@@ -1,2 +1,2 @@
-# ManWEB
- sistema de gestão e controle de manutenção
+# manweb
+Gestão de manutenção
