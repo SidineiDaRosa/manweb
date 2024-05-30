@@ -2,8 +2,8 @@
 
 @section('content')
 
-<main class="content">
-    <div>LISTAGEM DE EQUIPAMENTOS</div>
+<main class="content" style="background-color: transparent;">
+    <div>Lista de equipamentos</div>
     <div class="card">
         <div class="card-header-template">
 
