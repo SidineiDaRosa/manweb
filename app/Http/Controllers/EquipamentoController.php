@@ -25,6 +25,7 @@ class EquipamentoController extends Controller
      */
     public function index(Request $request)
     {
+        //bloco principal
         $id = $request->get('empresa');
         if ($request->has('searching')) {
             $searching = $request->get('searching');
