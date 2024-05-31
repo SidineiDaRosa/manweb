@@ -58,7 +58,7 @@ class HomeController extends Controller
         //Busca ordens do dia abertas
         $ordens_servicos_hoje = OrdemServico::where('situacao', $situacao)
             ->where('data_inicio', ('='), $dataFim)
-            ->where('empresa_id', ('<='), 2)
+            ->where('empresa_id', ('='), 2)
             ->orderby('data_inicio')->orderby('hora_inicio')->count();
         //Busca ordens do dia fehadas
         $ordens_servicos_hoje_fechado = OrdemServico::where('situacao', 'fechado')

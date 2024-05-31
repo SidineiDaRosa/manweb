@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdemServicoController;
-
+use Illuminate\Support\Facades\Auth;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -192,7 +192,7 @@ Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers
 //Filtro Produtos item  saida 
 Route::middleware('auth')->post('/Item-Saida-Produto', [App\Http\Controllers\ItemSaidaProdutoController::class, 'index']);
 //Serviçoes executados
-Route::middleware('auth')->post('/Servicos-executado-index', [App\Http\Controllers\ServicosExecutadosController::class, 'index']);
+//Route::middleware('auth')->post('/Servicos-executado-index', [App\Http\Controllers\ServicosExecutadosController::class, 'index']);
 Route::middleware('auth')->resource('/Servicos-executado', 'App\Http\Controllers\ServicosExecutadoController');
 //--------------------------------------------------------------------//
 //---Pedido de compra lista-------------------------------------------//
