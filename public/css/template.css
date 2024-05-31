@@ -1,0 +1,482 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    color: #2a2735;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 50px 1fr 40px;
+    grid-template-areas:
+        "header header"
+        "sidebar content"
+        "footer footer";
+    height: 100vh;
+    margin: 0;
+    background-color: #ddd;
+
+}
+
+/*------------------------------------------------------------------------------------------------------*/
+/*Caixa de mensagem e alerta*/
+/*------------------------------------------------------------------------------------------------------*/
+#div-messagebox-alert {
+    padding: 10px;
+}
+
+i {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+i:hover {
+    opacity: 1;
+
+}
+
+body.hide-sidebar {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    color: #1b0946;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "header"
+        "content"
+        "footer";
+    height: 100vh;
+    margin: 0;
+    background-color: #ddd;
+
+}
+
+header.header {
+ 
+    /*position: relative;*/
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    max-height: 100px;
+    grid-area: header;
+    display: flex;
+    background-color:#6d8ce8; /* Cor do Cabeçalho */
+    align-items: center;
+    z-index: 10;
+}
+
+header.header .logo {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #20313d;
+    font-size: 1.5rem;
+    flex-basis: 250px;
+    height: 100%;
+}
+
+header.header .menu-toggle {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    color: #20313d;
+    cursor: pointer;
+}
+
+header.header .spacer {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    flex-grow: 1;
+
+}
+
+header.header .dropdown {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    position: relative;
+}
+
+header.header .dropdown-button {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.1rem;
+    color: #20313d;
+    cursor: pointer;
+
+}
+
+header.header .dropdown-content {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    display: none;
+    position: absolute;
+    min-width: 100%;
+    background-color: #dad3c9;
+    padding: 3px 0px 10px;
+    z-index: 100;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, .2);
+
+}
+
+header.header .dropdown:hover .dropdown-content {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    transition-delay: 10s;
+    display: block;
+
+}
+
+header.header .dropdown-content ul {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+header.header .dropdown-content a {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    color: #20313d;
+    padding: 5px;
+    font-size: 1.1rem;
+}
+
+header.header .dropdown-content a:hover {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+header.header .dropdown:hover {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+header.header .avatar {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    height: 2rem;
+    /*era pra ser height 80% mas não deu certo*/
+    border-radius: 50%;
+    margin-left: 10px;
+
+}
+
+/*------------------------------------------------------------------------------------------------------*/
+/*Menu lateral left*/
+/*------------------------------------------------------------------------------------------------------*/
+.icofont-caret-down {
+    float: right;
+
+}
+
+aside.sidebar {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(70, 130, 180);
+
+}
+
+aside.sidebar .menu {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    width: 100%;
+    color: #2e1964;
+    flex-grow: 1;
+}
+
+aside.sidebar .menu ul.nav-list {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    color: #07294b;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+/*lista menu */
+aside.sidebar .menu li.nav-item {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    color: #061d35;
+    padding: 8px 0px 8px 20px;
+    margin: 0;
+
+
+
+}
+
+/*lista de menus*/
+aside.sidebar .menu li.nav-item a {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    font-stretch: condensed;
+    text-decoration: none;
+    color: #faf9fc;
+}
+
+.a {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: extra-condensed;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: #552ea5;
+}
+
+/*sidebar-submenu-expanded*/
+.sidebar-submenu-expanded {
+    height: auto;
+    width: 98%;
+    background-color: rgb(123, 36, 180);
+    font-size: medium;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.sidebar-submenu-expanded:hover {
+    background-color: #3c2074;
+}
+
+.sidebar-submenu-expanded-a {
+    opacity: 0.9;
+    font-size: 30px;
+    color:black;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.sidebar-submenu-expanded-a:hover {
+    opacity: 1;
+    animation-delay: 0.5s;
+}
+
+body.hide-sidebar aside.sidebar {
+
+    color: #1976d2;
+    display: none;
+}
+
+/*div maquinas*/
+#icofont-truck {
+    background-color: rgb(161, 160, 158);
+    border-radius: 5px;
+    height: auto;
+    width: 99%;
+    border-left: 5px;
+
+}
+
+e.sidebar .icon {
+
+    color: #1976d2;
+    font-size: 3.2rem;
+    margin: 2px 10px 2px 0px;
+
+}
+
+aside.sidebar .sidebar-widget .info {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.division {
+
+    widows: 80%;
+    /* width: 80%; */
+    border: solid 1px #eee;
+}
+
+aside.sidebar .info .main {
+
+    font-size: 2rem;
+}
+
+
+aside.sidebar .menu li.nav-item:hover {
+
+    background-color: rgba(0, 0, 0, 0.1);
+
+}
+
+main.content {
+
+    grid-area: content;
+    background-color: #fff;
+    padding: 10px;
+}
+
+main.content .content-title {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+}
+
+main.content .content-title h1 {
+    color: #444;
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0;
+}
+
+main.content .content-title h2 {
+    color: #888;
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0;
+}
+
+footer.footer {
+    grid-area: footer;
+    display: flex;
+    background-color: #1976d2;
+    background-color: #7c7c7c;
+    color: #fff;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+    font-size: 1.2rem;
+}
+
+.record {
+    font-size: 1.8rem;
+}
+
+.card-header-template {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+    margin-bottom: 0;
+    background-color: #c9d0da;
+    border-bottom: 1px solid rgba(0, 0, 0, .125)
+}
+
+.card-body-template {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+/*Estilização das tabelas*/
+.table-template {
+    width: 100%;
+    margin-bottom: .2rem;
+    background-color: transparent;
+    text-transform: uppercase;
+    border: 1px solid #939397;
+}
+
+.table-template td,
+.table-template th {
+    padding: .2rem;
+    border: 1px solid #bfbfc2;
+}
+
+table td {
+    font-size: 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.th-title {
+    background-color: #c9d0da;
+    font-weight: 400;
+}
+
+.th-title-main {
+    background-color: #96acc2;
+    font-weight: 400;
+}
+
+.form-control-template {
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 1px);
+    padding: .1rem .75rem;
+    font-size: 0.9rem;
+    line-height: 0.8;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .1rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+.btn-sm-template {
+    padding: .1rem .5rem;
+    font-size: .8rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border-radius: .2rem
+}
+
+input {
+    font-size: medium;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+
+select {
+    font-size: medium;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+@media screen and(min-width:680px) {
+    aside.sidebar {
+        background-color: rgb(32, 192, 32);
+    }
+}
