@@ -25,6 +25,10 @@ class EquipamentoController extends Controller
      */
     public function index(Request $request)
     {
+        //estas variavel abaixo são teste de commit
+       $variavelteste;
+       $variavelteste2;
+       //--------------------------------------
         $id = $request->get('empresa');
         if ($request->has('searching')) {
             $searching = $request->get('searching');
