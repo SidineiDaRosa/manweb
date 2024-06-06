@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -15,10 +14,13 @@
             background-color: #333;
         }
 
+
         .navbar {
             background-color: #333;
             overflow: hidden;
             width: 100%;
+            height: 35px;
+            /* Defina a altura desejada para o navbar */
         }
 
         .navbar a {
@@ -26,7 +28,7 @@
             display: block;
             color: #f2f2f2;
             text-align: center;
-            padding: 14px 16px;
+            padding: 5px 16px;
             text-decoration: none;
         }
 
@@ -78,68 +80,67 @@
             text-align: center;
             width: 50%;
             margin: 1%;
-
         }
 
+        .carousel-item {
+            height: 100vh;
+            /* Definindo a altura da div do carrossel como 100% da altura da viewport */
+        }
+
+        .carousel-item video {
+            height: 100%;
+            /* O vídeo ocupa 100% da altura da div do carrossel */
+            width: 100%;
+            /* O vídeo ocupa 100% da largura da div do carrossel */
+            object-fit: cover;
+            /* O vídeo será redimensionado para preencher a área do contêiner, mantendo a proporção */
+        }
     </style>
+</head>
 
 <body>
-    </head>
-
-        <div class="navbar" id="myNavbar">
-            <a href="" class="title-menu">Home</a>
-            <a href="{{'e-comerce-show-produto'}}">PRODUTOS</a>
-            <a href="{{ route('app.home') }}" class="title-menu">MANTENÇÃO</a>
-            <a href="#" class="title-menu">SOBRE NÓS</a>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                &#9776;
-            </a>
-        </div>
-        <script>
-            function myFunction() {
-                var x = document.getElementById("myNavbar");
-                if (x.className === "navbar") {
-                    x.className += " responsive";
-                } else {
-                    x.className = "navbar";
-                }
+    <div class="navbar" id="myNavbar">
+        <a href="" class="title-menu">Home</a>
+        <a href="{{'e-comerce-show-produto'}}">PRODUTOS</a>
+        <a href="{{ route('app.home') }}" class="title-menu">MANTENÇÃO</a>
+        <a href="#" class="title-menu">SOBRE NÓS</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            &#9776;
+        </a>
+    </div>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myNavbar");
+            if (x.className === "navbar") {
+                x.className += " responsive";
+            } else {
+                x.className = "navbar";
             }
-        </script>
-
-    <style>
-        .carousel-item img {
-            max-height: 300px;
-            /* Ajuste a altura conforme necessário */
-            width: 100%;
-            object-fit: cover;
         }
-
-        .carousel-caption {
-            margin-bottom: 300px;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
-        }
-    </style>
+    </script>
 
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <video autoplay muted loop>
-                    <source src="{{ asset('img/video6.mp4') }}" type="video/mp4" class="d-block w-100" alt="...">
+                <video autoplay muted loop class="h-100">
+                    <source src="{{ asset('img/apresentacao/industria.mp4') }}" type="video/mp4" alt="...">
                 </video>
             </div>
             <div class="carousel-item">
-                <video autoplay muted loop>
-                    <source src="{{ asset('img/video5.mp4') }}" type="video/mp4" class="d-block w-100" alt="...">
-
-            </div>
-
-            <div class="carousel-item">
-                <video autoplay muted loop>
-                    <source src="{{ asset('img/video1.mp4') }}" type="video/mp4" class="d-block w-100" alt="...">
+                <video autoplay muted loop class="h-100">
+                    <source src="{{ asset('img/video5.mp4') }}" type="video/mp4" alt="...">
                 </video>
             </div>
+            <div class="carousel-item">
+                <video autoplay muted loop class="h-100">
+                    <source src="{{ asset('img/apresentacao/video1.mp4') }}" type="video/mp4" alt="...">
+                </video>
+            </div>
+            <!--Div imagem fosca-->
+            <div id="overlay"></div>
             <div class="carousel-caption">
-                <h1>Manutenção industrial</h1>
+                <h1>ManWeb</h1>
+                Sistema para gestão de manutenção.
                 <input type="button" value="saber mais...">
             </div>
         </div>
@@ -156,27 +157,28 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-<footer>
-    <!--inicio do rodapé da pagina-->
-    <div>
-        <style>
-            footer {
-                text-align: center;
-                width: 100%;
-            }
 
-            .title-footer {
-                color: black;
-                margin: 1%;
-            }
-        </style>
-        <a href="#" class="title-footer">HOME</a>|
-        <a href="{{'e-comerce-show-produto'}}" class="title-footer">PRODUTOS</a>|
-        <a href="#" class="title-footer">SOBRE NÓS</a>|
-        <a href="#" class="title-footer">DOWNLOADS</a>
-        <a href="#" class="title-footer">Webmail</a>
-    </div>
-</footer>
+    <!--inicio do rodapé da pagina-->
+    <footer>
+        <div>
+            <style>
+                footer {
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .title-footer {
+                    color: black;
+                    margin: 10px;
+                }
+            </style>
+            <a href="#" class="title-footer">HOME</a>|
+            <a href="{{'e-comerce-show-produto'}}" class="title-footer">PRODUTOS</a>|
+            <a href="#" class="title-footer">SOBRE NÓS</a>|
+            <a href="#" class="title-footer">DOWNLOADS</a>
+            <a href="#" class="title-footer">Webmail</a>
+        </div>
+    </footer>
+</body>
 
 </html>
