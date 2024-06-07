@@ -74,6 +74,7 @@
                         display: flex;
                         font-size: 20px;
                         font-family: 'Poppins', sans-serif;
+
                         color: #007b00;
                         margin-bottom: 5px;
                     }
@@ -123,19 +124,27 @@
                     <div class="item">
                         <div class="box-conteudo">
                             <div id=idOs class="conteudo" style="color:mediumblue">
-                                ID:&nbsp&nbsp{{$ordem_servico->id}}
+                                <Caption style="font-weight:100; color:#007b00;">ID:</Caption>
+                                &nbsp&nbsp{{$ordem_servico->id}}
                             </div>
 
                             @php
                             use Carbon\Carbon;
+
                             $data_inicio = Carbon::parse($ordem_servico->data_inicio . ' ' . $ordem_servico->hora_inicio);
                             $data_fim = Carbon::parse($ordem_servico->data_fim . ' ' . $ordem_servico->hora_fim);
                             $diff = $data_fim->diff($data_inicio);
-                            $tempo_entre_datas = $diff->format('%h horas e %i minutos');
+                            $hours = $diff->format('%h');
+                            $minutes = $diff->format('%i');
+                            $tempo_entre_datas = $hours . '<span>h</span> ' . $minutes . '<span> min</span>';
                             @endphp
-                            <div class="titulo">O tempo previsto para realizar o serviço é de:</div>
-                            <div class="conteudo" style="color:crimson">{{$tempo_entre_datas}}</div>
 
+                            <div class="titulo">O tempo previsto para realizar o serviço é de:</div>
+                            <!-- Conteúdo com texto alinhado na parte inferior -->
+                            <div class="conteudo" style="display: flex; align-items: flex-end; color: crimson; font-size: 18px;">
+                                {{$hours}}<span style="font-family:'Poppins', sans-serif; font-weight:300; color:#007b00; font-size:15px;">hs &nbsp e &nbsp </span>
+                                {{$minutes}}<span style="font-family:'Poppins', sans-serif; font-weight:300; color:#007b00; font-size:15px;">min.</span>
+                            </div>
                             <hr>
                             <p>
                             <p>
@@ -152,8 +161,9 @@
                                     border: 1px solid rgba(33, 116, 212, 0.3);
                                     border-radius: 5px;
                                     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-                                    background-color: transparent; /* Transparent background */
-                                    
+                                    background-color: transparent;
+                                    /* Transparent background */
+
                                 }
 
                                 #txt-area:focus {
