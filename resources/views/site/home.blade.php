@@ -14,67 +14,60 @@
             background-color: #333;
         }
 
+        body {
+            font-family: Arial, sans-serif;
+        }
 
         .navbar {
-            background-color: #333;
-            overflow: hidden;
-            width: 100%;
-            height: 35px;
-            /* Defina a altura desejada para o navbar */
+            background-color:white;
         }
 
-        .navbar a {
-            float: left;
-            display: block;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 5px 16px;
-            text-decoration: none;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
+        .menu-item {
+            background: transparent;
             color: black;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: inline-block;
         }
 
-        .navbar a.active {
-            background-color: #04AA6D;
-            color: white;
+        .dropdown {
+        top: 100px;
+        left: 0;
+        background: #fff;
+        color: black;
+        padding: 10px;
+        width: 100vw;
+        height: 400px;
+        position: absolute;
+        box-shadow: 0 8px 16px rgba(10, 8, 8, 0.2);
+        opacity: 0;
+        visibility: hidden;
+        transition: visibility 0s linear 0.5s, opacity 0.5s linear 0s;
+        z-index: 9999; /* Garantir que o dropdown fique por cima de tudo */
+    }
+        .menu-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transition: visibility 0s linear 0s, opacity 0.5s linear 0s;
         }
 
-        .navbar .icon {
-            display: none;
-        }
-
-        @media screen and (max-width: 600px) {
-            .navbar a:not(:first-child) {
-                display: none;
+        @media (max-width: 800px) {
+            .menu {
+                display: flex;
+                flex-direction: column;
+                width: 30%;
+                margin: 5px;
+                border: 1px chocolate;
             }
 
-            .navbar a.icon {
-                float: right;
+            .menu-item {
                 display: block;
+                width: 100%;
+                box-sizing: border-box;
             }
         }
 
-        @media screen and (max-width: 600px) {
-            .navbar.responsive {
-                position: relative;
-            }
-
-            .navbar.responsive .icon {
-                position: absolute;
-                right: 0;
-                top: 0;
-            }
-
-            .navbar.responsive a {
-                float: none;
-                display: block;
-                text-align: left;
-            }
-        }
-
+        /*=====================================================*/
         #myNavbar {
             display: flex;
             text-align: center;
@@ -99,15 +92,50 @@
 </head>
 
 <body>
-    <div class="navbar" id="myNavbar">
-        <a href="" class="title-menu">Home</a>
-        <a href="{{'e-comerce-show-produto'}}">PRODUTOS</a>
-        <a href="{{ route('app.home') }}" class="title-menu">MANTENÇÃO</a>
-        <a href="#" class="title-menu">SOBRE NÓS</a>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-            &#9776;
-        </a>
-    </div>
+
+    {{----------------------------------------------------------------------------}}
+    {{--nav bar--}}
+
+    <nav class="navbar">
+        <div class="menu" id="menu">
+            <div class="menu-item">
+                <a href="#">Home</a>
+            </div>
+            <div class="menu-item">
+                <a href="#">Sobre nós</a>
+                <div class="dropdown">
+                    <a href="#">Nossa história</a>
+                    <hr>
+                    <a href="#">Nossa equipe</a>
+                    <hr>
+                    <a href="#">Nossa missão</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="#">Produtos e serviços</a>
+                <div class="dropdown">
+                    <a href="#">Consultorias</a>
+                    <hr>
+                    <a href="#">Vendas</a>
+                    <hr>
+                    <a href="#">Suporte</a>
+                    <hr>
+                    <a href="{{'e-comerce-show-produto'}}">Produtos</a>
+                    <hr>
+                    <a href="{{ route('app.home') }}" class="title-menu" caption="erp" >ERP ManWEB</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="#">Contato</a>
+                <div class="dropdown">
+                    <a href="#">Email Us</a>
+                    <hr>
+                    <a href="#">Onde estamos</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {{-----------------------------------------fim nav bar-------------------------}}
     <script>
         function myFunction() {
             var x = document.getElementById("myNavbar");
