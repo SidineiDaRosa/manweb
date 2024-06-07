@@ -244,7 +244,7 @@
                     <hr style="margin:-1px;color:#ccc;">
                     <div class="conteudo">
                         <div class="col-md-0 offset-md-0">
-                            <button type="button" id="executarFormulario" class="btn btn-secondary sm" value="">
+                            <button type="button" id="executarFormulario" class="btn btn-success sm" value="">
                                 Buscar
                                 <i class="icofont-search"></i>
                             </button>
@@ -263,8 +263,8 @@
                     <hr style="margin:-1px;color:#ccc;">
                     <div class="conteudo">
                         <div class="col-md-0 offset-md-0">
-                            <button type="submit" id="submitForm" class="btn btn-primary sm" value="">
-                                Incluir no pedido
+                            <button type="submit" id="submitForm" class="btn btn-outline-primary sm" value="">
+                                Incluír no pedido
                             </button>
                         </div>
                     </div>
@@ -398,7 +398,7 @@
         <div class="row mb-1">
             <hr>
             <div class="col-md-12">
-                <button id="enviar" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                <button id="enviar" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">
                     <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">Fechar pedido compra</button>
             </div>
         </div>
