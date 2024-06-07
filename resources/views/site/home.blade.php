@@ -19,7 +19,7 @@
         }
 
         .navbar {
-            background-color:white;
+            background-color: white;
         }
 
         .menu-item {
@@ -30,25 +30,31 @@
             display: inline-block;
         }
 
+        .menu-item:hover {}
+
         .dropdown {
-        top: 100px;
-        left: 0;
-        background: #fff;
-        color: black;
-        padding: 10px;
-        width: 100vw;
-        height: 400px;
-        position: absolute;
-        box-shadow: 0 8px 16px rgba(10, 8, 8, 0.2);
-        opacity: 0;
-        visibility: hidden;
-        transition: visibility 0s linear 0.5s, opacity 0.5s linear 0s;
-        z-index: 9999; /* Garantir que o dropdown fique por cima de tudo */
-    }
+            top: 60px;
+            left: 0;
+            background: #fff;
+            color: black;
+            padding: 10px;
+            width: 100vw;
+            height: 400px;
+            position: absolute;
+            box-shadow: 0 8px 16px rgba(10, 8, 8, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: visibility 0s linear 0.5s, opacity 0.5s linear 0s;
+            z-index: 9999;
+            /* Garantir que o dropdown fique por cima de tudo */
+
+        }
+
         .menu-item:hover .dropdown {
             opacity: 1;
             visibility: visible;
             transition: visibility 0s linear 0s, opacity 0.5s linear 0s;
+
         }
 
         @media (max-width: 800px) {
@@ -67,14 +73,9 @@
             }
         }
 
-        /*=====================================================*/
-        #myNavbar {
-            display: flex;
-            text-align: center;
-            width: 50%;
-            margin: 1%;
-        }
+        .div-menu-item-column {}
 
+        /*=====================================================*/
         .carousel-item {
             height: 100vh;
             /* Definindo a altura da div do carrossel como 100% da altura da viewport */
@@ -122,7 +123,7 @@
                     <hr>
                     <a href="{{'e-comerce-show-produto'}}">Produtos</a>
                     <hr>
-                    <a href="{{ route('app.home') }}" class="title-menu" caption="erp" >ERP ManWEB</a>
+                    <a href="{{ route('app.home') }}" class="title-menu" caption="erp">ERP ManWEB</a>
                 </div>
             </div>
             <div class="menu-item">
