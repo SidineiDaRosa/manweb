@@ -11,12 +11,14 @@
             font-size: 25px;
             color: gray;
             text-align: center;
-            margin-top:-10px;
+            margin-top: -10px;
         }
+
+        main {}
     </style>
     <div class="card">
-            @foreach ($pedidos_compra as $pedido_compra)
-            @endforeach
+        @foreach ($pedidos_compra as $pedido_compra)
+        @endforeach
         <div class="card-header-template">
             <div>
                 <a href="{{route('pedido-compra.index')}}" class="btn btn-sm-template btn-outline-secondary">
@@ -47,7 +49,7 @@
         </style>
 
         {{-------------------------------------------------------------------------}}
-        {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
+        {{--Inicio do bloco que contém o continer ---------------------}}
         <style>
             body,
             html {
@@ -56,19 +58,20 @@
                 padding: 0;
             }
 
+            textarea {
+                font-size: 15px;
+                font-weight: 500;
+                color: magenta;
+            }
+
             .container-chart {
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-around;
                 align-items: flex-start;
                 background-color: white;
+                margin: 0;
 
-            }
-
-            textarea {
-                font-size: 15px;
-                font-weight: 500;
-                color: magenta;
             }
 
             .item {
@@ -80,7 +83,8 @@
                 overflow: auto;
                 /* Impede que o conteúdo transborde */
                 font-weight: 500;
-                margin-top: 0px;;
+                margin-top: 0px;
+                ;
             }
 
             .box {
@@ -101,6 +105,7 @@
                     margin: 0px -80;
                 }
             }
+
             .box-conteudo {
                 margin-left: 50px;
                 justify-content: flex-start;
@@ -131,10 +136,10 @@
 
                 <div class="titulo">Emissão</div>
                 <hr style="margin:-5px;color:#ccc;">
-                <div class="conteudo">{{ $pedido_compra->data_emissao }} {{ $pedido_compra->hora_emissao }}</div>
+                <div class="conteudo">{{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y') }} {{ $pedido_compra->hora_emissao }}</div>
                 <div class="titulo">Previsão</div>
                 <hr style="margin:-5px;color:#ccc;">
-                <div class="conteudo">{{ $pedido_compra->data_prevista}} {{ $pedido_compra->hora_prevista}}</div>
+                <div class="conteudo">{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</div>
 
             </div>
             {{--Box 2--}}
@@ -179,49 +184,98 @@
             @method('POST')
             {{---------------------------------------------------}}
             {{--Bloco escolha do produto para inserir no pedido--}}
-            <div class="form-row">
-                <div class="row mb-1">
-                    <label for="pedidos_compra_id" class="col-md-4 col-form-label text-md-end text-right">ID Ped</label>
-                    <div class="col-md-6">
-                        <input name="pedidos_compra_id" id="pedidos_compra_id" type="text" class="form-control" value="{{ $pedido_compra->id }}" readonly>
-                        <span id="pedidos_compra_id_error" class="text-danger"></span>
+            <div class="container-row-column">
+                <style>
+                    .div-column {
+                        display: flex;
+                        flex-direction: column;
+                        margin-left: 20px;
+                        margin-right: 20px;
+                    }
+
+                    .container-row-column {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        /* Alinha os itens ao centro horizontalmente */
+                        align-items: center;
+                        /* Alinha os itens ao centro verticalmente */
+                        text-align: center;
+                        /* Centraliza o texto */
+                        background-color:#f7fEEf;
+                    }
+
+                    @media (max-width: 900px) {
+                        .div-column {
+                            margin-left: 20px;
+                            margin-right: 20px;
+                        }
+
+                        .container-row-column {
+                            flex-direction: column;
+                            /* Altera a direção para uma coluna em telas menores */
+                            justify-content: flex-start;
+                            /* Alinha os itens à esquerda */
+                            align-items: flex-start;
+                            /* Alinha os itens ao topo */
+                            text-align: left;
+                            /* Define o texto para a esquerda */
+                        }
+                    }
+                </style>
+                <div class="div-column" hidden>
+                    <div class="titulo">ID Pedido</div>
+                    <hr style="margin:-1px;color:#ccc;">
+                    <div class="conteudo"style="color:#2174d4 !important;">
+                        {{ $pedido_compra->id }}
+                        <input name="pedidos_compra_id" id="pedidos_compra_id" type="text" class="form-control" value="{{ $pedido_compra->id }}" readonly hidden>
                     </div>
                 </div>
-                <div class="row mb-6">
-                    <label for="produto_id" class="col-md-4 col-form-label text-md-end text-right">ID Produto </label>
-                    <div class="col-md-6">
-                        <input name="produto_id" id="produto_id" type="text" class="form-control" value="{{ $produto_id }}" readonly>
+                <div class="div-column">
+                    <div class="titulo">ID Produto</div>
+                    <hr style="margin:-1px;color:#ccc;">
+                    <div class="conteudo">
+                        {{ $produto_id }}
+                        <input name="produto_id" id="produto_id" type="text" class="form-control" value="{{ $produto_id }}" readonly hidden>
                     </div>
                 </div>
-                <div class="row mb-2">
-                    <div class="col-md-0 offset-md-0">
-                        <button type="button" id="executarFormulario" class="btn btn-secondary sm" value="">
-                            Buscar
-                            <i class="icofont-search"></i>
-                        </button>
+                <div class="div-column">
+                    <div class="titulo">Buscar</div>
+                    <hr style="margin:-1px;color:#ccc;">
+                    <div class="conteudo">
+                        <div class="col-md-0 offset-md-0">
+                            <button type="button" id="executarFormulario" class="btn btn-secondary sm" value="">
+                                Buscar
+                                <i class="icofont-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="row mb-1">
-                    <label for="quantidade" class="col-md-4 col-form-label text-md-end text-right">Quantidade</label>
-                    <div class="col-md-6">
+                <div class="div-column">
+                    <div class="titulo">Quantidade</div>
+                    <hr style="margin:-0px;color:#ccc;">
+                    <div class="conteudo">
                         <input name="quantidade" id="quantidade" type="text" class="form-control" value="{{ old('quantidade') }}">
-                        <span id="quantidade_error" class="text-danger"></span>
-                    </div>
-                    {{-------------------------------------------------}}
-                    {{-- focus no input quantidade--}}
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            document.getElementById('quantidade').focus();
-                        });
-                    </script>
-                </div>
-                <div class="row mb-0">
-                    <div class="col-md-6 offset-md-4">
-                        <button type="submit" id="submitForm" class="btn btn-primary sm" value="">
-                            Incluir no pedido
-                        </button>
                     </div>
                 </div>
+                <div class="div-column">
+                    <div class="titulo">Inserir</div>
+                    <hr style="margin:-1px;color:#ccc;">
+                    <div class="conteudo">
+                        <div class="col-md-0 offset-md-0">
+                            <button type="submit" id="submitForm" class="btn btn-primary sm" value="">
+                                Incluir no pedido
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {{-------------------------------------------------}}
+                {{-- focus no input quantidade--}}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('quantidade').focus();
+                    });
+                </script>
             </div>
         </form>
         <form id="formSearchingProducts" action="{{'Produtos-filtro'}}" method="POST" class="row mb-1">
@@ -342,10 +396,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
         <div class="row mb-1">
-        <hr>
+            <hr>
             <div class="col-md-12">
                 <button id="enviar" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#confirmModal">
-                <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">Fechar pedido compra</button>
+                    <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">Fechar pedido compra</button>
             </div>
         </div>
     </div>

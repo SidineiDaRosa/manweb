@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header-template">
             <div>
-                Ordem de serviço
+                Show pedido de compra
             </div>
             <div>
                 <a class="btn btn-primary btn-lg mr-2" href="{{ route('ordem-servico.index') }}">Voltar</a>
