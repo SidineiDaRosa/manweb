@@ -123,9 +123,10 @@
                     {{--Box 2--}}
                     <div class="item">
                         <div class="box-conteudo">
+                            <div class="titulo">ID:</div>
+                            <hr>
                             <div id=idOs class="conteudo" style="color:mediumblue">
-                                <Caption style="font-weight:100; color:#007b00;">ID:</Caption>
-                                &nbsp&nbsp{{$ordem_servico->id}}
+                                {{$ordem_servico->id}}
                             </div>
 
                             @php
@@ -134,16 +135,18 @@
                             $data_inicio = Carbon::parse($ordem_servico->data_inicio . ' ' . $ordem_servico->hora_inicio);
                             $data_fim = Carbon::parse($ordem_servico->data_fim . ' ' . $ordem_servico->hora_fim);
                             $diff = $data_fim->diff($data_inicio);
-                            $hours = $diff->format('%h');
-                            $minutes = $diff->format('%i');
-                            $tempo_entre_datas = $hours . '<span>h</span> ' . $minutes . '<span> min</span>';
-                            @endphp
 
+                            // Calculando o total de horas
+
+                            $totalHours = $diff->days * 24 + $diff->h;
+                            $minutes = $diff->format('%i');
+                            @endphp
                             <div class="titulo">O tempo previsto para realizar o serviço é de:</div>
                             <!-- Conteúdo com texto alinhado na parte inferior -->
                             <div class="conteudo" style="display: flex; align-items: flex-end; color: crimson; font-size: 18px;">
-                                {{$hours}}<span style="font-family:'Poppins', sans-serif; font-weight:300; color:#007b00; font-size:15px;">hs &nbsp e &nbsp </span>
+                                {{$totalHours}}<span style="font-family:'Poppins', sans-serif; font-weight:300; color:#007b00; font-size:15px;">hs &nbsp e &nbsp </span>
                                 {{$minutes}}<span style="font-family:'Poppins', sans-serif; font-weight:300; color:#007b00; font-size:15px;">min.</span>
+
                             </div>
                             <hr>
                             <p>
