@@ -6,8 +6,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-
-
 <main class="content">
     <div class="titulo-main">
         Ordem de Serviço
@@ -73,14 +71,23 @@
                     .conteudo {
                         display: flex;
                         font-size: 20px;
+                        font-weight:400;
                         font-family: 'Poppins', sans-serif;
-
                         color: #007b00;
-                        margin-bottom: 5px;
+                        margin-bottom: -1px;
+                     align-items: flex-end; 
                     }
 
                     #patrimonio {
                         color: #2174d4;
+                    }
+
+                    .span-texto-sm {
+                        font-family: 'Poppins', sans-serif;
+                        font-weight: 300;
+                        color:mediumblue;
+                        font-size: 15px;
+                        margin-bottom: 1px;
                     }
                 </style>
                 <div class="container-chart">
@@ -144,8 +151,8 @@
                             <div class="titulo">O tempo previsto para realizar o serviço é de:</div>
                             <!-- Conteúdo com texto alinhado na parte inferior -->
                             <div class="conteudo" style="display: flex; align-items: flex-end; color: crimson; font-size: 18px;">
-                                {{$totalHours}}<span style="font-family:'Poppins', sans-serif; font-weight:300; color:#007b00; font-size:15px;">hs &nbsp e &nbsp </span>
-                                {{$minutes}}<span style="font-family:'Poppins', sans-serif; font-weight:300; color:#007b00; font-size:15px;">min.</span>
+                                {{$totalHours}}<span class="span-texto-sm ">hs &nbsp e &nbsp </span>
+                                {{$minutes}}<span class="span-texto-sm ">min.</span>
 
                             </div>
                             <hr>
@@ -184,18 +191,19 @@
                     <div class="item">
                         <div class="box-conteudo">
                             <div class="titulo">Emissão</div>
-
-                            <div class="conteudo"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}} {{$ordem_servico->hora_emissao}}</div>
                             <hr>
+                            <div class="conteudo"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
+                            
                             <div class="titulo"> Previsão para início</div>
-
-                            <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}} {{$ordem_servico->hora_inicio}}</div>
                             <hr>
+                            <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}} <span class="span-texto-sm "> &nbsp as &nbsp</span>{{$ordem_servico->hora_inicio}}</div>
+                           
                             <div class="titulo">Previsão par fim</div>
-
-                            <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}} {{$ordem_servico->hora_fim}}</div>
+                            <hr>
+                            <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_fim}}</div>
                             <!--Exemplo de progressbar com um input texto-->
-
+                            <div class="titulo">Status do progresso do serviço está em:</div>
+                            
                             <input type="text" value="{{ $ordem_servico->status_servicos }}" id="progress-input" hidden>
                             <div class="progress">
                                 <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos}}%</div>
