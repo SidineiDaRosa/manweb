@@ -109,8 +109,7 @@
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">
-                    <textarea name="" id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao"></textarea>
-
+                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao"></textarea>
                 </div>
                 <style>
                     #txt-area {
@@ -136,7 +135,7 @@
                 <div class="titulo">Progresso do serviço:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text"id="status_servicos" type="text" class="form-control-template" name="status_servicos" value="">
+                    <input class="input-text" id="status_servicos" type="text" class="form-control-template" name="status_servicos" value="">
                 </div>
             </div>
         </div>
@@ -145,10 +144,13 @@
             <div class="titulo">Emissão</div>
             <hr>
             <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly><input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly></div>
-            <div class="titulo">hora prevista</div>
+            <div class="titulo">Previsão para início</div>
             <hr>
-            <div class="conteudo"> <input class="input-text" type="time" class="form-control" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value=""></div>
-            <div class="titulo">Data prevista par término</div>
+            <div class="conteudo">
+                <input class="input-text" type="date" name="data_prevista" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
+                <div class="conteudo"> <input class="input-text" type="time" class="form-control" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value=""></div>
+            </div>
+            <div class="titulo">Data prevista para término</div>
             <hr>
             <div class="conteudo">
                 <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
