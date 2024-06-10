@@ -25,7 +25,7 @@
        
         <div class="logo">
         <i class="icofont-architecture-alt icofont-2x wite"></i>
-            <span class="font-wheight-light">ManWEb</span>
+            <span class="font-wheight-light">ManWEB</span>
         </div>
         <div class="spacer"></div>
 
