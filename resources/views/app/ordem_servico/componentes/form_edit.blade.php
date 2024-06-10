@@ -119,213 +119,232 @@
         document.getElementById('bg-modal').style.display = 'none';
     }
 </script>
-<!----**************************************************************************************--->
-<!----Grava -->
-<!---*************************************************************************************----->
-
 {{---------------------------------------------------------------------}}
 {{--Inicio de formulário de ordem de serviço--=------------------------}}
 <form action="{{route('ordem-servico.update',['ordem_servico' => $ordem_servico->id]) }}" method="POST">
     @csrf
     @method('PUT')
     <!------------------------------------------------------------------------------------------->
-    <div class="form-row">
-        <div class="col-md-1 mb-0">
-            <label for="idOs" class="col-md-4 col-form-label text-md-end">ID</label>
-            <input id="id1" type="nuber" class="form-control" name="id" value="{{$ordem_servico->id}}" disabled>
-            {{ $errors->has('id') ? $errors->first('id') : '' }}
-        </div>
+    {{-------------------------------------------------------------------------}}
+    {{--início da div que contem os box--}}
+    {{-------------------------------------------------------------------------}}
+    {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
 
-        <!------------------------------------------------------>
-        <!-------------empresa--------------->
-        <div class="col-sm-1 mb-0">
-            <label for="empresa_id" class="col-md-6 col-form-label text-md-end">E_id</label>
-            <input type="text" class="form-control" name="empresa_id" id="empresa_id" value="{{$ordem_servico->empresa->id}}" readonly>
-            {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+    <style>
+        hr {
+            margin: -5px;
+        }
 
-        </div>
-        <div class="col-sm-4 mb-0">
-            <label for="empresa_id" class="col-md-6 col-form-label text-md-end">Empresa</label>
-            <input type="text" class="form-control" name="razao_social" id="razao_social" value="{{$ordem_servico->empresa->razao_social}}" readonly>
-            {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+        .box-conteudo {
+            margin-left: 50px;
+            justify-content: flex-start;
+        }
 
-        </div>
-        <!------------------------------------------------------------------------------------------->
-        <!----equipamento-->
-        <!------------------------------------------------------------------------------------------->
-        <div class="col-md-1 mb-0">
-            <label for="equipamento" class="col-md-6 col-form-label text-md-end">ID </label>
-            <input id="patrimonio" type="text" class="form-control" name="equipamento_id" value="{{ $ordem_servico->equipamento->id }}" disabled>
-            {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+        .titulo {
+            display: flex;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
 
-        </div>
-        <div class="col-md-4">
-            <label for="equipamento" class="col-md-6 col-form-label text-md-end">Equipamento/Patrimônio</label>
-            <input id="patrimonio" type="text" class="form-control" name="equipamento_id" value="{{ $ordem_servico->equipamento->nome }}" disabled>
-            {{ $errors->has('nome') ? $errors->first('nome') : '' }}
-        </div>
+        }
 
-    </div>
-    <!------------------------------------------------------------------------------------------->
-    <!----Datas---------------------------------------------------------------------------------->
-    <!------------------------------------------------------------------------------------------->
-    <div class="form-row">
-        <div class="col-md-1 mb-0">
-            <label for="data_Emissao">Data emissao</label>
-            <input type="date" class="form-control" id="data_emissao1" name="data_emissao" value="{{$ordem_servico->data_emissao}}" readonly>
-            <div class="invalid-tooltip">
-                informe a data
-            </div>
-        </div>
-        <div class="col-md-1 mb-0">
-            <label for="horaEmissao">Hora emissao</label>
-            <input type="time" class="form-control" name=hora_emissao id="hora_Emissao1" required value="{{$ordem_servico->hora_emissao}}" readonly>
-            <div class="invalid-tooltip">
-                Por favor, informe a hora.
-            </div>
-        </div>
+        .conteudo {
+            display: flex;
+            font-size: 20px;
+            font-weight: 400;
+            font-family: 'Poppins', sans-serif;
+            color: #007b00;
+            margin-bottom: -1px;
+            align-items: flex-end;
+        }
 
-        <div class="col-sm-1 mb-0">
-            <label for="dataPrevista">Data prevista</label>
-            <input type="date" class="form-control" name="data_inicio" id="data_prevista" placeholder="dataPrevista" required value="{{$ordem_servico->data_inicio}}" onchange=" ValidateDate()">
-            <div class="invalid-tooltip">
-                Por favor, informe data
-            </div>
-            <script>
-                function ValidateDate() {
+        #patrimonio {
+            color: #2174d4;
+        }
 
-                    let dataEmissao = document.getElementById('data_emissao1').value;
-                    let dataPrevista = document.getElementById('data_prevista').value;
-                    let dataFim = document.getElementById('data_fim').value;
-                    if (dataPrevista < dataEmissao) {
-                        alert('A data prevista deve ser maior que a data de emissão!');
-                        document.getElementById('data_prevista').value = 'null';
-                        document.getElementById('data_prevista').style.backgroundColor = '#FFC0CB';
-                        document.getElementById('data_prevista').focus();
-                    } else {
-                        document.getElementById('data_prevista').style.backgroundColor = '#7FFF7F';
+        .span-texto-sm {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            color: mediumblue;
+            font-size: 15px;
+            margin-bottom: 1px;
+        }
 
-                        if (dataFim < dataPrevista) {
-                            document.getElementById('data_fim').value = 'null';
-                            document.getElementById('data_fim').style.backgroundColor = '#FFC0CB';
-                        } else {
+        .input-text {
+            margin-top: 5px;
+            width: auto;
+            border: none;
+            color: #2174d4;
+        }
+    </style>
+    <div class="container-chart">
+        {{--Box 1--}}
+        <div class="item">
+            <div class="box-conteudo">
+                <div class="titulo">ID:</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="text" class="input-text" name="ordem_servico_id" id="ordem_servico_id" value="{{$ordem_servico->id}}" readonly>
+                    {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+                </div>
+                <div class="titulo">Empresa:</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="text" class="input-text" name="empresa_id" id="empresa_id" value="{{$ordem_servico->empresa->id}}" readonly style="width:20%;">
+                    {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+                    <input type="text" class="input-text" name="razao_social" id="razao_social" value="{{$ordem_servico->empresa->razao_social}}" readonly style="width:80%;">
+                    {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+                </div>
 
-                            document.getElementById('data_fim').style.backgroundColor = '#7FFF7F';
+                <div class="titulo">ID patrimonio:</div>
+                <hr>
+                <div class="conteudo">
+                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->id }}" disabled style="width:20%;">
+                    {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+                </div>
+                <div class="titulo">Patrimonio:</div>
+                <hr>
+                <div class="conteudo">
+                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;">
+                    {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+                </div>
+                <div class="titulo">Emissor:</div>
+                <hr>
+                <div class="conteudo">
+                    <input id="emissor" type="text" class="input-text" name="emissor" value="{{$ordem_servico->emissor}}" readonly>
+                    {{ $errors->has('nome') ? $errors->first('nome') : '' }}
+                </div>
+                <div class="titulo">Executor:</div>
+                <hr>
+                <div class="conteudo">
+                    <select name="responsavel" id="responsavel" class="input-text">
+                        <option value="{{$ordem_servico->responsavel}}">{{$ordem_servico->responsavel}}</option>
+                        @foreach ($funcionarios as $funcionario_find)
+                        <option value="{{$funcionario_find->primeiro_nome}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
+                            {{$funcionario_find->primeiro_nome}}
+                        </option>
+                        @endforeach
+                    </select>
+                    {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
+                </div>
+                <div class="titulo">Emissão:</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="date" class="input-text" id="data_emissao1" name="data_emissao" value="{{$ordem_servico->data_emissao}}" readonly>
+                    <div class="invalid-tooltip">
+                        informe a data
+                    </div>
+                    <input type="time" class="input-text" name=hora_emissao id="hora_Emissao1" required value="{{$ordem_servico->hora_emissao}}" readonly>
+                    <div class="invalid-tooltip">
+                        Por favor, informe a hora.
+                    </div>
+                </div>
+                <div class="titulo">Previsão para início:</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="date" class="input-text" name="data_inicio" id="data_prevista" placeholder="dataPrevista" required value="{{$ordem_servico->data_inicio}}" onchange=" ValidateDate()">
+                    <div class="invalid-tooltip">
+                        Por favor, informe data
+                    </div>
+                    <script>
+                        function ValidateDate() {
+
+                            let dataEmissao = document.getElementById('data_emissao1').value;
+                            let dataPrevista = document.getElementById('data_prevista').value;
+                            let dataFim = document.getElementById('data_fim').value;
+                            if (dataPrevista < dataEmissao) {
+                                alert('A data prevista deve ser maior que a data de emissão!');
+                                document.getElementById('data_prevista').value = 'null';
+                                document.getElementById('data_prevista').style.backgroundColor = '#FFC0CB';
+                                document.getElementById('data_prevista').focus();
+                            } else {
+                                document.getElementById('data_prevista').style.backgroundColor = '#7FFF7F';
+
+                                if (dataFim < dataPrevista) {
+                                    document.getElementById('data_fim').value = 'null';
+                                    document.getElementById('data_fim').style.backgroundColor = '#FFC0CB';
+                                } else {
+
+                                    document.getElementById('data_fim').style.backgroundColor = '#7FFF7F';
+                                }
+
+                            }
                         }
+                    </script>
+                    <input type="time" class="input-text" name="hora_inicio" id="hora_prevista" placeholder="horaPrevista" required value="{{$ordem_servico->hora_inicio}}">
+                    <div class="invalid-tooltip">
+                        Por favor, informe hora.
+                    </div>
+                </div>
+                <div class="titulo">Previsão para finalização:</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="date" class="input-text" name="data_fim" id="data_fim" placeholder="dataFim" required value="{{$ordem_servico->data_fim}}" required onchange="ValidateDate()">
+                    <div class="invalid-tooltip">
+                        Por favor, informe dataFim.
+                    </div>
+                    <input type="time" class="input-text" name="hora_fim" id="hora_Fim" placeholder="horaFim" required value="{{$ordem_servico->hora_fim}}">
+                    <div class="invalid-tooltip">
+                        Por favor, informe um estado válido.
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--Box 2--}}
+        <div class="item">
+            <div class="box-conteudo">
+                <div class="titulo">
+                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--">{{$ordem_servico->descricao}}</textarea>
+                </div>
+                <style>
+                    #txt-area {
+                        height: auto;
+                        width: 100%;
+                        border: 1px solid rgba(33, 116, 212, 0.3);
+                        border-radius: 5px;
+                        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+                        background-color: transparent;
+                        /* Transparent background */
 
                     }
-                }
-            </script>
-        </div>
 
-        <div class="col-sm-1 mb-0">
-            <label for="horaPrevista">Hora prevista</label>
-            <input type="time" class="form-control" name="hora_inicio" id="hora_prevista" placeholder="horaPrevista" required value="{{$ordem_servico->hora_inicio}}">
-            <div class="invalid-tooltip">
-                Por favor, informe hora.
+                    #txt-area:focus {
+                        border-color: rgba(33, 116, 212, 0.5);
+                        /* Use the same rgba color but with a different opacity */
+                        box-shadow: 0 0 0 0.1rem rgba(33, 116, 212, 0.25);
+                        /* Add a shadow to match Bootstrap */
+                        outline: none;
+                        /* Remove the default outline */
+                    }
+                </style>
+                <div class="titulo">Sitação:</div>
+                <hr>
+                <div class="conteudo">
+                    <input id="situacao" type="text" class="input-text" name="situacao" value="{{$ordem_servico->situacao}}" readonly>
+                    <div class="invalid-tooltip">
+                        Por favor, informe situacao.
+                    </div>
+                    <input class="btn btn-warning" type="button" name="openmodalsituacao" id="openmodalsituacao" value="Alterar status" onclick="abreModal()">
+                </div>
+                <input id="status_servicos" type="text" class="form-control-template" name="status_servicos" value="{{$ordem_servico->status_servicos}}">
+                {{ $errors->has('status_servicos') ? $errors->first('status_servicos') : '' }}
             </div>
         </div>
-        <div class="col-sm-1 mb-0">
-            <label for="dataFim">Data fim</label>
-            <input type="date" class="form-control" name="data_fim" id="data_fim" placeholder="dataFim" required value="{{$ordem_servico->data_fim}}" required onchange="ValidateDate()">
-            <div class="invalid-tooltip">
-                Por favor, informe dataFim.
+        {{--Box 3--}}
+        <div class="item">
+            <div class="titulo">tipo 1</div>
+            <hr>
+            <div class="conteudo">
+                <select class="form-control" name="tendencia" id="tendencia" value="">
+                    <option value="Corretiva">Corretiva</option>
+                    <option value="Preventiva">Preventiva</option>
+                    <option value="Preditiva">preditiva</option>
+                    <option value="Melhoria">Melhoria</option>
+
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
             </div>
-
-        </div>
-        <div class="col-sm-1 mb-0">
-            <label for="horaFim">Hora fim</label>
-            <input type="time" class="form-control" name="hora_fim" id="hora_Fim" placeholder="horaFim" required value="{{$ordem_servico->hora_fim}}">
-            <div class="invalid-tooltip">
-                Por favor, informe um estado válido.
-            </div>
-        </div>
-        <div class="col-sm-3 mb-0">
-            <label for="situacao" class="">Situação</label>
-            <input id="situacao" type="text" class="form-control-template" name="situacao" value="{{$ordem_servico->situacao}}" readonly>
-            <div class="invalid-tooltip">
-                Por favor, informe situacao.
-            </div>
-        </div>
-        <div class="col-sm-3 mb-0">
-            <label for="openmodalsituacao" class="">Editar status</label>
-            <p>
-                <input class="btn btn-warning" type="button" name="openmodalsituacao" id="openmodalsituacao" value="Alterar status" onclick="abreModal()">
-        </div>
-        <div class="col-md-2 mb-0">
-            <label for="tendencia" class="col-md-4 col-form-label text-md-end">Tipo de os</label>
-            <select class="form-control" name="tendencia" id="tendencia" value="">
-                <option value="Corretiva">Corretiva</option>
-                <option value="Preventiva">Preventiva</option>
-                <option value="Preditiva">preditiva</option>
-                <option value="Melhoria">Melhoria</option>
-
-            </select>
-            <div class="invalid-tooltip">
-                Por favor, informe a tendência.
-            </div>
-        </div>
-    </div>
-    <!------------------------------------------------------------------------------------------->
-    <!----Emissor e responsavel-->
-    <!------------------------------------------------------------------------------------------->
-    <div class="form-row">
-        <div class="col-sm-6 mb-0">
-            <label for="emissor" class="col-md-4 col-form-label text-md-end">Emissor</label>
-            <input id="emissor" type="text" class="form-control" name="emissor" value="{{$ordem_servico->emissor}}" readonly>
-            {{ $errors->has('nome') ? $errors->first('nome') : '' }}
-
-        </div>
-        <!-------------------------------------------------------------------------------------------->
-        <!---Responsável ------------->
-        <!-------------------------------------------------------------------------------------------->
-        <div class="col-md-6 mb-0">
-            <label for="responsavel" class="col-md-4 col-form-label text-md-end">Responsável</label>
-            <select name="responsavel" id="responsavel" class="form-control-template">
-                <option value="{{$ordem_servico->responsavel}}">{{$ordem_servico->responsavel}}</option>
-                @foreach ($funcionarios as $funcionario_find)
-                <option value="{{$funcionario_find->primeiro_nome}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
-                    {{$funcionario_find->primeiro_nome}}
-                </option>
-                @endforeach
-            </select>
-            {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-sm-6 mb-0">
-            <label for="responsavel" class="col-md-6 col-form-label text-md-end">Descrição</label>
-            <textarea id="descricao" name="descricao" cols="30" rows="3" class="form-control">{{$ordem_servico->descricao}}</textarea>
-
-            {{ $errors->has('nome') ? $errors->first('nome') : '' }}
-            <style>
-                #descricao {
-                    font-family: 'Roboto', sans-serif;
-                    font-weight: 300;
-                    /* Define a espessura da fonte como leve (300) */
-                    font-size: 16px;
-                    /* Define o tamanho da fonte como 14px */
-                }
-            </style>
-        </div>
-        <!------------------------------------------------>
-        <!------------------------------------------------>
-    </div>
-    <div class="form-row mb-0">
-
-        <div class="col-md-4 mb-0">
-            <label for="link_foto" class="col-md-4 col-form-label text-md-end">link foto</label>
-            <input id="link_foto" type="text" class="form-control" name="link_foto" value="{{$ordem_servico->link_foto}}" readonly>
-            {{ $errors->has('link_foto') ? $errors->first('link_foto') : '' }}
-
-        </div>
-        <div class="col-md-2 mb-0">
-            <label for="status_servicos" class="col-md-4 col-form-label text-md-end">status %</label>
-            <input id="status_servicos" type="text" class="form-control-template" name="status_servicos" value="{{$ordem_servico->status_servicos}}">
-            {{ $errors->has('status_servicos') ? $errors->first('status_servicos') : '' }}
-        </div>
-        <div class="col-md-2 mb-0">
-            <label for="gravidade" class="col-md-4 col-form-label text-md-end">Gravidade</label>
             <select class="form-control" name="gravidade" id="gravidade" value="">
                 <option value="5">Extremamante grave</option>
                 <option value="4">Muito grave</option>
@@ -336,10 +355,6 @@
             <div class="invalid-tooltip">
                 Por favor, informe a urgencia.
             </div>
-        </div>
-
-        <div class="col-md-2 mb-0">
-            <label for="urgencia" class="col-md-4 col-form-label text-md-end">Urgência</label>
             <select class="form-control" name="urgencia" id="urgencia" value="">
                 <option value="5">Extremamante urgente</option>
                 <option value="4">Urgente</option>
@@ -350,10 +365,6 @@
             <div class="invalid-tooltip">
                 Por favor, informe a urgencia.
             </div>
-        </div>
-        <!---->
-        <div class="col-md-2 mb-0">
-            <label for="tendencia" class="col-md-4 col-form-label text-md-end">Tendência</label>
             <select class="form-control" name="tendencia" id="tendencia" value="">
                 <option value="5">Piorar rápidamante</option>
                 <option value="4">Piorar em curto prazo</option>
@@ -364,9 +375,8 @@
             <div class="invalid-tooltip">
                 Por favor, informe a tendência.
             </div>
-        </div>
-        <div class="col-md-2 mb-0">
-            <label for="causa" class="col-md-4 col-form-label text-md-end">Causa</label>
+            <input id="link_foto" type="text" class="form-control" name="link_foto" value="{{$ordem_servico->link_foto}}" readonly>
+            {{ $errors->has('link_foto') ? $errors->first('link_foto') : '' }}
             <select class="form-control" name="causa" id="causa" value="">
                 <option value="5">Quebra</option>
                 <option value="4">Imprevisto</option>
@@ -375,9 +385,6 @@
             <div class="invalid-tooltip">
                 Por favor, informe a tendência.
             </div>
-        </div>
-        <div class="col-md-2 mb-0">
-            <label for="efeito" class="col-md-4 col-form-label text-md-end">Efeito</label>
             <select class="form-control" name="efeito" id="efeito" value="">
                 <option value="5">Prejuizo na produção</option>
                 <option value="4">Atrazo</option>
@@ -386,9 +393,6 @@
             <div class="invalid-tooltip">
                 Por favor, informe a tendência.
             </div>
-        </div>
-        <div class="col-md-2 mb-0">
-            <label for="solucao" class="col-md-4 col-form-label text-md-end">Solução</label>
             <select class="form-control" name="solucao" id="solucao" value="">
                 <option value="5">Agilizar</option>
                 <option value="4">Mão de obra autonama</option>
@@ -398,15 +402,137 @@
                 Por favor, informe a tendência.
             </div>
         </div>
-
-    </div>
-    <hr>
-    <div class="row sm-3 mb-0">
-        <div class="col-md-12">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">
-                Alterar ordem de serviço
-            </button>
+        {{--fim card 3--}}
+        {{----------------------------------------------------------------------------}}
+        <div class="row sm-3 mb-0">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    Alterar ordem de serviço
+                </button>
+            </div>
         </div>
-    </div>
 
 </form>
+<style>
+    body,
+    html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+
+    .container-chart {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: flex-start;
+        background-color: white;
+        margin: -1;
+
+    }
+
+    /*borda total de horas trabalhadas*/
+    .mb-3,
+    .my-3 {
+        border-bottom: none;
+    }
+
+
+    .item {
+        width: calc(33% - 20px);
+        height: auto;
+        margin: 10px;
+        padding: 15px;
+        background-color: white;
+        overflow: auto;
+        /* Impede que o conteúdo transborde */
+        font-weight: 500;
+    }
+
+    .box {
+        display: flex;
+        width: 100%;
+        height: auto;
+        margin-bottom: 1px;
+        background-color: #ccc;
+        border-radius: 5px;
+        padding: 5px;
+
+
+    }
+
+    @media (max-width: 900px) {
+        .item {
+            width: 100%;
+            margin: 0px -80;
+        }
+    }
+
+    .card-header-template {
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin-bottom: 20px;
+
+
+    }
+
+    .card-header-template h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        line-height: 3rem;
+        color: #2C2A2A;
+
+
+
+    }
+
+    .container-chart img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+    }
+
+    .progress {
+        height: 20px;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        color: #fff;
+        text-align: center;
+        line-height: 20px;
+        background-color: #2174d4;
+        transition: width 0.5s ease-in-out;
+    }
+
+    div.card-header-template {
+        background-color: white;
+
+
+    }
+
+    .card-header {
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        background-color: #2C2A2A;
+
+    }
+
+    .card-body {
+        background-color: #e9ecef;
+
+
+
+    }
+</style>
