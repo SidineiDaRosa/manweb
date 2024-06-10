@@ -57,10 +57,11 @@
             <div class="box-conteudo">
                 <div class="titulo"> Empresa</div>
                 <hr>
-                <div class="conteudo"></div>
-                <input class="input-text" id="empresa_id" type="text" name="empresa_id" value="@foreach($empresa as $empresas_f)
+                <div class="conteudo">
+                    <input class="input-text" id="empresa_id" type="text" name="empresa_id" value="@foreach($empresa as $empresas_f)
                     {{$empresas_f['id']}}
                     @endforeach" readonly>
+                </div>
                 {{-----------------------------------------------}}
                 {{--Patrimônio--}}
                 <?php
@@ -76,10 +77,10 @@
                 <div class="conteudo">
                     <input class="input-text" id="patrimonio_id" type="nuber" name="equipamento_id" value="{{$equipamento}}" require readonly>
                 </div>
-                <div class="titulo">Patrimonio:</div>
+                <div class="titulo">Nome do patrimônio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" name="equipamento_nome" id="equipamento_nome" type="text" value="{{ $equip_nome->nome }}" readonly>
+                    <input class="input-text" name="equipamento_nome" id="equipamento_nome" type="text" value="{{ $equip_nome->nome }}" readonly style="width:100%;">
                 </div>
                 <div class="titulo">Emissor:</div>
                 <hr>
@@ -101,6 +102,21 @@
                     </select>
                     {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
                 </div>
+                <div class="titulo">Emissão</div>
+                <hr>
+                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly><input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly></div>
+                <div class="titulo">Previsão para início</div>
+                <hr>
+                <div class="conteudo">
+                    <input class="input-text" type="date" name="data_prevista" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
+                    <div class="conteudo"> <input class="input-text" type="time" class="form-control" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value=""></div>
+                </div>
+                <div class="titulo">Data prevista para término</div>
+                <hr>
+                <div class="conteudo">
+                    <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
+                    <input class="input-text" type="time" name="hora_fim" id="horaFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
+                </div>
             </div>
 
         </div>
@@ -109,7 +125,7 @@
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">
-                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao"></textarea>
+                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--"></textarea>
                 </div>
                 <style>
                     #txt-area {
@@ -135,27 +151,31 @@
                 <div class="titulo">Progresso do serviço:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" id="status_servicos" type="text" class="form-control-template" name="status_servicos" value="">
+                    <input class="input-text" id="status_servicos" type="text" name="status_servicos" value="" placeholder="--Insira progresso--">%
                 </div>
+                <div class="form-group">
+                    <label for="imagem">Imagem:</label>
+                    <input type="file" class="form-control-file" id="imagem" name="imagem">
+                </div>
+                <script>
+                    function validateImageSize() {
+                        var input = document.getElementById('imagem');
+                        var fileSize = input.files[0].size; // Tamanho do arquivo em bytes
+                        var maxSize = 1024 * 1024; // Tamanho máximo permitido (1MB, por exemplo)
+
+                        if (fileSize < maxSize) {
+                            document.getElementById('error-message').innerText = 'A imagem deve ter no mínimo 1MB.';
+                            input.value = ''; // Limpa o campo de arquivo selecionado
+                        } else {
+                            document.getElementById('error-message').innerText = '';
+                        }
+                    }
+                </script>
             </div>
         </div>
         {{--Box 3--}}
         <div class="item">
-            <div class="titulo">Emissão</div>
-            <hr>
-            <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly><input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly></div>
-            <div class="titulo">Previsão para início</div>
-            <hr>
-            <div class="conteudo">
-                <input class="input-text" type="date" name="data_prevista" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
-                <div class="conteudo"> <input class="input-text" type="time" class="form-control" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value=""></div>
-            </div>
-            <div class="titulo">Data prevista para término</div>
-            <hr>
-            <div class="conteudo">
-                <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
-                <input class="input-text" type="time" name="hora_fim" id="horaFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
-            </div>
+
             <div class="titulo">Situação</div>
             <hr>
             <div class="conteudo">
@@ -185,24 +205,84 @@
             <div class="conteudo">
                 <input class="input-text" id="link_foto" type="text" class="form-control" name="link_foto" value="" readonly>
             </div>
-            <div class="form-group">
-                <label for="imagem">Imagem:</label>
-                <input type="file" class="form-control-file" id="imagem" name="imagem">
+            <div class="titulo">Gravidade</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="gravidade" id="gravidade" value="">
+                    <option value="5">Extremamante grave</option>
+                    <option value="4">Muito grave</option>
+                    <option value="3">Grave</option>
+                    <option value="2">Pouco grave</option>
+                    <option value="1">Nada grave</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a urgencia.
+                </div>
             </div>
-            <script>
-                function validateImageSize() {
-                    var input = document.getElementById('imagem');
-                    var fileSize = input.files[0].size; // Tamanho do arquivo em bytes
-                    var maxSize = 1024 * 1024; // Tamanho máximo permitido (1MB, por exemplo)
-
-                    if (fileSize < maxSize) {
-                        document.getElementById('error-message').innerText = 'A imagem deve ter no mínimo 1MB.';
-                        input.value = ''; // Limpa o campo de arquivo selecionado
-                    } else {
-                        document.getElementById('error-message').innerText = '';
-                    }
-                }
-            </script>
+            <div class="titulo">Urgência</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="urgencia" id="urgencia" value="">
+                    <option value="5">Extremamante urgente</option>
+                    <option value="4">Urgente</option>
+                    <option value="3">Urgente se possível</option>
+                    <option value="2">Pouco urgente</option>
+                    <option value="1">Não urgente</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a urgencia.
+                </div>
+            </div>
+            <div class="titulo">Tendência</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="tendencia" id="tendencia" value="">
+                    <option value="5">Piorar rápidamante</option>
+                    <option value="4">Piorar em curto prazo</option>
+                    <option value="3">Piorar</option>
+                    <option value="2">Piorar logo prazo</option>
+                    <option value="1">Não irá piorar</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
+            </div>
+            <div class="titulo">Causa</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="causa" id="causa" value="">
+                    <option value="5">Quebra</option>
+                    <option value="4">Imprevisto</option>
+                    <option value="3">Proposital</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
+            </div>
+            <div class="titulo">Efeito</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="efeito" id="efeito" value="">
+                    <option value="5">Prejuizo na produção</option>
+                    <option value="4">Atrazo</option>
+                    <option value="3">Riscos humano</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
+            </div>
+            <div class="titulo">Solução</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="solucao" id="solucao" value="">
+                    <option value="5">Agilizar</option>
+                    <option value="4">Mão de obra autonama</option>
+                    <option value="3">Acionar segurança</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
+            </div>
         </div>
         {{--fim card 3--}}
 
@@ -231,90 +311,7 @@
             }
         </script>
 
-        <!------------------------------------------------------------------------------------------->
-        <!----Emissor e responsavel pela ordem de serviço-->
-        <!------------------------------------------------------------------------------------------->
-        <div class="form-row mb-0">
 
-
-            <div class="col-md-2 mb-0">
-                <label for="gravidade" class="col-md-4 col-form-label text-md-end">Gravidade</label>
-                <select class="form-control" name="gravidade" id="gravidade" value="">
-                    <option value="5">Extremamante grave</option>
-                    <option value="4">Muito grave</option>
-                    <option value="3">Grave</option>
-                    <option value="2">Pouco grave</option>
-                    <option value="1">Nada grave</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a urgencia.
-                </div>
-            </div>
-
-            <div class="col-md-2 mb-0">
-                <label for="urgencia" class="col-md-4 col-form-label text-md-end">Urgência</label>
-                <select class="form-control" name="urgencia" id="urgencia" value="">
-                    <option value="5">Extremamante urgente</option>
-                    <option value="4">Urgente</option>
-                    <option value="3">Urgente se possível</option>
-                    <option value="2">Pouco urgente</option>
-                    <option value="1">Não urgente</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a urgencia.
-                </div>
-            </div>
-            <!---->
-            <div class="col-md-2 mb-0">
-                <label for="tendencia" class="col-md-4 col-form-label text-md-end">Tendência</label>
-                <select class="form-control" name="tendencia" id="tendencia" value="">
-                    <option value="5">Piorar rápidamante</option>
-                    <option value="4">Piorar em curto prazo</option>
-                    <option value="3">Piorar</option>
-                    <option value="2">Piorar logo prazo</option>
-                    <option value="1">Não irá piorar</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a tendência.
-                </div>
-            </div>
-            <!---->
-            <div class="col-md-2 mb-0">
-                <label for="causa" class="col-md-4 col-form-label text-md-end">Causa</label>
-                <select class="form-control" name="causa" id="causa" value="">
-                    <option value="5">Quebra</option>
-                    <option value="4">Imprevisto</option>
-                    <option value="3">Proposital</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a tendência.
-                </div>
-            </div>
-            <div class="col-md-2 mb-0">
-                <label for="efeito" class="col-md-4 col-form-label text-md-end">Efeito</label>
-                <select class="form-control" name="efeito" id="efeito" value="">
-                    <option value="5">Prejuizo na produção</option>
-                    <option value="4">Atrazo</option>
-                    <option value="3">Riscos humano</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a tendência.
-                </div>
-            </div>
-            <div class="col-md-2 mb-0">
-                <label for="solucao" class="col-md-4 col-form-label text-md-end">Solução</label>
-                <select class="form-control" name="solucao" id="solucao" value="">
-                    <option value="5">Agilizar</option>
-                    <option value="4">Mão de obra autonama</option>
-                    <option value="3">Acionar segurança</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a tendência.
-                </div>
-            </div>
-
-        </div>
-        <!--  -->
 
 </form>
 <button type="button" class="btn btn-primary btn-lg btn-block" onclick="CadastraFormOs()">
