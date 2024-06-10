@@ -108,8 +108,8 @@
                 <div class="titulo">Previsão para início</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" type="date" name="data_prevista" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
-                    <div class="conteudo"> <input class="input-text" type="time" class="form-control" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value=""></div>
+                    <input class="input-text" type="date" name="data_inicio" id="data_inicio" placeholder="data_inicio" required value="" onchange="ValidateDatePrevista()">
+                    <input class="input-text" type="time" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value="">
                 </div>
                 <div class="titulo">Data prevista para término</div>
                 <hr>
