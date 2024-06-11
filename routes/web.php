@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('site.home');
 })->name('site.home');
-Route::get('/site-about', function () {
-    return view('site.about');
-})->name('site.about');
+Route::get('/site/sobre_nos', function () {
+    return view('site.sobre_nos');
+})->name('site.sobre_nos');
 Route::get('/site-panel', function () {
     return view('site.control_panel');
 })->name('site.control_panel');
