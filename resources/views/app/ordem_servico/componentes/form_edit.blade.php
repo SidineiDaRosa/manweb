@@ -1,8 +1,5 @@
 {{--modal window --}}
-<style>
-    form {
-        background-color: rgb(220, 220, 220);
-    }
+
 </style>
 <div class="bg-modal" id="bg-modal">
     <div class="modal-md">
@@ -127,8 +124,7 @@
     <!------------------------------------------------------------------------------------------->
     {{-------------------------------------------------------------------------}}
     {{--início da div que contem os box--}}
-    {{-------------------------------------------------------------------------}}
-    {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
+
 
     <style>
         hr {
@@ -171,7 +167,7 @@
 
         .input-text {
             margin-top: 5px;
-            width: auto;
+            width: 50%;
             border: none;
             color: #2174d4;
         }
@@ -314,92 +310,162 @@
                         /* Add a shadow to match Bootstrap */
                         outline: none;
                         /* Remove the default outline */
+
                     }
                 </style>
-                <div class="titulo">Sitação:</div>
+                <div class="titulo">Situação:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="situacao" type="text" class="input-text" name="situacao" value="{{$ordem_servico->situacao}}" readonly>
+                    <input id="situacao" type="text" class="input-text" name="situacao" value="{{$ordem_servico->situacao}}" readonly style="height:30px;">
                     <div class="invalid-tooltip">
                         Por favor, informe situacao.
                     </div>
-                    <input class="btn btn-warning" type="button" name="openmodalsituacao" id="openmodalsituacao" value="Alterar status" onclick="abreModal()">
+                    <input class="btn btn-outline-success btn-sm" type="button" name="openmodalsituacao" id="openmodalsituacao" value="Alterar status" onclick="abreModal()">
                 </div>
-                <input id="status_servicos" type="text" class="form-control-template" name="status_servicos" value="{{$ordem_servico->status_servicos}}">
-                {{ $errors->has('status_servicos') ? $errors->first('status_servicos') : '' }}
+                <div class="titulo">Progressão do serviço:</div>
+                <hr>
+                <div class="conteudo">
+                    <input id="status_servicos" type="text" class="input-text" value="{{$ordem_servico->status_servicos}}">%
+                </div>
+                <div class="titulo"></div>
+                <hr>
+                <div class="conteudo">
+                    <style>
+                        .progress-bar {
+                            width: 100%;
+                            background-color: #f1f1f1;
+                        }
+
+                        .progress {
+                            height: 30px;
+                            background-color: #4caf50;
+                            text-align: center;
+                            line-height: 30px;
+                            color: white;
+                        }
+
+                        .progress-container {
+                            width: 100%;
+                            margin: 20px auto;
+                        }
+
+                        input[type="range"] {
+                            width: 100%;
+                        }
+                    </style>
+                    <div class="progress-container">
+                        <input type="range" min="0" max="100" value="{{$ordem_servico->status_servicos}}" class="slider" id="progressSlider" onchange="updateProgress()" name="status_servicos">
+                    </div>
+                    <script>
+                        function updateProgress() {
+                            // Obtém o valor do controle deslizante
+                            let progresServ = document.getElementById('progressSlider').value;
+                            // Atualiza o valor do campo de entrada
+                            document.getElementById('status_servicos').value = progresServ;
+                        }
+                    </script>
+                    {{-----------------------------------------------------------------}}
+                </div>
             </div>
         </div>
         {{--Box 3--}}
         <div class="item">
-            <div class="titulo">tipo 1</div>
+            <div class="titulo">tipo de O.S</div>
             <hr>
             <div class="conteudo">
-                <select class="form-control" name="tendencia" id="tendencia" value="">
+                <select class="input-text" name="tendencia" id="tendencia" value="">
                     <option value="Corretiva">Corretiva</option>
                     <option value="Preventiva">Preventiva</option>
                     <option value="Preditiva">preditiva</option>
                     <option value="Melhoria">Melhoria</option>
-
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
                 </div>
             </div>
-            <select class="form-control" name="gravidade" id="gravidade" value="">
-                <option value="5">Extremamante grave</option>
-                <option value="4">Muito grave</option>
-                <option value="3">Grave</option>
-                <option value="2">Pouco grave</option>
-                <option value="1">Nada grave</option>
-            </select>
-            <div class="invalid-tooltip">
-                Por favor, informe a urgencia.
+            <div class="titulo">Gravidade</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="gravidade" id="gravidade" value="">
+                    <option value="5">Extremamante grave</option>
+                    <option value="4">Muito grave</option>
+                    <option value="3">Grave</option>
+                    <option value="2">Pouco grave</option>
+                    <option value="1">Nada grave</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a urgencia.
+                </div>
             </div>
-            <select class="form-control" name="urgencia" id="urgencia" value="">
-                <option value="5">Extremamante urgente</option>
-                <option value="4">Urgente</option>
-                <option value="3">Urgente se possível</option>
-                <option value="2">Pouco urgente</option>
-                <option value="1">Não urgente</option>
-            </select>
-            <div class="invalid-tooltip">
-                Por favor, informe a urgencia.
+            <div class="titulo">Urgência</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="urgencia" id="urgencia" value="">
+                    <option value="5">Extremamante urgente</option>
+                    <option value="4">Urgente</option>
+                    <option value="3">Urgente se possível</option>
+                    <option value="2">Pouco urgente</option>
+                    <option value="1">Não urgente</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a urgencia.
+                </div>
             </div>
-            <select class="form-control" name="tendencia" id="tendencia" value="">
-                <option value="5">Piorar rápidamante</option>
-                <option value="4">Piorar em curto prazo</option>
-                <option value="3">Piorar</option>
-                <option value="2">Piorar logo prazo</option>
-                <option value="1">Não irá piorar</option>
-            </select>
-            <div class="invalid-tooltip">
-                Por favor, informe a tendência.
+            <div class="titulo">Tendência</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="tendencia" id="tendencia" value="">
+                    <option value="5">Piorar rápidamante</option>
+                    <option value="4">Piorar em curto prazo</option>
+                    <option value="3">Piorar</option>
+                    <option value="2">Piorar logo prazo</option>
+                    <option value="1">Não irá piorar</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
             </div>
-            <input id="link_foto" type="text" class="form-control" name="link_foto" value="{{$ordem_servico->link_foto}}" readonly>
-            {{ $errors->has('link_foto') ? $errors->first('link_foto') : '' }}
-            <select class="form-control" name="causa" id="causa" value="">
-                <option value="5">Quebra</option>
-                <option value="4">Imprevisto</option>
-                <option value="3">Proposital</option>
-            </select>
-            <div class="invalid-tooltip">
-                Por favor, informe a tendência.
+            <div class="titulo">Link</div>
+            <hr>
+            <div class="conteudo">
+                <input id="link_foto" type="text" class="input-text" name="link_foto" value="{{$ordem_servico->link_foto}}" readonly>
+                {{ $errors->has('link_foto') ? $errors->first('link_foto') : '' }}
             </div>
-            <select class="form-control" name="efeito" id="efeito" value="">
-                <option value="5">Prejuizo na produção</option>
-                <option value="4">Atrazo</option>
-                <option value="3">Riscos humano</option>
-            </select>
-            <div class="invalid-tooltip">
-                Por favor, informe a tendência.
+            <div class="titulo">Causa</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="causa" id="causa" value="">
+                    <option value="5">Quebra</option>
+                    <option value="4">Imprevisto</option>
+                    <option value="3">Proposital</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
             </div>
-            <select class="form-control" name="solucao" id="solucao" value="">
-                <option value="5">Agilizar</option>
-                <option value="4">Mão de obra autonama</option>
-                <option value="3">Acionar segurança</option>
-            </select>
-            <div class="invalid-tooltip">
-                Por favor, informe a tendência.
+            <div class="titulo">Efeito</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="efeito" id="efeito" value="">
+                    <option value="5">Prejuizo na produção</option>
+                    <option value="4">Atrazo</option>
+                    <option value="3">Riscos humano</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
+            </div>
+            <div class="titulo">Solução</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="solucao" id="solucao" value="">
+                    <option value="5">Agilizar</option>
+                    <option value="4">Mão de obra autonama</option>
+                    <option value="3">Acionar segurança</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tendência.
+                </div>
             </div>
         </div>
         {{--fim card 3--}}
