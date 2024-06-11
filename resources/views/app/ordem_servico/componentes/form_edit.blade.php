@@ -472,7 +472,7 @@
         {{----------------------------------------------------------------------------}}
         <div class="row sm-3 mb-0">
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                <button type="submit" class="btn btn-outline-primary btn-sm">
                     Alterar ordem de serviço
                 </button>
             </div>
