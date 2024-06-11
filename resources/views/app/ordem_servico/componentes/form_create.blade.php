@@ -19,7 +19,7 @@
             font-family: 'Poppins', sans-serif;
 
         }
-
+        
         .conteudo {
             display: flex;
             font-size: 20px;
@@ -58,7 +58,7 @@
                 <div class="conteudo">
                     <input class="input-text" id="empresa_id" type="text" name="empresa_id" value="@foreach($empresa as $empresas_f)
                     {{$empresas_f['id']}}
-                    @endforeach" readonly>
+                    @endforeach" readonly style="color:#4caf50;">
                 </div>
                 {{-----------------------------------------------}}
                 {{--Patrimônio--}}
@@ -73,27 +73,27 @@
                 <div class="titulo">ID patrimonio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" id="patrimonio_id" type="nuber" name="equipamento_id" value="{{$equipamento}}" require readonly>
+                    <input class="input-text" id="patrimonio_id" type="nuber" name="equipamento_id" value="{{$equipamento}}" require readonly style="color:#4caf50;">
                 </div>
                 <div class="titulo">Nome do patrimônio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" name="equipamento_nome" id="equipamento_nome" type="text" value="{{ $equip_nome->nome }}" readonly style="width:100%;">
+                    <input class="input-text" name="equipamento_nome" id="equipamento_nome" type="text" value="{{ $equip_nome->nome }}" readonly style="width:100%;color:#4caf50;">
                 </div>
                 <div class="titulo">Emissor:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="text" class="input-text" id="emissor" name="emissor" placeholder="emissor" value="{{auth()->user()->name}}" readonly>
+                    <input type="text" class="input-text" id="emissor" name="emissor" placeholder="emissor" value="{{auth()->user()->name}}" readonly style="color:#4caf50;">
                 </div>
                 {{-----------------------------------------}}
                 {{--Responsável para executar a terefa--}}
                 <div class="titulo">Executor:</div>
                 <hr>
                 <div class="conteudo">
-                    <select class="input-text" name="responsavel" id="responsavel" class="form-control-template" onchange="ValidateChange();">
+                    <select class="input-text" name="responsavel" id="responsavel" class="form-control-template" onchange="ValidateChangeResp();">
                         <script>
-                            function ValidateChange(){
-                                document.getElementById('responsavel').style.background="rgb(150, 255, 150)";
+                            function ValidateChangeResp() {
+                                document.getElementById('responsavel').style.background = "rgb(150, 255, 150)";
                             }
                         </script>
                         <option value=""> --Selecione o Responsável--</option>
@@ -110,19 +110,31 @@
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>
-                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly><input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly></div>
+                <div class="conteudo" ><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly style="color:#4caf50;">
+                <input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly style="color:#4caf50;"></div>
+    
                 <div class="titulo">Previsão para início</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" type="date" name="data_inicio" id="dataPrevista"  required value="" onchange="ValidateDatePrevista();">
-                    
-                    <input class="input-text" type="time" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value="">
+                    <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();">
+
+                    <input class="input-text" type="time" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value="" onchange="ValidarHoraInicio()">
+                    <script>
+                    function ValidarHoraInicio() {
+                        document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
+                    }
+                </script>
                 </div>
                 <div class="titulo">Data prevista para término</div>
                 <hr>
                 <div class="conteudo">
                     <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
-                    <input class="input-text" type="time" name="hora_fim" id="horaFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
+                    <input class="input-text" type="time" name="hora_fim" id="horaFim" placeholder="dataFim" required value="" onchange="ValidarHoraFim()">
+                    <script>
+                        function ValidarHoraFim() {
+                            document.getElementById('horaFim').style.background = "rgb(150, 255, 150)"
+                        }
+                    </script>
                 </div>
             </div>
 
@@ -335,40 +347,39 @@
         </div>
         {{--fim card 3--}}
         {{--Validação de datas--}}
-       
+
         <script>
             function ValidateDatePrevista() {
-                
+
                 let dataPrevista = document.getElementById('dataPrevista').value;
                 let dataEmissao = document.getElementById('data_emissao').value;
                 if (dataPrevista < dataEmissao) {
                     alert('Atenção! A data prevista que você está inserindo é anterior a data de emissão.');
                     //document.getElementById('dataPrevista').value = 'null';
-                    
 
-                }else{
-                    document.getElementById('dataPrevista').style.background="rgb(150, 255, 150)";
+
+                } else {
+                    document.getElementById('dataPrevista').style.background = "rgb(150, 255, 150)";
                 }
             }
+
             function ValidateDateFim() {
                 let dataPrevista = document.getElementById('dataPrevista').value;
                 let dataFim = document.getElementById('dataFim').value;
                 if (dataFim < dataPrevista) {
                     alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
                     document.getElementById('dataFim').value = 'null';
-                    document.getElementById('dataFim').style.background= "rgb(255, 150, 150)";
-                   
+                    document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
 
-                }else{
-                    document.getElementById('dataFim').style.background="rgb(150, 255, 150)";
+
+                } else {
+                    document.getElementById('dataFim').style.background = "rgb(150, 255, 150)";
                 }
             }
         </script>
 
-
-
 </form>
-<button type="button" class="btn btn-primary btn-lg btn-block" onclick="CadastraFormOs()">
+<button type="button" class="btn btn-outline-primary btn-sm" onclick="CadastraFormOs()">
     Cadastrar
 </button>
 

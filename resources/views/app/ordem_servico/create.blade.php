@@ -1,5 +1,4 @@
 @extends('app.layouts.app')
-
 @section('content')
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,8 +8,14 @@
 <main class="content">
     <div class="titulo-main">
         Criar ordem de serviço
-        <a class="btn btn-primary btn-sm" href="{{route('ordem-servico.index')}}">Voltar</a>
-        <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
+        <a href="{{route('ordem-servico.index')}}" class="btn btn-info btn-icon-split btn-sm">
+            <span class="icon text-white-50">
+                <i class="icofont-filter"></i>
+            </span>
+            <span class="text">Filtros OS</span>
+        </a>
+
+        <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
             <i class="icofont-dashboard"></i> dashboard
         </a>
     </div>
@@ -23,13 +28,13 @@
             margin-top: -2;
         }
     </style>
-    <div class="card-body">
+   
         @component('app.ordem_servico.componentes.form_create', ['ordem_servico'=>$ordem_servico,
         'equipamentos'=>$equipamentos,'funcionarios'=>$funcionarios,
         'empresa'=>$empresa,
         'equipamento'=>$equipamento])
         @endcomponent
-    </div>
+  
 </main>
 
 @endsection
