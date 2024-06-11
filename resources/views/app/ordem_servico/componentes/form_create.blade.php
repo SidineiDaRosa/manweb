@@ -9,7 +9,7 @@
         }
 
         .box-conteudo {
-            margin-left: 50px;
+            margin-left: 5px;
             justify-content: flex-start;
         }
 
