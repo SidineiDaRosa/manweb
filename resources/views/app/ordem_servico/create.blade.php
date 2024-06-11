@@ -27,14 +27,17 @@
             text-align: center;
             margin-top: -2;
         }
+        .card-body-main{
+            width:100%;
+        } 
     </style>
-   
+    <div class="card-body-main">
         @component('app.ordem_servico.componentes.form_create', ['ordem_servico'=>$ordem_servico,
         'equipamentos'=>$equipamentos,'funcionarios'=>$funcionarios,
         'empresa'=>$empresa,
         'equipamento'=>$equipamento])
         @endcomponent
-  
+    </div>
 </main>
 
 @endsection
