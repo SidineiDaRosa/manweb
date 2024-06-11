@@ -2,8 +2,6 @@
     @csrf
     {{-------------------------------------------------------------------------}}
     {{--início da div que contem os box--}}
-    {{-------------------------------------------------------------------------}}
-    {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
 
     <style>
         hr {
@@ -92,7 +90,12 @@
                 <div class="titulo">Executor:</div>
                 <hr>
                 <div class="conteudo">
-                    <select class="input-text" name="responsavel" id="responsavel" class="form-control-template">
+                    <select class="input-text" name="responsavel" id="responsavel" class="form-control-template" onchange="ValidateChange();">
+                        <script>
+                            function ValidateChange(){
+                                document.getElementById('responsavel').style.background="rgb(150, 255, 150)";
+                            }
+                        </script>
                         <option value=""> --Selecione o Responsável--</option>
                         @foreach ($funcionarios as $funcionario_find)
                         <option value="{{$funcionario_find->primeiro_nome}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
@@ -101,6 +104,9 @@
                         @endforeach
                     </select>
                     {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
+                    <div class="invalid-tooltip">
+                        Por favor, informe a urgencia.
+                    </div>
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>
@@ -108,7 +114,8 @@
                 <div class="titulo">Previsão para início</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" type="date" name="data_inicio" id="data_inicio" placeholder="data_inicio" required value="" onchange="ValidateDatePrevista()">
+                    <input class="input-text" type="date" name="data_inicio" id="dataPrevista"  required value="" onchange="ValidateDatePrevista();">
+                    
                     <input class="input-text" type="time" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value="">
                 </div>
                 <div class="titulo">Data prevista para término</div>
@@ -146,13 +153,55 @@
                         /* Add a shadow to match Bootstrap */
                         outline: none;
                         /* Remove the default outline */
+
                     }
                 </style>
+
+                {{---------------------------------------------------------------------}}
                 <div class="titulo">Progresso do serviço:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" id="status_servicos" type="text" name="status_servicos" value="" placeholder="--Insira progresso--">%
+                    <input class="input-text" id="status_servicos" type="text" name="status_servicos" value="1" readonly style="display: flex; justify-content:center;">%
                 </div>
+                <div class="titulo"></div>
+                <hr>
+                <div class="conteudo">
+                    <style>
+                        .progress-bar {
+                            width: 100%;
+                            background-color: #f1f1f1;
+                        }
+
+                        .progress {
+                            height: 30px;
+                            background-color: #4caf50;
+                            text-align: center;
+                            line-height: 30px;
+                            color: white;
+                        }
+
+                        .progress-container {
+                            width: 100%;
+                            margin: 20px auto;
+                        }
+
+                        input[type="range"] {
+                            width: 100%;
+                        }
+                    </style>
+                    <div class="progress-container">
+                        <input type="range" min="0" max="100" value="1" class="slider" id="progressSlider" onchange="updateProgress()" name="status_servicos">
+                    </div>
+                    <script>
+                        function updateProgress() {
+                            // Obtém o valor do controle deslizante
+                            let progresServ = document.getElementById('progressSlider').value;
+                            // Atualiza o valor do campo de entrada
+                            document.getElementById('status_servicos').value = progresServ;
+                        }
+                    </script>
+                </div>
+                {{----------------------------------------------------------------------}}
                 <div class="form-group">
                     <label for="imagem">Imagem:</label>
                     <input type="file" class="form-control-file" id="imagem" name="imagem">
@@ -285,28 +334,33 @@
             </div>
         </div>
         {{--fim card 3--}}
-
-        <!------------------------------------------------------------------------------------------->
-        <!----Datas-->
-        <!------------------------------------------------------------------------------------------->
+        {{--Validação de datas--}}
+       
         <script>
             function ValidateDatePrevista() {
+                
                 let dataPrevista = document.getElementById('dataPrevista').value;
                 let dataEmissao = document.getElementById('data_emissao').value;
                 if (dataPrevista < dataEmissao) {
                     alert('Atenção! A data prevista que você está inserindo é anterior a data de emissão.');
                     //document.getElementById('dataPrevista').value = 'null';
+                    
 
+                }else{
+                    document.getElementById('dataPrevista').style.background="rgb(150, 255, 150)";
                 }
             }
-
             function ValidateDateFim() {
                 let dataPrevista = document.getElementById('dataPrevista').value;
                 let dataFim = document.getElementById('dataFim').value;
                 if (dataFim < dataPrevista) {
                     alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
                     document.getElementById('dataFim').value = 'null';
+                    document.getElementById('dataFim').style.background= "rgb(255, 150, 150)";
+                   
 
+                }else{
+                    document.getElementById('dataFim').style.background="rgb(150, 255, 150)";
                 }
             }
         </script>
