@@ -132,7 +132,7 @@
         }
 
         .box-conteudo {
-            margin-left: 50px;
+            margin-left: 5px;
             justify-content: flex-start;
         }
 
@@ -179,34 +179,34 @@
                 <div class="titulo">ID:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="text" class="input-text" name="ordem_servico_id" id="ordem_servico_id" value="{{$ordem_servico->id}}" readonly>
+                    <input type="text" class="input-text" name="ordem_servico_id" id="ordem_servico_id" value="{{$ordem_servico->id}}" readonly style="color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Empresa:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="text" class="input-text" name="empresa_id" id="empresa_id" value="{{$ordem_servico->empresa->id}}" readonly style="width:20%;">
+                    <input type="text" class="input-text" name="empresa_id" id="empresa_id" value="{{$ordem_servico->empresa->id}}" readonly style="width:20%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
-                    <input type="text" class="input-text" name="razao_social" id="razao_social" value="{{$ordem_servico->empresa->razao_social}}" readonly style="width:80%;">
+                    <input type="text" class="input-text" name="razao_social" id="razao_social" value="{{$ordem_servico->empresa->razao_social}}" readonly style="width:80%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
 
                 <div class="titulo">ID patrimonio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->id }}" disabled style="width:20%;">
+                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->id }}" disabled style="width:20%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Patrimonio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;">
+                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Emissor:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="emissor" type="text" class="input-text" name="emissor" value="{{$ordem_servico->emissor}}" readonly>
+                    <input id="emissor" type="text" class="input-text" name="emissor" value="{{$ordem_servico->emissor}}" readonly style="color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Executor:</div>
