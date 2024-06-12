@@ -6,7 +6,22 @@
     <form action="{{ route('Peca-equipamento.store') }}" method="POST">
         @csrf
         @endif
+        {{--Seta campos de preenchimentos necessários--}}
         <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                //chama função para setar os campos
+                alterarBackgroundCampos();
+            });
+
+            function alterarBackgroundCampos() {
+                document.getElementById('produto_id').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('quantidade').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('data_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('hora_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('intervalo_manutencao').style.background = "rgba(249, 187, 120, 0.2)";
+
+            }
+            //Fim da função que seta as cores dos campos
             function AtualizaProxManut() {
                 let dataUltimaSub, anoUltimasub, diaUltimaSub
                 let dataProxManut
@@ -109,7 +124,7 @@
             }
 
             .box-conteudo {
-                margin-left: 50px;
+                margin-left: 2px;
                 justify-content: flex-start;
             }
 
@@ -130,6 +145,14 @@
 
             #patrimonio {
                 color: #2174d4;
+            }
+
+            .input-text {
+                margin-top: 5px;
+                width: 50%;
+                border: none;
+                color: #2174d4;
+                margin-right: 2px;
             }
         </style>
         <div class="container-box">
@@ -163,47 +186,37 @@
                     <div class="titulo">ID produto:</div>
                     <hr>
                     <div class="conteudo">
-                        <input type="text" name="produto_id" id="produto_id" readonly>
-                    </div>
-                    <div class="titulo">Quantidade</div>
-                    <hr>
-                    <div class="conteudo">
-                        <input name="quantidade" id="quantidade" type="number" value="" placeholder="Digite a quantidade de produto...">
+                        <input class="input-text" type="text" name="produto_id" id="produto_id" readonly>
+                        <input class="input-text" name="quantidade" id="quantidade" type="number" step="0.2" value="" placeholder="--insira a quantidade--">
                     </div>
                     <div class="titulo">Data:</div>
                     <hr>
                     <div class="conteudo">
-                        <input name="data_substituicao" id="data_substituicao" type="date" value="">
-                    </div>
-                    <div class="titulo">Hora:</div>
-                    <hr>
-                    <div class="conteudo">
-                        <input name="hora_substituicao" id="hora_substituicao" type="time" value="">
+                        <input class="input-text" name="data_substituicao" id="data_substituicao" type="date" value="">
+                        <input class="input-text" name="hora_substituicao" id="hora_substituicao" type="time" value="">
                     </div>
                     <div class="titulo">Intervalo de manutenção</div>
                     <hr>
                     <div class="conteudo">
-                        <input name="intervalo_manutencao" id="intervalo_manutencao" type="number" value="" onchange="AtualizaProxManut()" placeholder="Digite o intervalo em horas corridas...">
+                        <input name="intervalo_manutencao" id="intervalo_manutencao" type="number" value="" onchange="AtualizaProxManut()" placeholder="--insira o intervalo em horas--">
                     </div>
-                    <button class="btn btn-outline-success btn-sm" type="submit" style="height:25px;">
-                        {{ isset($equipamento) ? 'Atualizar' : 'Cadastrar' }}
+                    <div class="titulo">Data da próxima manutencão</div>
+                    <hr>
+                    <div class="conteudo">
+                        <input class="input-text" name="data_proxima_manutencao" id="data_proxima_manutencao" type="date" value="" readonly>
+                        <input class="input-text" name="horas_proxima_manutencao" id="horas_proxima_manutencao" type="number" value="" readonly>hs
+                    </div>
+                    <button type=" submit" class="btn btn-outline-primary btn-sm" style="height:20px;">
+                        Salvar
                     </button>
+
                 </div>
             </div>
 
             {{--Box 3--}}
             <div class="item">
                 <div class="box-conteudo">
-                    <div class="titulo">Data da próxima manutencão</div>
-                    <hr>
-                    <div class="conteudo">
-                        <input name="data_proxima_manutencao" id="data_proxima_manutencao" type="date" value="" readonly>
-                    </div>
-                    <div class="titulo">Horas para próxima manutencão</div>
-                    <hr>
-                    <div class="conteudo">
-                        <input name="horas_proxima_manutencao" id="horas_proxima_manutencao" type="number" value="" readonly>
-                    </div>
+
                     <div class="titulo">Horimetro</div>
                     <hr>
                     <div class="conteudo">
@@ -217,7 +230,10 @@
                     <div class="titulo">Status</div>
                     <hr>
                     <div class="conteudo">
-                        <input name="status" id="status" type="text" value="Ativo" readonly >
+                        <select class="input-text" name="status" id="status" value="Ativo">
+                            <option value="opcao1">Ativado</option>
+                            <option value="opcao2">Desativado</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -324,7 +340,7 @@
                 <!--input box filtro buscar produto--------->
                 <input type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
                 <button type="submit">
-                    <i class="icofont-search icofont-1x"></i>
+                    <i class="icofont-search icofont-2x"></i>
                 </button>
             </form>
         </div>
@@ -428,6 +444,4 @@
                 @endforeach
             </tbody>
         </table>
-
-    </div>
     </div>
