@@ -2,7 +2,26 @@
     @csrf
     {{-------------------------------------------------------------------------}}
     {{--início da div que contem os box--}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Seu código aqui
+            alterarBackgroundCampos();
+        });
+        // Define a nova função
+        function alterarBackgroundCampos() {
 
+            var responsavel = document.getElementById('responsavel');
+            var dataPrevista = document.getElementById('dataPrevista');
+            var horaPrevista = document.getElementById('horaPrevista');
+
+            responsavel.style.background = "rgba(249, 187, 120, 0.2)";
+            if (dataPrevista) dataPrevista.style.background = "rgba(249, 187, 120, 0.2)";
+            if (horaPrevista) horaPrevista.style.background = "rgba(249, 187, 120, 0.2)";
+            document.getElementById('dataFim').style.background="rgba(249, 187, 120, 0.2)";
+            document.getElementById('horaFim').style.background="rgba(249, 187, 120, 0.2)";
+            document.getElementById('descricao').style.background="rgba(249, 187, 120, 0.2)";
+        }
+    </script>
     <style>
         hr {
             margin: -5px;
@@ -19,7 +38,7 @@
             font-family: 'Poppins', sans-serif;
 
         }
-        
+
         .conteudo {
             display: flex;
             font-size: 20px;
@@ -101,29 +120,33 @@
                         <option value="{{$funcionario_find->primeiro_nome}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
                             {{$funcionario_find->primeiro_nome}}
                         </option>
+
                         @endforeach
                     </select>
                     {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
                     <div class="invalid-tooltip">
-                        Por favor, informe a urgencia.
+                        Por favor, informe o responsável.
                     </div>
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>
-                <div class="conteudo" ><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly style="color:#4caf50;">
-                <input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly style="color:#4caf50;"></div>
-    
+                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly style="color:#4caf50;">
+                    <input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly style="color:#4caf50;">
+                </div>
+
                 <div class="titulo">Previsão para início</div>
                 <hr>
                 <div class="conteudo">
                     <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();">
-
+                    <script>
+                        document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
+                    </script>
                     <input class="input-text" type="time" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value="" onchange="ValidarHoraInicio()">
                     <script>
-                    function ValidarHoraInicio() {
-                        document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
-                    }
-                </script>
+                        function ValidarHoraInicio() {
+                            document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
+                        }
+                    </script>
                 </div>
                 <div class="titulo">Data prevista para término</div>
                 <hr>

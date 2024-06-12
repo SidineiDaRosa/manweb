@@ -1,7 +1,7 @@
 @extends('app.layouts.app')
 @section('content')
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<meta http-equiv="refresh" content="30">
+<meta http-equiv="refresh" content="60">
 <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
