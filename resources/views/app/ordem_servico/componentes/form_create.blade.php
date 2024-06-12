@@ -17,9 +17,9 @@
             responsavel.style.background = "rgba(249, 187, 120, 0.2)";
             if (dataPrevista) dataPrevista.style.background = "rgba(249, 187, 120, 0.2)";
             if (horaPrevista) horaPrevista.style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('dataFim').style.background="rgba(249, 187, 120, 0.2)";
-            document.getElementById('horaFim').style.background="rgba(249, 187, 120, 0.2)";
-            document.getElementById('descricao').style.background="rgba(249, 187, 120, 0.2)";
+            document.getElementById('dataFim').style.background = "rgba(249, 187, 120, 0.2)";
+            document.getElementById('horaFim').style.background = "rgba(249, 187, 120, 0.2)";
+            document.getElementById('descricao').style.background = "rgba(249, 187, 120, 0.2)";
         }
     </script>
     <style>
@@ -167,8 +167,13 @@
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">
-                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--"></textarea>
+                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--" onchange="valdDescr()"></textarea>
                 </div>
+                <script>
+                    function ValdDescr() {
+                        document.getElementById('descricao').style.background = "rgb(150, 255, 150)";
+                    }
+                </script>
                 <style>
                     #txt-area {
                         height: auto;
