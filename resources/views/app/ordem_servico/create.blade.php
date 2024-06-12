@@ -21,14 +21,6 @@
             </a>
         </div>
         <style>
-            .titulo-main {
-                font-size: 20px;
-                color: gray;
-                text-align: center;
-                margin-top: -2;
-            }
-        </style>
-        <style>
             .card-body-main {
                 margin: 1px;
                 width: 90%;
