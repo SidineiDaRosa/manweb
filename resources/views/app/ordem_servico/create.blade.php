@@ -8,45 +8,39 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template mb-1">
-            <div class="titulo-main">
-                Criar ordem de serviço
-                <a href="{{route('ordem-servico.index')}}" class="btn btn-info btn-icon-split btn-sm">
-                    <span class="icon text-white-50">
-                        <i class="icofont-filter"></i>
-                    </span>
-                    <span class="text">Filtros OS</span>
-                </a>
+            Criar ordem de serviço
+            <a href="{{route('ordem-servico.index')}}" class="btn btn-info btn-icon-split btn-sm">
+                <span class="icon text-white-50">
+                    <i class="icofont-filter"></i>
+                </span>
+                <span class="text">Filtros OS</span>
+            </a>
 
-                <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
-                </a>
-            </div>
+            <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
+                <i class="icofont-dashboard"></i> dashboard
+            </a>
         </div>
-    </div>
-    <style>
-        .titulo-main {
-            font-size: 20px;
-            color: gray;
-            text-align: center;
-            margin-top: -2;
-        }
-
-        .card-body-main {
-            width: 100%;
-        }
-    </style>
-    <style>
-        .card-body-main {
-            margin: 1px;
-            width: 90%;
-        }
-    </style>
-    <div class="card-body-main">
-        @component('app.ordem_servico.componentes.form_create', ['ordem_servico'=>$ordem_servico,
-        'equipamentos'=>$equipamentos,'funcionarios'=>$funcionarios,
-        'empresa'=>$empresa,
-        'equipamento'=>$equipamento])
-        @endcomponent
+        <style>
+            .titulo-main {
+                font-size: 20px;
+                color: gray;
+                text-align: center;
+                margin-top: -2;
+            }
+        </style>
+        <style>
+            .card-body-main {
+                margin: 1px;
+                width: 90%;
+            }
+        </style>
+        <div class="card-body-main">
+            @component('app.ordem_servico.componentes.form_create', ['ordem_servico'=>$ordem_servico,
+            'equipamentos'=>$equipamentos,'funcionarios'=>$funcionarios,
+            'empresa'=>$empresa,
+            'equipamento'=>$equipamento])
+            @endcomponent
+        </div>
     </div>
 </main>
 
