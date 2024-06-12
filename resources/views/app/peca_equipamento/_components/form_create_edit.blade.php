@@ -185,7 +185,7 @@
                     <div class="conteudo">
                         <input name="intervalo_manutencao" id="intervalo_manutencao" type="number" value="" onchange="AtualizaProxManut()" placeholder="Digite o intervalo em horas corridas...">
                     </div>
-                    <button type="submit" style="height: 30px; width: 150px; background-color:green; color: white; border: none; border-radius: 3px;">
+                    <button class="btn btn-outline-success btn-sm" type="submit" style="height:25px;">
                         {{ isset($equipamento) ? 'Atualizar' : 'Cadastrar' }}
                     </button>
                 </div>
@@ -217,7 +217,7 @@
                     <div class="titulo">Status</div>
                     <hr>
                     <div class="conteudo">
-                        <input name="status" id="status" type="text" value="Ativo" readonly>
+                        <input name="status" id="status" type="text" value="Ativo" readonly >
                     </div>
                 </div>
             </div>
@@ -324,7 +324,7 @@
                 <!--input box filtro buscar produto--------->
                 <input type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
                 <button type="submit">
-                    <i class="icofont-search icofont-2x"></i>
+                    <i class="icofont-search icofont-1x"></i>
                 </button>
             </form>
         </div>
