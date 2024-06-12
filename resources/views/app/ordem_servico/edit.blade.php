@@ -17,8 +17,7 @@
         <style>
             .card-body-main{
                 margin:1px;
-                width:90%;
-                
+                width:90%;  
             }
         </style>
         <div class="card-body-main">
