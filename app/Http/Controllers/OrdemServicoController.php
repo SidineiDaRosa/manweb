@@ -279,7 +279,18 @@ class OrdemServicoController extends Controller
     public function update(Request $request, OrdemServico $ordem_servico)
     {
         $ordem_servico->update($request->all()); //
-        return redirect()->route('ordem-servico.index');
+        $idOs = $ordem_servico->id;
+        $funcionarios = Funcionario::all();
+        $ordem_servico_1 = OrdemServico::where('id', $idOs )->get();
+        $servicos_executado = Servicos_executado::where('ordem_servico_id',  $idOs)->get();
+        $total_hs_os = Servicos_executado::where('ordem_servico_id',  $idOs)->sum('subtotal');
+        foreach ($ordem_servico_1  as $ordem_servico_f) {
+        }
+        return view('app.ordem_servico.show', [
+            'ordem_servico' => $ordem_servico_f, 'servicos_executado' => $servicos_executado,
+            'funcionarios' => $funcionarios,
+            'total_hs_os' => $total_hs_os
+        ]);
     }
 
 
