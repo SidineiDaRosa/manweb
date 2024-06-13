@@ -22,8 +22,7 @@
             </select>
             {{ $errors->has('empresa_id') ? $errors->first('empresa_id') : '' }}
             </div>
-        </div>
-        <!------------------------------------------------------------------------------------------->
+</div>
 
         <div class="row mb-1">
             <label for="nome" class="col-md-4 col-form-label text-md-end">Nome</label>
