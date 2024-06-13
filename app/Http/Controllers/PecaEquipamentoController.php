@@ -73,7 +73,7 @@ class PecaEquipamentoController extends Controller
         $equipamento_array = json_decode($json, true); // Decodificar o JSON para um array associativo
         
         //--------------------
-        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->get();
+        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status','ativado')->orderby('horas_proxima_manutencao')->get();
         $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
 

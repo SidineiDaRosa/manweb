@@ -19,6 +19,9 @@
                 document.getElementById('data_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
                 document.getElementById('hora_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
                 document.getElementById('intervalo_manutencao').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('status').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('criticidade').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('tipo_componente').style.background = "rgba(249, 187, 120, 0.2)";
 
             }
             //Fim da função que seta as cores dos campos
@@ -71,7 +74,6 @@
                 dataProxManut = anosProxima + '-' + mesesProxima + '-' + diasProxima
                 document.getElementById('data_proxima_manutencao').value = dataProxManut
                 document.getElementById('horas_proxima_manutencao').value = intervaloMan
-                document.getElementById('status').value = 'ativo'
                 // document.getElementById('link_peca').value='vazio'
                 // document.getElementById('forma_medicao').value=1
             }
@@ -220,19 +222,34 @@
                     <div class="titulo">Horimetro</div>
                     <hr>
                     <div class="conteudo">
-                        <input name="horimetro" id="horimetro" type="number" value="0">
-                    </div>
-                    <div class="titulo">Forma medição</div>
-                    <hr>
-                    <div class="conteudo">
-                        <input name="forma_medicao" id="forma_medicao" type="number" value="1">
+                        <input class="input-text" name="horimetro" id="horimetro" type="number" value="0">
+                        <input class="input-text" name="forma_medicao" id="forma_medicao" type="number" value="1" readonly>
                     </div>
                     <div class="titulo">Status</div>
                     <hr>
                     <div class="conteudo">
-                        <select class="input-text" name="status" id="status" value="Ativo">
-                            <option value="opcao1">Ativado</option>
-                            <option value="opcao2">Desativado</option>
+                        <select class="input-text" name="status" id="status" value="ativado">
+                            <option value="ativado">Ativado</option>
+                            <option value="desativado">Desativado</option>
+                        </select>
+                    </div>
+                    <div class="titulo">Tipo de componente</div>
+                    <hr>
+                    <div class="conteudo">
+                        <select class="input-text" name="tipo_componente" id="tipo_componente" value="ativado">
+                            <option value="lubrificação">lubrificação</option>
+                            <option value="Chek-List">Chek-List</option>
+                            <option value="Componente">Componete/Peça</option>
+                        </select>
+                    </div>
+                    <div class="titulo">Grau de criticidade</div>
+                    <hr>
+                    <div class="conteudo">
+                        <select class="input-text" name="criticidade" id="criticidade" value="ativado">
+                            <option value="Extra Alta">Extra Alta</option>
+                            <option value="Alta">Alta</option>
+                            <option value="Média">Média</option>
+                            <option value="Baixa">Baixa</option>
                         </select>
                     </div>
                 </div>

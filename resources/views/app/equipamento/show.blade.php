@@ -544,18 +544,18 @@
 <table class="table table-striped table-hover" id="tblPecas">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>ID RG</th>
             <th>ID Produto </th>
-            <th>Produto</th>
+            <th>Produto Nome</th>
             <th>Quantidade</th>
-            <th>Link</th>
             <th>intervalo</th>
             <th>data ultima substituação</th>
-            <th>Hora</th>
             <th>data proxima</th>
             <th>horas proxima</th>
             <th>horimetro</th>
             <th>status</th>
+            <th>Tipo de componente</th>
+            <th>Criticidade</th>
             <th>Operaçoes</th>
 
         </tr>
@@ -571,10 +571,8 @@
             </td>
             <td>{{ $peca_equipamento->produto->nome}}</td>
             <td>{{ $peca_equipamento->quantidade}}</td>
-            <td>{{ $peca_equipamento->link_peca}}</td>
-            <td>{{ $peca_equipamento->intervalo_manutencao}}</td>
-            <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}</td>
-            <td>{{ $peca_equipamento->hora_substituicao}}</td>
+            <td>{{ $peca_equipamento->intervalo_manutencao}}hs</td>
+            <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}}</td>
             <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}}</td>
             <td class="
     @if($peca_equipamento->horas_proxima_manutencao >= 48)
@@ -589,6 +587,8 @@
             </td>
             <td>{{ $peca_equipamento->horimetro}}</td>
             <td>{{ $peca_equipamento->status}}</td>
+            <td>{{ $peca_equipamento->tipo_componente}}</td>
+            <td>{{ $peca_equipamento->criticidade}}</td>
 
 
             </div>

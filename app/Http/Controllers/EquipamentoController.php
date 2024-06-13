@@ -25,9 +25,6 @@ class EquipamentoController extends Controller
      */
     public function index(Request $request)
     {
-        //estas variavel abaixo são teste de commit
-        $variavelteste=0;
-        $variavelteste2=0;
         //--------------------------------------
         $id = $request->get('empresa');
         if ($request->has('searching')) {
@@ -98,7 +95,7 @@ class EquipamentoController extends Controller
         //$empresa=Empresas::all();   
         //return view('app.equipamento.show', ['equipamento' => $equipamento,
         // 'empresa'=>$empresa]);
-        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->get();
+        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status','ativado')->orderby('horas_proxima_manutencao')->get();
         //$ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
         //$ordens_servicos = OrdemServico::where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();

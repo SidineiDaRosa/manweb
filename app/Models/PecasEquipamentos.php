@@ -21,6 +21,8 @@ class PecasEquipamentos extends Model
         'horimetro',
         'forma_medicao',
         'status',
+        'tipo_componente',
+        'criticidade',
        
     ];
 
