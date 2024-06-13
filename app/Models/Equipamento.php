@@ -17,9 +17,16 @@ class Equipamento extends Model
         'potencia',
         'tipo_potencia',
         'data_fabricacao',
+        'data_instalacao',
+        'data_desativacao',
         'equipamento_pai',
         'combustivel',
         'empresa_id',
+        'tipo_de_ativo',
+        'estado_do_ativo',
+        'criticidade',
+        'localizacao',
+        'valor_estimado',
         'anexo_1',
         'anexo_2'
     ];

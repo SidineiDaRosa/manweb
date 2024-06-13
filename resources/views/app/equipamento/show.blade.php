@@ -116,13 +116,38 @@
             <div class="titulo">Empresa</div>
             <hr>
             <div class="conteudo"> {{$equipamento->Empresa->razao_social}}</div>
-            <div class="titulo">Ano de fabricação</div>
+            <div class="titulo">Data de fabricação</div>
             <hr>
-            <div class="conteudo"> {{$equipamento->data_fabricacao}}</div>
+            <div class="conteudo"> {{ \Carbon\Carbon::parse($equipamento->data_fabricacao)->format('d/m/Y') }}</div>
+            <div class="titulo">Data de instalação</div>
+            <hr>
+            <div class="conteudo"> {{ \Carbon\Carbon::parse($equipamento->data_instalacao)->format('d/m/Y') }}</div>
+            <div class="titulo">Data da desativação do ativo</div>
+            <hr>
+            @if ($equipamento->data_desativacao)
+            <div class="conteudo">{{ \Carbon\Carbon::parse($equipamento->data_desativacao)->format('d/m/Y') }}</div>
+            @else
+            <div class="conteudo">Data não disponível</div>
+            @endif
 
         </div>
         {{--Box 3--}}
         <div class="item">
+            <div class="titulo">Estado do ativo</div>
+            <hr>
+            <div class="conteudo">
+                {{$equipamento->estado_do_ativo}}
+            </div>
+            <div class="titulo">Criticidade</div>
+            <hr>
+            <div class="conteudo">
+                {{$equipamento->criticidade}}
+            </div>
+            <div class="titulo">Tipo/categoria</div>
+            <hr>
+            <div class="conteudo">
+                {{$equipamento->tipo_de_ativo}}
+            </div>
             <div class="titulo">Arquivos anexados</div>
             <hr>
             <a href="/patrimonios/{{$equipamento->anexo_1}}" target="_blank">Anexo 1 | {{$equipamento->anexo_2}}<span class="material-symbols-outlined">
@@ -207,7 +232,7 @@
                     $classHora = 'bg-red';//seta para vermelho
                     }
                     @endphp
-                    
+
                     <tr>
                         <td>{{ $ordem_servico->id }}</td>
                         <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}}</td>
