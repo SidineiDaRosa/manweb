@@ -233,13 +233,14 @@
                             <option value="desativado">Desativado</option>
                         </select>
                     </div>
-                    <div class="titulo">Tipo de componente</div>
+                    <div class="titulo">Categoria</div>
                     <hr>
                     <div class="conteudo">
                         <select class="input-text" name="tipo_componente" id="tipo_componente" value="ativado">
                             <option value="lubrificação">lubrificação</option>
                             <option value="Chek-List">Chek-List</option>
-                            <option value="Componente">Componete/Peça</option>
+                            <option value="Componente">Componente</option>
+                            <option value="mensalidade">Mensalidade</option>
                         </select>
                     </div>
                     <div class="titulo">Grau de criticidade</div>
