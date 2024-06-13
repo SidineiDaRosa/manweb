@@ -57,6 +57,22 @@
                 {{ $errors->has('data_fabricacao') ? $errors->first('data_fabricacao') : '' }}
             </div>
         </div>
+        <div class="row mb-1">
+            <label for="data_fabricacao" class="col-md-4 col-form-label text-md-end">Data Instalação</label>
+
+            <div class="col-md-6">
+                <input id="data_instalacao" type="date" class="form-control-template" name="data_instalacao" value="" required autocomplete="" autofocus>
+                {{ $errors->has('data_fabricacao') ? $errors->first('data_fabricacao') : '' }}
+            </div>
+        </div>
+        <div class="row mb-1">
+            <label for="data_fabricacao" class="col-md-4 col-form-label text-md-end">Data Desativação</label>
+
+            <div class="col-md-6">
+                <input id="data_desativação" type="date" class="form-control-template" name="data_desativação" value="" required autocomplete="" autofocus>
+                {{ $errors->has('data_fabricacao') ? $errors->first('data_fabricacao') : '' }}
+            </div>
+        </div>
 
         <div class="row mb-1">
             <label for="marca_id" class="col-md-4 col-form-label text-md-end">Marca</label>
@@ -85,7 +101,52 @@
                 {{ $errors->has('equipamento_pai') ? $errors->first('equipamento_pai') : '' }}
             </div>
         </div>
+        <div class="row mb-1">
+            <label for="marca_id" class="col-md-4 col-form-label text-md-end">Tipo de ativo</label>
 
+            <div class="col-md-6">
+                <select name="marca_id" id="" class="form-control-template">
+                    <option value=""> --Selecione a categoria--</option>
+                    <option value="Compressores">Compressores</option>
+                    <option value="Compressores">Caminhão caçamba</option>
+                    <option value="Compressores">Caminhão Baú</option>
+                    <option value="Compressores">Máquinas pesada</option>
+                    <option value="Compressores">Trator</option>
+                    <option value="Compressores">Automóveis</option>
+                    <option value="Compressores">Terrenos</option>
+                    <option value="Compressores">Imóveis</option>
+                    <option value="Compressores">Máquinas industrial</option>
+                </select>
+                {{ $errors->has('marca_id') ? $errors->first('marca_id') : '' }}
+            </div>
+        </div>
+        <div class="row mb-1">
+            <label for="marca_id" class="col-md-4 col-form-label text-md-end">Estado do ativo</label>
+
+            <div class="col-md-6">
+                <select name="marca_id" id="" class="form-control-template">
+                    <option value=""> --Selecione a categoria--</option>
+                    <option value="Compressores">Vendido</option>
+                    <option value="Compressores">Desativado</option>
+                    <option value="Compressores">Ativado</option>
+                </select>
+                {{ $errors->has('marca_id') ? $errors->first('marca_id') : '' }}
+            </div>
+        </div>
+        <div class="row mb-1">
+            <label for="marca_id" class="col-md-4 col-form-label text-md-end">Criticidade</label>
+
+            <div class="col-md-6">
+                <select name="marca_id" id="" class="form-control-template">
+                    <option value=""> --Selecione a categoria--</option>
+                    <option value="Compressores">Extra alta</option>
+                    <option value="Compressores">Alta</option>
+                    <option value="Compressores">Média</option>
+                    <option value="Compressores">Baixa</option>
+                </select>
+                {{ $errors->has('marca_id') ? $errors->first('marca_id') : '' }}
+            </div>
+        </div>
         <div class="row mb-1">
             <label for="anexo_1" class="col-md-4 col-form-label text-md-end">Anexo 1</label>
 
