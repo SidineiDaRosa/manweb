@@ -163,7 +163,17 @@
                             <span class="text">Busca os semana</span>
                         </a>
                 </div>
-              
+                <div class="col-md-0">
+                    <label for="btFiltrar" class="">Vencidas</label>
+                    <p>
+                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetOsVencidas()">
+                            <span class="icon text-white-50">
+                                <i class="icofont-filter"></i>
+                            </span>
+                            <span class="text">Busca os Vencidas</span>
+                        </a>
+                </div>
+
                 <script>
                     //------------------------------------------------------------------//
                     //Código que executa os filtros do formulário index ordem de serviço
@@ -189,7 +199,17 @@
                     function SetAbertas() {
 
                         document.getElementById("data_inicio").value = '2000-01-01';
-                        document.getElementById("data_fim").value = '2030-01-01';
+                        document.getElementById("data_fim").value ='2030-01-01';
+                        document.getElementById("situacao").value = 'aberto';
+                        document.getElementById("tipo_consulta").value = 6;
+                        document.getElementById("empresa_id").value = 2;
+                        document.getElementById('form_filt_os').submit();
+                    }
+
+                    function SetOsVencidas() {//Filtra os ja vencidas
+
+                        document.getElementById("data_inicio").value = '2000-01-01';
+                        document.getElementById("data_fim").value = data_atual ;
                         document.getElementById("situacao").value = 'aberto';
                         document.getElementById("tipo_consulta").value = 6;
                         document.getElementById("empresa_id").value = 2;
@@ -206,11 +226,11 @@
                         </a>
                 </div>
                 <div class="col-md-0">
-                <label for="btFiltrar" class="">dashboard</label>
-                <p>
-                    <a class="btn btn-info btn-icon-split btn-warning" href="{{ route('app.home') }}">
-                        <i class="icofont-dashboard"></i> dashboard
-                    </a>
+                    <label for="btFiltrar" class="">dashboard</label>
+                    <p>
+                        <a class="btn btn-info btn-icon-split btn-warning" href="{{ route('app.home') }}">
+                            <i class="icofont-dashboard"></i> dashboard
+                        </a>
                 </div>
             </div>
         </div>
