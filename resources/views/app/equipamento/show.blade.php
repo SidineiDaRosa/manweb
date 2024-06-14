@@ -579,7 +579,7 @@
             <th>horas proxima</th>
             <th>horimetro</th>
             <th>status</th>
-            <th>Tipo de componente</th>
+            <th>Tipo de Ativo</th>
             <th>Criticidade</th>
             <th>Operaçoes</th>
 
