@@ -571,6 +571,9 @@
 </style>
 {{------------------------------------------------}}
 {{--Tabela de peças dos equipamento---------------}}
+<a class="btn btn-sm-template btn-outline-primary" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id,'todas'=>'1']) }}">
+    <i class="icofont-eye-alt">Ver todas as peças</i>
+</a>
 <table class="table table-striped table-hover" id="tblPecas">
     <thead>
         <tr>
