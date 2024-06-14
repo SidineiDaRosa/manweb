@@ -65,20 +65,19 @@
         <div class="row mb-1">
             <label for="data_fabricacao" class="col-md-4 col-form-label text-md-end text-right">Data Instalação</label>
             <div class="col-md-6">
-                <input id="data_instalacao" type="date" class="form-control-template" name="data_instalacao" value="" required autocomplete="" autofocus>
+                <input id="data_instalacao" type="date" class="form-control-template" name="data_instalacao" value="{{$equipamento->data_instalacao ?? old('data_instalacao') }}" required autocomplete="" autofocus>
                 {{ $errors->has('data_fabricacao') ? $errors->first('data_fabricacao') : '' }}
             </div>
         </div>
         <div class="row mb-1">
             <label for="data_fabricacao" class="col-md-4 col-form-label text-md-end text-right">Data Desativação</label>
             <div class="col-md-6">
-                <input id="data_desativacao" type="date" class="form-control-template" name="data_desativacao" value="00/00/0000" autofocus>
+                <input id="data_desativacao" type="date" class="form-control-template" name="data_desativacao" value="{{$equipamento->data_desativacao?? old('data_desativacao') }}" autofocus>
             </div>
         </div>
 
         <div class="row mb-1">
             <label for="marca_id" class="col-md-4 col-form-label text-md-end text-right">Marca</label>
-
             <div class="col-md-6">
                 <select name="marca_id" id="" class="form-control-template">
                     <option value=""> --Selecione a marca--</option>
@@ -108,7 +107,7 @@
 
             <div class="col-md-6">
                 <select name="tipo_de_ativo" id="" class="form-control-template">
-                    <option value=""> --Selecione a categoria--</option>
+                    <option value="">{{$equipamento->tipo_de_ativo?? old('tipo_de_ativo') }}</option>
                     <option value="Compressores">Compressores</option>
                     <option value="Caminhão caçamba">Caminhão caçamba</option>
                     <option value="Caminhão Baú">Caminhão Baú</option>
@@ -126,7 +125,7 @@
             <label for="marca_id" class="col-md-4 col-form-label text-md-end text-right">Estado do ativo</label>
             <div class="col-md-6">
                 <select name="estado_do_ativo" id="" class="form-control-template">
-                    <option value=""> --Selecione a categoria--</option>
+                    <option value="">{{$equipamento->estado_do_ativo?? old('estado_do_ativo') }}</option>
                     <option value="Vendido">Vendido</option>
                     <option value="Desativado">Desativado</option>
                     <option value="Ativado">Ativado</option>
@@ -139,7 +138,7 @@
 
             <div class="col-md-6">
                 <select name="criticidade" id="" class="form-control-template">
-                    <option value=""> --Selecione a categoria--</option>
+                    <option value="">{{$equipamento->criticidade?? old('criticidade') }}</option>
                     <option value="Extra alta">Extra alta</option>
                     <option value="Alta">Alta</option>
                     <option value="Média">Média</option>
@@ -152,7 +151,7 @@
             <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Localização</label>
 
             <div class="col-md-6">
-                <input id="localizacao" type="text" class="form-control-template" name="localizacao" value="{{$equipamento->nome ?? old('nome') }}" required autocomplete="nome" autofocus>
+                <input id="localizacao" type="text" class="form-control-template" name="localizacao" value="{{$equipamento->localizacao ?? old('localizacao') }}" required autocomplete="nome" autofocus>
                 {{ $errors->has('nome') ? $errors->first('nome') : '' }}
             </div>
         </div>
@@ -175,7 +174,7 @@
         <div class="row mb-1">
             <label for="anexo_2" class="col-md-4 col-form-label text-md-end text-right">Valor estimado</label>
             <div class="col-md-6">
-                <input id="valor_estimado" type="text" class="form-control-template" name="valor_estimado" value="0,00" autocomplete="" autofocus>
+                <input id="valor_estimado" type="text" class="form-control-template" name="valor_estimado" value="{{$equipamento->valor_estimado?? old('valor_estimado') }}" autocomplete="" autofocus>
                 {{ $errors->has('data_fabricacao') ? $errors->first('data_fabricacao') : '' }}
             </div>
         </div>

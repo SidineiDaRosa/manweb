@@ -95,7 +95,12 @@
             <div class="titulo">Descrição do ativo</div>
             <hr>
             <div class="conteudo"> {{$equipamento->descricao}}</div>
-
+            <div class="titulo">Valor estimado</div>
+            <hr>
+            <div class="conteudo">R${{$equipamento->valor_estimado}}</div>
+            <div class="titulo">Localização</div>
+            <hr>
+            <div class="conteudo">{{$equipamento->localizacao}}</div>
             <div class="card-body">
                 <?php
                 $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");

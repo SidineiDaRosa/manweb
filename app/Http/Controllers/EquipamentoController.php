@@ -135,10 +135,17 @@ class EquipamentoController extends Controller
     public function update(Request $request, Equipamento $equipamento)
     {
         $equipamento->update($request->all());
-        return redirect()->route('equipamento.index');
+        $equipamento_id=$request->get('id');
+        $pecasEquip = PecasEquipamentos::where('equipamento', $equipamento_id)->where('status','ativado')->orderby('horas_proxima_manutencao')->get();
+        //$ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+        //$ordens_servicos = OrdemServico::where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+        $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+        $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
+        return view('app.equipamento.show', [
+            'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
+            'ordens_servicos_1' => $ordens_servicos_1
+        ]);
     }
-
-
     /**
      * Remove the specified resource from storage.
      *
