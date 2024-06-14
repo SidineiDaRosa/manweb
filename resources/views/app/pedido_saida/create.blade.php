@@ -4,7 +4,7 @@
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
     <div class="card">
-        Novo pedido de saida cabeçalho
+        Novo pedido de saida cabeçalho do pedido
         <style>
             .card-header {
                 background-color: rgb(211, 211, 211);
@@ -92,7 +92,7 @@
                             <label for="cliente" class="">Cliente</label>
 
                             <select name="fornecedor_id" id="" class="form-control">
-                                <option value=""> --Selecione o fornecedor--</option>
+                                <option value=""> --Selecione o Cliente--</option>
                                 @foreach ($fornecedores as $fornecedor)
                                 <option value="{{ $fornecedor->id }}" {{ ($fornecedor->fornecedor_id ?? old('fornecedor_id')) == $fornecedor->id ? 'selected' : '' }}>
                                     {{ $fornecedor->nome_fantasia }}

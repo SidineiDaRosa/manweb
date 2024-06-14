@@ -101,7 +101,9 @@ class SaidaProdutoController extends Controller
         $categorias = Marca::all();
         $unidades = Empresas::all();
         //echo('controller saidas de produtos');
-        echo ('retornar');
+        echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+
+        
     }
 
     /**

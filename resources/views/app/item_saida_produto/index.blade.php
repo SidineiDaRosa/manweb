@@ -14,7 +14,7 @@
 <main class="content" id="main1">
     <div class="card">
         <div class="card-header-template">
-            <div> Item saida de produto</div>
+            <div> Item saida de produto listagem</div>
 
         </div>
         <div class="card-body">

@@ -14,7 +14,7 @@
     <main class="content">
         <div class="card">
             <div class="card-header-template">
-                <div>Saída de Produtos</div>
+                <div>Saída de Produtos cadastro</div>
                 <div>
                     <a href="{{ route('Saida-produto.index') }}" class="btn btn-sm btn-primary">
                         LISTAGEM
