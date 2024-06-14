@@ -1,7 +1,9 @@
 <?php
 
+//-------------------------------------
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ExampleMail;
 use App\Models\Empresas;
 use Illuminate\Http\Request;
 use App\Models\Equipamento;
@@ -11,7 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
 use App\Models\Servicos_executado;
-
 class OrdemServicoController extends Controller
 {
     /**
@@ -22,6 +23,10 @@ class OrdemServicoController extends Controller
     //public function index(Request $request)
     public function index(Request $request)
     {
+        //Mail::to('sidineidarosa201@gmail.com')->send(new ExampleMail());
+      
+        //return "Email enviado com sucesso!";
+
         // date_default_timezone_set('America/Sao_Paulo');
         //$today = date("Y-m-d"); //data de hoje
         //$timeNew =date('H:i:s');
