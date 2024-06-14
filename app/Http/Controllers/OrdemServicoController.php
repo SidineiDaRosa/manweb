@@ -2,6 +2,7 @@
 
 //-------------------------------------
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ExampleMail;
 use App\Models\Empresas;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
 use App\Models\Servicos_executado;
+
 class OrdemServicoController extends Controller
 {
     /**
@@ -24,9 +26,9 @@ class OrdemServicoController extends Controller
     public function index(Request $request)
     {
         //Mail::to('sidineidarosa201@gmail.com')->send(new ExampleMail());
-      
-        //return "Email enviado com sucesso!";
 
+       // return "Email enviado com sucesso!";
+       // echo ($request);
         // date_default_timezone_set('America/Sao_Paulo');
         //$today = date("Y-m-d"); //data de hoje
         //$timeNew =date('H:i:s');
@@ -286,7 +288,7 @@ class OrdemServicoController extends Controller
         $ordem_servico->update($request->all()); //
         $idOs = $ordem_servico->id;
         $funcionarios = Funcionario::all();
-        $ordem_servico_1 = OrdemServico::where('id', $idOs )->get();
+        $ordem_servico_1 = OrdemServico::where('id', $idOs)->get();
         $servicos_executado = Servicos_executado::where('ordem_servico_id',  $idOs)->get();
         $total_hs_os = Servicos_executado::where('ordem_servico_id',  $idOs)->sum('subtotal');
         foreach ($ordem_servico_1  as $ordem_servico_f) {
