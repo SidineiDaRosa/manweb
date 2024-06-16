@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Equipamento;
 use App\Models\Funcionario;
 use App\Models\PedidoCompra;
+use App\Models\UnidadeMedida;
+use App\Models\PedidoCompraLista;
+use App\Models\Produto;
 
 class PedidoCompraController extends Controller
 {
@@ -24,7 +27,7 @@ class PedidoCompraController extends Controller
             // Faça alguma coisa aqui
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
-            $pedidos_compra = PedidoCompra::where('status',$situacao)->get();
+            $pedidos_compra = PedidoCompra::where('status', $situacao)->get();
             return view('app.pedido_compra.index', [
                 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra
             ]);
@@ -33,7 +36,7 @@ class PedidoCompraController extends Controller
             // Faça alguma outra coisa aqui
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
-            $pedidos_compra = PedidoCompra::where('status','')->get();
+            $pedidos_compra = PedidoCompra::where('status', '')->get();
             return view('app.pedido_compra.index', [
                 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra
             ]);
@@ -77,7 +80,36 @@ class PedidoCompraController extends Controller
         }
 
         PedidoCompra::updateOrCreate(['id' => $request->id], $request->all());
-        return response()->json(['success' => 'Registro gravado com sucesso!']);
+        //eturn response()->json(['success' => 'Registro gravado com sucesso!']);
+
+        // Resto do seu código para retornar a view com os dados atualizados
+        $produto_id = $request->get('23');
+        //$pedidoCompraId = $request->get('numpedidocompra');
+        //$pedidoCompraId = $request->numpedidocompra;
+        $pedidoCompra  = PedidoCompra::whereNotNull('created_at') // Garante que 'created_at' não seja nulo
+            ->where('hora_prevista', $request->hora_prevista) // Filtra pela hora prevista fornecida
+            ->latest() // Ordena pela data de criação em ordem decrescente
+            ->first(); // Obtém o primeiro registro do resultado ordenado
+        $pedidoCompraId = $pedidoCompra  ->id;
+        // Resto do seu código para retornar a view com os dados atualizados
+        $equipamentos = Equipamento::all();
+        $funcionarios = Funcionario::all();
+        $unidades_de_medida = UnidadeMedida::all();
+        $pedidos_compra = PedidoCompra::where('id', $pedidoCompraId)->get();
+        $produtos = Produto::all();
+        $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id', $pedidoCompraId)->get();
+        $produto_rg = Produto::where('id', $produto_id)->get();
+        //$pedidoCompraLista = PedidoCompraLista::all();
+        return view('app.pedido_compra.index_lista', [
+            'equipamentos' => $equipamentos,
+            'funcionarios' => $funcionarios,
+            'pedidos_compra' => $pedidos_compra,
+            'produto_id' =>  $produto_id,
+            'pedido_compra_lista' => $pedidoCompraLista,
+            'produtos' => $produtos,
+            'unidades_de_medida' => $unidades_de_medida,
+            'produto_rg' => $produto_rg
+        ]);
     }
 
     /**
@@ -91,7 +123,7 @@ class PedidoCompraController extends Controller
         //
     }
 
-     /**
+    /**
      * Show the form for editing the specified resource.
      *
      * @param App\Models\PedidoCompra $pedido_compra_id
