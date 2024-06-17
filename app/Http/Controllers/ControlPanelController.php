@@ -24,7 +24,7 @@ class ControlPanelController extends Controller
 
     {
         $horas_proxima_manutencao = $request->get('horas_proxima_manutencao');
-        echo ($horas_proxima_manutencao);
+        $categoria = $request->get('categoria');
         $equipamentos = Equipamento::all();
         $produtos = Produto::all();
 
@@ -61,11 +61,10 @@ class ControlPanelController extends Controller
         if ($x = $totRegPecEquip) {
             echo ('total de peças equipamento ok');
             if (isset($horas_proxima_manutencao)) {
-                echo ('a varial exite');
                 if (!empty($horas_proxima_manutencao)) { //verifica se exite este registro
 
                     $ordens_servicos = PecasEquipamentos::where('horas_proxima_manutencao', ('>='), -4000)
-                        ->where('horas_proxima_manutencao', ('<='), $horas_proxima_manutencao)->get();
+                        ->where('horas_proxima_manutencao', ('<='), $horas_proxima_manutencao)->where('tipo_componente',$categoria)->get();
                     $x = 0;
                     $totRegPecEquip = 0;
                     return view('site.control_panel', ['ordens_servicos' =>  $ordens_servicos, 'equipamentos' => $equipamentos, 'produtos' => $produtos]);

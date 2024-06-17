@@ -88,6 +88,12 @@
                     <input type="date" value="" id="data_inicial">
                     <label for="data_final">Data final</label>
                     <input type="date" value="" id="data_final">
+                    <select id="categoria" name="categoria">
+                        <option value="Chek-list">Chek-list</option>
+                        <option value="Lubrificação">Lubrificação</option>
+                        <option value="Componente">Componente</option>
+                        <option value="mensalidade">mensalidade</option>
+                    </select>
                 </form>
                 <input type="button" value="Força atualização do intervalo de manutenção" onclick="PegaDataHoraPhp()">
                 <script>
@@ -110,6 +116,10 @@
                     <thead>
                         <tr>
                             <th scope="col" class="th-title">Id</th>
+                            <th scope="col" class="th-title">Descrição</th>
+                            <th scope="col" class="th-title">Estado</th>
+                            <th scope="col" class="th-title">criticidade</th>
+                            <th scope="col" class="th-title">Categoria</th>
                             <th scope="col" class="th-title">Data_proxima_manutencao</th>
                             <th scope="col" class="th-title">Produto_id</th>
                             <th scope="col" class="th-title">Equipamento</th>
@@ -120,6 +130,10 @@
                     @foreach ($ordens_servicos as $ordem_servico_f)
                     <tr>
                         <th scope="row"> {{$ordem_servico_f->id}}</td>
+                        <td> {{$ordem_servico_f->descricao}}</td>
+                        <td> {{$ordem_servico_f->status}}</td>
+                        <td> {{$ordem_servico_f->criticidade}}</td>
+                        <td> {{$ordem_servico_f->tipo_componente}}</td>
                         <td>{{ date( 'd/m/Y' , strtotime($ordem_servico_f['data_proxima_manutencao']))}}</td>
                         <td>{{ $ordem_servico_f->produto->nome}}</td>
                         <td> <a class="btn btn-secondary btn-sm" href="{{route('Peca-equipamento.index', ['equipamento' =>$ordem_servico_f->equipamento]) }}">
