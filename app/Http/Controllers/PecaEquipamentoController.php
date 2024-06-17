@@ -16,13 +16,14 @@ class PecaEquipamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $equipamento)
+    public function index(Request $request)
     {
         //
+        $categoria = $request->get('categoria');
         $categorias = Categoria::all();
-        $equipamento_id = $equipamento->get('equipamento');
-        //$pecasEquip = PecasEquipamentos::where('status','ativado')->orderby('horas_proxima_manutencao')->get();
-        $pecasEquip = PecasEquipamentos::all();
+       // $equipamento_id = $equipamento->get('equipamento');
+        $pecasEquip = PecasEquipamentos::where('tipo_componente',$categoria)->where('horas_proxima_manutencao','<=',830)->orderby('horas_proxima_manutencao')->get();
+       // $pecasEquip = PecasEquipamentos::all();
         //$equipamento = Equipamento::where('id',  $equipamento_id)->get();
         $equipamentos = Equipamento::all();
         //****filtro ordem de serviço pelo equipamento situacao*****

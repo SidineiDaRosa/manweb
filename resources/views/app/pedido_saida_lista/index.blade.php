@@ -202,7 +202,11 @@
                 <tr>
                     <th scope="row">{{$saida_produto->id }}</td>
                     <td>{{ $saida_produto->produto->cod_fabricante}}</td>
-                    <td>{{ $saida_produto->produto->id}}</td>
+                    <td>{{ $saida_produto->produto->id}}
+                        <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $saida_produto->produto->id]) }}">
+                            <i class="icofont-eye-alt"></i>
+                        </a>
+                    </td>
                     <td>{{ $saida_produto->produto->nome}}</td>
                     <td>{{ $saida_produto->unidade_medida}}</td>
                     <td>{{ $saida_produto->quantidade}}</td>
