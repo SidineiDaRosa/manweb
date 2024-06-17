@@ -338,7 +338,6 @@
                 <th>Responsável</th>
                 <th>Descrição</th>
                 <th>Status</th>
-                <th>Valor</th>
                 <th>Operações</th>
                 <th>check</th>
             </tr>
@@ -404,7 +403,6 @@
                         <div class="progress-bar text-bg-warning">{{ $ordem_servico->status_servicos}}%</div>
                     </div>
                 </td>
-                <td id="valor" value="{{ $ordem_servico->valor}}">{{ $ordem_servico->valor}}</td>
                 <!--Div operaçoes do registro da ordem des serviço-->
                 <td>
                     <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
@@ -578,6 +576,7 @@
     <thead>
         <tr>
             <th>ID RG</th>
+            <th>Descrição</th>
             <th>ID Produto </th>
             <th>Produto Nome</th>
             <th>Quantidade</th>
@@ -597,6 +596,7 @@
         @foreach ($pecas_equipamento as $peca_equipamento)
         <tr>
             <td scope="row">{{ $peca_equipamento->id }}</td>
+            <td scope="row">{{ $peca_equipamento->descricao}}</td>
             <td>{{ $peca_equipamento->produto->id}}
                 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
                     <i class="icofont-eye-alt"></i>

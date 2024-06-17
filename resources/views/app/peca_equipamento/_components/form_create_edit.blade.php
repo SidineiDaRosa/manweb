@@ -22,6 +22,7 @@
                 document.getElementById('status').style.background = "rgba(249, 187, 120, 0.2)";
                 document.getElementById('criticidade').style.background = "rgba(249, 187, 120, 0.2)";
                 document.getElementById('tipo_componente').style.background = "rgba(249, 187, 120, 0.2)";
+                document.getElementById('descricao').style.background = "rgba(249, 187, 120, 0.2)";
 
             }
             //Fim da função que seta as cores dos campos
@@ -179,6 +180,11 @@
                         <input id="equipamento_nome" type="text" name="equipamento_nome" value="@foreach($equipamento as $equipamento_f)
                     {{$equipamento_f['nome']}}
                     @endforeach" hidden>
+                    </div>
+                    <div class="titulo">Descrição do item</div>
+                    <hr>
+                    <div class="conteudo">
+                        <input name="descricao" id="descricao" type="text" value="" placeholder="--insira uma descrição para o item--">
                     </div>
                 </div>
             </div>

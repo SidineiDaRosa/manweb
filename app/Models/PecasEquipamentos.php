@@ -23,6 +23,7 @@ class PecasEquipamentos extends Model
         'status',
         'tipo_componente',
         'criticidade',
+        'descricao'
        
     ];
 

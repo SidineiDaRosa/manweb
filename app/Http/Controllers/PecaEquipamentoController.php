@@ -63,26 +63,39 @@ class PecaEquipamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Verificar se um registro com os mesmos atributos já existe
+        $existingRecord = PecasEquipamentos::where('descricao', $request->input('equipamento'))
+            ->where('produto_id')
+            // Adicione outras condições conforme necessário
+            ->first();
+
+        if ($existingRecord) {
+            // Registro duplicado encontrado, você pode retornar uma mensagem de erro ou redirecionar o usuário
+            return redirect()->back()->with('error', 'Registro já existe.');
+        }
+
+        // Se não houver duplicatas, crie o novo registro
         PecasEquipamentos::create($request->all());
+
         $equipamento_id = $request->get('equipamento');
         $equipamento = Equipamento::where('id', $equipamento_id)->first(); // Obter o equipamento com o ID especificado
 
         $json = json_encode($equipamento); // Converter o objeto em JSON
-        
+
         $equipamento_array = json_decode($json, true); // Decodificar o JSON para um array associativo
-        
+
         //--------------------
-        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status','ativado')->orderby('horas_proxima_manutencao')->get();
+        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->orderby('horas_proxima_manutencao')->get();
         $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
 
         return view('app.equipamento.show', [
-        'equipamento' =>$equipamento , 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
-         'ordens_servicos_1' => $ordens_servicos_1
-     ]);
+            'equipamento' => $equipamento,
+            'pecas_equipamento' => $pecasEquip,
+            'ordens_servicos' => $ordens_servicos,
+            'ordens_servicos_1' => $ordens_servicos_1
+        ]);
     }
-
     /**
      * Display the specified resource.
      *
