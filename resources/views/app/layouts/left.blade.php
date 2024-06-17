@@ -109,7 +109,7 @@
                     <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-patrimonio">
                         <a class="sidebar-submenu-expanded-a" href="{{route('equipamento.index')}}">&nbsp&nbspAtivos e Passivos</a><br>
                         <a class="sidebar-submenu-expanded-a" href="{{ route('equipamento.create') }}">&nbsp&nbspCadastro de
-                            equipamentos</a><br>
+                        <a class="sidebar-submenu-expanded-a" href="{{ route('Peca-equipamento.index') }}">&nbsp&nbspFiltros de Chek-List Lubrificação</a><br>
                         <hr>
                         <a class="sidebar-submenu-expanded-a" href="">Manutenção</a><br>
                         <a class="sidebar-submenu-expanded-a" href="{{route('ordem-servico.index')}}">

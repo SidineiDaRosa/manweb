@@ -21,12 +21,13 @@ class PecaEquipamentoController extends Controller
         //
         $categorias = Categoria::all();
         $equipamento_id = $equipamento->get('equipamento');
-        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->get();
-        $equipamento = Equipamento::where('id',  $equipamento_id)->get();
+        //$pecasEquip = PecasEquipamentos::where('status','ativado')->orderby('horas_proxima_manutencao')->get();
+        $pecasEquip = PecasEquipamentos::all();
+        //$equipamento = Equipamento::where('id',  $equipamento_id)->get();
+        $equipamentos = Equipamento::all();
         //****filtro ordem de serviço pelo equipamento situacao*****
-        $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
-
-        return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'categorias' => $categorias]);
+        //$ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+        return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
     }
     /**
      * Show the form for creating a new resource.
