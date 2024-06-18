@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Check_listController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdemServicoController;
 use Illuminate\Support\Facades\Auth;
@@ -209,3 +210,8 @@ Route::delete('/delete-item-pedido-delete', 'App\Http\Controllers\PedidoCompraLi
 //---------------------------------------------------------------//
 //Filtro Produtos
 Route::middleware('auth')->post('/Produtos-filtro-componente', [App\Http\Controllers\PecaEquipamentoController::class, 'create'])->name('Produtos-filtro-componente');
+//---------------------------------------------------------------//
+// Envia requisição ajax para atualizar um chek-list
+//---------------------------------------------------------------//
+Route::post('/checklist/send', [Check_listController::class, 'send'])->name('checklist.send');
+

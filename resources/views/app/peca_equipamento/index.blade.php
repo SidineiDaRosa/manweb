@@ -16,7 +16,7 @@
         <hr>
         <form>
             <label for="opcoes">Categoria:</label>
-            <select id="opcoes" name="categoria" placeholder="--Selecione a categoria--" >
+            <select id="opcoes" name="categoria" placeholder="--Selecione a categoria--">
                 <option value="Mensalidade">Mensalidade</option>
                 <option value="Chek-list">Chek-list</option>
                 <option value="Lubrificação">Lubrificação</option>
@@ -185,6 +185,69 @@
         <!--Div operaçoes do registro da ordem des serviço-->
         <td>
             <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
+                <a class="btn btn-sm-template btn-outline-primary" href="">
+                    Concluir Tarefa
+                </a>
+                <!DOCTYPE html>
+                <html>
+
+                <head>
+                    <title>Enviar Requisição AJAX</title>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                </head>
+
+                <body>
+                    <button id="sendAjaxRequest">Enviar Requisição AJAX</button>
+                    <div id="response"></div> <!-- Div para mostrar a resposta -->
+
+                    <script>
+                        // $.ajax({
+                        // url: '{{ route("checklist.send") }}', // Rota de envio
+                        // type: 'POST', // Tipo de requisição (POST, GET, etc.)
+                        // data: {
+                        // _token: '{{ csrf_token() }}' // Adicione o token CSRF para segurança
+                        // },
+                        // success: function(response) {
+                        // Função que será executada se a requisição for bem-sucedida
+                        //  $('#response').html('<p>Sucesso: ' + response.message + '</p>');
+                        // },
+                        // error: function(xhr, status, error) {
+                        // // Função que será executada se a requisição falhar
+                        // $('#response').html('<p>Erro: ' + error + '</p>');
+                        //}
+                        //});
+                        $(document).ready(function() {
+                            $('#sendAjaxRequest').click(function() {
+                                // Defina os dados específicos que deseja enviar
+                                var dados = {
+                                    nome: 'Sidinei',
+                                    idade: 30
+                                    // Adicione outros dados conforme necessário
+                                };
+
+                                $.ajax({
+                                    url: '{{ route("checklist.send") }}', // Rota de envio
+                                    type: 'POST', // Tipo de requisição (POST, GET, etc.)
+                                    data: {
+                                        _token: '{{ csrf_token() }}', // Adicione o token CSRF para segurança
+                                        dados: dados // Envie os dados específicos
+                                    },
+                                    success: function(response) {
+                                        // Função que será executada se a requisição for bem-sucedida
+                                        $('#response').html('<p>Sucesso: ' + response.message + '</p>');
+                                        console.log(response.data); // Exiba os dados recebidos no console
+                                    },
+                                    error: function(xhr, status, error) {
+                                        // Função que será executada se a requisição falhar
+                                        $('#response').html('<p>Erro: ' + error + '</p>');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </body>
+
+                </html>
                 <a class="btn btn-sm-template btn-outline-primary" href="">
                     <i class="icofont-eye-alt"></i>
                 </a>
