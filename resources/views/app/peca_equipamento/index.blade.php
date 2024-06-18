@@ -197,7 +197,7 @@
                 </head>
 
                 <body>
-                    <button id="sendAjaxRequest">Enviar Requisição AJAX</button>
+                    <button id="sendAjaxRequest" class="update_chek_list">Enviar Requisição AJAX</button>
                     <div id="response"></div> <!-- Div para mostrar a resposta -->
 
                     <script>
@@ -217,7 +217,7 @@
                         //}
                         //});
                         $(document).ready(function() {
-                            $('#sendAjaxRequest').click(function() {
+                            $('#tblPecas').on('click', '.update_chek_list', function() {
                                 // Defina os dados específicos que deseja enviar
                                 var dados = {
                                     nome: 'Sidinei',
@@ -242,6 +242,63 @@
                                         $('#response').html('<p>Erro: ' + error + '</p>');
                                     }
                                 });
+                            });
+                        });
+                        ///-----------------------------
+                        $(document).ready(function() {
+                            $('#myTable').on('click', '.complete-btn', function(e) {
+                                e.preventDefault(); // Evita o comportamento padrão do link
+
+                                var taskId = $(this).closest('tr').data('id'); // Obtém o ID da tarefa da linha
+
+                                // Aqui você pode enviar a requisição AJAX para concluir a tarefa com o ID obtido
+                                $.ajax({
+                                    url: '{{ route("checklist.send") }}', // Rota de envio
+                                    method: 'POST',
+                                    data: {
+                                        taskId: taskId
+                                    }, // Ou qualquer outro dado que você precise enviar
+                                    success: function(response) {
+                                        // Lógica para atualizar a tabela ou realizar outras ações após a conclusão da tarefa
+                                    },
+                                    error: function(xhr, status, error) {
+                                        // Tratamento de erro, se necessário
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                    <button class="btnAtualizar" data-id="{{$peca_equipamento->id}}">Atualizar</button>
+                    <script>
+                        // Função para enviar a requisição AJAX
+                        function atualizarRegistro(id) {
+                            // Aqui você deve substituir 'url_do_seu_endpoint' pela URL do seu endpoint que irá atualizar o registro
+                            let url = '{{ route("checklist.send") }}' + id;
+
+                            // Envio da requisição AJAX
+                            $.ajax({
+                                type: 'PUT',
+                                url: url,
+                                data: {
+                                    _token: '{{ csrf_token() }}', // Se estiver usando o Laravel, adicione o token CSRF
+                                    // Outros dados que você quer enviar para atualização, se necessário
+                                },
+                                success: function(response) {
+                                    // Ação a ser executada em caso de sucesso na requisição
+                                    console.log('Registro atualizado com sucesso!');
+                                },
+                                error: function(xhr, status, error) {
+                                    // Ação a ser executada em caso de erro na requisição
+                                    console.error('Erro ao atualizar registro:', error);
+                                }
+                            });
+                        }
+
+                        // Captura do clique no botão e chamada da função para atualizar o registro
+                        $(document).ready(function() {
+                            $('.btnAtualizar').click(function() {
+                                let id = $(this).data('id');
+                                atualizarRegistro(id);
                             });
                         });
                     </script>
