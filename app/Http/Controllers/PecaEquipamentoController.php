@@ -27,27 +27,13 @@ class PecaEquipamentoController extends Controller
         $categoria = $request->get('categoria');
         $data_proxima = $request->get('data_proxima_manutencao');
         $horas_proxima = $request->get('horas_proxima_manutencao');
-        echo($data_proxima);
         $categorias = Categoria::all();
         // $equipamento_id = $equipamento->get('equipamento');
-        if ($chek_list == 1) {
-            $pecasEquip = PecasEquipamentos::where('id', $peca_equip_id)->orderby('horas_proxima_manutencao')->get();
-            // $pecasEquip = PecasEquipamentos::all();
-            //$equipamento = Equipamento::where('id',  $equipamento_id)->get();
+        if (!isset($chek_list)) {
+            $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=',240)->orderby('horas_proxima_manutencao')->get();
             $equipamentos = Equipamento::all();
-            //****filtro ordem de serviço pelo equipamento situacao*****
-            //$ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
-        } else {
-            $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=',$horas_proxima)->orderby('horas_proxima_manutencao')->get();
-             //$pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('data_proxima_manutencao', '<=',$data_proxima)->orderby('horas_proxima_manutencao')->get();
-            // $pecasEquip = PecasEquipamentos::all();
-            //$equipamento = Equipamento::where('id',  $equipamento_id)->get();
-            $equipamentos = Equipamento::all();
-            //****filtro ordem de serviço pelo equipamento situacao*****
-            //$ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
             return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
-        }
+        } 
     }
     /**
      * Show the form for creating a new resource.
