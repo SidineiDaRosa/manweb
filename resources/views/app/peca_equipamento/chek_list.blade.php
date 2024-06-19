@@ -1,6 +1,9 @@
 @extends('app.layouts.app')
 
+@section('titulo', 'Produtos')
+
 @section('content')
+
 <main class="content">
     <div class="card">
         <style>
@@ -12,18 +15,8 @@
                 font-size: 20px;
             }
         </style>
-        <h5>Componentes deste equipamento</h5>
+        <h5>Check-List</h5>
         <hr>
-        <form>
-            <label for="opcoes">Categoria:</label>
-            <select id="opcoes" name="categoria" placeholder="--Selecione a categoria--">
-                <option value="Mensalidade">Mensalidade</option>
-                <option value="Chek-list">Chek-list</option>
-                <option value="Lubrificação">Lubrificação</option>
-            </select>
-            <br><br>
-            <input type="submit" value="Enviar">
-        </form>
         @foreach ($equipamentos as $equipamentos_f)
         @endforeach
         <div class="card-body">
@@ -337,4 +330,88 @@
             </tbody>
             </table>
 </main>
+{{--====================================================================--}}
+{{--Função que fecha a ordem de serviço--}}
+<div class="d-grid gap-2 d-sm-flex justify-content float-center">
+    <button id="enviar" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+        <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
+        Fechar Ordem de serviço</button>
+</div>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JavaScript (bundle includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Modal de Confirmação -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Deseja Concluír Chek-List?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmarEnvio" data-bs-dismiss="modal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Sucesso -->
+<div class="modal fade" id="sucessoModal" tabindex="-1" aria-labelledby="sucessoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sucessoModalLabel">Sucesso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Chek-List Concluído!
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal de Erro -->
+<div class="modal fade" id="erroModal" tabindex="-1" aria-labelledby="sucessoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sucessoModalLabel"><i class="icofont-warning"></i>Alerta!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Erro ao fechar Chek-List!
+            </div>
+        </div>
+    </div>
+</div>
+<input type="text" id="valor" placeholder="Digite um valor" value="{{$peca_equipamento->id }}" hidden readonly>
+<script>
+    $(document).ready(function() {
+        $('#confirmarEnvio').click(function() {
+            var valor = $('#valor').val(); // Obtém o valor do input
+
+            $.ajax({
+                type: 'GET', // Método HTTP da requisição
+                url: '', // URL para onde a requisição será enviada
+                data: {
+                    valor: valor
+                }, // Dados a serem enviados (no formato chave: valor)
+                success: function(response) {
+                    $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
+                    $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
+                },
+                error: function(xhr, status, error) {
+                    $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver
+                    $('#erroModal').modal('show'); // Exibe a modal de sucesso
+                }
+            });
+        });
+    });
+</script>
 @endsection
