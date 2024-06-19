@@ -33,7 +33,7 @@ class PecaEquipamentoController extends Controller
             //$ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
             return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         } else {
-            $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=', 830)->orderby('horas_proxima_manutencao')->get();
+            $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->get();
             // $pecasEquip = PecasEquipamentos::all();
             //$equipamento = Equipamento::where('id',  $equipamento_id)->get();
             $equipamentos = Equipamento::all();

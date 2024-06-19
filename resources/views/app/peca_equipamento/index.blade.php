@@ -2,6 +2,31 @@
 
 @section('content')
 <main class="content">
+    <div class="card-header-template">
+
+        <diV>
+            <a class="btn btn-outline-primary" href="{{ route('Peca-equipamento.index') }}">
+                <span class="material-symbols-outlined">
+                    format_list_bulleted
+                </span>
+            </a>
+            <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
+                <i class="icofont-dashboard"></i> dashboard
+            </a>
+        </div>
+    </div>
+    </div>
+    <div class="titulo-main">
+        Chek-List
+    </div>
+    <style>
+        .titulo-main {
+            font-size: 20px;
+            color: gray;
+            text-align: center;
+            margin-top: -2;
+        }
+    </style>
     <div class="card">
         <style>
             .card {
@@ -185,126 +210,6 @@
         <!--Div operaçoes do registro da ordem des serviço-->
         <td>
             <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                <a class="btn btn-sm-template btn-outline-primary" href="">
-                    Concluir Tarefa
-                </a>
-                <!DOCTYPE html>
-                <html>
-
-                <head>
-                    <title>Enviar Requisição AJAX</title>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                </head>
-
-                <body>
-                    <button id="sendAjaxRequest" class="update_chek_list">Enviar Requisição AJAX</button>
-                    <div id="response"></div> <!-- Div para mostrar a resposta -->
-
-                    <script>
-                        // $.ajax({
-                        // url: '{{ route("checklist.send") }}', // Rota de envio
-                        // type: 'POST', // Tipo de requisição (POST, GET, etc.)
-                        // data: {
-                        // _token: '{{ csrf_token() }}' // Adicione o token CSRF para segurança
-                        // },
-                        // success: function(response) {
-                        // Função que será executada se a requisição for bem-sucedida
-                        //  $('#response').html('<p>Sucesso: ' + response.message + '</p>');
-                        // },
-                        // error: function(xhr, status, error) {
-                        // // Função que será executada se a requisição falhar
-                        // $('#response').html('<p>Erro: ' + error + '</p>');
-                        //}
-                        //});
-                        $(document).ready(function() {
-                            $('#tblPecas').on('click', '.update_chek_list', function() {
-                                // Defina os dados específicos que deseja enviar
-                                var dados = {
-                                    nome: 'Sidinei',
-                                    idade: 30
-                                    // Adicione outros dados conforme necessário
-                                };
-
-                                $.ajax({
-                                    url: '{{ route("checklist.send") }}', // Rota de envio
-                                    type: 'POST', // Tipo de requisição (POST, GET, etc.)
-                                    data: {
-                                        _token: '{{ csrf_token() }}', // Adicione o token CSRF para segurança
-                                        dados: dados // Envie os dados específicos
-                                    },
-                                    success: function(response) {
-                                        // Função que será executada se a requisição for bem-sucedida
-                                        $('#response').html('<p>Sucesso: ' + response.message + '</p>');
-                                        console.log(response.data); // Exiba os dados recebidos no console
-                                    },
-                                    error: function(xhr, status, error) {
-                                        // Função que será executada se a requisição falhar
-                                        $('#response').html('<p>Erro: ' + error + '</p>');
-                                    }
-                                });
-                            });
-                        });
-                        ///-----------------------------
-                        $(document).ready(function() {
-                            $('#myTable').on('click', '.complete-btn', function(e) {
-                                e.preventDefault(); // Evita o comportamento padrão do link
-
-                                var taskId = $(this).closest('tr').data('id'); // Obtém o ID da tarefa da linha
-
-                                // Aqui você pode enviar a requisição AJAX para concluir a tarefa com o ID obtido
-                                $.ajax({
-                                    url: '{{ route("checklist.send") }}', // Rota de envio
-                                    method: 'POST',
-                                    data: {
-                                        taskId: taskId
-                                    }, // Ou qualquer outro dado que você precise enviar
-                                    success: function(response) {
-                                        // Lógica para atualizar a tabela ou realizar outras ações após a conclusão da tarefa
-                                    },
-                                    error: function(xhr, status, error) {
-                                        // Tratamento de erro, se necessário
-                                    }
-                                });
-                            });
-                        });
-                    </script>
-                    <button class="btnAtualizar" data-id="{{$peca_equipamento->id}}">Atualizar</button>
-                    <script>
-                        // Função para enviar a requisição AJAX
-                        function atualizarRegistro(id) {
-                            // Aqui você deve substituir 'url_do_seu_endpoint' pela URL do seu endpoint que irá atualizar o registro
-                            let url = '{{ route("checklist.send") }}' + id;
-
-                            // Envio da requisição AJAX
-                            $.ajax({
-                                type: 'PUT',
-                                url: url,
-                                data: {
-                                    _token: '{{ csrf_token() }}', // Se estiver usando o Laravel, adicione o token CSRF
-                                    // Outros dados que você quer enviar para atualização, se necessário
-                                },
-                                success: function(response) {
-                                    // Ação a ser executada em caso de sucesso na requisição
-                                    console.log('Registro atualizado com sucesso!');
-                                },
-                                error: function(xhr, status, error) {
-                                    // Ação a ser executada em caso de erro na requisição
-                                    console.error('Erro ao atualizar registro:', error);
-                                }
-                            });
-                        }
-
-                        // Captura do clique no botão e chamada da função para atualizar o registro
-                        $(document).ready(function() {
-                            $('.btnAtualizar').click(function() {
-                                let id = $(this).data('id');
-                                atualizarRegistro(id);
-                            });
-                        });
-                    </script>
-                </body>
-
-                </html>
                 <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
                     <i class="icofont-eye-alt"></i>
                 </a>
