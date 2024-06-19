@@ -25,7 +25,7 @@ class PecaEquipamentoController extends Controller
         $categorias = Categoria::all();
         // $equipamento_id = $equipamento->get('equipamento');
         if ($chek_list == 1) {
-            $pecasEquip = PecasEquipamentos::where('id',$peca_equip_id )->orderby('horas_proxima_manutencao')->get();
+            $pecasEquip = PecasEquipamentos::where('id', $peca_equip_id)->orderby('horas_proxima_manutencao')->get();
             // $pecasEquip = PecasEquipamentos::all();
             //$equipamento = Equipamento::where('id',  $equipamento_id)->get();
             $equipamentos = Equipamento::all();
@@ -141,7 +141,8 @@ class PecaEquipamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+      //
     }
 
     /**

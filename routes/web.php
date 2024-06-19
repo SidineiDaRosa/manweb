@@ -214,4 +214,10 @@ Route::middleware('auth')->post('/Produtos-filtro-componente', [App\Http\Control
 // Envia requisição ajax para atualizar um chek-list
 //---------------------------------------------------------------//
 Route::post('/checklist/send', [Check_listController::class, 'send'])->name('checklist.send');
-
+//---------------------------------------------------------------//
+// Envia requisição ajax para atualizar um chek-list
+//---------------------------------------------------------------//
+Route::middleware('auth')->get(
+    'utils/update-chek-list',
+    'App\Http\Controllers\UtilsController@update_chek_list'
+)->name('update-chek-list');

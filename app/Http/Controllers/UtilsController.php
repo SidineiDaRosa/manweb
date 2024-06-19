@@ -9,6 +9,9 @@ use App\Models\OrdemServico;
 use App\Models\PedidoCompra;
 use Illuminate\Http\Request;
 use App\Models\Servicos_executado;
+use App\Models\PecasEquipamentos;
+use DateTime;
+use DateInterval;
 
 class UtilsController extends Controller
 {
@@ -126,11 +129,37 @@ class UtilsController extends Controller
         date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
         $today = date("Y-m-d"); //data de hoje
         $timeNew = date('H:i:s');
-        $pedido_compra->data_fechamento= $today;
+        $pedido_compra->data_fechamento = $today;
         //$pedido_compra->hora_fim =  $timeNew;
         $pedido_compra->status = 'fechado'; //fecha a situação
-       // $pedido_compra->status_servicos = 100; //coloca o status em 100%
+        // $pedido_compra->status_servicos = 100; //coloca o status em 100%
         $pedido_compra->save(); //salva a atleração do pedido
         return response()->json(['mensagem' => 'Pedido atualizado para fechado']);
+    }
+
+    public function update_chek_list(Request $request)
+    {
+        //--------------------------------------------//
+        //--altera status pedido de compra---------------//
+        // Encontre o registro pelo ID
+        $id = $request->input('valor');
+        // Atualize o campo 'nome' com o valor enviado na requisição
+        date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
+        $today = date("Y-m-d"); //data de hoje
+        $timeNew = date('H:i:s');
+        $pecaEquipamento = PecasEquipamentos::find($request->input('valor')); //busca o registro do produto com o id da entrada do produto
+         $intervalo_horas = $pecaEquipamento->intervalo_manutencao; // Obtém o intervalo de horas do objeto
+        //--------------------------------------------------//
+        // Defina a data da última manutenção
+        $data_ultima_manutencao = new DateTime(); // Cria um objeto DateTime com a data e hora atuais
+        $intervalo_horas_d = intval($intervalo_horas / 24); // Convertendo para inteiro
+        $data_proxima_manutencao = clone $data_ultima_manutencao; // Clona a data e hora atuais para a próxima manutenção
+        $data_proxima_manutencao->add(new DateInterval('P' . $intervalo_horas_d . 'D')); // Adiciona o intervalo em dias à data
+        //---------------------------------------------------//
+        $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
+        $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
+        $pecaEquipamento->save();
+        // echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+        return response()->json(['mensagem' => 'Checklist de número:', 'id' => $id]);
     }
 }

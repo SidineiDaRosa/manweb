@@ -313,7 +313,7 @@
                     <script>
                         function DeletarOs() {
                             var x;
-                            var r = confirm("Deseja deletar a ordem de serviço?");
+                            var r = confirm("Deseja deletar o chek-list?");
                             if (r == true) {
 
                                 // document.getElementById('').submit()
@@ -390,7 +390,7 @@
         </div>
     </div>
 </div>
-<input type="text" id="valor" placeholder="Digite um valor" value="{{$peca_equipamento->id }}" hidden readonly>
+<input type="text" id="valor" placeholder="Digite um valor" value="{{$peca_equipamento->id }}" name="peca_equip_id" readonly>
 <script>
     $(document).ready(function() {
         $('#confirmarEnvio').click(function() {
@@ -398,12 +398,16 @@
 
             $.ajax({
                 type: 'GET', // Método HTTP da requisição
-                url: '', // URL para onde a requisição será enviada
+                url: '{{ route("update-chek-list") }}', // URL para onde a requisição será enviada 
                 data: {
                     valor: valor
                 }, // Dados a serem enviados (no formato chave: valor)
                 success: function(response) {
-                    $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
+                    if (response.mensagem) {
+                        $('#mensagem').text(response.mensagem); // Exibe a mensagem retornada pelo servidor
+                    } else {
+                        $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor se a mensagem não estiver presente
+                    }
                     $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
                 },
                 error: function(xhr, status, error) {
