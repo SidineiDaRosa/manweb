@@ -42,10 +42,14 @@
         <form>
             <label for="opcoes">Categoria:</label>
             <select id="opcoes" name="categoria" placeholder="--Selecione a categoria--">
-                <option value="Mensalidade">Mensalidade</option>
                 <option value="Chek-list">Chek-list</option>
                 <option value="Lubrificação">Lubrificação</option>
+                <option value="Mensalidade">Mensalidade</option>
             </select>
+            <label for="opcoes">Data :</label>
+            <input type="date" name="data_proxima_manutencao" value="">
+            <label for="opcoes">Horas restante:</label>
+            <input type="number" name="horas_proxima_manutencao" value="24">
             <br><br>
             <input type="submit" value="Enviar">
         </form>

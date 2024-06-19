@@ -19,9 +19,15 @@ class PecaEquipamentoController extends Controller
     public function index(Request $request)
     {
         //
+        date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
+        $today = date("Y-m-d"); //data de hoje
+        $timeNew = date('H:i:s');
         $chek_list = $request->get('chek_list');
         $peca_equip_id = $request->get('peca_equip_id');
         $categoria = $request->get('categoria');
+        $data_proxima = $request->get('data_proxima_manutencao');
+        $horas_proxima = $request->get('horas_proxima_manutencao');
+        echo($data_proxima);
         $categorias = Categoria::all();
         // $equipamento_id = $equipamento->get('equipamento');
         if ($chek_list == 1) {
@@ -33,7 +39,8 @@ class PecaEquipamentoController extends Controller
             //$ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
             return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         } else {
-            $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->get();
+            $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=',$horas_proxima)->orderby('horas_proxima_manutencao')->get();
+             //$pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('data_proxima_manutencao', '<=',$data_proxima)->orderby('horas_proxima_manutencao')->get();
             // $pecasEquip = PecasEquipamentos::all();
             //$equipamento = Equipamento::where('id',  $equipamento_id)->get();
             $equipamentos = Equipamento::all();
@@ -142,7 +149,7 @@ class PecaEquipamentoController extends Controller
     public function update(Request $request, $id)
     {
 
-      //
+        //
     }
 
     /**
