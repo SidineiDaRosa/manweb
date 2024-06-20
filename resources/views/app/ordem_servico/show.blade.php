@@ -20,292 +20,306 @@
     </style>
     {{-------------------------------------------------------------------------}}
     {{--início da div que contem os box--}}
-    <div class="container-chart">
-        <div class="card">
-
-            <div class="card-header-template">
-                <div>
-                    <a class="btn btn-outline-primary" href="{{ route('ordem-servico.index') }}"><span class="material-symbols-outlined">
-                            format_list_bulleted
-                        </span>
-                    </a>
-                    <a class="btn btn-outline-primary" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
-                        <i class="icofont-database-add"></i>
-                        Criar novo pedido de saída
-                    </a>
-                    <a class="btn btn-outline-primary" href="{{route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4])}}">
-                        <i class="icofont-search"></i>
-                        </i>Busca Pedidos </a>
-                    <a class="btn btn-outline-success" href="{{route('equipamento.show', ['equipamento' => $ordem_servico->equipamento->id]) }}">
-                        <i class="icofont-tractor"></i>
-                        ir para o equipamento
-                    </a>
-                    <a class="btn btn-outline-primary" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
-                        <i class="icofont-ui-edit"></i>Editar</a>
-                    <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
-                        <i class="icofont-dashboard"></i> dashboard
-                    </a>
-                </div>
+    <div class="card">
+        <div class="card-header-template">
+            <div>
+                <a class="btn btn-outline-primary" href="{{ route('ordem-servico.index') }}"><span class="material-symbols-outlined">
+                        format_list_bulleted
+                    </span>
+                </a>
+                <a class="btn btn-outline-primary" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
+                    <i class="icofont-database-add"></i>
+                    Criar novo pedido de saída
+                </a>
+                <a class="btn btn-outline-primary" href="{{route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4])}}">
+                    <i class="icofont-search"></i>
+                    </i>Busca Pedidos </a>
+                <a class="btn btn-outline-success" href="{{route('equipamento.show', ['equipamento' => $ordem_servico->equipamento->id]) }}">
+                    <i class="icofont-tractor"></i>
+                    ir para o equipamento
+                </a>
+                <a class="btn btn-outline-primary" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
+                    <i class="icofont-ui-edit"></i>Editar</a>
+                <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> dashboard
+                </a>
             </div>
-            <div class="card1">
-                {{-------------------------------------------------------------------------}}
-                {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
+        </div>
+        <div class="card1">
+            {{-------------------------------------------------------------------------}}
+            {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
 
-                <style>
-                    hr {
-                        margin: -5px;
-                    }
+            <style>
+                hr {
+                    margin: -5px;
+                }
 
-                    .box-conteudo {
-                        margin-left: 50px;
-                        justify-content: flex-start;
-                    }
+                .box-conteudo {
+                    margin-left: 2px;
+                    justify-content: flex-start;
+                }
 
-                    .titulo {
-                        display: flex;
-                        font-size: 15px;
-                        font-family: 'Poppins', sans-serif;
+                .titulo {
+                    display: flex;
+                    font-size: 15px;
+                    font-family: 'Poppins', sans-serif;
 
-                    }
+                }
 
-                    .conteudo {
-                        display: flex;
-                        font-size: 20px;
-                        font-weight:400;
-                        font-family: 'Poppins', sans-serif;
-                        color: #007b00;
-                        margin-bottom: -1px;
-                     align-items: flex-end; 
-                    }
+                .conteudo {
+                    display: flex;
+                    font-size: 20px;
+                    font-weight: 400;
+                    font-family: 'Poppins', sans-serif;
+                    color: #007b00;
+                    margin-bottom: -1px;
+                    align-items: flex-end;
+                }
 
-                    #patrimonio {
-                        color: #2174d4;
-                    }
+                #patrimonio {
+                    color: #2174d4;
+                }
 
-                    .span-texto-sm {
-                        font-family: 'Poppins', sans-serif;
-                        font-weight: 300;
-                        color:mediumblue;
-                        font-size: 15px;
-                        margin-bottom: 1px;
-                    }
-                </style>
-                <div class="container-chart">
-                    {{--Box 1--}}
-                    <div class="item">
-                        <div class="box-conteudo">
-                            <div class="titulo"> Empresa</div>
-                            <hr>
-                            <div class="conteudo">{{$ordem_servico->Empresa->razao_social}}</div>
+                .span-texto-sm {
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 300;
+                    color: mediumblue;
+                    font-size: 15px;
+                    margin-bottom: 1px;
+                }
+            </style>
+            <div class="container-item">
+                {{--Box 1--}}
+                <div class="item">
+                    <div class="box-conteudo">
+                        <div class="titulo"> Empresa</div>
+                        <hr>
+                        <div class="conteudo">{{$ordem_servico->Empresa->razao_social}}</div>
 
-                            <div class="titulo">Patrimônio/Ativo</div>
-                            <hr>
-                            <div class="conteudo" id="patrimonio">{{$ordem_servico->equipamento->nome}}</div>
+                        <div class="titulo">Patrimônio/Ativo</div>
+                        <hr>
+                        <div class="conteudo" id="patrimonio">{{$ordem_servico->equipamento->nome}}</div>
 
-                            <div class="titulo">Emissor</div>
-                            <hr>
-                            <div class="conteudo">{{$ordem_servico->emissor}}</div>
+                        <div class="titulo">Emissor</div>
+                        <hr>
+                        <div class="conteudo">{{$ordem_servico->emissor}}</div>
 
-                            <div class="titulo">Responsável</div>
-                            <hr>
-                            <div class="conteudo">{{$ordem_servico->responsavel}}</div>
-                            <div class="titulo">Situação</div>
-                            <hr>
-                            <div class="conteudo">{{$ordem_servico->situacao}}</div>
-                            <div id=qrCodes>
-                                {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $ordem_servico->id) !!}
-                                <?php
-                                $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");
-                                $url = '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                                $urlPaginaAtual = $protocolo . $url
-                                //echo $protocolo.$url;
-                                ?>
-                                &nbsp&nbsp&nbsp&nbsp{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}
-
-                            </div>
+                        <div class="titulo">Responsável</div>
+                        <hr>
+                        <div class="conteudo">{{$ordem_servico->responsavel}}</div>
+                        <div class="titulo">Situação</div>
+                        <hr>
+                        <div class="conteudo">{{$ordem_servico->situacao}}</div>
+                        <div id=qrCodes>
+                            {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $ordem_servico->id) !!}
+                            <?php
+                            $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");
+                            $url = '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                            $urlPaginaAtual = $protocolo . $url
+                            //echo $protocolo.$url;
+                            ?>
+                            &nbsp&nbsp&nbsp&nbsp{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}
 
                         </div>
 
                     </div>
-                    {{--Box 2--}}
-                    <div class="item">
-                        <div class="box-conteudo">
-                            <div class="titulo">ID:</div>
-                            <hr>
-                            <div id=idOs class="conteudo" style="color:mediumblue">
-                                {{$ordem_servico->id}}
-                            </div>
-
-                            @php
-                            use Carbon\Carbon;
-
-                            $data_inicio = Carbon::parse($ordem_servico->data_inicio . ' ' . $ordem_servico->hora_inicio);
-                            $data_fim = Carbon::parse($ordem_servico->data_fim . ' ' . $ordem_servico->hora_fim);
-                            $diff = $data_fim->diff($data_inicio);
-
-                            // Calculando o total de horas
-
-                            $totalHours = $diff->days * 24 + $diff->h;
-                            $minutes = $diff->format('%i');
-                            @endphp
-                            <div class="titulo">O tempo previsto para realizar o serviço é de:</div>
-                            <!-- Conteúdo com texto alinhado na parte inferior -->
-                            <div class="conteudo" style="display: flex; align-items: flex-end; color: crimson; font-size: 18px;">
-                                {{$totalHours}}<span class="span-texto-sm ">hs &nbsp e &nbsp </span>
-                                {{$minutes}}<span class="span-texto-sm ">min.</span>
-
-                            </div>
-                            <hr>
-                            <p>
-                            <p>
-                            <p>
-                            <div class="titulo">Descrição dos serviços a serem executados</div>
-                            <div class="titulo">
-                                <textarea name="" id="txt-area" class="form-control" rows="6" readonly style="color:crimson">{{$ordem_servico->descricao}}</textarea>
-
-                            </div>
-                            <style>
-                                #txt-area {
-                                    height: auto;
-                                    width: 100%;
-                                    border: 1px solid rgba(33, 116, 212, 0.3);
-                                    border-radius: 5px;
-                                    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-                                    background-color: transparent;
-                                    /* Transparent background */
-
-                                }
-
-                                #txt-area:focus {
-                                    border-color: rgba(33, 116, 212, 0.5);
-                                    /* Use the same rgba color but with a different opacity */
-                                    box-shadow: 0 0 0 0.1rem rgba(33, 116, 212, 0.25);
-                                    /* Add a shadow to match Bootstrap */
-                                    outline: none;
-                                    /* Remove the default outline */
-                                }
-                            </style>
-                        </div>
-                    </div>
-                    {{--Box 3--}}
-                    <div class="item">
-                        <div class="box-conteudo">
-                            <div class="titulo">Emissão</div>
-                            <hr>
-                            <div class="conteudo"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
-                            
-                            <div class="titulo"> Previsão para início</div>
-                            <hr>
-                            <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}} <span class="span-texto-sm "> &nbsp as &nbsp</span>{{$ordem_servico->hora_inicio}}</div>
-                           
-                            <div class="titulo">Previsão par fim</div>
-                            <hr>
-                            <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_fim}}</div>
-                            <!--Exemplo de progressbar com um input texto-->
-                            <div class="titulo">Status do progresso do serviço está em:</div>
-                            
-                            <input type="text" value="{{ $ordem_servico->status_servicos }}" id="progress-input" hidden>
-                            <div class="progress">
-                                <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos}}%</div>
-                            </div>
-                        </div>
-
-                    </div>
-                    {{--fim card--}}
-                    <!--Cabeçalho------------------------------------------------------------------------->
-
-                    <script>
-                        //document.addEventListener('DOMContentLoaded', function() {
-                        var progressBar = document.getElementById('progress-bar');
-                        var progressInput = document.getElementById('progress-input');
-
-                        // Função para atualizar a barra de progresso
-                        function updateProgressBar(value) {
-                            progressBar.style.width = value + '%';
-                            progressBar.setAttribute('aria-valuenow', value);
-                        }
-
-                        // Chama a função de atualização da barra de progresso com o valor inicial do input
-                        updateProgressBar(progressInput.value);
-
-                        // Adiciona um ouvinte de eventos para o input
-                        progressInput.addEventListener('input', function() {
-                            var value = progressInput.value;
-                            updateProgressBar(value);
-                        });
-                        //});
-                    </script>
-                    <!--Fim Exemplo de progressbar com um input texto-->
-
-                    {{--------------------------------------------------------------------------------------}}
-                    {{--Atualização do de os----------------------------------------------------------------}}
-                    <table class="table table-striped table-hover" id="tb-servicos">
-                        <thead>
-                            <tr class="list">
-                                <th>ID</th>
-                                <th>Data prevista</th>
-                                <th>Hora prevista</th>
-                                <th>Data fim</th>
-                                <th>Hora fim</th>
-                                <th>Executor</th>
-                                <th>Descrição dos serviços</th>
-                                <th>Sub tot horas</th>
-                            </tr>
-                        </thead>
-
-                        @foreach($servicos_executado as $servicos_exec)
-                        <tbody>
-                            <td>{{$servicos_exec->id}}</td>
-                            <td>{{$servicos_exec->data_inicio}}</td>
-                            <td>{{$servicos_exec->hora_inicio}}</td>
-                            <td>{{$servicos_exec->data_fim}}</td>
-                            <td>{{$servicos_exec->hora_fim}}</td>
-                            <td>{{$servicos_exec->funcionario->primeiro_nome}} {{$servicos_exec->funcionario->ultimo_nome}}</td>
-                            <td>{{$servicos_exec->descricao}}</td>
-                            <td>{{$servicos_exec->subtotal}}hs</td>
-                            @endforeach
-                        </tbody>
-
-                    </table>
 
                 </div>
+                {{--Box 2--}}
+                <div class="item">
+                    <div class="box-conteudo">
+                        <div class="titulo">ID:</div>
+                        <hr>
+                        <div id=idOs class="conteudo" style="color:mediumblue">
+                            {{$ordem_servico->id}}
+                        </div>
 
-            </div>
-            <div class="card text-bg-info mb-3 float-left" style="max-width: 18rem;" id="div-total-horas">
-                <div class="card-header">Total de horas trabalhadas</div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ number_format($total_hs_os, 2, ',', '.') }}hs</h5>
+                        @php
+                        use Carbon\Carbon;
+
+                        $data_inicio = Carbon::parse($ordem_servico->data_inicio . ' ' . $ordem_servico->hora_inicio);
+                        $data_fim = Carbon::parse($ordem_servico->data_fim . ' ' . $ordem_servico->hora_fim);
+                        $diff = $data_fim->diff($data_inicio);
+
+                        // Calculando o total de horas
+
+                        $totalHours = $diff->days * 24 + $diff->h;
+                        $minutes = $diff->format('%i');
+                        @endphp
+                        <div class="titulo">O tempo previsto para realizar o serviço é de:</div>
+                        <!-- Conteúdo com texto alinhado na parte inferior -->
+                        <div class="conteudo" style="display: flex; align-items: flex-end; color: crimson; font-size: 18px;">
+                            {{$totalHours}}<span class="span-texto-sm ">hs &nbsp e &nbsp </span>
+                            {{$minutes}}<span class="span-texto-sm ">min.</span>
+
+                        </div>
+                        <hr>
+                        <p>
+                        <p>
+                        <p>
+                        <div class="titulo">Descrição dos serviços a serem executados</div>
+                        <div class="titulo">
+                            <textarea name="" id="txt-area" class="form-control" rows="6" readonly style="color:crimson">{{$ordem_servico->descricao}}</textarea>
+
+                        </div>
+                        <style>
+                            #txt-area {
+                                height: auto;
+                                width: 100%;
+                                border: 1px solid rgba(33, 116, 212, 0.3);
+                                border-radius: 5px;
+                                transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+                                background-color: transparent;
+                                /* Transparent background */
+
+                            }
+
+                            #txt-area:focus {
+                                border-color: rgba(33, 116, 212, 0.5);
+                                /* Use the same rgba color but with a different opacity */
+                                box-shadow: 0 0 0 0.1rem rgba(33, 116, 212, 0.25);
+                                /* Add a shadow to match Bootstrap */
+                                outline: none;
+                                /* Remove the default outline */
+                            }
+                        </style>
+                    </div>
+                </div>
+                {{--Box 3--}}
+                <div class="item">
+                    <div class="box-conteudo">
+                        <div class="titulo">Emissão</div>
+                        <hr>
+                        <div class="conteudo"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
+
+                        <div class="titulo"> Previsão para início</div>
+                        <hr>
+                        <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}} <span class="span-texto-sm "> &nbsp as &nbsp</span>{{$ordem_servico->hora_inicio}}</div>
+
+                        <div class="titulo">Previsão par fim</div>
+                        <hr>
+                        <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_fim}}</div>
+                        <!--Exemplo de progressbar com um input texto-->
+                        <div class="titulo">Status do progresso do serviço está em:</div>
+
+                        <input type="text" value="{{ $ordem_servico->status_servicos }}" id="progress-input" hidden>
+                        <div class="progress">
+                            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos}}%</div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <!-- arquivo resources/views/atualizar-registro.blade.php -->
-            <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
-            <div class="card-header-template">
-                <div id="bt_inserir_servico" class="d-grid gap-2 d-sm-flex justify-content-sm float-left">
-                    <div class="row mb-1">
-                        <div class="col-md-12">
-                            <a class="btn btn-outline-primary" href="{{route('Servicos-executado.create',['ordem_servico'=>$ordem_servico->id])}}">
-                                <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height:25px; width:25px;">Adicionar serviço
+            {{--fim cotiner item item--}}
+            <!--Cabeçalho------------------------------------------------------------------------->
 
-                            </a>
+            <script>
+                //document.addEventListener('DOMContentLoaded', function() {
+                var progressBar = document.getElementById('progress-bar');
+                var progressInput = document.getElementById('progress-input');
+
+                // Função para atualizar a barra de progresso
+                function updateProgressBar(value) {
+                    progressBar.style.width = value + '%';
+                    progressBar.setAttribute('aria-valuenow', value);
+                }
+
+                // Chama a função de atualização da barra de progresso com o valor inicial do input
+                updateProgressBar(progressInput.value);
+
+                // Adiciona um ouvinte de eventos para o input
+                progressInput.addEventListener('input', function() {
+                    var value = progressInput.value;
+                    updateProgressBar(value);
+                });
+                //});
+            </script>
+            <!--Fim Exemplo de progressbar com um input texto-->
+
+            {{--------------------------------------------------------------------------------------}}
+            {{--Atualização do de os----------------------------------------------------------------}}
+            Serviços executados
+            @foreach($servicos_executado as $servicos_executados)
+            <div class="container-item" style="border: 1px solid rgba(0, 0, 0, 0.3); border-radius: 5px;">
+                <div class="item">
+                    <div class="box-conteudo">
+                        <div class="titulo">ID</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                            {{$servicos_executados->id}}
+                        </div>
+                        <div class="titulo">Data Inicio</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                            {{$servicos_executados->data_inicio}}- {{$servicos_executados->hora_inicio}}
+
+                        </div>
+                        <div class="titulo">Data Fim</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                            {{$servicos_executados->data_fim}}- {{$servicos_executados->hora_fim}}
                         </div>
                     </div>
                 </div>
-                <div class="d-grid gap-2 d-sm-flex justify-content float-center">
-                    <button id="enviar" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">
-                        <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
-                        Fechar Ordem de serviço</button>
+                <div class="item" style="height: auto;">
+                    <div class="box-conteudo">
+                        <div class="titulo">Executante</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                            {{$servicos_executados->funcionario->primeiro_nome}} {{$servicos_executados->funcionario->ultimo_nome}}
+                        </div>
+                        <div class="titulo">Descrição dos serviços</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                            {{$servicos_executados->descricao}}
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="box-conteudo" style="font-size:17px; color:#2174d4;">
+                        <div class="titulo">Subtotal de horas</div>
+                        <hr>
+                        <div class="conteudo">
+                            {{$servicos_executados->subtotal}}hs
+                        </div>
+                    </div>
                 </div>
             </div>
+            @endforeach
+        </div>
+
+    </div>
+    <div class="card alin-itens-right" >
+        <div class="card text-sm-info mb-3 float-right" style="max-width: 18rem;" id="div-total-horas">
+            <div class="card-header">Total de horas trabalhadas</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ number_format($total_hs_os, 2, ',', '.') }}hs</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- arquivo resources/views/atualizar-registro.blade.php -->
+    <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
+    <div class="card-header-template">
+        <div id="bt_inserir_servico" class="d-grid gap-2 d-sm-flex justify-content-sm float-left">
+            <div class="row mb-1">
+                <div class="col-md-12">
+                    <a class="btn btn-outline-primary" href="{{route('Servicos-executado.create',['ordem_servico'=>$ordem_servico->id])}}">
+                        <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height:25px; width:25px;">Adicionar serviço
+
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="d-grid gap-2 d-sm-flex justify-content float-center">
+            <button id="enviar" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
+                Fechar Ordem de serviço</button>
         </div>
     </div>
 </main>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-</head>
-
-</html>
 {{--====================================================================--}}
 {{--Função que fecha a ordem de serviço--}}
 
@@ -396,7 +410,7 @@
     }
 
 
-    .container-chart {
+    .container-item {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
