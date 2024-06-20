@@ -39,12 +39,18 @@
         </style>
         <h5>Componentes deste equipamento</h5>
         <hr>
-        <form>
+        <form action="{{'peca-equpamento-filtro'}}" method="POST">
+            @csrf
             <label for="opcoes">Categoria:</label>
             <select id="opcoes" name="categoria" placeholder="--Selecione a categoria--">
                 <option value="Chek-list">Chek-list</option>
                 <option value="Lubrificação">Lubrificação</option>
                 <option value="Mensalidade">Mensalidade</option>
+            </select>
+            <label for="opcoes">Selecione Pela data ou pela hora:</label>
+            <select id="opcoes" name="opcao" placeholder="--Selecione a categoria--">
+                <option value="1">Data da próxima manutenção</option>
+                <option value="2">Horas restante</option>
             </select>
             <label for="opcoes">Data :</label>
             <input type="date" name="data_proxima_manutencao" value="">
@@ -119,50 +125,15 @@
                     background-color: #f08080;
                 }
             </style>
-            <style>
-                #tblOs {
-                    flex-wrap: wrap;
-                    font-family: arial, sans-serif;
-                    border-collapse: collapse;
-                    width: auto;
-                    background-color: rgb(211, 211, 211);
-                }
 
-                #tblPecas {
-                    font-family: arial, sans-serif;
-                    border-collapse: collapse;
-                    width: 100%;
-                    background-color: rgb(211, 211, 211);
-                }
-
-                thead {
-                    background-color: rgb(169, 169, 169);
-                }
-
-                td,
-                th {
-                    border: 1px solid #dddddd;
-                    text-align: left;
-                    padding: 8px;
-                }
-
-                tr:nth-child(even) {
-                    background-color: #dddddd;
-                }
-
-                tr:hover {
-                    background-color: rgb(169, 169, 169);
-
-                }
-            </style>
             {{------------------------------------------------}}
             {{--Tabela de peças dos equipamento---------------}}
-            <table class="table table-striped table-hover" id="tblPecas">
+            <table class="table" id="tblPecas">
                 <thead>
                     <tr>
                         <th>ID RG</th>
                         <th>Descrição</th>
-                        <th>ID Produto </th>
+                        <th>Produto </th>
                         <th>Produto Nome</th>
                         <th>Quantidade</th>
                         <th>intervalo</th>
@@ -186,8 +157,9 @@
                             <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
                                 <i class="icofont-eye-alt"></i>
                             </a>
+                            <hr>
+                            {{ $peca_equipamento->produto->nome}}
                         </td>
-                        <td>{{ $peca_equipamento->produto->nome}}</td>
                         <td>{{ $peca_equipamento->quantidade}}</td>
                         <td>{{ $peca_equipamento->intervalo_manutencao}}hs</td>
                         <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}}</td>

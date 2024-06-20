@@ -199,17 +199,17 @@
                     function SetAbertas() {
 
                         document.getElementById("data_inicio").value = '2000-01-01';
-                        document.getElementById("data_fim").value ='2030-01-01';
+                        document.getElementById("data_fim").value = '2030-01-01';
                         document.getElementById("situacao").value = 'aberto';
                         document.getElementById("tipo_consulta").value = 6;
                         document.getElementById("empresa_id").value = 2;
                         document.getElementById('form_filt_os').submit();
                     }
 
-                    function SetOsVencidas() {//Filtra os ja vencidas
+                    function SetOsVencidas() { //Filtra os ja vencidas
 
                         document.getElementById("data_inicio").value = '2000-01-01';
-                        document.getElementById("data_fim").value = data_atual ;
+                        document.getElementById("data_fim").value = data_atual;
                         document.getElementById("situacao").value = 'aberto';
                         document.getElementById("tipo_consulta").value = 6;
                         document.getElementById("empresa_id").value = 2;

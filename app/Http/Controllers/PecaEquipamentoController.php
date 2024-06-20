@@ -27,13 +27,30 @@ class PecaEquipamentoController extends Controller
         $categoria = $request->get('categoria');
         $data_proxima = $request->get('data_proxima_manutencao');
         $horas_proxima = $request->get('horas_proxima_manutencao');
+        $opcao = $request->get('opcao');
         $categorias = Categoria::all();
+        echo ($categoria . '---' . $data_proxima . '---' . $horas_proxima . '---' . $opcao);
         // $equipamento_id = $equipamento->get('equipamento');
-        if (!isset($chek_list)) {
-            $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=',240)->orderby('horas_proxima_manutencao')->get();
-            $equipamentos = Equipamento::all();
+        $equipamentos = Equipamento::all();
+        if ($chek_list == 1) {
+            $pecasEquip = PecasEquipamentos::where('id',$peca_equip_id)->get();
+            return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
+        }
+        if (!isset($categoria)) {
+            $pecasEquip = PecasEquipamentos::where('tipo_componente', 'Chek-List')->where('horas_proxima_manutencao', '<=', 3000)->orderby('horas_proxima_manutencao')->get();
             return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
-        } 
+        } else {
+            switch ($opcao) {
+                case 1:
+                    $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('data_proxima_manutencao', '<=', $data_proxima)->orderby('horas_proxima_manutencao')->get();
+                    return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
+                    break;
+                case 2:
+                    $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=', $horas_proxima)->orderby('horas_proxima_manutencao')->get();
+                    return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
+                    break;
+            }
+        }
     }
     /**
      * Show the form for creating a new resource.
