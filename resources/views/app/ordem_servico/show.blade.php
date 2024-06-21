@@ -445,7 +445,7 @@
     .item {
         width: calc(33% - 20px);
         height: auto;
-        margin: 10px;
+        margin: 5px;
         padding: 15px;
         background-color: white;
         overflow: auto;
