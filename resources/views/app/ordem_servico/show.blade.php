@@ -245,18 +245,21 @@
                     <div class="box-conteudo">
                         <div class="titulo">ID</div>
                         <hr>
-                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                        <div class="conteudo" style="font-size:17px; color:#2174d4;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
                             {{$servicos_executados->id}}
                         </div>
                         <div class="titulo">Data Inicio</div>
                         <hr>
-                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                        <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"">
                             {{$servicos_executados->data_inicio}}- {{$servicos_executados->hora_inicio}}
 
                         </div>
-                        <div class="titulo">Data Fim</div>
+                        <div class=" titulo">Data Fim</div>
                         <hr>
-                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                        <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
                             {{$servicos_executados->data_fim}}- {{$servicos_executados->hora_fim}}
                         </div>
                     </div>
@@ -265,58 +268,64 @@
                     <div class="box-conteudo">
                         <div class="titulo">Executante</div>
                         <hr>
-                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                        <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"">
                             {{$servicos_executados->funcionario->primeiro_nome}} {{$servicos_executados->funcionario->ultimo_nome}}
                         </div>
-                        <div class="titulo">Descrição dos serviços</div>
+                        <div class=" titulo">Descrição dos serviços</div>
                         <hr>
-                        <div class="conteudo" style="font-size:17px; color:#2174d4;">
+                        <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"">
                             {{$servicos_executados->descricao}}
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="box-conteudo" style="font-size:17px; color:#2174d4;">
-                        <div class="titulo">Subtotal de horas</div>
-                        <hr>
-                        <div class="conteudo">
-                            {{$servicos_executados->subtotal}}hs
+                <div class=" item">
+                            <div class="box-conteudo">
+                                <div class="titulo">Subtotal de horas</div>
+                                <hr>
+                                <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+                                    {{$servicos_executados->subtotal}}hs
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+            </div>
+           
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card text-sm-info mb-4 float-right" style="width: 18rem; text-align: right;">
+                            <div class="card-header ext-sm-info" >Total de horas trabalhadas</div>
+                            <div class="card-body" style="height:20px;">
+                                <h6 class="card-title" >{{ number_format($total_hs_os, 2, ',', '.') }}hs</h6>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            @endforeach
-        </div>
+         
+            <!-- arquivo resources/views/atualizar-registro.blade.php -->
+            <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
+            <div class="card-header-template">
+                <div id="bt_inserir_servico" class="d-grid gap-2 d-sm-flex justify-content-sm float-left">
+                    <div class="row mb-1">
+                        <div class="col-md-12">
+                            <a class="btn btn-outline-primary" href="{{route('Servicos-executado.create',['ordem_servico'=>$ordem_servico->id])}}">
+                                <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height:25px; width:25px;">Adicionar serviço
 
-    </div>
-    <div class="card alin-itens-right" >
-        <div class="card text-sm-info mb-3 float-right" style="max-width: 18rem;" id="div-total-horas">
-            <div class="card-header">Total de horas trabalhadas</div>
-            <div class="card-body">
-                <h5 class="card-title">{{ number_format($total_hs_os, 2, ',', '.') }}hs</h5>
-            </div>
-        </div>
-    </div>
-
-    <!-- arquivo resources/views/atualizar-registro.blade.php -->
-    <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
-    <div class="card-header-template">
-        <div id="bt_inserir_servico" class="d-grid gap-2 d-sm-flex justify-content-sm float-left">
-            <div class="row mb-1">
-                <div class="col-md-12">
-                    <a class="btn btn-outline-primary" href="{{route('Servicos-executado.create',['ordem_servico'=>$ordem_servico->id])}}">
-                        <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height:25px; width:25px;">Adicionar serviço
-
-                    </a>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-sm-flex justify-content float-right">
+                    <button id="enviar" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                        <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
+                        Fechar Ordem de serviço</button>
                 </div>
             </div>
-        </div>
-        <div class="d-grid gap-2 d-sm-flex justify-content float-center">
-            <button id="enviar" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">
-                <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
-                Fechar Ordem de serviço</button>
-        </div>
-    </div>
 </main>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
