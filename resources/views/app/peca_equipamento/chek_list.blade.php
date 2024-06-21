@@ -139,7 +139,7 @@
                         <div class="conteudo">
                             {{ $peca_equipamento->id }}
                         </div>
-                        <div class="titulo">Quantidade:</div>
+                        <div class="titulo">Descrição:</div>
                         <hr style="margin:-5px;">
                         <div class="conteudo">
                             {{ $peca_equipamento->descricao}}hs

@@ -37,7 +37,7 @@
                 font-size: 20px;
             }
         </style>
-        <h5>Componentes deste equipamento</h5>
+        <h5>Componentes/categorias periódicos</h5>
         <hr>
         <form action="{{'peca-equpamento-filtro'}}" method="POST">
             @csrf
@@ -131,16 +131,14 @@
             <table class="table" id="tblPecas">
                 <thead>
                     <tr>
-                        <th>ID RG</th>
+                        <th>ID</th>
                         <th>Descrição</th>
                         <th>Produto </th>
-                        <th>Produto Nome</th>
                         <th>Quantidade</th>
                         <th>intervalo</th>
                         <th>data ultima substituação</th>
                         <th>data proxima</th>
-                        <th>horas proxima</th>
-                        <th>horimetro</th>
+                        <th>horas restante</th>
                         <th>status</th>
                         <th>Tipo de Ativo</th>
                         <th>Criticidade</th>
@@ -151,14 +149,13 @@
                 <tbody>
                     @foreach ($pecas_equipamento as $peca_equipamento)
                     <tr>
-                        <td scope="row">{{ $peca_equipamento->id }}</td>
-                        <td scope="row">{{ $peca_equipamento->descricao}}</td>
-                        <td>{{ $peca_equipamento->produto->id}}
+                        <td>{{ $peca_equipamento->id}}</td>
+                        <td>{{ $peca_equipamento->descricao}}</td>
+                        <td>{{ $peca_equipamento->produto->nome}}
+                            <hr>
                             <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
                                 <i class="icofont-eye-alt"></i>
                             </a>
-                            <hr>
-                            {{ $peca_equipamento->produto->nome}}
                         </td>
                         <td>{{ $peca_equipamento->quantidade}}</td>
                         <td>{{ $peca_equipamento->intervalo_manutencao}}hs</td>
@@ -175,7 +172,6 @@
 ">
                             {{ $peca_equipamento->horas_proxima_manutencao }}
                         </td>
-                        <td>{{ $peca_equipamento->horimetro}}</td>
                         <td>{{ $peca_equipamento->status}}</td>
                         <td>{{ $peca_equipamento->tipo_componente}}</td>
                         <td>{{ $peca_equipamento->criticidade}}</td>
@@ -196,12 +192,12 @@
                     @method('DELETE')
                     @csrf
                 </form>
-                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
+                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarRegistro()">
                     <i class="icofont-ui-delete"></i>
                     <script>
-                        function DeletarOs() {
+                        function DeletarRegistro() {
                             var x;
-                            var r = confirm("Deseja deletar a ordem de serviço?");
+                            var r = confirm("Deseja deletar o registro?");
                             if (r == true) {
 
                                 // document.getElementById('').submit()
