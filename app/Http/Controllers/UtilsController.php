@@ -148,18 +148,71 @@ class UtilsController extends Controller
         $today = date("Y-m-d"); //data de hoje
         $timeNew = date('H:i:s');
         $pecaEquipamento = PecasEquipamentos::find($request->input('valor')); //busca o registro do produto com o id da entrada do produto
-         $intervalo_horas = $pecaEquipamento->intervalo_manutencao; // Obtém o intervalo de horas do objeto
+        $intervalo_horas = $pecaEquipamento->intervalo_manutencao; // Obtém o intervalo de horas do objeto
         //--------------------------------------------------//
         // Defina a data da última manutenção
         $data_ultima_manutencao = new DateTime(); // Cria um objeto DateTime com a data e hora atuais
-        $intervalo_horas_d = intval($intervalo_horas / 24); // Convertendo para inteiro
-        $data_proxima_manutencao = clone $data_ultima_manutencao; // Clona a data e hora atuais para a próxima manutenção
-        $data_proxima_manutencao->add(new DateInterval('P' . $intervalo_horas_d . 'D')); // Adiciona o intervalo em dias à data
+
+        // Converte o intervalo de horas para dias inteiros
+        $intervalo_horas_d = intval($intervalo_horas / 24);
+
+        // Clona a data da última manutenção para definir a próxima manutenção
+        $data_proxima_manutencao = clone $data_ultima_manutencao;
+
+        // Adiciona o intervalo de dias à data da próxima manutenção
+        $data_proxima_manutencao->add(new DateInterval('P' . $intervalo_horas_d . 'D'));
+
+        // Adiciona as horas restantes (não múltiplos de 24) à data da próxima manutenção
+        $horas_restantes = $intervalo_horas % 24;
+        $data_proxima_manutencao->add(new DateInterval('PT' . $horas_restantes . 'H'));
+
+        // Calcula a diferença entre as datas
+        $diferenca = $data_ultima_manutencao->diff($data_proxima_manutencao);
+
+        // Converte a diferença em dias e horas
+        // $diferenca_horas = ($diferenca->days * 24) + $diferenca->h + ($diferenca->i / 60) + ($diferenca->s / 3600);
+        $diferenca_horas = intval(($diferenca->days * 24) + $diferenca->h + ($diferenca->i / 60) + ($diferenca->s / 3600));
+
         //---------------------------------------------------//
         $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
         $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
+        $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
         $pecaEquipamento->save();
-        // echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
-        return response()->json(['mensagem' => 'Checklist de número:', 'id' => $id]);
+        //------------------------------------------------//
+        $id_os= $request->input('id_os');
+        // Define os dados manualmente
+        //$data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
+
+        $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
+        $time_now = $timeNew;
+        $hora_inicio = $time_now = date('H:i:s', strtotime('-12 minutes'));
+        $data = [
+            'ordem_servico_id' => $id_os,
+            'data_inicio' => $today,
+            'hora_inicio' => $hora_inicio,
+            'data_fim' => $today,
+            'hora_fim' => $timeNew,
+            'funcionario_id' => 2,
+            'descricao' =>  $pecaEquipamento->descricao,
+            'subtotal' => '0.15'
+            // Outros campos, se houver
+        ];
+
+        // Cria um novo objeto Servicos_executado com os dados definidos manualmente
+        $servico_executado = new Servicos_executado();
+        $servico_executado->ordem_servico_id = $data['ordem_servico_id'];
+        $servico_executado->data_inicio = $data['data_inicio'];
+        $servico_executado->hora_inicio = $data['hora_inicio'];
+        $servico_executado->data_fim = $data['data_fim'];
+        $servico_executado->hora_fim = $data['hora_fim'];
+        $servico_executado->funcionario_id = $data['funcionario_id'];
+        $servico_executado->descricao = $data['descricao'];
+        $servico_executado->subtotal = $data['subtotal'];
+        //Atribua outros campos, se houver
+
+        // Salva o registro no banco de dados
+        $servico_executado->save();
+
+        return response()->json(['mensagem' => 'Checklist de número:', 'id' => $id, 'intervalo' => $diferenca_horas]);
     }
 }

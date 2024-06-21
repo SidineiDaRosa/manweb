@@ -46,6 +46,7 @@
                 <option value="Chek-list">Chek-list</option>
                 <option value="Lubrificação">Lubrificação</option>
                 <option value="Mensalidade">Mensalidade</option>
+                <option value="Componente">Componente</option>
             </select>
             <label for="opcoes">Selecione Pela data ou pela hora:</label>
             <select id="opcoes" name="opcao" placeholder="--Selecione a categoria--">

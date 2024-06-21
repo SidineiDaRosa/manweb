@@ -25,4 +25,5 @@ class Servicos_executado extends Model
     {
         return $this->belongsTo('App\Models\Funcionario');
     }
+ 
 }

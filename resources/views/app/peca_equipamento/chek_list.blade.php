@@ -243,6 +243,22 @@
             </div>
             <div class="modal-body">
                 Deseja Concluír Chek-List?
+                <hr>
+                <input type="number" id="id_os" class="form-control" placeholder="Número da OS" value="" name="id_os" style="background-color: rgba(249, 187, 120, 0.2)";" onchange="validar()">
+               
+
+                <script>
+                    function validar() {
+                        var id_os = document.getElementById('id_os').value;
+
+                        if (id_os > 0) {
+                            document.getElementById('id_os').style.backgroundColor = 'rgb(150, 255, 150)'; // Cor verde se o valor for maior que zero
+                            document.getElementById('confirmarEnvio').focus();
+                        } else {
+                            document.getElementById('id_os').style.backgroundColor = 'red'; // Cor vermelha se o valor não for maior que zero
+                        }
+                    }
+                </script>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -258,10 +274,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="sucessoModalLabel">Sucesso</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Chek-List Concluído!
+                <div id="id-resp"></div>
             </div>
         </div>
     </div>
@@ -280,21 +297,24 @@
         </div>
     </div>
 </div>
-<input type="text" id="valor" placeholder="Digite um valor" value="{{$peca_equipamento->id }}" name="peca_equip_id" readonly>
+<input type="text" id="valor" placeholder="Digite um valor" value="{{$peca_equipamento->id }}" name="peca_equip_id" readonly hidden>
 <script>
     $(document).ready(function() {
         $('#confirmarEnvio').click(function() {
             var valor = $('#valor').val(); // Obtém o valor do input
+            let idOs = $('#id_os').val(); // Obtém o valor do input
 
             $.ajax({
                 type: 'GET', // Método HTTP da requisição
                 url: '{{ route("update-chek-list") }}', // URL para onde a requisição será enviada 
                 data: {
-                    valor: valor
+                    valor: valor,
+                    id_os: idOs
                 }, // Dados a serem enviados (no formato chave: valor)
                 success: function(response) {
                     if (response.mensagem) {
                         $('#mensagem').text(response.mensagem); // Exibe a mensagem retornada pelo servidor
+                        $('#id-resp').html('ID: ' + response.id + '<br>Intervalo: ' + response.intervalo); // Exibe ID e intervalo na modal
                     } else {
                         $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor se a mensagem não estiver presente
                     }
@@ -307,10 +327,9 @@
             });
         });
     });
-    document.getElementById('confirmButton').addEventListener('click', function() {
+    document.getElementById('btn-close').addEventListener('click', function() {
         // Aqui você pode adicionar qualquer lógica adicional antes do refresh, se necessário.
         // Por exemplo, uma requisição AJAX para salvar a conclusão no banco de dados.
-
         // Recarregar a página
         location.reload();
     });
