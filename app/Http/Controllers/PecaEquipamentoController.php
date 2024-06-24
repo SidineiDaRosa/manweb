@@ -33,7 +33,7 @@ class PecaEquipamentoController extends Controller
         // $equipamento_id = $equipamento->get('equipamento');
         $equipamentos = Equipamento::all();
         if ($chek_list == 1) {
-            $pecasEquip = PecasEquipamentos::where('id',$peca_equip_id)->get();
+            $pecasEquip = PecasEquipamentos::where('id', $peca_equip_id)->get();
             return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         }
         if (!isset($categoria)) {
@@ -134,14 +134,30 @@ class PecaEquipamentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Peca_equipamento  $peca_equipamento_id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($peca_equipamento_id)
     {
-        //
-    }
+        $pecasEquip = PecasEquipamentos::where('id', $peca_equipamento_id)->get();
 
+        foreach ($pecasEquip as $pecaEquip_for) :
+            $equipamentoId = $pecaEquip_for->equipamento; // Acessando como propriedade de objeto
+        //echo "Equipamento ID: " . $equipamentoId . "\n";
+        endforeach;
+        $categorias = Categoria::all();
+        //$equipamentoId = $pecasEquip->equipamento;
+        //$equipamentoId = $pecasEquip->get('equipamento');
+        $equipamento = Equipamento::where('id',  $equipamentoId)->get();
+        $produtos = Produto::where('id', 0)->get();
+        return view('app.peca_equipamento.edit_', [
+            'produtos' => $produtos,
+            'equipamento' => $equipamento,
+            'categorias' => $categorias,
+            'pecas_equipamentos' => $pecasEquip
+
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -151,10 +167,25 @@ class PecaEquipamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        //
+        $request->validate([
+            'equipamento_nome' => 'required|string|max:255',
+            'descricao' => 'required|string',
+            // Adicione outras regras de validação conforme necessário
+        ]);
+    
+        // Encontrar o equipamento pelo ID
+        $equipamento = PecasEquipamentos::findOrFail($id);
+    
+        // Atualizar os campos do equipamento com os dados do formulário
+        $equipamento->equipamento= $request->equipamento_id;
+        $equipamento->descricao = $request->descricao;
+        // Atualize outros campos conforme necessário
+    
+        // Salvar as alterações
+        $equipamento->save();
+    
+        return redirect()->route('sua.rota.aqui')->with('success', 'Equipamento atualizado com sucesso.');
     }
-
     /**
      * Remove the specified resource from storage.
      *

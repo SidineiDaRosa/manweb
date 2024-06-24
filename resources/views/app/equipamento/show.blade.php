@@ -632,8 +632,11 @@
                     <a class="btn btn-sm-template btn-outline-primary" href="">
                         <i class="icofont-eye-alt"></i>
                     </a>
-                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="">
-                        <i class="icofont-ui-edit"></i> </a>
+                    {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
+                    <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $peca_equipamento->id,'tipofiltro'=>1,'produto'=>0]) }}">
+                        <i class="icofont-ui-edit"></i>
+                    </a>
+
                     <!--Condoçes para deletar a os-->
                     <form id="" method="post" action="">
                         @method('DELETE')

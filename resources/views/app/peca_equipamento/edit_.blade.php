@@ -22,8 +22,9 @@
         }
     </style>
     <div class="card-body-main">
-        @component('app.peca_equipamento._components.form_create_edit', ['produtos'=>$produtos, 'equipamento'=>$equipamento,'categorias' => $categorias])
+        @component('app.peca_equipamento.edit', ['produtos'=>$produtos, 'equipamento'=>$equipamento,'categorias' => $categorias,'pecas_equipamentos'=>$pecas_equipamentos])
         @endcomponent
     </div>
+
 </main>
 @endsection
