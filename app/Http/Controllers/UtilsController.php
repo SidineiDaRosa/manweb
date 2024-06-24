@@ -180,6 +180,8 @@ class UtilsController extends Controller
         $pecaEquipamento->save();
         //------------------------------------------------//
         $id_os= $request->input('id_os');
+        $tipo_de_servico= $request->input('tipo_de_servico');
+        $estado= $request->input('estado');
         // Define os dados manualmente
         //$data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
 
@@ -194,7 +196,9 @@ class UtilsController extends Controller
             'hora_fim' => $timeNew,
             'funcionario_id' => 2,
             'descricao' =>  $pecaEquipamento->descricao,
-            'subtotal' => '0.15'
+            'subtotal' => '0.15',
+            'tipo_de_servico' => $tipo_de_servico,
+            'estado'=>$estado,
             // Outros campos, se houver
         ];
 
@@ -208,6 +212,8 @@ class UtilsController extends Controller
         $servico_executado->funcionario_id = $data['funcionario_id'];
         $servico_executado->descricao = $data['descricao'];
         $servico_executado->subtotal = $data['subtotal'];
+        $servico_executado->tipo_de_servico = $data['tipo_de_servico'];
+        $servico_executado->estado = $data['estado'];
         //Atribua outros campos, se houver
 
         // Salva o registro no banco de dados

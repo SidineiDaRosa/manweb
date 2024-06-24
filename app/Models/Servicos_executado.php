@@ -17,7 +17,9 @@ class Servicos_executado extends Model
         'hora_fim',
         'funcionario_id',
         'descricao',
-        'subtotal'
+        'subtotal',
+        'tipo_de_servico',
+        'estado'
 
     ];
 
@@ -25,5 +27,4 @@ class Servicos_executado extends Model
     {
         return $this->belongsTo('App\Models\Funcionario');
     }
- 
 }

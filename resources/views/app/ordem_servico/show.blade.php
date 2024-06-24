@@ -288,6 +288,18 @@
                          'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
                                     {{$servicos_executados->subtotal}}hs
                                 </div>
+                                <div class="titulo">tipo de serviço</div>
+                                <hr>
+                                <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+                                    {{$servicos_executados->tipo_de_servico}}
+                                </div>
+                                <div class="titulo">estado</div>
+                                <hr>
+                                <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+                                    {{$servicos_executados->estado}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -295,18 +307,18 @@
                 </div>
 
             </div>
-           
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card text-sm-info mb-4 float-right" style="width: 18rem; text-align: right;">
-                            <div class="card-header ext-sm-info" >Total de horas trabalhadas</div>
-                            <div class="card-body" style="height:20px;">
-                                <h6 class="card-title" >{{ number_format($total_hs_os, 2, ',', '.') }}hs</h6>
-                            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card text-sm-info mb-4 float-right" style="width: 18rem; text-align: right;">
+                        <div class="card-header ext-sm-info">Total de horas trabalhadas</div>
+                        <div class="card-body" style="height:20px;">
+                            <h6 class="card-title">{{ number_format($total_hs_os, 2, ',', '.') }}hs</h6>
                         </div>
                     </div>
                 </div>
-         
+            </div>
+
             <!-- arquivo resources/views/atualizar-registro.blade.php -->
             <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
             <div class="card-header-template">

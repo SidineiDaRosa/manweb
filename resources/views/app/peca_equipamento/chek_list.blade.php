@@ -244,9 +244,18 @@
             <div class="modal-body">
                 Deseja Concluír Chek-List?
                 <hr>
-                <input type="number" id="id_os" class="form-control" placeholder="Número da OS" value="" name="id_os" style="background-color: rgba(249, 187, 120, 0.2)";" onchange="validar()">
-               
-
+                <input type="number" id="id_os" class="form-control" placeholder="Número da OS" value="" name="id_os" style="background-color: rgba(249, 187, 120, 0.2)" ;onchange="validar()">
+                <select class="form-control" name="tipo_de_sercivo" id="tipo_de_servico" name="estado" style="background-color: rgba(249, 187, 120, 0.2) ;">
+                    <option value="Inspeção">Inspeção</option>
+                    <option value="Preventiva">Preventiva</option>
+                    <option value="Corretiva">Corretiva</option>
+                    <option value="Ampliação">Ampliação</option>
+                </select>
+                <select class="form-control" name="" id="estado" name="estado" style="background-color: rgba(249, 187, 120, 0.2) ;">
+                    <option value="Bom">Bom</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Ruim">Ruim</option>
+                </select>
                 <script>
                     function validar() {
                         var id_os = document.getElementById('id_os').value;
@@ -303,13 +312,17 @@
         $('#confirmarEnvio').click(function() {
             var valor = $('#valor').val(); // Obtém o valor do input
             let idOs = $('#id_os').val(); // Obtém o valor do input
+            let tipoServico = $('#tipo_de_servico').val(); // Obtém o valor do input
+            let estadoServico = $('#estado').val(); // Obtém o valor do input
 
             $.ajax({
                 type: 'GET', // Método HTTP da requisição
                 url: '{{ route("update-chek-list") }}', // URL para onde a requisição será enviada 
                 data: {
                     valor: valor,
-                    id_os: idOs
+                    id_os: idOs,
+                    tipo_de_servico: tipoServico,
+                    estado: estadoServico
                 }, // Dados a serem enviados (no formato chave: valor)
                 success: function(response) {
                     if (response.mensagem) {

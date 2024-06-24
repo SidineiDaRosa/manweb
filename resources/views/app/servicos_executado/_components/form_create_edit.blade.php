@@ -118,6 +118,27 @@
         }
     </script>
     <div class="row mb-1">
+        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Tipo de serviço</label>
+        <div class="col-md-6">
+            <select class="form-control" name="tipo_de_servico" id="tipo_de_servico" name="tipo_de_servio" style="background-color: rgba(249, 187, 120, 0.2) ;">
+                <option value="Inspeção">Inspeção</option>
+                <option value="Preventiva">Preventiva</option>
+                <option value="Corretiva">Corretiva</option>
+                <option value="Ampliação">Ampliação</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-1">
+        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Estado</label>
+        <div class="col-md-6">
+            <select class="form-control" name="estado" id="estado" name="estado" style="background-color: rgba(249, 187, 120, 0.2) ;">
+                <option value="Bom">Bom</option>
+                <option value="Regular">Regular</option>
+                <option value="Ruim">Ruim</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-1">
         <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Total horas</label>
 
         <div class="col-md-6">
@@ -205,7 +226,7 @@
                     document.getElementById("data_inicio").value = 0;
                     document.getElementById("hora_inicio").value = 0;
                     document.getElementById('funcionario_id').value = 0;
-                    alert("Você está tentando lançar em um período que já consta um lançamento de serviço seu!"+response.mensagem);
+                    alert("Você está tentando lançar em um período que já consta um lançamento de serviço seu!" + response.mensagem);
 
                     var input = document.getElementById("data_inicio");
                     input.style.backgroundColor = "rgb(255, 150, 150)";
