@@ -157,7 +157,7 @@ class OrdemServicoController extends Controller
         $id = $empresa->get('empresa');
         $equipamento = $empresa->get('equipamento');
         // $funcionarios=Funcionario::all();
-        $funcionarios = Funcionario::where('funcao', 'supervisor')->get();
+        $funcionarios = Funcionario::all();//Busca todos os funcionários
         $equipamentos = Equipamento::where('empresa_id', $id)->get();
         $ordem_servico = OrdemServico::all();
         $empresa = Empresas::where('id', $id)->get();
