@@ -216,7 +216,7 @@
                 </div>
             </form>
             <form action="" class="scrollable">
-                <h6>O.S vencidas e não concluídas</h6>
+                <h6>O.S Vencidas e Pendentes</h6>
                 <div class="div-os-sm" style="background-color:rgb(251,170,153);">
                     <table class="condensed-table">
                         <thead>

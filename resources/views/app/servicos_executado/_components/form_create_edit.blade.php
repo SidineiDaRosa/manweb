@@ -121,15 +121,16 @@
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Tipo de serviço</label>
         <div class="col-md-6">
             <select class="form-control" name="tipo_de_servico" id="tipo_de_servico" name="tipo_de_servio" style="background-color: rgba(249, 187, 120, 0.2) ;">
-                <option value="Inspeção">Inspeção</option>
-                <option value="Preventiva">Preventiva</option>
                 <option value="Corretiva">Corretiva</option>
+                <option value="Preventiva">Preventiva</option>
+                <option value="Preventiva">Preditiva</option>
+                <option value="Inspeção">Chek-List</option>
                 <option value="Ampliação">Ampliação</option>
             </select>
         </div>
     </div>
     <div class="row mb-1">
-        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Estado</label>
+        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Estado avaliação</label>
         <div class="col-md-6">
             <select class="form-control" name="estado" id="estado" name="estado" style="background-color: rgba(249, 187, 120, 0.2) ;">
                 <option value="Bom">Bom</option>

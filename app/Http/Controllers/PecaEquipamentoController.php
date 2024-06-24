@@ -167,24 +167,61 @@ class PecaEquipamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'equipamento_nome' => 'required|string|max:255',
-            'descricao' => 'required|string',
-            // Adicione outras regras de validação conforme necessário
+        // echo ($request);
+        $Equip_id = $request->get('equipamento'); //id do equipamento
+        $descricao = $request->get('descricao');
+        $produto_id = $request->get('produto_id');
+        $quantidade = $request->get('quantidade');
+        $data_substituicao = $request->get('data_substituicao');
+        $hora_substituicao = $request->get('hora_substituicao');
+        $data_proxima_manutencao = $request->get('data_proxima_manutencao');
+        $horas_proxima_manutencao = $request->get('horas_proxima_manutencao');
+        $horimetro = $request->get('horimetro');
+        //$pecaEquip_id=$request->get('forma_medicao');
+        $status = $request->get('status');
+        $forma_medicao = $request->get('forma_medicao');
+        $tipo_componente = $request->get('tipo_componente');
+        $criticidade = $request->get('criticidade');
+        // Validação dos dados vindos do formulário
+        $validatedData = $request->validate([
+            'equipamento' => 'required',
+            'descricao' => 'required',
+            'produto_id' => 'required',
+            'quantidade' => 'required|numeric',
+            'data_substituicao' => 'required|date',
+            'hora_substituicao' => 'required',
+            'data_proxima_manutencao' => 'required|date',
+            'horas_proxima_manutencao' => 'required',
+            'horimetro' => 'required',
+            'status' => 'required',
+            'forma_medicao' => 'required',
+            'tipo_componente' => 'required',
+            'criticidade' => 'required',
         ]);
-    
-        // Encontrar o equipamento pelo ID
-        $equipamento = PecasEquipamentos::findOrFail($id);
-    
-        // Atualizar os campos do equipamento com os dados do formulário
-        $equipamento->equipamento= $request->equipamento_id;
-        $equipamento->descricao = $request->descricao;
-        // Atualize outros campos conforme necessário
-    
-        // Salvar as alterações
-        $equipamento->save();
-    
-        return redirect()->route('sua.rota.aqui')->with('success', 'Equipamento atualizado com sucesso.');
+
+        try {
+            // Encontrar o registro pelo ID
+            $pecaEquipamento = PecasEquipamentos::findOrFail($id);
+
+            // Atualizar os campos com os dados validados
+            $pecaEquipamento->update($validatedData);
+
+            // Retornar uma resposta de sucesso
+            //return response()->json(['message' => 'Registro atualizado com sucesso', 'data' => $pecaEquipamento], 200);
+            $pecasEquip = PecasEquipamentos::where('equipamento', $Equip_id )->where('status', 'ativado')->orderby('horas_proxima_manutencao')->get();
+            $ordens_servicos = OrdemServico::where('equipamento_id',  $Equip_id )->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+            $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $Equip_id )->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
+            $equipamento = Equipamento::where('id', $Equip_id )->first(); // Obter o equipamento com o ID especificado
+            return view('app.equipamento.show', [
+                'equipamento' => $equipamento,
+                'pecas_equipamento' => $pecasEquip,
+                'ordens_servicos' => $ordens_servicos,
+                'ordens_servicos_1' => $ordens_servicos_1
+            ]);
+        } catch (\Exception $e) {
+            // Em caso de erro, trate-o adequadamente (log, mensagem de erro, etc.)
+            return response()->json(['message' => 'Erro ao atualizar registro', 'error' => $e->getMessage()], 500);
+        }
     }
     /**
      * Remove the specified resource from storage.

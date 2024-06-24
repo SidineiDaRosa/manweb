@@ -1,11 +1,13 @@
 @foreach($equipamento as $equipamento_f)
 @endforeach
+@foreach($pecas_equipamentos as $pecas_equipamentos_for)
+@endforeach
 @if(session('success'))
 <div class="alert alert-success">
     {{ session('success') }}
 </div>
 @endif
-<form action="{{ route('Peca-equipamento.update', ['pecas_equipamento' => $equipamento_f->id]) }}" method="POST">
+<form action="{{ route('Peca-equipamento.update', ['pecas_equipamento' => $pecas_equipamentos_for->id]) }}" method="POST">
     @csrf
     @method('PUT')
     {{--Seta campos de preenchimentos necessários--}}
@@ -160,17 +162,14 @@
             margin-right: 2px;
         }
     </style>
-    @foreach($pecas_equipamentos as $pecas_equipamentos_for)
-    @endforeach
     <div class="container-box">
         {{--Box 1--}}
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">ID:</div>
                 <hr>
-                <div class="conteudo">@foreach($equipamento as $equipamento_f)
-                    {{$equipamento_f['id']}}
-                    @endforeach
+                <div class="conteudo">
+                    {{$pecas_equipamentos_for->id}}
                     <input type="text" name="equipamento" value="@foreach($equipamento as $equipamento_f)
                         {{$equipamento_f['id']}}
                         @endforeach" hidden>
@@ -239,7 +238,8 @@
                 <div class="titulo">Status</div>
                 <hr>
                 <div class="conteudo">
-                    <select class="input-text" name="status" id="status" value="{{$pecas_equipamentos_for->status}}">
+                    <select class="input-text" name="status" id="status" value="">
+                    <option value="{{$pecas_equipamentos_for->status}}">{{$pecas_equipamentos_for->status}}</option>
                         <option value="ativado">Ativado</option>
                         <option value="desativado">Desativado</option>
                     </select>
@@ -247,8 +247,8 @@
                 <div class="titulo">Categoria</div>
                 <hr>
                 <div class="conteudo">
-                    <select class="input-text" name="tipo_componente" id="tipo_componente" value="{{$pecas_equipamentos_for->tipo_componente}}">
-                        <option value="lubrificação">{{$pecas_equipamentos_for->tipo_componente}}</option>
+                    <select class="input-text" name="tipo_componente" id="tipo_componente" value="">
+                        <option value="{{$pecas_equipamentos_for->tipo_componente}}">{{$pecas_equipamentos_for->tipo_componente}}</option>
                         <option value="lubrificação">lubrificação</option>
                         <option value="Chek-List">Chek-List</option>
                         <option value="Componente">Componente</option>
@@ -258,16 +258,18 @@
                 <div class="titulo">Grau de criticidade</div>
                 <hr>
                 <div class="conteudo">
-                    <select class="input-text" name="criticidade" id="criticidade" value="{{$pecas_equipamentos_for->criticidade}}">
-                        <option value="Extra Alta">{{$pecas_equipamentos_for->criticidade}}</option>
+                    <select class="input-text" name="criticidade" id="criticidade" value="">
+                        <option value="{{$pecas_equipamentos_for->criticidade}}">{{$pecas_equipamentos_for->criticidade}}</option>
                         <option value="Extra Alta">Extra Alta</option>
                         <option value="Alta">Alta</option>
                         <option value="Média">Média</option>
                         <option value="Baixa">Baixa</option>
                     </select>
+                    {{ $errors->has('empresa_id') ? $errors->first('empresa_id') : '' }}
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </form>
 {{--fim card--}}

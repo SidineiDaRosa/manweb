@@ -81,6 +81,7 @@
             font-family: 'Poppins', sans-serif;
             color: #007b00;
             margin-bottom: 5px;
+            width:300px;
         }
     </style>
     <div class="container-chart">
@@ -629,9 +630,9 @@
             <!--Div operaçoes do registro da ordem des serviço-->
             <td>
                 <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                    <a class="btn btn-sm-template btn-outline-primary" href="">
-                        <i class="icofont-eye-alt"></i>
-                    </a>
+                <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
+                    <i class="icofont-eye-alt"></i>
+                </a>
                     {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
                     <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $peca_equipamento->id,'tipofiltro'=>1,'produto'=>0]) }}">
                         <i class="icofont-ui-edit"></i>
@@ -642,12 +643,12 @@
                         @method('DELETE')
                         @csrf
                     </form>
-                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
+                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarPecaEquip()">
                         <i class="icofont-ui-delete"></i>
                         <script>
-                            function DeletarOs() {
+                            function DeletarPecaEquip() {
                                 var x;
-                                var r = confirm("Deseja deletar a ordem de serviço?");
+                                var r = confirm("Deseja deletar peça?");
                                 if (r == true) {
 
                                     // document.getElementById('').submit()
