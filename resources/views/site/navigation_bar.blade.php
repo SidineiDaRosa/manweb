@@ -200,7 +200,7 @@
                             <div class="box-conteudo">
                                 <div class="titulo">Pessoas</div>
                                 <div class="conteudo">
-                                    <a href="/html_teste">Nossa equipe</a>
+                                    <a href="/arquivo_html_pagina/index.html">Nossa equipe</a>
                                 </div>
                             </div>
                         </div>
