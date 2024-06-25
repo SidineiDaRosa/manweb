@@ -252,15 +252,16 @@
                         <div class="titulo">Data Inicio</div>
                         <hr>
                         <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
-                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"">
-                            {{$servicos_executados->data_inicio}}- {{$servicos_executados->hora_inicio}}
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+                            {{ \Carbon\Carbon::parse($servicos_executados->data_inicio)->format('d/m/Y') }} as {{$servicos_executados->hora_inicio}}
 
                         </div>
                         <div class=" titulo">Data Fim</div>
                         <hr>
                         <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
                          'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
-                            {{$servicos_executados->data_fim}}- {{$servicos_executados->hora_fim}}
+                            {{ \Carbon\Carbon::parse($servicos_executados->data_fim)->format('d/m/Y') }} as {{$servicos_executados->hora_fim}}
+                        
                         </div>
                     </div>
                 </div>
@@ -269,7 +270,7 @@
                         <div class="titulo">Executante</div>
                         <hr>
                         <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
-                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"">
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
                             {{$servicos_executados->funcionario->primeiro_nome}} {{$servicos_executados->funcionario->ultimo_nome}}
                         </div>
                         <div class=" titulo">Descrição dos serviços</div>

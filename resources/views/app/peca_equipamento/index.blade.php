@@ -139,9 +139,9 @@
                         <th>intervalo</th>
                         <th>data ultima substituação</th>
                         <th>data proxima</th>
-                        <th>horas restante</th>
-                        <th>status</th>
-                        <th>Tipo de Ativo</th>
+                        <th>Horas restante</th>
+                        <th>Status</th>
+                        <th>Tipo de Componente</th>
                         <th>Criticidade</th>
                         <th>Operaçoes</th>
 
@@ -186,30 +186,6 @@
                 <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
                     <i class="icofont-eye-alt"></i>
                 </a>
-                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="">
-                    <i class="icofont-ui-edit"></i> </a>
-                <!--Condoçes para deletar a os-->
-                <form id="" method="post" action="">
-                    @method('DELETE')
-                    @csrf
-                </form>
-                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarRegistro()">
-                    <i class="icofont-ui-delete"></i>
-                    <script>
-                        function DeletarRegistro() {
-                            var x;
-                            var r = confirm("Deseja deletar o registro?");
-                            if (r == true) {
-
-                                // document.getElementById('').submit()
-                            } else {
-                                x = "Você pressionou Cancelar!";
-                            }
-                            document.getElementById("demo").innerHTML = x;
-                        }
-                    </script>
-                </a>
-                <!------------------------------>
             </div>
             @endforeach
             </tbody>

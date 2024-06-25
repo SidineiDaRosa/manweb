@@ -139,9 +139,7 @@ class UtilsController extends Controller
 
     public function update_chek_list(Request $request)
     {
-        //--------------------------------------------//
-        //--altera status pedido de compra---------------//
-        // Encontre o registro pelo ID
+        // Encontre o registro pelo ID que sta em valor
         $id = $request->input('valor');
         // Atualize o campo 'nome' com o valor enviado na requisição
         date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
@@ -179,45 +177,46 @@ class UtilsController extends Controller
         $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
         $pecaEquipamento->save();
         //------------------------------------------------//
-        $id_os= $request->input('id_os');
-        $tipo_de_servico= $request->input('tipo_de_servico');
-        $estado= $request->input('estado');
+        $id_os = $request->input('id_os');
+        $tipo_de_servico = $request->input('tipo_de_servico');
+        $estado = $request->input('estado');
         // Define os dados manualmente
         //$data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
 
         $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
         $time_now = $timeNew;
         $hora_inicio = $time_now = date('H:i:s', strtotime('-12 minutes'));
-        $data = [
-            'ordem_servico_id' => $id_os,
-            'data_inicio' => $today,
-            'hora_inicio' => $hora_inicio,
-            'data_fim' => $today,
-            'hora_fim' => $timeNew,
-            'funcionario_id' => 2,
-            'descricao' =>  $pecaEquipamento->descricao,
-            'subtotal' => '0.15',
-            'tipo_de_servico' => $tipo_de_servico,
-            'estado'=>$estado,
-            // Outros campos, se houver
-        ];
-
-        // Cria um novo objeto Servicos_executado com os dados definidos manualmente
-        $servico_executado = new Servicos_executado();
-        $servico_executado->ordem_servico_id = $data['ordem_servico_id'];
-        $servico_executado->data_inicio = $data['data_inicio'];
-        $servico_executado->hora_inicio = $data['hora_inicio'];
-        $servico_executado->data_fim = $data['data_fim'];
-        $servico_executado->hora_fim = $data['hora_fim'];
-        $servico_executado->funcionario_id = $data['funcionario_id'];
-        $servico_executado->descricao = $data['descricao'];
-        $servico_executado->subtotal = $data['subtotal'];
-        $servico_executado->tipo_de_servico = $data['tipo_de_servico'];
-        $servico_executado->estado = $data['estado'];
-        //Atribua outros campos, se houver
-
-        // Salva o registro no banco de dados
-        $servico_executado->save();
+        $ordemServico = OrdemServico::where('id', $id_os)->where('situacao', 'em andamento')->first(); //Busca a ordem de serviço correspondente e verifica se é válido
+        if (isset($ordemServico) && is_numeric($id_os) && $id_os > 0) {
+            $data = [
+                'ordem_servico_id' => $id_os,
+                'data_inicio' => $today,
+                'hora_inicio' => $hora_inicio,
+                'data_fim' => $today,
+                'hora_fim' => $timeNew,
+                'funcionario_id' => 2,
+                'descricao' =>  $pecaEquipamento->descricao,
+                'subtotal' => '0.15',
+                'tipo_de_servico' => $tipo_de_servico,
+                'estado' => $estado,
+            ];
+            // Cria um novo objeto Servicos_executado com os dados definidos manualmente
+            $servico_executado = new Servicos_executado();
+            $servico_executado->ordem_servico_id = $data['ordem_servico_id'];
+            $servico_executado->data_inicio = $data['data_inicio'];
+            $servico_executado->hora_inicio = $data['hora_inicio'];
+            $servico_executado->data_fim = $data['data_fim'];
+            $servico_executado->hora_fim = $data['hora_fim'];
+            $servico_executado->funcionario_id = $data['funcionario_id'];
+            $servico_executado->descricao = $data['descricao'];
+            $servico_executado->subtotal = $data['subtotal'];
+            $servico_executado->tipo_de_servico = $data['tipo_de_servico'];
+            $servico_executado->estado = $data['estado'];
+            // Salva o registro no banco de dados
+            $servico_executado->save();
+        } else {
+            return response()->json(['mensagem' => 'ID da ordem de serviço inválido.'], 400);
+        };
 
         return response()->json(['mensagem' => 'Checklist de número:', 'id' => $id, 'intervalo' => $diferenca_horas]);
     }
