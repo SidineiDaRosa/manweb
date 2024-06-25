@@ -338,6 +338,11 @@
                         <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
                         Fechar Ordem de serviço</button>
                 </div>
+                <div class="d-grid gap-2 d-sm-flex justify-content float-right">
+                    <button id="bt_iniciar_os" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="">
+                        <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
+                        Iniciar OS</button>
+                </div>
             </div>
 </main>
 @endsection
@@ -413,6 +418,29 @@
                 success: function(response) {
                     $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
                     $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
+                },
+                error: function(xhr, status, error) {
+                    $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver
+                    $('#erroModal').modal('show'); // Exibe a modal de sucesso
+                }
+            });
+        });
+    });
+    //----------------------------------------------------------------------------//
+    //Iniciar ordem de serviço
+    $(document).ready(function() {
+        $('#bt_iniciar_os').click(function() {
+            var valor = $('#valor').val(); // Obtém o valor do input
+
+            $.ajax({
+                type: 'GET', // Método HTTP da requisição
+                url: '{{ route("start-os") }}', // URL para onde a requisição será enviada
+                data: {
+                    valor: valor
+                }, // Dados a serem enviados (no formato chave: valor)
+                success: function(response) {
+                    $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
+                   // $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
                 },
                 error: function(xhr, status, error) {
                     $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver

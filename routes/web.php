@@ -117,11 +117,16 @@ Route::middleware('auth')->get(
     'utils/get-horimetro-inicial',
     'App\Http\Controllers\UtilsController@getHorimetroInicial'
 )->name('utils.get-horimetro-inicial');
-//rota update os
+//------------------------------------------------------//
+//----------------   os   ------------------------------//
 Route::middleware('auth')->get(
     'utils/updateos',
     'App\Http\Controllers\UtilsController@updateos'
 )->name('updateos');
+Route::middleware('auth')->get(
+    'utils/start-os',
+    'App\Http\Controllers\UtilsController@startos'
+)->name('start-os');
 
 //busca o horimetro inicial de recursos de produção via ajax.
 Route::middleware('auth')->get(

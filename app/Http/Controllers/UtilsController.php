@@ -88,6 +88,25 @@ class UtilsController extends Controller
         $ordem_servico->save(); //salva a atleração da ordem
         return response()->json(['mensagem' => 'ordem atualizada para fechado1']);
     }
+    //------------------------------------------------------//
+    public function startos(Request $request)
+    {
+        //--------------------------------------------//
+        //--init uma ordem de serviço---------------//
+        // Encontre o registro pelo ID
+        $id_os = $request->input('valor');
+        $ordem_servico = OrdemServico::find($id_os); //procura o registro da ordem
+        // Atualize o campo 'nome' com o valor enviado na requisição
+        date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
+        $today = date("Y-m-d"); //data de hoje
+        $timeNew = date('H:i:s');
+        $ordem_servico->data_inicio = $today;
+        $ordem_servico->hora_inicio =  $timeNew;
+        $ordem_servico->situacao = 'em andamento'; //fecha a situação
+        $ordem_servico->status_servicos = 50; //coloca o status em 100%
+        $ordem_servico->save(); //salva a atleração da ordem
+        return response()->json(['mensagem' => 'ordem atualizada para em andamento']);
+    }
     public function validarDataHoraTermino(Request $request)
     {
         //---------------------------------------//
