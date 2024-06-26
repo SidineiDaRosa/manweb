@@ -109,8 +109,8 @@
                 <select name="tipo_de_ativo" id="" class="form-control-template">
                     <option value="">{{$equipamento->tipo_de_ativo?? old('tipo_de_ativo') }}</option>
                     <option value="Compressores">Compressores</option>
-                    <option value="Caminhão caçamba">Caminhão caçamba</option>
-                    <option value="Caminhão Baú">Caminhão Baú</option>
+                    <option value="Caminhões">Caminhão</option>
+                    <option value="Local Ala">Local Ala</option>
                     <option value="Máquinas pesada">Máquinas pesada</option>
                     <option value="Trator">Trator</option>
                     <option value="Automóveis">Automóveis</option>

@@ -7,6 +7,8 @@
 <main class="content">
     {{--teste de botão pulsante--}}
     <style>
+        /* ---------------------------------------//
+        // Alerta de green de uma tarefa em curso*/
         .circle {
             width: 10px;
             height: 10px;
@@ -153,6 +155,7 @@
             padding: 5px;
         }
 
+
         @media (max-width: 900px) {
             .item {
                 width: 100%;
@@ -270,9 +273,9 @@
         </div>
         {{--Box 2--}}
         <div class="item">
-            O.S sendo executadas &nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 14px;vertical-align: middle;">Filtrar Ordens</a> |
-            <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index') }}" style="text-decoration: underline; font-size: 14px;vertical-align: middle;">Unidades</a> |
-            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 14px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Ativos/Nova O.S</a>
+            O.S sendo executadas &nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
+            <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Unidades</a> |
+            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Ativos/Nova O.S</a>
             <style>
                 #menu-ativos {
                     font-size: 50px;
@@ -430,9 +433,9 @@
         {{--Box 5--}}
         {{--Box que contém a lista de pedidos abertos--}}
         <div class="item">
-            Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 15px;vertical-align: middle;">Produtos</a> |
-            <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 15px;vertical-align: middle;">Pedidos de compra</a> |
-            <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index')}}" style="text-decoration: underline; font-size: 15px;vertical-align: middle;">Novo pedido de compra</a>
+            Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
+            <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
+            <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Novo pedido de compra</a>
             <hr>
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">
                 <div class="card-body">
@@ -482,12 +485,12 @@
                                 width: 500px;
                                 display: none;
                                 position: absolute;
-                                background-color:aliceblue;
+                                background-color: aliceblue;
                                 border: 1px solid #ccc;
                                 padding: 10px;
                                 opacity: 0;
                                 transition: opacity 0.5s ease-in-out;
-                                border-radius:5px;
+                                border-radius: 5px;
                                 z-index: 9999;
                                 /* Coloca a div acima de todos os outros elementos */
                             }

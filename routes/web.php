@@ -234,3 +234,7 @@ Route::middleware('auth')->get(
     'utils/update-chek-list',
     'App\Http\Controllers\UtilsController@update_chek_list'
 )->name('update-chek-list');
+Route::middleware('auth')->get(
+    'utils/search',
+    'App\Http\Controllers\UtilsController@search'
+)->name('search');

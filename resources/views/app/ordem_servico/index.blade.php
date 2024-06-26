@@ -101,13 +101,16 @@
                     </select>
                     {{ $errors->has('empresa_id') ? $errors->first('empresa_id') : '' }}
                 </div>
+
                 {{----------------------------------------------------------------}}
                 {{--Select para escolher o patrimônio-----------------------------}}
                 <div class="col-md-3 mb-0">
                     <label for="id">Patrimônio:</label>
-                    <input type="number" class="form-control" id="patrimonio" name="patrimonio_id" placeholder="ID patrimonio" value="">
+                    <input type="number" class="form-control" id="patrimonio" name="patrimonio_id" placeholder="ID patrimonio" value="" hidden>
+                    <select class="form-control" id="results" onchange="updateIdPatrimonio()">
+                        <option class="form-control" value="">Selecione um resultado</option>
+                    </select>
                 </div>
-
                 </form>
                 {{----------------------------------------------------------------}}
                 {{--Conjunto de botão para ações de filtros de ordens de serviço--}}
@@ -173,7 +176,56 @@
                             <span class="text">Busca os Vencidas</span>
                         </a>
                 </div>
+                <!--------------------------------Ajax para pesquisa------------------------------------->
+                <!-- resources/views/your_view.blade.php -->
+                <!DOCTYPE html>
+                <html lang="en">
 
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Search Example</title>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                </head>
+
+                <body>
+                    <script>
+                        function updateIdPatrimonio() {
+                            let sh = document.getElementById('results').value;
+                            document.getElementById('patrimonio').value = sh; // Corrigido para 'patrimonio'
+                        }
+
+                        $(document).ready(function() {
+                            $('#empresa_id').on('change', function() {
+                                var query = $(this).val();
+
+                                $.ajax({
+                                    url: '{{ route("search") }}',
+                                    type: 'GET',
+                                    data: {
+                                        'query': query
+                                    },
+                                    success: function(data) {
+                                        console.log(data); // Verificar os dados retornados
+                                        $('#results').empty();
+                                        $('#results').append('<option value="">Selecione um resultado</option>');
+
+                                        $.each(data, function(key, item) {
+                                            $('#results').append('<option value="' + item.id + '">' + item.nome + '</option>');
+                                        });
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.log('Erro na requisição AJAX: ' + error);
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </body>
+
+                </html>
+
+                <!----------------------------------fim do ajax------------------------------------------>
                 <script>
                     //------------------------------------------------------------------//
                     //Código que executa os filtros do formulário index ordem de serviço

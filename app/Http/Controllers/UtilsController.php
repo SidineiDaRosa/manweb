@@ -239,4 +239,11 @@ class UtilsController extends Controller
 
         return response()->json(['mensagem' => 'Checklist de número:', 'id' => $id, 'intervalo' => $diferenca_horas]);
     }
+    public function search(Request $request)
+    {
+        $search = $request->get('query');
+        $results = Equipamento::where('empresa_id', 'LIKE', "%{$search}%")->get(['id', 'nome']); // Certifique-se que 'nome' é um campo existente
+
+        return response()->json($results);
+    }
 }

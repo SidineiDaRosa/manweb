@@ -44,7 +44,10 @@
             </form>
             <div>
                 <a href="{{ route('produto.create') }}" class="btn btn-outline-primary">
-                    <img src="{{ asset('img/icon/add_products.png') }}" alt="" style="height:25px; width:25px;">
+                    <img src="" alt="">
+                    <span class="material-symbols-outlined">
+                        forms_add_on
+                    </span>
                     Novo Produto
                 </a>
                 <a href="{{route('pedido-compra.index')}}" class="btn btn-outline-primary">
@@ -99,6 +102,7 @@
 
         thead {
             background-color: rgb(169, 169, 169);
+            font-family:'Poppins', sans-serif;
         }
 
         td,
@@ -106,6 +110,8 @@
             border: 1px solid #dddddd;
             text-align: left;
             padding: 3px;
+            font-family:'Poppins', sans-serif;
+            font-weight: 300;
         }
 
         tr:nth-child(even) {
@@ -121,7 +127,7 @@
 
     <div class="card-body">
         <table class="" id="tblProdutos">
-            <thead>
+            <thead >
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Qrcode</th>
