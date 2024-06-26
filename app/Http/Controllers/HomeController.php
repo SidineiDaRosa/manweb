@@ -34,6 +34,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
         $empresa = Empresas::all();
         $equipamento = Equipamento::all();
         $id = $request->get("id");
