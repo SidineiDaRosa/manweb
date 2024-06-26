@@ -134,10 +134,10 @@
         }
 
         .item {
-            width: calc(33% - 20px);
+            width: calc(33% - 5px);
             height: 400px;
-            margin: 10px;
-            padding: 15px;
+            margin: 5px;
+            padding: 10px;
             background-color: white;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

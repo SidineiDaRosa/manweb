@@ -53,6 +53,8 @@ class HomeController extends Controller
         $dataInicio = $data;
         $dataFim = $hoje; //formato en
         $dataFim_1 = date("Y-m-d", strtotime("+500 days")); //formato en
+        $dataFutura_1_days= date("Y-m-d", strtotime("+1 days")); //formato en
+        $dataFutura_5_days= date("Y-m-d", strtotime("+5 days")); //formato en
         $funcionarios = Funcionario::all();
         $situacao = 'aberto';
         //Busca ordens do dia abertas
@@ -81,7 +83,8 @@ class HomeController extends Controller
             ->where('empresa_id', ('<='), 2)
             ->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos_futura = OrdemServico::where('situacao', 'aberto') //Ordens de serviço futuras
-            ->where('data_fim', ('>'), $dataFim)
+            ->where('data_inicio', ('>='), $dataFutura_1_days)
+            ->where('data_inicio', ('<='), $dataFutura_5_days)
             ->where('empresa_id', ('='), 2)
             ->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos_abarta_passada = OrdemServico::where('situacao', 'aberto') //Ordens de serviço futuras
