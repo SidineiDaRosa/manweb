@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Redirect;
+
 use Illuminate\Http\Request;
 use App\Models\EstoqueProdutos;
 use App\Models\Produto;
@@ -10,6 +12,7 @@ use App\Models\Empresas;
 use App\Models\PedidoSaida;
 use App\Models\UnidadeMedida;
 use App\Models\Categoria;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 
 class EstoqueProdutoController extends Controller
 {
@@ -86,17 +89,42 @@ class EstoqueProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        EstoqueProdutos::create($request->all());
-        $empresas = Empresas::all();
-        $produtos = Produto::all();
-        $categorias = Categoria::all();
+        // Obtém o produto_id do request
         $produtoId = $request->get('produto_id');
-        $estoque_produtos = EstoqueProdutos::where('empresa_id',2)->where('produto_id',$produtoId)->get();
 
-        return view('app.estoque_produto.index', [
-            'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias
-        ]);
+        // Verifica se já existe um registro com empresa_id = 2 e produto_id igual ao do request
+        $estoque_existente = EstoqueProdutos::where('empresa_id', 2)
+            ->where('produto_id', $produtoId)
+            ->first();
+
+        if ($estoque_existente) {
+            // Registro já existe, redireciona de volta com uma mensagem de erro
+
+            // return Redirect::back()->withErrors(['message' => 'Já existe um registro para este produto nesta empresa.']); // Delay de 3 segundos
+            echo ('<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="padding: 100px; background-color: #f44336; color: white; border-radius: 4px; border: 1px solid #f44336; width: fit-content;font-size:25px;">
+                Já existe um registro para este produto nesta empresa.
+            </div>
+        </div>');
+        } else {
+            // Cria um novo registro de EstoqueProdutos
+            EstoqueProdutos::create($request->all());
+
+            // Recarrega os dados para a view após a criação do novo registro
+            $empresas = Empresas::all();
+            $produtos = Produto::all();
+            $categorias = Categoria::all();
+            $estoque_produtos = EstoqueProdutos::where('empresa_id', 2)
+                ->where('produto_id', $produtoId)
+                ->get();
+            // Retorna a view com os dados carregados
+            return view('app.estoque_produto.index', [
+                'estoque_produtos' => $estoque_produtos,
+                'empresas' => $empresas,
+                'produtos' => $produtos,
+                'categorias' => $categorias
+            ]);
+        }
     }
 
     /**

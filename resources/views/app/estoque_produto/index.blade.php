@@ -27,11 +27,8 @@
                     <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
                         <option value="1">Busca pelo Id</option>
                         <option value="2">Pela empresa</option>
-                       
-                       
                     </select>
                 </div>
-          
 
                 <!---estilização do input box buscar produtos---->
                 <style>
@@ -102,8 +99,12 @@
                 <tbody>
                     @foreach ($estoque_produtos as $estoque_produto)
                     <tr>
-                        <th scope="row">{{ $estoque_produto->id }}</td>
-                        <td>{{ $estoque_produto->produto->id}}</td>
+                        <th>{{ $estoque_produto->id }}</td>
+                        <td>{{ $estoque_produto->produto->id}} 
+                            <a title="Abre o cadastro do produto" class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}">
+                                <i class="icofont-eye-alt"></i>
+                            </a>
+                        </td>
                         <td>{{ $estoque_produto->produto->nome }}</td>
                         <td>{{ $estoque_produto->unidade_medida }}</td>
                         <td>{{ $estoque_produto->quantidade }}</td>
@@ -112,7 +113,6 @@
                         <td>{{ $estoque_produto->estoque_maximo}}</td>
                         <td>{{ $estoque_produto->local}}</td>
                         <td>{{ $estoque_produto->empresa->nome_fantasia}}</td>
-
                         <td>
                             @foreach($produtos as $produto)
                             @endforeach
@@ -122,7 +122,7 @@
                                 </span>
                                 <span class="text">Inserir estoque</span>
                             </a>
-                           
+
                         <td>
 
                         </td>
