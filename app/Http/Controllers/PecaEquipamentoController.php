@@ -29,7 +29,6 @@ class PecaEquipamentoController extends Controller
         $horas_proxima = $request->get('horas_proxima_manutencao');
         $opcao = $request->get('opcao');
         $categorias = Categoria::all();
-        echo ($categoria . '---' . $data_proxima . '---' . $horas_proxima . '---' . $opcao);
         // $equipamento_id = $equipamento->get('equipamento');
         $equipamentos = Equipamento::all();
         if ($chek_list == 1) {

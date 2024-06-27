@@ -89,6 +89,11 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento, Request $Request)
     {
+        date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
+        $today = date("Y-m-d"); //data de hoje
+        $timeNew = date('H:i:s');
+        $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
+        //---------------------------------//
         $todas = $Request->get('todas');
         $equipamento_id = $equipamento->id;
         if ($todas == 1) {
@@ -100,7 +105,7 @@ class EquipamentoController extends Controller
                 'ordens_servicos_1' => $ordens_servicos_1
             ]);
         }else{
-            $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->orderby('horas_proxima_manutencao')->get();
+            $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao',72)->orderby('horas_proxima_manutencao')->get();
             $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
             $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
             return view('app.equipamento.show', [

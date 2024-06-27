@@ -1,6 +1,23 @@
 @extends('app.layouts.app')
 
 @section('content')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var hoje = new Date();
+        var amanha = new Date(hoje);
+        amanha.setDate(hoje.getDate() + 1); // Adiciona 1 dia
+
+        var dia = amanha.getDate();
+        var mes = amanha.getMonth() + 1; // Mês começa do zero
+        var ano = amanha.getFullYear();
+
+        // Formata a data para o formato do input type="date" (AAAA-MM-DD)
+        var dataFormatada = ano + '-' + (mes < 10 ? '0' + mes : mes) + '-' + (dia < 10 ? '0' + dia : dia);
+
+        // Define o valor do campo data_proxima_manutencao
+        document.getElementById('data_proxima_manutencao').value = dataFormatada;
+    });
+</script>
 <main class="content">
     <div class="card-header-template">
 
@@ -41,34 +58,49 @@
         <hr>
         <form action="{{'peca-equpamento-filtro'}}" method="POST">
             @csrf
-            <label for="opcoes">Categoria:</label>
-            <select id="opcoes" name="categoria" placeholder="--Selecione a categoria--">
-                <option value="Chek-list">Chek-list</option>
-                <option value="Lubrificação">Lubrificação</option>
-                <option value="Mensalidade">Mensalidade</option>
-                <option value="Componente">Componente</option>
-            </select>
-            <label for="opcoes">Selecione Pela data ou pela hora:</label>
-            <select id="opcoes" name="opcao" placeholder="--Selecione a categoria--">
-                <option value="1">Data da próxima manutenção</option>
-                <option value="2">Horas restante</option>
-            </select>
-            <label for="opcoes">Data :</label>
-            <input type="date" name="data_proxima_manutencao" value="">
-            <label for="opcoes">Horas restante:</label>
-            <input type="number" name="horas_proxima_manutencao" value="24">
-            <br><br>
-            <input type="submit" value="Enviar">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="opcoes">Categoria:</label>
+                        <select class="form-control" id="opcoes" name="categoria">
+                            <option value="Chek-list">Chek-list</option>
+                            <option value="Lubrificação">Lubrificação</option>
+                            <option value="Mensalidade">Mensalidade</option>
+                            <option value="Componente">Componente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="opcoes">Selecione Pela data ou pela hora:</label>
+                        <select class="form-control" id="opcoes" name="opcao">
+                            <option value="1">Data da próxima manutenção</option>
+                            <option value="2">Horas restante</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="opcoes">Data:</label>
+                        <input class="form-control" type="date" id="data_proxima_manutencao" name="data_proxima_manutencao" value="">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="opcoes">Horas restante:</label>
+                        <input class="form-control" type="number" name="horas_proxima_manutencao" value="24">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 text-center">
+                        <input type="submit" class="btn btn-outline-primary" value="Enviar">
+                    </div>
+                </div>
+            </div>
         </form>
-        @foreach ($equipamentos as $equipamentos_f)
-        @endforeach
+
         <div class="card-body">
             <style>
                 #tblOs {
-                    font-family: arial, sans-serif;
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
                     border-collapse: collapse;
                     width: 100%;
                     background-color: rgb(211, 211, 211);
+                    font-weight: 300;
                 }
 
                 #tblPecas {
@@ -87,6 +119,7 @@
                     border: 1px solid #dddddd;
                     text-align: left;
                     padding: 8px;
+                    font-weight: 400;
 
                 }
 
@@ -154,7 +187,11 @@
                     @foreach ($pecas_equipamento as $peca_equipamento)
                     <tr>
                         <td>{{$peca_equipamento->id}}</td>
-                        <td>{{$peca_equipamento->equipamento}}</td> <!-- Exibindo o nome do equipamento -->
+                        @foreach ($equipamentos as $equipamento)
+                        @if ($equipamento['id'] == $peca_equipamento->equipamento)
+                        <td>{{ $equipamento['nome'] }}</td> <!-- Exibindo o nome do equipamento -->
+                        @endif
+                        @endforeach
                         <td>{{ $peca_equipamento->descricao}}</td>
                         <td>{{ $peca_equipamento->produto->nome}}
                             <hr>
