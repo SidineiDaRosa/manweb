@@ -108,7 +108,10 @@
                     <label for="id">Patrimônio:</label>
                     <input type="number" class="form-control" id="patrimonio" name="patrimonio_id" placeholder="ID patrimonio" value="" hidden>
                     <select class="form-control" id="results" onchange="updateIdPatrimonio()">
-                        <option class="form-control" value="">Selecione um resultado</option>
+                        <option class="form-control" value="" style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                         font-weight:300px;"
+                        
+                        >Selecione um resultado</option>
                     </select>
                 </div>
                 </form>

@@ -129,10 +129,13 @@
 
             {{------------------------------------------------}}
             {{--Tabela de peças dos equipamento---------------}}
+
+
             <table class="table" id="tblPecas">
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Equipamento</th>
                         <th>Descrição</th>
                         <th>Produto </th>
                         <th>Quantidade</th>
@@ -150,7 +153,8 @@
                 <tbody>
                     @foreach ($pecas_equipamento as $peca_equipamento)
                     <tr>
-                        <td>{{ $peca_equipamento->id}}</td>
+                        <td>{{$peca_equipamento->id}}</td>
+                        <td>{{$peca_equipamento->equipamento}}</td> <!-- Exibindo o nome do equipamento -->
                         <td>{{ $peca_equipamento->descricao}}</td>
                         <td>{{ $peca_equipamento->produto->nome}}
                             <hr>
