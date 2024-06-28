@@ -8,21 +8,21 @@
         <div class="card-header-template">
 
             <diV>
-                <a class="btn btn-outline-primary" href="{{route('equipamento.index')}}">
+                <a class="btn btn-outline-primary btn-sm" href="{{route('equipamento.index')}}">
                     <span class="material-symbols-outlined">
                         format_list_bulleted
                     </span>
                 </a>
 
-                <a class="btn btn-outline-primary" href="{{route('equipamento.create')}}">
+                <a class="btn btn-outline-primary btn-sm" href="{{route('equipamento.create')}}">
                     Cadastrar novo patrimônio
                 </a>
-                <a class="btn btn-outline-primary" href="{{ route('Peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
+                <a class="btn btn-outline-primary btn-sm" href="{{ route('Peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
                     Novo Componente<span class="material-symbols-outlined">
                         create_new_folder
                     </span>
                 </a>
-                <a class="btn btn-outline-primary" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}">
+                <a class="btn btn-outline-primary btn-sm" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}">
                     <span class="icon text-white-50">
                     </span>
                     <span class="text">Nova O.S</span>
@@ -36,7 +36,7 @@
                     </span>
 
                 </a>
-                <a class="btn btn-outline-info" href="{{ route('app.home') }}">
+                <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> dashboard
                 </a>
             </div>
@@ -167,6 +167,24 @@
             <hr>
             <div class="conteudo">
                 {{$equipamento->tipo_de_ativo}}
+            </div>
+            <div class="titulo">Horímetro</div>
+            <hr>
+            <div class="conteudo">
+                <style>
+                    .input-text {
+                        margin-top: 5px;
+                        width: 50%;
+                        border: none;
+                        color: #2174d4;
+                    }
+                </style>
+
+                <input class="input-text" type="text" value="{{$equipamento->horimetro}}" readonly>
+                <div style="margin-top:10px;"><a class="btn btn-outline-primary btn-sm" href="">
+                        Atualizar Horímetro
+                    </a></div>
+
             </div>
             <div class="titulo">Arquivos anexados</div>
             <hr>
