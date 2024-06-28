@@ -78,7 +78,16 @@ class EquipamentoController extends Controller
         //echo( $id.$nome);
 
         Equipamento::create($request->all());
-        return redirect()->route('equipamento.index');
+        
+        $equipamento = Equipamento::orderBy('id', 'desc')->first();
+        $equipamento_id = $equipamento->id;
+        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', 72)->orderby('horas_proxima_manutencao')->get();
+        $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+        $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
+        return view('app.equipamento.show', [
+            'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
+            'ordens_servicos_1' => $ordens_servicos_1
+        ]);
     }
 
     /**
@@ -104,8 +113,8 @@ class EquipamentoController extends Controller
                 'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
                 'ordens_servicos_1' => $ordens_servicos_1
             ]);
-        }else{
-            $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao',72)->orderby('horas_proxima_manutencao')->get();
+        } else {
+            $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', 72)->orderby('horas_proxima_manutencao')->get();
             $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
             $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
             return view('app.equipamento.show', [
@@ -113,7 +122,6 @@ class EquipamentoController extends Controller
                 'ordens_servicos_1' => $ordens_servicos_1
             ]);
         }
-     
     }
 
     /**
