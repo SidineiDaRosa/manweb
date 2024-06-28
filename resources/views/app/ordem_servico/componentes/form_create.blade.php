@@ -163,7 +163,6 @@
                         }
                     </script>
 
-
                 </div>
                 <div class="titulo">Data prevista para término</div>
                 <hr>

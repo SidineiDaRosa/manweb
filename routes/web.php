@@ -3,6 +3,7 @@
 use App\Http\Controllers\Check_listController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdemServicoController;
+use App\Http\Controllers\PedidoCompraListaController;
 use Illuminate\Support\Facades\Auth;
 //use Illuminate\Support\Facades\Route;
 /*
@@ -173,6 +174,7 @@ Route::middleware('auth')->resource('/Peca-equipamento', 'App\Http\Controllers\P
 Route::middleware('auth')->post('/peca-equpamento-filtro', [App\Http\Controllers\PecaEquipamentoController::class, 'index']);
 
 use App\Http\Controllers\PecaEquipamentoController;
+use App\Models\PedidoCompraLista;
 
 Route::middleware(['auth'])->get('/peca-equipamento-editar/{peca_equipamento_id}', [PecaEquipamentoController::class, 'edit'])->name('Peca-equipamento-editar.edit');
 Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaEquipamentoController::class, 'update'])->name('Peca-equipamento.update');
@@ -238,3 +240,7 @@ Route::middleware('auth')->get(
     'utils/search',
     'App\Http\Controllers\UtilsController@search'
 )->name('search');
+//------------------------------------------------------------//
+// Deletar um item de umpedido de compra
+//Route::delete('/item/{id}', [PedidoCompraLista::class, 'destroy'])->name('item.destroy');
+Route::delete('/pedido-compra-lista/{id}', [PedidoCompraListaController::class, 'destroy'])->name('pedido-compra-lista.destroy');

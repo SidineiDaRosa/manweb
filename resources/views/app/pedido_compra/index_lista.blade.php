@@ -202,7 +202,7 @@
                         /* Alinha os itens ao centro verticalmente */
                         text-align: center;
                         /* Centraliza o texto */
-                        background-color:#f7fEEf;
+                        background-color: #f7fEEf;
                     }
 
                     @media (max-width: 900px) {
@@ -226,7 +226,7 @@
                 <div class="div-column" hidden>
                     <div class="titulo">ID Pedido</div>
                     <hr style="margin:-1px;color:#ccc;">
-                    <div class="conteudo"style="color:#2174d4 !important;">
+                    <div class="conteudo" style="color:#2174d4 !important;">
                         {{ $pedido_compra->id }}
                         <input name="pedidos_compra_id" id="pedidos_compra_id" type="text" class="form-control" value="{{ $pedido_compra->id }}" readonly hidden>
                     </div>
@@ -358,28 +358,22 @@
                         <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$pedido_compra_ls->produto_id]) }}">
                             <i class="icofont-eye-alt"></i>
                         </a>
-                        <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarProduto()">
-                            <i class="icofont-ui-delete"></i></a>
-                        <script>
-                            function DeletarProduto() {
-                                var x;
-                                var r = confirm("Deseja deletar o produto da lista de compra?");
-                                if (r == true) {
 
-                                    document.getElementById('form_{{$pedido_compra_ls->id }}').submit()
-                                    //route('pedido-compra-lista.destroy',['pedidocompralista'=>2])
-                                } else {
-                                    x = "Você pressionou Cancelar!";
+                        </script>
+
+                        <form id="delete-item-form-{{ $pedido_compra_ls->id }}" action="{{ route('pedido-compra-lista.destroy', $pedido_compra_ls->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="confirmDelete({{$pedido_compra_ls->id}})"> <i class="icofont-ui-delete"></i></a></button>
+                        </form>
+
+                        <script>
+                            function confirmDelete(itemId) {
+                                if (confirm('Você tem certeza que deseja deletar este item?')) {
+                                    document.getElementById('delete-item-form-' + itemId).submit();
                                 }
-                                document.getElementById("demo").innerHTML = x;
                             }
                         </script>
-                        <form id="form_{{$pedido_compra_ls->id}}" method="post" action="{{ route('delete-item-pedido-delete')}}">
-                            @method('DELETE')
-                            @csrf
-                            <input type="text" value="{{ $pedido_compra_ls->produto_id}}" name="produto" hidden>
-                            <input type="text" value="{{ $pedido_compra_ls->produto_id}}" name="produto_id" hidden>
-                        </form>
                     </td>
                 </tr>
                 @endforeach

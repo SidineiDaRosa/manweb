@@ -28,7 +28,7 @@ class PedidoCompraListaController extends Controller
         $pedidos_compra = PedidoCompra::where('id', $pedidoCompraId)->get();
         $produtos = Produto::all();
         $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id', $pedidoCompraId)->get();
-        $produto_rg= Produto::where('id', $produto_id )->get();
+        $produto_rg = Produto::where('id', $produto_id)->get();
         //$pedidoCompraLista = PedidoCompraLista::all();
         return view('app.pedido_compra.index_lista', [
             'equipamentos' => $equipamentos,
@@ -38,7 +38,7 @@ class PedidoCompraListaController extends Controller
             'pedido_compra_lista' => $pedidoCompraLista,
             'produtos' => $produtos,
             'unidades_de_medida' => $unidades_de_medida,
-            'produto_rg'=>$produto_rg
+            'produto_rg' => $produto_rg
         ]);
     }
     /**
@@ -128,8 +128,8 @@ class PedidoCompraListaController extends Controller
         $produtos = Produto::all();
         $pedidoCompra = PedidoCompra::where('id', $pedidoCompraId)->get();
         $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id', $pedidoCompraId)->get();
-        $unidades_de_medida= UnidadeMedida::all();
-        
+        $unidades_de_medida = UnidadeMedida::all();
+
         return view('app.pedido_compra.index_lista', [
             'equipamentos' => $equipamentos,
             'funcionarios' => $funcionarios,
@@ -163,17 +163,15 @@ class PedidoCompraListaController extends Controller
         // Validação e atualização dos dados do item
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $produto_id = $request->input('produto_id');
-        $seuModelo = PedidoCompraLista::where('produto_id', $produto_id)->first();
-        echo ($produto_id.'para ser exluída');
-        // if (!$seuModelo) {
-        //  return redirect()->back()->with('error', 'Item não encontrado.');
-        // }
+        $item = PedidoCompraLista::find($id);
 
-        // $seuModelo->delete();
+        if ($item) {
+            $item->delete();
+            return response()->json(['message' => 'Item deletado com sucesso!'], 200);
+        }
 
-        //return redirect()->back()->with('success', 'Item deletado com sucesso.');
+        return response()->json(['message' => 'Item não encontrado!'], 404);
     }
 }
