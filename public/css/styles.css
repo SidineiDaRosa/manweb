@@ -1,0 +1,29 @@
+/*Estilização de links*/
+.txt-link {
+    color: cornflowerblue;
+    /* Define a cor do link */
+    text-decoration: underline;
+    /* Adiciona o sublinhado */
+    font-family: 'Poppins', sans-serif;
+    font-size:15px;
+    font-weight:300;
+  }
+  
+/* Estilo para link visitado */
+.txt-link:visited {
+    color: cornflowerblue;
+    /* Define a cor do link visitado */
+  }
+  
+  /* Estilo para link ao passar o mouse */
+  .txt-link:hover {
+    color: red;
+    /* Define a cor do link ao passar o mouse */
+    cursor: pointer;
+  }
+  
+  /* Estilo para link ativo */
+  .txt-link:active {
+    color: green;
+    /* Define a cor do link ao clicar */
+  }

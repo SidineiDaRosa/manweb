@@ -81,16 +81,19 @@
             font-family: 'Poppins', sans-serif;
             color: #007b00;
             margin-bottom: 5px;
-            width:300px;
+            width: 300px;
         }
     </style>
+    <link rel="stylesheet" href="myProjects/webProject/icofont/css/icofont.min.css">
     <div class="container-chart">
         {{--Box 1--}}
         <div class="item">
             <div id=idOs class="conteudo" style="color:mediumblue">
                 ID:&nbsp&nbsp{{$equipamento->id}}
             </div>
-            <div class="titulo">Ativo | Patrimônio</div>
+            <div class="titulo">Ativo | Patrimônio<span class="material-symbols-outlined">
+                    sell
+                </span></div>
             <hr>
             <div class="conteudo">{{$equipamento->nome}}</div>
             <div class="titulo">Descrição do ativo</div>
@@ -99,9 +102,14 @@
             <div class="titulo">Valor estimado</div>
             <hr>
             <div class="conteudo">R${{$equipamento->valor_estimado}}</div>
-            <div class="titulo">Localização</div>
+            <div class="titulo">Localização<span class="material-symbols-outlined">
+                    pin_drop
+                </span></div>
             <hr>
-            <div class="conteudo">{{$equipamento->localizacao}}</div>
+            <div class="conteudo">
+                {{$equipamento->localizacao}}
+
+            </div>
             <div class="card-body">
                 <?php
                 $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");
@@ -122,13 +130,19 @@
             <div class="titulo">Empresa</div>
             <hr>
             <div class="conteudo"> {{$equipamento->Empresa->razao_social}}</div>
-            <div class="titulo">Data de fabricação</div>
+            <div class="titulo">Data de fabricação<span class="material-symbols-outlined">
+                    calendar_month
+                </span></div>
             <hr>
             <div class="conteudo"> {{ \Carbon\Carbon::parse($equipamento->data_fabricacao)->format('d/m/Y') }}</div>
-            <div class="titulo">Data de instalação</div>
+            <div class="titulo">Data de instalação<span class="material-symbols-outlined">
+                    calendar_month
+                </span></div>
             <hr>
             <div class="conteudo"> {{ \Carbon\Carbon::parse($equipamento->data_instalacao)->format('d/m/Y') }}</div>
-            <div class="titulo">Data da desativação do ativo</div>
+            <div class="titulo">Data da desativação do ativo<span class="material-symbols-outlined">
+                    calendar_month
+                </span></div>
             <hr>
             @if ($equipamento->data_desativacao)
             <div class="conteudo">{{ \Carbon\Carbon::parse($equipamento->data_desativacao)->format('d/m/Y') }}</div>
@@ -630,9 +644,9 @@
             <!--Div operaçoes do registro da ordem des serviço-->
             <td>
                 <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
-                    <i class="icofont-eye-alt"></i>
-                </a>
+                    <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
+                        <i class="icofont-eye-alt"></i>
+                    </a>
                     {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
                     <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $peca_equipamento->id,'tipofiltro'=>1,'produto'=>0]) }}">
                         <i class="icofont-ui-edit"></i>

@@ -193,32 +193,7 @@
                             <a class="txt-link" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">{{ $equipamento['nome'] }}</a>
                         </td> <!-- Exibindo o nome do equipamento -->
                         <style>
-                            .txt-link {
-                                color: cornflowerblue;
-                                /* Define a cor do link */
-                                text-decoration: underline;
-                                /* Adiciona o sublinhado */
-                                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                            }
-
-                            /* Estilo para link visitado */
-                            .txt-link:visited {
-                                color:cornflowerblue;
-                                /* Define a cor do link visitado */
-                            }
-
-                            /* Estilo para link ao passar o mouse */
-                            .txt-link:hover {
-                                color: red;
-                                /* Define a cor do link ao passar o mouse */
-                                cursor: pointer;
-                            }
-
-                            /* Estilo para link ativo */
-                            .txt-link:active {
-                                color: green;
-                                /* Define a cor do link ao clicar */
-                            }
+                           
                         </style>
                         @endif
                         @endforeach
