@@ -141,23 +141,36 @@
                     <script>
                         document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
                     </script>
-                    <input class="input-text" type="time" name="hora_inicio" id="horaPrevista" placeholder="horaPrevista" required value="" onchange="ValidarHoraInicio()">
+                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
                     <script>
-                        function ValidarHoraInicio() {
-                            document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
+                        function ValidateHoraInicio() {
+                            var horaInicioElement = document.getElementById('hora_inicio');
+                            var horaFimElement = document.getElementById('hora_fim');
+
+                            // Validação de hora inicial e final 
+                            var horaInic = horaInicioElement.value;
+                            var horaFim = horaFimElement.value;
+                            if (horaFim && horaFim <= horaInic) { // Verifica se horaFim não é vazio e faz a comparação
+                                alert('Alerta!, Horas inválidas,Hora de Fim: ' + horaInic + horaFim);
+                                horaInicioElement.value = '';
+                                horaFimElement.value = '';
+                                horaInicioElement.style.background = 'red';
+                                horaFimElement.style.background = 'red';
+                            } else {
+                                horaInicioElement.style.background = "rgb(150, 255, 150)";
+                                horaFimElement.style.background = "rgb(150, 255, 150)";
+                            }
                         }
                     </script>
+
+
                 </div>
                 <div class="titulo">Data prevista para término</div>
                 <hr>
                 <div class="conteudo">
                     <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
-                    <input class="input-text" type="time" name="hora_fim" id="horaFim" placeholder="dataFim" required value="" onchange="ValidarHoraFim()">
-                    <script>
-                        function ValidarHoraFim() {
-                            document.getElementById('horaFim').style.background = "rgb(150, 255, 150)"
-                        }
-                    </script>
+                    <input class="input-text" type="time" name="hora_fim" id="hora_fim" placeholder="dataFim" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
+
                 </div>
             </div>
 
