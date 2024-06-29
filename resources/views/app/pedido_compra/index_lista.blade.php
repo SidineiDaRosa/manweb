@@ -6,6 +6,19 @@
     <div class="titulo-main">
         Pedido de compra
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Executar após o carregamento do DOM
+            let produtoId = document.getElementById('produto_id').value;
+            let quantidadeElement = document.getElementById('quantidade');
+
+            if (produtoId >= 1) {
+                quantidadeElement.disabled = false; // Habilitar o campo
+            } else {
+                quantidadeElement.disabled = true; // Desabilitar o campo
+            }
+        });
+    </script>
     <style>
         .titulo-main {
             font-size: 25px;
@@ -358,14 +371,15 @@
                         <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$pedido_compra_ls->produto_id]) }}">
                             <i class="icofont-eye-alt"></i>
                         </a>
-
-                        </script>
-
                         <form id="delete-item-form-{{ $pedido_compra_ls->id }}" action="{{ route('pedido-compra-lista.destroy', $pedido_compra_ls->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="button" onclick="confirmDelete({{$pedido_compra_ls->id}})"> <i class="icofont-ui-delete"></i></a></button>
+                            <!-- O botão não é mais necessário aqui -->
                         </form>
+
+                        <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" onclick="confirmDelete({{ $pedido_compra_ls->id }})">
+                            <i class="icofont-ui-delete"></i>
+                        </a>
 
                         <script>
                             function confirmDelete(itemId) {

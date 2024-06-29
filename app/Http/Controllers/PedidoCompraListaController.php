@@ -166,12 +166,29 @@ class PedidoCompraListaController extends Controller
     public function destroy($id)
     {
         $item = PedidoCompraLista::find($id);
-
+        //return response()->json(['message' => 'Item deletado com sucesso!'], 200);
+        $pedidocompraItem = PedidoCompraLista::find($id);
+        $prdidoCompra = $pedidocompraItem->pedidos_compra_id;
+        echo ($prdidoCompra);
         if ($item) {
             $item->delete();
-            return response()->json(['message' => 'Item deletado com sucesso!'], 200);
+            $equipamentos = Produto::all();
+            $equipamentos = Equipamento::all();
+            $funcionarios = Funcionario::all();
+            $produtos = Produto::all();
+            $pedidoCompra = PedidoCompra::where('id', $prdidoCompra)->get();
+            $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id',  $prdidoCompra)->get();
+            $unidades_de_medida = UnidadeMedida::all();
+            return view('app.pedido_compra.index_lista', [
+                'equipamentos' => $equipamentos,
+                'funcionarios' => $funcionarios,
+                'pedidos_compra' =>  $pedidoCompra,
+                'produto_id' => '',
+                'pedido_compra_lista' => $pedidoCompraLista,
+                'produtos' => $produtos,
+                'unidades_de_medida' => $unidades_de_medida
+            ]);
         }
-
         return response()->json(['message' => 'Item não encontrado!'], 404);
     }
 }

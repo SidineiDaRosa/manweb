@@ -951,3 +951,27 @@
     <div id="info-box" class="info-box">
 
     </div>
+    <?php
+    // Definir o fuso horário para Brasília
+    date_default_timezone_set('America/Sao_Paulo');
+    // Data específica no formato 'Y-m-d'
+    $data = date('y-m-d');
+
+    // Obter o dia da semana da data específica em inglês
+    $diaSemanaIngles = date('l', strtotime($data));
+
+    // Traduzir o dia da semana para português
+    $diaSemanaPortugues = [
+        'Monday'    => 'Segunda-feira',
+        'Tuesday'   => 'Terça-feira',
+        'Wednesday' => 'Quarta-feira',
+        'Thursday'  => 'Quinta-feira',
+        'Friday'    => 'Sexta-feira',
+        'Saturday'  => 'Sábado',
+        'Sunday'    => 'Domingo'
+    ];
+
+    // Exibir o dia da semana em português
+    echo "Hoje $data " . $diaSemanaPortugues[$diaSemanaIngles] . ".";
+
+    ?>
