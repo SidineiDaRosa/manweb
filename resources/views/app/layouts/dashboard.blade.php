@@ -5,6 +5,7 @@
 <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
+
     {{--teste de botão pulsante--}}
     <style>
         /* ---------------------------------------//
@@ -330,8 +331,26 @@
                     </table>
                 </div>
                 <hr>
+                <span id="dataCompleta">
+                <script>
+                    // Função para obter o dia da semana, dia do mês e o mês atual
+                    function exibirDataCompleta() {
+                        const diasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+                        const mesesAno = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
-                O.S abertas pra hoje
+                        let dataAtual = new Date();
+                        let diaSemana = diasSemana[dataAtual.getDay()];
+                        let diaMes = dataAtual.getDate();
+                        let mes = mesesAno[dataAtual.getMonth()];
+                        let ano = dataAtual.getFullYear();
+
+                        document.getElementById('dataCompleta').innerText = `Hoje é ${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
+                    }
+
+                    // Chama a função para exibir a data completa ao carregar a página
+                    exibirDataCompleta();
+                
+                </script>
                 <div class="div-os-sm">
                     <table class="condensed-table">
                         <thead>
@@ -426,6 +445,76 @@
                         @endforeach
                     </tbody>
                 </table>
+                <h6>Segunda</h6>
+                @foreach($monday as $ordem)
+                <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <hr>
+                @endforeach
+
+                <h6>Terça</h6>
+                @foreach($tuesday as $ordem)
+                <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <br>
+                @endforeach
+
+                <h6>Quarta</h6>
+                @foreach($wednesday as $ordem)
+                <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <br>
+                @endforeach
+
+                <h6>Quinta</h6>
+                @foreach($thursday as $ordem)
+                <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Gravidade: {{ $ordem->gravidade }}</p>
+                <p>Urgência: {{ $ordem->urgencia }}</p>
+                <p>Tendência: {{ $ordem->tendencia }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <br>
+                @endforeach
+
+                <h6>Sexta</h6>
+                @foreach($friday as $ordem)
+                <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <br>
+                @endforeach
+
+                <h6>Sabado</h>
+                    @foreach($saturday as $ordem)
+                    <p>ID: {{ $ordem->id }}</p>
+                    <p>Data Início: {{ $ordem->data_inicio }}</p>
+                    <p>Descrição: {{ $ordem->descricao }}</p>
+                    <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                    <p>Gravidade: {{ $ordem->gravidade }}</p>
+                    <p>Urgência: {{ $ordem->urgencia }}</p>
+                    <p>Tendência: {{ $ordem->tendencia }}</p>
+                    <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                    <br>
+                    @endforeach
+
+                    <h6>Domingo</h6>
+                    @foreach($sunday as $ordem)
+                    <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                    <p>Descrição: {{ $ordem->descricao }}</p>
+                    <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                    <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                    <br>
+                    @endforeach
+
             </div>
 
         </div>
@@ -955,27 +1044,4 @@
     <div id="info-box" class="info-box">
 
     </div>
-    <?php
-    // Definir o fuso horário para Brasília
-    date_default_timezone_set('America/Sao_Paulo');
-    // Data específica no formato 'Y-m-d'
-    $data = date('y-m-d');
-
-    // Obter o dia da semana da data específica em inglês
-    $diaSemanaIngles = date('l', strtotime($data));
-
-    // Traduzir o dia da semana para português
-    $diaSemanaPortugues = [
-        'Monday'    => 'Segunda-feira',
-        'Tuesday'   => 'Terça-feira',
-        'Wednesday' => 'Quarta-feira',
-        'Thursday'  => 'Quinta-feira',
-        'Friday'    => 'Sexta-feira',
-        'Saturday'  => 'Sábado',
-        'Sunday'    => 'Domingo'
-    ];
-
-    // Exibir o dia da semana em português
-    echo "Hoje $data " . $diaSemanaPortugues[$diaSemanaIngles] . ".";
-
-    ?>
+    

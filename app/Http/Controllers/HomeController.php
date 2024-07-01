@@ -133,6 +133,63 @@ class HomeController extends Controller
         $countOS = OrdemServico::where('situacao', 'fechado')
             ->where('data_inicio', ('>='), $dataInicio)
             ->where('data_fim', ('<='), $dataFim)->count();
+        //-----------------------------------------------------------//
+        // Função para obter as datas da semana atual (segunda a domingo)
+
+        function getWeekDates()
+        {
+            $dates = [];
+
+            // Define a data atual
+            $currentDate = Carbon::now();
+
+            // Encontra a última segunda-feira (ou a segunda-feira atual)
+            $monday = $currentDate->copy()->startOfWeek(Carbon::MONDAY);
+
+            // Adiciona cada dia da semana ao array de datas
+            for ($i = 0; $i < 7; $i++) {
+                $dates[] = $monday->copy()->addDays($i);
+            }
+
+            return $dates;
+        }
+
+        // Chama a função para obter as datas da semana atual
+        $weekDates = getWeekDates();
+
+        // Inicializa o array para armazenar as ordens de serviço por dia
+        $ordensPorDia = [
+            'Monday' => [],
+            'Tuesday' => [],
+            'Wednesday' => [],
+            'Thursday' => [],
+            'Friday' => [],
+            'Saturday' => [],
+            'Sunday' => [],
+        ];
+
+        // Exemplo de busca de ordens de serviço para a semana atual (segunda a domingo)
+        $ordens_servicos_semana_atual = OrdemServico::whereBetween('data_inicio', [$weekDates[0]->format('Y-m-d'), $weekDates[6]->format('Y-m-d')])
+            ->where('empresa_id', 2)
+            ->orderBy('data_inicio')
+            ->orderBy('hora_inicio')
+            ->get();
+
+        // Calcula o valor GUT para cada ordem de serviço e armazena em uma coleção
+        $ordens_servicos_semana_atual = $ordens_servicos_semana_atual->map(function ($ordem) {
+            $ordem->valor_gut = $ordem->gravidade * $ordem->urgencia * $ordem->tendencia;
+            return $ordem;
+        });
+
+        // Organiza as ordens de serviço por dia da semana
+        foreach ($ordens_servicos_semana_atual as $ordem) {
+            $dayOfWeek = Carbon::parse($ordem->data_inicio)->format('l');
+            $ordensPorDia[$dayOfWeek][] = $ordem;
+        }
+
+
+        //------------------------------------------------------------//
+
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
@@ -147,7 +204,14 @@ class HomeController extends Controller
             'ordens_servicos_fech_hoje' => $ordens_servicos_fech_hoje,
             'ordens_servicos_futura' => $ordens_servicos_futura,
             'ordens_servicos_aberta_hoje' => $ordens_servicos_aberta_hoje,
-            'ordens_servicos_abarta_vencidas' => $ordens_servicos_abarta_vencidas
+            'ordens_servicos_abarta_vencidas' => $ordens_servicos_abarta_vencidas,
+            'monday' => $ordensPorDia['Monday'],
+            'tuesday' => $ordensPorDia['Tuesday'],
+            'wednesday' => $ordensPorDia['Wednesday'],
+            'thursday' => $ordensPorDia['Thursday'],
+            'friday' => $ordensPorDia['Friday'],
+            'saturday' => $ordensPorDia['Saturday'],
+            'sunday' => $ordensPorDia['Sunday'],
 
         ]);
     }
