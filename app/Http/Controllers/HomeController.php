@@ -83,11 +83,26 @@ class HomeController extends Controller
             ->where('data_fim', ('='), $dataFim)
             ->where('empresa_id', ('<='), 2)
             ->orderby('data_inicio')->orderby('hora_inicio')->get();
-        $ordens_servicos_futura = OrdemServico::where('situacao', 'aberto') //Ordens de serviço futuras
-            ->where('data_inicio', ('>='), $dataFutura_1_days)
-            ->where('data_inicio', ('<='), $dataFutura_5_days)
-            ->where('empresa_id', ('='), 2)
-            ->orderby('data_inicio')->orderby('hora_inicio')->get();
+        //--------------------------------------------------------//
+        // Datas futuras
+        $dataFutura_1_days = Carbon::now()->addDays(1)->format('Y-m-d');
+        $dataFutura_5_days = Carbon::now()->addDays(5)->format('Y-m-d');
+
+        // Busca as ordens de serviço que atendem aos critérios
+        $ordens_servicos_futura = OrdemServico::where('situacao', 'Aberto')
+            ->whereBetween('data_inicio', [$dataFutura_1_days, $dataFutura_5_days])
+            ->where('empresa_id', 2)
+            ->orderBy('data_inicio')
+            ->orderBy('hora_inicio')
+            ->get();
+
+        // Calcula o valor GUT para cada ordem de serviço e armazena em uma coleção
+        $ordens_servicos_futura = $ordens_servicos_futura->map(function ($ordem) {
+            $ordem->valor_gut = $ordem->gravidade * $ordem->urgencia * $ordem->tendencia;
+            return $ordem;
+        });
+        // Ordena a coleção pelo valor GUT em ordem decrescente
+        $ordens_servicos_futura = $ordens_servicos_futura->sortByDesc('valor_gut')->values();
         //-------------------------------------------------------//
         // Busca ordesn do dia e ordena de acordo com o GUT
         // Busca as ordens de serviço que atendem aos critérios
@@ -107,7 +122,7 @@ class HomeController extends Controller
 
         // Ordena a coleção pelo valor GUT em ordem decrescente
         $ordens_servicos_aberta_hoje = $ordens_servicos_aberta_hoje->sortByDesc('valor_gut')->values();
-
+        //----------------------------------------------------------------------//
         $ordens_servicos_abarta_vencidas = OrdemServico::where('situacao', 'aberto') //Ordens de serviço vencidas
             ->where('data_fim', ('<'), $dataFim)
             ->where('empresa_id', ('='), 2)

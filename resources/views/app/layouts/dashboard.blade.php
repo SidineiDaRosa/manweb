@@ -394,6 +394,7 @@
                             <th>Previsão início</th>
                             <th>Descrição</th>
                             <th>Patrimônio</th>
+                            <th>GUT</th>
 
                         </tr>
                     </thead>
@@ -420,6 +421,7 @@
                             </td>
                             <td>{{$ordem_servico->descricao}}</td>
                             <td>{{$ordem_servico->equipamento->nome}}</td>
+                            <td>{{$ordem_servico->valor_gut}}</td>
                         </tr>
                         @endforeach
                     </tbody>
