@@ -1,5 +1,38 @@
 {{--modal window --}}
+<script>
+    function ValidateHoraInicio() {
+        var dataInicioElement = document.getElementById('dataPrevista');
+        var horaInicioElement = document.getElementById('hora_inicio');
+        var dataFimElement = document.getElementById('dataFim');
+        var horaFimElement = document.getElementById('hora_fim');
 
+        // Validação de data e hora
+        var dataInicio = new Date(dataInicioElement.value);
+        var horaInic = horaInicioElement.value;
+        var dataFim = new Date(dataFimElement.value);
+        var horaFim = horaFimElement.value;
+
+        // Verifica se as datas e horas estão preenchidas
+        if (!dataInicio || !horaInic || !dataFim) {
+            alert('Por favor, preencha todas as datas e horas.');
+            return;
+        }
+
+        // Verifica se dataPrevista é igual a dataFim para validar as horas
+        if (dataInicio.getTime() === dataFim.getTime()) {
+            // Verifica se horaFim é maior que horaInicio
+            if (horaFim <= horaInic) {
+                alert('Hora de fim deve ser maior que hora de início.');
+                horaFimElement.style.background = "red";
+                horaFimElement.value = '';
+                return;
+            }
+        }
+        // Resetar estilos caso válido
+        horaInicioElement.style.background = "rgb(150, 255, 150)";
+        horaFimElement.style.background = "rgb(150, 255, 150)";
+    }
+</script>
 </style>
 <div class="bg-modal" id="bg-modal">
     <div class="modal-md">

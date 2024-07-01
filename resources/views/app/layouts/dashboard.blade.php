@@ -342,34 +342,36 @@
                                 <th>Previsão de fim</th>
                                 <th>Descrição</th>
                                 <th>Patrimônio</th>
+                                <th>GUT</th>
 
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach($ordens_servicos_abarta_passada as $os_emandamento)
+                            @foreach($ordens_servicos_aberta_hoje as $os_hoje)
                             @php
-                            $dataPrevista = \Carbon\Carbon::parse($os_emandamento->data_fim);
+                            $dataPrevista = \Carbon\Carbon::parse($os_hoje->data_fim);
                             $dataAtual = \Carbon\Carbon::today();
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
                             <tr>
                                 <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_emandamento->id])}}">
+                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
                                         <span class="material-symbols-outlined">
                                             open_in_new
                                         </span>
                                     </a>
                                 </td>
-                                <td>{{$os_emandamento->id}}</td>
-                                <td>{{ \Carbon\Carbon::parse($os_emandamento->data_inicio)->format('d/m/Y') }} {{$os_emandamento->hora_inicio}}</td>
+                                <td>{{$os_hoje->id}}</td>
+                                <td>{{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/Y') }} {{$os_hoje->hora_inicio}}</td>
 
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/Y') }} {{$os_emandamento->hora_fim}}
+                                    {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }} {{$os_hoje->hora_fim}}
 
                                 </td>
-                                <td>{{$os_emandamento->descricao}}</td>
-                                <td>{{$os_emandamento->equipamento->nome}}</td>
+                                <td>{{$os_hoje->descricao}}</td>
+                                <td>{{$os_hoje->equipamento->nome}}</td>
+                                <td>{{$os_hoje->valor_gut}}</td>
                             </tr>
                             @endforeach
                         </tbody>

@@ -144,22 +144,36 @@
                     <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
                     <script>
                         function ValidateHoraInicio() {
+                            var dataInicioElement = document.getElementById('dataPrevista');
                             var horaInicioElement = document.getElementById('hora_inicio');
+                            var dataFimElement = document.getElementById('dataFim');
                             var horaFimElement = document.getElementById('hora_fim');
 
-                            // Validação de hora inicial e final 
+                            // Validação de data e hora
+                            var dataInicio = new Date(dataInicioElement.value);
                             var horaInic = horaInicioElement.value;
+                            var dataFim = new Date(dataFimElement.value);
                             var horaFim = horaFimElement.value;
-                            if (horaFim && horaFim <= horaInic) { // Verifica se horaFim não é vazio e faz a comparação
-                                alert('Alerta!, Horas inválidas,Hora de Fim: ' + horaInic + horaFim);
-                                horaInicioElement.value = '';
-                                horaFimElement.value = '';
-                                horaInicioElement.style.background = 'red';
-                                horaFimElement.style.background = 'red';
-                            } else {
-                                horaInicioElement.style.background = "rgb(150, 255, 150)";
-                                horaFimElement.style.background = "rgb(150, 255, 150)";
+
+                            // Verifica se as datas e horas estão preenchidas
+                            if (!dataInicio || !horaInic || !dataFim) {
+                                alert('Por favor, preencha todas as datas e horas.');
+                                return;
                             }
+
+                            // Verifica se dataPrevista é igual a dataFim para validar as horas
+                            if (dataInicio.getTime() === dataFim.getTime()) {
+                                // Verifica se horaFim é maior que horaInicio
+                                if (horaFim <= horaInic) {
+                                    alert('Hora de fim deve ser maior que hora de início.');
+                                    horaFimElement.style.background = "red";
+                                    horaFimElement.value = '';
+                                    return;
+                                }
+                            }
+                            // Resetar estilos caso válido
+                            horaInicioElement.style.background = "rgb(150, 255, 150)";
+                            horaFimElement.style.background = "rgb(150, 255, 150)";
                         }
                     </script>
 
@@ -288,17 +302,32 @@
                     <option value="cancelada">Cancelada</option>
                     <option value="em andamento">Em andamento</option>
                 </select>
-
+                <div class="conteudo">
+                </div>
             </div>
-            <div class="titulo">Tipo de os</div>
+            <div class="titulo">Natureza do Serviço:</div>
             <hr>
             <div class="conteudo">
-                <select class="input-text" class="form-control" name="tendencia" id="tendencia" value="">
-                    <option value="Corretiva">Corretiva</option>
+                <select class="input-text" id="natureza_do_servico" name="natureza_do_servico">
+                    <option value="corretiva">Corretiva</option>
+                    <option value="ampliacao">Ampliação</option>
+                    <option value="investimento">Investimento</option>
                     <option value="Preventiva">Preventiva</option>
                     <option value="Preditiva">Preditiva</option>
-                    <option value="Melhoria">Melhoria</option>
-                    <option value="Melhoria">Investimento</option>
+                    <option value="Instalação">Instalação</option>
+                    <option value="rotina">Rotina periódica</option>
+                    <!-- Outras naturezas conforme necessário -->
+                </select>
+            </div>
+            <div class="titulo">Especialidade do serviço:</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" id="specialidade_do_servico" name="especialidade_do_servico">
+                    <option value="eletrica">Elétrica</option>
+                    <option value="civil">Civil</option>
+                    <option value="mecanica">Mecânica</option>
+                    <option value="sesmt">Mecânica</option>
+                    <!-- Outras especialidades conforme necessário -->
                 </select>
             </div>
             <div class="titulo">link</div>
@@ -306,7 +335,7 @@
             <div class="conteudo">
                 <input class="input-text" id="link_foto" type="text" class="form-control" name="link_foto" value="" readonly>
             </div>
-            <div class="titulo">Gravidade</div>
+            <div class="titulo">GUT</div>
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="gravidade" id="gravidade" value="">
@@ -319,10 +348,6 @@
                 <div class="invalid-tooltip">
                     Por favor, informe a urgencia.
                 </div>
-            </div>
-            <div class="titulo">Urgência</div>
-            <hr>
-            <div class="conteudo">
                 <select class="input-text" name="urgencia" id="urgencia" value="">
                     <option value="5">Extremamante urgente</option>
                     <option value="4">Urgente</option>
@@ -333,19 +358,15 @@
                 <div class="invalid-tooltip">
                     Por favor, informe a urgencia.
                 </div>
-            </div>
-            <div class="titulo">Tendência</div>
-            <hr>
-            <div class="conteudo">
-                <select class="input-text" name="tendencia" id="tendencia" value="">
-                    <option value="5">Piorar rápidamante</option>
-                    <option value="4">Piorar em curto prazo</option>
-                    <option value="3">Piorar</option>
-                    <option value="2">Piorar logo prazo</option>
-                    <option value="1">Não irá piorar</option>
+                <select class="input-text" name="urgencia" id="urgencia" value="">
+                    <option value="5">Extremamante urgente</option>
+                    <option value="4">Urgente</option>
+                    <option value="3">Urgente se possível</option>
+                    <option value="2">Pouco urgente</option>
+                    <option value="1">Não urgente</option>
                 </select>
                 <div class="invalid-tooltip">
-                    Por favor, informe a tendência.
+                    Por favor, informe a urgencia.
                 </div>
             </div>
             <div class="titulo">Causa</div>

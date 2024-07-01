@@ -27,7 +27,9 @@ class OrdemServico extends Model
         'urgencia',
         'tendencia',
         'empresa_id',
-        'situacao'
+        'situacao',
+        'natureza_do_servico',
+        'especialidade_do_servico'
     ];
     public function equipamento()
     {

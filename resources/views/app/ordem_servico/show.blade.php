@@ -199,6 +199,13 @@
                         <div class="titulo">Previsão par fim</div>
                         <hr>
                         <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_fim}}</div>
+                        <div class="titulo">Natureza do serviço</div>
+                        <hr>
+                        <div class="conteudo">{{$ordem_servico->natureza_do_servico}}</div>
+                        <div class="titulo">Área de especialidade</div>
+                        <hr>
+                        <div class="conteudo">{{$ordem_servico->especialidade_do_servico}}</div>
+
                         <!--Exemplo de progressbar com um input texto-->
                         <div class="titulo">Status do progresso do serviço está em:</div>
 
@@ -261,7 +268,7 @@
                         <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
                          'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
                             {{ \Carbon\Carbon::parse($servicos_executados->data_fim)->format('d/m/Y') }} as {{$servicos_executados->hora_fim}}
-                        
+
                         </div>
                     </div>
                 </div>
@@ -440,7 +447,7 @@
                 }, // Dados a serem enviados (no formato chave: valor)
                 success: function(response) {
                     $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
-                   // $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
+                    // $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
                 },
                 error: function(xhr, status, error) {
                     $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver

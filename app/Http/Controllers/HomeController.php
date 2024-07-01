@@ -54,8 +54,8 @@ class HomeController extends Controller
         $dataInicio = $data;
         $dataFim = $hoje; //formato en
         $dataFim_1 = date("Y-m-d", strtotime("+500 days")); //formato en
-        $dataFutura_1_days= date("Y-m-d", strtotime("+1 days")); //formato en
-        $dataFutura_5_days= date("Y-m-d", strtotime("+5 days")); //formato en
+        $dataFutura_1_days = date("Y-m-d", strtotime("+1 days")); //formato en
+        $dataFutura_5_days = date("Y-m-d", strtotime("+5 days")); //formato en
         $funcionarios = Funcionario::all();
         $situacao = 'aberto';
         //Busca ordens do dia abertas
@@ -68,7 +68,7 @@ class HomeController extends Controller
             ->where('data_fim', ('='), $dataFim)
             ->where('empresa_id', ('<='), 2)
             ->orderby('data_inicio')->orderby('hora_inicio')->count();
-            $ordens_servicos = OrdemServico::where('situacao', $situacao)//Ordens de serviços abertas futuras para gerar gráfico
+        $ordens_servicos = OrdemServico::where('situacao', $situacao) //Ordens de serviços abertas futuras para gerar gráfico
             ->whereRaw('data_inicio > ? AND data_fim < ?', [$dataInicio, $dataFim_1])
             ->where('empresa_id', '<=', 2)
             ->orderBy('data_inicio')
@@ -88,11 +88,26 @@ class HomeController extends Controller
             ->where('data_inicio', ('<='), $dataFutura_5_days)
             ->where('empresa_id', ('='), 2)
             ->orderby('data_inicio')->orderby('hora_inicio')->get();
-        $ordens_servicos_abarta_passada = OrdemServico::where('situacao', 'aberto') //Ordens de serviço futuras
-            ->where('data_inicio', ('>='), $dataFim)
-            ->where('data_inicio', ('<='), $dataAmanha)
-            ->where('empresa_id', ('='), 2)
-            ->orderby('data_inicio')->orderby('hora_inicio')->get();
+        //-------------------------------------------------------//
+        // Busca ordesn do dia e ordena de acordo com o GUT
+        // Busca as ordens de serviço que atendem aos critérios
+        $dataHoje = Carbon::now()->format('Y-m-d');
+
+        // Busca as ordens de serviço que atendem aos critérios
+        $ordens_servicos_aberta_hoje = OrdemServico::where('situacao', 'Aberto')
+            ->whereDate('data_inicio', '=', $dataHoje)
+            ->where('empresa_id', 2)
+            ->get();
+
+        // Calcula o valor GUT para cada ordem de serviço e armazena em uma coleção
+        $ordens_servicos_aberta_hoje = $ordens_servicos_aberta_hoje->map(function ($ordem) {
+            $ordem->valor_gut = $ordem->gravidade * $ordem->urgencia * $ordem->tendencia;
+            return $ordem;
+        });
+
+        // Ordena a coleção pelo valor GUT em ordem decrescente
+        $ordens_servicos_aberta_hoje = $ordens_servicos_aberta_hoje->sortByDesc('valor_gut')->values();
+
         $ordens_servicos_abarta_vencidas = OrdemServico::where('situacao', 'aberto') //Ordens de serviço vencidas
             ->where('data_fim', ('<'), $dataFim)
             ->where('empresa_id', ('='), 2)
@@ -116,7 +131,7 @@ class HomeController extends Controller
             'pedidos_compra' => $pedidosCompraAberto,
             'ordens_servicos_fech_hoje' => $ordens_servicos_fech_hoje,
             'ordens_servicos_futura' => $ordens_servicos_futura,
-            'ordens_servicos_abarta_passada' => $ordens_servicos_abarta_passada,
+            'ordens_servicos_aberta_hoje' => $ordens_servicos_aberta_hoje,
             'ordens_servicos_abarta_vencidas' => $ordens_servicos_abarta_vencidas
 
         ]);

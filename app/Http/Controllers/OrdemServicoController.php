@@ -27,8 +27,8 @@ class OrdemServicoController extends Controller
     {
         //Mail::to('sidineidarosa201@gmail.com')->send(new ExampleMail());
 
-       // return "Email enviado com sucesso!";
-       // echo ($request);
+        // return "Email enviado com sucesso!";
+        // echo ($request);
         // date_default_timezone_set('America/Sao_Paulo');
         //$today = date("Y-m-d"); //data de hoje
         //$timeNew =date('H:i:s');
@@ -157,7 +157,7 @@ class OrdemServicoController extends Controller
         $id = $empresa->get('empresa');
         $equipamento = $empresa->get('equipamento');
         // $funcionarios=Funcionario::all();
-        $funcionarios = Funcionario::all();//Busca todos os funcionários
+        $funcionarios = Funcionario::all(); //Busca todos os funcionários
         $equipamentos = Equipamento::where('empresa_id', $id)->get();
         $ordem_servico = OrdemServico::all();
         $empresa = Empresas::where('id', $id)->get();
@@ -207,7 +207,9 @@ class OrdemServicoController extends Controller
             'urgencia' => $request->urgencia,
             'tendencia' => $request->tendencia,
             'empresa_id' => $request->empresa_id,
-            'situacao' => $request->situacao
+            'situacao' => $request->situacao,
+            'natureza_do_servico' => $request->natureza_do_servico,
+            'especialidade_do_servico' => $request->especialidade_do_servico
         ]);
         //------------------------------------------------------------//
         $equipamentos = Equipamento::all();
@@ -312,8 +314,21 @@ class OrdemServicoController extends Controller
     {
         //
         $ordem_servico_id = $ordem_servico->get('id_os');
-        echo ($ordem_servico_id);
-        //$ordem_servico->delete();
-        //return redirect()->route('marca.index');
+        // Encontrar a ordem de serviço pelo ID
+        $ordem_servico = OrdemServico::find($ordem_servico_id);
+
+        if ($ordem_servico) {
+            // Deletar a ordem de serviço
+            $ordem_servico->delete();
+
+            // Exibir mensagem de sucesso estilizada
+            echo "<div style='color: green; font-weight: bold;'>Ordem de serviço ID {$ordem_servico_id } deletada com sucesso.</div>";
+        } else {
+            // Exibir mensagem de erro estilizada
+            echo "<div style='color: red; font-weight: bold;'>Erro: Ordem de serviço ID {$ordem_servico_id } não encontrada.</div>";
+        }
+
+        // Parar a execução para garantir que a mensagem seja exibida
+        exit;
     }
 }
