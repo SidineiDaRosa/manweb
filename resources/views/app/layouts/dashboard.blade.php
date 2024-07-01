@@ -332,76 +332,83 @@
                 </div>
                 <hr>
                 <span id="dataCompleta">
-                <script>
-                    // Função para obter o dia da semana, dia do mês e o mês atual
-                    function exibirDataCompleta() {
-                        const diasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-                        const mesesAno = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+                    <script>
+                        // Função para obter o dia da semana, dia do mês e o mês atual
+                        function exibirDataCompleta() {
+                            const diasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+                            const mesesAno = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
-                        let dataAtual = new Date();
-                        let diaSemana = diasSemana[dataAtual.getDay()];
-                        let diaMes = dataAtual.getDate();
-                        let mes = mesesAno[dataAtual.getMonth()];
-                        let ano = dataAtual.getFullYear();
+                            let dataAtual = new Date();
+                            let diaSemana = diasSemana[dataAtual.getDay()];
+                            let diaMes = dataAtual.getDate();
+                            let mes = mesesAno[dataAtual.getMonth()];
+                            let ano = dataAtual.getFullYear();
 
-                        document.getElementById('dataCompleta').innerText = `Hoje é ${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
-                    }
+                            document.getElementById('dataCompleta').innerText = `Hoje é ${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
+                        }
 
-                    // Chama a função para exibir a data completa ao carregar a página
-                    exibirDataCompleta();
-                
-                </script>
-                <div class="div-os-sm">
-                    <table class="condensed-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>ID</th>
-                                <th>Previsão de início</th>
-                                <th>Previsão de fim</th>
-                                <th>Descrição</th>
-                                <th>Patrimônio</th>
-                                <th>GUT</th>
+                        // Chama a função para exibir a data completa ao carregar a página
+                        exibirDataCompleta();
+                    </script>
+                    <div class="div-os-sm">
+                        <table class="condensed-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>Previsão de início</th>
+                                    <th>Previsão de fim</th>
+                                    <th>Descrição</th>
+                                    <th>Patrimônio</th>
+                                    <th>GUT</th>
 
-                            </tr>
-                        </thead>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            @foreach($ordens_servicos_aberta_hoje as $os_hoje)
-                            @php
-                            $dataPrevista = \Carbon\Carbon::parse($os_hoje->data_fim);
-                            $dataAtual = \Carbon\Carbon::today();
-                            $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
-                            @endphp
-                            <tr>
-                                <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
-                                        <span class="material-symbols-outlined">
-                                            open_in_new
-                                        </span>
-                                    </a>
-                                </td>
-                                <td>{{$os_hoje->id}}</td>
-                                <td>{{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/Y') }} {{$os_hoje->hora_inicio}}</td>
+                            <tbody>
+                                @foreach($ordens_servicos_aberta_hoje as $os_hoje)
+                                @php
+                                $dataPrevista = \Carbon\Carbon::parse($os_hoje->data_fim);
+                                $dataAtual = \Carbon\Carbon::today();
+                                $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
+                                @endphp
+                                <tr>
+                                    <td>
+                                        <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
+                                            <span class="material-symbols-outlined">
+                                                open_in_new
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>{{$os_hoje->id}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/Y') }} {{$os_hoje->hora_inicio}}</td>
 
-                                <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }} {{$os_hoje->hora_fim}}
+                                    <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
+                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }} {{$os_hoje->hora_fim}}
 
-                                </td>
-                                <td>{{$os_hoje->descricao}}</td>
-                                <td>{{$os_hoje->equipamento->nome}}</td>
-                                <td>{{$os_hoje->valor_gut}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <hr>
+                                    </td>
+                                    <td>{{$os_hoje->descricao}}</td>
+                                    <td>{{$os_hoje->equipamento->nome}}</td>
+                                    <td>{{$os_hoje->valor_gut}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
 
             </div>
 
         </div>
         {{--Box 3--}}
+        <style>
+            .txt-conteudo-sm {
+                font-size: 12px;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .hr-sm-shrt {}
+        </style>
         <div class="item">
             <h6>OS abertas futura</h6>
             <div class="div-os-sm">
@@ -447,13 +454,11 @@
                 </table>
                 <h6>Segunda</h6>
                 @foreach($monday as $ordem)
-                <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                <p>Descrição: {{ $ordem->descricao }}</p>
-                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <p><span class="txt-conteudo-sm">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</span>
+                <p><span class="txt-conteudo-sm">Descrição: {{ $ordem->descricao }}</span>
+                <span>Equipamento: {{ $ordem->equipamento->nome }}-Valor GUT: {{ $ordem->valor_gut }}</span></p>
                 <hr>
                 @endforeach
-
                 <h6>Terça</h6>
                 @foreach($tuesday as $ordem)
                 <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
@@ -462,7 +467,6 @@
                 <p>Valor GUT: {{ $ordem->valor_gut }}</p>
                 <br>
                 @endforeach
-
                 <h6>Quarta</h6>
                 @foreach($wednesday as $ordem)
                 <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
@@ -1044,4 +1048,3 @@
     <div id="info-box" class="info-box">
 
     </div>
-    
