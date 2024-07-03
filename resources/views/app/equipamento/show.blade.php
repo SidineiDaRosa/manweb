@@ -114,12 +114,16 @@
                 <?php
                 $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");
                 $url = '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                $urlPaginaAtual = $protocolo . $url
-                //echo $protocolo.$url;
+                $urlPaginaAtual = $protocolo . $url;
                 ?>
-                {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}
-                {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $equipamento->id.'--'.$equipamento->nome) !!}
+                {!! QrCode::size(50)->backgroundColor(255,255,255)->generate($urlPaginaAtual) !!}
             </div>
+            <form id="generateQRForm" action="{{ route('generate-qrcode') }}" method="POST">
+                @csrf
+                <input type="text" hidden name="equipamento_id"  value="{{$equipamento->id}}">
+                <input type="hidden" name="url" value="{{ $urlPaginaAtual }}">
+                <a href="#" onclick="event.preventDefault(); document.getElementById('generateQRForm').submit();" style="font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">Clique aqui para gerar o QR Code</a>
+
         </div>
         {{--Box 2--}}
         <div class="item">

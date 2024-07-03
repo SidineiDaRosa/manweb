@@ -191,7 +191,7 @@
                             <div class="box-conteudo">
                                 <div class="titulo">Instituição</div>
                                 <div class="conteudo">
-                                    <a href="#">Nossa história</a>
+                                    <a href="#">história</a>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                             <div class="box-conteudo">
                                 <div class="titulo">Pessoas</div>
                                 <div class="conteudo">
-                                    <a href="/arquivo_html_pagina/index.html">Nossa equipe</a>
+                                    <a href="">Nossa equipe</a>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +229,7 @@
                                 <div class="titulo">Produtos</div>
                                 <p></p>
                                 <div class="conteudo">
-                                    <a href="{{'e-comerce-show-produto'}}">Produtos</a>
+                                    <a href="">Produtos</a>
                                 </div>
                                 <div class="titulo">Suporte</div>
                                 <p></p>
@@ -289,7 +289,7 @@
                                 <div class="titulo">Aqui história da empresa</div>
                                 <p></p>
                                 <div class="conteudo">
-                                    Onde como tudo começou
+                                Aqui história da empresa
                                 </div>
                             </div>
                         </div>

@@ -326,9 +326,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- arquivo resources/views/atualizar-registro.blade.php -->
-            <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
             <div class="card-header-template">
                 <div id="bt_inserir_servico" class="d-grid gap-2 d-sm-flex justify-content-sm float-left">
                     <div class="row mb-1">
@@ -351,6 +348,28 @@
                         Iniciar OS</button>
                 </div>
             </div>
+            <!-- arquivo resources/views/atualizar-registro.blade.php -->
+            <style>
+                .container {
+                    display: flex;
+                    justify-content: center;
+                    /* Alinha horizontalmente ao centro */
+                    align-items: center;
+                    /* Alinha verticalmente ao centro */
+                    height: 100vh;
+                    /* Altura do contêiner */
+                }
+
+                #imagem {
+                    width: 100%;
+                    height: 100%;
+                }
+            </style>
+            <div class="container">
+                <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
+
+            </div>
+
 </main>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

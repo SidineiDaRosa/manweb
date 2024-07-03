@@ -55,7 +55,7 @@
                 }
             </style>
             <a href="#" class="title-footer">HOME</a>|
-            <a href="{{'e-comerce-show-produto'}}" class="title-footer">PRODUTOS</a>|
+            <a href="" class="title-footer">PRODUTOS</a>|
             <a href="#" class="title-footer">SOBRE NÓS</a>|
             <a href="#" class="title-footer">DOWNLOADS</a>
             <a href="#" class="title-footer">Webmail</a>

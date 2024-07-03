@@ -104,7 +104,7 @@ class HomeController extends Controller
         // Ordena a coleção pelo valor GUT em ordem decrescente
         $ordens_servicos_futura = $ordens_servicos_futura->sortByDesc('valor_gut')->values();
         //-------------------------------------------------------//
-        // Busca ordesn do dia e ordena de acordo com o GUT
+        // Busca ordens do dia e ordena de acordo com o GUT
         // Busca as ordens de serviço que atendem aos critérios
         $dataHoje = Carbon::now()->format('Y-m-d');
 
@@ -188,6 +188,94 @@ class HomeController extends Controller
         }
 
 
+        //------------------------------------------------------------//
+        //-----------------------------------------------------------//
+        // Função para obter os próximos 7 dias a partir da data atual
+
+        function getNext7Days()
+        {
+            $dates = [];
+
+            // Define a data atual
+            $currentDate = Carbon::now();
+
+            // Adiciona cada um dos próximos 7 dias ao array de datas
+            for ($i = 0; $i < 7; $i++) {
+                $dates[] = $currentDate->copy()->addDays($i);
+            }
+
+            return $dates;
+        }
+
+        // Função para gerar HTML com os dias da semana e as ordens de serviço
+        function generateHtml($ordensPorDia, $next7Days)
+        {
+            $html = "<table border='1'><tr><th>Dia</th><th>Data</th><th>Ordens de Serviço</th></tr>";
+
+            foreach ($next7Days as $date) {
+                $dayOfWeek = $date->format('l'); // Dia da semana em inglês
+                $dateFormatted = $date->format('Y-m-d'); // Data formatada
+
+                $html .= "<tr>";
+                $html .= "<td>{$dayOfWeek}</td>";
+                $html .= "<td>{$dateFormatted}</td>";
+                $html .= "<td>";
+
+                if (!empty($ordensPorDia[$dayOfWeek])) {
+                    foreach ($ordensPorDia[$dayOfWeek] as $ordem) {
+                        $html .= "Ordem ID: {$ordem->id}, Valor GUT: {$ordem->valor_gut}<br>";
+                    }
+                } else {
+                    $html .= "Nenhuma ordem de serviço.";
+                }
+
+                $html .= "</td>";
+                $html .= "</tr>";
+            }
+
+            $html .= "</table>";
+
+            return $html;
+        }
+
+        // Chama a função para obter os próximos 7 dias
+        $next7Days = getNext7Days();
+
+        // Inicializa o array para armazenar as ordens de serviço por dia
+        $ordensPorDia = [
+            'Monday' => [],
+            'Tuesday' => [],
+            'Wednesday' => [],
+            'Thursday' => [],
+            'Friday' => [],
+            'Saturday' => [],
+            'Sunday' => [],
+        ];
+
+        // Exemplo de busca de ordens de serviço para os próximos 7 dias
+        $ordens_servicos_proximos_dias = OrdemServico::whereBetween('data_inicio', [$next7Days[0]->format('Y-m-d'), $next7Days[6]->format('Y-m-d')])
+            ->where('empresa_id', 2)
+            ->orderBy('data_inicio')
+            ->orderBy('hora_inicio')
+            ->get();
+
+        // Calcula o valor GUT para cada ordem de serviço e armazena em uma coleção
+        $ordens_servicos_proximos_dias = $ordens_servicos_proximos_dias->map(function ($ordem) {
+            $ordem->valor_gut = $ordem->gravidade * $ordem->urgencia * $ordem->tendencia;
+            return $ordem;
+        });
+
+        // Organiza as ordens de serviço por dia da semana
+        foreach ($ordens_servicos_proximos_dias as $ordem) {
+            $dayOfWeek = Carbon::parse($ordem->data_inicio)->format('l');
+            $ordensPorDia[$dayOfWeek][] = $ordem;
+        }
+
+        // Gera o HTML com os dias da semana e as ordens de serviço
+        $html = generateHtml($ordensPorDia, $next7Days);
+
+        // Exibe o HTML
+        echo $html;
         //------------------------------------------------------------//
 
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();

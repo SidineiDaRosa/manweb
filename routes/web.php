@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdemServicoController;
 use App\Http\Controllers\PedidoCompraListaController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\QrCodeController;
+
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -244,3 +246,7 @@ Route::middleware('auth')->get(
 // Deletar um item de umpedido de compra
 //Route::delete('/item/{id}', [PedidoCompraLista::class, 'destroy'])->name('item.destroy');
 Route::delete('/pedido-compra-lista/{id}', [PedidoCompraListaController::class, 'destroy'])->name('pedido-compra-lista.destroy');
+//-----------------------------------------------------------//
+// Gerar Qr code
+
+Route::middleware('auth')->post('/gerar-qrcode', 'App\Http\Controllers\QrCodeController@gerarQRCode')->name('generate-qrcode');
