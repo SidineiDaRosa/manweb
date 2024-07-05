@@ -531,12 +531,12 @@
                             .wide-progress {
                                 width: 100%;
                                 /* Ajuste esta largura conforme necessário */
-                               
+
                             }
 
                             .progress {
                                 width: 50px;
-                                
+
                             }
                         </style>
                         {{--------------------------------Fim GUT------------------------------------}}
@@ -575,295 +575,169 @@
                     }
                 </script>
                 {{--fim da div expan--}}
-                <div>
-                    <h6>Segunda</h6>
-                    @foreach($monday as $ordem)
-                    <p><span class="txt-conteudo-sm" style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</span>
-                    <p><span class="txt-conteudo-sm" style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">Descrição: {{ $ordem->descricao }}</span>
-                        <span>Equipamento: {{ $ordem->equipamento->nome }}-Valor GUT: {{ $ordem->valor_gut }}</span>
-                    </p>
-                    <p style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">Valor GUT:{{ $ordem->valor_gut }}</p>
-                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>
-                    <hr>
-                </div>
-                @endforeach
-                {{------------------------------------------------------------------------}}
-
-                {{-------------------------------------------------------------------------}}
-                <hr class="hr-sm">
-                <h6>Terça</h6>
-                @foreach($tuesday as $ordem)
-                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                <p>Descrição: {{ $ordem->descricao }}</p>
-                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                    <span class="material-symbols-outlined">
-                        open_in_new
-                    </span>
-                </a>
-                <hr>
-                @endforeach
-                <h6>Quarta</h6>
-                @foreach($wednesday as $ordem)
-                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                <p>Descrição: {{ $ordem->descricao }}</p>
-                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                    <span class="material-symbols-outlined">
-                        open_in_new
-                    </span>
-                </a>
-                <hr>
-                @endforeach
-
-                <h6>Quinta</h6>
-                @foreach($thursday as $ordem)
-                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                <p>Descrição: {{ $ordem->descricao }}</p>
-                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                    <span class="material-symbols-outlined">
-                        open_in_new
-                    </span>
-                </a>
-                <hr>
-                @endforeach
-
-                <h6>Sexta</h6>
-                @foreach($friday as $ordem)
-                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                <p>Descrição: {{ $ordem->descricao }}</p>
-                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                    <span class="material-symbols-outlined">
-                        open_in_new
-                    </span>
-                </a>
-                <hr>
-                @endforeach
-
-                <h6>Sabado</h>
-                    @foreach($saturday as $ordem)
-                    <p><a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                            <span class="material-symbols-outlined">
-                                open_in_new
-                            </span>
-                        </a style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}</p>
-                    <p>Data Início: {{ $ordem->data_inicio }}</p>
-                    <p>Descrição: {{ $ordem->descricao }}</p>
-                    <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                    <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>
-                    <hr>
-                    @endforeach
-
-                    <h6>Domingo</h6>
-                    @foreach($sunday as $ordem)
-                    <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
-                            <span class="material-symbols-outlined">
-                                open_in_new
-                            </span>
-                        </a>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                    <p>Descrição: {{ $ordem->descricao }}</p>
-                    <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                    <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-
-                    <hr>
-                    @endforeach
 
             </div>
         </div>
-    </div>
-    {{--Box 4--}}
-    <div class="item">
-        <h6 style="margin-top: 5px;">Distribuição de o.s</h6> <!-- Ajuste a margem superior conforme necessário -->
-        <div id="graficoPizza" class="box"></div>
-    </div>
-    {{--Box 5--}}
-    {{--Box que contém a lista de pedidos abertos--}}
-    <div class="item">
-        Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
-        <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
-        <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Novo pedido de compra</a>
-        <hr>
-        <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">
-            <div class="card-body">
-                <div class="container">
-                    <table class="condensed-table" id="tb_pedidos_compra">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>ID</th>
-                                <th>Emissão</th>
-                                <th>Previsão</th>
-                                <th>Destino</th>
-                            </tr>
-                        </thead>
+        {{--Box 4--}}
+        <div class="item">
+            <h6 style="margin-top: 5px;">Distribuição de o.s</h6> <!-- Ajuste a margem superior conforme necessário -->
+            <div id="graficoPizza" class="box"></div>
+        </div>
+        {{--Box 5--}}
+        {{--Box que contém a lista de pedidos abertos--}}
+        <div class="item">
+            Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
+            <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
+            <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Novo pedido de compra</a>
+            <hr>
+            <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">
+                <div class="card-body">
+                    <div class="container">
+                        <table class="condensed-table" id="tb_pedidos_compra">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>Emissão</th>
+                                    <th>Previsão</th>
+                                    <th>Destino</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            @foreach ($pedidos_compra as $pedido_compra)
-                            @php
-                            $dataPrevista = \Carbon\Carbon::parse($pedido_compra->data_prevista);
+                            <tbody>
+                                @foreach ($pedidos_compra as $pedido_compra)
+                                @php
+                                $dataPrevista = \Carbon\Carbon::parse($pedido_compra->data_prevista);
 
-                            $dataAtual = \Carbon\Carbon::today();
-                            $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
-                            @endphp
-                            <tr>
-                                <td>
-                                    <a class="" href="{{route('pedido-compra-lista.index', ['numpedidocompra'=>$pedido_compra->id ])}}">
-                                        <span class="material-symbols-outlined">open_in_new</span>
-                                    </a>
-                                </td>
-                                <td>{{ $pedido_compra->id }}</td>
-                                <td>{{\Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y')}} {{ $pedido_compra->hora_emissao}}</td>
-                                <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}
+                                $dataAtual = \Carbon\Carbon::today();
+                                $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
+                                @endphp
+                                <tr>
+                                    <td>
+                                        <a class="" href="{{route('pedido-compra-lista.index', ['numpedidocompra'=>$pedido_compra->id ])}}">
+                                            <span class="material-symbols-outlined">open_in_new</span>
+                                        </a>
+                                    </td>
+                                    <td>{{ $pedido_compra->id }}</td>
+                                    <td>{{\Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y')}} {{ $pedido_compra->hora_emissao}}</td>
+                                    <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
+                                        {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}
 
-                                </td>
+                                    </td>
 
-                                <td>{{ $pedido_compra->equipamento->nome }}</td>
-                                <td hidden>{{ $pedido_compra->descricao}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    {{-----------------------------------------------}}
-                    {{--Div script exibe informações sobre o pedido--}}
-                    <style>
-                        .info-box {
-                            width: 500px;
-                            display: none;
-                            position: absolute;
-                            background-color: aliceblue;
-                            border: 1px solid #ccc;
-                            padding: 10px;
-                            opacity: 0;
-                            transition: opacity 0.5s ease-in-out;
-                            border-radius: 5px;
-                            z-index: 9999;
-                            /* Coloca a div acima de todos os outros elementos */
-                        }
-                    </style>
-                    <script>
-                        var tabela = document.getElementById('tb_pedidos_compra');
-                        var infoBox = document.getElementById('info-box');
-                        var timeoutId;
-
-                        tabela.addEventListener('mouseover', function(event) {
-                            if (event.target.tagName === 'TD') {
-                                timeoutId = setTimeout(function() {
-                                    var row = event.target.parentNode;
-                                    var cells = row.getElementsByTagName('td');
-                                    var labels = ['ID', 'Emissão', 'Previsão de uso', 'Ativo', 'Descrição']; // Rótulos dos campos
-                                    var info = '<div class="info-content" style="text-align: center;">' +
-                                        '<h5 style="margin-bottom: 10px;">Pedido de compra</h5>'; // Adiciona margem inferior para separar do restante do conteúdo
-
-                                    for (var i = 1; i < cells.length; i++) {
-                                        info += '<p><strong>' + labels[i - 1] + ':</strong> ' + cells[i].textContent + '</p>';
-                                    }
-
-                                    info += '</div>';
-
-                                    infoBox.innerHTML = info;
-                                    infoBox.style.display = 'block';
-
-                                    // Posição inicial
-                                    var topPosition = event.clientY + 10;
-                                    var leftPosition = event.clientX + 10;
-
-                                    // Verifica se a posição da div excede a altura da janela
-                                    var windowHeight = window.innerHeight;
-                                    var infoBoxHeight = infoBox.clientHeight;
-                                    if (topPosition + infoBoxHeight > windowHeight) {
-                                        topPosition = windowHeight - infoBoxHeight - 20; // 20 pixels de margem
-                                    }
-
-                                    infoBox.style.top = topPosition + 'px';
-                                    infoBox.style.left = leftPosition + 'px';
-                                    infoBox.style.opacity = 1; // Altera a opacidade para 1 para mostrar a div gradualmente
-                                }, 300); // 2 segundos
+                                    <td>{{ $pedido_compra->equipamento->nome }}</td>
+                                    <td hidden>{{ $pedido_compra->descricao}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{-----------------------------------------------}}
+                        {{--Div script exibe informações sobre o pedido--}}
+                        <style>
+                            .info-box {
+                                width: 500px;
+                                display: none;
+                                position: absolute;
+                                background-color: aliceblue;
+                                border: 1px solid #ccc;
+                                padding: 10px;
+                                opacity: 0;
+                                transition: opacity 0.5s ease-in-out;
+                                border-radius: 5px;
+                                z-index: 9999;
+                                /* Coloca a div acima de todos os outros elementos */
                             }
-                        });
+                        </style>
+                        <script>
+                            var tabela = document.getElementById('tb_pedidos_compra');
+                            var infoBox = document.getElementById('info-box');
+                            var timeoutId;
 
-                        tabela.addEventListener('mouseout', function() {
-                            clearTimeout(timeoutId);
-                            infoBox.style.opacity = 0; // Altera a opacidade para 0 para esconder a div gradualmente
-                        });
-                    </script>
+                            tabela.addEventListener('mouseover', function(event) {
+                                if (event.target.tagName === 'TD') {
+                                    timeoutId = setTimeout(function() {
+                                        var row = event.target.parentNode;
+                                        var cells = row.getElementsByTagName('td');
+                                        var labels = ['ID', 'Emissão', 'Previsão de uso', 'Ativo', 'Descrição']; // Rótulos dos campos
+                                        var info = '<div class="info-content" style="text-align: center;">' +
+                                            '<h5 style="margin-bottom: 10px;">Pedido de compra</h5>'; // Adiciona margem inferior para separar do restante do conteúdo
 
+                                        for (var i = 1; i < cells.length; i++) {
+                                            info += '<p><strong>' + labels[i - 1] + ':</strong> ' + cells[i].textContent + '</p>';
+                                        }
 
+                                        info += '</div>';
+
+                                        infoBox.innerHTML = info;
+                                        infoBox.style.display = 'block';
+
+                                        // Posição inicial
+                                        var topPosition = event.clientY + 10;
+                                        var leftPosition = event.clientX + 10;
+
+                                        // Verifica se a posição da div excede a altura da janela
+                                        var windowHeight = window.innerHeight;
+                                        var infoBoxHeight = infoBox.clientHeight;
+                                        if (topPosition + infoBoxHeight > windowHeight) {
+                                            topPosition = windowHeight - infoBoxHeight - 20; // 20 pixels de margem
+                                        }
+
+                                        infoBox.style.top = topPosition + 'px';
+                                        infoBox.style.left = leftPosition + 'px';
+                                        infoBox.style.opacity = 1; // Altera a opacidade para 1 para mostrar a div gradualmente
+                                    }, 300); // 2 segundos
+                                }
+                            });
+
+                            tabela.addEventListener('mouseout', function() {
+                                clearTimeout(timeoutId);
+                                infoBox.style.opacity = 0; // Altera a opacidade para 0 para esconder a div gradualmente
+                            });
+                        </script>
+
+                    </div>
                 </div>
-
             </div>
-
-
         </div>
+        {{--Box 6--}}
+        <style>
+            .scrollable {
+                max-height: 300px;
+                overflow: auto;
+                border: 1px solid #ccc;
+                padding: 10px;
+            }
 
+            form {
+                font-size: 15px;
+                color: black;
+                font-stretch: condensed;
+                font-weight: 300;
+
+            }
+
+            .div-os-sm {
+                font-size: 12px;
+                font-weight: 400;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-stretch: ultra-condensed;
+                color: black;
+                border-radius: 5px;
+                padding: 1px;
+                margin: 1px;
+                background-color: rgb(248, 248, 255, 0.7);
+
+            }
+        </style>
+        <div class="item">
+            Geração de OS ao longo do tempo
+            <hr>
+            <canvas id="myChart2" class="box"></canvas>
+        </div>
     </div>
 
-    {{--Box 6--}}
-    <style>
-        .scrollable {
-            max-height: 300px;
-            overflow: auto;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        form {
-            font-size: 15px;
-            color: black;
-            font-stretch: condensed;
-            font-weight: 300;
-
-        }
-
-        .div-os-sm {
-            font-size: 12px;
-            font-weight: 400;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-stretch: ultra-condensed;
-            color: black;
-            border-radius: 5px;
-            padding: 1px;
-            margin: 1px;
-            background-color: rgb(248, 248, 255, 0.7);
-
-        }
-    </style>
-    <div class="item">
-        Geração de OS ao longo do tempo
-        <hr>
-        <canvas id="myChart2" class="box"></canvas>
-    </div>{{--fim do item 6--}}
+    {{--fim do item 6--}}
+    </div>
     </div>
     <script>
         //-------------------------------------------------------------------------------------------------------
@@ -1220,10 +1094,6 @@
             transition: 1.5s;
             opacity: 0.9;
         }
-
-        /* Remove a borda da última célula */
-        table.condensed-table th:last-child,
-        table.condensed-table td:last-child {}
     </style>
-   
-   
+
+</main>

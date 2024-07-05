@@ -277,16 +277,7 @@ class HomeController extends Controller
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
-        // Array para armazenar as ordens de serviço por dia
-        $ordensPorProximoDia = [
-            'Monday' => $ordens_servicos_next_day,
-            'Tuesday' => $ordens_servicos_second_day,
-            'Wednesday' => $ordens_servicos_third_day,
-            'Thursday' => $ordens_servicos_fourth_day,
-            'Friday' => $ordens_servicos_fifth_day,
-            'Saturday' => $ordens_servicos_sixth_day,
-            'Sunday' => $ordens_servicos_seventh_day
-        ];
+     
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
@@ -309,7 +300,6 @@ class HomeController extends Controller
             'friday' => $ordensPorDia['Friday'],
             'saturday' => $ordensPorDia['Saturday'],
             'sunday' => $ordensPorDia['Sunday'],
-            'ordensPorProximoDia' => $ordensPorProximoDia
 
         ]);
     }
