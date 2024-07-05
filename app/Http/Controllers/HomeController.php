@@ -186,10 +186,7 @@ class HomeController extends Controller
             $dayOfWeek = Carbon::parse($ordem->data_inicio)->format('l');
             $ordensPorDia[$dayOfWeek][] = $ordem;
         }
-
-
         //------------------------------------------------------------//
-        //-----------------------------------------------------------//
         // Função para obter os próximos 7 dias a partir da data atual
 
         function getNext7Days()
@@ -208,35 +205,6 @@ class HomeController extends Controller
         }
 
         // Função para gerar HTML com os dias da semana e as ordens de serviço
-        function generateHtml($ordensPorDia, $next7Days)
-        {
-            $html = "<table border='1'><tr><th>Dia</th><th>Data</th><th>Ordens de Serviço</th></tr>";
-
-            foreach ($next7Days as $date) {
-                $dayOfWeek = $date->format('l'); // Dia da semana em inglês
-                $dateFormatted = $date->format('Y-m-d'); // Data formatada
-
-                $html .= "<tr>";
-                $html .= "<td>{$dayOfWeek}</td>";
-                $html .= "<td>{$dateFormatted}</td>";
-                $html .= "<td>";
-
-                if (!empty($ordensPorDia[$dayOfWeek])) {
-                    foreach ($ordensPorDia[$dayOfWeek] as $ordem) {
-                        $html .= "Ordem ID: {$ordem->id}, Valor GUT: {$ordem->valor_gut}<br>";
-                    }
-                } else {
-                    $html .= "Nenhuma ordem de serviço.";
-                }
-
-                $html .= "</td>";
-                $html .= "</tr>";
-            }
-
-            $html .= "</table>";
-
-            return $html;
-        }
 
         // Chama a função para obter os próximos 7 dias
         $next7Days = getNext7Days();
@@ -271,13 +239,54 @@ class HomeController extends Controller
             $ordensPorDia[$dayOfWeek][] = $ordem;
         }
 
-        // Gera o HTML com os dias da semana e as ordens de serviço
-        $html = generateHtml($ordensPorDia, $next7Days);
-
-        // Exibe o HTML
-        echo $html;
         //------------------------------------------------------------//
+        // Variáveis para armazenar a contagem das ordens de serviço para cada dia
+        // Obter a data atual
+        $monday = Carbon::now();
+        $ordens_servicos_next_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(1))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
 
+        $ordens_servicos_second_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(2))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_third_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(3))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_fourth_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(4))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_fifth_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(5))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_sixth_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(6))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_seventh_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(7))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+        // Array para armazenar as ordens de serviço por dia
+        $ordensPorProximoDia = [
+            'Monday' => $ordens_servicos_next_day,
+            'Tuesday' => $ordens_servicos_second_day,
+            'Wednesday' => $ordens_servicos_third_day,
+            'Thursday' => $ordens_servicos_fourth_day,
+            'Friday' => $ordens_servicos_fifth_day,
+            'Saturday' => $ordens_servicos_sixth_day,
+            'Sunday' => $ordens_servicos_seventh_day
+        ];
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
@@ -300,6 +309,7 @@ class HomeController extends Controller
             'friday' => $ordensPorDia['Friday'],
             'saturday' => $ordensPorDia['Saturday'],
             'sunday' => $ordensPorDia['Sunday'],
+            'ordensPorProximoDia' => $ordensPorProximoDia
 
         ]);
     }

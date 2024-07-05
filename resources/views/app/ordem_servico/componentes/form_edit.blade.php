@@ -1,4 +1,5 @@
 {{--modal window --}}
+
 <script>
     function ValidateHoraInicio() {
         var dataInicioElement = document.getElementById('dataPrevista');
@@ -151,9 +152,10 @@
 </script>
 {{---------------------------------------------------------------------}}
 {{--Inicio de formulário de ordem de serviço--=------------------------}}
-<form action="{{route('ordem-servico.update',['ordem_servico' => $ordem_servico->id]) }}" method="POST">
+<form action="{{ route('ordem-servico.update', ['ordem_servico' => $ordem_servico->id]) }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @method('PUT')
+    @method('PATCH')
+
     <!------------------------------------------------------------------------------------------->
     {{-------------------------------------------------------------------------}}
     {{--início da div que contem os box--}}
@@ -227,13 +229,13 @@
                 <div class="titulo">ID patrimonio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->id }}" disabled style="width:20%;color:#007b00">
+                    <input id="equipamento_id" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->id}}" readonly style="width:20%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Patrimonio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="patrimonio" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;color:#007b00">
+                    <input id="patrimonio" type="text" class="input-text" name="nome" value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Emissor:</div>
@@ -398,6 +400,12 @@
                         }
                     </script>
                     {{-----------------------------------------------------------------}}
+
+                </div>
+                <div class="titulo">Imagem:</div>
+                <hr style="margin-bottom:3px;">
+                <div class="conteudo">
+                    <input class="btn btn-outline-dark btn-sm" type="file" id="imagem" name="imagem" style="font-family:'Poppins', sans-serif; font-weight:300; background-color:green; width:100%">
                 </div>
             </div>
         </div>
@@ -420,50 +428,48 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="gravidade" id="gravidade" value="">
-                    <option value="5">Extremamante grave</option>
-                    <option value="4">Muito grave</option>
-                    <option value="3">Grave</option>
-                    <option value="2">Pouco grave</option>
-                    <option value="1">Nada grave</option>
+                <option value="{{$ordem_servico->gravidade}}">{{$ordem_servico->gravidade}}</option>
+                    <option value="5">Extremamante grave 5</option>
+                    <option value="4">Muito grave 4</option>
+                    <option value="3">Grave 3</option>
+                    <option value="2">Pouco grave 3</option>
+                    <option value="1">Nada grave 1</option>
                 </select>
                 <div class="invalid-tooltip">
-                    Por favor, informe a urgencia.
+                    Por favor, informe a gravidade.
                 </div>
             </div>
             <div class="titulo">Urgência</div>
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="urgencia" id="urgencia" value="">
-                    <option value="5">Extremamante urgente</option>
-                    <option value="4">Urgente</option>
-                    <option value="3">Urgente se possível</option>
-                    <option value="2">Pouco urgente</option>
-                    <option value="1">Não urgente</option>
+                <option value="{{$ordem_servico->urgencia}}">{{$ordem_servico->urgencia}}</option>
+                    <option value="5">Extremamante urgente 5</option>
+                    <option value="4">Urgente 4</option>
+                    <option value="3">Urgente se possível 3</option>
+                    <option value="2">Pouco urgente 2</option>
+                    <option value="1">Não urgente 1</option>
                 </select>
                 <div class="invalid-tooltip">
-                    Por favor, informe a urgencia.
+                    Por favor, informe a Urgência.
                 </div>
             </div>
             <div class="titulo">Tendência</div>
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="tendencia" id="tendencia" value="">
-                    <option value="5">Piorar rápidamante</option>
-                    <option value="4">Piorar em curto prazo</option>
-                    <option value="3">Piorar</option>
-                    <option value="2">Piorar logo prazo</option>
-                    <option value="1">Não irá piorar</option>
+                    <option value="{{$ordem_servico->tendencia}}">{{$ordem_servico->tendencia}}</option>
+                    <option value="5">Piorar rápidamante 5</option>
+                    <option value="4">Piorar em curto prazo 4</option>
+                    <option value="3">Piorar 3</option>
+                    <option value="2">Piorar logo prazo 2</option>
+                    <option value="1">Não irá piorar 1</option>
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
                 </div>
             </div>
-            <div class="titulo">Link</div>
-            <hr>
-            <div class="conteudo">
-                <input id="link_foto" type="text" class="input-text" name="link_foto" value="{{$ordem_servico->link_foto}}" readonly>
-                {{ $errors->has('link_foto') ? $errors->first('link_foto') : '' }}
-            </div>
+
             <div class="titulo">Causa</div>
             <hr>
             <div class="conteudo">

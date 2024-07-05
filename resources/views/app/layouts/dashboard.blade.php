@@ -375,7 +375,6 @@
 
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach($ordens_servicos_aberta_hoje as $os_hoje)
                                 @php
@@ -426,7 +425,7 @@
             .hr-sm-shrt {}
         </style>
         <div class="item">
-            <h6>OS abertas futura</h6>
+            <h6>OS abertas para amanhã</h6>
             <div class="div-os-sm">
                 {{--div sm expan--}}
                 <style>
@@ -454,6 +453,15 @@
                         justify-content: space-between;
                         width: 100%;
                     }
+
+                    .div-font-sm-conteudo {
+                        font-size: 13px !important;
+                        font-weight: 100 !important;
+                        font-family: 'Poppins', sans-serif !important;
+                        margin: 10px;
+                        text-align: left !important;
+                        height: auto;
+                    }
                 </style>
 
                 @foreach($ordens_servicos_futura as $ordem_servico)
@@ -465,13 +473,73 @@
                 @endphp
                 <div class="div-tuggle-row" onclick="FunToggle('{{ $uniqueId }}')">
                     <div class="div-sm-cabecalho">
-                        <div>
+                        <div> <a href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}">
+                                <span class="material-symbols-outlined">
+                                    open_in_new
+                                </span>
+                            </a></div>
+                        <div class="div-font-sm-conteudo">{{$ordem_servico->id}}</div>
+                        <div class="div-font-sm-conteudo">
                             <span class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
+
                                 {{ \Carbon\Carbon::parse($ordem_servico->data_inicio)->format('d/m/Y') }} {{$ordem_servico->hora_inicio}}</span>
                         </div>
-                        <div>{{$ordem_servico->equipamento->nome}}</div>
-                        <div>{{$ordem_servico->valor_gut}}</div>
+                        <div class="div-font-sm-conteudo">{{$ordem_servico->equipamento->nome}}</div>
+                        {{----------------------------------------------------------------------}}
+                        {{--Progress bar GUT ------------------------------------------------}}
+                        <input type="text" value="{{ $ordem_servico->valor_gut}}" id="progress-input" hidden>
+                        <div class="progress">
+                            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="125" style="color:black">
+                                {{ $ordem_servico->valor_gut}}
+                            </div>
+                        </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var progressBar = document.getElementById('progress-bar');
+                                var progressInput = document.getElementById('progress-input');
 
+                                // Função para atualizar a barra de progresso
+                                function updateProgressBar(value) {
+                                    progressBar.style.width = value + '%';
+                                    progressBar.setAttribute('aria-valuenow', value);
+                                    progressBar.textContent = value; // Atualiza o texto da barra de progresso
+                                    updateProgressBarColor(value);
+                                }
+
+                                // Função para atualizar a cor da barra de progresso
+                                function updateProgressBarColor(value) {
+                                    if (value <= 50) {
+                                        progressBar.style.backgroundColor = 'blue';
+                                    } else if (value > 50 && value <= 80) {
+                                        progressBar.style.backgroundColor = 'yellow';
+                                    } else {
+                                        progressBar.style.backgroundColor = 'orange';
+                                    }
+                                }
+
+                                // Chama a função de atualização da barra de progresso com o valor inicial do input
+                                updateProgressBar(progressInput.value);
+
+                                // Adiciona um ouvinte de eventos para o input
+                                progressInput.addEventListener('input', function() {
+                                    var value = progressInput.value;
+                                    updateProgressBar(value);
+                                });
+                            });
+                        </script>
+                        <style>
+                            .wide-progress {
+                                width: 100%;
+                                /* Ajuste esta largura conforme necessário */
+                               
+                            }
+
+                            .progress {
+                                width: 50px;
+                                
+                            }
+                        </style>
+                        {{--------------------------------Fim GUT------------------------------------}}
                         <div style="display:flex">
                             <span id="stat0-{{ $uniqueId }}" class="material-symbols-outlined" style="display:none;">
                                 stat_1
@@ -482,8 +550,8 @@
                         </div>
                     </div>
                     <hr class="hr-sm-tuggle">
-                    <div id="div-Toggle-{{ $uniqueId }}" style="height:30px; display:none;">
-                        <p>{{$ordem_servico->descricao}}</p>
+                    <div class="div-font-sm-conteudo" id="div-Toggle-{{ $uniqueId }}" style="height:auto; display:none;">
+                        {{$ordem_servico->descricao}}
                     </div>
                     <hr>
                 </div>
@@ -510,88 +578,126 @@
                 <div>
                     <h6>Segunda</h6>
                     @foreach($monday as $ordem)
-                    <p><span class="txt-conteudo-sm" style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:10px;">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</span>
-                    <p><span class="txt-conteudo-sm" style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:10px;">Descrição: {{ $ordem->descricao }}</span>
+                    <p><span class="txt-conteudo-sm" style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</span>
+                    <p><span class="txt-conteudo-sm" style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">Descrição: {{ $ordem->descricao }}</span>
                         <span>Equipamento: {{ $ordem->equipamento->nome }}-Valor GUT: {{ $ordem->valor_gut }}</span>
                     </p>
                     <p style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">Valor GUT:{{ $ordem->valor_gut }}</p>
+                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a>
                     <hr>
                 </div>
                 @endforeach
                 {{------------------------------------------------------------------------}}
-                <!DOCTYPE html>
-                <html lang="en">
 
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Expandir Div</title>
-                    <!-- Adicione o link para a biblioteca Material Symbols -->
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+                {{-------------------------------------------------------------------------}}
+                <hr class="hr-sm">
+                <h6>Terça</h6>
+                @foreach($tuesday as $ordem)
+                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                    <span class="material-symbols-outlined">
+                        open_in_new
+                    </span>
+                </a>
+                <hr>
+                @endforeach
+                <h6>Quarta</h6>
+                @foreach($wednesday as $ordem)
+                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                    <span class="material-symbols-outlined">
+                        open_in_new
+                    </span>
+                </a>
+                <hr>
+                @endforeach
 
+                <h6>Quinta</h6>
+                @foreach($thursday as $ordem)
+                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                    <span class="material-symbols-outlined">
+                        open_in_new
+                    </span>
+                </a>
+                <hr>
+                @endforeach
 
+                <h6>Sexta</h6>
+                @foreach($friday as $ordem)
+                <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <p>Descrição: {{ $ordem->descricao }}</p>
+                <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
+                <p>Valor GUT: {{ $ordem->valor_gut }}</p>
+                <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                    <span class="material-symbols-outlined">
+                        open_in_new
+                    </span>
+                </a>
+                <hr>
+                @endforeach
 
-                    {{-------------------------------------------------------------------------}}
-                    <hr class="hr-sm">
-                    <h6>Terça</h6>
-                    @foreach($tuesday as $ordem)
-                    <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+                <h6>Sabado</h>
+                    @foreach($saturday as $ordem)
+                    <p><a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                            <span class="material-symbols-outlined">
+                                open_in_new
+                            </span>
+                        </a style="font-family:arial,sans-serif;font-size:15px;font-weight:300;margin:5px;">ID: {{ $ordem->id }}</p>
+                    <p>Data Início: {{ $ordem->data_inicio }}</p>
                     <p>Descrição: {{ $ordem->descricao }}</p>
                     <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
                     <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                    <br>
+                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a>
+                    <hr>
                     @endforeach
-                    <h6>Quarta</h6>
-                    @foreach($wednesday as $ordem)
-                    <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
+
+                    <h6>Domingo</h6>
+                    @foreach($sunday as $ordem)
+                    <p> <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem->id])}}">
+                            <span class="material-symbols-outlined">
+                                open_in_new
+                            </span>
+                        </a>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
                     <p>Descrição: {{ $ordem->descricao }}</p>
                     <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
                     <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                    <br>
+
+                    <hr>
                     @endforeach
-
-                    <h6>Quinta</h6>
-                    @foreach($thursday as $ordem)
-                    <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                    <p>Descrição: {{ $ordem->descricao }}</p>
-                    <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                    <p>Gravidade: {{ $ordem->gravidade }}</p>
-                    <p>Urgência: {{ $ordem->urgencia }}</p>
-                    <p>Tendência: {{ $ordem->tendencia }}</p>
-                    <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                    <br>
-                    @endforeach
-
-                    <h6>Sexta</h6>
-                    @foreach($friday as $ordem)
-                    <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                    <p>Descrição: {{ $ordem->descricao }}</p>
-                    <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                    <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                    <br>
-                    @endforeach
-
-                    <h6>Sabado</h>
-                        @foreach($saturday as $ordem)
-                        <p>ID: {{ $ordem->id }}</p>
-                        <p>Data Início: {{ $ordem->data_inicio }}</p>
-                        <p>Descrição: {{ $ordem->descricao }}</p>
-                        <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                        <p>Gravidade: {{ $ordem->gravidade }}</p>
-                        <p>Urgência: {{ $ordem->urgencia }}</p>
-                        <p>Tendência: {{ $ordem->tendencia }}</p>
-                        <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                        <br>
-                        @endforeach
-
-                        <h6>Domingo</h6>
-                        @foreach($sunday as $ordem)
-                        <p>ID: {{ $ordem->id }}-Data Início: {{ $ordem->data_inicio }}</p>
-                        <p>Descrição: {{ $ordem->descricao }}</p>
-                        <p>Equipamento: {{ $ordem->equipamento->nome }}</p>
-                        <p>Valor GUT: {{ $ordem->valor_gut }}</p>
-                        <br>
-                        @endforeach
 
             </div>
         </div>
@@ -1119,6 +1225,5 @@
         table.condensed-table th:last-child,
         table.condensed-table td:last-child {}
     </style>
-    <div id="info-box" class="info-box">
-
-    </div>
+   
+   

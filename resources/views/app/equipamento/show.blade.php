@@ -39,6 +39,8 @@
                 <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> dashboard
                 </a>
+                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
+                    <i class="icofont-ui-edit"></i> </a>
             </div>
         </div>
     </div>
@@ -120,7 +122,7 @@
             </div>
             <form id="generateQRForm" action="{{ route('generate-qrcode') }}" method="POST">
                 @csrf
-                <input type="text" hidden name="equipamento_id"  value="{{$equipamento->id}}">
+                <input type="text" hidden name="equipamento_id" value="{{$equipamento->id}}">
                 <input type="hidden" name="url" value="{{ $urlPaginaAtual }}">
                 <a href="#" onclick="event.preventDefault(); document.getElementById('generateQRForm').submit();" style="font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">Clique aqui para gerar o QR Code</a>
 

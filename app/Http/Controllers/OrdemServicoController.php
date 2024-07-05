@@ -277,26 +277,74 @@ class OrdemServicoController extends Controller
         return view('app.ordem_servico.show', ['ordem_servico' => $ordem_servico,]);
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\OrdemServico $ordem_sevico
+     * @param  \App\OrdemServico $ordem_servico
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, OrdemServico $ordem_servico)
     {
-        $ordem_servico->update($request->all()); //
+        // Debugging para verificar dados recebidos
+        //dd($request->all());
+        // Validação dos campos
+        $request->validate([
+            'imagem' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validação da imagem
+            // outras validações, se necessário
+        ]);
+
+        // Upload da nova imagem, se houver
+        if ($request->hasFile('imagem') && $request->file('imagem')->isValid()) {
+            // Apagar a imagem antiga se existir
+            if ($ordem_servico->link_foto) {
+                $imagemCaminho = public_path($ordem_servico->link_foto);
+                // Verifica se o caminho é um arquivo válido antes de tentar excluir
+                if (file_exists($imagemCaminho) && is_file($imagemCaminho)) {
+                    unlink($imagemCaminho);
+                }
+            }
+
+            // Salvar a nova imagem
+            $imagemNome = md5($request->imagem->getClientOriginalName() . '_' . time()) . '.' . $request->imagem->extension();
+            $request->imagem->move(public_path('img/ordem_servico'), $imagemNome);
+            $ordem_servico->link_foto = 'img/ordem_servico/' . $imagemNome;
+        }
+
+        // Atualizar os outros campos
+        $ordem_servico->update([
+            'data_emissao' => $request->data_emissao,
+            'hora_emissao' => $request->hora_emissao,
+            'data_inicio' => $request->data_inicio,
+            'hora_inicio' => $request->hora_inicio,
+            'data_fim' => $request->data_fim,
+            'hora_fim' => $request->hora_fim,
+            'equipamento_id' => $request->equipamento_id, // corrigido para equipamento_id
+            'emissor' => $request->emissor,
+            'responsavel' => $request->responsavel,
+            'descricao' => $request->descricao,
+            'status_servicos' => $request->status_servicos,
+            'gravidade' => $request->gravidade,
+            'urgencia' => $request->urgencia,
+            'tendencia' => $request->tendencia,
+            // 'empresa_id' => $request->empresa_id,
+            'situacao' => $request->situacao,
+            // 'natureza_do_servico' => $request->natureza_do_servico,
+            // 'especialidade_do_servico' => $request->especialidade_do_servico,
+            'link_foto' => $ordem_servico->link_foto // Caminho da imagem
+        ]);
+        // Verificar se o link_foto foi atualizado corretamente
+        ///dd($ordem_servico->link_foto);
+
+        // Recuperar dados para a view
         $idOs = $ordem_servico->id;
         $funcionarios = Funcionario::all();
-        $ordem_servico_1 = OrdemServico::where('id', $idOs)->get();
-        $servicos_executado = Servicos_executado::where('ordem_servico_id',  $idOs)->get();
-        $total_hs_os = Servicos_executado::where('ordem_servico_id',  $idOs)->sum('subtotal');
-        foreach ($ordem_servico_1  as $ordem_servico_f) {
-        }
+        $servicos_executado = Servicos_executado::where('ordem_servico_id', $idOs)->get();
+        $total_hs_os = Servicos_executado::where('ordem_servico_id', $idOs)->sum('subtotal');
+
         return view('app.ordem_servico.show', [
-            'ordem_servico' => $ordem_servico_f, 'servicos_executado' => $servicos_executado,
+            'ordem_servico' => $ordem_servico,
+            'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
             'total_hs_os' => $total_hs_os
         ]);
@@ -322,10 +370,10 @@ class OrdemServicoController extends Controller
             $ordem_servico->delete();
 
             // Exibir mensagem de sucesso estilizada
-            echo "<div style='color: green; font-weight: bold;'>Ordem de serviço ID {$ordem_servico_id } deletada com sucesso.</div>";
+            echo "<div style='color: green; font-weight: bold;'>Ordem de serviço ID {$ordem_servico_id} deletada com sucesso.</div>";
         } else {
             // Exibir mensagem de erro estilizada
-            echo "<div style='color: red; font-weight: bold;'>Erro: Ordem de serviço ID {$ordem_servico_id } não encontrada.</div>";
+            echo "<div style='color: red; font-weight: bold;'>Erro: Ordem de serviço ID {$ordem_servico_id} não encontrada.</div>";
         }
 
         // Parar a execução para garantir que a mensagem seja exibida

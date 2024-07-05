@@ -66,7 +66,7 @@ Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\Equipa
 
 //ordem de serviço
 Route::middleware('auth')->resource('/ordem-servico', 'App\Http\Controllers\OrdemServicoController');
-
+Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 'update'])->name('ordem_servico.update');
 //ordem de serviço rota de pesquisas
 Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
 

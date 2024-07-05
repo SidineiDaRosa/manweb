@@ -358,11 +358,12 @@
                     /* Alinha verticalmente ao centro */
                     height: 100vh;
                     /* Altura do contêiner */
+                  
                 }
 
                 #imagem {
                     width: 100%;
-                    height: 100%;
+                    height: 85%;
                 }
             </style>
             <div class="container">
