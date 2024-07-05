@@ -241,43 +241,44 @@ class HomeController extends Controller
 
         //------------------------------------------------------------//
         // Variáveis para armazenar a contagem das ordens de serviço para cada dia
-        // Obter a data atual
-        $monday = Carbon::now();
-        $ordens_servicos_next_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(1))
+        $today = Carbon::now()->startOfDay(); // Data de hoje, sem componentes de hora/minuto/segundo
+        $ordens_servicos_next_day = OrdemServico::whereDate('data_inicio', $today->copy()->addDays(1))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
 
-        $ordens_servicos_second_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(2))
+        $ordens_servicos_second_day = OrdemServico::whereDate('data_inicio', $today->copy()->addDays(2))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
 
-        $ordens_servicos_third_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(3))
+        // Verificar resultados
+
+        $ordens_servicos_third_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(3))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
 
-        $ordens_servicos_fourth_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(4))
+        $ordens_servicos_fourth_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(4))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
 
-        $ordens_servicos_fifth_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(5))
+        $ordens_servicos_fifth_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(5))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
 
-        $ordens_servicos_sixth_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(6))
+        $ordens_servicos_sixth_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(6))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
 
-        $ordens_servicos_seventh_day = OrdemServico::where('data_inicio', '=', $monday->copy()->addDays(7))
+        $ordens_servicos_seventh_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(7))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
-     
+
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
@@ -300,7 +301,8 @@ class HomeController extends Controller
             'friday' => $ordensPorDia['Friday'],
             'saturday' => $ordensPorDia['Saturday'],
             'sunday' => $ordensPorDia['Sunday'],
-
+            'ordens_servicos_second_day' => $ordens_servicos_second_day,
+            'ordens_servicos_third_day' => $ordens_servicos_third_day
         ]);
     }
 }

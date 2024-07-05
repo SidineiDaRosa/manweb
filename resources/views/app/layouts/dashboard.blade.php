@@ -575,7 +575,17 @@
                     }
                 </script>
                 {{--fim da div expan--}}
-
+                
+                @foreach($ordens_servicos_second_day as $seg_day)
+                <h6>Depois de amanhã:</h6>
+                {{$seg_day}}
+                @endforeach
+                <hr>
+                @foreach($ordens_servicos_third_day as $terc_day)
+                <h6>Terceiro dia:</h6>
+                id:{{$terc_day->id}} <br>
+                Equipamento:{{$terc_day->equipamento->nome}}
+                @endforeach
             </div>
         </div>
         {{--Box 4--}}
