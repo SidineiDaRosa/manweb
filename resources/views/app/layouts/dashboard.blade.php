@@ -236,7 +236,6 @@
                             @foreach($ordens_servicos_abarta_vencidas as $ordens_servicos_venc)
                             @php
                             $dataPrevista = \Carbon\Carbon::parse($ordens_servicos_venc->data_fim);
-
                             $dataAtual = \Carbon\Carbon::today();
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
@@ -414,7 +413,7 @@
 
         <style>
             .txt-conteudo-sm {
-                font-size: 12px;
+                font-size: 13px;
                 font-family: 'Poppins', sans-serif;
                 display: flex;
                 flex-direction: row;
@@ -464,7 +463,7 @@
                     }
                 </style>
 
-                @foreach($ordens_servicos_futura as $ordem_servico)
+                @foreach($ordens_servicos_next_day as $ordem_servico)
                 @php
                 $dataPrevista = \Carbon\Carbon::parse($ordem_servico->data_fim);
                 $dataAtual = \Carbon\Carbon::today();
@@ -575,17 +574,43 @@
                     }
                 </script>
                 {{--fim da div expan--}}
-                
-                @foreach($ordens_servicos_second_day as $seg_day)
-                <h6>Depois de amanhã:</h6>
-                {{$seg_day}}
-                @endforeach
+                @forelse($ordens_servicos_second_day as $seg_day)
+                <h6>Depois de amanhã ({{ \Carbon\Carbon::parse($seg_day->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
+                <div class="div-font-sm-conteudo">
+                    <a href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a>
+                    {{$seg_day->id}}
+                    {{$seg_day->data_inicio}} às {{$seg_day->hora_inicio}} até
+                    {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
+                    {{$seg_day->equipamento->nome}}
+                </div>
+                <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
+                <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
+                @empty
+                <h6>Para depois de amanhã, não há ordens de serviço</h6>
+                @endforelse
                 <hr>
-                @foreach($ordens_servicos_third_day as $terc_day)
-                <h6>Terceiro dia:</h6>
-                id:{{$terc_day->id}} <br>
-                Equipamento:{{$terc_day->equipamento->nome}}
-                @endforeach
+                @forelse($ordens_servicos_third_day as $terc_day)
+                <h6>Para daqui 3 dias ({{ \Carbon\Carbon::parse($terc_day->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
+                <div class="div-font-sm-conteudo">
+                    <a href="{{route('ordem-servico.show', ['ordem_servico' => $terc_day->id])}}">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a>
+                    {{$terc_day->id}}
+                    {{$terc_day->data_inicio}} às {{$terc_day->hora_inicio}} até
+                    {{$terc_day->data_fim}} às {{$terc_day->hora_fim}}
+                    {{$terc_day->equipamento->nome}}
+                </div>
+                <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
+                <div class="div-font-sm-conteudo">{{$terc_day->descricao}}</div>
+                @empty
+                <h6>Para daqui 3 dias, não há ordens de serviço</h6>
+                @endforelse
             </div>
         </div>
         {{--Box 4--}}

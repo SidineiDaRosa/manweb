@@ -242,6 +242,8 @@ class HomeController extends Controller
         //------------------------------------------------------------//
         // Variáveis para armazenar a contagem das ordens de serviço para cada dia
         $today = Carbon::now()->startOfDay(); // Data de hoje, sem componentes de hora/minuto/segundo
+        // Define o fuso horário para São Paulo
+        $timezone = 'America/Sao_Paulo';
         $ordens_servicos_next_day = OrdemServico::whereDate('data_inicio', $today->copy()->addDays(1))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
@@ -301,6 +303,7 @@ class HomeController extends Controller
             'friday' => $ordensPorDia['Friday'],
             'saturday' => $ordensPorDia['Saturday'],
             'sunday' => $ordensPorDia['Sunday'],
+            'ordens_servicos_next_day'=>$ordens_servicos_next_day,
             'ordens_servicos_second_day' => $ordens_servicos_second_day,
             'ordens_servicos_third_day' => $ordens_servicos_third_day
         ]);
