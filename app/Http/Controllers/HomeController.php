@@ -249,10 +249,21 @@ class HomeController extends Controller
             ->where('empresa_id', '<=', 2)
             ->get();
 
+        // Calcula o valor GUT para cada ordem de serviço e armazena em uma coleção
+        $ordens_servicos_next_day = $ordens_servicos_next_day->map(function ($ordem) {
+            $ordem->valor_gut = $ordem->gravidade * $ordem->urgencia * $ordem->tendencia;
+            return $ordem;
+        });
+
         $ordens_servicos_second_day = OrdemServico::whereDate('data_inicio', $today->copy()->addDays(2))
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
+        // Calcula o valor GUT para cada ordem de serviço e armazena em uma coleção
+        $ordens_servicos_second_day =  $ordens_servicos_second_day->map(function ($ordem) {
+            $ordem->valor_gut = $ordem->gravidade * $ordem->urgencia * $ordem->tendencia;
+            return $ordem;
+        });
 
         // Verificar resultados
 
@@ -303,7 +314,7 @@ class HomeController extends Controller
             'friday' => $ordensPorDia['Friday'],
             'saturday' => $ordensPorDia['Saturday'],
             'sunday' => $ordensPorDia['Sunday'],
-            'ordens_servicos_next_day'=>$ordens_servicos_next_day,
+            'ordens_servicos_next_day' => $ordens_servicos_next_day,
             'ordens_servicos_second_day' => $ordens_servicos_second_day,
             'ordens_servicos_third_day' => $ordens_servicos_third_day
         ]);

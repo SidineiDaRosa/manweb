@@ -398,9 +398,20 @@
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td>{{$os_hoje->equipamento->nome}}</td>
-                                    <td>{{$os_hoje->valor_gut}}</td>
-                                </tr>
-                                @endforeach
+                                    <td>
+                                        {{-- Valor GUT --}}
+                                        @php
+                                        $valorGUT = $os_hoje->valor_gut;
+
+                                        // Determina a cor da barra de progresso
+                                        if ($valorGUT <= 50) { $progressColor='blue' ; } elseif ($valorGUT> 50 && $valorGUT <= 80) { $progressColor='yellow' ; } else { $progressColor='orange' ; }; @endphp <input type="text" value="{{ $valorGUT }}" id="progress-input-today" hidden>
+                                                <div class="progress">
+                                                    <div id="progress-bar-today" class="progress-bar" role="progressbar" aria-valuenow="{{ $valorGUT }}" aria-valuemin="0" aria-valuemax="125" style="width: {{ $valorGUT }}%; background-color: {{ $progressColor }}; color: black;">
+                                                        {{ $valorGUT }}
+                                                    </div>
+                                                </div>
+                                    </td>
+                                    @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -455,7 +466,7 @@
 
                     .div-font-sm-conteudo {
                         font-size: 13px !important;
-                        font-weight: 100 !important;
+                        font-weight: 300 !important;
                         font-family: 'Poppins', sans-serif !important;
                         margin: 10px;
                         text-align: left !important;
@@ -485,24 +496,26 @@
                         </div>
                         <div class="div-font-sm-conteudo">{{$ordem_servico->equipamento->nome}}</div>
                         {{----------------------------------------------------------------------}}
-                        {{--Progress bar GUT ------------------------------------------------}}
-                        <input type="text" value="{{ $ordem_servico->valor_gut}}" id="progress-input" hidden>
+                        {{-- Progress bar GUT ------------------------------------------------ --}}
+                        <input type="text" value="{{ $ordem_servico->valor_gut }}" id="progress-input-{{ $ordem_servico->id }}" hidden>
                         <div class="progress">
-                            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="125" style="color:black">
-                                {{ $ordem_servico->valor_gut}}
+                            <div id="progress-bar-{{ $ordem_servico->id }}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="125" style="color:black">
+                                {{ $ordem_servico->valor_gut }}
                             </div>
                         </div>
+
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                var progressBar = document.getElementById('progress-bar');
-                                var progressInput = document.getElementById('progress-input');
+                                var progressBar = document.getElementById('progress-bar-{{ $ordem_servico->id }}');
+                                var progressInput = document.getElementById('progress-input-{{ $ordem_servico->id }}');
 
                                 // Função para atualizar a barra de progresso
                                 function updateProgressBar(value) {
-                                    progressBar.style.width = value + '%';
-                                    progressBar.setAttribute('aria-valuenow', value);
-                                    progressBar.textContent = value; // Atualiza o texto da barra de progresso
-                                    updateProgressBarColor(value);
+                                    var numericValue = parseFloat(value);
+                                    progressBar.style.width = numericValue + '%';
+                                    progressBar.setAttribute('aria-valuenow', numericValue);
+                                    progressBar.textContent = numericValue; // Atualiza o texto da barra de progresso
+                                    updateProgressBarColor(numericValue);
                                 }
 
                                 // Função para atualizar a cor da barra de progresso
@@ -521,23 +534,35 @@
 
                                 // Adiciona um ouvinte de eventos para o input
                                 progressInput.addEventListener('input', function() {
-                                    var value = progressInput.value;
+                                    var value = parseFloat(progressInput.value);
                                     updateProgressBar(value);
                                 });
                             });
                         </script>
+
                         <style>
                             .wide-progress {
                                 width: 100%;
                                 /* Ajuste esta largura conforme necessário */
-
                             }
 
                             .progress {
                                 width: 50px;
-
                             }
                         </style>
+
+
+                        <style>
+                            .wide-progress {
+                                width: 100%;
+                                /* Ajuste esta largura conforme necessário */
+                            }
+
+                            .progress {
+                                width: 50px;
+                            }
+                        </style>
+
                         {{--------------------------------Fim GUT------------------------------------}}
                         <div style="display:flex">
                             <span id="stat0-{{ $uniqueId }}" class="material-symbols-outlined" style="display:none;">
