@@ -260,7 +260,7 @@
                 <div class="titulo">Emissão:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="date" class="input-text" id="data_emissao1" name="data_emissao" value="{{$ordem_servico->data_emissao}}" readonly>
+                    <input type="date" class="input-text" id="data_emissao" name="data_emissao" value="{{$ordem_servico->data_emissao}}" readonly>
                     <div class="invalid-tooltip">
                         informe a data
                     </div>
@@ -296,23 +296,23 @@
                     <script>
                         function ValidateDate() {
                             // Validação de data
-                            let dataEmissao = document.getElementById('data_emissao1').value;
-                            let dataPrevista = document.getElementById('data_prevista').value;
-                            let dataFim = document.getElementById('data_fim').value;
+                            let dataEmissao = document.getElementById('data_emissao').value;
+                            let dataPrevista = document.getElementById('dataPrevista').value;
+                            let dataFim = document.getElementById('dataFim').value;
                             if (dataPrevista < dataEmissao) {
                                 alert('A data prevista deve ser maior que a data de emissão!');
-                                document.getElementById('data_prevista').value = 'null';
-                                document.getElementById('data_prevista').style.backgroundColor = '#FFC0CB';
-                                document.getElementById('data_prevista').focus();
+                                document.getElementById('dataPrevista').value = 'null';
+                                document.getElementById('dataPrevista').style.backgroundColor = '#FFC0CB';
+                                document.getElementById('dataPrevista').focus();
                             } else {
-                                document.getElementById('data_prevista').style.backgroundColor = '#7FFF7F';
+                                document.getElementById('dataPrevista').style.backgroundColor = '#7FFF7F';
 
                                 if (dataFim < dataPrevista) {
-                                    document.getElementById('data_fim').value = 'null';
-                                    document.getElementById('data_fim').style.backgroundColor = '#FFC0CB';
+                                    document.getElementById('dataFim').value = 'null';
+                                    document.getElementById('dataFim').style.backgroundColor = '#FFC0CB';
                                 } else {
 
-                                    document.getElementById('data_fim').style.backgroundColor = '#7FFF7F';
+                                    document.getElementById('dataFim').style.backgroundColor = '#7FFF7F';
                                 }
 
                             }
