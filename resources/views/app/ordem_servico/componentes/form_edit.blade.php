@@ -264,7 +264,7 @@
                     <div class="invalid-tooltip">
                         informe a data
                     </div>
-                    <input type="time" class="input-text" name=hora_emissao id="hora_Emissao1" required value="{{$ordem_servico->hora_emissao}}" readonly>
+                    <input type="time" class="input-text" name="hora_emissao" id="hora_Emissao1" required value="{{$ordem_servico->hora_emissao}}" readonly>
                     <div class="invalid-tooltip">
                         Por favor, informe a hora.
                     </div>
@@ -272,13 +272,30 @@
                 <div class="titulo">Previsão para início:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="date" class="input-text" name="data_inicio" id="data_prevista" placeholder="dataPrevista" required value="{{$ordem_servico->data_inicio}}" onchange=" ValidateDate()">
+                    <input type="date" class="input-text" name="data_inicio" id="dataPrevista" required value="{{$ordem_servico->data_inicio}}" onchange=" ValidateDate()">
                     <div class="invalid-tooltip">
                         Por favor, informe data
                     </div>
+                    <input type="time" class="input-text" name="hora_inicio" id="hora_Inicio" required value="{{$ordem_servico->hora_inicio}}">
+                    <div class="invalid-tooltip">
+                        Por favor, informe hora.
+                    </div>
+                </div>
+                <div class="titulo">Previsão para finalização:</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="date" class="input-text" name="data_fim" id="dataFim" required value="{{$ordem_servico->data_fim}}" required onchange="ValidateDate()">
+                    <div class="invalid-tooltip">
+                        Por favor, informe dataFim.
+                    </div>
+
+                    <input type="time" class="input-text" name="hora_fim" id="hora_Fim" value="{{$ordem_servico->hora_fim}}" onchange="ValidateHoraFim()">
+                    <div class="invalid-tooltip">
+                        Por favor, informe um estado válido.
+                    </div>
                     <script>
                         function ValidateDate() {
-
+                            // Validação de data
                             let dataEmissao = document.getElementById('data_emissao1').value;
                             let dataPrevista = document.getElementById('data_prevista').value;
                             let dataFim = document.getElementById('data_fim').value;
@@ -300,23 +317,48 @@
 
                             }
                         }
+                        // Validação de horas
+                        function ValidateHoraFim() {
+
+                            // Validação de data
+                            let dataInicio = document.getElementById('dataPrevista').value;
+
+                            let horaInicio = document.getElementById('hora_Inicio').value;
+
+                            let dataFim = document.getElementById('dataFim').value;
+
+                            let horaFim = document.getElementById('hora_Fim').value;
+
+                            // Validação de data e hora
+                            // Verifica se as datas e horas estão preenchidas
+                            if (!dataInicio || !horaInicio || !dataFim) {
+                                alert('Por favor, preencha todas as datas e horas.');
+                                return;
+                            }
+
+                            // Verifica se dataPrevista é igual a dataFim para validar as horas
+                            if (dataInicio === dataFim) {
+                                // Verifica se horaFim é maior que horaInicio
+                                if (horaFim <= horaInicio) {
+                                    alert('Hora de fim deve ser maior que hora de início.');
+                                    document.getElementById('hora_Fim').style.backgroundColor = 'red'
+                                    document.getElementById('hora_Fim').value = ''
+                                    return;
+                                } else {
+                                    document.getElementById('hora_Fim').style.backgroundColor = "rgb(150, 255, 150)"
+                                    document.getElementById('hora_Inicio').style.backgroundColor = "rgb(150, 255, 150)"
+                                }
+                            } else {
+                                document.getElementById('hora_Fim').style.backgroundColor = "rgb(150, 255, 150)"
+                                document.getElementById('hora_Inicio').style.backgroundColor = "rgb(150, 255, 150)"
+                            }
+                            // Resetar estilos caso válido
+                            //horaInicioElement.style.background = "rgb(150, 255, 150)";
+                            //horaFimElement.style.background = "rgb(150, 255, 150)";
+                            // document.getElementById('hora_Fim').style.backgroundColor = "rgb(150, 255, 150)"
+                            //document.getElementById('hora_Fim').style.background = ''
+                        }
                     </script>
-                    <input type="time" class="input-text" name="hora_inicio" id="hora_prevista" placeholder="horaPrevista" required value="{{$ordem_servico->hora_inicio}}">
-                    <div class="invalid-tooltip">
-                        Por favor, informe hora.
-                    </div>
-                </div>
-                <div class="titulo">Previsão para finalização:</div>
-                <hr>
-                <div class="conteudo">
-                    <input type="date" class="input-text" name="data_fim" id="data_fim" placeholder="dataFim" required value="{{$ordem_servico->data_fim}}" required onchange="ValidateDate()">
-                    <div class="invalid-tooltip">
-                        Por favor, informe dataFim.
-                    </div>
-                    <input type="time" class="input-text" name="hora_fim" id="hora_Fim" placeholder="horaFim" required value="{{$ordem_servico->hora_fim}}">
-                    <div class="invalid-tooltip">
-                        Por favor, informe um estado válido.
-                    </div>
                 </div>
             </div>
         </div>
@@ -428,7 +470,7 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="gravidade" id="gravidade" value="">
-                <option value="{{$ordem_servico->gravidade}}">{{$ordem_servico->gravidade}}</option>
+                    <option value="{{$ordem_servico->gravidade}}">{{$ordem_servico->gravidade}}</option>
                     <option value="5">Extremamante grave 5</option>
                     <option value="4">Muito grave 4</option>
                     <option value="3">Grave 3</option>
@@ -443,7 +485,7 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="urgencia" id="urgencia" value="">
-                <option value="{{$ordem_servico->urgencia}}">{{$ordem_servico->urgencia}}</option>
+                    <option value="{{$ordem_servico->urgencia}}">{{$ordem_servico->urgencia}}</option>
                     <option value="5">Extremamante urgente 5</option>
                     <option value="4">Urgente 4</option>
                     <option value="3">Urgente se possível 3</option>

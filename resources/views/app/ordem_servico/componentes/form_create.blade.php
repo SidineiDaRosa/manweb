@@ -301,6 +301,7 @@
                     <option value="indefinido">Indefinido</option>
                     <option value="cancelada">Cancelada</option>
                     <option value="em andamento">Em andamento</option>
+                    <option value="em andamento">Pausado</option>
                 </select>
                 <div class="conteudo">
                 </div>
@@ -316,6 +317,7 @@
                     <option value="Preditiva">Preditiva</option>
                     <option value="Instalação">Instalação</option>
                     <option value="rotina">Rotina periódica</option>
+                    <option value="rotina">Outro</option>
                     <!-- Outras naturezas conforme necessário -->
                 </select>
             </div>
