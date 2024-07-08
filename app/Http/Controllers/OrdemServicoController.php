@@ -181,6 +181,17 @@ class OrdemServicoController extends Controller
             'imagem' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validação da imagem
             // outros campos de validação, se necessário
         ]);
+        // Verificar duplicidade
+        $duplicateOS = OrdemServico::where('data_emissao', $request->data_emissao)
+            ->where('hora_emissao', $request->hora_emissao)
+            ->where('equipamento_id', $request->equipamento_id)
+            ->where('emissor', $request->emissor)
+            ->where('responsavel', $request->responsavel)
+            ->first();
+
+        if ($duplicateOS) {
+            return redirect()->back()->withErrors('Ordem de serviço já existente.');
+        }
 
         // Upload da imagem
         $imagemNome = null;
