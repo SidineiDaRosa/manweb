@@ -453,14 +453,18 @@
         </div>
         {{--Box 3--}}
         <div class="item">
-            <div class="titulo">tipo de O.S</div>
+            <div class="titulo">Natureza da O.S</div>
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="tendencia" id="tendencia" value="">
-                    <option value="Corretiva">Corretiva</option>
+                    <option value="corretiva">Corretiva</option>
+                    <option value="ampliacao">Ampliação</option>
+                    <option value="investimento">Investimento</option>
                     <option value="Preventiva">Preventiva</option>
-                    <option value="Preditiva">preditiva</option>
-                    <option value="Melhoria">Melhoria</option>
+                    <option value="Preditiva">Preditiva</option>
+                    <option value="Instalação">Instalação</option>
+                    <option value="rotina">Rotina periódica</option>
+                    <option value="rotina">Outro</option>
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
@@ -516,9 +520,12 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="causa" id="causa" value="">
-                    <option value="5">Quebra</option>
-                    <option value="4">Imprevisto</option>
+                    <option value="6">Nenhuma</option>
+                    <option value="5">Quebra imprevisto</option>
+                    <option value="4">Erro operacional</option>
                     <option value="3">Proposital</option>
+                    <option value="2">Desgaste Fadiga</option>
+                    <option value="1">Erro de projeto peça com defeito</option>
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
@@ -528,9 +535,10 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="efeito" id="efeito" value="">
-                    <option value="5">Prejuizo na produção</option>
-                    <option value="4">Atrazo</option>
+                    <option value="2">Nenhum</option>
                     <option value="3">Riscos humano</option>
+                    <option value="4">Atrazo na produção</option>
+                    <option value="5">Prejuizo na produção</option>
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.

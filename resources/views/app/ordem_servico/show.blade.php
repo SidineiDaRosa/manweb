@@ -342,34 +342,76 @@
                         <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
                         Fechar Ordem de serviço</button>
                 </div>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
                 <div class="d-grid gap-2 d-sm-flex justify-content float-right">
-                    <button id="bt_iniciar_os" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="">
+                    <button id="bt_iniciar_os" class="btn btn-outline-secondary" onclick="StartOs()">
                         <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
-                        Iniciar OS</button>
+                        Iniciar OS
+                    </button>
                 </div>
-            </div>
-            <!-- arquivo resources/views/atualizar-registro.blade.php -->
-            <style>
-                .container {
-                    display: flex;
-                    justify-content: center;
-                    /* Alinha horizontalmente ao centro */
-                    align-items: center;
-                    /* Alinha verticalmente ao centro */
-                    height: 100vh;
-                    /* Altura do contêiner */
-                  
-                }
 
-                #imagem {
-                    width: 100%;
-                    height: 85%;
-                }
-            </style>
-            <div class="container">
-                <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
+                <div id="mensagem"></div>
 
+                <script>
+                    function StartOs() {
+                      
+                        Swal.fire({
+                            title: 'Quer iniciar a O.S ?',
+                            showDenyButton: true,
+                            confirmButtonText: 'Sim',
+                            denyButtonText: 'Não',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire('O.S sendo iniciada', '', 'success');
+
+                                // Iniciar ordem de serviço
+                                var valor = $('#valor').val(); // Obtém o valor do input
+
+                                $.ajax({
+                                    type: 'GET', // Método HTTP da requisição
+                                    url: '{{ route("start-os") }}', // URL para onde a requisição será enviada
+                                    data: {
+                                        valor: valor
+                                    }, // Dados a serem enviados (no formato chave: valor)
+                                    success: function(response) {
+                                        $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
+                                        // $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
+                                    },
+                                    error: function(xhr, status, error) {
+                                        $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver
+                                        $('#erroModal').modal('show'); // Exibe a modal de erro
+                                    }
+                                });
+                            } else if (result.isDenied) {
+                                Swal.fire('Inicio de O.S Cancelado!', '', 'info');
+                            }
+                        });
+                    }
+                </script>
             </div>
+        </div>
+        <!-- arquivo resources/views/atualizar-registro.blade.php -->
+        <style>
+            .container {
+                display: flex;
+                justify-content: center;
+                /* Alinha horizontalmente ao centro */
+                align-items: center;
+                /* Alinha verticalmente ao centro */
+                height: 100vh;
+                /* Altura do contêiner */
+
+            }
+
+            #imagem {
+                width: 100%;
+                height: 85%;
+            }
+        </style>
+        <div class="container">
+            <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
+
+        </div>
 
 </main>
 @endsection
@@ -445,29 +487,6 @@
                 success: function(response) {
                     $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
                     $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
-                },
-                error: function(xhr, status, error) {
-                    $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver
-                    $('#erroModal').modal('show'); // Exibe a modal de sucesso
-                }
-            });
-        });
-    });
-    //----------------------------------------------------------------------------//
-    //Iniciar ordem de serviço
-    $(document).ready(function() {
-        $('#bt_iniciar_os').click(function() {
-            var valor = $('#valor').val(); // Obtém o valor do input
-
-            $.ajax({
-                type: 'GET', // Método HTTP da requisição
-                url: '{{ route("start-os") }}', // URL para onde a requisição será enviada
-                data: {
-                    valor: valor
-                }, // Dados a serem enviados (no formato chave: valor)
-                success: function(response) {
-                    $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
-                    // $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
                 },
                 error: function(xhr, status, error) {
                     $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver

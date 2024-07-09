@@ -328,7 +328,7 @@
                     <option value="eletrica">Elétrica</option>
                     <option value="civil">Civil</option>
                     <option value="mecanica">Mecânica</option>
-                    <option value="sesmt">Mecânica</option>
+                    <option value="sesmt">SESMT</option>
                     <!-- Outras especialidades conforme necessário -->
                 </select>
             </div>
@@ -375,11 +375,12 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="causa" id="causa" value="">
+                    <option value="6">Nenhum</option>
                     <option value="5">Quebra imprevisto</option>
                     <option value="4">Erro operacional</option>
                     <option value="3">Proposital</option>
-                    <option value="3">Desgaste Fadiga</option>
-                    <option value="3">Erro de projeto peça com defeito</option>
+                    <option value="2">Desgaste Fadiga</option>
+                    <option value="1">Erro de projeto peça com defeito</option>
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
@@ -389,9 +390,10 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="efeito" id="efeito" value="">
-                    <option value="5">Prejuizo na produção</option>
-                    <option value="4">Atrazo na produção</option>
+                    <option value="2">Nenhum</option>
                     <option value="3">Riscos humano</option>
+                    <option value="4">Atrazo na produção</option>
+                    <option value="5">Prejuizo na produção</option>
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
