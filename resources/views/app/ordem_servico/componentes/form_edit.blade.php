@@ -556,9 +556,66 @@
                     Por favor, informe a tendência.
                 </div>
             </div>
+            {{-- Início de assinatura manual --}}
+            <div id="confirmacao" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
+                    <p>Deseja salvar esta assinatura?</p>
+                    <button type="button" class="btn btn-success" onclick="saveSignature()">Sim</button>
+                    <button type="button" class="btn btn-danger" onclick="cancelSignature()">Cancelar</button>
+                </div>
+            </div>
+
+            <canvas id="meuCanvas" width="150" height="50" style="border: 1px solid black;"></canvas>
+            <input type="hidden" id="signature_receptor" name="signature_receptor"> <br>
+            <button type="button" class="btn btn-outline-primary btn-sm" id="salvar" onclick="showConfirmation()">
+                Salvar Assinatura
+            </button>
+
+            <script>
+                const canvas = document.getElementById('meuCanvas');
+                const ctx = canvas.getContext('2d');
+                let desenhando = false;
+
+                canvas.addEventListener('mousedown', (e) => {
+                    desenhando = true;
+                    ctx.beginPath();
+                    ctx.moveTo(e.offsetX, e.offsetY);
+                });
+
+                canvas.addEventListener('mousemove', (e) => {
+                    if (desenhando) {
+                        ctx.lineTo(e.offsetX, e.offsetY);
+                        ctx.stroke();
+                    }
+                });
+
+                canvas.addEventListener('mouseup', () => {
+                    desenhando = false;
+                });
+
+                canvas.addEventListener('mouseout', () => {
+                    desenhando = false;
+                });
+
+                function showConfirmation() {
+                    document.getElementById('confirmacao').style.display = 'block';
+                }
+
+                function saveSignature() {
+                    const dataURL = canvas.toDataURL('image/png');
+                    document.getElementById('signature_receptor').value = dataURL;
+                    document.getElementById('confirmacao').style.display = 'none'; // Esconde a div de confirmação
+                }
+
+                function cancelSignature() {
+                    document.getElementById('confirmacao').style.display = 'none'; // Esconde a div de confirmação
+                }
+            </script>
+
+
+            {{--Fim de assinatura manual--}}
         </div>
         {{--fim card 3--}}
-        {{----------------------------------------------------------------------------}}
         <div class="row sm-3 mb-0">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-outline-primary btn-sm">
@@ -691,3 +748,66 @@
 
     }
 </style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captura de Assinatura</title>
+    <style>
+        #signature-pad {
+            border: 1px solid #000;
+            width: 100%;
+            max-width: 600px; /* Ajuste conforme necessário */
+            height: 200px; /* Altura fixa ou ajustável conforme necessário */
+        }
+    </style>
+    <!-- Incluir a biblioteca Signature Pad -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad"></script>
+</head>
+<body >
+    <div hidden>
+    <!-- Canvas para a assinatura -->
+    <canvas id="signature-pad"></canvas>
+
+    <!-- Campo oculto para armazenar a assinatura -->
+    <input type="hidden" id="signatureData" name="signatureData">
+
+    <!-- Botões para ações -->
+    <button onclick="saveSignature()">Salvar Assinatura</button>
+    <button onclick="clearSignature()">Limpar Assinatura</button>
+    </div>
+    <!-- Script para inicializar o Signature Pad -->
+    <script>
+        // Variável global para o Signature Pad
+        var signaturePad;
+
+        // Função para inicializar o Signature Pad
+        function initializeSignaturePad() {
+            var canvas = document.getElementById('signature-pad');
+            signaturePad = new SignaturePad(canvas, {
+                backgroundColor: 'rgb(255, 255, 255)' // Cor de fundo do canvas
+            });
+        }
+
+        // Função para salvar a assinatura
+        function saveSignature1() {
+            if (signaturePad.isEmpty()) {
+                alert('Por favor, assine antes de salvar.');
+            } else {
+                var dataURL = signaturePad.toDataURL();
+                document.getElementById('signatureData').value = dataURL;
+                alert('Assinatura capturada com sucesso!');
+            }
+        }
+
+        // Função para limpar a assinatura
+        function clearSignature() {
+            signaturePad.clear();
+        }
+
+        // Inicializar o Signature Pad
+        initializeSignaturePad();
+    </script>
+</body>
+</html>

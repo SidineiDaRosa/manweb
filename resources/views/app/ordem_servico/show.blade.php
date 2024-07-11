@@ -213,6 +213,13 @@
                         <div class="progress">
                             <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos}}%</div>
                         </div>
+                        <div class="titulo">Assinatura:</div>
+                        <hr>
+                        @if ($ordem_servico->signature_receptor)
+                        <img src="{{ asset($ordem_servico->signature_receptor) }}" alt="Assinatura do Receptor">
+                        @else
+                        <p>Assinatura não disponível</p>
+                        @endif
                     </div>
 
                 </div>
@@ -354,7 +361,7 @@
 
                 <script>
                     function StartOs() {
-                      
+
                         Swal.fire({
                             title: 'Quer iniciar a O.S ?',
                             showDenyButton: true,
