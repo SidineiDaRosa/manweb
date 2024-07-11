@@ -473,7 +473,15 @@
                         height: auto;
                     }
                 </style>
-
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+                {{--------------------------------------}}
+                {{--Verifica se a variavel contém dados--}}
+                {{--------------------------------------}}
+                @if(empty($ordens_servicos_next_day) || $ordens_servicos_next_day->isEmpty())
+                <div class="alert alert-info">
+                    <div class="div-font-sm-conteudo">Nenhuma ordem de serviço prevista para o próximo dia.</div>
+                </div>
+                @else
                 @foreach($ordens_servicos_next_day as $ordem_servico)
                 @php
                 $dataPrevista = \Carbon\Carbon::parse($ordem_servico->data_fim);
@@ -551,18 +559,6 @@
                             }
                         </style>
 
-
-                        <style>
-                            .wide-progress {
-                                width: 100%;
-                                /* Ajuste esta largura conforme necessário */
-                            }
-
-                            .progress {
-                                width: 50px;
-                            }
-                        </style>
-
                         {{--------------------------------Fim GUT------------------------------------}}
                         <div style="display:flex">
                             <span id="stat0-{{ $uniqueId }}" class="material-symbols-outlined" style="display:none;">
@@ -573,14 +569,15 @@
                             </span>
                         </div>
                     </div>
-                    <hr class="hr-sm-tuggle">
+                    <hr style="width: 50%; margin-left: 0;margin-top:-2px;">
                     <div class="div-font-sm-conteudo" id="div-Toggle-{{ $uniqueId }}" style="height:auto; display:none;">
+                        <div style="color: green;">Descrição</div>
                         {{$ordem_servico->descricao}}
                     </div>
                     <hr>
                 </div>
                 @endforeach
-
+                @endif
                 <script>
                     function FunToggle(uniqueId) {
                         let divToggle = document.getElementById('div-Toggle-' + uniqueId);
@@ -602,6 +599,7 @@
                 @forelse($ordens_servicos_second_day as $seg_day)
                 <h6>Depois de amanhã ({{ \Carbon\Carbon::parse($seg_day->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 <div class="div-font-sm-conteudo">
+                    <hr>
                     <a href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
                         <span class="material-symbols-outlined">
                             open_in_new
@@ -612,6 +610,7 @@
                     {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
                     {{$seg_day->equipamento->nome}}
                 </div>
+                <hr style="width: 50%; margin-left: 0;margin-top:-2px;">
                 <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
                 <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
                 @empty
