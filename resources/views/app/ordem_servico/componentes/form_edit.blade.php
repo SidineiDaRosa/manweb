@@ -566,10 +566,11 @@
             </div>
 
             <canvas id="meuCanvas" width="150" height="50" style="border: 1px solid black;"></canvas>
-            <input type="hidden" id="signature_receptor" name="signature_receptor"> <br>
-            <button type="button" class="btn btn-outline-primary btn-sm" id="salvar" onclick="showConfirmation()">
-                Salvar Assinatura
-            </button>
+            <input type="hidden" id="signature_receptor" name="signature_receptor" value="null">
+            <br>
+            <button type="button" class="btn btn-outline-primary btn-sm" id="salvar" onclick="showConfirmation()">Salvar Assinatura</button>
+
+            {{-- Botão de envio, inicialmente desabilitado --}}
 
             <script>
                 const canvas = document.getElementById('meuCanvas');
@@ -605,15 +606,15 @@
                     const dataURL = canvas.toDataURL('image/png');
                     document.getElementById('signature_receptor').value = dataURL;
                     document.getElementById('confirmacao').style.display = 'none'; // Esconde a div de confirmação
+                    document.getElementById('submitBtn').disabled = false; // Habilita o botão de envio
                 }
 
                 function cancelSignature() {
                     document.getElementById('confirmacao').style.display = 'none'; // Esconde a div de confirmação
                 }
             </script>
+            {{-- Fim de assinatura manual --}}
 
-
-            {{--Fim de assinatura manual--}}
         </div>
         {{--fim card 3--}}
         <div class="row sm-3 mb-0">
@@ -750,6 +751,7 @@
 </style>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -758,24 +760,27 @@
         #signature-pad {
             border: 1px solid #000;
             width: 100%;
-            max-width: 600px; /* Ajuste conforme necessário */
-            height: 200px; /* Altura fixa ou ajustável conforme necessário */
+            max-width: 600px;
+            /* Ajuste conforme necessário */
+            height: 200px;
+            /* Altura fixa ou ajustável conforme necessário */
         }
     </style>
     <!-- Incluir a biblioteca Signature Pad -->
     <script src="https://cdn.jsdelivr.net/npm/signature_pad"></script>
 </head>
-<body >
+
+<body>
     <div hidden>
-    <!-- Canvas para a assinatura -->
-    <canvas id="signature-pad"></canvas>
+        <!-- Canvas para a assinatura -->
+        <canvas id="signature-pad"></canvas>
 
-    <!-- Campo oculto para armazenar a assinatura -->
-    <input type="hidden" id="signatureData" name="signatureData">
+        <!-- Campo oculto para armazenar a assinatura -->
+        <input type="hidden" id="signatureData" name="signatureData">
 
-    <!-- Botões para ações -->
-    <button onclick="saveSignature()">Salvar Assinatura</button>
-    <button onclick="clearSignature()">Limpar Assinatura</button>
+        <!-- Botões para ações -->
+        <button onclick="saveSignature()">Salvar Assinatura</button>
+        <button onclick="clearSignature()">Limpar Assinatura</button>
     </div>
     <!-- Script para inicializar o Signature Pad -->
     <script>
@@ -810,4 +815,5 @@
         initializeSignaturePad();
     </script>
 </body>
+
 </html>

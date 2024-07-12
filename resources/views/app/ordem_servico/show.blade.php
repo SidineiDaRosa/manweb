@@ -23,24 +23,24 @@
     <div class="card">
         <div class="card-header-template">
             <div>
-                <a class="btn btn-outline-primary" href="{{ route('ordem-servico.index') }}"><span class="material-symbols-outlined">
+                <a class="btn btn-outline-primary mb-1" href="{{ route('ordem-servico.index') }}"><span class="material-symbols-outlined">
                         format_list_bulleted
                     </span>
                 </a>
-                <a class="btn btn-outline-primary" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
+                <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-database-add"></i>
                     Criar novo pedido de saída
                 </a>
-                <a class="btn btn-outline-primary" href="{{route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4])}}">
+                <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4])}}">
                     <i class="icofont-search"></i>
                     </i>Busca Pedidos </a>
-                <a class="btn btn-outline-success" href="{{route('equipamento.show', ['equipamento' => $ordem_servico->equipamento->id]) }}">
+                <a class="btn btn-outline-success mb-1" href="{{route('equipamento.show', ['equipamento' => $ordem_servico->equipamento->id]) }}">
                     <i class="icofont-tractor"></i>
                     ir para o equipamento
                 </a>
-                <a class="btn btn-outline-primary" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
+                <a id="btn-edit" class="btn btn-outline-primary mb-1" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-ui-edit"></i>Editar</a>
-                <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
+                <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> dashboard
                 </a>
             </div>
@@ -216,10 +216,23 @@
                         <div class="titulo">Assinatura:</div>
                         <hr>
                         @if ($ordem_servico->signature_receptor)
-                        <img src="{{ asset($ordem_servico->signature_receptor) }}" alt="Assinatura do Receptor">
+                        <img id="signature_receptor" src="{{ asset($ordem_servico->signature_receptor) }}" alt="Assinatura do Receptor">
                         @else
                         <p>Assinatura não disponível</p>
                         @endif
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                // Verifica se a assinatura está presente
+                                var signatureImage = document.getElementById("signature_receptor");
+                                if (signatureImage) {
+
+                                    // Oculta o link adicionando um estilo inline que esconde visualmente
+                                    document.getElementById("btn-add-task").style.display = 'none';
+                                    document.getElementById("btn-edit").style.display = 'none';
+                                    document.getElementById("bt_iniciar_os").style.display = 'none';
+                                }
+                            });
+                        </script>
                     </div>
 
                 </div>
@@ -290,135 +303,136 @@
                         <div class=" titulo">Descrição dos serviços</div>
                         <hr>
                         <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
-                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"">
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
                             {{$servicos_executados->descricao}}
                         </div>
                     </div>
                 </div>
                 <div class=" item">
-                            <div class="box-conteudo">
-                                <div class="titulo">Subtotal de horas</div>
-                                <hr>
-                                <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                    <div class="box-conteudo">
+                        <div class="titulo">Subtotal de horas</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
                          'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
-                                    {{$servicos_executados->subtotal}}hs
-                                </div>
-                                <div class="titulo">tipo de serviço</div>
-                                <hr>
-                                <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
-                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
-                                    {{$servicos_executados->tipo_de_servico}}
-                                </div>
-                                <div class="titulo">estado</div>
-                                <hr>
-                                <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
-                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
-                                    {{$servicos_executados->estado}}
-                                </div>
-                            </div>
+                            {{$servicos_executados->subtotal}}hs
                         </div>
-                    </div>
-                    @endforeach
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card text-sm-info mb-4 float-right" style="width: 18rem; text-align: right;">
-                        <div class="card-header ext-sm-info">Total de horas trabalhadas</div>
-                        <div class="card-body" style="height:20px;">
-                            <h6 class="card-title">{{ number_format($total_hs_os, 2, ',', '.') }}hs</h6>
+                        <div class="titulo">tipo de serviço</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+                            {{$servicos_executados->tipo_de_servico}}
+                        </div>
+                        <div class="titulo">estado</div>
+                        <hr>
+                        <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
+                         'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+                            {{$servicos_executados->estado}}
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card-header-template">
-                <div id="bt_inserir_servico" class="d-grid gap-2 d-sm-flex justify-content-sm float-left">
-                    <div class="row mb-1">
-                        <div class="col-md-12">
-                            <a class="btn btn-outline-primary" href="{{route('Servicos-executado.create',['ordem_servico'=>$ordem_servico->id])}}">
-                                <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height:25px; width:25px;">Adicionar serviço
+            @endforeach
+        </div>
 
-                            </a>
-                        </div>
-                    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-sm-info mb-4 float-right" style="width: 18rem; text-align: right;">
+                <div class="card-header ext-sm-info">Total de horas trabalhadas</div>
+                <div class="card-body" style="height:20px;">
+                    <h6 class="card-title">{{ number_format($total_hs_os, 2, ',', '.') }}hs</h6>
                 </div>
-                <div class="d-grid gap-2 d-sm-flex justify-content float-right">
-                    <button id="enviar" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">
-                        <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
-                        Fechar Ordem de serviço</button>
-                </div>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-                <div class="d-grid gap-2 d-sm-flex justify-content float-right">
-                    <button id="bt_iniciar_os" class="btn btn-outline-secondary" onclick="StartOs()">
-                        <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
-                        Iniciar OS
-                    </button>
-                </div>
-
-                <div id="mensagem"></div>
-
-                <script>
-                    function StartOs() {
-
-                        Swal.fire({
-                            title: 'Quer iniciar a O.S ?',
-                            showDenyButton: true,
-                            confirmButtonText: 'Sim',
-                            denyButtonText: 'Não',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire('O.S sendo iniciada', '', 'success');
-
-                                // Iniciar ordem de serviço
-                                var valor = $('#valor').val(); // Obtém o valor do input
-
-                                $.ajax({
-                                    type: 'GET', // Método HTTP da requisição
-                                    url: '{{ route("start-os") }}', // URL para onde a requisição será enviada
-                                    data: {
-                                        valor: valor
-                                    }, // Dados a serem enviados (no formato chave: valor)
-                                    success: function(response) {
-                                        $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
-                                        // $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
-                                    },
-                                    error: function(xhr, status, error) {
-                                        $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver
-                                        $('#erroModal').modal('show'); // Exibe a modal de erro
-                                    }
-                                });
-                            } else if (result.isDenied) {
-                                Swal.fire('Inicio de O.S Cancelado!', '', 'info');
-                            }
-                        });
-                    }
-                </script>
             </div>
         </div>
-        <!-- arquivo resources/views/atualizar-registro.blade.php -->
-        <style>
-            .container {
-                display: flex;
-                justify-content: center;
-                /* Alinha horizontalmente ao centro */
-                align-items: center;
-                /* Alinha verticalmente ao centro */
-                height: 100vh;
-                /* Altura do contêiner */
+    </div>
+    <div class="card-header-template  text-center">
+        <div>
+            <a id="btn-add-task" class="btn btn-outline-primary mb-1" href="{{ route('Servicos-executado.create', ['ordem_servico' => $ordem_servico->id]) }}" style="width: 300px;">
+                <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height: 25px; width: 25px;"> Adicionar serviço
+            </a>
 
-            }
-
-            #imagem {
-                width: 100%;
-                height: 85%;
-            }
-        </style>
-        <div class="container">
-            <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
+            <button id="enviar" class="btn btn-outline-secondary mb-1" data-bs-toggle="modal" data-bs-target="#confirmModal" style="width:300px;">
+                <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
+                Fechar Ordem de serviço</button>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+            <button id="bt_iniciar_os" class="btn btn-outline-success mb-1" onclick="StartOs()" style="width:300px;">
+                <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
+                Iniciar OS
+            </button>
+            <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1">Gerar PDF</button>
+            <script>
+                document.getElementById('gerarPdfButton').addEventListener('click', function() {
+                    document.getElementById('frm-pdf').submit();
+                });
+            </script>
 
         </div>
+    </div>
+    <form id="frm-pdf" action="{{ route('gerar.pdf') }}" method="POST" target="_blank">
+        @csrf
+        <input type="number" class="form-control" id="ordem_servico_id" name="ordem_servico_id" required value="{{$ordem_servico->id}}" hidden>
+    </form>
+    <div id="mensagem"></div>
+    <script>
+        function StartOs() {
+
+            Swal.fire({
+                title: 'Quer iniciar a O.S ?',
+                showDenyButton: true,
+                confirmButtonText: 'Sim',
+                denyButtonText: 'Não',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('O.S sendo iniciada', '', 'success');
+
+                    // Iniciar ordem de serviço
+                    var valor = $('#valor').val(); // Obtém o valor do input
+
+                    $.ajax({
+                        type: 'GET', // Método HTTP da requisição
+                        url: '{{ route("start-os") }}', // URL para onde a requisição será enviada
+                        data: {
+                            valor: valor
+                        }, // Dados a serem enviados (no formato chave: valor)
+                        success: function(response) {
+                            $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
+                            // $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
+                        },
+                        error: function(xhr, status, error) {
+                            $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver
+                            $('#erroModal').modal('show'); // Exibe a modal de erro
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Inicio de O.S Cancelado!', '', 'info');
+                }
+            });
+        }
+    </script>
+    </div>
+    <!-- arquivo resources/views/atualizar-registro.blade.php -->
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            /* Alinha horizontalmente ao centro */
+            align-items: center;
+            /* Alinha verticalmente ao centro */
+            height: 100vh;
+            /* Altura do contêiner */
+
+        }
+
+        #imagem {
+            width: 100%;
+            height: 85%;
+        }
+    </style>
+    <div class="container">
+        <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
+
+    </div>
 
 </main>
 @endsection

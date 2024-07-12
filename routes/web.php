@@ -244,9 +244,11 @@ Route::middleware('auth')->get(
 )->name('search');
 //------------------------------------------------------------//
 // Deletar um item de umpedido de compra
-//Route::delete('/item/{id}', [PedidoCompraLista::class, 'destroy'])->name('item.destroy');
 Route::delete('/pedido-compra-lista/{id}', [PedidoCompraListaController::class, 'destroy'])->name('pedido-compra-lista.destroy');
 //-----------------------------------------------------------//
 // Gerar Qr code
 
 Route::middleware('auth')->post('/gerar-qrcode', 'App\Http\Controllers\QrCodeController@gerarQRCode')->name('generate-qrcode');
+//----------------------------------------------------------//
+//   Imprimir em PDF
+Route::post('/imprimir-pdf', [App\Http\Controllers\PdfController::class, 'gerarPDF'])->name('gerar.pdf');
