@@ -472,6 +472,11 @@
                         text-align: left !important;
                         height: auto;
                     }
+                    .title-md{
+                        font-family: 'Poppins', sans-serif !important; 
+                        font-size: 18px !important;
+                        font-weight: 300 !important;  
+                            }
                 </style>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
                 {{--------------------------------------}}
@@ -511,7 +516,6 @@
                                 {{ $ordem_servico->valor_gut }}
                             </div>
                         </div>
-
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 var progressBar = document.getElementById('progress-bar-{{ $ordem_servico->id }}');
@@ -557,6 +561,7 @@
                             .progress {
                                 width: 50px;
                             }
+                          
                         </style>
 
                         {{--------------------------------Fim GUT------------------------------------}}
@@ -597,7 +602,7 @@
                 </script>
                 {{--fim da div expan--}}
                 @forelse($ordens_servicos_second_day as $seg_day)
-                <h6>Depois de amanhã ({{ \Carbon\Carbon::parse($seg_day->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
+                <h6 class="title-md">Depois de amanhã ({{ \Carbon\Carbon::parse($seg_day->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 <div class="div-font-sm-conteudo">
                     <hr>
                     <a href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
