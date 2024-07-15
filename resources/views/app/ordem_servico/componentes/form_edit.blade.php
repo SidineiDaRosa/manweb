@@ -264,7 +264,7 @@
                     <div class="invalid-tooltip">
                         informe a data
                     </div>
-                    <input type="time" class="input-text" name="hora_emissao" id="hora_Emissao1" required value="{{$ordem_servico->hora_emissao}}" readonly>
+                    <input type="time" class="input-text" name="hora_emissao" id="hora_Emissao" required value="{{$ordem_servico->hora_emissao}}" readonly>
                     <div class="invalid-tooltip">
                         Por favor, informe a hora.
                     </div>
@@ -276,10 +276,17 @@
                     <div class="invalid-tooltip">
                         Por favor, informe data
                     </div>
-                    <input type="time" class="input-text" name="hora_inicio" id="hora_Inicio" required value="{{$ordem_servico->hora_inicio}}">
+                    <input type="time" class="input-text" name="hora_inicio" id="hora_Inicio" required value="{{$ordem_servico->hora_inicio}}" onchange="ValidateHora()">
                     <div class="invalid-tooltip">
                         Por favor, informe hora.
                     </div>
+                    <script>
+                        function ValidateHora(){
+                            document.getElementById('hora_Fim').value=''// seta para vazio a hora inicio
+                            document.getElementById('hora_Fim').style.backgroundColor = '#FFC0CB'
+                            alert('Escolha a hora de final')
+                        }
+                    </script>
                 </div>
                 <div class="titulo">Previsão para finalização:</div>
                 <hr>

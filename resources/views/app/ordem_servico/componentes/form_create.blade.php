@@ -360,7 +360,7 @@
                 <div class="invalid-tooltip">
                     Por favor, informe a urgencia.
                 </div>
-                <select class="input-text" name="urgencia" id="urgencia" value="">
+                <select class="input-text" name="tendencia" id="tendencia" value="">
                     <option value="5">Extremamante urgente</option>
                     <option value="4">Urgente</option>
                     <option value="3">Urgente se possível</option>

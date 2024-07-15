@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OrdemServico;
 use App\Models\Equipamento;
+use App\Models\Empresas;
 use PDF;
 
 class PdfController extends Controller
@@ -20,11 +21,14 @@ class PdfController extends Controller
         $ordemServicoId = $request->input('ordem_servico_id');
         // Buscar a ordem de serviço no banco de dados
         $ordemServico = OrdemServico::findOrFail($ordemServicoId);
-        $equipamento = Equipamento::where('id',$ordemServico->equipamento_id)->get();
+        $equipamento = Equipamento::where('id', $ordemServico->equipamento_id)->get();
+        $empresa = Empresas::where('id', $ordemServico->empresa_id)->get();
+        
         // Preparar os dados para o PDF
         $data = [
             'ordemServico' => $ordemServico,
-            'equipamento'=>$equipamento
+            'equipamento' => $equipamento,
+            'empresa'=>$empresa 
         ];
 
         // Carregar a view do PDF usando Dompdf

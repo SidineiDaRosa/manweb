@@ -51,7 +51,10 @@
     <div class="header">
         <img src="{{ public_path('img/logo_fapolpa.jpeg') }}" alt="Imagem do Produto" class="preview-image-logo">
         <div style="text-align: center;margin-top:0%;">Ordem de Serviço #{{ $ordemServico->id }}</div>
-        <hr>
+
+        @foreach($empresa as $empresa_f)
+        @endforeach
+        Empresa:{{$empresa_f->razao_social}} <br>
         @php
         use Carbon\Carbon;
         @endphp
@@ -87,11 +90,12 @@
             </tr>
             <tr>
                 <td>Descrição</td>
-                <td>{{ $ordemServico->descricao }}</td>
+
+                <td><textarea name="" id="">{{ $ordemServico->descricao }}</textarea></td>
             </tr>
             <tr>
-                <td>Status dos Serviços</td>
-                <td>{{ $ordemServico->status_servicos }}</td>
+                <td>Status do andamento do serviço</td>
+                <td>{{ $ordemServico->status_servicos }}%</td>
             </tr>
             <tr>
                 <td>Link da Foto</td>
@@ -108,10 +112,6 @@
             <tr>
                 <td>Tendência</td>
                 <td>{{ $ordemServico->tendencia }}</td>
-            </tr>
-            <tr>
-                <td>Empresa ID</td>
-                <td>{{ $ordemServico->empresa_id }}</td>
             </tr>
             <tr>
                 <td>Situação</td>
