@@ -271,6 +271,7 @@
             </form>
         </div>
         {{--Box 2--}}
+        {{-- Satus de Tarefas iniciadas, pausadas, e em excução--}}
         <style>
             .div-text-sm-row-15 {
                 font-family: arial, sans-serif;
@@ -313,7 +314,6 @@
                             @foreach($ordens_servicos_emandamento as $os_emandamento)
                             @php
                             $dataPrevista = \Carbon\Carbon::parse($os_emandamento->data_fim);
-
                             $dataAtual = \Carbon\Carbon::today();
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
@@ -371,7 +371,6 @@
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
                                     <th>GUT</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -380,6 +379,7 @@
                                 $dataPrevista = \Carbon\Carbon::parse($os_hoje->data_fim);
                                 $dataAtual = \Carbon\Carbon::today();
                                 $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
+                                $horaInicio = \Carbon\Carbon::parse($os_hoje->hora_inicio);
                                 @endphp
                                 <tr>
                                     <td>
@@ -390,11 +390,13 @@
                                         </a>
                                     </td>
                                     <td>{{$os_hoje->id}}</td>
-                                    <td>{{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/Y') }} {{$os_hoje->hora_inicio}}</td>
-
+                                    <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
+                                        {{$os_hoje->hora_inicio}}
+                                    </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }} {{$os_hoje->hora_fim}}
-
+                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }}
+                                        <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"> às </span>
+                                         {{$os_hoje->hora_fim}}
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td>{{$os_hoje->equipamento->nome}}</td>
@@ -404,16 +406,18 @@
                                         $valorGUT = $os_hoje->valor_gut;
 
                                         // Determina a cor da barra de progresso
-                                        if ($valorGUT <= 50) { $progressColor='blue' ; } elseif ($valorGUT> 50 && $valorGUT <= 80) { $progressColor='yellow' ; } else { $progressColor='orange' ; }; @endphp <input type="text" value="{{ $valorGUT }}" id="progress-input-today" hidden>
+                                        if ($valorGUT <= 50) { $progressColor='blue' ; } elseif ($valorGUT> 50 && $valorGUT <= 80) { $progressColor='yellow' ; } else { $progressColor='orange' ; } @endphp <input type="text" value="{{ $valorGUT }}" id="progress-input-today" hidden>
                                                 <div class="progress">
                                                     <div id="progress-bar-today" class="progress-bar" role="progressbar" aria-valuenow="{{ $valorGUT }}" aria-valuemin="0" aria-valuemax="125" style="width: {{ $valorGUT }}%; background-color: {{ $progressColor }}; color: black;">
                                                         {{ $valorGUT }}
                                                     </div>
                                                 </div>
                                     </td>
-                                    @endforeach
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
+
                     </div>
                     <hr>
 
@@ -472,11 +476,12 @@
                         text-align: left !important;
                         height: auto;
                     }
-                    .title-md{
-                        font-family: 'Poppins', sans-serif !important; 
+
+                    .title-md {
+                        font-family: 'Poppins', sans-serif !important;
                         font-size: 18px !important;
-                        font-weight: 300 !important;  
-                            }
+                        font-weight: 300 !important;
+                    }
                 </style>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
                 {{--------------------------------------}}
@@ -561,7 +566,6 @@
                             .progress {
                                 width: 50px;
                             }
-                          
                         </style>
 
                         {{--------------------------------Fim GUT------------------------------------}}

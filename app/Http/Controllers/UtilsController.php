@@ -12,6 +12,8 @@ use App\Models\Servicos_executado;
 use App\Models\PecasEquipamentos;
 use DateTime;
 use DateInterval;
+use Illuminate\Support\Facades\DB; // Importa a classe DB
+use Exception; // Importa a classe Exception
 
 class UtilsController extends Controller
 {
@@ -155,7 +157,6 @@ class UtilsController extends Controller
         $pedido_compra->save(); //salva a atleração do pedido
         return response()->json(['mensagem' => 'Pedido atualizado para fechado']);
     }
-
     public function update_chek_list(Request $request)
     {
         // Encontre o registro pelo ID que sta em valor
@@ -190,11 +191,6 @@ class UtilsController extends Controller
         // $diferenca_horas = ($diferenca->days * 24) + $diferenca->h + ($diferenca->i / 60) + ($diferenca->s / 3600);
         $diferenca_horas = intval(($diferenca->days * 24) + $diferenca->h + ($diferenca->i / 60) + ($diferenca->s / 3600));
 
-        //---------------------------------------------------//
-        $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
-        $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
-        $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
-        $pecaEquipamento->save();
         //------------------------------------------------//
         $id_os = $request->input('id_os');
         $tipo_de_servico = $request->input('tipo_de_servico');
@@ -233,6 +229,12 @@ class UtilsController extends Controller
             $servico_executado->estado = $data['estado'];
             // Salva o registro no banco de dados
             $servico_executado->save();
+            //---------------------------------------------------//
+            //   salva alteração em  peças equipamentos          //
+            $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
+            $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
+            $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
+            $pecaEquipamento->save();//salva alteração em  peças equipamentos
         } else {
             return response()->json(['mensagem' => 'ID da ordem de serviço inválido.'], 400);
         };
