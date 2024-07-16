@@ -68,7 +68,7 @@
 
                 .conteudo {
                     display: flex;
-                    font-size: 20px;
+                    font-size: 18px;
                     font-weight: 400;
                     font-family: 'Poppins', sans-serif;
                     color: #007b00;
@@ -190,15 +190,15 @@
                     <div class="box-conteudo">
                         <div class="titulo">Emissão</div>
                         <hr>
-                        <div class="conteudo"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
+                        <div class="conteudo" style="color: #2174d4;"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp às &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
 
                         <div class="titulo"> Previsão para início</div>
                         <hr>
-                        <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}} <span class="span-texto-sm "> &nbsp as &nbsp</span>{{$ordem_servico->hora_inicio}}</div>
+                        <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}} <span class="span-texto-sm "> &nbsp às &nbsp</span>{{$ordem_servico->hora_inicio}}</div>
 
                         <div class="titulo">Previsão par fim</div>
                         <hr>
-                        <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}<span class="span-texto-sm "> &nbsp as &nbsp</span> {{$ordem_servico->hora_fim}}</div>
+                        <div class="conteudo" style="color:cornflowerblue;" >{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}<span class="span-texto-sm "> &nbsp às &nbsp</span> {{$ordem_servico->hora_fim}}</div>
                         <div class="titulo">Natureza do serviço</div>
                         <hr>
                         <div class="conteudo">{{$ordem_servico->natureza_do_servico}}</div>
@@ -237,7 +237,7 @@
 
                 </div>
             </div>
-            {{--fim cotiner item item--}}
+            {{--fim container item--}}
             <!--Cabeçalho------------------------------------------------------------------------->
 
             <script>

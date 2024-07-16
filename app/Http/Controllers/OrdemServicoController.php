@@ -355,6 +355,8 @@ class OrdemServicoController extends Controller
             'responsavel' => $request->responsavel,
             'descricao' => $request->descricao,
             'status_servicos' => $request->status_servicos,
+            'especialidade_do_servico' => $request->especialidade_do_servico,
+            'natureza_do_servico' => $request->natureza_do_servico,
             'gravidade' => $request->gravidade,
             'urgencia' => $request->urgencia,
             'tendencia' => $request->tendencia,

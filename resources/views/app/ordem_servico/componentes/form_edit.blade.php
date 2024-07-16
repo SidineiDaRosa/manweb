@@ -260,11 +260,11 @@
                 <div class="titulo">Emissão:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="date" class="input-text" id="data_emissao" name="data_emissao" value="{{$ordem_servico->data_emissao}}" readonly>
+                    <input type="date" class="input-text" id="d_emissao" name="data_emissao" value="{{$ordem_servico->data_emissao}}" readonly>
                     <div class="invalid-tooltip">
                         informe a data
                     </div>
-                    <input type="time" class="input-text" name="hora_emissao" id="hora_Emissao" required value="{{$ordem_servico->hora_emissao}}" readonly>
+                    <input type="time" class="input-text" name="hora_emissao" id="h_emissao" required value="{{$ordem_servico->hora_emissao}}" readonly>
                     <div class="invalid-tooltip">
                         Por favor, informe a hora.
                     </div>
@@ -284,7 +284,7 @@
                         function ValidateHora(){
                             document.getElementById('hora_Fim').value=''// seta para vazio a hora inicio
                             document.getElementById('hora_Fim').style.backgroundColor = '#FFC0CB'
-                            alert('Escolha a hora de final')
+                            alert('Escolha a hora de fim')
                         }
                     </script>
                 </div>
@@ -303,7 +303,7 @@
                     <script>
                         function ValidateDate() {
                             // Validação de data
-                            let dataEmissao = document.getElementById('data_emissao').value;
+                            let dataEmissao = document.getElementById('d_emissao').value;
                             let dataPrevista = document.getElementById('dataPrevista').value;
                             let dataFim = document.getElementById('dataFim').value;
                             if (dataPrevista < dataEmissao) {
@@ -463,18 +463,35 @@
             <div class="titulo">Natureza da O.S</div>
             <hr>
             <div class="conteudo">
-                <select class="input-text" name="tendencia" id="tendencia" value="">
+                <select class="input-text" name="natureza_do_servico" id="natureza_do_servico" value="">
+                <option value="{{$ordem_servico->natureza_do_servico}}">{{$ordem_servico->natureza_do_servico}}</option>
                     <option value="corretiva">Corretiva</option>
                     <option value="ampliacao">Ampliação</option>
                     <option value="investimento">Investimento</option>
                     <option value="Preventiva">Preventiva</option>
                     <option value="Preditiva">Preditiva</option>
                     <option value="Instalação">Instalação</option>
-                    <option value="rotina">Rotina periódica</option>
-                    <option value="rotina">Outro</option>
+                    <option value="rotina">Rotina periódica check-list</option>
+                    <option value="outro">Outro</option>
+
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
+                </div>
+            </div>
+            <div class="titulo">Especialidade da O.S</div>
+            <hr>
+            <div class="conteudo">
+                <select class="input-text" name="especialidade_do_servico" id="especialidade_do_servico" value="">
+                <option value="{{$ordem_servico->especialidade_do_servico}}">{{$ordem_servico->especialidade_do_servico}}</option>
+                    <option value="eletrica">Elétrica</option>
+                    <option value="mecanica">Mecanica</option>
+                    <option value="civil">Civil</option>
+                    <option value="SESMT">SEMT</option>
+                    <option value="Tarefa avulsa">Tarefa avulsa</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Por favor, informe a tarefa.
                 </div>
             </div>
             <div class="titulo">Gravidade</div>
