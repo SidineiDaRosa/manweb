@@ -22,12 +22,16 @@ class PedidoCompraController extends Controller
     {
 
         $situacao = $request->get('situacao');
+        $data_inicio=$request->get('data_inicio');
+        $data_fim=$request->get('data_fim');
         if (isset($situacao)) {
             // A variável $situacao está declarada
             // Faça alguma coisa aqui
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
-            $pedidos_compra = PedidoCompra::where('status', $situacao)->get();
+            $pedidos_compra = PedidoCompra::where('status', $situacao)
+                ->whereBetween('data_emissao', [$data_inicio, $data_fim])
+                ->get();
             return view('app.pedido_compra.index', [
                 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra
             ]);

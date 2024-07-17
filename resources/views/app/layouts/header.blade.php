@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-    <title>ManWEB</title>
+    <title>Gestão de Manutenção Fapolpa</title>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
        
         <div class="logo">
         <i class="icofont-architecture-alt icofont-2x wite"></i>
-            <span class="font-wheight-light">ManWEB</span>
+            <span class="font-wheight-light">Manutenção Fapolpa</span>
         </div>
         <div class="spacer"></div>
 

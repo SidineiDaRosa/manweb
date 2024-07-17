@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="data_inicio">Data inicial:</label>
-                        <input type="date" class="form-control" name="data_inicio" id="data_inicio">
+                        <input type="date" class="form-control" name="data_inicio" id="data_inicio" >
                     </div>
                     <div class="col-md-4">
                         <label for="data_inicio">Data final:</label>
@@ -60,9 +60,9 @@
                     @foreach ($pedidos_compra as $pedido_compra)
                     <tr>
                         <th scope="row">{{ $pedido_compra->id }}</td>
-                        <td>{{ $pedido_compra->data_emissao }} {{ $pedido_compra->hora_emissao }}</td>
-                        <td>{{ $pedido_compra->data_prevista}} {{ $pedido_compra->hora_prevista}}</td>
-                        <td>{{ $pedido_compra->data_fechamento}}</td>
+                        <td>{{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y') }} {{ $pedido_compra->hora_emissao }}</td>
+                        <td>{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</td>
+                        <td>{{ \Carbon\Carbon::parse($pedido_compra->data_fechamento)->format('d/m/Y') }}</td>
                         <td>{{ $pedido_compra->equipamento->nome}}</td>
                         <td>{{ $pedido_compra->funcionarios->primeiro_nome}}</td>
                         <td>{{ $pedido_compra->status}}</td>

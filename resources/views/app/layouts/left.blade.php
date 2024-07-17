@@ -74,7 +74,7 @@
             <li class="nav-item">
                 <a onclick="FunExpandMenuRecursos();">
                     <i class="icofont-cubes icofont-2x"></i>
-                    &nbsp&nbspRecursos
+                    &nbsp&nbspGestão de Suprimentos
                     <i class="icofont-caret-down icofont-2x"></i>
                 </a>
                 <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-recursos">
