@@ -25,6 +25,8 @@ class PedidoSaidaListaController extends Controller
         //
         $pedido_saida_id_1 = $pedido_saida->get('pedido_saida');
         $produto_id = $pedido_saida->get('produto_id');
+        $data_inicio = $pedido_saida->get('data_inicio');
+        $data_fim = $pedido_saida->get('data_fim');
         if ($produto_id >= 1) {
             $saidas_do_produto = SaidaProduto::where('produto_id', $produto_id)->get();
             $produto = Produto::where('id', $produto_id)->get();

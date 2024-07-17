@@ -4,17 +4,23 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div> Lista entrada de produtos</div>
+            <div> Entradas de produtos</div>
 
             <form id="formSearchingProducts" action="{{'Ent-Produtos-filtro'}}" method="POST">
                 @csrf
                 <!--------------------------------------------------------------------------------------->
                 <!---------Select empresa------------->
                 <!--------------------------------------------------------------------------------------->
-
+                <div class="col-md-4">
+                    <input type="date" class="form-control" name="data_inicio" id="data_inicio" placeholder="dataPrevista" style="height: auto;">
+                </div>
+                <div class="col-md-4">
+                    <input type="date" class="form-control" name="data_fim" id="data_fim" placeholder="dataPrevista" style="height: auto;">
+                </div>
+               
                 <div class="col-md-4 mb-0">
                     <select name="empresa_id" id="empresa_id" class="form-control">
-                        <option value=""> --Selecione a empresa--</option>
+                        <option value="2">Fapolpa Industria de Papel e embalagens Ltda</option>
                         @foreach ($empresa as $empresas_find)
                         <option value="{{$empresas_find->id}}" {{($empresas_find->empresa_id ?? old('empresa_id')) == $empresas_find->id ? 'selected' : '' }}>
                             {{$empresas_find->razao_social}}
@@ -25,11 +31,11 @@
                 </div>
                 <div class="col-md-4 mb-0">
                     <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
+                    <option value="5">Busca Pela empresa</option>
                         <option value="1">Busca pelo ID</option>
                         <option value="2">Busca Pelas inicias</option>
                         <option value="3">Busca pelo Código do Fabricante</option>
                         <option value="4">Busca por categoria</option>
-                        <option value="5">Busca Pela empresa</option>
                     </select>
                 </div>
                 <!---estilização do input box buscar produtos---->

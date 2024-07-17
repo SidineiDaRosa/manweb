@@ -27,11 +27,13 @@ class PedidosSaidaController extends Controller
         $tipoFiltro = $request->get('tipofiltro');
         $situacao = $request->get('status');
         $produto = $request->get('produto');
+        $data_inicio = $request->get('data_inicio');
+        $data_fim = $request->get('data_fim');
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
         $empresas = Empresas::all();
         if ($tipoFiltro == 1) {
-            $pedidos_saida = PedidoSaida::where('status', $situacao)->get();
+            $pedidos_saida = PedidoSaida::where('status', $situacao)->whereBetween('data_emissao', [$data_inicio, $data_fim])->get();
             return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida]);
         }
         if ($tipoFiltro == 2) {
@@ -45,8 +47,9 @@ class PedidosSaidaController extends Controller
         }
         if ((empty($tipoFiltro))) {
             $pedidos_saida = PedidoSaida::where('id', 2)->get();
+            echo($pedidos_saida);
             return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida]);
-            echo ('vazio');
+            
         }
     }
     /**

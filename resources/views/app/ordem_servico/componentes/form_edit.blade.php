@@ -51,11 +51,14 @@
                         fechaModal();
                     }
                 </script>
+                <option value="pendente de aprovacao">Pendente de Aprovação</option>
                 <option value="aberto">Aberto</option>
                 <option value="fechado">Fechado</option>
                 <option value="indefinido">Indefinido</option>
                 <option value="cancelada">Cancelada</option>
                 <option value="em andamento">Em andamento</option>
+                <option value="pausado">Pausado</option>
+                <option value="rejeitada">Rejeitada</option>
                 {{ $errors->has('nome') ? $errors->first('nome') : '' }}
             </select>
             <div class="invalid-tooltip">
@@ -281,8 +284,8 @@
                         Por favor, informe hora.
                     </div>
                     <script>
-                        function ValidateHora(){
-                            document.getElementById('hora_Fim').value=''// seta para vazio a hora inicio
+                        function ValidateHora() {
+                            document.getElementById('hora_Fim').value = '' // seta para vazio a hora inicio
                             document.getElementById('hora_Fim').style.backgroundColor = '#FFC0CB'
                             alert('Escolha a hora de fim')
                         }
@@ -464,7 +467,7 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="natureza_do_servico" id="natureza_do_servico" value="">
-                <option value="{{$ordem_servico->natureza_do_servico}}">{{$ordem_servico->natureza_do_servico}}</option>
+                    <option value="{{$ordem_servico->natureza_do_servico}}">{{$ordem_servico->natureza_do_servico}}</option>
                     <option value="corretiva">Corretiva</option>
                     <option value="ampliacao">Ampliação</option>
                     <option value="investimento">Investimento</option>
@@ -483,7 +486,7 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="especialidade_do_servico" id="especialidade_do_servico" value="">
-                <option value="{{$ordem_servico->especialidade_do_servico}}">{{$ordem_servico->especialidade_do_servico}}</option>
+                    <option value="{{$ordem_servico->especialidade_do_servico}}">{{$ordem_servico->especialidade_do_servico}}</option>
                     <option value="eletrica">Elétrica</option>
                     <option value="mecanica">Mecanica</option>
                     <option value="civil">Civil</option>

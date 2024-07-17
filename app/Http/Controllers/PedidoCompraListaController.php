@@ -22,6 +22,8 @@ class PedidoCompraListaController extends Controller
         // Resto do seu código para retornar a view com os dados atualizados
         $produto_id = $request->get('produto_id');
         $pedidoCompraId = $request->get('numpedidocompra');
+        $data_inicio = $request->get('data_inicio');
+        $data_fim = $request->get('data_fim');
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
         $unidades_de_medida = UnidadeMedida::all();

@@ -295,6 +295,7 @@ class HomeController extends Controller
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
+        $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();// busca os pendente de aprovação
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
             'empresa' => $empresa,

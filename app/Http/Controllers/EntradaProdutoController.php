@@ -23,6 +23,8 @@ class EntradaProdutoController extends Controller
         $tipoFiltro = $request->get('tipofiltro');
         $nome_produto_like = $request->get('produto');
         $empresa_id = $request->get('empresa_id');
+        $data_inicio = $request->get('data_inicio');
+        $data_fim = $request->get('data_fim');
         $empresa = Empresas::all();
         //$fornecedores=Fornecedor::all();
         if ($tipoFiltro >= 1) {
@@ -31,7 +33,7 @@ class EntradaProdutoController extends Controller
             if ($tipoFiltro == 1) {
                 //$entradas_produtos = EntradaProduto::all();
                 //$entradas_produtos = EntradaProduto::where('nome', 'like', $nome_produto_like . '%')->get();
-                $entradas_produtos = EntradaProduto::where('produto_id', $nome_produto_like)->where('empresa_id',$empresa_id)->get();
+                $entradas_produtos = EntradaProduto::where('produto_id', $nome_produto_like)->where('empresa_id', $empresa_id)->get();
                 if (!empty($entradas_produtos)) {
                     return view('app.entrada_produto.index', [
                         'entradas_produtos' => $entradas_produtos,
@@ -51,7 +53,9 @@ class EntradaProdutoController extends Controller
                 // }
             }
             if ($tipoFiltro == 5) {
-                $entradas_produtos = EntradaProduto::where('empresa_id',$empresa_id )->get();
+                $entradas_produtos = EntradaProduto::where('empresa_id', $empresa_id)
+                    ->whereBetween('data', [$data_inicio, $data_fim])
+                    ->get();
                 //$valorTotal = OrdemServico::where('data_inicio', ('>='), $dataFim)->where('empresa_id', $empresa_id)->where('situacao', $situacao)->sum('valor');
                 if (!empty($entradas_produtos)) {
                     return view('app.entrada_produto.index', [
@@ -75,19 +79,19 @@ class EntradaProdutoController extends Controller
      */
     public function create(Request $produto_id)
     {
-      
+
         $produtoId = $produto_id->get('produto');
-        $estoque_id=$produto_id->get('estoque_id');
+        $estoque_id = $produto_id->get('estoque_id');
         $fornecedores = Fornecedor::all();
         $empresa = Empresas::all();
         $estoque  = EstoqueProdutos::where('id', $estoque_id)->get();
         $produtos  = Produto::where('id', $produtoId)->get();
-       
+
         return view('app.entrada_produto.create', [
             'produtos' => $produtos,
             'fornecedores' => $fornecedores,
             'empresa' => $empresa,
-            'estoque'=>$estoque 
+            'estoque' => $estoque
 
         ]);
     }
@@ -99,11 +103,11 @@ class EntradaProdutoController extends Controller
      */
     public function store(Request $request)
     {
-       EntradaProduto::create($request->all());
-       // $produto = Produto::find($request->input('produto_id')); //busca o registro do produto com o id da entrada do produto
+        EntradaProduto::create($request->all());
+        // $produto = Produto::find($request->input('produto_id')); //busca o registro do produto com o id da entrada do produto
         //$produto->estoque_ideal = $produto->estoque_ideal + $request->input('quantidade'); // soma estoque antigo com a entrada de produto
-       // $produto->save();
-        $estoque= EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
+        // $produto->save();
+        $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
         $estoque->quantidade = $estoque->quantidade + $request->input('quantidade'); // soma estoque antigo com a entrada de produto
         $estoque->save();
         return redirect()->route('entrada-produto.index');

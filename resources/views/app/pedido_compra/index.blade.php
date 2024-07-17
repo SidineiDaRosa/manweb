@@ -71,7 +71,7 @@
                                 <a class="btn btn-sm-template btn-outline-primary" href="{{route('pedido-compra-lista.index', ['numpedidocompra'=>$pedido_compra->id ])}}">
                                     <i class="icofont-eye-alt"></i>
                                 </a>
-                                <a class="btn btn-sm-template btn-outline-primary" href="route('pedido-compra.edit', ['pedido_compra_id'=>$pedido_compra->id])">
+                                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}">
                                     <i class="icofont-ui-edit"></i>
                                 </a>
                             </div>

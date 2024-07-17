@@ -100,7 +100,7 @@
                 }
 
                 hr {
-                    margin: -5px;
+                    margin: -2px;
                     color: dimgray;
                 }
 
@@ -123,9 +123,17 @@
                     color: #007b00;
                     margin-bottom: 5px;
                 }
+                .conteudo-sm {
+                    display: flex;
+                    font-size: 15px;
+                    font-family: 'Poppins', sans-serif;
+                    color:black;
+                    margin-bottom: 5px;
+                    font-weight:300;
+                }
             </style>
             {{--------------------------------------------------------}}
-            {{--Bloco de descrição e dadso do produto--}}
+            {{--Bloco de descrição e dados do produto--}}
             {{--------------------------------------------------------}}
             <div id="dados-tec">
                 <div id=idOs class="conteudo" style="color:mediumblue">
@@ -136,14 +144,14 @@
                 <div class="conteudo">{{ $produto->nome }}</div>
                 <div class="titulo">Descrição do produto</div>
                 <hr>
-                <div class="conteudo">{{ $produto->descricao }}</div>
+                <div class="conteudo-sm">{{ $produto->descricao }}</div>
                 <div class="titulo">Marca | Fabricante </div>
                 <hr>
                 <div class="conteudo" style="color:mediumblue;">{{ $produto->marca->nome }}-Cod Fab:{{ $produto->cod_fabricante }}</div>
                 <div class="titulo">Quantidade em estoque</div>
                 <hr>
-                <div class="conteudo">{{$estoque_produtos_sum}}{{$produto->unidade_medida->nome}}</div>
-                <div id=idOs class="conteudo" style="color:mediumblue">
+                <div class="conteudo">{{$estoque_produtos_sum}}&nbsp&nbsp{{$produto->unidade_medida->nome}}</div>
+                <div id=idOs class="conteudo" style="color:mediumblue" hidden>
                     Valor total:&nbsp&nbspR${{number_format($estoque_produtos_sum_valor, 2, ',', '.')}}
                 </div>
                 <div class="titulo">Categoria</div>
@@ -160,6 +168,9 @@
                     </span>
                     <span class="text">Criar estoque</span>
                 </a>
+                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.edit', ['produto' => $produto->id]) }}" title="editar dados do produto">
+
+                    <i class="icofont-ui-edit"></i> </a>
                 <p>
                 <div>
                     <?php
@@ -171,7 +182,6 @@
                     ?>
                     <p>
                         {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}
-                        {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}
                         {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}
                     <p>
                 </div>

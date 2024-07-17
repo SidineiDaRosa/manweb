@@ -90,7 +90,7 @@ class PedidoCompraController extends Controller
             ->where('hora_prevista', $request->hora_prevista) // Filtra pela hora prevista fornecida
             ->latest() // Ordena pela data de criação em ordem decrescente
             ->first(); // Obtém o primeiro registro do resultado ordenado
-        $pedidoCompraId = $pedidoCompra  ->id;
+        $pedidoCompraId = $pedidoCompra->id;
         // Resto do seu código para retornar a view com os dados atualizados
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
@@ -122,7 +122,6 @@ class PedidoCompraController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -132,10 +131,19 @@ class PedidoCompraController extends Controller
     public function edit($pedido_compra_id)
     {
         $pedido_compra = PedidoCompra::find($pedido_compra_id);
-        dd($pedido_compra);
-        die(); // Garante que a execução pare aqui
+        $patrimonio_id = $pedido_compra->equipamento_id;
+        $patrimonio = Equipamento::find($patrimonio_id);
+        $patrimonio_f = Equipamento::where('id', $patrimonio_id)->get();
+        $funcionarios = Funcionario::all();
+        $empresa = Empresas::where('id', $patrimonio->empresa_id)->get();
+        return view('app.pedido_compra.edit', [
+            'pedido_compra' => $pedido_compra,
+            'funcionarios' => $funcionarios,
+            'patrimonio_id' => $patrimonio_id,
+            'empresa' => $empresa,
+            'patrimonio_f' => $patrimonio_f
+        ]);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -145,7 +153,14 @@ class PedidoCompraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Recupere o pedido de compra pelo ID
+        $pedido_compra = PedidoCompra::findOrFail($id);
+
+        // Salve os campos da requisição diretamente no modelo
+        $pedido_compra->update($request->all());
+
+        // Redirecione de volta para a lista de pedidos de compra com uma mensagem de sucesso
+        return redirect()->route('pedido-compra.index')->with('success', 'Pedido de Compra atualizado com sucesso!');
     }
 
     /**

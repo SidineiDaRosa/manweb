@@ -183,12 +183,9 @@
                 <div class="conteudo">
                     <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
                     <input class="input-text" type="time" name="hora_fim" id="hora_fim" placeholder="dataFim" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
-
                 </div>
             </div>
-
         </div>
-
         {{--Box 2--}}
         <div class="item">
             <div class="box-conteudo">
@@ -296,12 +293,14 @@
             <div class="conteudo">
 
                 <select class="input-text" class="form-control" name="situacao" id="situacao" value="">
+                    <option value="pendente de aprovacao">Pendente de Aprovação</option>
                     <option value="aberto">Aberto</option>
                     <option value="fechado">Fechado</option>
                     <option value="indefinido">Indefinido</option>
                     <option value="cancelada">Cancelada</option>
                     <option value="em andamento">Em andamento</option>
-                    <option value="em andamento">Pausado</option>
+                    <option value="pausado">Pausado</option>
+                    <option value="rejeitada">Rejeitada</option>
                 </select>
                 <div class="conteudo">
                 </div>

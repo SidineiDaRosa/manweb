@@ -39,8 +39,11 @@ class SaidaProdutoController extends Controller
      */
     public function create(Request $Request)
     {
+        echo($Request);
         $empresa_id = $Request->get('empresa');
         $produtoId = $Request->get('produto');
+        $produto_id = $Request->get('produto_id');
+        $data_inicio = $Request->get('data_inicio');
         $peca_equipamento_id = $Request->get('peca_equipamento_id');
         $peca_equipamento=PecasEquipamentos::where('id',$peca_equipamento_id)->get();
         $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)->where('produto_id', $produtoId)->get();

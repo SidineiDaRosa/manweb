@@ -180,8 +180,9 @@ use App\Models\PedidoCompraLista;
 
 Route::middleware(['auth'])->get('/peca-equipamento-editar/{peca_equipamento_id}', [PecaEquipamentoController::class, 'edit'])->name('Peca-equipamento-editar.edit');
 Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaEquipamentoController::class, 'update'])->name('Peca-equipamento.update');
-
-//Rota pedidos de compra
+//------------------------------------------//
+//  Pedidos de compra                       //
+//------------------------------------------//
 Route::middleware('auth')->resource('/pedido-compra', 'App\Http\Controllers\PedidoCompraController');
 //Rota filtro pedido de entrada
 Route::middleware('auth')->post('/Ent-Produtos-filtro', [App\Http\Controllers\EntradaProdutoController::class, 'index']);

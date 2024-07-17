@@ -4,15 +4,15 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div> Pedidos de saida lista filtro</div>
+            <div> Pedidos de saidas de produtos</div>
 
             <form id="formSearchingProducts" action="{{'pedido-saida-filtro'}}" method="POST">
                 @csrf
                 <div class="col-md-2 mb-0">
-                    <input type="date" class="form-control" name="data_inicio" id="data_inicio">
+                    <input type="date" class="form-control" name="data_inicio" id="data_inicio" style="height: auto;">
                 </div>
                 <div class="col-md-2 mb-0">
-                    <input type="date" class="form-control" name="data_fim" id="data_fim">
+                    <input type="date" class="form-control" name="data_fim" id="data_fim"style="height: auto;">
                 </div>
                 <div class="col-md-2 mb-0">
                     <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
