@@ -25,8 +25,8 @@
                 </div>
                 <div class="col-md-4 mb-0">
                     <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
-                        <option value="1">Busca pelo Id</option>
                         <option value="2">Pela empresa</option>
+                        <option value="1">Busca pelo Id</option>
                     </select>
                 </div>
 

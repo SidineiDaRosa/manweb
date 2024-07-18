@@ -123,13 +123,14 @@
                     color: #007b00;
                     margin-bottom: 5px;
                 }
+
                 .conteudo-sm {
                     display: flex;
                     font-size: 15px;
                     font-family: 'Poppins', sans-serif;
-                    color:black;
+                    color: black;
                     margin-bottom: 5px;
-                    font-weight:300;
+                    font-weight: 300;
                 }
             </style>
             {{--------------------------------------------------------}}
@@ -164,7 +165,7 @@
                         open_in_new
                     </span></a>
                 <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" class="btn btn-outline-success btn-sm">
-                    <i class="icofont-database-add"></i>
+                    <i class="icofont-cubes"></i>
                     </span>
                     <span class="text">Criar estoque</span>
                 </a>
@@ -204,7 +205,7 @@
                 <th scope="col" class="th-title">estoque máximo</th>
                 <th scope="col" class="th-title">Local</th>
                 <th scope="col" class="th-title">empresa</th>
-                <th scope="col" class="th-title">operaçoes</th>
+                <th scope="col" class="th-title">Operações</th>
             </tr>
         </thead>
         <tbody>
@@ -220,16 +221,17 @@
                 <td>{{ $estoque_produto->estoque_maximo}}</td>
                 <td>{{ $estoque_produto->local}}</td>
                 <td>{{ $estoque_produto->empresa->nome_fantasia}}</td>
-
                 <td>
-                    <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn-sm btn-success">
+                    <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn btn-bg-template btn-outline-primary  @can('user') disabled @endcan">
 
                         <i class="icofont-database-add"></i>
                         </span>
                         <span class="text">Inserir estoque</span>
                     </a>
-
-                <td>
+                    <a class="btn btn-bg-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="Editar dados do estoque">
+                        <i class="icofont-ui-edit"></i>
+                        <span class="text">Editar</span></a>
+                </td>
             </tr>
             @endforeach
 
