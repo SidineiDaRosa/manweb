@@ -100,7 +100,7 @@
                     @foreach ($estoque_produtos as $estoque_produto)
                     <tr>
                         <th>{{ $estoque_produto->id }}</td>
-                        <td>{{ $estoque_produto->produto->id}} 
+                        <td>{{ $estoque_produto->produto->id}}
                             <a title="Abre o cadastro do produto" class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}">
                                 <i class="icofont-eye-alt"></i>
                             </a>
@@ -122,15 +122,14 @@
                                 </span>
                                 <span class="text">Inserir estoque</span>
                             </a>
+                            <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="editar dados do estoque">
 
+                                <i class="icofont-ui-edit"></i> </a>
                         <td>
 
                         </td>
                         </td>
                     </tr>
-
-
-
                     @endforeach
 
                 </tbody>

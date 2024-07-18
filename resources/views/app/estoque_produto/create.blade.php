@@ -4,7 +4,7 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div>Cadastro de local de estoque</div>
+            <div>Cadastrar local de estoque</div>
             <div>
                 <a href="{{ route('entrada-produto.index') }}" class="btn btn-sm btn-primary">
                     LISTAGEM
@@ -14,8 +14,7 @@
    
         <div class="card-body">
             @component('app.estoque_produto._components.form_create_edit', [
-            'produtos' => $produtos,
-            'fornecedores'=>$fornecedores,'empresa'=>$empresa,'unidades' => $unidades
+            'produtos' => $produtos,'empresa'=>$empresa,'unidades' => $unidades
             ])
             @endcomponent
         </div>

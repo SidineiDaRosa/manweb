@@ -6,7 +6,7 @@ use App\Http\Controllers\OrdemServicoController;
 use App\Http\Controllers\PedidoCompraListaController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QrCodeController;
-
+use app\Http\Controllers\EstoqueProdutoController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -166,11 +166,17 @@ Route::middleware('auth')->post('/Produtos-filtro', [App\Http\Controllers\Produt
 //Rota saida de produtos
 Route::middleware('auth')->resource('/Saida-produto', 'App\Http\Controllers\SaidaProdutoController');
 Route::middleware('auth')->resource('/mostra-produto', 'App\Http\Controllers\SaidaProdutoController');
-//Rota estoque de produtos
-Route::middleware('auth')->resource('/Estoque-produto', 'App\Http\Controllers\EstoqueProdutoController');
-//Rota filtro estoque de produtos
+
+//-------------------------------------------------------------//
+//           Estoque de produtos
+//-------------------------------------------------------------//
 Route::middleware('auth')->post('/Estoque-Produtos-filtro', [App\Http\Controllers\EstoqueProdutoController::class, 'index']);
-//Rota pecas equipamentos
+Route::middleware('auth')->resource('/Estoque-produto', 'App\Http\Controllers\EstoqueProdutoController');
+Route::middleware('auth')->resource('Estoque-produto', EstoqueProdutoController::class);
+//-------------------------------------------------------------//
+//          Peças equipamentos
+//-------------------------------------------------------------//
+
 Route::middleware('auth')->resource('/Peca-equipamento', 'App\Http\Controllers\PecaEquipamentoController');
 //--
 Route::middleware('auth')->post('/peca-equpamento-filtro', [App\Http\Controllers\PecaEquipamentoController::class, 'index']);

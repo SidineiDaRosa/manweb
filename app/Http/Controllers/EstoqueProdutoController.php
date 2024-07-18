@@ -137,6 +137,7 @@ class EstoqueProdutoController extends Controller
     {
         //
     }
+    // Outras funções
 
     /**
      * Show the form for editing the specified resource.
@@ -146,7 +147,20 @@ class EstoqueProdutoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $estoque = EstoqueProdutos::find($id);
+        $produtoId = $estoque->produto_id;
+        // $produto=Produto::find($produtoId);
+        $produto = Produto::where('id', $produtoId)->get();
+        $produto = Produto::where('id', $produtoId)->get();
+        $empresa = Empresas::all();
+        $unidades = UnidadeMedida::all();
+        //  $produtos = Produto::where('id', $produtoId)->get();
+        return view('app.estoque_produto.edit', [
+            'estoque' => $estoque,
+            'produtos' => $produto,
+            'empresa' => $empresa,
+            'unidades' => $unidades
+        ]);
     }
 
     /**
@@ -158,7 +172,36 @@ class EstoqueProdutoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // 1. Encontrar o registro pelo ID
+        $estoque =EstoqueProdutos::findOrFail($id);
+
+        // 2. Validar os dados recebidos do formulário
+        $request->validate([
+           // 'data' => 'required|date',
+            'produto_id' => 'required|exists:produtos,id',
+            'empresa_id' => 'required|exists:empresas,id',
+            'unidade_medida' => 'required|string',
+            'quantidade' => 'required|numeric',
+            'valor' => 'required|numeric',
+            'estoque_minimo' => 'nullable|numeric',
+            'estoque_maximo' => 'nullable|numeric',
+            'local' => 'nullable|string',
+        ]);
+
+        // 3. Atualizar o registro com os dados validados
+        //$estoque->data = $request->input('data');
+        $estoque->produto_id = $request->input('produto_id');
+        $estoque->empresa_id = $request->input('empresa_id');
+        $estoque->unidade_medida = $request->input('unidade_medida');
+        $estoque->quantidade = $request->input('quantidade');
+        $estoque->valor = $request->input('valor');
+        $estoque->estoque_minimo = $request->input('estoque_minimo');
+        $estoque->estoque_maximo = $request->input('estoque_maximo');
+        $estoque->local = $request->input('local');
+        $estoque->save();
+
+        // 4. Redirecionar com uma mensagem de sucesso
+        return redirect()->route('Estoque-produto.index')->with('success', 'Estoque atualizado com sucesso!');
     }
 
     /**

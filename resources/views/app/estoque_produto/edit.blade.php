@@ -1,34 +1,24 @@
-
-
-
-
 @extends('app.layouts.app')
 
-@section('titulo', 'Produtos')
-
 @section('content')
-
 <main class="content">
     <div class="card">
-        <div class="card-header">
-            <p>Editar Produto</p>
-        </div>
-        <div class="card-footer justify-content-left">
-            <a href="{{route('produto.index')}}" class="btn">
-                LISTAGEM DE PRODUTOS
-            </a>
-
-            <a href="{{route('produto.create')}}" class="btn">
-                NOVO PRODUTO
-            </a>
+        <div class="card-header-template">
+            <div>Editar local de estoque</div>
+            <div>
+                <a href="{{ route('entrada-produto.index') }}" class="btn btn-sm btn-primary">
+                    LISTAGEM
+                </a>
+            </div>
         </div>
         <div class="card-body">
-            @component('app.saida_produto._components.form_create_edit', ['produto'=>$produto])
-                    
-                @endcomponent  
+            @component('app.estoque_produto._components.form_create_edit', [
+            'estoque'=>$estoque,
+            'produtos' => $produtos,'empresa'=>$empresa,'unidades' => $unidades
+            ])
+            @endcomponent
         </div>
     </div>
 
 </main>
-
 @endsection
