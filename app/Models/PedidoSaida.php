@@ -22,7 +22,6 @@ class PedidoSaida extends Model
         'status',
         'descricao',
         'ordem_servico_id'
-        
 
     ];
     public function Empresa(){

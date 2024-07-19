@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use App\Models\EntradaProduto;
 use App\Models\Produto;
@@ -19,7 +20,6 @@ class EntradaProdutoController extends Controller
      */
     public function index(Request $request)
     {
-
         $tipoFiltro = $request->get('tipofiltro');
         $nome_produto_like = $request->get('produto');
         $empresa_id = $request->get('empresa_id');
@@ -28,7 +28,6 @@ class EntradaProdutoController extends Controller
         $empresa = Empresas::all();
         //$fornecedores=Fornecedor::all();
         if ($tipoFiltro >= 1) {
-
 
             if ($tipoFiltro == 1) {
                 //$entradas_produtos = EntradaProduto::all();
@@ -40,7 +39,6 @@ class EntradaProdutoController extends Controller
                         'empresa' => $empresa
                     ]);
                 }
-
                 //if ($tipoFiltro == 2) {
                 //$entradas_produtos = EntradaProduto::all();
                 //$entradas_produtos = EntradaProduto::where('nome', 'like', $nome_produto_like . '%')->get();
@@ -104,13 +102,20 @@ class EntradaProdutoController extends Controller
     public function store(Request $request)
     {
         EntradaProduto::create($request->all());
-        // $produto = Produto::find($request->input('produto_id')); //busca o registro do produto com o id da entrada do produto
-        //$produto->estoque_ideal = $produto->estoque_ideal + $request->input('quantidade'); // soma estoque antigo com a entrada de produto
-        // $produto->save();
         $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
         $estoque->quantidade = $estoque->quantidade + $request->input('quantidade'); // soma estoque antigo com a entrada de produto
         $estoque->save();
-        return redirect()->route('entrada-produto.index');
+        $produto_id=$estoque->produto_id;
+        $empresa=Empresas::all();
+        $entradas_produtos = EntradaProduto::where('produto_id', $produto_id)->where('empresa_id',2)->where('empresa_id',2)->get();
+        $produto= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $estoque_produtos= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $categorias=Categoria::all();
+        //dd($estoque_produtos);
+        return view('app.estoque_produto.index', [
+            'estoque_produtos' => $estoque_produtos, 'empresas' => $empresa, 'produtos' => $produto, 'categorias' => $categorias
+        ]);
+
     }
     /**
      * Display the specified resource.

@@ -7,6 +7,7 @@ use App\Http\Controllers\PedidoCompraListaController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QrCodeController;
 use app\Http\Controllers\EstoqueProdutoController;
+use App\Http\Controllers\PedidosSaidaController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -207,13 +208,14 @@ Route::middleware('auth')->post('/item-produto-filtro', [App\Http\Controllers\It
 /// ->backgroundColor(255,55,0)
 ///  ->generate('A simple example of QR code');
 ///});
-
-//Rotas pedidos de saida--------------------------------------------------------------------------
+//--------------------------------------------------------//
+//               Pedidos de saida
+//--------------------------------------------------------//
 Route::middleware('auth')->resource('/pedido-saida', 'App\Http\Controllers\PedidosSaidaController');
-//Rota pedidos de saida
 Route::middleware('auth')->resource('/pedido-saida-lista', 'App\Http\Controllers\PedidoSaidaListaController');
 Route::middleware('auth')->post('/pedido-saida-filtro', [App\Http\Controllers\PedidosSaidaController::class, 'index']);
 Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
+//Route::put('/pedido-saida/{pedido_saida}', [PedidosSaidaController::class, 'update'])->name('pedido-saida.update');
 //Filtro Produtos item  saida 
 Route::middleware('auth')->post('/Item-Saida-Produto', [App\Http\Controllers\ItemSaidaProdutoController::class, 'index']);
 //Serviçoes executados

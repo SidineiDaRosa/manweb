@@ -84,7 +84,6 @@
                 <thead>
                     <tr>
                         <th scope="col" class="th-title">Id</th>
-                        <th scope="col" class="th-title">Produto id</th>
                         <th scope="col" class="th-title">Produto</th>
                         <th scope="col" class="th-title">Unid</th>
                         <th scope="col" class="th-title">Quantidade</th>
@@ -100,12 +99,11 @@
                     @foreach ($estoque_produtos as $estoque_produto)
                     <tr>
                         <th>{{ $estoque_produto->id }}</td>
-                        <td>{{ $estoque_produto->produto->id}}
-                            <a title="Abre o cadastro do produto" class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}">
-                                <i class="icofont-eye-alt"></i>
-                            </a>
+                        <td>
+                            <a href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank">{{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}<span class="material-symbols-outlined">
+                        open_in_new
+                    </span></a>
                         </td>
-                        <td>{{ $estoque_produto->produto->nome }}</td>
                         <td>{{ $estoque_produto->unidade_medida }}</td>
                         <td>{{ $estoque_produto->quantidade }}</td>
                         <td>{{ $estoque_produto->valor }}</td>

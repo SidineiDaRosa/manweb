@@ -12,6 +12,7 @@ use App\Models\PedidoSaida;
 use App\Models\SaidaProduto;
 use App\Models\Fornecedor;
 use App\Models\OrdemServico;
+use App\Models\User;
 
 class PedidosSaidaController extends Controller
 {
@@ -32,24 +33,36 @@ class PedidosSaidaController extends Controller
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
         $empresas = Empresas::all();
+        $emissores = User::all();
         if ($tipoFiltro == 1) {
             $pedidos_saida = PedidoSaida::where('status', $situacao)->whereBetween('data_emissao', [$data_inicio, $data_fim])->get();
-            return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida]);
+            return view('app.pedido_saida.index', [
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida,
+                'emissores' => $emissores
+            ]);
         }
         if ($tipoFiltro == 2) {
             $pedidos_saida = PedidoSaida::where('status', $situacao)->get();
-            return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida]);
+
+            return view('app.pedido_saida.index', [
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida,
+                'emissores' => $emissores
+            ]);
         }
         if ($tipoFiltro == 4) {
 
             $pedidos_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->get();
-            return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida]);
+            return view('app.pedido_saida.index', [
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida,
+                'emissores' => $emissores
+            ]);
         }
         if ((empty($tipoFiltro))) {
             $pedidos_saida = PedidoSaida::where('id', 2)->get();
-            echo($pedidos_saida);
-            return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida]);
-            
+            return view('app.pedido_saida.index', [
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida,
+                'emissores' => $emissores
+            ]);
         }
     }
     /**
@@ -67,13 +80,13 @@ class PedidosSaidaController extends Controller
         $funcionarios = Funcionario::all();
         $empresas = Empresas::all();
         $fornecedores = Fornecedor::all();
-        echo($ordem_servico_id );
-        return view('app.pedido_saida.create', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
-         'pedidos_saida' => $pedidos_saida,'ordem_servico'=>$ordem_servico,
-         'fornecedores' =>$fornecedores 
+        echo ($ordem_servico_id);
+        return view('app.pedido_saida.create', [
+            'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
+            'pedidos_saida' => $pedidos_saida, 'ordem_servico' => $ordem_servico,
+            'fornecedores' => $fornecedores
         ]);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -88,7 +101,11 @@ class PedidosSaidaController extends Controller
         $pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->get();
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
-        return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedido_saida]);
+        $emissores = User::all();
+        return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedido_saida,
+        'emissores' => $emissores
+    
+    ]);
     }
 
     /**
@@ -111,14 +128,14 @@ class PedidosSaidaController extends Controller
 
     public function edit(PedidoSaida $pedidoSaida)
     {
-
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
-        $empresas = Empresas::all();
+        $empresa = Empresas::find($pedidoSaida->empresa_id);
         $fornecedores = Fornecedor::all();
+        $emissor = User::find($pedidoSaida->funcionarios_id);
         return view('app.pedido_saida.edit', [
-            'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidoSaida,
-            'empresa' => $empresas,
+            'equipamentos' => $equipamentos, 'emissor' => $emissor, 'pedidos_saida' => $pedidoSaida,
+            'empresa' => $empresa,
             'fornecedores' => $fornecedores,
         ]);
     }
@@ -131,7 +148,24 @@ class PedidosSaidaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pedidoSaida = PedidoSaida::findOrFail($id);
+
+        $pedidoSaida->data_prevista = $request->input('data_prevista');
+        $pedidoSaida->hora_prevista = $request->input('hora_prevista');
+        $pedidoSaida->status = $request->input('status');
+        // Adicione outras atualizações de campo conforme necessário
+
+        $pedidoSaida->save();
+
+        $pedidosSaida = PedidoSaida::where('id', $pedidoSaida->empresa_id)->get();
+        $equipamentos = Equipamento::all();
+        $funcionarios = Funcionario::all();
+        $empresa = Empresas::find(2);
+        $pedidos_saida = PedidoSaida::where('id', $id)->get();
+        $emissores = User::all();
+        return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida,
+        'emissores'=>$emissores
+    ]);
     }
 
     /**

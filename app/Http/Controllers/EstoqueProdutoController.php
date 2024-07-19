@@ -201,7 +201,14 @@ class EstoqueProdutoController extends Controller
         $estoque->save();
 
         // 4. Redirecionar com uma mensagem de sucesso
-        return redirect()->route('Estoque-produto.index')->with('success', 'Estoque atualizado com sucesso!');
+        
+        $empresa=Empresas::all();
+        $produto= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $estoque_produtos= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $categorias=Categoria::all();
+        return view('app.estoque_produto.index', [
+            'estoque_produtos' => $estoque_produtos, 'empresas' => $empresa, 'produtos' => $produto, 'categorias' => $categorias
+        ]);
     }
 
     /**

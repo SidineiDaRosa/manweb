@@ -6,7 +6,8 @@
     <form action="{{ route('Estoque-produto.store') }}" method="POST">
         @csrf
 @endif
-
+@foreach($produtos as $produto)
+@endforeach
     <!-- Campos do formulário -->
     <div class="row mb-3">
         <label for="data" class="col-md-4 col-form-label text-md-end text-right">Data</label>
@@ -15,19 +16,17 @@
             {{ $errors->has('data') ? $errors->first('data') : '' }}
         </div>
     </div>
-
     <div class="row mb-1">
         <label for="produto" class="col-md-4 col-form-label text-md-end text-right">Produto id</label>
         <div class="col-md-6">
-            <input name="produto_id" id="produto_id" type="text" class="form-control" value="{{ $estoque->produto_id ?? old('produto_id') }}" readonly>
+            <input name="produto_id" id="produto_id" type="text" class="form-control" value="{{$produto->id ?? old('produto_id') }}" readonly>
             {{ $errors->has('produto_id') ? $errors->first('produto_id') : '' }}
         </div>
     </div>
-
     <div class="row mb-1">
         <label for="produto" class="col-md-4 col-form-label text-md-end text-right">Produto</label>
         <div class="col-md-6">
-            <input name="produto" id="produto" type="text" class="form-control" value="{{ $estoque->produto->nome ?? old('produto') }}" readonly>
+            <input name="produto" id="produto" type="text" class="form-control" value="{{ $produto->nome ?? old('produto_nome') }}" readonly>
             {{ $errors->has('produto') ? $errors->first('produto') : '' }}
         </div>
     </div>
@@ -43,7 +42,7 @@
     <div class="row mb-1">
         <label for="unidade_medida" class="col-md-4 col-form-label text-md-end text-right">Unid</label>
         <div class="col-md-6">
-            <input name="unidade_medida" id="unidade_medida" type="text" class="form-control" value="{{ $estoque->produto->unidade_medida->nome ?? old('unidade_medida') }}" readonly>
+            <input name="unidade_medida" id="unidade_medida" type="text" class="form-control" value="{{$produto->unidade_medida_id}}" readonly>
             {{ $errors->has('unidade_medida') ? $errors->first('unidade_medida') : '' }}
         </div>
     </div>
@@ -51,11 +50,10 @@
     <div class="row mb-1">
         <label for="quantidade" class="col-md-4 col-form-label text-md-end text-right">Quantidade</label>
         <div class="col-md-6">
-            <input name="quantidade" id="quantidade" type="text" class="form-control" value="{{ $estoque->quantidade ?? old('quantidade') }}">
+            <input name="quantidade" id="quantidade" type="text" class="form-control" value="{{ $estoque->quantidade ?? old('quantidade') }}" readonly>
             {{ $errors->has('quantidade') ? $errors->first('quantidade') : '' }}
         </div>
     </div>
-
     <div class="row mb-1">
         <label for="valor" class="col-md-4 col-form-label text-md-end text-right">R$</label>
         <div class="col-md-6">

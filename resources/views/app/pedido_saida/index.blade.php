@@ -12,7 +12,7 @@
                     <input type="date" class="form-control" name="data_inicio" id="data_inicio" style="height: auto;">
                 </div>
                 <div class="col-md-2 mb-0">
-                    <input type="date" class="form-control" name="data_fim" id="data_fim"style="height: auto;">
+                    <input type="date" class="form-control" name="data_fim" id="data_fim" style="height: auto;">
                 </div>
                 <div class="col-md-2 mb-0">
                     <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
@@ -24,8 +24,8 @@
                 </div>
                 <div class="col-md-2 mb-0">
                     <select class="form-control" name="status" id="status" value="" placeholder="Selecione o estado do pedido">
-                        <option value="aberto">Busca Aberto</option>
                         <option value="fechado">Busca Fechado</option>
+                        <option value="aberto">Busca Aberto</option>
                         <option value="indefenido">Busca Indefinido</option>
                         <option value="em andamento">Busca Em andamanto</option>
                     </select>
@@ -48,14 +48,14 @@
             <style>
                 #formSearchingProducts {
                     background-color: white;
-                    width:auto;
+                    width: auto;
                     height: 44px;
                     border-radius: 5px;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
                 }
-             
+
                 input {
                     all: unset;
                     font: 16px system-ui;
@@ -106,7 +106,7 @@
                     background-color: rgb(169, 169, 169);
                 }
             </style>
-            <table class="" id="tblPedidosSaida">
+            <table id="tblPedidosSaida">
                 <thead>
                     <tr>
                         <th scope="col" class="th-title">Id</th>
@@ -115,78 +115,60 @@
                         <th scope="col" class="th-title">Empresa</th>
                         <th scope="col" class="th-title">Equipamento</th>
                         <th scope="col" class="th-title">Emissor</th>
-                        <th scope="col" class="th-title">status</th>
-                        <th scope="col" class="th-title">Os</th>
-                        <th scope="col" class="th-title">operaçoes</th>
-
+                        <th scope="col" class="th-title">Status</th>
+                        <th scope="col" class="th-title">OS</th>
+                        <th scope="col" class="th-title">Operações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($pedidos_saida as $pedido_saida)
                     <tr>
-                        <th scope="row">{{ $pedido_saida->id }}</td>
-                        <td>{{ $pedido_saida->data_emissao }}</td>
-                        <td>{{ $pedido_saida->data_prevista}}</td>
-                        <td>{{ $pedido_saida->empresa->nome_fantasia}}</td>
-                        <td>{{ $pedido_saida->equipamento->nome}}</td>
-                        <td>{{ $pedido_saida->funcionarios->primeiro_nome}}</td>
-                        <td>{{ $pedido_saida->status}}</td>
-                        <td>{{ $pedido_saida->ordem_servico_id}}</td>
+                        <td>{{ $pedido_saida->id }}</td>
+                        <td>{{ \Carbon\Carbon::parse($pedido_saida->data_emissao)->format('d/m/Y') }} às {{ $pedido_saida->hora_emissao }}</td>
+                        <td>{{ \Carbon\Carbon::parse($pedido_saida->data_prevista)->format('d/m/Y') }} às {{ $pedido_saida->hora_prevista }}</td>
+                        <td>{{ $pedido_saida->empresa->nome_fantasia }}</td>
+                        <td>{{ $pedido_saida->equipamento->nome }}</td>
+                        @foreach($emissores as $emissor)
+                        @endforeach
                         <td>
-                            <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-
-
-                                <a class=" btn btn-sm-template btn-outline-primary" href="{{route('pedido-saida.show', ['pedido_saida'=>$pedido_saida->id])}}">
-
+                            @php
+                            $emissor = $emissores->firstWhere('id', $pedido_saida->funcionarios_id);
+                            @endphp
+                            {{ $emissor->name ?? 'Desconhecido' }}
+                        </td>
+                        <td>{{ $pedido_saida->status }}</td>
+                        <td>{{ $pedido_saida->ordem_servico_id }}</td>
+                        <td>
+                            <div class="btn-group btn-group-actions visible-on-hover">
+                                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-saida-lista.index', ['pedido_saida' => $pedido_saida->id]) }}">
                                     <i class="icofont-eye-alt"></i>
                                 </a>
-
-                                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('pedido-saida-lista.index', ['pedido_saida'=>$pedido_saida->id])}}">
-                                    <i class="icofont-list"></i></a>
-                                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('pedido-saida.edit', ['pedido_saida'=>$pedido_saida->id])}}">
-                                        <i class="icofont-ui-edit"></i> </a>
-                                    <!--Condioçes para deletar-->
-                                    <form id="form_{{$pedido_saida->id }}" method="post" action="{{route('pedido-saida.destroy', [$pedido_saida->id])}}">
-                                        @method('POST')
-                                        @csrf
-                                    </form>
-                                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarPedidoSaida()">
-                                        <i class="icofont-ui-delete"></i>
-                                        <script>
-                                            function DeletarPedidoSaida() {
-                                                var x;
-                                                var r = confirm("Deseja deletar a pedido de saida?");
-                                                if (r == true) {
-
-                                                    document.getElementById('form_header{{$pedido_saida->id }}').submit()
-                                                } else {
-                                                    x = "Você pressionou Cancelar!";
-                                                }
-                                                document.getElementById("demo").innerHTML = x;
-                                            }
-
-                                            function PedidosSaidaHeader() {
-                                                var x;
-                                                var r = confirm(" Pedido de saida header?");
-                                                if (r == true) {
-
-                                                    document.getElementById('form_header{{$pedido_saida->id }}').submit()
-                                                } else {
-                                                    x = "Você pressionou Cancelar!";
-                                                }
-                                                document.getElementById("demo").innerHTML = x;
-                                            }
-                                        </script>
-                                    </a>
-                                    <!------------------------------>
+                                <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcan" href="{{ route('pedido-saida.edit', ['pedido_saida' => $pedido_saida->id]) }}">
+                                    <i class="icofont-ui-edit"></i>
+                                </a>
+                                <form id="form_{{ $pedido_saida->id }}" method="post" action="{{ route('pedido-saida.destroy', [$pedido_saida->id]) }}">
+                                    @method('POST')
+                                    @csrf
+                                </form>
+                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPedidoSaida({{ $pedido_saida->id }})">
+                                    <i class="icofont-ui-delete"></i>
+                                </a>
                             </div>
                         </td>
-
-
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+
+            <script>
+                function DeletarPedidoSaida(id) {
+                    var r = confirm("Deseja deletar o pedido de saída?");
+                    if (r == true) {
+                        document.getElementById('form_' + id).submit();
+                    }
+                }
+            </script>
+
         </div>
 
 
