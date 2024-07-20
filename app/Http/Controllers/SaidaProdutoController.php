@@ -39,38 +39,45 @@ class SaidaProdutoController extends Controller
      */
     public function create(Request $Request)
     {
-        echo($Request);
         $empresa_id = $Request->get('empresa');
         $produtoId = $Request->get('produto');
         $produto_id = $Request->get('produto_id');
         $data_inicio = $Request->get('data_inicio');
         $peca_equipamento_id = $Request->get('peca_equipamento_id');
-        $peca_equipamento=PecasEquipamentos::where('id',$peca_equipamento_id)->get();
+        $peca_equipamento = PecasEquipamentos::where('id', $peca_equipamento_id)->get();
         $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)->where('produto_id', $produtoId)->get();
-        if (!empty($estoque_produtos)) {
-            $equipamento_id =  $Request->get('equipamento_id');
-            $unidade_medida = UnidadeMedida::all();
-            $estoque_id = $Request->get('estoque_id');
-            $pedido = $Request->get('pedido');
-            $pedido_saida_produtos = PedidoSaida::where('id', $pedido)->get();
-            $produtos = Produto::where('id', $produtoId)->get();
-            $produtos = EntradaProduto::where('produto_id', $produtoId)->get();
-            // $pedido = PedidoSaida::where('id', $pedidoId)->get();
-            $estoque  = EstoqueProdutos::where('id', $estoque_id)->get();
-            return view('app.saida_produto.create', [
-                'produtos' => $produtos, 'equipamento_id' =>  $equipamento_id,
-                'unidade_medida' => $unidade_medida,
-                'pedido' => $pedido,
-                'estoque' => $estoque,
-                'pedido_saida_produtos' => $pedido_saida_produtos,
-                'estoque_produtos' => $estoque_produtos,
-                'peca_equipamento_id' => $peca_equipamento_id,
-                'peca_equipamento'=>$peca_equipamento
-            ]);
-        } else {
-            echo ('<div id="Alert">Não foi encontrado o produto no estoque!</div><Style>#Alert{background_color:Red;}</Style>');
+        foreach ($estoque_produtos as $estoque_qnt) {
         }
-        //
+
+        if ($estoque_qnt->quantidade <= 0) {
+            echo '<div class="message" style="background-color:orange; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação Negada! Estoque Zerado.</div>';
+        } else {
+
+            if (!empty($estoque_produtos)) {
+                $equipamento_id =  $Request->get('equipamento_id');
+                $unidade_medida = UnidadeMedida::all();
+                $estoque_id = $Request->get('estoque_id');
+                $pedido = $Request->get('pedido');
+                $pedido_saida_produtos = PedidoSaida::where('id', $pedido)->get();
+                $produtos = Produto::where('id', $produtoId)->get();
+                $produtos = EntradaProduto::where('produto_id', $produtoId)->get();
+                // $pedido = PedidoSaida::where('id', $pedidoId)->get();
+                $estoque  = EstoqueProdutos::where('id', $estoque_id)->get();
+                return view('app.saida_produto.create', [
+                    'produtos' => $produtos, 'equipamento_id' =>  $equipamento_id,
+                    'unidade_medida' => $unidade_medida,
+                    'pedido' => $pedido,
+                    'estoque' => $estoque,
+                    'pedido_saida_produtos' => $pedido_saida_produtos,
+                    'estoque_produtos' => $estoque_produtos,
+                    'peca_equipamento_id' => $peca_equipamento_id,
+                    'peca_equipamento' => $peca_equipamento
+                ]);
+            } else {
+                echo ('<div id="Alert">Não foi encontrado o produto no estoque!</div><Style>#Alert{background_color:Red;}</Style>');
+            }
+            //
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -83,31 +90,33 @@ class SaidaProdutoController extends Controller
         //
         $pedido_saida_id = $request->get('pedidos_saida_id');
         $dataAtual = $request->get('data');
-        $data_proxima_manutencao= $request->get('data_proxima_manutencao');
+        $data_proxima_manutencao = $request->get('data_proxima_manutencao');
         $pedido_saida = PedidoSaida::where('id', $pedido_saida_id)->get();
-        SaidaProduto::create($request->all());
         $saidas_produtos = SaidaProduto::all();
         $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
+        if ($request->quantidade>$estoque->quantidade) {
+            echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
+        Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
+        </div>';
+        } else {
+            SaidaProduto::create($request->all());
         $estoque->quantidade = $estoque->quantidade - $request->input('quantidade'); // soma estoque antigo com a entrada de produto
-        $estoque->save();
-        //-------------------------------------
-        //$dataAtual = date('y/m/d');
-        //echo($dataAtual );
-        $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
-        $pecaEquipamento->data_substituicao=$dataAtual; // soma estoque antigo com a entrada de produto
-        $pecaEquipamento->save();
-        $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
-        $pecaEquipamento->data_proxima_manutencao=$data_proxima_manutencao; // soma estoque antigo com a entrada de produto
-        $pecaEquipamento->save();
-        $equipamentos = Equipamento::all();
-        $produtos = Produto::all();
-        $categorias = Marca::all();
-        $unidades = Empresas::all();
-        //echo('controller saidas de produtos');
-        echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
-
-        
+            $estoque->save();
+            //-------------------------------------
+            $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
+            $pecaEquipamento->data_substituicao = $dataAtual; // soma estoque antigo com a entrada de produto
+             $pecaEquipamento->save();
+            $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
+            $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
+            $pecaEquipamento->save();
+            $equipamentos = Equipamento::all();
+            $produtos = Produto::all();
+            $categorias = Marca::all();
+            $unidades = Empresas::all();
+            echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+        }
     }
+
 
     /**
      * Display the specified resource.
