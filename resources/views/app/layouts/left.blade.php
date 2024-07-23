@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="{{ asset('js/left.js') }}" defer></script>
-    <title>Document</title>
+    <title>Left</title>
 </head>
 
 </html>
@@ -19,6 +20,11 @@
         font-size: 40px;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
+
+    .spn-txt-menu {
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+    }
 </style>
 
 <aside class="sidebar" id="sidebarleft">
@@ -26,17 +32,25 @@
         <!--Classe inicio das listas de menu-->
 
         <ul class="nav-list">
+            <a class="sidebar-submenu-expanded-a" href="{{ route('app.home') }}">
+                <i class="icofont-dashboard icofont-1x">&nbsp&nbsp&nbsp
+                    <span class="spn-txt-menu">DASHBOARD</span>
+                </i>
+            </a><br>
+            <hr>
             <li class="nav-item">
                 <a onclick="FunExpandMenuDashboard();">
-                    <i class="icofont-dashboard icofont-2x">&nbsp&nbsp&nbspDashboard</i>
+                    &nbsp&nbsp&nbsp
+                    <span class="spn-txt-menu">Home</span>
+                    </i>
                     <i class="icofont-caret-down icofont-2x"></i>
-
                 </a>
                 <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-dashboard">
-                    <a href="{{ route('app.home') }}" class="title-menu">DASHBOARD OS</a><p>
-                    <a class="sidebar-submenu-expanded-a" href="{{ route('control-panel.index') }}">Painel de controle</a><br>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{ route('site.configuracoes') }}">Configurações</a>
+                    <a href="{{ route('app.home') }}" class="title-menu">Home</a>
+                    <p>
+                        <a class="sidebar-submenu-expanded-a" href="{{ route('control-panel.index') }}">Painel de controle</a><br>
+                        <hr>
+                        <a class="sidebar-submenu-expanded-a" href="{{ route('site.configuracoes') }}">Configurações</a>
                 </div>
             </li>
             <hr>
@@ -64,10 +78,9 @@
                     <i class="icofont-caret-down icofont-2x"></i>
                 </a>
                 <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-marcas">
-                    <a class="sidebar-submenu-expanded-a" href="{{route('marca.index')}}">Busca Marcas</a><br>
-                    <a class="sidebar-submenu-expanded-a" href="">Cadastro de marcas</a><br>
+                    <a class="sidebar-submenu-expanded-a" href="{{route('marca.index')}}">Cadastro de marcas</a><br>
                     <hr>
-                    <a class="sidebar-submenu-expanded-a" href="">Cadastro de grupo /categoria</a>
+                    <a class="sidebar-submenu-expanded-a" href="#">Cadastro de Segmentos</a>
                 </div>
             </li>
             <!--Menu recursos-->
@@ -107,23 +120,21 @@
                         <i class="icofont-caret-down icofont-2x"></i>
                     </a>
                     <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-patrimonio">
-                        <a class="sidebar-submenu-expanded-a" href="{{route('equipamento.index')}}">&nbsp&nbspAtivos e Passivos</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="{{ route('equipamento.create') }}">&nbsp&nbspCadastro de
+                        <a class="sidebar-submenu-expanded-a" href="#">&nbsp&nbspAtivos</a><br>
                         <a class="sidebar-submenu-expanded-a" href="{{ route('Peca-equipamento.index') }}">&nbsp&nbspFiltros de Chek-List Lubrificação</a><br>
                         <hr>
                         <a class="sidebar-submenu-expanded-a" href="">Manutenção</a><br>
                         <a class="sidebar-submenu-expanded-a" href="{{route('ordem-servico.index')}}">
                             <i class="icofont-repair"></i>
-                            &nbsp&nbspOrdem de serviço</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="">
+                            &nbsp&nbspOrdem de Serviço</a><br>
+                        <a class="sidebar-submenu-expanded-a" href="#">
                             <i class="icofont-dashboard-web"></i>
                             &nbsp&nbspRelatórios</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="">
+                        <a class="sidebar-submenu-expanded-a" href="#">
                             <i class="icofont-bars"></i>
                             &nbsp&nbspGráficos</a>
                     </div>
             </li>
-
             <li class="nav-item">
                 <a href="#">
                     <a href="{{route('ordem-producao.index')}}">
@@ -133,15 +144,17 @@
 
                     </a>
             </li>
-
-
+            @auth
+            @if(Auth::user()->level === 0)
             <li class="nav-item">
-                <a href="{{route('register')}}">
+                <a href="{{ route('register') }}">
                     <i class="icofont-users mr-2 icofont-2x"></i>
                     &nbspUsuários
                     <i class="icofont-caret-down icofont-2x"></i>
                 </a>
             </li>
+            @endif
+            @endauth
 
     </nav>
 

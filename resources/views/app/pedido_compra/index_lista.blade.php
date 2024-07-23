@@ -40,6 +40,9 @@
                 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-compra-lista-printer', ['numpedidocompra'=>$pedido_compra->id]) }}">
                     <i class="icofont-printer"></i>
                 </a>
+                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}" title="Editar Pedido de compra">
+                    <i class="icofont-ui-edit"></i>
+                </a>
                 <a class="btn btn-sm-template btn-outline-dark" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> dashboard
                 </a>

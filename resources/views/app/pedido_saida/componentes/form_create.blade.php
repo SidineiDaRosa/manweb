@@ -2,8 +2,6 @@
 <!----Grava -->
 <!---*************************************************************************************----->
 @if (isset($ordem_servico->id))
-<form action="{{route('ordem-servico.store',['ordem_servico' => $ordem_servico->id]) }}" method="POST">
-    @csrf
     @method('PUT')
     @else
     <form action="{{ route('ordem-servico.store') }}" method="POST">

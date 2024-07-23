@@ -53,7 +53,7 @@
                         <th scope="col" class="th-title">Equipamento</th>
                         <th scope="col" class="th-title">status</th>
                         <th scope="col" class="th-title">Emissor</th>
-                        <th scope="col" class="th-title">operaçoes</th>
+                        <th scope="col" class="th-title">operações</th>
                     </tr>
                 </thead>
                 <tbody>

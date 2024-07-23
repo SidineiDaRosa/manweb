@@ -41,12 +41,14 @@
                     <td>{{ $saida_produto->equipamento->nome}}</td>
                     <td>
                         <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                            <a class="btn btn-sm-template btn-outline-primary" href="{{ route('mostra-produto.show',[1]) }}">                          
-                            <i class="icofont-eye-alt"></i>
+                            <a class="btn btn-sm-template btn-outline-primary" href="{{ route('mostra-produto.show',[1]) }}">
+                                <i class="icofont-eye-alt"></i>
                             </a>
 
                         </div>
+
                     </td>
+
                 </tr>
 
                 @endforeach

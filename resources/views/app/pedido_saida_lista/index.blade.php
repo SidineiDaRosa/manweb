@@ -143,9 +143,8 @@
                 <div class="titulo">Emissor</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="text" class="input-bordernone" name="emissor" id="emissor" value="{{$pedido_saida_f->funcionarios->primeiro_nome ?? old('hora_prevista') }}" required autocomplete="funcionarios_id " autofocus readonly>
+                    <input type="text" class="input-bordernone" name="emissor" id="emissor" value="{{$pedido_saida_f->funcionarios_id}}" required autocomplete="funcionarios_id " autofocus readonly>
                 </div>
-
             </div>
         </div>
         {{--Box 3--}}
@@ -174,7 +173,11 @@
                 <div class="conteudo">
                     <input type="text" class="input-bordernone" name="equipamento" id="equipamento" value="{{$pedido_saida_f->equipamento->nome ?? old('hora_prevista') }}" required autocomplete="funcionarios_id " autofocus readonly>
                 </div>
-
+                <div class="titulo">Descrição</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="text" class="input-bordernone" name="descricao" id="descricao" value="{{$pedido_saida_f->descricao}}" required autocomplete="funcionarios_id " autofocus readonly>
+                </div>
             </div>
         </div>
     </div>

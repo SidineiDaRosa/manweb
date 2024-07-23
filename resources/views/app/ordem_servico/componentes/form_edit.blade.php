@@ -51,14 +51,13 @@
                         fechaModal();
                     }
                 </script>
-                <option value="pendente de aprovacao">Pendente de Aprovação</option>
-                <option value="aberto">Aberto</option>
-                <option value="fechado">Fechado</option>
-                <option value="indefinido">Indefinido</option>
-                <option value="cancelada">Cancelada</option>
-                <option value="em andamento">Em andamento</option>
-                <option value="pausado">Pausado</option>
-                <option value="rejeitada">Rejeitada</option>
+             <option value="aberto">Aberto</option>
+                    <option value="fechado">Fechado</option>
+                    <option value="indefinido">Indefinido</option>
+                    <option value="cancelada">Cancelada</option>
+                    <option value="em andamento">Em andamento</option>
+                    <option value="pausado">Pausado</option>
+                    <option value="rejeitada">Rejeitada</option>
                 {{ $errors->has('nome') ? $errors->first('nome') : '' }}
             </select>
             <div class="invalid-tooltip">

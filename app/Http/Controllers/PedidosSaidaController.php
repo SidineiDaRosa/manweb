@@ -152,6 +152,7 @@ class PedidosSaidaController extends Controller
 
         $pedidoSaida->data_prevista = $request->input('data_prevista');
         $pedidoSaida->hora_prevista = $request->input('hora_prevista');
+        $pedidoSaida->descricao = $request->input('descricao');
         $pedidoSaida->status = $request->input('status');
         // Adicione outras atualizações de campo conforme necessário
 

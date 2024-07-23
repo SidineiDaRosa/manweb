@@ -293,7 +293,6 @@
             <div class="conteudo">
 
                 <select class="input-text" class="form-control" name="situacao" id="situacao" value="">
-                    <option value="pendente de aprovacao">Pendente de Aprovação</option>
                     <option value="aberto">Aberto</option>
                     <option value="fechado">Fechado</option>
                     <option value="indefinido">Indefinido</option>
@@ -331,9 +330,9 @@
                     <!-- Outras especialidades conforme necessário -->
                 </select>
             </div>
-            <div class="titulo">link</div>
-            <hr>
-            <div class="conteudo">
+            <div class="titulo" hidden>link</div>
+            <hr hidden>
+            <div class="conteudo" hidden>
                 <input class="input-text" id="link_foto" type="text" class="form-control" name="link_foto" value="" readonly>
             </div>
             <div class="titulo">GUT</div>
@@ -360,11 +359,11 @@
                     Por favor, informe a urgencia.
                 </div>
                 <select class="input-text" name="tendencia" id="tendencia" value="">
-                    <option value="5">Extremamante urgente</option>
-                    <option value="4">Urgente</option>
-                    <option value="3">Urgente se possível</option>
-                    <option value="2">Pouco urgente</option>
-                    <option value="1">Não urgente</option>
+                    <option value="5">Piorar rápidamante 5</option>
+                    <option value="4">Piorar em curto prazo 4</option>
+                    <option value="3">Piorar 3</option>
+                    <option value="2">Piorar logo prazo 2</option>
+                    <option value="1">Não irá piorar 1</option>
                 </select>
                 <div class="invalid-tooltip">
                     Por favor, informe a urgencia.

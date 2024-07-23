@@ -61,6 +61,11 @@
                         <label for="ordem_servico_id">Ordem serviço:</label>
                         <input type="text" class="form-control" name="ordem_servico_id" id="ordem_servico_id" value="{{ $pedidos_saida->ordem_servico_id }}" readonly>
                     </div>
+                      <!----------------------------------->
+                      <div class="col-md-5 mb-1">
+                        <label for="cliente" class="">Obs.</label>
+                        <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Descreva algo..." value="{{ $pedidos_saida->descricao}}">
+                    </div>
                     <div class="col-md-12 mt-3">
                         <button type="submit" class="btn btn-outline-primary">Atualizar</button>
                     </div>

@@ -27,56 +27,52 @@
             }
             //Fim da função que seta as cores dos campos
             function AtualizaProxManut() {
-                let dataUltimaSub, anoUltimasub, diaUltimaSub
-                let dataProxManut
-                let intervaloMan
-                let mesesInter
-                let diasInter
-                let mesesProxima, diasProxima, anosProxima
-                dataUltimaSub = document.getElementById('data_substituicao').value
-                intervaloMan = document.getElementById('intervalo_manutencao').value
-                let dataUltimaSub_1 = new Date(dataUltimaSub)
-                let anoUltima = dataUltimaSub_1.getFullYear();
-                let mesUltima = dataUltimaSub_1.getMonth() + 1;
-                let diaUltima = dataUltimaSub_1.getDate() + 1;
-                if (intervaloMan >= 8700) {
-                    let anosInter = (intervaloMan / 8700)
-                    let anosInter_1 = (parseInt(anosInter))
-                    let getMeses = (parseInt(((anosInter - anosInter_1) * 8700) / 730))
-                    mesesProxima = String(getMeses + 1).padStart(2, '0');
-                    anosProxima = String(anosInter_1 + anoUltima).padStart(4, '0');
-                    diasProxima = String(diaUltima).padStart(2, '0')
-                    alert('A data da próxima manutenção será agendada para:' + diasProxima + '-' + mesesProxima + '-' + anosProxima)
-                }
-                if (intervaloMan >= 720 & intervaloMan < 8700) {
-                    mesesInter = (parseInt(intervaloMan / 730))
-                    //mesesProxima =( mesesInter + mesUltima).padStart(2, '0')
-                    anosProxima = String(anoUltima).padStart(4, '0');
-                    mesesProxima = String(mesesInter + mesUltima).padStart(2, '0');
-                    diasProxima = String(diaUltima).padStart(2, '0')
-                    alert('A data da próxima manutenção será agendada para:' + diasProxima + '-' + mesesProxima + '-' + anosProxima)
-                }
-                if (intervaloMan >= 1 & intervaloMan < 720) {
-                    diasInter = (parseInt(intervaloMan / 24)) + diaUltima
-                    if (diasInter >= 30) {
-                        mesUltima = mesUltima + 1
+                // Obter os valores dos inputs
+                const lastMaintenanceDate = document.getElementById('data_substituicao').value;
+                const lastMaintenanceTime = document.getElementById('hora_substituicao').value;
+                const maintenanceInterval = parseFloat(document.getElementById('intervalo_manutencao').value);
 
-                        diasInter = diasInter - 30
-                        diasInter = diasInter
+                if (lastMaintenanceDate && lastMaintenanceTime && !isNaN(maintenanceInterval)) {
+                    // Combinar data e hora em um único objeto Date
+                    const lastMaintenanceDateTime = new Date(`${lastMaintenanceDate}T${lastMaintenanceTime}`);
 
-                    }
-                    anosProxima = anoUltima
-                    mesesProxima = String(mesUltima).padStart(2, '0');
-                    diasProxima = String(diasInter).padStart(2, '0')
-                    alert('A data da próxima manutenção será agendada para:' + diasProxima + '-' + mesesProxima + '-' + anosProxima)
+                    // Calcular o intervalo de manutenção em milissegundos
+                    const maintenanceIntervalMs = maintenanceInterval * 60 * 60 * 1000;
+
+                    // Calcular a data e hora da próxima manutenção
+                    const nextMaintenanceDateTime = new Date(lastMaintenanceDateTime.getTime() + maintenanceIntervalMs);
+
+                    // Obter a data e hora da próxima manutenção em formatos legíveis
+                    const nextMaintenanceDate = nextMaintenanceDateTime.toISOString().split('T')[0];
+                    const nextMaintenanceTime = nextMaintenanceDateTime.toTimeString().split(' ')[0];
+
+                    // Calcular as horas restantes
+                    const currentDateTime = new Date();
+                    const remainingTimeMs = nextMaintenanceDateTime - currentDateTime;
+                    const remainingHours = Math.max(Math.floor(remainingTimeMs / (1000 * 60 * 60)), 0);
+
+                    // Exibir o alerta com a data e hora da próxima manutenção
+                    console.log(`Próxima manutenção: ${nextMaintenanceDate} às ${nextMaintenanceTime} intervalo de:${remainingHours}`);
+                    alert(`Próxima manutenção: ${nextMaintenanceDate} às ${nextMaintenanceTime} E restam: ${remainingHours} horas`);
+
+                    // Definir o valor dos campos com a data e hora da próxima manutenção
+                    document.getElementById('data_proxima_manutencao').value = `${nextMaintenanceDate}`;
+                    document.getElementById('hora_proxima_manutencao').value = `${nextMaintenanceTime}`;
+
+                    // Definir o valor do campo com as horas restantes
+                    document.getElementById('horas_proxima_manutencao').value = `${remainingHours}`;
+                    // Obter o campo pelo ID
+                    const descricaoCampo = document.getElementById('descricao');
+                    document.getElementById('descricao').value='';
+
+                    // Remover o atributo readonly para habilitar o campo
+                    descricaoCampo.removeAttribute('readonly');
+
+                    // Definir o foco no campo
+                    descricaoCampo.focus();
+                } else {
+                    alert('Por favor, preencha todos os campos corretamente.');
                 }
-                //var dia = String(data_atual.getDate()).padStart(2, '0');
-                //var mes = String(mesesProxima .getMonth() + 1).padStart(2, '0');
-                dataProxManut = anosProxima + '-' + mesesProxima + '-' + diasProxima
-                document.getElementById('data_proxima_manutencao').value = dataProxManut
-                document.getElementById('horas_proxima_manutencao').value = intervaloMan
-                // document.getElementById('link_peca').value='vazio'
-                // document.getElementById('forma_medicao').value=1
             }
         </script>
         {{----------------------------------------------------------------------}}
@@ -181,16 +177,6 @@
                     {{$equipamento_f['nome']}}
                     @endforeach" hidden>
                     </div>
-                    <div class="titulo">Descrição do item</div>
-                    <hr>
-                    <div class="conteudo">
-                        <input name="descricao" id="descricao" type="text" value="" placeholder="--insira uma descrição para o item--">
-                    </div>
-                </div>
-            </div>
-            {{--Box 2--}}
-            <div class="item">
-                <div class="box-conteudo">
                     <div class="titulo">ID produto:</div>
                     <hr>
                     <div class="conteudo">
@@ -208,15 +194,28 @@
                     <div class="conteudo">
                         <input name="intervalo_manutencao" id="intervalo_manutencao" type="number" value="" onchange="AtualizaProxManut()" placeholder="--insira o intervalo em horas--">
                     </div>
+
+                </div>
+            </div>
+            {{--Box 2--}}
+            <div class="item">
+                <div class="box-conteudo">
                     <div class="titulo">Data da próxima manutencão</div>
                     <hr>
                     <div class="conteudo">
                         <input class="input-text" name="data_proxima_manutencao" id="data_proxima_manutencao" type="date" value="" readonly>
+                        <input class="input-text" name="horas_proxima_manutencao" id="hora_proxima_manutencao" type="time" value="" readonly>
+                    </div>
+                    <div class="titulo">Horas para próxima manutenção</div>
+                    <hr>
+                    <div class="conteudo">
                         <input class="input-text" name="horas_proxima_manutencao" id="horas_proxima_manutencao" type="number" value="" readonly>hs
                     </div>
-                    <button type=" submit" class="btn btn-outline-primary btn-sm" style="height:20px;">
-                        Salvar
-                    </button>
+                    <div class="titulo">Descrição do item</div>
+                    <hr>
+                    <div class="conteudo">
+                        <input name="descricao" id="descricao" type="text" value="Descrição não inserido" placeholder="--insira uma descrição para o item--" readonly>
+                    </div>
 
                 </div>
             </div>
@@ -259,6 +258,9 @@
                             <option value="Baixa">Baixa</option>
                         </select>
                     </div>
+                    <button type=" submit" class="btn btn-outline-primary btn-sm" style="height:20px;">
+                        Salvar
+                    </button>
                 </div>
             </div>
         </div>
@@ -469,3 +471,4 @@
             </tbody>
         </table>
     </div>
+   
