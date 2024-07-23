@@ -52,12 +52,12 @@
                     }
                 </script>
              <option value="aberto">Aberto</option>
-                    <option value="fechado">Fechado</option>
-                    <option value="indefinido">Indefinido</option>
-                    <option value="cancelada">Cancelada</option>
+                    <option value="fechado">fechado</option>
+                    <option value="indefinido">indefinido</option>
+                    <option value="cancelada">cancelada</option>
                     <option value="em andamento">Em andamento</option>
-                    <option value="pausado">Pausado</option>
-                    <option value="rejeitada">Rejeitada</option>
+                    <option value="pausado">pausado</option>
+                    <option value="rejeitada">rejeitada</option>
                 {{ $errors->has('nome') ? $errors->first('nome') : '' }}
             </select>
             <div class="invalid-tooltip">

@@ -71,6 +71,7 @@
                         <option value="indefinido">indefinido</option>
                         <option value="cancelada">cancelada</option>
                         <option value="em andamento">em andamento</option>
+                        <option value="pausado">pausado</option>
                     </select>
                 </div>
                 <div class="col-md-2 mb-0">
