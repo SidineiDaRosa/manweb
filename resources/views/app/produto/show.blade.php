@@ -198,8 +198,8 @@
                 <th scope="col" class="th-title">Id do estoque</th>
                 <th scope="col" class="th-title">Produto id</th>
                 <th scope="col" class="th-title">Produto</th>
-                <th scope="col" class="th-title">Unid</th>
-                <th scope="col" class="th-title">Quantidade</th>
+                <th scope="col" class="th-title">Cod Unid Medida</th>
+                <th scope="col" class="th-title">Quant. Estoque</th>
                 <th scope="col" class="th-title">Valor</th>
                 <th scope="col" class="th-title">estoque minimo</th>
                 <th scope="col" class="th-title">estoque máximo</th>
