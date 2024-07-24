@@ -5,17 +5,17 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <video autoplay muted loop class="h-100">
-                    <source src="{{ asset('img/apresentacao/industria.mp4') }}" type="video/mp4" alt="...">
+                    <source src="{{ asset('img/apresentacao/fapolpa1.jpeg') }}" type="video/mp4" alt="...">
                 </video>
             </div>
             <div class="carousel-item">
                 <video autoplay muted loop class="h-100">
-                    <source src="{{ asset('img/video5.mp4') }}" type="video/mp4" alt="...">
+                    <source src="{{ asset('img/fapolpa1.jpeg') }}" type="video/mp4" alt="...">
                 </video>
             </div>
             <div class="carousel-item">
                 <video autoplay muted loop class="h-100">
-                    <source src="{{ asset('img/apresentacao/video1.mp4') }}" type="video/mp4" alt="...">
+                    <source src="{{ asset('img/apresentacao/fapolpa1.jpeg') }}" type="video/mp4" alt="...">
                 </video>
             </div>
             <!--Div imagem fosca-->

@@ -166,7 +166,18 @@ class ProdutoController extends Controller
             $produto->image3 = $imageName;
         };
         $produto->save();
-        return redirect()->route('produto.index');
+       // return redirect()->route('produto.index');
+
+        $ultimoProduto = Produto::latest('created_at')->first();
+        $estoque_produtos = EstoqueProdutos::where('produto_id',  $ultimoProduto->id)->get();
+        $estoque_produtos_sum = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
+        $estoque_produtos_sum_v = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
+        $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
+
+        return view('app.produto.show', [
+            'produto' =>  $ultimoProduto, 'estoque_produtos' => $estoque_produtos, 'estoque_produtos_sum' => $estoque_produtos_sum,
+            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor
+        ]);
     }
 
     /**
@@ -242,7 +253,17 @@ class ProdutoController extends Controller
         }
 
         $produto->save();
-        return redirect()->route('produto.index');
+
+        ///
+        $ultimoProduto = Produto::find($id);
+        $estoque_produtos = EstoqueProdutos::where('produto_id',  $ultimoProduto->id)->get();
+        $estoque_produtos_sum = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
+        $estoque_produtos_sum_v = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
+        $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
+        return view('app.produto.show', [
+            'produto' =>  $ultimoProduto, 'estoque_produtos' => $estoque_produtos, 'estoque_produtos_sum' => $estoque_produtos_sum,
+            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor
+        ]);
     }
 
     private function uploadImage($imageFile, $fieldName, $produto)

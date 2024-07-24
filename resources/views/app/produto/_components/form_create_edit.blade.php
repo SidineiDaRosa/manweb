@@ -99,19 +99,19 @@
                     {{------------------------------------------------------------------------}}
                     {{--Carregar uma imagem para o site---------------------------------------}}
                     <div class="row mb-1">
-                        <label for="image" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem</label>
+                        <label for="image" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem 1</label>
                         <div class="col-md-6">
                             <input type="file" id="image" name="image">
                         </div>
                     </div>
                     <div class="row mb-1">
-                        <label for="estoque_maximo" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem</label>
+                        <label for="estoque_maximo" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem 2</label>
                         <div class="col-md-6">
                             <input type="file" id="image2" name="image2">
                         </div>
                     </div>
                     <div class="row mb-1">
-                        <label for="estoque_maximo" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem</label>
+                        <label for="estoque_maximo" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem 3</label>
                         <div class="col-md-6">
                             <input type="file" id="image3" name="image3">
                         </div>

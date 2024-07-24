@@ -43,17 +43,17 @@
                 </button>
             </form>
             <div>
-                <a href="{{ route('produto.create') }}" class="btn btn-outline-primary">
+                <a href="{{ route('produto.create') }}" class="btn btn-outline-primary btn-sm">
                     <img src="" alt="">
                     <span class="material-symbols-outlined">
                         forms_add_on
                     </span>
                     Novo Produto
                 </a>
-                <a href="{{route('pedido-compra.index')}}" class="btn btn-outline-primary">
+                <a href="{{route('pedido-compra.index')}}" class="btn btn-outline-primary btn-sm">
                     Pedidos de compra
                 </a>
-                <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
+                <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> dashboard
                 </a>
             </div>
