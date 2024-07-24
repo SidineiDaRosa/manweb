@@ -50,9 +50,10 @@
     <div class="row mb-1">
         <label for="quantidade" class="col-md-4 col-form-label text-md-end text-right">Quantidade</label>
         <div class="col-md-6">
-            <input name="quantidade" id="quantidade" type="text" class="form-control" value="{{ $estoque->quantidade ?? old('quantidade') }}" readonly>
-            {{ $errors->has('quantidade') ? $errors->first('quantidade') : '' }}
-        </div>
+    <input name="quantidade" id="quantidade" type="text" class="form-control" 
+           value="{{ isset($estoque->quantidade) ? $estoque->quantidade : old('quantidade', '0') }}" readonly>
+    {{ $errors->has('quantidade') ? $errors->first('quantidade') : '' }}
+</div>
     </div>
     <div class="row mb-1">
         <label for="valor" class="col-md-4 col-form-label text-md-end text-right">R$</label>
