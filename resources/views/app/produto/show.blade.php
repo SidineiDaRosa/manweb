@@ -53,7 +53,7 @@
             </script>
             <style>
                 .carousel-container {
-                    max-width: 600px;
+                    max-width:370px;
                     margin: 0 auto;
                     overflow: hidden;
                     float: left;
