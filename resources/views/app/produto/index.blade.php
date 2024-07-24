@@ -137,7 +137,7 @@
                     <th scope="col">Dados técnicos</th>
                     <th scope="col">Fabricante</th>
                     <th scope="col">Ver peça</th>
-                    <th scope="col">Categoria</th>
+                    <th scope="col">Imagem</th>
                     <th scope="col">Cad Estoque</th>
                     <th scope="col">Operações</th>
 
