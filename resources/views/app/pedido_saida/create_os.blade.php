@@ -4,13 +4,14 @@
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
     <div class="card">
-        <div> Criar novo pedido de saída</div>
+        <div> Criar novo pedido de saída com O.S</div>
         <div class="col-md-2"> <a href="{{route('pedido-saida.index')}}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-20">
                     <i class="icofont-list"></i>
                 </span>
                 <span class="text">Voltar para pedidos de saída</span>
             </a></div>
+
     </div>
     <div class="card-header">
         <script>
@@ -53,7 +54,7 @@
                     <!---os-->
                     <div class="col-md-1">
                         <label for="ordem_serviço_id">Ordem serviço:</label>
-                        <input type="text" class="form-control" name="ordem_servico_id" id="ordem_servico_id" value="" readonly>
+                        <input type="text" class="form-control" name="ordem_servico_id" id="ordem_servico_id" placeholder="ordem_serviço_id" value="{{$ordem_servico_f->id}}" readonly>
                     </div>
                     <div class="col-md-6">
                         <label for="funcionarios_id" class="">Emissor</label>
@@ -63,14 +64,17 @@
                     <!------------------------------------------------------------------------------------------->
                     <!---equipamento-->
                     <!------------------------------------------------------------------------------------------->
-                    <div class="col-md-6">
-                        <label for="funcionarios_id" class="">Equipamento/Patrimônio</label>
-                        <select name="equipamento_id" id="equipamento_id" class="form-control">
-                            <option value="">Selecione um equipamento</option>
-                            @foreach ($equipamentos as $equipamento)
-                            <option value="{{ $equipamento->id }}">{{ $equipamento->nome }}</option>
-                            @endforeach
-                        </select>
+
+                    <div class="col-md-1">
+                        <label for="equipamento_id" class="">ID Equipamento</label>
+
+                        <input type="text" class="form-control" id="equipamento_id" name="equipamento_id" placeholder="equipamento_id" value="{{$ordem_servico_f->equipamento->id}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="equipamento_id" class="">Nome do Equipamento</label>
+
+                        <input type="text" class="form-control" id="equipamento_nome" name="equipamento_nome" placeholder="equipamento_id" value="{{$ordem_servico_f->equipamento->nome}}" readonly>
+
                     </div>
                     <!---------Select empresa------------->
                     <!--------------------------------------------------------------------------------------->
@@ -110,8 +114,8 @@
     </div>
     </div>
     <div class="card-body">
-        @endsection
 
+        @endsection
         <footer>
         </footer>
 

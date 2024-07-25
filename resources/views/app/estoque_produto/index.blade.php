@@ -80,58 +80,61 @@
             </div>
         </div>
         <div class="card-body">
+            {{--Table stock os products searching--}}
             <table class="table-template table-striped table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col" class="th-title">Id</th>
-                        <th scope="col" class="th-title">Produto</th>
-                        <th scope="col" class="th-title">Unid</th>
-                        <th scope="col" class="th-title">Quantidade</th>
-                        <th scope="col" class="th-title">Valor</th>
-                        <th scope="col" class="th-title">estoque minimo</th>
-                        <th scope="col" class="th-title">estoque máximo</th>
-                        <th scope="col" class="th-title">Local</th>
-                        <th scope="col" class="th-title">empresa</th>
-                        <th scope="col" class="th-title">operaçoes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($estoque_produtos as $estoque_produto)
-                    <tr>
-                        <th>{{ $estoque_produto->id }}</td>
-                        <td>
-                            <a href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank">{{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}<span class="material-symbols-outlined">
-                        open_in_new
-                    </span></a>
-                        </td>
-                        <td>{{ $estoque_produto->unidade_medida }}</td>
-                        <td>{{ $estoque_produto->quantidade }}</td>
-                        <td>{{ $estoque_produto->valor }}</td>
-                        <td>{{ $estoque_produto->estoque_minimo }}</td>
-                        <td>{{ $estoque_produto->estoque_maximo}}</td>
-                        <td>{{ $estoque_produto->local}}</td>
-                        <td>{{ $estoque_produto->empresa->nome_fantasia}}</td>
-                        <td>
-                            @foreach($produtos as $produto)
-                            @endforeach
-                            <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn-sm btn-success">
-
-                                <i class="icofont-database-add"></i>
-                                </span>
-                                <span class="text">Inserir estoque</span>
-                            </a>
-                            <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="editar dados do estoque">
-
-                                <i class="icofont-ui-edit"></i> </a>
-                        <td>
-
-                        </td>
-                        </td>
-                    </tr>
-                    @endforeach
-
-                </tbody>
-            </table>
+    <thead>
+        <tr>
+            <th scope="col" class="th-title">Id</th>
+            <th scope="col" class="th-title">Produto</th>
+            <th scope="col" class="th-title">Unid</th>
+            <th scope="col" class="th-title">Quantidade</th>
+            <th scope="col" class="th-title">Valor</th>
+            <th scope="col" class="th-title">Estoque Minimo</th>
+            <th scope="col" class="th-title">Estoque Máximo</th>
+            <th scope="col" class="th-title">Local</th>
+            <th scope="col" class="th-title">Empresa</th>
+            <th scope="col" class="th-title">Operações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($estoque_produtos as $estoque_produto)
+        <tr>
+            <td>{{ $estoque_produto->id }}</td>
+            <td>
+                <a href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank">{{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}<span class="material-symbols-outlined">
+                open_in_new
+                </span></a>
+            </td>
+            <td>{{ $estoque_produto->unidade_medida }}</td>
+            <td 
+                @if($estoque_produto->quantidade <= 0.05 * $estoque_produto->estoque_minimo)
+                    style="background-color: red;"
+                @elseif($estoque_produto->quantidade <= 0.5 * $estoque_produto->estoque_minimo)
+                    style="background-color: yellow;"
+                @else
+                    style="background-color: green;"
+                @endif
+            >{{ $estoque_produto->quantidade }}</td>
+            <td>{{ $estoque_produto->valor }}</td>
+            <td>{{ $estoque_produto->estoque_minimo }}</td>
+            <td>{{ $estoque_produto->estoque_maximo}}</td>
+            <td>{{ $estoque_produto->local}}</td>
+            <td>{{ $estoque_produto->empresa->nome_fantasia}}</td>
+            <td>
+                @foreach($produtos as $produto)
+                @endforeach
+                <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn-sm btn-success">
+                    <i class="icofont-database-add"></i>
+                    <span class="text">Inserir estoque</span>
+                </a>
+                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="editar dados do estoque">
+                    <i class="icofont-ui-edit"></i>
+                </a>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
 
         </div>

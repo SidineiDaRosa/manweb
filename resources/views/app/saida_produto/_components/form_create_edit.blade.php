@@ -33,7 +33,6 @@
                     {{ $errors->has('intervalo_manutencao') ? $errors->first('intervalo_manutencao') : '' }}
                 </div>
             </div>
-
             <div class="row mb-3">
                 <label for="data_proxima_manutencao" class="col-md-4 col-form-label text-md-end text-right">Data da próxima manutenção</label>
                 <div class="col-md-6">

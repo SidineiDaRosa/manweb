@@ -140,9 +140,15 @@
                         <td>{{ $pedido_saida->ordem_servico_id }}</td>
                         <td>
                             <div class="btn-group btn-group-actions visible-on-hover">
+                                @if($pedido_saida->ordem_servico_id >= 1)
                                 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-saida-lista.index', ['pedido_saida' => $pedido_saida->id]) }}">
                                     <i class="icofont-eye-alt"></i>
                                 </a>
+                                @else
+                                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-saida.show', ['pedido_saida' => $pedido_saida->id]) }}">
+                                    <i class="icofont-eye-alt">add item</i>
+                                </a>
+                                @endif
                                 <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcan" href="{{ route('pedido-saida.edit', ['pedido_saida' => $pedido_saida->id]) }}">
                                     <i class="icofont-ui-edit"></i>
                                 </a>
@@ -159,7 +165,6 @@
                     @endforeach
                 </tbody>
             </table>
-
             <script>
                 function DeletarPedidoSaida(id) {
                     var r = confirm("Deseja deletar o pedido de saída?");

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 use App\Models\Equipamento;
@@ -74,18 +75,37 @@ class PedidosSaidaController extends Controller
     {
         //
         $ordem_servico_id = $requ->get('ordem_servico');
-        $ordem_servico = OrdemServico::where('id', $ordem_servico_id)->get();
-        $pedidos_saida = PedidoSaida::all();
-        $equipamentos = Equipamento::all();
-        $funcionarios = Funcionario::all();
-        $empresas = Empresas::all();
-        $fornecedores = Fornecedor::all();
-        echo ($ordem_servico_id);
-        return view('app.pedido_saida.create', [
-            'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
-            'pedidos_saida' => $pedidos_saida, 'ordem_servico' => $ordem_servico,
-            'fornecedores' => $fornecedores
-        ]);
+        if ($ordem_servico_id == 0) {
+            //  Cria um pedido de saída sem nescidade de uma OS
+            $ordem_servico = OrdemServico::where('id', 16)->get();
+            $pedidos_saida = PedidoSaida::all();
+            $equipamentos = Equipamento::orderBy('nome')->get();
+            $funcionarios = Funcionario::all();
+            $empresas = Empresas::all();
+            $fornecedores = Fornecedor::all();
+            $categorias = Categoria::all();
+            echo ($ordem_servico_id);
+            return view('app.pedido_saida.create', [
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
+                'pedidos_saida' => $pedidos_saida, 'ordem_servico' => $ordem_servico,
+                'fornecedores' => $fornecedores,
+                'categorias' => $categorias
+            ]);
+        } else {
+
+            $ordem_servico = OrdemServico::where('id', $ordem_servico_id)->get();
+            $pedidos_saida = PedidoSaida::all();
+            $equipamentos = Equipamento::all();
+            $funcionarios = Funcionario::all();
+            $empresas = Empresas::all();
+            $fornecedores = Fornecedor::all();
+            echo ($ordem_servico_id);
+            return view('app.pedido_saida.create_os', [
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
+                'pedidos_saida' => $pedidos_saida, 'ordem_servico' => $ordem_servico,
+                'fornecedores' => $fornecedores
+            ]);
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -96,18 +116,27 @@ class PedidosSaidaController extends Controller
     public function store(Request $req)
     {
         //
-        PedidoSaida::create($req->all());
         $ordem_servico = $req->get('ordem_servico_id');
+        PedidoSaida::create($req->all());
         $pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->get();
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
         $emissores = User::all();
-        return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedido_saida,
-        'emissores' => $emissores
-    
-    ]);
+        if ($ordem_servico >= 1) {
+            return view('app.pedido_saida.index', [
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedido_saida,
+                'emissores' => $emissores
+            ]);
+        } else {
+            $categorias = Categoria::all();
+            $ultimo_pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->latest()->first();
+            $pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->get();
+            return view('app.pedido_saida.show', [
+                'pedido_saida' => $ultimo_pedido_saida,
+                'categorias' => $categorias
+            ]);
+        }
     }
-
     /**
      * Display the specified resource.
      *
@@ -117,9 +146,13 @@ class PedidosSaidaController extends Controller
     public function show($id)
     {
         //
-
+        $categorias = Categoria::all();
+        $pedido_saida = PedidoSaida::find($id);
+        return view('app.pedido_saida.show', [
+            'pedido_saida' => $pedido_saida,
+            'categorias' => $categorias,
+        ]);
     }
-
     /**
      * Show the form for editing the specified resource.
      * @param  \App\PedidoSaida  $PedidoSaida
@@ -164,9 +197,10 @@ class PedidosSaidaController extends Controller
         $empresa = Empresas::find(2);
         $pedidos_saida = PedidoSaida::where('id', $id)->get();
         $emissores = User::all();
-        return view('app.pedido_saida.index', ['equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida,
-        'emissores'=>$emissores
-    ]);
+        return view('app.pedido_saida.index', [
+            'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_saida' => $pedidos_saida,
+            'emissores' => $emissores
+        ]);
     }
 
     /**
