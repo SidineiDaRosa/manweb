@@ -13,6 +13,7 @@ use App\Models\PedidoSaida;
 use App\Models\SaidaProduto;
 use App\Models\Fornecedor;
 use App\Models\OrdemServico;
+use App\Models\Produto;
 use App\Models\User;
 
 class PedidosSaidaController extends Controller
@@ -139,19 +140,24 @@ class PedidosSaidaController extends Controller
     }
     /**
      * Display the specified resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+
+    public function show(Request $request, $id)
     {
-        //
-        $categorias = Categoria::all();
-        $pedido_saida = PedidoSaida::find($id);
-        return view('app.pedido_saida.show', [
-            'pedido_saida' => $pedido_saida,
-            'categorias' => $categorias,
-        ]);
+        $os = $request->get('os');
+       
+            $categorias = Categoria::all();
+            $pedido_saida = PedidoSaida::find($id);
+            $produtos = Produto::orderBy('nome')->get();
+            return view('app.pedido_saida.show', [
+                'pedido_saida' => $pedido_saida,
+                'categorias' => $categorias,
+                'produtos' => $produtos
+            ]);
+        
     }
     /**
      * Show the form for editing the specified resource.
