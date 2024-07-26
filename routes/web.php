@@ -191,7 +191,9 @@ Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaE
 //  Pedidos de compra                       //
 //------------------------------------------//
 Route::middleware('auth')->resource('/pedido-compra', 'App\Http\Controllers\PedidoCompraController');
-//Rota filtro pedido de entrada
+//------------------------------------------//
+// Filtro pedido de entrada
+//------------------------------------------//
 Route::middleware('auth')->post('/Ent-Produtos-filtro', [App\Http\Controllers\EntradaProdutoController::class, 'index']);
 //Rota control panel
 Route::middleware('auth')->resource('/control-panel', 'App\Http\Controllers\ControlPanelController');
@@ -215,7 +217,10 @@ Route::middleware('auth')->resource('/pedido-saida', 'App\Http\Controllers\Pedid
 Route::middleware('auth')->resource('/pedido-saida-lista', 'App\Http\Controllers\PedidoSaidaListaController');
 Route::middleware('auth')->post('/pedido-saida-filtro', [App\Http\Controllers\PedidosSaidaController::class, 'index']);
 Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
-//Route::put('/pedido-saida/{pedido_saida}', [PedidosSaidaController::class, 'update'])->name('pedido-saida.update');
+//----------------------------------------------------//
+//               Saida De produtos store        
+//----------------------------------------------------//
+Route::middleware('auth')->resource('/saida-produto-add-item', 'App\Http\Controllers\SaidaProdutoController');
 //Filtro Produtos item  saida 
 Route::middleware('auth')->post('/Item-Saida-Produto', [App\Http\Controllers\ItemSaidaProdutoController::class, 'index']);
 //Serviçoes executados

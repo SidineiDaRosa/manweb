@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Models\Empresas;
 use Illuminate\Http\Request;
 use App\Models\EntradaProduto;
@@ -14,6 +14,7 @@ use App\Models\PedidoSaida;
 use App\Models\UnidadeMedida;
 use App\Models\EstoqueProdutos;
 use App\Models\PecasEquipamentos;
+use App\Models\Categoria;
 
 class SaidaProdutoController extends Controller
 {
@@ -87,37 +88,106 @@ class SaidaProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $pedido_saida_id = $request->get('pedidos_saida_id');
+        $ordem_servico_id = $request->get('ordem_servico_id');
+        // Define o fuso horário para São Paulo
+        date_default_timezone_set('America/Sao_Paulo');
         $dataAtual = $request->get('data');
-        $data_proxima_manutencao = $request->get('data_proxima_manutencao');
-        $pedido_saida = PedidoSaida::where('id', $pedido_saida_id)->get();
-        $saidas_produtos = SaidaProduto::all();
-        $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
-        if ($request->quantidade>$estoque->quantidade) {
-            echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
+        if ($ordem_servico_id >= 1) {
+            $pedido_saida_id = $request->get('pedidos_saida_id');
+            $data_proxima_manutencao = $request->get('data_proxima_manutencao');
+            $pedido_saida = PedidoSaida::where('id', $pedido_saida_id)->get();
+            $saidas_produtos = SaidaProduto::all();
+            $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
+            if ($request->quantidade > $estoque->quantidade) {
+                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
         Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
         </div>';
+            } else {
+                SaidaProduto::create($request->all());
+                $estoque->quantidade = $estoque->quantidade - $request->input('quantidade'); // soma estoque antigo com a entrada de produto
+                $estoque->save();
+                //-------------------------------------
+                $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
+                $pecaEquipamento->data_substituicao = $dataAtual; // soma estoque antigo com a entrada de produto
+                $pecaEquipamento->save();
+                $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
+                $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
+                $pecaEquipamento->save();
+                $equipamentos = Equipamento::all();
+                $produtos = Produto::all();
+                $categorias = Marca::all();
+                $unidades = Empresas::all();
+                echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+            }
         } else {
-            SaidaProduto::create($request->all());
-        $estoque->quantidade = $estoque->quantidade - $request->input('quantidade'); // soma estoque antigo com a entrada de produto
-            $estoque->save();
-            //-------------------------------------
-            $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
-            $pecaEquipamento->data_substituicao = $dataAtual; // soma estoque antigo com a entrada de produto
-             $pecaEquipamento->save();
-            $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
-            $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
-            $pecaEquipamento->save();
-            $equipamentos = Equipamento::all();
-            $produtos = Produto::all();
-            $categorias = Marca::all();
-            $unidades = Empresas::all();
-            echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+            //--------------------------------------------------//
+            //  Adiciona um item de produto ao pedido de saída
+            //-------------------------------------------------//
+            // pega o numero do pedido
+            $pedido_saida_id = $request->get('pedido_id');
+            $produto_id = $request->get('produto_id');
+            $quantidade = $request->get('quantidade');
+            $equipamento_id = $request->get('equipamento_id');
+            $pedido_saida = PedidoSaida::find($pedido_saida_id);
+            $produto = Produto::find($produto_id);
+            $estoque = EstoqueProdutos::where('produto_id', $produto_id)->first(); //busca o registro do produto com o id da entrada do produto
+
+            if ($request->quantidade > $estoque->quantidade) {
+                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
+            Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
+            </div>';
+            } else {
+                //-----------------------------------------//
+                // Dados de exemplo
+                // Define a data atual
+                $now = Carbon::now()->toDateTimeString(); // Formato: YYYY-MM-DD HH:MM:SS
+                $dados = [
+                    'pedidos_saida_id' => $pedido_saida_id,
+                    'produto_id' => $produto_id,
+                    'unidade_medida' => 'pç',
+                    'quantidade' => $quantidade,
+                    'valor' => 0,
+                    'subtotal' => 0,
+                    'data' => $now,
+                    'equipamento_id' => $equipamento_id
+                ];
+
+                // Criação do objeto SaidaProduto
+                $saida_produto = new SaidaProduto();
+                $saida_produto->pedidos_saida_id = $dados['pedidos_saida_id'];
+                $saida_produto->produto_id = $dados['produto_id'];
+                $saida_produto->unidade_medida = $dados['unidade_medida'];
+                $saida_produto->quantidade = $dados['quantidade'];
+                $saida_produto->valor = $dados['valor'];
+                $saida_produto->subtotal = $dados['subtotal'];
+                $saida_produto->data = $dados['data'];
+                $saida_produto->equipamento_id = $dados['equipamento_id'];
+
+                // Salvando o objeto no banco de dados
+                $saida_produto->save();
+                //-----------------------------------------//
+                $estoque->quantidade = $estoque->quantidade - $quantidade; // soma estoque antigo com a entrada de produto
+                $estoque->save();
+
+               // echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+            }
+            //-------------------------------------------//
+            //    Redireciona para a view
+            $categorias = Categoria::all();
+            $produtos = Produto::orderBy('nome')->get();
+            $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $pedido_saida_id)->get();
+            ///
+            return view('app.pedido_saida.show', [
+                'pedido_saida' => $pedido_saida,
+                'categorias' => $categorias,
+                'produtos' => $produtos,
+              'saidas_produtos'=>$saidas_produtos
+            ]);
+            
+            //}
+            /// }
         }
     }
-
-
     /**
      * Display the specified resource.
      *

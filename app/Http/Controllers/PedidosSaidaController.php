@@ -124,6 +124,8 @@ class PedidosSaidaController extends Controller
                 'emissores' => $emissores
             ]);
         } else {
+            // 
+            //   Cria um pedido sem adição da os
             $categorias = Categoria::all();
             $ultimo_pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->latest()->first();
             $pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->get();
@@ -149,13 +151,14 @@ class PedidosSaidaController extends Controller
             $categorias = Categoria::all();
             $pedido_saida = PedidoSaida::find($id);
             $produtos = Produto::orderBy('nome')->get();
-        
+
+        $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $id)->get();
            return view('app.pedido_saida.show', [
             'pedido_saida' => $pedido_saida,
              'categorias' => $categorias,
-                'produtos' => $produtos
+                'produtos' => $produtos,
+                'saidas_produtos'=>$saidas_produtos
          ]);
-        
     }
     /**
      * Show the form for editing the specified resource.
