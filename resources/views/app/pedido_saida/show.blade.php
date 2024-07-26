@@ -4,10 +4,15 @@
     <div class="card">
         <div class="card-header-template">
             <div>
-                Pedido de saida sem os
+                Pedido de saída sem os
                 <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> dashboard
                 </a>
+                <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.index')}}"><span class="material-symbols-outlined">
+                        format_list_bulleted
+                    </span>
+                </a>
+            </a>
             </div>
             <div>
                 ID:{{$pedido_saida->id}}
@@ -23,33 +28,34 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Filtrar Produtos</title>
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const produtos = @json($produtos); // Converte o array de produtos para JSON
+    document.addEventListener('DOMContentLoaded', function() {
+        const produtos = @json($produtos); // Converte o array de produtos para JSON
 
-                    const searchInput = document.getElementById('search');
-                    const selectElement = document.getElementById('produto-select');
+        const searchInput = document.getElementById('search');
+        const selectElement = document.getElementById('produto-select');
 
-                    function filterProdutos(query) {
-                        selectElement.innerHTML = ''; // Limpa as opções existentes
-                        const filteredProdutos = produtos.filter(produto =>
-                            produto.nome.toLowerCase().includes(query.toLowerCase())
-                        );
-                        filteredProdutos.forEach(produto => {
-                            const option = document.createElement('option');
-                            option.value = produto.id;
-                            option.textContent = `${produto.nome} (ID: ${produto.id})`; // Exibe nome e ID
-                            selectElement.appendChild(option);
-                        });
-                    }
+        function filterProdutos(query) {
+            selectElement.innerHTML = ''; // Limpa as opções existentes
+            const filteredProdutos = produtos.filter(produto =>
+                produto.nome.toLowerCase().startsWith(query.toLowerCase()) // Verifica se começa com a query
+            );
+            filteredProdutos.forEach(produto => {
+                const option = document.createElement('option');
+                option.value = produto.id;
+                option.textContent = `${produto.nome} (ID: ${produto.id})`; // Exibe nome e ID
+                selectElement.appendChild(option);
+            });
+        }
 
-                    searchInput.addEventListener('input', function() {
-                        filterProdutos(searchInput.value);
-                    });
+        searchInput.addEventListener('input', function() {
+            filterProdutos(searchInput.value);
+        });
 
-                    // Inicializa com todos os produtos
-                    filterProdutos('');
-                });
-            </script>
+        // Inicializa com todos os produtos
+        filterProdutos('');
+    });
+</script>
+
         </head>
 
         <body>
@@ -79,7 +85,6 @@
         <!DOCTYPE html>
 <html>
 <head>
-    <title>Lista de Produtos</title>
     <style>
         table {
             width: 100%;
@@ -98,7 +103,7 @@
     </style>
 </head>
 <body>
-    <h1>Lista de Produtos</h1>
+    <h6>Lista de Produtos</h6>
     @if(isset($saidas_produtos) && $saidas_produtos->isNotEmpty())
         <table>
             <thead>
@@ -130,7 +135,7 @@
         </table>
     @else
         <div class="no-data">
-            Nenhum dado disponível para exibir.
+            Nenhum produto neste pedido, disponível para exibir.
         </div>
     @endif
 </body>

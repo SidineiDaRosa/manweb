@@ -180,6 +180,7 @@
                                 <th>Finalização</th>
                                 <th>Descrição</th>
                                 <th>Patrimônio</th>
+                                <th> executante</th>
                                 <th>chk</th>
                             </tr>
                         </thead>
@@ -205,6 +206,7 @@
                                 </td>
                                 <td>{{$ordens_servicos_fech->descricao}}</td>
                                 <td>{{$ordens_servicos_fech->equipamento->nome}}</td>
+                                <td>{{$ordens_servicos_fech->responsavel}}</td>
                                 <td><img src="{{ asset('img/check-mark.png') }}" alt="" id="check"></td>
                                 <style>
                                     #check {
@@ -396,7 +398,7 @@
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
                                         {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }}
                                         <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"> às </span>
-                                         {{$os_hoje->hora_fim}}
+                                        {{$os_hoje->hora_fim}}
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td>{{$os_hoje->equipamento->nome}}</td>
@@ -657,7 +659,7 @@
             Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
             <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Novo pedido de compra</a>
-            <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}"style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
+            <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
             <hr>
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">
                 <div class="card-body">

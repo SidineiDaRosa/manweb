@@ -5,12 +5,14 @@
 <main class="content">
     <div class="card">
         <div> Criar novo pedido de saída</div>
-        <div class="col-md-2"> <a href="{{route('pedido-saida.index')}}" class="btn btn-info btn-icon-split">
-                <span class="icon text-white-20">
-                    <i class="icofont-list"></i>
+        <div class="col-md-2"> <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.index')}}"><span class="material-symbols-outlined">
+                    format_list_bulleted
                 </span>
-                <span class="text">Voltar para pedidos de saída</span>
-            </a></div>
+            </a>
+            <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
+                <i class="icofont-dashboard"></i> dashboard
+            </a>
+        </div>
     </div>
     <div class="card-header">
         <!----**************************************************************************************--->
