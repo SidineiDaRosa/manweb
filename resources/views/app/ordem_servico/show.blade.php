@@ -322,7 +322,7 @@
                          'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
                             {{$servicos_executados->tipo_de_servico}}
                         </div>
-                        <div class="titulo">estado</div>
+                        <div class="titulo">Estado de avaliação</div>
                         <hr>
                         <div class="conteudo" style="font-size:17px; color:dimgrey;font-family:system-ui, -apple-system, BlinkMacSystemFont,
                          'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
