@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Carbon\Carbon;
 use App\Models\Empresas;
 use Illuminate\Http\Request;
@@ -169,7 +170,7 @@ class SaidaProdutoController extends Controller
                 $estoque->quantidade = $estoque->quantidade - $quantidade; // soma estoque antigo com a entrada de produto
                 $estoque->save();
 
-               // echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+                // echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
             }
             //-------------------------------------------//
             //    Redireciona para a view
@@ -181,9 +182,9 @@ class SaidaProdutoController extends Controller
                 'pedido_saida' => $pedido_saida,
                 'categorias' => $categorias,
                 'produtos' => $produtos,
-              'saidas_produtos'=>$saidas_produtos
+                'saidas_produtos' => $saidas_produtos
             ]);
-            
+
             //}
             /// }
         }
@@ -230,6 +231,38 @@ class SaidaProdutoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Recuperar o item de saída de produto
+        $saida_produto = SaidaProduto::findOrFail($id);
+
+        // Recuperar a quantidade do item de saída de produto
+        $quantidade = $saida_produto->quantidade;
+        // Recuperar a quantidade do item de saída de produto
+        $pedidos_saida_id = $saida_produto->pedidos_saida_id;
+
+        // Atualizar o estoque
+        $estoque = EstoqueProdutos::where('produto_id', $saida_produto->produto_id)->first();
+        //$estoque = PedidoSaida::where('pedidos_saida_id', $saida_produto->produto_id)->first();
+        if ($estoque) {
+            $estoque->quantidade += $quantidade; // Adiciona a quantidade de volta ao estoque
+            $estoque->save();
+        } else {
+            // Opcional: lidar com o caso onde o estoque não é encontrado
+            // Pode logar um aviso ou notificar o usuário
+        }
+
+        // Excluir o item da SaidaProduto
+        $saida_produto->delete();
+        //    Redireciona para a view
+        $categorias = Categoria::all();
+        $produtos = Produto::orderBy('nome')->get();
+        $saidas_produtos = SaidaProduto::where('pedidos_saida_id',  $pedidos_saida_id )->get();
+        $pedido_saida = SaidaProduto::find($pedidos_saida_id );
+        ///
+        return view('app.pedido_saida.show', [
+            'pedido_saida' => $pedido_saida,
+            'categorias' => $categorias,
+            'produtos' => $produtos,
+            'saidas_produtos' => $saidas_produtos
+        ]);
     }
 }

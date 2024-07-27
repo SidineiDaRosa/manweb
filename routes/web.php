@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QrCodeController;
 use app\Http\Controllers\EstoqueProdutoController;
 use App\Http\Controllers\PedidosSaidaController;
+use App\Http\Controllers\SaidaProdutoController;
+
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -266,3 +268,7 @@ Route::middleware('auth')->post('/gerar-qrcode', 'App\Http\Controllers\QrCodeCon
 //----------------------------------------------------------//
 //   Imprimir em PDF
 Route::post('/imprimir-pdf', [App\Http\Controllers\PdfController::class, 'gerarPDF'])->name('gerar.pdf');
+//----------------------------------------------------------//
+// 
+// Deleta item pedido de saida
+Route::middleware('auth')->delete('/saida-produto/{id}', [SaidaProdutoController::class, 'destroy'])->name('saida-produto.destroy');
