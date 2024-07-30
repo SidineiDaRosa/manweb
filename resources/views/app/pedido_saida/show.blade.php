@@ -80,56 +80,56 @@
             </div>
             <hr>
             {{-- Formulário com os dados para adicionar o item --}}
-<form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST">
-    @csrf
-    <div class="form-group">
-        <label for="equipamento_id">Equipamento_id</label>
-        <input type="number" id="equipamento_id" name="equipamento_id" class="form-control" value="{{$pedido_saida->equipamento_id}}" readonly>
-    </div>
-    <input class="form-control" type="text" id="search" placeholder="Pesquisar por iniciais...">
-    <div class="form-group">
-        <label for="produto-select">Produto</label>
-        <select id="produto-select" name="produto_id" class="form-control">
-            <!-- As opções serão preenchidas dinamicamente -->
-        </select>
-    </div>
+            <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label for="equipamento_id">Equipamento_id</label>
+                    <input type="number" id="equipamento_id" name="equipamento_id" class="form-control" value="{{$pedido_saida->equipamento_id}}" readonly>
+                </div>
+                <input class="form-control" type="text" id="search" placeholder="Pesquisar por iniciais...">
+                <div class="form-group">
+                    <label for="produto-select">Produto</label>
+                    <select id="produto-select" name="produto_id" class="form-control">
+                        <!-- As opções serão preenchidas dinamicamente -->
+                    </select>
+                </div>
 
-    <div class="form-group">
-        <label for="quantidade">Quantidade</label>
-        <input type="number" id="quantidade" name="quantidade" class="form-control" required>
-    </div>
-    <input type="hidden" name="pedido_id" value="{{ $pedido_saida->id }}">
-    <button type="button" class="btn btn-primary" onclick="confirmSave()">Cadastrar</button>
-</form>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade</label>
+                    <input type="number" id="quantidade" name="quantidade" class="form-control" required>
+                </div>
+                <input type="hidden" name="pedido_id" value="{{ $pedido_saida->id }}">
+                <button type="button" class="btn btn-primary" onclick="confirmSave()">Cadastrar</button>
+            </form>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmSave() {
-        Swal.fire({
-            title: 'Deseja cadastrar o item?',
-            text: "Você não poderá reverter isso!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, cadastrar!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Submete o formulário
-                document.getElementById('form_add_item').submit();
-            }
-        });
-    }
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                function confirmSave() {
+                    Swal.fire({
+                        title: 'Deseja cadastrar o item?',
+                        text: "Você não poderá reverter isso!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sim, cadastrar!',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Submete o formulário
+                            document.getElementById('form_add_item').submit();
+                        }
+                    });
+                }
 
-    // Adiciona um listener para o evento de tecla no formulário
-    document.getElementById('form_add_item').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Impede o envio do formulário padrão
-            confirmSave();
-        }
-    });
-</script>
+                // Adiciona um listener para o evento de tecla no formulário
+                document.getElementById('form_add_item').addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Impede o envio do formulário padrão
+                        confirmSave();
+                    }
+                });
+            </script>
 
         </body>
 
@@ -170,6 +170,7 @@
                     <tr>
                         <th>Pedidos Saída ID</th>
                         <th>Produto ID</th>
+                        <th>Descrição</th>
                         <th>Unidade de Medida</th>
                         <th>Quantidade</th>
                         <th>Valor</th>
@@ -184,6 +185,12 @@
                     <tr>
                         <td>{{ $saida_produto->pedidos_saida_id }}</td>
                         <td>{{ $saida_produto->produto_id }}</td>
+                        <td>
+                            @php
+                            $produto = $produtos->firstWhere('id', $saida_produto->produto_id);
+                            @endphp
+                            {{ $produto ? $produto->nome : 'Produto não encontrado' }}
+                        </td>
                         <td>{{ $saida_produto->unidade_medida }}</td>
                         <td>{{ $saida_produto->quantidade }}</td>
                         <td>{{ $saida_produto->valor }}</td>

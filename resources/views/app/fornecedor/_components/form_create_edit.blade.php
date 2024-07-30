@@ -1,5 +1,5 @@
 
-@if (isset($produto->id))
+@if (isset($fornecedor->id))
 <form action="{{ route('fornecedor.update', ['fornecedor' => $fornecedor->id]) }}" method="POST">
     @csrf
     @method('PUT')

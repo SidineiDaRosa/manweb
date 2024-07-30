@@ -21,8 +21,7 @@
                             <option value="aberto">aberto</option>
                             <option value="fechado">fechado</option>
                             <option value="indefinido">indefinido</option>
-                            <option value="cancelada">cancelada</option>
-                            <option value="em andamento">em andamento</option>
+                            <option value="cancelado">cancelado</option>
                         </select>
                     </div>
                     <div class="col-md-4">

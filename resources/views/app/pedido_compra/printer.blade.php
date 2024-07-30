@@ -51,7 +51,7 @@
             </div>
             <div>
                 <fieldset class="filed-data-long">
-                    <legend>Emissor:</legend>{{ $pedido_compra->funcionarios->primeiro_nome}}
+                    <legend>Emissor:</legend>{{auth()->user()->name}}
                 </fieldset>
             </div>
 

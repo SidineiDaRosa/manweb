@@ -80,7 +80,8 @@
     <div class="row mb-1">
         <label for="cnpj" class="col-md-4 col-form-label text-md-end text-right">funcionario_id</label>
         <div class="col-sm-4">
-            <input id="hora_prevista" name="funcionarios_id" type="text" class="form-control" value="{{$pedido_compra->funcionarios_id}}" readonly>
+            <input id="hora_prevista" name="funcionarios_id" type="text" class="form-control" value="{{auth()->user()->id}}" readonly>
+            <input id="emissor_nome" name="emissor_nome" type="text" class="form-control" value="{{auth()->user()->name}}" readonly>
         </div>
     </div>
     <div class="row mb-1">
@@ -91,6 +92,7 @@
                 <option value="aberto">Aberto</option>
                 <option value="fechado">Fechado</option>
                 <option value="indefinido">Indefinido</option>
+                <option value="indefinido">Cancelado</option>
             </select>
         </div>
     </div>

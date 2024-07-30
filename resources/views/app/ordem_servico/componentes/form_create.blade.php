@@ -109,7 +109,7 @@
                 <div class="titulo">Executor:</div>
                 <hr>
                 <div class="conteudo">
-                    <select class="input-text" name="responsavel" id="responsavel" class="form-control-template" onchange="ValidateChangeResp();">
+                    <select class="input-text" name="responsavel" id="responsavel" class="form-control-template" onchange="ValidateChangeResp();" required>
                         <script>
                             function ValidateChangeResp() {
                                 document.getElementById('responsavel').style.background = "rgb(150, 255, 150)";
@@ -181,8 +181,8 @@
                 <div class="titulo">Data prevista para término</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
-                    <input class="input-text" type="time" name="hora_fim" id="hora_fim" placeholder="dataFim" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
+                    <input class="input-text" type="date" name="data_fim" id="dataFim" placeholder="dataFim" required onchange="ValidateDateFim()">
+                    <input class="input-text" type="time" name="hora_fim" id="hora_fim" placeholder="dataFim" required onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
                 </div>
             </div>
         </div>

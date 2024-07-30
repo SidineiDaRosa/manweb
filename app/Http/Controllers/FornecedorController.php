@@ -61,7 +61,7 @@ class FornecedorController extends Controller
      */
     public function edit(Fornecedor $fornecedor)
     {
-        return view('app.fornecedor.edit', ['fornecedor'=>$fornecedor]);
+       return view('app.fornecedor.edit', ['fornecedor'=>$fornecedor]);
     }
 
     /**
@@ -73,6 +73,7 @@ class FornecedorController extends Controller
      */
     public function update(Request $request, Fornecedor $fornecedor)
     {
+        echo($request);
         $fornecedor->update($request->all());
         return redirect()->route('fornecedor.show', ['fornecedor'=>$fornecedor]);
     }

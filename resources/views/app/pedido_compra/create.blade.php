@@ -26,7 +26,6 @@
             <input id="nome_fantasia" name="nome_fantasia" type="text" class="form-control" nome_fantasia="nome_fantasia" value="{{$empresa_f->id}}" readonly>
             {{ $errors->has('nome_fantasia') ? $errors->first('nome_fantasia') : '' }}
         </div>
-
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Rasão sicial da empresa/unidade</label>
@@ -75,9 +74,10 @@
         </div>
     </div>
     <div class="row mb-1">
-        <label for="cnpj" class="col-md-4 col-form-label text-md-end text-right">funcionario_id</label>
+        <label for="cnpj" class="col-md-4 col-form-label text-md-end text-right">Emissor</label>
         <div class="col-sm-4">
-            <input id="hora_prevista" name="funcionarios_id" type="text" class="form-control" value="1" readonly>
+            <input id="hora_prevista" name="funcionarios_id" type="text" class="form-control" value="{{auth()->user()->id}}" readonly >
+            <input id="emissor_nome" name="emissor_nome" type="text" class="form-control" value="{{auth()->user()->name}}" readonly>
         </div>
     </div>
     <div class="row mb-1">

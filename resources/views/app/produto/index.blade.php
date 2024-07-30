@@ -135,10 +135,11 @@
                     <th scope="col">Nome</th>
                     <th scope="col">un medida</th>
                     <th scope="col">Dados técnicos</th>
+                    <th scope="col">Categoria</th>
                     <th scope="col">Fabricante</th>
                     <th scope="col">Ver peça</th>
                     <th scope="col">Imagem</th>
-                    <th scope="col">Cad Estoque</th>
+                    <th scope="col">Cad. Estoque</th>
                     <th scope="col">Operações</th>
 
                 </tr>
@@ -153,6 +154,7 @@
                     <td>{{ $produto->nome }}</td>
                     <td>{{ $produto->unidade_medida->nome}}</td>
                     <td>{{ $produto->descricao }}</td>
+                    <td>{{ $produto->categoria->nome}}</td>
                     <td>{{ $produto->marca->nome}}</td>
                     <td><a href="{{ $produto->link_peca}}" target="blank">Ver no site do fabricante
                             <i class="icofont-arrow-right"></i>

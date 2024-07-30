@@ -123,15 +123,15 @@
                     color: #007b00;
                     margin-bottom: 5px;
                 }
-
                 .conteudo-sm {
                     display: flex;
                     font-size: 15px;
                     font-family: 'Poppins', sans-serif;
-                    color: black;
+                    color:dimgray;
                     margin-bottom: 5px;
-                    font-weight: 300;
+                    font-weight: 400;
                 }
+                
             </style>
             {{--------------------------------------------------------}}
             {{--Bloco de descrição e dados do produto--}}
@@ -148,7 +148,7 @@
                 <div class="conteudo-sm">{{ $produto->descricao }}</div>
                 <div class="titulo">Marca | Fabricante </div>
                 <hr>
-                <div class="conteudo" style="color:mediumblue;">{{ $produto->marca->nome }}-Cod Fab:{{ $produto->cod_fabricante }}</div>
+                <div class="conteudo" style="color:mediumblue;">{{ $produto->marca->nome }}&nbsp&nbsp|&nbsp&nbspCod Fab:{{ $produto->cod_fabricante }}</div>
                 <div class="titulo">Quantidade em estoque</div>
                 <hr>
                 <div class="conteudo">{{$estoque_produtos_sum}}&nbsp&nbsp{{$produto->unidade_medida->nome}}</div>
@@ -198,13 +198,13 @@
                 <th scope="col" class="th-title">Id do estoque</th>
                 <th scope="col" class="th-title">Produto id</th>
                 <th scope="col" class="th-title">Produto</th>
-                <th scope="col" class="th-title">Cod Unid Medida</th>
+                <th scope="col" class="th-title">Cod. Unid. Medida</th>
                 <th scope="col" class="th-title">Quant. Estoque</th>
                 <th scope="col" class="th-title">Valor</th>
-                <th scope="col" class="th-title">estoque minimo</th>
+                <th scope="col" class="th-title">Estoque minimo</th>
                 <th scope="col" class="th-title">estoque máximo</th>
-                <th scope="col" class="th-title">Local</th>
-                <th scope="col" class="th-title">empresa</th>
+                <th scope="col" class="th-title">Local do estoque</th>
+                <th scope="col" class="th-title">Empresa</th>
                 <th scope="col" class="th-title">Operações</th>
             </tr>
         </thead>
@@ -214,7 +214,7 @@
                 <th scope="row">{{ $estoque_produto->id }}</td>
                 <td>{{ $estoque_produto->produto->id}}</td>
                 <td>{{ $estoque_produto->produto->nome }}</td>
-                <td>{{ $estoque_produto->unidade_medida }}</td>
+                <td>{{ $estoque_produto->unidade_medida}}</td>
                 <td>{{ $estoque_produto->quantidade }}</td>
                 <td>{{ $estoque_produto->valor }}</td>
                 <td>{{ $estoque_produto->estoque_minimo }}</td>

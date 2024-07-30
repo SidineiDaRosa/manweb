@@ -168,7 +168,7 @@
                 <div class="conteudo">{{ $pedido_compra->equipamento->nome}}</div>
                 <div class="titulo">Emissor</div>
                 <hr style="margin:-5px;color:#ccc;">
-                <div class="conteudo">{{ $pedido_compra->funcionarios->primeiro_nome}}</div>
+                <div class="conteudo">{{auth()->user()->name}}</div>
             </div>
             {{--Box 3--}}
             <div class="item">
