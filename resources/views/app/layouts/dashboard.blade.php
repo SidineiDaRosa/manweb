@@ -803,7 +803,7 @@
         <div class="item">
             Status do estoque de Produtos em nível mínimo
             <a class="" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
-            <a class="" href="{{route('Estoque-produto.index')}}"style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Estoque de produtos</a>
+            <a class="" href="{{route('Estoque-produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Estoque de produtos</a>
             <hr>
             <table class="condensed-table" id="tb_pedidos_compra" style="background-color: burlywood;">
                 <thead>
@@ -829,13 +829,17 @@
                         @php
                         $produtoNome = $produtos->firstWhere('id', $produto_estoque_critico->produto_id)->nome ?? 'Produto não encontrado';
                         @endphp
-
+                        <style>
+                            .bg-light-warning {
+                                background-color:greenyellow;
+                                /* cor amarelo claro */
+                            }
+                        </style>
                         <td>{{ $produtoNome }}</td>
-
-                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-warning @elseif($produto_estoque_critico->quantidade <= $produto_estoque_critico->estoque_minimo) bg-danger @endif">
+                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
                             {{ $produto_estoque_critico->quantidade }}
                         </td>
-                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-warning @elseif($produto_estoque_critico->quantidade <= $produto_estoque_critico->estoque_minimo) bg-danger @endif">
+                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
                             {{ $produto_estoque_critico->estoque_minimo }}
                         </td>
                         <td> {{$produto_estoque_critico->estoque_maximo}}</td>
