@@ -9,7 +9,7 @@ use App\Models\Funcionario;
 use App\Models\PedidoCompra;
 use App\Models\Produto;
 use App\Models\UnidadeMedida;
-
+use App\Models\User;
 class PedidoCompraListaController extends Controller
 {
     /**
@@ -29,6 +29,7 @@ class PedidoCompraListaController extends Controller
         $unidades_de_medida = UnidadeMedida::all();
         $pedidos_compra = PedidoCompra::where('id', $pedidoCompraId)->get();
         $produtos = Produto::all();
+        $emissores = User::all();//Busca usuarios
         $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id', $pedidoCompraId)->get();
         $produto_rg = Produto::where('id', $produto_id)->get();
         //$pedidoCompraLista = PedidoCompraLista::all();
@@ -40,7 +41,8 @@ class PedidoCompraListaController extends Controller
             'pedido_compra_lista' => $pedidoCompraLista,
             'produtos' => $produtos,
             'unidades_de_medida' => $unidades_de_medida,
-            'produto_rg' => $produto_rg
+            'produto_rg' => $produto_rg,
+            'emissores'=>$emissores//Envia emissores para a view app.pedido_compra.index_lista
         ]);
     }
     /**
@@ -84,12 +86,14 @@ class PedidoCompraListaController extends Controller
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
         $patrimonio = Equipamento::where('id', $patrimonio_id)->get();
+        $emissores = User::all();//Busca usuarios
         //$empresa_id=$patrimonio->empresa_id;
         return view('app.pedido_compra.create', [
             'equipamentos' => $equipamentos,
             'funcionarios' => $funcionarios,
             'patrimonio_id' => $patrimonio_id,
-            'patrimonio' => $patrimonio
+            'patrimonio' => $patrimonio,
+            'emissores'=> $emissores
         ]);
     }
     /**
@@ -131,7 +135,7 @@ class PedidoCompraListaController extends Controller
         $pedidoCompra = PedidoCompra::where('id', $pedidoCompraId)->get();
         $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id', $pedidoCompraId)->get();
         $unidades_de_medida = UnidadeMedida::all();
-
+        $emissores = User::all();//Busca usuarios
         return view('app.pedido_compra.index_lista', [
             'equipamentos' => $equipamentos,
             'funcionarios' => $funcionarios,
@@ -139,7 +143,9 @@ class PedidoCompraListaController extends Controller
             'produto_id' => $produto_id,
             'pedido_compra_lista' => $pedidoCompraLista,
             'produtos' => $produtos,
-            'unidades_de_medida' => $unidades_de_medida
+            'unidades_de_medida' => $unidades_de_medida,
+            'emissores'=> $emissores
+            
         ]);
     }
 
@@ -181,6 +187,7 @@ class PedidoCompraListaController extends Controller
             $pedidoCompra = PedidoCompra::where('id', $prdidoCompra)->get();
             $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id',  $prdidoCompra)->get();
             $unidades_de_medida = UnidadeMedida::all();
+            $emissores = User::all();//Busca usuarios
             return view('app.pedido_compra.index_lista', [
                 'equipamentos' => $equipamentos,
                 'funcionarios' => $funcionarios,
@@ -188,7 +195,8 @@ class PedidoCompraListaController extends Controller
                 'produto_id' => '',
                 'pedido_compra_lista' => $pedidoCompraLista,
                 'produtos' => $produtos,
-                'unidades_de_medida' => $unidades_de_medida
+                'unidades_de_medida' => $unidades_de_medida,
+                'emissores'=> $emissores
             ]);
         }
         return response()->json(['message' => 'Item não encontrado!'], 404);

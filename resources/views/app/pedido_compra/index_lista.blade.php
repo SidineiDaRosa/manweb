@@ -156,7 +156,11 @@
                 <div class="titulo">Previsão</div>
                 <hr style="margin:-5px;color:#ccc;">
                 <div class="conteudo">{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</div>
-
+                <div class="titulo">Fechamento</div>
+                <hr style="margin:-5px;color:#ccc;">
+                <div class="conteudo">
+                    {{ optional($pedido_compra)->data_fechamento ? \Carbon\Carbon::parse($pedido_compra->data_fechamento)->format('d/m/Y') : 'Data de fechamento não disponível' }}
+                </div>
             </div>
             {{--Box 2--}}
             <div class="item">
@@ -168,7 +172,15 @@
                 <div class="conteudo">{{ $pedido_compra->equipamento->nome}}</div>
                 <div class="titulo">Emissor</div>
                 <hr style="margin:-5px;color:#ccc;">
-                <div class="conteudo">{{auth()->user()->name}}</div>
+                <div class="conteudo"> @php
+                    $emissor = $emissores->firstWhere('id', $pedido_compra->funcionarios->id);
+                    @endphp
+                    @if($emissor)
+                    {{ $emissor->name }}
+                    @else
+                    Emissor não encontrado
+                    @endif
+                </div>
             </div>
             {{--Box 3--}}
             <div class="item">

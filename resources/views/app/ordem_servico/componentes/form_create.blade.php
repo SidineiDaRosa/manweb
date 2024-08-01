@@ -186,6 +186,37 @@
                 </div>
             </div>
         </div>
+        {{--Validação de datas--}}
+
+        <script>
+            function ValidateDatePrevista() {
+                let dataPrevista = document.getElementById('dataPrevista').value;
+                let dataEmissao = document.getElementById('data_emissao').value;
+                document.getElementById('dataFim').value = 'null';
+                document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
+                if (dataPrevista < dataEmissao) {
+                    alert('Atenção! A data prevista que você está inserindo é anterior a data de emissão.');
+                    //document.getElementById('dataPrevista').value = 'null';
+
+
+                } else {
+                    document.getElementById('dataPrevista').style.background = "rgb(150, 255, 150)";
+                }
+            }
+
+            function ValidateDateFim() {
+                let dataPrevista = document.getElementById('dataPrevista').value;
+                let dataFim = document.getElementById('dataFim').value;
+                if (dataFim < dataPrevista) {
+                    alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
+                    document.getElementById('dataFim').value = 'null';
+                    document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
+
+                } else {
+                    document.getElementById('dataFim').style.background = "rgb(150, 255, 150)";
+                }
+            }
+        </script>
         {{--Box 2--}}
         <div class="item">
             <div class="box-conteudo">
@@ -411,37 +442,6 @@
             </div>
         </div>
         {{--fim card 3--}}
-        {{--Validação de datas--}}
-
-        <script>
-            function ValidateDatePrevista() {
-
-                let dataPrevista = document.getElementById('dataPrevista').value;
-                let dataEmissao = document.getElementById('data_emissao').value;
-                if (dataPrevista < dataEmissao) {
-                    alert('Atenção! A data prevista que você está inserindo é anterior a data de emissão.');
-                    //document.getElementById('dataPrevista').value = 'null';
-
-
-                } else {
-                    document.getElementById('dataPrevista').style.background = "rgb(150, 255, 150)";
-                }
-            }
-
-            function ValidateDateFim() {
-                let dataPrevista = document.getElementById('dataPrevista').value;
-                let dataFim = document.getElementById('dataFim').value;
-                if (dataFim < dataPrevista) {
-                    alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
-                    document.getElementById('dataFim').value = 'null';
-                    document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
-
-
-                } else {
-                    document.getElementById('dataFim').style.background = "rgb(150, 255, 150)";
-                }
-            }
-        </script>
 
 </form>
 <button type="button" class="btn btn-outline-primary btn-sm" onclick="CadastraFormOs()">

@@ -10,6 +10,7 @@ use App\Models\PedidoCompra;
 use App\Models\UnidadeMedida;
 use App\Models\PedidoCompraLista;
 use App\Models\Produto;
+use App\Models\User;
 
 class PedidoCompraController extends Controller
 {
@@ -24,6 +25,7 @@ class PedidoCompraController extends Controller
         $situacao = $request->get('situacao');
         $data_inicio=$request->get('data_inicio');
         $data_fim=$request->get('data_fim');
+        $emissores = User::all();
         if (isset($situacao)) {
             // A variável $situacao está declarada
             // Faça alguma coisa aqui
@@ -33,7 +35,8 @@ class PedidoCompraController extends Controller
                 ->whereBetween('data_emissao', [$data_inicio, $data_fim])
                 ->get();
             return view('app.pedido_compra.index', [
-                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra,
+                'emissores'=>$emissores
             ]);
         } else {
             // A variável $situacao não está declarada
@@ -42,7 +45,8 @@ class PedidoCompraController extends Controller
             $funcionarios = Funcionario::all();
             $pedidos_compra = PedidoCompra::where('status', '')->get();
             return view('app.pedido_compra.index', [
-                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra
+                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra,
+                'emissores'=>$emissores
             ]);
         }
         //
@@ -103,6 +107,7 @@ class PedidoCompraController extends Controller
         $produtos = Produto::all();
         $pedidoCompraLista = PedidoCompraLista::where('pedidos_compra_id', $pedidoCompraId)->get();
         $produto_rg = Produto::where('id', $produto_id)->get();
+        $emissores = User::all();
         //$pedidoCompraLista = PedidoCompraLista::all();
         return view('app.pedido_compra.index_lista', [
             'equipamentos' => $equipamentos,
@@ -112,7 +117,8 @@ class PedidoCompraController extends Controller
             'pedido_compra_lista' => $pedidoCompraLista,
             'produtos' => $produtos,
             'unidades_de_medida' => $unidades_de_medida,
-            'produto_rg' => $produto_rg
+            'produto_rg' => $produto_rg,
+            'emissores'=>$emissores
         ]);
     }
 

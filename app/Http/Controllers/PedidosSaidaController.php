@@ -26,7 +26,6 @@ class PedidosSaidaController extends Controller
     public function index(Request $request)
     {
         $ordem_servico = $request->get('ordem_servico');
-
         $tipoFiltro = $request->get('tipofiltro');
         $situacao = $request->get('status');
         $produto = $request->get('produto');

@@ -50,8 +50,8 @@
                         <th scope="col" class="th-title">Data prevista</th>
                         <th scope="col" class="th-title">Data Fechamento</th>
                         <th scope="col" class="th-title">Equipamento</th>
+                        <th scope="col" class="th-title">Emissor_id</th>
                         <th scope="col" class="th-title">status</th>
-                        <th scope="col" class="th-title">Emissor</th>
                         <th scope="col" class="th-title">operações</th>
                     </tr>
                 </thead>
@@ -63,7 +63,7 @@
                         <td>{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</td>
                         <td>{{ \Carbon\Carbon::parse($pedido_compra->data_fechamento)->format('d/m/Y') }}</td>
                         <td>{{ $pedido_compra->equipamento->nome}}</td>
-                        <td>{{ $pedido_compra->funcionarios->primeiro_nome}}</td>
+                        <td>{{ $pedido_compra->funcionarios->id}}</td>
                         <td>{{ $pedido_compra->status}}</td>
                         <td>
                             <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
