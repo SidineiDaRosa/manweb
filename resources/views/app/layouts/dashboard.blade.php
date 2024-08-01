@@ -802,7 +802,8 @@
         </style>
         <div class="item">
             Status do estoque de Produtos em nível mínimo
-            <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a>
+            <a class="" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
+            <a class="" href="{{route('Estoque-produto.index')}}"style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Estoque de produtos</a>
             <hr>
             <table class="condensed-table" id="tb_pedidos_compra" style="background-color: burlywood;">
                 <thead>
@@ -830,9 +831,13 @@
                         @endphp
 
                         <td>{{ $produtoNome }}</td>
-                        
-                        <td> {{$produto_estoque_critico->quantidade}}</td>
-                        <td> {{$produto_estoque_critico->estoque_minimo}}</td>
+
+                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-warning @elseif($produto_estoque_critico->quantidade <= $produto_estoque_critico->estoque_minimo) bg-danger @endif">
+                            {{ $produto_estoque_critico->quantidade }}
+                        </td>
+                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-warning @elseif($produto_estoque_critico->quantidade <= $produto_estoque_critico->estoque_minimo) bg-danger @endif">
+                            {{ $produto_estoque_critico->estoque_minimo }}
+                        </td>
                         <td> {{$produto_estoque_critico->estoque_maximo}}</td>
                     </tr>
                     @endforeach

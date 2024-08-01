@@ -17,6 +17,9 @@
             <a href="{{route('produto.create')}}" class="btn">
                 NOVO PRODUTO
             </a>
+            <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> dashboard
+                </a>
         </div>
         <div class="card-body">
             <table class="table table-hover">

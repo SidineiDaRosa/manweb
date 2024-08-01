@@ -301,7 +301,11 @@ class HomeController extends Controller
         $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
 
         // $produtos_estoque_critico= EstoqueProdutos::where('quantidade', '<=0')->get();
+       // $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
+           // ->orderBy('criticidade', 'desc')
+           // ->get();
         $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
+            ->where('criticidade', '>=', 1)
             ->orderBy('criticidade', 'desc')
             ->get();
         $produtos = Produto::all();

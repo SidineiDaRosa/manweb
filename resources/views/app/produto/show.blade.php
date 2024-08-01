@@ -17,10 +17,13 @@
                     </span>
                 </a>
                 <a href="{{ route('produto.create') }}" class="btn btn-outline-primary btn-sm">
-                    NOVO
+                    Novo
                 </a>
                 <a class="btn btn-outline-primary btn-sm" href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
                     <i class="icofont-ui-edit"></i> Editar </a>
+                <a class="btn btn-outline-dark sm" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> dashboard
+                </a>
             </div>
         </div>
         <div class="card-body">
@@ -53,7 +56,7 @@
             </script>
             <style>
                 .carousel-container {
-                    max-width:370px;
+                    max-width: 370px;
                     margin: 0 auto;
                     overflow: hidden;
                     float: left;
@@ -123,15 +126,15 @@
                     color: #007b00;
                     margin-bottom: 5px;
                 }
+
                 .conteudo-sm {
                     display: flex;
                     font-size: 15px;
                     font-family: 'Poppins', sans-serif;
-                    color:dimgray;
+                    color: dimgray;
                     margin-bottom: 5px;
                     font-weight: 400;
                 }
-                
             </style>
             {{--------------------------------------------------------}}
             {{--Bloco de descrição e dados do produto--}}

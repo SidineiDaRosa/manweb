@@ -4,7 +4,11 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div> Lista do estoque de produtos</div>
+            <div> Lista do estoque de produtos
+            <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> dashboard
+                </a>
+            </div>
 
             <form id="formSearchingProducts" action="{{'Estoque-Produtos-filtro'}}" method="POST">
                 @csrf

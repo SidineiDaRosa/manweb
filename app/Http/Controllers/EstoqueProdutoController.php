@@ -198,6 +198,7 @@ class EstoqueProdutoController extends Controller
         $estoque->estoque_minimo = $request->input('estoque_minimo');
         $estoque->estoque_maximo = $request->input('estoque_maximo');
         $estoque->local = $request->input('local');
+        $estoque->criticidade= $request->input('criticidade');
         $estoque->save();
 
         // 4. Redirecionar com uma mensagem de sucesso
