@@ -580,7 +580,7 @@
                             </span>
                         </div>
                     </div>
-                    <hr style="width: 50%; margin-left: 0;margin-top:-2px;">
+                    <hr style="width: 50%; margin-left: 0;margin:-10px;">
                     <div class="div-font-sm-conteudo" id="div-Toggle-{{ $uniqueId }}" style="height:auto; display:none;">
                         <div style="color: green;">Descrição</div>
                         {{$ordem_servico->descricao}}
