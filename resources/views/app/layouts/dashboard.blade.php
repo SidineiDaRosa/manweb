@@ -656,7 +656,7 @@
         {{--Box 5--}}
         {{--Box que contém a lista de pedidos abertos--}}
         <div class="item">
-            Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
+            Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
             <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a>
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
@@ -801,9 +801,44 @@
             }
         </style>
         <div class="item">
-            Geração de OS ao longo do tempo
+            Status do estoque de Produtos em nível mínimo
+            <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a>
             <hr>
-            <canvas id="myChart2" class="box"></canvas>
+            <table class="condensed-table" id="tb_pedidos_compra" style="background-color: burlywood;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Produto_id</th>
+                        <th>Estoque</th>
+                        <th>Estoque_minimo</th>
+                        <th>Estoque_máximo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($produtos_estoque_critico as $produto_estoque_critico)
+                    <tr>
+                        <td>
+                            <a class="" href="{{ route('produto.show', ['produto' => $produto_estoque_critico->produto_id]) }}">
+                                <span class="material-symbols-outlined">open_in_new</span>
+                            </a>
+                        </td>
+                        <td>{{ $produto_estoque_critico->id }}</td>
+                        @php
+                        $produtoNome = $produtos->firstWhere('id', $produto_estoque_critico->produto_id)->nome ?? 'Produto não encontrado';
+                        @endphp
+
+                        <td>{{ $produtoNome }}</td>
+                        
+                        <td> {{$produto_estoque_critico->quantidade}}</td>
+                        <td> {{$produto_estoque_critico->estoque_minimo}}</td>
+                        <td> {{$produto_estoque_critico->estoque_maximo}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <canvas id="myChart2" class="box" hidden></canvas>
         </div>
     </div>
 

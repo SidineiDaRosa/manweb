@@ -86,7 +86,13 @@
             {{ $errors->has('local') ? $errors->first('local') : '' }}
         </div>
     </div>
-
+    <div class="row mb-1">
+        <label for="criticidade" class="col-md-4 col-form-label text-md-end text-right">Criticidade</label>
+        <div class="col-md-6">
+            <input name="criticidade" id="criticidade" type="text" class="form-control" value="{{ $estoque->criticidade ?? old('criticidade') }}">
+            {{ $errors->has('criticidade') ? $errors->first('criticidade') : '' }}
+        </div>
+    </div>
     <div class="row mb-0">
         <div class="col-md-6 offset-md-4">
             <button type="submit" class="btn btn-primary">

@@ -18,7 +18,7 @@ class EstoqueProdutos extends Model
         'estoque_minimo',
         'estoque_maximo',
         'local',
-
+        'criticidade'
     ];
 
     public function produto()

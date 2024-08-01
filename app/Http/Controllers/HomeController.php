@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Empresas;
 use App\Models\Equipamento;
+use App\Models\EstoqueProdutos;
 use App\Models\OrdemServico;
 use App\Models\Funcionario;
 use App\Models\PedidoCompra;
+use App\Models\Prduto;
+use App\Models\Produto;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
@@ -295,7 +298,13 @@ class HomeController extends Controller
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
-        $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();// busca os pendente de aprovação
+        $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
+
+        // $produtos_estoque_critico= EstoqueProdutos::where('quantidade', '<=0')->get();
+        $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
+            ->orderBy('criticidade', 'desc')
+            ->get();
+        $produtos = Produto::all();
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
             'empresa' => $empresa,
@@ -317,7 +326,9 @@ class HomeController extends Controller
             'sunday' => $ordensPorDia['Sunday'],
             'ordens_servicos_next_day' => $ordens_servicos_next_day,
             'ordens_servicos_second_day' => $ordens_servicos_second_day,
-            'ordens_servicos_third_day' => $ordens_servicos_third_day
+            'ordens_servicos_third_day' => $ordens_servicos_third_day,
+            'produtos_estoque_critico' => $produtos_estoque_critico,
+            'produtos' => $produtos
         ]);
     }
 }
