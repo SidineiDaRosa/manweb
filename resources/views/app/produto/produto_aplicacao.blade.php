@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-header-template">
             <div>
-                Onde o produto é aplicao
+                Onde o produto é aplicado
             </div>
             <a class="btn btn-outline-dark sm" href="{{ route('app.home') }}">
                 <i class="icofont-dashboard"></i> dashboard
