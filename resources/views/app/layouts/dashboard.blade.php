@@ -585,7 +585,7 @@
                         <div style="color: green;">Descrição</div>
                         {{$ordem_servico->descricao}}
                     </div>
-                    <hr>
+                    <hr style="margin:5px;">
                 </div>
                 @endforeach
                 @endif
@@ -831,7 +831,7 @@
                         @endphp
                         <style>
                             .bg-light-warning {
-                                background-color:greenyellow;
+                                background-color: rgba(173, 255, 47, 0.5);
                                 /* cor amarelo claro */
                             }
                         </style>

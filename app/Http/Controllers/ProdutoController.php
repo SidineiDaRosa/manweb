@@ -11,6 +11,8 @@ use App\Models\UnidadeMedida;
 use App\Models\Categoria;
 use App\Models\EstoqueProdutos; //Include estoque produtos
 use App\Models\Empresas;
+use App\Models\Equipamento;
+use App\Models\PecasEquipamentos;
 use BaconQrCode\Renderer\Path\Move;
 use Illuminate\Support\Facades\File; // Importa a classe File
 //use phpDocumentor\Reflection\Types\This;
@@ -98,6 +100,16 @@ class ProdutoController extends Controller
             }
             //return view('app.produto.index', ['produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias]);
             // }
+            if ($tipoFiltro == 10) { //filtra pelo esoque minimo
+               $produto_aplicacao=PecasEquipamentos::where('produto_id',$nome_produto_like)->get();
+               $produtos=Produto::all();
+               $equipamentos=Equipamento::all();
+               return view('app.produto.produto_aplicacao', [
+                'produto_aplicacao'=>$produto_aplicacao,
+                'produtos'=>$produtos,
+                'equipamentos'=>$equipamentos
+            ]);
+            }
         } else {
             $produtos = Produto::where('id', 0)->get();
             return view('app.produto.index', [
@@ -291,5 +303,9 @@ class ProdutoController extends Controller
 
         $produto->delete();
         return redirect()->route('produto.index');
+    }
+    public function aplicacao_produto(Request $request){
+
+
     }
 }

@@ -89,7 +89,7 @@
                     }
                 }
                 ?>
-                <div class="titulo">ID patrimonio:</div>
+                <div class="titulo">ID patrimônio:</div>
                 <hr>
                 <div class="conteudo">
                     <input class="input-text" id="patrimonio_id" type="nuber" name="equipamento_id" value="{{$equipamento}}" require readonly style="color:#4caf50;">
@@ -99,14 +99,14 @@
                 <div class="conteudo">
                     <input class="input-text" name="equipamento_nome" id="equipamento_nome" type="text" value="{{ $equip_nome->nome }}" readonly style="width:100%;color:#4caf50;">
                 </div>
-                <div class="titulo">Emissor:</div>
+                <div class="titulo">Emissor da ordem:</div>
                 <hr>
                 <div class="conteudo">
                     <input type="text" class="input-text" id="emissor" name="emissor" placeholder="emissor" value="{{auth()->user()->name}}" readonly style="color:#4caf50;">
                 </div>
                 {{-----------------------------------------}}
                 {{--Responsável para executar a terefa--}}
-                <div class="titulo">Executor:</div>
+                <div class="titulo">Executor responsável:</div>
                 <hr>
                 <div class="conteudo">
                     <select class="input-text" name="responsavel" id="responsavel" class="form-control-template" onchange="ValidateChangeResp();" required>

@@ -228,25 +228,25 @@
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
 
-                <div class="titulo">ID patrimonio:</div>
+                <div class="titulo">ID patrimônio:</div>
                 <hr>
                 <div class="conteudo">
                     <input id="equipamento_id" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->id}}" readonly style="width:20%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
-                <div class="titulo">Patrimonio:</div>
+                <div class="titulo">Patrimônio:</div>
                 <hr>
                 <div class="conteudo">
                     <input id="patrimonio" type="text" class="input-text" name="nome" value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
-                <div class="titulo">Emissor:</div>
+                <div class="titulo">Emissor da ordem:</div>
                 <hr>
                 <div class="conteudo">
                     <input id="emissor" type="text" class="input-text" name="emissor" value="{{$ordem_servico->emissor}}" readonly style="color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
-                <div class="titulo">Executor:</div>
+                <div class="titulo">Executor responsável:</div>
                 <hr>
                 <div class="conteudo">
                     <select name="responsavel" id="responsavel" class="input-text">

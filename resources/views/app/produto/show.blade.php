@@ -175,6 +175,8 @@
                 <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.edit', ['produto' => $produto->id]) }}" title="editar dados do produto">
 
                     <i class="icofont-ui-edit"></i> </a>
+                    <a class="btn btn-bg-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto">
+                    <span class="text">Onde é aplicado este produto</span></a>
                 <p>
                 <div>
                     <?php
