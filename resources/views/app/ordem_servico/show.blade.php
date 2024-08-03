@@ -150,7 +150,7 @@
                             </div>
                         </div>
                         <!--Progressbar com um input texto-->
-                        <div class="titulo" style="font-size:15px;font-weight:300;">Status do progresso do serviço está em:</div>
+                        <div class="titulo" style="font-size:15px;font-weight:300;">Progresso:</div>
                         <div class="progress">
                             <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos}}%</div>
                         </div>
