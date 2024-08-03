@@ -14,11 +14,6 @@
                 </a>
                 </a>
             </div>
-            <div>
-                ID:{{$pedido_saida->id}}
-                data:{{$pedido_saida->data_emissao}}
-                ID:{{$pedido_saida->equipamento_id}}
-            </div>
         </div>
         <!DOCTYPE html>
         <html lang="en">
@@ -74,18 +69,38 @@
                     <input type="text" class="form-control -lg" name="data_emissao" id="data_emissao" value="{{$pedido_saida->hora_emissao}}" readonly>
                 </div>
                 <div class="col-md-1">
-                    <label for="data_inicio">Data emissão:</label>
-                    <input type="date" class="form-control -lg" name="data_emissao" id="data_emissao" value="{{$pedido_saida->data_emissao}}" readonly>
+                    <label for="data_inicio">Data prevista:</label>
+                    <input type="date" class="form-control -lg" name="data_emissao" id="data_prevista" value="{{$pedido_saida->data_emissao}}" readonly>
+                </div>
+                <div class="col-md-1">
+                    <label for="data_inicio">Hora prevista:</label>
+                    <input type="text" class="form-control -lg" name="data_emissao" id="data_emissao" value="{{$pedido_saida->hora_emissao}}" readonly>
                 </div>
             </div>
-            <hr>
             {{-- Formulário com os dados para adicionar o item --}}
             <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST">
                 @csrf
-                <div class="form-group">
-                    <label for="equipamento_id">Equipamento_id</label>
-                    <input type="number" id="equipamento_id" name="equipamento_id" class="form-control" value="{{$pedido_saida->equipamento_id}}" readonly>
+                <div class="form-row">
+                    <div class="col-md-1">
+                        <label for="equipamento_id">Equipamento_id</label>
+                        <input type="number" id="equipamento_id" name="equipamento_id" class="form-control" value="{{$pedido_saida->equipamento_id}}" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="equipamento_id">Equipamento nome</label>
+                        @php
+                        $equipamentoId = $pedido_saida->equipamento_id;
+                        $equipamento = $equipamentos->firstWhere('id', $equipamentoId);
+                        @endphp
+
+                        @if($equipamento)
+                        <input type="text" id="equipamento_nome" name="equipamento_nome" class="form-control" value="{{ $equipamento->nome }}" readonly>
+                        <input type="hidden" id="equipamento_id" name="equipamento_id" value="{{ $equipamento->id }}">
+                        @else
+                        <p>Equipamento não encontrado.</p>
+                        @endif
+                    </div>
                 </div>
+                <hr>
                 <input class="form-control" type="text" id="search" placeholder="Pesquisar por iniciais...">
                 <div class="form-group">
                     <label for="produto-select">Produto</label>

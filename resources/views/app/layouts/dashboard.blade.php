@@ -658,7 +658,7 @@
         <div class="item">
             Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
-            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a>
+            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a> | 
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
             <hr>
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">

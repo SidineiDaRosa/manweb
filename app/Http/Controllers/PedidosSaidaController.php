@@ -129,10 +129,12 @@ class PedidosSaidaController extends Controller
             $ultimo_pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->latest()->first();
             $pedido_saida = PedidoSaida::where('ordem_servico_id', $ordem_servico)->get();
             $produtos = Produto::orderBy('nome')->get();
+            $equipamentos = Equipamento::all();
             return view('app.pedido_saida.show', [
                 'pedido_saida' => $ultimo_pedido_saida,
                 'categorias' => $categorias,
-                'produtos' => $produtos
+                'produtos' => $produtos,
+                'equipamentos'=>$equipamentos
             ]);
         }
     }
@@ -152,11 +154,13 @@ class PedidosSaidaController extends Controller
             $produtos = Produto::orderBy('nome')->get();
 
         $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $id)->get();
+        $equipamentos=Equipamento::all();
            return view('app.pedido_saida.show', [
             'pedido_saida' => $pedido_saida,
              'categorias' => $categorias,
                 'produtos' => $produtos,
-                'saidas_produtos'=>$saidas_produtos
+                'saidas_produtos'=>$saidas_produtos,
+                'equipamentos'=>$equipamentos
          ]);
     }
     /**

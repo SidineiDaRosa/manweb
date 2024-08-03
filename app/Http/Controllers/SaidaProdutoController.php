@@ -93,20 +93,26 @@ class SaidaProdutoController extends Controller
         // Define o fuso horário para São Paulo
         date_default_timezone_set('America/Sao_Paulo');
         $dataAtual = $request->get('data');
+
         if ($ordem_servico_id >= 1) {
+            //-------------------------------------------//
+            //     Entra neste laço caso OS >=1          //
+            //-------------------------------------------//
             $pedido_saida_id = $request->get('pedidos_saida_id');
             $data_proxima_manutencao = $request->get('data_proxima_manutencao');
             $pedido_saida = PedidoSaida::where('id', $pedido_saida_id)->get();
             $saidas_produtos = SaidaProduto::all();
             $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
+            //      comparador de estoque               //
             if ($request->quantidade > $estoque->quantidade) {
                 echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
         Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
         </div>';
             } else {
-                SaidaProduto::create($request->all());
+                echo($request);
+               // SaidaProduto::create($request->all());// Salva a sáida do produto
                 $estoque->quantidade = $estoque->quantidade - $request->input('quantidade'); // soma estoque antigo com a entrada de produto
-                $estoque->save();
+                $estoque->save(); // Salva atualização do estoque
                 //-------------------------------------
                 $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
                 $pecaEquipamento->data_substituicao = $dataAtual; // soma estoque antigo com a entrada de produto
@@ -121,11 +127,10 @@ class SaidaProdutoController extends Controller
                 echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
             }
         } else {
-            //--------------------------------------------------//
-            //  Adiciona um item de produto ao pedido de saída
-            //-------------------------------------------------//
-            // pega o numero do pedido
-            $pedido_saida_id = $request->get('pedido_id');
+            //----------------------------------------------------------//
+            //  Adiciona item de produto ao pedido de saída  sem a Os   //
+            //----------------------------------------------------------//
+            $pedido_saida_id = $request->get('pedido_id');// pega o numero do pedido
             $produto_id = $request->get('produto_id');
             $quantidade = $request->get('quantidade');
             $equipamento_id = $request->get('equipamento_id');
@@ -177,16 +182,15 @@ class SaidaProdutoController extends Controller
             $categorias = Categoria::all();
             $produtos = Produto::orderBy('nome')->get();
             $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $pedido_saida_id)->get();
+            $equipamentos = Equipamento::all();
             ///
             return view('app.pedido_saida.show', [
                 'pedido_saida' => $pedido_saida,
                 'categorias' => $categorias,
                 'produtos' => $produtos,
-                'saidas_produtos' => $saidas_produtos
+                'saidas_produtos' => $saidas_produtos,
+                'equipamentos' => $equipamentos
             ]);
-
-            //}
-            /// }
         }
     }
     /**
@@ -255,8 +259,8 @@ class SaidaProdutoController extends Controller
         //    Redireciona para a view
         $categorias = Categoria::all();
         $produtos = Produto::orderBy('nome')->get();
-        $saidas_produtos = SaidaProduto::where('pedidos_saida_id',  $pedidos_saida_id )->get();
-        $pedido_saida = SaidaProduto::find($pedidos_saida_id );
+        $saidas_produtos = SaidaProduto::where('pedidos_saida_id',  $pedidos_saida_id)->get();
+        $pedido_saida = SaidaProduto::find($pedidos_saida_id);
         ///
         return view('app.pedido_saida.show', [
             'pedido_saida' => $pedido_saida,
