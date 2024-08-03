@@ -119,11 +119,8 @@
                             //echo $protocolo.$url;
                             ?>
                             &nbsp&nbsp&nbsp&nbsp{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}
-
                         </div>
-
                     </div>
-
                 </div>
                 {{--Box 2--}}
                 <div class="item">
@@ -133,7 +130,30 @@
                         <div id=idOs class="conteudo" style="color:mediumblue">
                             {{$ordem_servico->id}}
                         </div>
-
+                        {{--//------------------------------------------//--}}
+                        {{--//Datas de inico e fim, progress bar        //--}}
+                        {{--//------------------------------------------//--}}
+                        <div style="display: flex;flex-direction:row;">
+                            <div style="width:50%;">
+                                <div class="titulo"> Previsão para início</div>
+                                <hr>
+                                <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}}
+                                    <span class="span-texto-sm "> &nbsp às &nbsp</span>{{$ordem_servico->hora_inicio}}
+                                </div>
+                            </div>
+                            <div style="width:50%;">
+                                <div class="titulo">Previsão para fim</div>
+                                <hr>
+                                <div class="conteudo" style="color:brown;float:right;display:flex;">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}
+                                    <span class="span-texto-sm "> &nbsp às &nbsp</span> {{$ordem_servico->hora_fim}}
+                                </div>
+                            </div>
+                        </div>
+                        <!--Progressbar com um input texto-->
+                        <div class="titulo" style="font-size:15px;font-weight:300;">Status do progresso do serviço está em:</div>
+                        <div class="progress">
+                            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos}}%</div>
+                        </div>
                         @php
                         use Carbon\Carbon;
 
@@ -146,7 +166,7 @@
                         $totalHours = $diff->days * 24 + $diff->h;
                         $minutes = $diff->format('%i');
                         @endphp
-                        <div class="titulo">O tempo previsto para realizar o serviço é de:</div>
+                        <div class="titulo" style="font-size:15px;font-weight:300;">O tempo previsto para realizar o serviço é de:</div>
                         <!-- Conteúdo com texto alinhado na parte inferior -->
                         <div class="conteudo" style="display: flex; align-items: flex-end; color: crimson; font-size: 18px;">
                             {{$totalHours}}<span class="span-texto-sm ">hs &nbsp e &nbsp </span>
@@ -160,7 +180,6 @@
                         <div class="titulo">Descrição dos serviços a serem executados</div>
                         <div class="titulo">
                             <textarea name="" id="txt-area" class="form-control" rows="6" readonly style="color:crimson">{{$ordem_servico->descricao}}</textarea>
-
                         </div>
                         <style>
                             #txt-area {
@@ -191,14 +210,6 @@
                         <div class="titulo">Emissão</div>
                         <hr>
                         <div class="conteudo" style="color: #2174d4;"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp às &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
-
-                        <div class="titulo"> Previsão para início</div>
-                        <hr>
-                        <div class="conteudo">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}} <span class="span-texto-sm "> &nbsp às &nbsp</span>{{$ordem_servico->hora_inicio}}</div>
-
-                        <div class="titulo">Previsão par fim</div>
-                        <hr>
-                        <div class="conteudo" style="color:cornflowerblue;" >{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}<span class="span-texto-sm "> &nbsp às &nbsp</span> {{$ordem_servico->hora_fim}}</div>
                         <div class="titulo">Natureza do serviço</div>
                         <hr>
                         <div class="conteudo">{{$ordem_servico->natureza_do_servico}}</div>
@@ -206,13 +217,8 @@
                         <hr>
                         <div class="conteudo">{{$ordem_servico->especialidade_do_servico}}</div>
 
-                        <!--Exemplo de progressbar com um input texto-->
-                        <div class="titulo">Status do progresso do serviço está em:</div>
-
                         <input type="text" value="{{ $ordem_servico->status_servicos }}" id="progress-input" hidden>
-                        <div class="progress">
-                            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos}}%</div>
-                        </div>
+
                         <div class="titulo">Assinatura:</div>
                         <hr>
                         @if ($ordem_servico->signature_receptor)
@@ -225,7 +231,6 @@
                                 // Verifica se a assinatura está presente
                                 var signatureImage = document.getElementById("signature_receptor");
                                 if (signatureImage) {
-
                                     // Oculta o link adicionando um estilo inline que esconde visualmente
                                     document.getElementById("btn-add-task").style.display = 'none';
                                     document.getElementById("btn-edit").style.display = 'none';
@@ -234,13 +239,13 @@
                             });
                         </script>
                     </div>
-
                 </div>
             </div>
             {{--fim container item--}}
-            <!--Cabeçalho------------------------------------------------------------------------->
-
             <script>
+                //--------------------------------------------------//
+                //          Progress BAR                            //
+                //--------------------------------------------------//
                 //document.addEventListener('DOMContentLoaded', function() {
                 var progressBar = document.getElementById('progress-bar');
                 var progressInput = document.getElementById('progress-input');
@@ -263,8 +268,8 @@
             </script>
             <!--Fim Exemplo de progressbar com um input texto-->
 
-            {{--------------------------------------------------------------------------------------}}
-            {{--Atualização do de os----------------------------------------------------------------}}
+            {{----------------------------------------------------------}}
+            {{--------------------//Serviços executados//---------------}}
             Serviços executados
             @foreach($servicos_executado as $servicos_executados)
             <div class="container-item" style="border: 1px solid rgba(0, 0, 0, 0.3); border-radius: 5px;">
