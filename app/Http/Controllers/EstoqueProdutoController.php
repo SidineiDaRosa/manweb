@@ -35,7 +35,10 @@ class EstoqueProdutoController extends Controller
         if ($empresa_id >= 1) {
             if ($tipoFiltro == 1) {
 
-                $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)->where('produto_id', $nome_produto_like)->get();
+                $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)
+                    ->where('produto_id', 'like', $nome_produto_like)
+                    ->orderBy('criticidade','desc')
+                    ->get();
                 //dd($estoque_produtos);
                 return view('app.estoque_produto.index', [
                     'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias
@@ -43,7 +46,10 @@ class EstoqueProdutoController extends Controller
             }
 
             if ($tipoFiltro == 2) {
-                $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)->get();
+                $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)
+                ->orderByRaw('(quantidade <= estoque_minimo) DESC')
+                ->orderBy('criticidade', 'desc')
+                ->get();
                 return view('app.estoque_produto.index', [
                     'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias
                 ]);
@@ -173,11 +179,11 @@ class EstoqueProdutoController extends Controller
     public function update(Request $request, $id)
     {
         // 1. Encontrar o registro pelo ID
-        $estoque =EstoqueProdutos::findOrFail($id);
+        $estoque = EstoqueProdutos::findOrFail($id);
 
         // 2. Validar os dados recebidos do formulário
         $request->validate([
-           // 'data' => 'required|date',
+            // 'data' => 'required|date',
             'produto_id' => 'required|exists:produtos,id',
             'empresa_id' => 'required|exists:empresas,id',
             'unidade_medida' => 'required|string',
@@ -198,15 +204,15 @@ class EstoqueProdutoController extends Controller
         $estoque->estoque_minimo = $request->input('estoque_minimo');
         $estoque->estoque_maximo = $request->input('estoque_maximo');
         $estoque->local = $request->input('local');
-        $estoque->criticidade= $request->input('criticidade');
+        $estoque->criticidade = $request->input('criticidade');
         $estoque->save();
 
         // 4. Redirecionar com uma mensagem de sucesso
-        
-        $empresa=Empresas::all();
-        $produto= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
-        $estoque_produtos= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
-        $categorias=Categoria::all();
+
+        $empresa = Empresas::all();
+        $produto = EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $estoque_produtos = EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $categorias = Categoria::all();
         return view('app.estoque_produto.index', [
             'estoque_produtos' => $estoque_produtos, 'empresas' => $empresa, 'produtos' => $produto, 'categorias' => $categorias
         ]);

@@ -110,7 +110,7 @@
                                     open_in_new
                                 </span></a>
                         </td>
-                        
+
                         <td>{{ $estoque_produto->unidade_medida }}</td>
                         <td @if($estoque_produto->quantidade <= 0) style="background-color: red;" @elseif($estoque_produto->quantidade > 0 && $estoque_produto->quantidade < $estoque_produto->estoque_minimo) style="background-color: yellow;"
                                     @elseif($estoque_produto->quantidade == $estoque_produto->estoque_minimo) style="background-color:rgba(127, 255, 0, 0.5);"
@@ -127,12 +127,17 @@
                             @foreach($produtos as $produto)
                             @endforeach
                             <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn-sm btn-success">
-                                <i class="icofont-database-add"></i>
-                                <span class="text">Inserir estoque</span>
+                                <i class="icofont-database-add">Inserir Estoque</i>
                             </a>
+                            {{--//-----------------------------------------//--}}
+                            {{--// Cria automaticamente um pedido de compra//--}}
+                            {{--//-----------------------------------------//--}}
+                        
+                            {{--//-----------------------------------------//--}}
                             <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="editar dados do estoque">
                                 <i class="icofont-ui-edit"></i>
                             </a>
+
                         </td>
                     </tr>
                     @endforeach

@@ -272,3 +272,12 @@ Route::post('/imprimir-pdf', [App\Http\Controllers\PdfController::class, 'gerarP
 // 
 // Deleta item pedido de saida
 Route::middleware('auth')->delete('/saida-produto/{id}', [SaidaProdutoController::class, 'destroy'])->name('saida-produto.destroy');
+//----------------------------------------------------------//
+//   PedidoCompraAutoGenerateController
+use App\Http\Controllers\PedidoCompraAutoGenerateController;
+
+Route::get('/pedido-compra/auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])
+    ->name('pedido.compra.auto.generate');
+
+Route::get('/pedido-compra/show', [PedidoCompraAutoGenerateController::class, 'show'])
+    ->name('pedido.compra.show');

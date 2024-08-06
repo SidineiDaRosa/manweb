@@ -175,8 +175,88 @@
                 <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.edit', ['produto' => $produto->id]) }}" title="editar dados do produto">
 
                     <i class="icofont-ui-edit"></i> </a>
-                    <a class="btn btn-bg-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto">
+                <a class="btn btn-bg-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto">
                     <span class="text">Onde é aplicado este produto</span></a>
+                {{--//-----------------------------------------//--}}
+                {{--// Cria automaticamente um pedido de compra//--}}
+                {{--//-----------------------------------------//--}}
+                <!-- jQuery -->
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <!-- Bootstrap JavaScript -->
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+                <!-- Botão para abrir o modal -->
+                <a class="btn btn-bg-template btn-outline-success @can('user') disabled @endcan" data-toggle="modal" data-target="#myModal" title="Onde é aplicado este produto">
+                    <span class="text">Gerar Pedido de Compra</span>
+                </a>
+
+                <!-- O modal Gerar Pedido de Compra-->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel">Gerar Pedido de Compra</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Conteúdo do modal aqui -->
+                                Finalidade: ID:70 Amoxarifado <br>
+                                Emissão: <input type="date" name="data_emissao" id="data_emissao" readonly><input type="time" name="hora_emissao" id="hora_emissao" readonly><br>
+                                Previsão: <input type="date" name="data_emissao" id="data_emissao" readonly><input type="time" name="hora_prevista" id="hora_prevista" readonly><br>
+                                ID Produto:<input type="number" name="id" id="id" value="{{$produto->id}}" readonly><br>
+                                Nome Produto:<input class="conteudo" type="text" name="nome" id="nome" value="{{$produto->nome}}" readonly style="width: 300px;;"><br>
+                                <hr>
+                                <p></p>
+                                Digite A Quantidade:
+                                <input type="number">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="btnSalvar">Salvar Pedido de compra</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        $('#btnSalvar').click(function() {
+                            // Coleta os dados do formulário
+                            var dataEmissao = $('#data_emissao').val();
+                            var horaEmissao = $('#hora_emissao').val();
+                            var idProduto = $('#id').val();
+                            var quantidade = $('input[type="number"]').val(); // Assumindo que este é o campo de quantidade
+
+                            // Envia os dados para a rota
+                            $.ajax({
+                                url: '{{ route("pedido.compra.auto.generate") }}', // Rota definida no Laravel
+                                type: 'GET',
+                                data: {
+                                    data_emissao: dataEmissao,
+                                    hora_emissao: horaEmissao,
+                                    data_prevista: dataPrevista,
+                                    hora_prevista: horaPrevista,
+                                    id: idProduto,
+                                    nome: nomeProduto,
+                                    quantidade: quantidade
+                                },
+                                success: function(response) {
+                                    // Manipule a resposta conforme necessário
+                                    console.log('Pedido de compra gerado com sucesso!', response);
+                                    // Feche o modal se desejado
+                                    $('#myModal').modal('hide');
+                                },
+                                error: function(xhr, status, error) {
+                                    // Manipule erros
+                                    console.error('Erro ao gerar pedido de compra', error);
+                                }
+                            });
+                        });
+                    });
+                </script>
+                {{--//-----------------Fim------------------------//--}}
                 <p>
                 <div>
                     <?php
@@ -205,9 +285,9 @@
                 <th scope="col" class="th-title">Produto</th>
                 <th scope="col" class="th-title">Cod. Unid. Medida</th>
                 <th scope="col" class="th-title">Quant. Estoque</th>
-                <th scope="col" class="th-title">Valor</th>
                 <th scope="col" class="th-title">Estoque minimo</th>
                 <th scope="col" class="th-title">estoque máximo</th>
+                <th scope="col" class="th-title">Valor</th>
                 <th scope="col" class="th-title">Local do estoque</th>
                 <th scope="col" class="th-title">Empresa</th>
                 <th scope="col" class="th-title">Operações</th>
@@ -221,9 +301,9 @@
                 <td>{{ $estoque_produto->produto->nome }}</td>
                 <td>{{ $estoque_produto->unidade_medida}}</td>
                 <td>{{ $estoque_produto->quantidade }}</td>
-                <td>{{ $estoque_produto->valor }}</td>
                 <td>{{ $estoque_produto->estoque_minimo }}</td>
                 <td>{{ $estoque_produto->estoque_maximo}}</td>
+                <td>{{ $estoque_produto->valor }}</td>
                 <td>{{ $estoque_produto->local}}</td>
                 <td>{{ $estoque_produto->empresa->nome_fantasia}}</td>
                 <td>
@@ -239,10 +319,29 @@
                 </td>
             </tr>
             @endforeach
-
         </tbody>
     </table>
+    <style>
+        .bg-warning-light {
+            background-color: #FFFFE0;
+            /* Amarelo claro */
+        }
 
+        .bg-success {
+            background-color: #28a745;
+            /* Verde */
+        }
+
+        .bg-warning {
+            background-color: #ffc107;
+            /* Amarelo forte */
+        }
+
+        .bg-danger {
+            background-color: #dc3545;
+            /* Vermelho */
+        }
+    </style>
 </main>
 
 @endsection
