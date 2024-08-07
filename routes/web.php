@@ -9,7 +9,7 @@ use App\Http\Controllers\QrCodeController;
 use app\Http\Controllers\EstoqueProdutoController;
 use App\Http\Controllers\PedidosSaidaController;
 use App\Http\Controllers\SaidaProdutoController;
-
+use App\Http\Controllers\PedidoCompraAutoGenerateController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -274,10 +274,11 @@ Route::post('/imprimir-pdf', [App\Http\Controllers\PdfController::class, 'gerarP
 Route::middleware('auth')->delete('/saida-produto/{id}', [SaidaProdutoController::class, 'destroy'])->name('saida-produto.destroy');
 //----------------------------------------------------------//
 //   PedidoCompraAutoGenerateController
-use App\Http\Controllers\PedidoCompraAutoGenerateController;
 
-Route::get('/pedido-compra/auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])
-    ->name('pedido.compra.auto.generate');
+//Route::get('/pedido-compra/auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])
+// ->name('pedido-compra-auto-generate');
 
-Route::get('/pedido-compra/show', [PedidoCompraAutoGenerateController::class, 'show'])
+// routes/web.php
+Route::middleware('auth')->post('/pedido-compra-auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])->name('pedido-compra-auto-generate');
+Route::middleware('auth')->get('/pedido-compra/show', [PedidoCompraAutoGenerateController::class, 'show'])
     ->name('pedido.compra.show');

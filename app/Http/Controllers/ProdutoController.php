@@ -42,9 +42,10 @@ class ProdutoController extends Controller
                 if (!empty($nome_produto_like)) {
 
                     //return QrCode::size(300)->generate('$nome_produto_like');
-                    return view('app.produto.index', ['produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
-                    'num_pedido' => $numPedido
-                ]);
+                    return view('app.produto.index', [
+                        'produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
+                        'num_pedido' => $numPedido
+                    ]);
                 }
             }
             if ($tipoFiltro == 2) {
@@ -101,14 +102,14 @@ class ProdutoController extends Controller
             //return view('app.produto.index', ['produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias]);
             // }
             if ($tipoFiltro == 10) { //filtra pelo esoque minimo
-               $produto_aplicacao=PecasEquipamentos::where('produto_id',$nome_produto_like)->get();
-               $produtos=Produto::all();
-               $equipamentos=Equipamento::all();
-               return view('app.produto.produto_aplicacao', [
-                'produto_aplicacao'=>$produto_aplicacao,
-                'produtos'=>$produtos,
-                'equipamentos'=>$equipamentos
-            ]);
+                $produto_aplicacao = PecasEquipamentos::where('produto_id', $nome_produto_like)->get();
+                $produtos = Produto::all();
+                $equipamentos = Equipamento::all();
+                return view('app.produto.produto_aplicacao', [
+                    'produto_aplicacao' => $produto_aplicacao,
+                    'produtos' => $produtos,
+                    'equipamentos' => $equipamentos
+                ]);
             }
         } else {
             $produtos = Produto::where('id', 0)->get();
@@ -178,7 +179,7 @@ class ProdutoController extends Controller
             $produto->image3 = $imageName;
         };
         $produto->save();
-       // return redirect()->route('produto.index');
+        // return redirect()->route('produto.index');
 
         $ultimoProduto = Produto::latest('created_at')->first();
         $estoque_produtos = EstoqueProdutos::where('produto_id',  $ultimoProduto->id)->get();
@@ -200,15 +201,17 @@ class ProdutoController extends Controller
      */
     public function show(Produto $produto)
     {
-       
+
         $produtoId = $produto->id; //pega o id do produto.
         $estoque_produtos = EstoqueProdutos::where('produto_id', $produtoId)->get();
         $estoque_produtos_sum = EstoqueProdutos::where('produto_id', $produtoId)->sum('quantidade');
         $estoque_produtos_sum_v = EstoqueProdutos::where('produto_id', $produtoId)->sum('quantidade');
         $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
+        $equipamentos = Equipamento::all();
         return view('app.produto.show', [
             'produto' => $produto, 'estoque_produtos' => $estoque_produtos, 'estoque_produtos_sum' => $estoque_produtos_sum,
-            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor
+            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor,
+            'equipamentos' => $equipamentos
         ]);
         // return view('app.estoque_produto.index', [
         //'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias
@@ -304,8 +307,7 @@ class ProdutoController extends Controller
         $produto->delete();
         return redirect()->route('produto.index');
     }
-    public function aplicacao_produto(Request $request){
-
-
+    public function aplicacao_produto(Request $request)
+    {
     }
 }

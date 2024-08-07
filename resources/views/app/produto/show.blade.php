@@ -203,14 +203,24 @@
                             <div class="modal-body">
                                 <!-- Conteúdo do modal aqui -->
                                 Finalidade: ID:70 Amoxarifado <br>
-                                Emissão: <input type="date" name="data_emissao" id="data_emissao" readonly><input type="time" name="hora_emissao" id="hora_emissao" readonly><br>
-                                Previsão: <input type="date" name="data_emissao" id="data_emissao" readonly><input type="time" name="hora_prevista" id="hora_prevista" readonly><br>
-                                ID Produto:<input type="number" name="id" id="id" value="{{$produto->id}}" readonly><br>
-                                Nome Produto:<input class="conteudo" type="text" name="nome" id="nome" value="{{$produto->nome}}" readonly style="width: 300px;;"><br>
+                                @if(isset($equipamentos) && $equipamentos->isNotEmpty())
+                                <select id="equipamento" name="equipamento_id" class="control-form" style="width:auto;" hidden>
+                                    @foreach($equipamentos as $equipamento)
+                                    <option value="{{ $equipamento->id }}">
+                                        {{ $equipamento->nome }} <!-- Supondo que você tenha um campo 'nome' no modelo Equipamento -->
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @else
+                                <p>Não há equipamentos disponíveis.</p>
+                                @endif
+                                ID Produto:<input type="number" name="produto_id" id="produto_id" value="{{$produto->id}}" readonly><br>
+                                Nome:<div class="conteudo">{{$produto->nome}}
+                                </div><br>
                                 <hr>
                                 <p></p>
-                                Digite A Quantidade:
-                                <input type="number">
+                                Quantidade:
+                                <input type="number" name="quantidade" id="quantidade" value="" placeholder="--digite a quantidade--">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -223,34 +233,34 @@
                 <script>
                     $(document).ready(function() {
                         $('#btnSalvar').click(function() {
-                            // Coleta os dados do formulário
-                            var dataEmissao = $('#data_emissao').val();
-                            var horaEmissao = $('#hora_emissao').val();
-                            var idProduto = $('#id').val();
-                            var quantidade = $('input[type="number"]').val(); // Assumindo que este é o campo de quantidade
+                            var produtoId = $('#produto_id').val();
+                            var qnt = $('#quantidade').val();
+                            var data = {
+                                id: produtoId, //id do produto
+                                quantidade: qnt //quantidade
 
-                            // Envia os dados para a rota
+                            };
+
                             $.ajax({
-                                url: '{{ route("pedido.compra.auto.generate") }}', // Rota definida no Laravel
-                                type: 'GET',
-                                data: {
-                                    data_emissao: dataEmissao,
-                                    hora_emissao: horaEmissao,
-                                    data_prevista: dataPrevista,
-                                    hora_prevista: horaPrevista,
-                                    id: idProduto,
-                                    nome: nomeProduto,
-                                    quantidade: quantidade
+                                url: '{{ route("pedido-compra-auto-generate") }}', // Certifique-se de que o nome da rota está correto
+                                type: 'POST',
+                                data: JSON.stringify(data),
+                                contentType: 'application/json',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                 },
                                 success: function(response) {
-                                    // Manipule a resposta conforme necessário
-                                    console.log('Pedido de compra gerado com sucesso!', response);
-                                    // Feche o modal se desejado
+                                    console.log('Resposta completa do controlador:', response);
+                                    if (response && response.message) {
+                                        alert('Resposta do controlador: ' + response.message);
+                                    } else {
+                                        alert('Resposta do controlador não contém a mensagem esperada.');
+                                    }
                                     $('#myModal').modal('hide');
                                 },
                                 error: function(xhr, status, error) {
-                                    // Manipule erros
                                     console.error('Erro ao gerar pedido de compra', error);
+                                    alert('Erro ao gerar pedido de compra: ' + error);
                                 }
                             });
                         });

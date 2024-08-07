@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
 use App\Models\Servicos_executado;
+use PhpParser\Node\Expr\BinaryOp\Equal;
 
 class OrdemServicoController extends Controller
 {
@@ -63,6 +64,7 @@ class OrdemServicoController extends Controller
                     $funcionarios = Funcionario::all();
                     $dataInicio = $request->get("data_inicio");
                     $situacao = $request->get("situacao");
+                    $equipamentos = Equipamento::all();
                     $ordens_servicos = OrdemServico::where('situacao', $situacao)
                         ->where('data_inicio', ('>='), $dataInicio)
                         ->where('data_inicio', ('<='), $dataFim)
@@ -73,7 +75,8 @@ class OrdemServicoController extends Controller
                     return view('app.ordem_servico.index', [
                         'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
                         'empresa' => $empresa,
-                        'valorTotal' => $valorTotal
+                        'valorTotal' => $valorTotal,
+                        'equipamentos' => $equipamentos
                     ]);
                 }
             }
@@ -257,11 +260,13 @@ class OrdemServicoController extends Controller
         $id = $ordem_servico->id;
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
         $total_hs_os = Servicos_executado::where('ordem_servico_id', $id)->sum('subtotal');
+        $equipamentos=Equipamento::all();
         //$total_hs_os=23;
         return view('app.ordem_servico.show', [
             'ordem_servico' => $ordem_servico, 'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
-            'total_hs_os' => $total_hs_os
+            'total_hs_os' => $total_hs_os,
+            'equipamentos'=> $equipamentos
         ]);
     }
     /**
