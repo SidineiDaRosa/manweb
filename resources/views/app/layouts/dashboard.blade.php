@@ -441,7 +441,7 @@
             .hr-sm-shrt {}
         </style>
         <div class="item">
-            <h6>OS abertas para amanhã</h6>
+            <h6 class="title-md">O.S. abertas para amanhã</h6>
             <div class="div-os-sm">
                 {{--div sm expan--}}
                 <style>
@@ -607,8 +607,17 @@
                     }
                 </script>
                 {{--fim da div expan--}}
+                {{--//-----------------------------------------------------//--}}
+                {{--//---- O.S. Para segundo dia --------------------------//--}}
+                {{--//-----------------------------------------------------//--}}
+                @if($ordens_servicos_second_day->isNotEmpty())
+                @foreach($ordens_servicos_second_day as $seg_day_title)
+                @endforeach
+                @else
+                <h6>Para depois de amanhã, não há O.S.</h6>
+                @endif
+                <h6 class="title-md">Depois de amanhã ({{ \Carbon\Carbon::parse($seg_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 @forelse($ordens_servicos_second_day as $seg_day)
-                <h6 class="title-md">Depois de amanhã ({{ \Carbon\Carbon::parse($seg_day->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 <div class="div-font-sm-conteudo">
                     <hr>
                     <a href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
@@ -625,11 +634,19 @@
                 <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
                 <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
                 @empty
-                <h6>Para depois de amanhã, não há ordens de serviço</h6>
                 @endforelse
                 <hr>
+                {{--//-----------------------------------------------------//--}}
+                {{--//---- Para daqui 3 dias ------------------------------//--}}
+                {{--//-----------------------------------------------------//--}}
+                @if($ordens_servicos_third_day->isNotEmpty())
+                @foreach($ordens_servicos_third_day as $terc_day_title)
+                <h6 class="title-md">Para daqui 3 dias ({{ \Carbon\Carbon::parse($terc_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
+                @endforeach
+                @else
+                <h6 class="title-md">Não há O.S. para daqui 3 dias.</h6>
+                @endif
                 @forelse($ordens_servicos_third_day as $terc_day)
-                <h6>Para daqui 3 dias ({{ \Carbon\Carbon::parse($terc_day->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 <div class="div-font-sm-conteudo">
                     <a href="{{route('ordem-servico.show', ['ordem_servico' => $terc_day->id])}}">
                         <span class="material-symbols-outlined">
@@ -643,8 +660,9 @@
                 </div>
                 <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
                 <div class="div-font-sm-conteudo">{{$terc_day->descricao}}</div>
+                <hr>
                 @empty
-                <h6>Para daqui 3 dias, não há ordens de serviço</h6>
+                <hr>
                 @endforelse
             </div>
         </div>
@@ -658,7 +676,7 @@
         <div class="item">
             Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
-            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a> | 
+            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a> |
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
             <hr>
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">
