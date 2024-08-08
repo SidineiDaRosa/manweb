@@ -666,7 +666,7 @@
         </div>
         {{--Box 4--}}
         <div class="item">
-            <h6 class="title-md">Distribuição de O.S</h6> <!-- Ajuste a margem superior conforme necessário -->
+            <h6 class="title-md">O.S FECHADA POR MÁQUINA</h6> <!-- Ajuste a margem superior conforme necessário -->
             <div id="graficoPizza" class="box" hidden></div>
             {{--//-------------------------------------------------//--}}
             {{--//--------------------------//--}}

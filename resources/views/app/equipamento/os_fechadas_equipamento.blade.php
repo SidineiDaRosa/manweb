@@ -7,8 +7,10 @@
 
     <div>ID:{{$ordens_servico->id}}</div>
     <div>Data Fim{{ \Carbon\Carbon::parse($ordens_servico->data_fim)->format('d/m/Y') }} às  {{$ordens_servico->hora_fim}}</div>
-    
-    <div style="font-weight:300;">{{$ordens_servico->descricao}}</div>
+    <div style="color:darkblue;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">Descrição da solicitação</div>
+    <hr style="margin-top:-2px;">  
+    <div style="font-weight:300;">
+    {{$ordens_servico->descricao}}</div>
     <div style="color: green;">{{$ordens_servico->responsavel}}</div>
     <hr>
     @endforeach

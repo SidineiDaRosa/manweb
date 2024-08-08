@@ -8,6 +8,7 @@ use App\Models\Marca;
 use App\Models\Equipamento;
 use App\Models\PecasEquipamentos;
 use App\Models\OrdemServico;
+use App\Models\Servicos_executado;//serviços executados
 use Illuminate\Support\Arr;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 //para busca de produtos em um formlário que adiciona os produtos ao equipamentos
@@ -107,8 +108,10 @@ class EquipamentoController extends Controller
             // Abre o.s. fehadas de equipamentos
             $equipamento=Equipamento::find($equipamento->id);
             $ordens_servicos = OrdemServico::where('equipamento_id', $equipamento->id)->where('situacao', 'fechado')->orderBy('data_fim','desc')->get();
+            //$servicos_executado=Servicos_executado::where('equipamento_id', $equipamento->id)->get();
             return view('app.equipamento.os_fechadas_equipamento', [
-                'equipamento' => $equipamento,'ordens_servicos' => $ordens_servicos
+                'equipamento' => $equipamento,'ordens_servicos' => $ordens_servicos,
+                
             ]);
         } else {
             //---------------------------------//

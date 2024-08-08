@@ -353,18 +353,25 @@
     </div>
     <div class="card-header-template  text-center">
         <div>
+          
+            {{--//--------------------------------------//--}}
+            {{--//--Critério se a os já fechada----------//--}}
+            {{--//--------------------------------------//--}}
+            @if($ordem_servico->situacao !== 'fechado')
             <a id="btn-add-task" class="btn btn-outline-primary mb-1" href="{{ route('Servicos-executado.create', ['ordem_servico' => $ordem_servico->id]) }}" style="width: 300px;">
                 <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height: 25px; width: 25px;"> Adicionar serviço
             </a>
-
             <button id="enviar" class="btn btn-outline-secondary mb-1" data-bs-toggle="modal" data-bs-target="#confirmModal" style="width:300px;">
                 <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
-                Fechar Ordem de serviço</button>
+                Fechar Ordem de serviço
+            </button>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
             <button id="bt_iniciar_os" class="btn btn-outline-success mb-1" onclick="StartOs()" style="width:300px;">
                 <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
                 Iniciar OS
             </button>
+            @endif
+           
             <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1">Gerar PDF</button>
             <script>
                 document.getElementById('gerarPdfButton').addEventListener('click', function() {

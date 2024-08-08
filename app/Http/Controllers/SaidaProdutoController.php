@@ -89,28 +89,32 @@ class SaidaProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        $ordem_servico_id = $request->get('ordem_servico_id');
         // Define o fuso horário para São Paulo
         date_default_timezone_set('America/Sao_Paulo');
         $dataAtual = $request->get('data');
-
+        $pedido_saida_id = $request->get('pedidos_saida_id');
+        $pedido_saida = PedidoSaida::find($pedido_saida_id);
+        // Verifica se $pedido_saida existe e se possui um id
+        if ($pedido_saida && $pedido_saida->id) {
+            $ordem_servico_id = $pedido_saida->id;
+        } else {
+            $ordem_servico_id = null;
+        }
         if ($ordem_servico_id >= 1) {
             //-------------------------------------------//
             //     Entra neste laço caso OS >=1          //
             //-------------------------------------------//
-            $pedido_saida_id = $request->get('pedidos_saida_id');
             $data_proxima_manutencao = $request->get('data_proxima_manutencao');
-            $pedido_saida = PedidoSaida::where('id', $pedido_saida_id)->get();
             $saidas_produtos = SaidaProduto::all();
             $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
             //      comparador de estoque               //
             if ($request->quantidade > $estoque->quantidade) {
-                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
+                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada para saída com O.S.!
         Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
         </div>';
             } else {
-                echo($request);
-               // SaidaProduto::create($request->all());// Salva a sáida do produto
+                echo ($request);
+                SaidaProduto::create($request->all()); // Salva a sáida do produto
                 $estoque->quantidade = $estoque->quantidade - $request->input('quantidade'); // soma estoque antigo com a entrada de produto
                 $estoque->save(); // Salva atualização do estoque
                 //-------------------------------------
@@ -130,7 +134,7 @@ class SaidaProdutoController extends Controller
             //----------------------------------------------------------//
             //  Adiciona item de produto ao pedido de saída  sem a Os   //
             //----------------------------------------------------------//
-            $pedido_saida_id = $request->get('pedido_id');// pega o numero do pedido
+            $pedido_saida_id = $request->get('pedido_id'); // pega o numero do pedido
             $produto_id = $request->get('produto_id');
             $quantidade = $request->get('quantidade');
             $equipamento_id = $request->get('equipamento_id');
@@ -144,7 +148,6 @@ class SaidaProdutoController extends Controller
             </div>';
             } else {
                 //-----------------------------------------//
-                // Dados de exemplo
                 // Define a data atual
                 $now = Carbon::now()->toDateTimeString(); // Formato: YYYY-MM-DD HH:MM:SS
                 $dados = [
@@ -168,7 +171,6 @@ class SaidaProdutoController extends Controller
                 $saida_produto->subtotal = $dados['subtotal'];
                 $saida_produto->data = $dados['data'];
                 $saida_produto->equipamento_id = $dados['equipamento_id'];
-
                 // Salvando o objeto no banco de dados
                 $saida_produto->save();
                 //-----------------------------------------//
@@ -240,12 +242,11 @@ class SaidaProdutoController extends Controller
 
         // Recuperar a quantidade do item de saída de produto
         $quantidade = $saida_produto->quantidade;
-        // Recuperar a quantidade do item de saída de produto
         $pedidos_saida_id = $saida_produto->pedidos_saida_id;
-
+        // Recuperar o pedido de saída correspondente
+        $pedido_saida = PedidoSaida::find($pedidos_saida_id);
         // Atualizar o estoque
         $estoque = EstoqueProdutos::where('produto_id', $saida_produto->produto_id)->first();
-        //$estoque = PedidoSaida::where('pedidos_saida_id', $saida_produto->produto_id)->first();
         if ($estoque) {
             $estoque->quantidade += $quantidade; // Adiciona a quantidade de volta ao estoque
             $estoque->save();
@@ -256,17 +257,20 @@ class SaidaProdutoController extends Controller
 
         // Excluir o item da SaidaProduto
         $saida_produto->delete();
-        //    Redireciona para a view
+
+        // Recuperar dados necessários para a view
         $categorias = Categoria::all();
         $produtos = Produto::orderBy('nome')->get();
-        $saidas_produtos = SaidaProduto::where('pedidos_saida_id',  $pedidos_saida_id)->get();
-        $pedido_saida = SaidaProduto::find($pedidos_saida_id);
-        ///
+        $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $pedidos_saida_id)->get();
+        $equipamentos = Equipamento::all();
+
+        // Redirecionar para a view com as variáveis necessárias
         return view('app.pedido_saida.show', [
             'pedido_saida' => $pedido_saida,
             'categorias' => $categorias,
             'produtos' => $produtos,
-            'saidas_produtos' => $saidas_produtos
+            'saidas_produtos' => $saidas_produtos,
+            'equipamentos' => $equipamentos
         ]);
     }
 }

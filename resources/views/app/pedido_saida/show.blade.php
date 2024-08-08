@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header-template">
             <div>
-                Pedido de saída sem os
+                Pedido de saída sem O.S.
                 <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> dashboard
                 </a>
@@ -224,7 +224,7 @@
                             <script>
                                 function confirmDelete(id) {
                                     Swal.fire({
-                                        title: 'Deseja excluir este item do pedido? No qual será extornado para o extoque novamente.',
+                                        title: 'Deseja excluir este item do pedido? Neste caso o item será extornado para o estoque novamente.',
                                         text: "Você não poderá reverter isso!",
                                         icon: 'warning',
                                         showCancelButton: true,
