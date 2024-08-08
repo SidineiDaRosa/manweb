@@ -677,25 +677,41 @@
                     </a>
 
                     <!--Condoçes para deletar a os-->
-                    <form id="" method="post" action="">
-                        @method('DELETE')
-                        @csrf
-                    </form>
-                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarPecaEquip()">
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                    <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $peca_equipamento->id }})">
                         <i class="icofont-ui-delete"></i>
-                        <script>
-                            function DeletarPecaEquip() {
-                                var x;
-                                var r = confirm("Deseja deletar peça?");
-                                if (r == true) {
-
-                                    // document.getElementById('').submit()
-                                } else {
-                                    x = "Você pressionou Cancelar!";
-                                }
-                                document.getElementById("demo").innerHTML = x;
+                    </a>
+                    <script>
+                        function DeletarPecaEquip(id) {
+                            if (confirm('Você tem certeza que deseja deletar esta peça?')) {
+                                // Envia uma requisição DELETE para deletar o item
+                                fetch(`/peca-equipamento/${id}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                        }
+                                    })
+                                    .then(response => {
+                                        console.log('Resposta recebida:', response);
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        console.log('Dados da resposta:', data);
+                                        if (data.success) {
+                                            alert('Peça deletada com sucesso!');
+                                            location.reload();
+                                        } else {
+                                            alert('Ocorreu um erro ao tentar deletar a peça: ' + data.message);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Erro na requisição:', error);
+                                        alert('Erro ao tentar deletar a peça.');
+                                    });
                             }
-                        </script>
+                        }
+                    </script>
+
                     </a>
                     <!------------------------------>
                 </div>

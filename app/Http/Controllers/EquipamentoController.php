@@ -78,7 +78,7 @@ class EquipamentoController extends Controller
         //echo( $id.$nome);
 
         Equipamento::create($request->all());
-        
+
         $equipamento = Equipamento::orderBy('id', 'desc')->first();
         $equipamento_id = $equipamento->id;
         $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', 72)->orderby('horas_proxima_manutencao')->get();
@@ -98,29 +98,39 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento, Request $Request)
     {
+        $tipoFiltro = $Request->get('tipofiltro');
         date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
         $today = date("Y-m-d"); //data de hoje
         $timeNew = date('H:i:s');
         $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
-        //---------------------------------//
-        $todas = $Request->get('todas');
-        $equipamento_id = $equipamento->id;
-        if ($todas == 1) {
-            $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->get();
-            $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            return view('app.equipamento.show', [
-                'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
-                'ordens_servicos_1' => $ordens_servicos_1
+        if ($tipoFiltro == 1) {
+            // Abre o.s. fehadas de equipamentos
+            $equipamento=Equipamento::find($equipamento->id);
+            $ordens_servicos = OrdemServico::where('equipamento_id', $equipamento->id)->where('situacao', 'fechado')->orderBy('data_fim','desc')->get();
+            return view('app.equipamento.os_fechadas_equipamento', [
+                'equipamento' => $equipamento,'ordens_servicos' => $ordens_servicos
             ]);
         } else {
-            $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=',72)->orderby('horas_proxima_manutencao')->get();
-            $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            return view('app.equipamento.show', [
-                'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
-                'ordens_servicos_1' => $ordens_servicos_1
-            ]);
+            //---------------------------------//
+            $todas = $Request->get('todas');
+            $equipamento_id = $equipamento->id;
+            if ($todas == 1) {
+                $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->get();
+                $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+                $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
+                return view('app.equipamento.show', [
+                    'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
+                    'ordens_servicos_1' => $ordens_servicos_1
+                ]);
+            } else {
+                $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 72)->orderby('horas_proxima_manutencao')->get();
+                $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+                $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
+                return view('app.equipamento.show', [
+                    'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
+                    'ordens_servicos_1' => $ordens_servicos_1
+                ]);
+            }
         }
     }
 
@@ -172,7 +182,13 @@ class EquipamentoController extends Controller
      */
     public function destroy(Equipamento $equipamento)
     {
-        $equipamento->delete();
-        return redirect()->route('equipamento.index');
+        if (auth()->user()->level === 0) {
+            // Deleta a peça de equipamento
+            $equipamento->delete();
+            // return redirect()->route('equipamento.index');
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Você não tem permissão para deletar este equipamento.']);
+        }
     }
 }

@@ -170,7 +170,7 @@
         {{--Box 1--}}
         <div class="item">
             <form action="" class="scrollable">
-                <h6>Fechadas hoje</h6>
+                <h6 class="title-md">O.S. FECHADAS HOJE</h6>
                 <div class="div-os-sm">
                     <table class="condensed-table">
                         <thead>
@@ -221,7 +221,7 @@
                 </div>
             </form>
             <form action="" class="scrollable">
-                <h6>O.S Vencidas e Pendentes</h6>
+                <h6 class="title-md">O.S VENCIDAS E PENDENTES </h6>
                 <div class="div-os-sm" style="background-color:rgb(251,170,153);">
                     <table class="condensed-table">
                         <thead>
@@ -288,7 +288,7 @@
             }
         </style>
         <div class="item">
-            O.S sendo executadas &nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
+            <h6 class="title-md">O.S. EM EXECUÇÃO </h6>&nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
             <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Unidades</a> |
             <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Ativos/Nova O.S</a>
             <style>
@@ -344,7 +344,7 @@
                     </table>
                 </div>
                 <hr>
-                <span id="dataCompleta">
+                <span class="title-md" id="dataCompleta">
                     <script>
                         // Função para obter o dia da semana, dia do mês e o mês atual
                         function exibirDataCompleta() {
@@ -356,7 +356,7 @@
                             let mes = mesesAno[dataAtual.getMonth()];
                             let ano = dataAtual.getFullYear();
 
-                            document.getElementById('dataCompleta').innerText = `Hoje é ${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
+                            document.getElementById('dataCompleta').innerText = `O.S. PARA Hoje, ${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
                         }
 
                         // Chama a função para exibir a data completa ao carregar a página
@@ -427,7 +427,6 @@
 
         </div>
         {{--Box 3--}}
-
         <style>
             .txt-conteudo-sm {
                 font-size: 13px;
@@ -441,7 +440,7 @@
             .hr-sm-shrt {}
         </style>
         <div class="item">
-            <h6 class="title-md">O.S. abertas para amanhã</h6>
+            <h6 class="title-md">O.S. PARA AMANHÃ</h6>
             <div class="div-os-sm">
                 {{--div sm expan--}}
                 <style>
@@ -516,7 +515,7 @@
                         </div>
                         <div class="div-font-sm-conteudo">{{$ordem_servico->equipamento->nome}}</div>
                         {{----------------------------------------------------------------------}}
-                        {{-- Progress bar GUT ------------------------------------------------ --}}
+                        {{-- Progress bar GUT --------------------------------------------------}}
                         <input type="text" value="{{ $ordem_servico->valor_gut }}" id="progress-input-{{ $ordem_servico->id }}" hidden>
                         <div class="progress">
                             <div id="progress-bar-{{ $ordem_servico->id }}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="125" style="color:black">
@@ -558,7 +557,6 @@
                                 });
                             });
                         </script>
-
                         <style>
                             .wide-progress {
                                 width: 100%;
@@ -614,9 +612,9 @@
                 @foreach($ordens_servicos_second_day as $seg_day_title)
                 @endforeach
                 @else
-                <h6>Para depois de amanhã, não há O.S.</h6>
+                <h6> NÃO HÀ O.S. PARA PARA DEPOIS DE AMANHÃ</h6>
                 @endif
-                <h6 class="title-md">Depois de amanhã ({{ \Carbon\Carbon::parse($seg_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
+                <h6 class="title-md">O.S. PARA DEPOIS DE AMANHÃ ({{ \Carbon\Carbon::parse($seg_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 @forelse($ordens_servicos_second_day as $seg_day)
                 <div class="div-font-sm-conteudo">
                     <hr>
@@ -630,7 +628,7 @@
                     {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
                     {{$seg_day->equipamento->nome}}
                 </div>
-                <hr style="width: 50%; margin-left: 0;margin-top:-2px;">
+                <hr style="width: 50%; margin-left: 0;margin:-1px;">
                 <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
                 <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
                 @empty
@@ -641,10 +639,10 @@
                 {{--//-----------------------------------------------------//--}}
                 @if($ordens_servicos_third_day->isNotEmpty())
                 @foreach($ordens_servicos_third_day as $terc_day_title)
-                <h6 class="title-md">Para daqui 3 dias ({{ \Carbon\Carbon::parse($terc_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
+                <h6 class="title-md">O.S. PARA DAQUI 3 DIAS ({{ \Carbon\Carbon::parse($terc_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 @endforeach
                 @else
-                <h6 class="title-md">Não há O.S. para daqui 3 dias.</h6>
+                <h6 class="title-md">NÃO HÀ O.S. PARA DAQUI 3 DIAS.</h6>
                 @endif
                 @forelse($ordens_servicos_third_day as $terc_day)
                 <div class="div-font-sm-conteudo">
@@ -668,13 +666,28 @@
         </div>
         {{--Box 4--}}
         <div class="item">
-            <h6 style="margin-top: 5px;">Distribuição de o.s</h6> <!-- Ajuste a margem superior conforme necessário -->
-            <div id="graficoPizza" class="box"></div>
+            <h6 class="title-md">Distribuição de O.S</h6> <!-- Ajuste a margem superior conforme necessário -->
+            <div id="graficoPizza" class="box" hidden></div>
+            {{--//-------------------------------------------------//--}}
+            {{--//--------------------------//--}}
+            {{--//-------------------------------------------------//--}}
+            @foreach($equipamento as $equipamentos)
+            <div style="display:flex; align-items:center; flex-direction:row;">
+                {{$equipamentos->id}} {{$equipamentos->nome}}
+                <div style="flex-grow:1;"></div> <!-- Este div empurra o link para a direita -->
+                <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;">
+                    <span class="material-symbols-outlined">
+                        open_in_new
+                    </span>
+                </a>
+            </div>
+            @endforeach
+            {{--//-------------------------------------------------//--}}
         </div>
         {{--Box 5--}}
         {{--Box que contém a lista de pedidos abertos--}}
         <div class="item">
-            Pedidos de compra aberto &nbsp&nbsp&nbsp&nbsp
+            <span class="title-md">PEDIDOS</span> &nbsp&nbsp&nbsp&nbsp
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
             <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a> |
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
@@ -819,9 +832,9 @@
             }
         </style>
         <div class="item">
-            Status do estoque de Produtos em nível mínimo
-            <a class="" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
-            <a class="" href="{{route('Estoque-produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Estoque de produtos</a>
+            <span class="title-md">ESTOQUE ALMOXARIFADO</span>
+            <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
+            <a class="sidebar-submenu-expanded-a" href="{{route('Estoque-produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Estoque de produtos</a>
             <hr>
             <table class="condensed-table" id="tb_pedidos_compra" style="background-color: burlywood;">
                 <thead>

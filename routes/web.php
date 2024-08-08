@@ -282,3 +282,7 @@ Route::middleware('auth')->delete('/saida-produto/{id}', [SaidaProdutoController
 Route::middleware('auth')->post('/pedido-compra-auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])->name('pedido-compra-auto-generate');
 Route::middleware('auth')->get('/pedido-compra/show', [PedidoCompraAutoGenerateController::class, 'show'])
     ->name('pedido.compra.show');
+//----------------------------------------------------------//
+//   Deletar peças de equipamento
+//----------------------------------------------------------//
+Route::delete('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'destroy'])->name('peca_equipamento.destroy');

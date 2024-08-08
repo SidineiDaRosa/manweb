@@ -207,10 +207,10 @@ class PecaEquipamentoController extends Controller
 
             // Retornar uma resposta de sucesso
             //return response()->json(['message' => 'Registro atualizado com sucesso', 'data' => $pecaEquipamento], 200);
-            $pecasEquip = PecasEquipamentos::where('equipamento', $Equip_id )->where('status', 'ativado')->orderby('horas_proxima_manutencao')->get();
-            $ordens_servicos = OrdemServico::where('equipamento_id',  $Equip_id )->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $Equip_id )->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            $equipamento = Equipamento::where('id', $Equip_id )->first(); // Obter o equipamento com o ID especificado
+            $pecasEquip = PecasEquipamentos::where('equipamento', $Equip_id)->where('status', 'ativado')->orderby('horas_proxima_manutencao')->get();
+            $ordens_servicos = OrdemServico::where('equipamento_id',  $Equip_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
+            $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $Equip_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
+            $equipamento = Equipamento::where('id', $Equip_id)->first(); // Obter o equipamento com o ID especificado
             return view('app.equipamento.show', [
                 'equipamento' => $equipamento,
                 'pecas_equipamento' => $pecasEquip,
@@ -230,6 +230,21 @@ class PecaEquipamentoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Encontre a peça de equipamento pelo ID
+        $pecaEquipamento = PecasEquipamentos::find($id);
+
+        // Verifique se a peça de equipamento foi encontrada
+        if (!$pecaEquipamento) {
+            return response()->json(['success' => false, 'message' => 'Peça não encontrada.']);
+        }
+
+        // Verifique se o usuário tem permissão para deletar a peça de equipamento
+        if (auth()->user()->level === 0) {
+            // Deleta a peça de equipamento
+            $pecaEquipamento->delete();
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Você não tem permissão para deletar esta peça.']);
+        }
     }
 }
