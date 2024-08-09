@@ -8,7 +8,8 @@ use App\Models\Marca;
 use App\Models\Equipamento;
 use App\Models\PecasEquipamentos;
 use App\Models\OrdemServico;
-use App\Models\Servicos_executado;//serviços executados
+use App\Models\user;
+use App\Models\Servicos_executado; //serviços executados
 use Illuminate\Support\Arr;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 //para busca de produtos em um formlário que adiciona os produtos ao equipamentos
@@ -105,13 +106,23 @@ class EquipamentoController extends Controller
         $timeNew = date('H:i:s');
         $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
         if ($tipoFiltro == 1) {
-            // Abre o.s. fehadas de equipamentos
-            $equipamento=Equipamento::find($equipamento->id);
-            $ordens_servicos = OrdemServico::where('equipamento_id', $equipamento->id)->where('situacao', 'fechado')->orderBy('data_fim','desc')->get();
-            //$servicos_executado=Servicos_executado::where('equipamento_id', $equipamento->id)->get();
+            //------------------------------------//
+            // Abre o.s. fehadas por equipamento
+            //-----------------------------------//
+
+            $equipamento = Equipamento::find($equipamento->id);
+            $ordens_servicos = OrdemServico::where('equipamento_id', $equipamento->id)->where('situacao', 'fechado')->orderBy('data_fim', 'desc')->get();
+            $servicos_executados_colecao = collect(); // Cria uma coleção vazia para colocar os serviços
+            $usuarios = User::all(); // Obtém todos os usuários
+            foreach ($ordens_servicos as $ordem_servico) {
+                $servicos_executados = Servicos_executado::where('ordem_servico_id', $ordem_servico->id)->get();
+                $servicos_executados_colecao = $servicos_executados_colecao->merge($servicos_executados); // Adiciona os serviços executados à coleção
+            }
             return view('app.equipamento.os_fechadas_equipamento', [
-                'equipamento' => $equipamento,'ordens_servicos' => $ordens_servicos,
-                
+                'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos,
+                'servicos_executados_colecao' =>$servicos_executados_colecao,
+                'usuarios'=>$usuarios
+
             ]);
         } else {
             //---------------------------------//

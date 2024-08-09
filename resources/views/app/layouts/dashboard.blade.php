@@ -583,7 +583,7 @@
                         <div style="color: green;">Descrição</div>
                         {{$ordem_servico->descricao}}
                     </div>
-                    <hr style="margin:5px;">
+                    <hr style="margin:8px;">
                 </div>
                 @endforeach
                 @endif
@@ -608,16 +608,22 @@
                 {{--//-----------------------------------------------------//--}}
                 {{--//---- O.S. Para segundo dia --------------------------//--}}
                 {{--//-----------------------------------------------------//--}}
-                @if($ordens_servicos_second_day->isNotEmpty())
                 @foreach($ordens_servicos_second_day as $seg_day_title)
                 @endforeach
+                @if(isset($seg_day_title))
+                <!-- Algum conteúdo -->
+                <h6 class="title-md">
+                    O.S. PARA DAQUI 2 DIAS ({{ \Carbon\Carbon::parse($seg_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):
+                </h6>
                 @else
-                <h6> NÃO HÀ O.S. PARA PARA DEPOIS DE AMANHÃ</h6>
+                <!-- Outro conteúdo -->
+                <h6 class="title-md">
+                    NÃO HÀ O.S. PARA DAQUI 2 DIAS.
+                </h6>
                 @endif
-                <h6 class="title-md">O.S. PARA DEPOIS DE AMANHÃ ({{ \Carbon\Carbon::parse($seg_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
+                <hr style="margin:-2px;">
                 @forelse($ordens_servicos_second_day as $seg_day)
-                <div class="div-font-sm-conteudo">
-                    <hr>
+                <div class="div-font-sm-conteudo" style="margin: 5px;">
                     <a href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
                         <span class="material-symbols-outlined">
                             open_in_new
@@ -628,7 +634,6 @@
                     {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
                     {{$seg_day->equipamento->nome}}
                 </div>
-                <hr style="width: 50%; margin-left: 0;margin:-1px;">
                 <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
                 <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
                 @empty
@@ -637,10 +642,11 @@
                 {{--//-----------------------------------------------------//--}}
                 {{--//---- Para daqui 3 dias ------------------------------//--}}
                 {{--//-----------------------------------------------------//--}}
+
                 @if($ordens_servicos_third_day->isNotEmpty())
                 @foreach($ordens_servicos_third_day as $terc_day_title)
-                <h6 class="title-md">O.S. PARA DAQUI 3 DIAS ({{ \Carbon\Carbon::parse($terc_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 @endforeach
+                <h6 class="title-md">O.S. PARA DAQUI 3 DIAS ({{ \Carbon\Carbon::parse($terc_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):</h6>
                 @else
                 <h6 class="title-md">NÃO HÀ O.S. PARA DAQUI 3 DIAS.</h6>
                 @endif
@@ -681,6 +687,7 @@
                     </span>
                 </a>
             </div>
+            <hr style="margin:4px;">
             @endforeach
             {{--//-------------------------------------------------//--}}
         </div>
