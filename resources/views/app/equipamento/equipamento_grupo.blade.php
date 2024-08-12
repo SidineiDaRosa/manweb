@@ -16,7 +16,7 @@
         @csrf
         <input type="hidden" name="asset_id" id="asset_id">
         <input type="hidden" name="tipofiltro" id="tipofiltro">
-        <button type="submit">Enviar</button>
+        <button type="submit" >Enviar</button>
     </form>
 
     <script>

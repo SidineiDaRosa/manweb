@@ -690,7 +690,7 @@
                 <form action="{{ route('assets') }}" method="POST">
                     @csrf
                     <input type="text" name="asset_id" placeholder="Digite o histórico do equipamento" required value="{{$equipamentos->id}}" hidden>
-                    <button type="submit">Enviar</button>
+                    <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
                 </form>
             </div>
             <hr style="margin:4px;">
