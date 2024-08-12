@@ -64,10 +64,14 @@ Route::middleware('auth')->resource('/fornecedor', 'App\Http\Controllers\Fornece
 
 //produto
 Route::middleware('auth')->resource('/produto', 'App\Http\Controllers\ProdutoController');
-//equipamento
+//----------------------------------------------//
+//                Equipamento
+//---------------------------------------------//
 Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\EquipamentoController');
-
-//ordem de serviço
+Route::resource('/equipamento-history', 'App\Http\Controllers\EquipamentoController');// acesso sem autenticação
+//---------------------------------------------//
+//             Ordem de serviço
+//---------------------------------------------//
 Route::middleware('auth')->resource('/ordem-servico', 'App\Http\Controllers\OrdemServicoController');
 Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 'update'])->name('ordem_servico.update');
 //ordem de serviço rota de pesquisas

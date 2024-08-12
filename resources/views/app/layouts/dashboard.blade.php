@@ -686,6 +686,11 @@
                         open_in_new
                     </span>
                 </a>
+                <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;">
+                    <span class="material-symbols-outlined">
+                        open_in_new
+                    </span>
+                </a>
             </div>
             <hr style="margin:4px;">
             @endforeach
