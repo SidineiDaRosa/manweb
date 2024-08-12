@@ -3,6 +3,7 @@
 <main class="content">
     <h3>Agrupamento do equipamento</h3>
     <h4>{{$equipamento->nome}}</h4>
+
     <hr>
     @foreach($equipamento_filho as $equipamento_filho_f)
     {{$equipamento_filho_f->nome}}

@@ -677,7 +677,7 @@
             {{--//-------------------------------------------------//--}}
             {{--//--------------------------//--}}
             {{--//-------------------------------------------------//--}}
-            @foreach($equipamento as $equipamentos)
+            @foreach($assets as $equipamentos)
             <div style="display:flex; align-items:center; flex-direction:row;">
                 {{$equipamentos->id}} {{$equipamentos->nome}}
                 <div style="flex-grow:1;"></div> <!-- Este div empurra o link para a direita -->

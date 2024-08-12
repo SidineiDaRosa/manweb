@@ -309,6 +309,7 @@ class HomeController extends Controller
             ->orderBy('criticidade', 'desc')
             ->get();
         $produtos = Produto::all();
+        $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
             'empresa' => $empresa,
@@ -332,7 +333,8 @@ class HomeController extends Controller
             'ordens_servicos_second_day' => $ordens_servicos_second_day,
             'ordens_servicos_third_day' => $ordens_servicos_third_day,
             'produtos_estoque_critico' => $produtos_estoque_critico,
-            'produtos' => $produtos
+            'produtos' => $produtos,
+            'assets'=>$assets
         ]);
     }
 }
