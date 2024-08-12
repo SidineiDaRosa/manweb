@@ -106,7 +106,7 @@ class EquipamentoController extends Controller
         $timeNew = date('H:i:s');
         $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
         if ($tipoFiltro == 1) {
-            //------------------------------------//
+            //------------------------------------//php
             // Abre o.s. fehadas por equipamento
             //-----------------------------------//
 

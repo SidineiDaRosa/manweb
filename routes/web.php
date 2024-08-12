@@ -68,7 +68,9 @@ Route::middleware('auth')->resource('/produto', 'App\Http\Controllers\ProdutoCon
 //                Equipamento
 //---------------------------------------------//
 Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\EquipamentoController');
-Route::resource('/equipamento-history', 'App\Http\Controllers\EquipamentoController');// acesso sem autenticação
+use App\Http\Controllers\EquipamentoHistoryController;
+Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets');//acesso sem autenticação
+Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history');//acesso sem autenticação
 //---------------------------------------------//
 //             Ordem de serviço
 //---------------------------------------------//

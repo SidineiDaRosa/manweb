@@ -681,16 +681,17 @@
             <div style="display:flex; align-items:center; flex-direction:row;">
                 {{$equipamentos->id}} {{$equipamentos->nome}}
                 <div style="flex-grow:1;"></div> <!-- Este div empurra o link para a direita -->
-                <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;">
+                <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;" hidden>
                     <span class="material-symbols-outlined">
                         open_in_new
                     </span>
                 </a>
-                <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;">
-                    <span class="material-symbols-outlined">
-                        open_in_new
-                    </span>
-                </a>
+                <!-- resources/views/example.blade.php -->
+                <form action="{{ route('assets') }}" method="POST">
+                    @csrf
+                    <input type="text" name="asset_id" placeholder="Digite o histórico do equipamento" required value="{{$equipamentos->id}}" hidden>
+                    <button type="submit">Enviar</button>
+                </form>
             </div>
             <hr style="margin:4px;">
             @endforeach
