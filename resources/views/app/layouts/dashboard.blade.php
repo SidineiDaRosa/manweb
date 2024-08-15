@@ -636,6 +636,7 @@
                 </div>
                 <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
                 <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
+                <hr>
                 @empty
                 @endforelse
                 <hr>

@@ -500,11 +500,7 @@
                 @endphp
                 <div class="div-tuggle-row" onclick="FunToggle('{{ $uniqueId }}')">
                     <div class="div-sm-cabecalho">
-                        <div> <a href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}" hidden>
-                                <span class="material-symbols-outlined">
-                                    open_in_new
-                                </span>
-                            </a></div>
+                        <div> </div>
                         <div class="div-font-sm-conteudo">{{$ordem_servico->id}}</div>
                         <div class="div-font-sm-conteudo">
                             <span class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
@@ -622,11 +618,7 @@
                 <hr style="margin:-2px;">
                 @forelse($ordens_servicos_second_day as $seg_day)
                 <div class="div-font-sm-conteudo" style="margin: 5px;">
-                    <a href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>
+                  
                     {{$seg_day->id}}
                     {{$seg_day->data_inicio}} às {{$seg_day->hora_inicio}} até
                     {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
@@ -634,6 +626,7 @@
                 </div>
                 <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
                 <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
+                <hr>
                 @empty
                 @endforelse
                 <hr>
@@ -650,11 +643,7 @@
                 @endif
                 @forelse($ordens_servicos_third_day as $terc_day)
                 <div class="div-font-sm-conteudo">
-                    <a href="{{route('ordem-servico.show', ['ordem_servico' => $terc_day->id])}}" hidden>
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>
+                  
                     {{$terc_day->id}}
                     {{$terc_day->data_inicio}} às {{$terc_day->hora_inicio}} até
                     {{$terc_day->data_fim}} às {{$terc_day->hora_fim}}
