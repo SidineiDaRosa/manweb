@@ -23,15 +23,15 @@
 <body>
     <img src="{{asset('img/logo_fapolpa.jpeg')}}" alt="Imagem do Produto" class="preview-image-logo">
     <style>
-        .preview-image-logo{
+        .preview-image-logo {
             width: 400px;
-            height:200px;
+            height: 200px;
             margin: 0 5px;
         }
     </style>
     <fieldset>
         @foreach ($pedidos_compra as $pedido_compra)
-        <h4>Pedido de compra:  {{ $pedido_compra->id }}</h4>
+        <h4>Pedido de compra: {{ $pedido_compra->id }}</h4>
 
         <div class="row">
             <div>
@@ -51,7 +51,17 @@
             </div>
             <div>
                 <fieldset class="filed-data-long">
-                    <legend>Emissor:</legend>{{auth()->user()->name}}
+                    <legend>Emissor:</legend>
+                    @php
+                    $funcionario = $usuarios->firstWhere('id', $pedido_compra->funcionarios_id);
+                    @endphp
+
+                    @if($funcionario)
+                    {{ $funcionario->name }}
+                    @else
+                    Funcionário não encontrado
+                    @endif
+
                 </fieldset>
             </div>
 
@@ -59,7 +69,7 @@
         <div class="row">
             <div>
                 <fieldset class="filed-data">
-                    <legend>Situação:</legend>{{ $pedido_compra->status}}
+                    <legend>Situação:</legend>{{ ucfirst($pedido_compra->status) }}
                 </fieldset>
             </div>
             <div>

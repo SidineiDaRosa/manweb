@@ -125,7 +125,6 @@
                 <input type="text" hidden name="equipamento_id" value="{{$equipamento->id}}">
                 <input type="hidden" name="url" value="{{ $urlPaginaAtual }}">
                 <a href="#" onclick="event.preventDefault(); document.getElementById('generateQRForm').submit();" style="font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">Clique aqui para gerar o QR Code</a>
-
         </div>
         {{--Box 2--}}
         <div class="item">
@@ -194,13 +193,14 @@
             </div>
             <div class="titulo">Arquivos anexados</div>
             <hr>
-            <a href="/patrimonios/{{$equipamento->anexo_1}}" target="_blank">Anexo 1 | {{$equipamento->anexo_2}}<span class="material-symbols-outlined">
+            <a href="" target="_blank">Anexo 1 | {{$equipamento->anexo_1}}<span class="material-symbols-outlined">
                     open_in_new
                 </span></a>
             <p></p>
-            <a href="/patrimonios/{{$equipamento->anexo_2}}" target="_blank">Anexo 2 | {{$equipamento->anexo_2}} <span class="material-symbols-outlined">
-                    open_in_new
-                </span></a>
+            <a href="" target="_blank">
+                Anexo 2 | {{$equipamento->anexo_2}}
+                <span class="material-symbols-outlined">open_in_new</span>
+            </a>
         </div>
         {{--fim card--}}
 

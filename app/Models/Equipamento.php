@@ -14,6 +14,7 @@ class Equipamento extends Model
         'descricao',
         'marca_id',
         'modelo',
+        'serial',
         'potencia',
         'tipo_potencia',
         'data_fabricacao',

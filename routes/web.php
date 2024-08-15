@@ -10,6 +10,8 @@ use app\Http\Controllers\EstoqueProdutoController;
 use App\Http\Controllers\PedidosSaidaController;
 use App\Http\Controllers\SaidaProdutoController;
 use App\Http\Controllers\PedidoCompraAutoGenerateController;
+use App\Http\Controllers\EquipamentoHistoryController;
+use App\Http\Controllers\DahboardStatusOsController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +26,8 @@ use App\Http\Controllers\PedidoCompraAutoGenerateController;
 
 Route::get('/', function () {
     return view('site.home');
-})->name('site.home');
+})->name('site.home');// Dashboard principal
+
 Route::get('/site/sobre_nos', function () {
     return view('site.sobre_nos');
 })->name('site.sobre_nos');
@@ -38,6 +41,7 @@ Route::get('/configuracoes', function () {
 //Route::get('/', function () {
 //return view('auth.login');
 //});
+Route::get('/asset-show', [EquipamentoHistoryController::class, 'asset_show'])->name('asset.show');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -68,7 +72,6 @@ Route::middleware('auth')->resource('/produto', 'App\Http\Controllers\ProdutoCon
 //                Equipamento
 //---------------------------------------------//
 Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\EquipamentoController');
-use App\Http\Controllers\EquipamentoHistoryController;
 Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets');//acesso sem autenticação
 Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history');//acesso sem autenticação
 //---------------------------------------------//
@@ -292,3 +295,11 @@ Route::middleware('auth')->get('/pedido-compra/show', [PedidoCompraAutoGenerateC
 //   Deletar peças de equipamento
 //----------------------------------------------------------//
 Route::delete('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'destroy'])->name('peca_equipamento.destroy');
+//---------------------------------------------------------//
+//    QRcode equipamentos history
+//---------------------------------------------------------//
+Route::get('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets');
+//---------------------------------------------------------//
+//    Status Os
+//---------------------------------------------------------//
+Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])->name('dashboard.status.os');

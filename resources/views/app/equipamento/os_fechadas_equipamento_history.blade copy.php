@@ -83,7 +83,7 @@
                     <hr>
 
                 </div>
-                <div style="color: green;">EMISSOR: {{$ordens_servico->responsavel}}</div>
+                <div style="color: green;">Emissor: {{$ordens_servico->responsavel}}</div>
             </div>
             <hr>
 

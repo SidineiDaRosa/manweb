@@ -130,7 +130,7 @@
             <thead >
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Qrcode</th>
+                    <th scope="col" hidden>Qrcode</th>
                     <th scope="col">cod_fabricante</th>
                     <th scope="col">Nome</th>
                     <th scope="col">un medida</th>
@@ -149,7 +149,7 @@
                 @foreach ($produtos as $produto)
                 <tr>
                     <th scope="row">{{ $produto->id }}</td>
-                    <td> {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}</td>
+                   {{-- {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}</td>--}}
                     <td>{{ $produto->cod_fabricante }}</td>
                     <td>{{ $produto->nome }}</td>
                     <td>{{ $produto->unidade_medida->nome}}</td>

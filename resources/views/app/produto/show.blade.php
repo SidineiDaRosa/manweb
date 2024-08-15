@@ -277,8 +277,8 @@
                     //echo $protocolo.$url;
                     ?>
                     <p>
-                        {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}
-                        {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}
+                      {{-- {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}--}} 
+                      {{--{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}--}}  
                     <p>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-@extends('app.layouts.app')
+
 <main class="content">
     <div class="div-title-main">O.S. FECHADAS POR EQUIPAMENTO</div>
     <div class="container">
@@ -83,7 +83,7 @@
                     <hr>
 
                 </div>
-                <div style="color: green;">EMISSOR: {{$ordens_servico->responsavel}}</div>
+                <div style="color: green;">Emissor: {{$ordens_servico->responsavel}}</div>
             </div>
             <hr>
 
