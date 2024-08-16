@@ -133,10 +133,11 @@
             align-items: flex-start;
             background-color: #f2f2f2;
         }
-
+  
         .item {
             width: calc(33% - 5px);
-            height: 100%;
+            /* Ocupa toda a altura disponível */
+            height:870px;
             margin: 5px;
             padding: 10px;
             background-color: white;
@@ -145,7 +146,6 @@
             overflow: auto;
             /* Impede que o conteúdo transborde */
         }
-
         .box {
             display: flex;
             width: 100%;
@@ -282,6 +282,7 @@
                 display: flex;
                 flex-direction: row;
             }
+
             .hr-sm {
                 margin-top: -10px;
             }
@@ -435,7 +436,6 @@
                 font-weight: 300;
 
             }
-
         </style>
         <div class="item">
             <h6 class="title-md">O.S. PARA AMANHÃ</h6>
@@ -618,7 +618,7 @@
                 <hr style="margin:-2px;">
                 @forelse($ordens_servicos_second_day as $seg_day)
                 <div class="div-font-sm-conteudo" style="margin: 5px;">
-                  
+
                     {{$seg_day->id}}
                     {{$seg_day->data_inicio}} às {{$seg_day->hora_inicio}} até
                     {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
@@ -643,7 +643,7 @@
                 @endif
                 @forelse($ordens_servicos_third_day as $terc_day)
                 <div class="div-font-sm-conteudo">
-                  
+
                     {{$terc_day->id}}
                     {{$terc_day->data_inicio}} às {{$terc_day->hora_inicio}} até
                     {{$terc_day->data_fim}} às {{$terc_day->hora_fim}}
@@ -657,8 +657,8 @@
                 @endforelse
             </div>
         </div>
-     
-    {{--fim do item 3--}}
+
+        {{--fim do item 3--}}
     </div>
     </div>
     <script>
