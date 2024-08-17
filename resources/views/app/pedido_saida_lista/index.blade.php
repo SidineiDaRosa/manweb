@@ -227,14 +227,45 @@
     <!-- <iframe id="ifm1" src="{{route('item-produto-saida.index',['pedido' => $pedido_saida_f->id,'empresa_id'=>$pedido_saida_f->empresa->id,'equipamento'=>$pedido_saida_f->equipamento->id])}}" width="90%" height="600" style="border:1px solid black;">  
     </iframe>-->
     <hr>
-    <div class="form-row">
-        <input type="number" class="form-control" style="width:200px;" readonly name="produto_id" id="produto_id">
-        <input type="text" class="form-control" style="width:50%;" readonly name="produto_nome" id="produto_nome">
-        <input type="number" id="quantidade" name="quantidade" class="form-control" style="width:200px;" readonly>
-        <!-- Botão de envio inicialmente oculto -->
-        <button id="btnEnviar"class="btn btn-outline-primary" style="display: none;">Enviar</button>
-    </div>
+    {{-- Formulário com os dados para adicionar o item --}}
+    <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST">
+        <div class="form-row">
+            <input type="number" class="form-control" style="width:200px;" readonly name="produto_id" id="produto_id">
+            <input type="text" class="form-control" style="width:50%;" readonly name="produto_nome" id="produto_nome">
+            <input type="number" id="quantidade" name="quantidade" class="form-control" style="width:200px;" readonly>
+            <!-- Botão de envio inicialmente oculto -->
+            <button id="btnEnviar" class="btn btn-outline-primary" style="display: none;" onclick="confirmSave()">Enviar</button>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                function confirmSave() {
+                    Swal.fire({
+                        title: 'Deseja cadastrar o item?',
+                        text: "Você não poderá reverter isso!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sim, cadastrar!',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Submete o formulário
+                            document.getElementById('form_add_item').submit();
+                        }
+                    });
+                }
 
+                // Adiciona um listener para o evento de tecla no formulário
+                document.getElementById('form_add_item').addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Impede o envio do formulário padrão
+                        confirmSave();
+                    }
+                });
+            </script>
+
+        </div>
+    </form>
     {{------------------------------------------------}}
     {{--Tabela de peças dos equipamento---------------}}
     <table class="table" id="tblPecas">
@@ -315,8 +346,8 @@
             rows.forEach(function(row) {
                 row.addEventListener("click", function() {
                     // Captura o ID e nome do produto das colunas corretas
-                    let produtoId = this.querySelector('td:nth-child(1)').innerText; // Ajuste o índice conforme a coluna correta
-                    let produtoNome = this.querySelector('td:nth-child(4)').innerText; // Ajuste o índice conforme a coluna correta
+                    let produtoId = this.querySelector('td:nth-child(5)').innerText; // Ajuste o índice conforme a coluna correta
+                    let produtoNome = this.querySelector('td:nth-child(6)').innerText; // Ajuste o índice conforme a coluna correta
 
                     // Exibe a mensagem de confirmação
                     let confirmacao = confirm("Deseja adicionar o produto " + produtoNome + " ao seu pedido?");
@@ -381,10 +412,9 @@
         });
     </script>
     @if($pedido_saida_f->status != 'fechado')
-    <iframe id="ifm1" src="{{ route('item-produto-saida.index', ['pedido' => $pedido_saida_f->id, 'empresa_id' => $pedido_saida_f->empresa->id, 'equipamento' => $pedido_saida_f->equipamento->id]) }}" width="90%" height="600" style="border:1px solid black;"></iframe>
+    <iframe id="ifm1" src="{{ route('item-produto-saida.index', ['pedido' => $pedido_saida_f->id, 'empresa_id' => $pedido_saida_f->empresa->id, 'equipamento' => $pedido_saida_f->equipamento->id]) }}" width="90%" height="600" style="border:1px solid black;" hidden></iframe>
     @endif
     @endsection
-
     <footer>
     </footer>
 
