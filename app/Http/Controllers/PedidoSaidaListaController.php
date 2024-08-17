@@ -12,7 +12,8 @@ use App\Models\PedidoSaida;
 use App\Models\SaidaProduto;
 use App\Models\UnidadeMedida;
 use App\Models\Produto;
-
+use App\Models\OrdemServico;
+use App\Models\PecasEquipamentos;
 class PedidoSaidaListaController extends Controller
 {
     /**
@@ -42,12 +43,18 @@ class PedidoSaidaListaController extends Controller
             $funcionarios = Funcionario::all();
             $saidas_produto = SaidaProduto::where('pedidos_saida_id', $pedido_saida_id_1)->get();
             $pedidos_saida = PedidoSaida::where('id', $pedido_saida_id_1)->get();
+            $ped_said = PedidoSaida::find($pedido_saida_id_1);
             $Unidades_de_Medida = UnidadeMedida::all();
+            //$os = OrdemServico::find($ordem_servico_id);
+            $pecas_equipamento= PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente','Componente')->get();
+            $patrimonio= Equipamento::where('id', $ped_said->equipamento_id)->get();
             return view('app.pedido_saida_lista.index', [
                 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
                 'saidas_produto' => $saidas_produto,
-                'pedidos_saida' =>  $pedidos_saida
+                'pedidos_saida' =>  $pedidos_saida,
                 //'Unidades_de_Medida' => $Unidades_de_Medida
+                'patrimonio'=> $patrimonio,
+                'pecas_equipamento'=>$pecas_equipamento
             ]);
         }
     }

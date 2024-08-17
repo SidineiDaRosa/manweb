@@ -5,7 +5,7 @@
 <main class="content">
 
     <div class="titulo-main">
-        Pedido de saída produtos
+        Pedido de saída produtos com O.S.
     </div>
 
     <style>
@@ -226,6 +226,160 @@
     <!-- <iframe id="ifm1" src="{{route('item-produto-saida.index',['pedido' => $pedido_saida_f->id,'empresa_id'=>$pedido_saida_f->empresa->id,'equipamento'=>$pedido_saida_f->equipamento->id])}}" width="90%" height="600" style="border:1px solid black;">-->
     <!-- <iframe id="ifm1" src="{{route('item-produto-saida.index',['pedido' => $pedido_saida_f->id,'empresa_id'=>$pedido_saida_f->empresa->id,'equipamento'=>$pedido_saida_f->equipamento->id])}}" width="90%" height="600" style="border:1px solid black;">  
     </iframe>-->
+    <hr>
+    <div class="form-row">
+        <input type="number" class="form-control" style="width:200px;" readonly name="produto_id" id="produto_id">
+        <input type="text" class="form-control" style="width:50%;" readonly name="produto_nome" id="produto_nome">
+        <input type="number" id="quantidade" name="quantidade" class="form-control" style="width:200px;" readonly>
+        <!-- Botão de envio inicialmente oculto -->
+        <button id="btnEnviar"class="btn btn-outline-primary" style="display: none;">Enviar</button>
+    </div>
+
+    {{------------------------------------------------}}
+    {{--Tabela de peças dos equipamento---------------}}
+    <table class="table" id="tblPecas">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Equipamento</th>
+                <th>Descrição</th>
+                <th>Produto_id</th>
+                <th>Produto </th>
+                <th>Quantidade</th>
+                <th>intervalo</th>
+                <th>data ultima substituação</th>
+                <th>data proxima</th>
+                <th>Horas restante</th>
+                <th>Status</th>
+                <th>Tipo de Componente</th>
+                <th>Criticidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($pecas_equipamento as $peca_equipamento)
+            <tr>
+                <td>{{$peca_equipamento->id}}</td>
+                @foreach ($patrimonio as $equipamento)
+                @if ($equipamento['id'] == $peca_equipamento->equipamento)
+                <td>
+                    <a class="txt-link" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">{{ $equipamento['nome'] }}</a>
+                </td> <!-- Exibindo o nome do equipamento -->
+                <style>
+
+                </style>
+                @endif
+                @endforeach
+                <td>{{ $peca_equipamento->descricao}}</td>
+                <td>
+                    {{ $peca_equipamento->produto->id}}
+                </td>
+                <td>
+
+                    <a class="txt-link" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
+                        {{ $peca_equipamento->produto->nome}}
+                    </a>
+                </td>
+                <td>{{ $peca_equipamento->quantidade}}</td>
+                <td>{{ $peca_equipamento->intervalo_manutencao}}hs</td>
+                <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}}</td>
+                <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}}</td>
+                <td class="
+    @if($peca_equipamento->horas_proxima_manutencao >= 48)
+        bg-success
+    @elseif($peca_equipamento->horas_proxima_manutencao < 48 && $peca_equipamento->horas_proxima_manutencao > 0)
+        bg-warning
+    @else
+        bg-danger
+    @endif
+">
+                    {{ $peca_equipamento->horas_proxima_manutencao }}
+                </td>
+                <td>{{ $peca_equipamento->status}}</td>
+                <td>{{ $peca_equipamento->tipo_componente}}</td>
+                <td>{{ $peca_equipamento->criticidade}}</td>
+                </div>
+                @endforeach
+        </tbody>
+    </table>
+    <style>
+        tr:hover {
+            background-color: rgba(255, 165, 0, 0.2);
+            /* ou #FFDAB9 */
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Seleciona todas as linhas da tabela, exceto o cabeçalho
+            var rows = document.querySelectorAll("#tblPecas tbody tr");
+
+            rows.forEach(function(row) {
+                row.addEventListener("click", function() {
+                    // Captura o ID e nome do produto das colunas corretas
+                    let produtoId = this.querySelector('td:nth-child(1)').innerText; // Ajuste o índice conforme a coluna correta
+                    let produtoNome = this.querySelector('td:nth-child(4)').innerText; // Ajuste o índice conforme a coluna correta
+
+                    // Exibe a mensagem de confirmação
+                    let confirmacao = confirm("Deseja adicionar o produto " + produtoNome + " ao seu pedido?");
+
+                    // Define os valores nos campos ocultos do formulário
+                    document.getElementById('produto_nome').value = produtoNome;
+                    document.getElementById('produto_id').value = produtoId;
+
+                    if (confirmacao) {
+                        // Lógica para adicionar o produto ao pedido
+                        alert("Produto " + produtoNome + " foi adicionado ao seu pedido!");
+
+                        // Habilita o campo 'quantidade' e aplica o foco
+                        let quantidadeField = document.getElementById('quantidade');
+                        let btnEnviar = document.getElementById('btnEnviar');
+
+                        quantidadeField.removeAttribute('readonly'); // Remove o atributo readonly
+                        quantidadeField.focus(); // Aplica o foco no campo
+
+                        // Mostra o botão de envio
+                        btnEnviar.style.display = 'block';
+                    } else {
+                        alert("Produto não foi adicionado.");
+                    }
+                });
+            });
+
+            // Evento para o botão de envio
+            document.getElementById('btnEnviar').addEventListener('click', function() {
+                let quantidade = document.getElementById('quantidade').value;
+                let produtoNome = document.getElementById('produto_nome').value;
+                let produtoId = document.getElementById('produto_id').value;
+
+                if (quantidade) {
+                    // Exemplo de lógica para enviar os dados
+                    alert("Enviando produto " + produtoNome + " (ID: " + produtoId + ") com quantidade: " + quantidade);
+
+                    // Aqui você pode adicionar código para enviar os dados para o servidor ou processar conforme necessário
+                    // Por exemplo, você pode usar AJAX para enviar os dados:
+                    /*
+                    fetch('/url-do-servidor', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            produto_id: produtoId,
+                            quantidade: quantidade
+                        }),
+                    }).then(response => response.json())
+                      .then(data => {
+                          console.log('Success:', data);
+                      })
+                      .catch((error) => {
+                          console.error('Error:', error);
+                      });
+                    */
+                } else {
+                    alert("Por favor, insira uma quantidade.");
+                }
+            });
+        });
+    </script>
     @if($pedido_saida_f->status != 'fechado')
     <iframe id="ifm1" src="{{ route('item-produto-saida.index', ['pedido' => $pedido_saida_f->id, 'empresa_id' => $pedido_saida_f->empresa->id, 'equipamento' => $pedido_saida_f->equipamento->id]) }}" width="90%" height="600" style="border:1px solid black;"></iframe>
     @endif
