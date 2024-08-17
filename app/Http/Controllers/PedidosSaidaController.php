@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
-
 use App\Models\Equipamento;
 use App\Models\Funcionario;
 use App\Models\PedidoCompra;
@@ -13,6 +12,7 @@ use App\Models\PedidoSaida;
 use App\Models\SaidaProduto;
 use App\Models\Fornecedor;
 use App\Models\OrdemServico;
+use App\Models\PecasEquipamentos;
 use App\Models\Produto;
 use App\Models\User;
 
@@ -75,6 +75,7 @@ class PedidosSaidaController extends Controller
     {
         //
         $ordem_servico_id = $requ->get('ordem_servico');
+        $patrimonio_id = $requ->get('equipamento_id');
         if ($ordem_servico_id == 0) {
             //  Cria um pedido de saída sem nescidade de uma OS
             $pedidos_saida = PedidoSaida::all();
@@ -87,18 +88,26 @@ class PedidosSaidaController extends Controller
                 'fornecedores' => $fornecedores,
                 'empresa'=>$empresa
             ]);
+
         } else {
+            //--------------------------------------------------------//
+            //   Cria um pedido de sáida apartir do numero da o.s.
+            //-------------------------------------------------------//
             $ordem_servico = OrdemServico::where('id', $ordem_servico_id)->get();
             $pedidos_saida = PedidoSaida::all();
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
             $empresas = Empresas::all();
             $fornecedores = Fornecedor::all();
-            echo ($ordem_servico_id);
+            $os = OrdemServico::find($ordem_servico_id);
+            $pecas_equipamento= PecasEquipamentos::where('equipamento', $os->equipamento_id)->where('tipo_componente','Componente')->get();
+            $patrimonio= Equipamento::where('id', $os->equipamento_id)->get();
             return view('app.pedido_saida.create_os', [
                 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
                 'pedidos_saida' => $pedidos_saida, 'ordem_servico' => $ordem_servico,
-                'fornecedores' => $fornecedores
+                'fornecedores' => $fornecedores,
+                'patrimonio'=> $patrimonio,
+                'pecas_equipamento'=>$pecas_equipamento
             ]);
         }
     }
