@@ -46,7 +46,9 @@ class PedidoSaidaListaController extends Controller
             $ped_said = PedidoSaida::find($pedido_saida_id_1);
             $Unidades_de_Medida = UnidadeMedida::all();
             //$os = OrdemServico::find($ordem_servico_id);
-            $pecas_equipamento= PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente','Componente')->get();
+            //$pecas_equipamento= PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente','Componente')->get();
+            $pecas_equipamento= PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente','Componente')
+            ->where('status','ativado')->get();
             $patrimonio= Equipamento::where('id', $ped_said->equipamento_id)->get();
             return view('app.pedido_saida_lista.index', [
                 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,

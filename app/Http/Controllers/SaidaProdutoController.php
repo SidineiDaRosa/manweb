@@ -16,6 +16,8 @@ use App\Models\UnidadeMedida;
 use App\Models\EstoqueProdutos;
 use App\Models\PecasEquipamentos;
 use App\Models\Categoria;
+use DateTime;
+use DateInterval;
 
 class SaidaProdutoController extends Controller
 {
@@ -66,7 +68,8 @@ class SaidaProdutoController extends Controller
                 // $pedido = PedidoSaida::where('id', $pedidoId)->get();
                 $estoque  = EstoqueProdutos::where('id', $estoque_id)->get();
                 return view('app.saida_produto.create', [
-                    'produtos' => $produtos, 'equipamento_id' =>  $equipamento_id,
+                    'produtos' => $produtos,
+                    'equipamento_id' =>  $equipamento_id,
                     'unidade_medida' => $unidade_medida,
                     'pedido' => $pedido,
                     'estoque' => $estoque,
@@ -90,13 +93,21 @@ class SaidaProdutoController extends Controller
     public function store(Request $request)
     {
         // Define o fuso horário para São Paulo
-        date_default_timezone_set('America/Sao_Paulo');
+        date_default_timezone_set('America/Sao_Paulo'); // seta hora para são paulo
         $dataAtual = $request->get('data');
-        $pedido_saida_id = $request->get('pedidos_saida_id');
-        $pedido_saida = PedidoSaida::find($pedido_saida_id);
+        $now = Carbon::now()->toDateTimeString(); // Formato: YYYY-MM-DD HH:MM:SS  Data atual
+        //-----------------------------------------//
+        // Pega dados da Request
+        //-----------------------------------------//
+        $pedido_saida_id = $request->get('pedido_id'); // pega o númeor do pedido
+        $pedido_saida = PedidoSaida::find($pedido_saida_id); // 
+        $produto_id = $request->get('produto_id'); //pega o ID do do produto
+        $quantidade = $request->get('quantidade'); //Pega a quantidade
+        $equipamento_id = $request->get('equipamento_id'); //Pega o Id do equipamento
+        $componente_id = $request->get('componente_id'); //Pega o Id componente com intervalo de manutenção
         // Verifica se $pedido_saida existe e se possui um id
         if ($pedido_saida && $pedido_saida->id) {
-            $ordem_servico_id = $pedido_saida->id;
+            $ordem_servico_id = $pedido_saida->ordem_servico_id;
         } else {
             $ordem_servico_id = null;
         }
@@ -104,52 +115,19 @@ class SaidaProdutoController extends Controller
             //-------------------------------------------//
             //     Entra neste laço caso OS >=1          //
             //-------------------------------------------//
-            $data_proxima_manutencao = $request->get('data_proxima_manutencao');
+            //..$data_proxima_manutencao = $request->get('data_proxima_manutencao');
             $saidas_produtos = SaidaProduto::all();
-            $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
+            //$estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
+            $estoque = EstoqueProdutos::where('produto_id', $produto_id)->first(); //busca o registro do produto com o id da entrada do produto
             //      comparador de estoque               //
             if ($request->quantidade > $estoque->quantidade) {
-                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada para saída com O.S.!
+                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada para saída de produto com O.S.!
         Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
         </div>';
             } else {
-                echo ($request);
-                SaidaProduto::create($request->all()); // Salva a sáida do produto
-                $estoque->quantidade = $estoque->quantidade - $request->input('quantidade'); // soma estoque antigo com a entrada de produto
-                $estoque->save(); // Salva atualização do estoque
-                //-------------------------------------
-                $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
-                $pecaEquipamento->data_substituicao = $dataAtual; // soma estoque antigo com a entrada de produto
-                $pecaEquipamento->save();
-                $pecaEquipamento = PecasEquipamentos::find($request->input('peca_equipamento_id')); //busca o registro do produto com o id da entrada do produto
-                $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
-                $pecaEquipamento->save();
-                $equipamentos = Equipamento::all();
-                $produtos = Produto::all();
-                $categorias = Marca::all();
-                $unidades = Empresas::all();
-                echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
-            }
-        } else {
-            //----------------------------------------------------------//
-            //  Adiciona item de produto ao pedido de saída  sem a Os   //
-            //----------------------------------------------------------//
-            $pedido_saida_id = $request->get('pedido_id'); // pega o numero do pedido
-            $produto_id = $request->get('produto_id');
-            $quantidade = $request->get('quantidade');
-            $equipamento_id = $request->get('equipamento_id');
-            $pedido_saida = PedidoSaida::find($pedido_saida_id);
-            $produto = Produto::find($produto_id);
-            $estoque = EstoqueProdutos::where('produto_id', $produto_id)->first(); //busca o registro do produto com o id da entrada do produto
-
-            if ($request->quantidade > $estoque->quantidade) {
-                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
-            Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
-            </div>';
-            } else {
                 //-----------------------------------------//
-                // Define a data atual
-                $now = Carbon::now()->toDateTimeString(); // Formato: YYYY-MM-DD HH:MM:SS
+                // Cria um objeto para gravar a sáida
+                //----------------------------------------//
                 $dados = [
                     'pedidos_saida_id' => $pedido_saida_id,
                     'produto_id' => $produto_id,
@@ -158,7 +136,85 @@ class SaidaProdutoController extends Controller
                     'valor' => 0,
                     'subtotal' => 0,
                     'data' => $now,
-                    'equipamento_id' => $equipamento_id
+                    'equipamento_id' => $pedido_saida->equipamento_id
+                ];
+
+                // Criação do objeto SaidaProduto
+                $saida_produto = new SaidaProduto();
+                $saida_produto->pedidos_saida_id = $dados['pedidos_saida_id'];
+                $saida_produto->produto_id = $dados['produto_id'];
+                $saida_produto->unidade_medida = $dados['unidade_medida'];
+                $saida_produto->quantidade = $dados['quantidade'];
+                $saida_produto->valor = $dados['valor'];
+                $saida_produto->subtotal = $dados['subtotal'];
+                $saida_produto->data = $dados['data'];
+                $saida_produto->equipamento_id = $dados['equipamento_id'];
+                // Salvando o objeto no banco de dados
+                $saida_produto->save();
+                //-----------------------------------------//
+                $estoque->quantidade = $estoque->quantidade - $quantidade; // soma estoque antigo com a entrada de produto
+                $estoque->save();
+                //-----------------------------------------//
+                //   Atualiza hora intervalod e manutenção
+                //   do registro
+                //-----------------------------------------//
+                $today = date("Y-m-d"); //data de hoje
+                $pecaEquipamento = PecasEquipamentos::find($request->input('componente_id')); //busca o registro do produto com o id da entrada do produto
+                $intervalo_horas = $pecaEquipamento->intervalo_manutencao; // Obtém o intervalo de horas do objeto
+                //--------------------------------------------------//
+                // Defina a data da última manutenção
+                $data_ultima_manutencao = new DateTime(); // Cria um objeto DateTime com a data e hora atuais
+
+                // Converte o intervalo de horas para dias inteiros
+                $intervalo_horas_d = intval($intervalo_horas / 24);
+
+                // Clona a data da última manutenção para definir a próxima manutenção
+                $data_proxima_manutencao = clone $data_ultima_manutencao;
+
+                // Adiciona o intervalo de dias à data da próxima manutenção
+                $data_proxima_manutencao->add(new DateInterval('P' . $intervalo_horas_d . 'D'));
+
+                // Adiciona as horas restantes (não múltiplos de 24) à data da próxima manutenção
+                $horas_restantes = $intervalo_horas % 24;
+                $data_proxima_manutencao->add(new DateInterval('PT' . $horas_restantes . 'H'));
+
+                // Calcula a diferença entre as datas
+                $diferenca = $data_ultima_manutencao->diff($data_proxima_manutencao);
+
+                // Converte a diferença em dias e horas
+                $diferenca_horas = intval(($diferenca->days * 24) + $diferenca->h + ($diferenca->i / 60) + ($diferenca->s / 3600));
+                //---------------------------------------------------//
+                //   salva alteração em  peças equipamentos          //
+                $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
+                $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
+                $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
+                $pecaEquipamento->save(); //salva alteração em  peças equipamentos
+
+                echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+            }
+        } else {
+            //----------------------------------------------------------//
+            //  Adiciona item de produto ao pedido de saída  sem a O.s.   //
+            //----------------------------------------------------------//
+            $estoque = EstoqueProdutos::where('produto_id', $produto_id)->first(); //busca o registro do produto com o id da entrada do produto
+
+            if ($request->quantidade > $estoque->quantidade) {
+                echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada!
+            Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
+            </div>';
+            } else {
+                //-----------------------------------------//
+                // Cria um objeto para gravar a sáida
+                //----------------------------------------//
+                $dados = [
+                    'pedidos_saida_id' => $pedido_saida_id,
+                    'produto_id' => $produto_id,
+                    'unidade_medida' => 'pç',
+                    'quantidade' => $quantidade,
+                    'valor' => 0,
+                    'subtotal' => 0,
+                    'data' => $now,
+                    'equipamento_id' => $pedido_saida->equipamento_id
                 ];
 
                 // Criação do objeto SaidaProduto

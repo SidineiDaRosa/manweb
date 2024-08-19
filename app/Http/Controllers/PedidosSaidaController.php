@@ -77,7 +77,7 @@ class PedidosSaidaController extends Controller
         $ordem_servico_id = $requ->get('ordem_servico');
         $patrimonio_id = $requ->get('equipamento_id');
         if ($ordem_servico_id == 0) {
-            //  Cria um pedido de saída sem nescidade de uma OS
+            //  Cria um pedido de saída sem necessidade de uma OS
             $pedidos_saida = PedidoSaida::all();
             $equipamentos = Equipamento::orderBy('nome')->get();
             $funcionarios = Funcionario::all();
@@ -100,7 +100,9 @@ class PedidosSaidaController extends Controller
             $empresas = Empresas::all();
             $fornecedores = Fornecedor::all();
             $os = OrdemServico::find($ordem_servico_id);
-            $pecas_equipamento= PecasEquipamentos::where('equipamento', $os->equipamento_id)->where('tipo_componente','Componente')->get();
+            $pecas_equipamento= PecasEquipamentos::where('equipamento', $os->equipamento_id)->where('tipo_componente','Componente')
+            ->where('status','ativado')->get();
+            
             $patrimonio= Equipamento::where('id', $os->equipamento_id)->get();
             return view('app.pedido_saida.create_os', [
                 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,

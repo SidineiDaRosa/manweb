@@ -42,6 +42,7 @@
             align-items: flex-start;
             background-color: white;
             margin: -1;
+            margin-bottom: -50px;
 
         }
 
@@ -185,6 +186,7 @@
     {{--fim card--}}
     {{--------------fim continer box----------------------------------------}}
     <div class="card-body">
+        Produtos adicionados
         <table class="table-template table-striped table-hover table-bordered">
             <thead>
                 <tr>
@@ -228,47 +230,24 @@
     </iframe>-->
     <hr>
     {{-- Formulário com os dados para adicionar o item --}}
-    <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST">
+    <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST" style="margin-left:20PX;">
+        Adicionar um Produto
+        @csrf
+        @if($pedido_saida_f->status != 'fechado')
         <div class="form-row">
+            <input type="number" name="componente_id" id="componente_id" value="" readonly hidden>
+            <input type="number" name="pedido_id" id="pedido_id" value="{{$pedido_saida_f->id ?? old('id') }}" readonly hidden>
             <input type="number" class="form-control" style="width:200px;" readonly name="produto_id" id="produto_id">
             <input type="text" class="form-control" style="width:50%;" readonly name="produto_nome" id="produto_nome">
             <input type="number" id="quantidade" name="quantidade" class="form-control" style="width:200px;" readonly>
             <!-- Botão de envio inicialmente oculto -->
-            <button id="btnEnviar" class="btn btn-outline-primary" style="display: none;" onclick="confirmSave()">Enviar</button>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script>
-                function confirmSave() {
-                    Swal.fire({
-                        title: 'Deseja cadastrar o item?',
-                        text: "Você não poderá reverter isso!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Sim, cadastrar!',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Submete o formulário
-                            document.getElementById('form_add_item').submit();
-                        }
-                    });
-                }
-
-                // Adiciona um listener para o evento de tecla no formulário
-                document.getElementById('form_add_item').addEventListener('keypress', function(event) {
-                    if (event.key === 'Enter') {
-                        event.preventDefault(); // Impede o envio do formulário padrão
-                        confirmSave();
-                    }
-                });
-            </script>
-
+            <button id="btnEnviar" class="btn btn-outline-primary" style="display: none;" onclick="">Adicionar</button>
         </div>
     </form>
     {{------------------------------------------------}}
     {{--Tabela de peças dos equipamento---------------}}
-    <table class="table" id="tblPecas">
+    <span style="margin-left:20px;"> Componentes cadastrados</span>
+    <table class="table" id="tblPecas" style="margin-left:20px;">
         <thead>
             <tr>
                 <th>ID</th>
@@ -281,14 +260,12 @@
                 <th>data ultima substituação</th>
                 <th>data proxima</th>
                 <th>Horas restante</th>
-                <th>Status</th>
-                <th>Tipo de Componente</th>
                 <th>Criticidade</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($pecas_equipamento as $peca_equipamento)
-            <tr>
+            <tr title="Ao clicar 2 vezes adiciona o produto">
                 <td>{{$peca_equipamento->id}}</td>
                 @foreach ($patrimonio as $equipamento)
                 @if ($equipamento['id'] == $peca_equipamento->equipamento)
@@ -296,7 +273,6 @@
                     <a class="txt-link" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">{{ $equipamento['nome'] }}</a>
                 </td> <!-- Exibindo o nome do equipamento -->
                 <style>
-
                 </style>
                 @endif
                 @endforeach
@@ -305,7 +281,6 @@
                     {{ $peca_equipamento->produto->id}}
                 </td>
                 <td>
-
                     <a class="txt-link" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
                         {{ $peca_equipamento->produto->nome}}
                     </a>
@@ -325,8 +300,6 @@
 ">
                     {{ $peca_equipamento->horas_proxima_manutencao }}
                 </td>
-                <td>{{ $peca_equipamento->status}}</td>
-                <td>{{ $peca_equipamento->tipo_componente}}</td>
                 <td>{{ $peca_equipamento->criticidade}}</td>
                 </div>
                 @endforeach
@@ -344,8 +317,9 @@
             var rows = document.querySelectorAll("#tblPecas tbody tr");
 
             rows.forEach(function(row) {
-                row.addEventListener("click", function() {
+                row.addEventListener("dblclick", function() {
                     // Captura o ID e nome do produto das colunas corretas
+                    let componenteId = this.querySelector('td:nth-child(1)').innerText; // Ajuste o índice conforme a coluna correta
                     let produtoId = this.querySelector('td:nth-child(5)').innerText; // Ajuste o índice conforme a coluna correta
                     let produtoNome = this.querySelector('td:nth-child(6)').innerText; // Ajuste o índice conforme a coluna correta
 
@@ -353,8 +327,9 @@
                     let confirmacao = confirm("Deseja adicionar o produto " + produtoNome + " ao seu pedido?");
 
                     // Define os valores nos campos ocultos do formulário
-                    document.getElementById('produto_nome').value = produtoNome;
+                    document.getElementById('componente_id').value = componenteId;
                     document.getElementById('produto_id').value = produtoId;
+                    document.getElementById('produto_nome').value = produtoNome;
 
                     if (confirmacao) {
                         // Lógica para adicionar o produto ao pedido
@@ -411,8 +386,7 @@
             });
         });
     </script>
-    @if($pedido_saida_f->status != 'fechado')
-    <iframe id="ifm1" src="{{ route('item-produto-saida.index', ['pedido' => $pedido_saida_f->id, 'empresa_id' => $pedido_saida_f->empresa->id, 'equipamento' => $pedido_saida_f->equipamento->id]) }}" width="90%" height="600" style="border:1px solid black;" hidden></iframe>
+
     @endif
     @endsection
     <footer>
