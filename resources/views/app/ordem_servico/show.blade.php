@@ -18,8 +18,9 @@
             margin-top: -2;
         }
     </style>
-    {{-------------------------------------------------------------------------}}
+    {{-----------------------------------}}
     {{--início da div que contem os box--}}
+    {{-----------------------------------}}
     <div class="card">
         <div class="card-header-template">
             <div>
@@ -27,10 +28,12 @@
                         format_list_bulleted
                     </span>
                 </a>
-                <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
+                @if($ordem_servico->situacao !== 'fechado')
+                <a id="Btn_novo_ped_compra" class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-database-add"></i>
                     Criar novo pedido de saída
                 </a>
+                @endif
                 <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4])}}">
                     <i class="icofont-search"></i>
                     </i>Busca Pedidos </a>
@@ -45,10 +48,30 @@
                 </a>
             </div>
         </div>
+        <!--!Ao abrir verifica algumas status-->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Verifica se a assinatura está presente
+                var signatureImage = document.getElementById("signature_receptor");
+                let situacao = document.getElementById("situacao");
+                if (signatureImage) {
+                    // Oculta o link adicionando um estilo inline que esconde visualmente
+                    document.getElementById("btn-add-task").style.display = 'none';
+                    document.getElementById("btn-edit").style.display = 'none';
+                    document.getElementById("bt_iniciar_os").style.display = 'none';
+                    document.getElementById("Btn_novo_ped_compra").style.display = 'none';
+                }
+                if (situacao.value === 'fechado') {
+                    document.getElementById("btn-add-task").style.display = 'none';
+                    document.getElementById("btn-edit").style.display = 'none';
+                    document.getElementById("bt_iniciar_os").style.display = 'none';
+                    document.getElementById("Btn_novo_ped_compra").style.display = 'none';
+                }
+            });
+        </script>
         <div class="card1">
             {{-------------------------------------------------------------------------}}
             {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
-
             <style>
                 hr {
                     margin: -5px;
@@ -63,7 +86,6 @@
                     display: flex;
                     font-size: 15px;
                     font-family: 'Poppins', sans-serif;
-
                 }
 
                 .conteudo {
@@ -226,18 +248,6 @@
                         @else
                         <p>Assinatura não disponível</p>
                         @endif
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                // Verifica se a assinatura está presente
-                                var signatureImage = document.getElementById("signature_receptor");
-                                if (signatureImage) {
-                                    // Oculta o link adicionando um estilo inline que esconde visualmente
-                                    document.getElementById("btn-add-task").style.display = 'none';
-                                    document.getElementById("btn-edit").style.display = 'none';
-                                    document.getElementById("bt_iniciar_os").style.display = 'none';
-                                }
-                            });
-                        </script>
                     </div>
                 </div>
             </div>
@@ -353,7 +363,7 @@
     </div>
     <div class="card-header-template  text-center">
         <div>
-          
+
             {{--//--------------------------------------//--}}
             {{--//--Critério se a os já fechada----------//--}}
             {{--//--------------------------------------//--}}
@@ -371,14 +381,13 @@
                 Iniciar OS
             </button>
             @endif
-           
+
             <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1">Gerar PDF</button>
             <script>
                 document.getElementById('gerarPdfButton').addEventListener('click', function() {
                     document.getElementById('frm-pdf').submit();
                 });
             </script>
-
         </div>
     </div>
     <form id="frm-pdf" action="{{ route('gerar.pdf') }}" method="POST" target="_blank">
@@ -424,28 +433,37 @@
     </script>
     </div>
     <!-- arquivo resources/views/atualizar-registro.blade.php -->
+    @php
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    $extension = pathinfo($ordem_servico->link_foto, PATHINFO_EXTENSION);
+    @endphp
+
+    @if (!empty($ordem_servico->link_foto) && in_array($extension, $allowedExtensions) && file_exists(public_path($ordem_servico->link_foto)))
+    <div class="container" style="margin-top:20px;">
+        <img src="/{{$ordem_servico->link_foto}}" alt="Imagem da Ordem de Serviço" id="imagem">
+    </div>
     <style>
         .container {
-            display: flex;
-            justify-content: center;
-            /* Alinha horizontalmente ao centro */
-            align-items: center;
-            /* Alinha verticalmente ao centro */
-            height: 100vh;
-            /* Altura do contêiner */
-
+            text-align: center;
+            /* Centraliza a imagem na div */
         }
 
         #imagem {
-            width: 100%;
-            height: 85%;
+            max-width: 100%;
+            /* Ajusta a largura máxima para 60% da largura da div pai */
+            max-height: 100vh;
+            /* Ajusta a altura máxima para 60% da altura da viewport */
+            height: auto;
+            /* Ajusta a altura para manter a proporção da imagem */
+            width: auto;
+            /* Ajusta a largura para manter a proporção da imagem */
+            display: inline-block;
+            /* Opcional: evita que a imagem se expanda para toda a largura disponível */
         }
     </style>
-    <div class="container">
-        <img src="/{{$ordem_servico->link_foto}}" alt="Imagem 1" id="imagem">
-
-    </div>
-
+    @else
+    <p>Imagem não disponível</p>
+    @endif
 </main>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -468,6 +486,7 @@
             </div>
             <div class="modal-body">
                 Deseja realmente fechar a Ordem de serviço?
+                <div style="font-size:15px;color:black;">Se clicar em confirmar, todos os pedidos de saída ligados a esta O.S., tmabém serão fechados!</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -476,7 +495,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal de Sucesso -->
 <div class="modal fade" id="sucessoModal" tabindex="-1" aria-labelledby="sucessoModalLabel" aria-hidden="true">
     <div class="modal-dialog">

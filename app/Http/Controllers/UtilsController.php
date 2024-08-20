@@ -7,6 +7,7 @@ use App\Models\RecursosProducao;
 use App\Models\Equipamento;
 use App\Models\OrdemServico;
 use App\Models\PedidoCompra;
+use App\Models\PedidoSaida; //pedido de saída
 use Illuminate\Http\Request;
 use App\Models\Servicos_executado;
 use App\Models\PecasEquipamentos;
@@ -88,6 +89,19 @@ class UtilsController extends Controller
         $ordem_servico->situacao = 'fechado'; //fecha a situação
         $ordem_servico->status_servicos = 100; //coloca o status em 100%
         $ordem_servico->save(); //salva a atleração da ordem
+        // Encontre o pedido de saida pelo ID
+        // Filtra os registros onde 'ordem_servico_id' é igual a $id_os
+
+        // Pega todos os registros na tabela 'pedidos_saida' com o ID da ordem de serviço especificado
+        $pedidos_saida = PedidoSaida::where('ordem_servico_id', $id_os)->get();
+
+        foreach ($pedidos_saida as $pedido) {
+            // Atualiza o status para 'fechado'
+            $pedido->status = 'fechado';
+
+            // Salva as alterações no banco de dados para este registro
+            $pedido->save();
+        }
         return response()->json(['mensagem' => 'ordem atualizada para fechado1']);
     }
     //------------------------------------------------------//
@@ -234,7 +248,7 @@ class UtilsController extends Controller
             $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
             $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
             $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
-            $pecaEquipamento->save();//salva alteração em  peças equipamentos
+            $pecaEquipamento->save(); //salva alteração em  peças equipamentos
         } else {
             return response()->json(['mensagem' => 'ID da ordem de serviço inválido.'], 400);
         };

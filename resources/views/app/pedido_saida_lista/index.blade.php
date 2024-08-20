@@ -7,7 +7,6 @@
     <div class="titulo-main">
         Pedido de saída produtos com O.S.
     </div>
-
     <style>
         .titulo-main {
             font-size: 20px;
@@ -130,7 +129,6 @@
                 <div class="conteudo">
                     <input type="text" class="input-bordernone" name="status" id="status" value="{{$pedido_saida_f->status ?? old('status') }}" required autocomplete="status" autofocus readonly>
                 </div>
-
             </div>
         </div>
         {{--Box 2--}}
@@ -228,12 +226,13 @@
     <!-- <iframe id="ifm1" src="{{route('item-produto-saida.index',['pedido' => $pedido_saida_f->id,'empresa_id'=>$pedido_saida_f->empresa->id,'equipamento'=>$pedido_saida_f->equipamento->id])}}" width="90%" height="600" style="border:1px solid black;">-->
     <!-- <iframe id="ifm1" src="{{route('item-produto-saida.index',['pedido' => $pedido_saida_f->id,'empresa_id'=>$pedido_saida_f->empresa->id,'equipamento'=>$pedido_saida_f->equipamento->id])}}" width="90%" height="600" style="border:1px solid black;">  
     </iframe>-->
+    @if($pedido_saida_f->status != 'fechado')
     <hr>
+
     {{-- Formulário com os dados para adicionar o item --}}
     <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST" style="margin-left:20PX;">
         Adicionar um Produto
         @csrf
-        @if($pedido_saida_f->status != 'fechado')
         <div class="form-row">
             <input type="number" name="componente_id" id="componente_id" value="" readonly hidden>
             <input type="number" name="pedido_id" id="pedido_id" value="{{$pedido_saida_f->id ?? old('id') }}" readonly hidden>
