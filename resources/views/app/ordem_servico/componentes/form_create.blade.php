@@ -147,7 +147,7 @@
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>
-                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" readonly style="color:#4caf50;">
+                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao"  style="color:#4caf50;">
                     <input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly style="color:#4caf50;">
                 </div>
 

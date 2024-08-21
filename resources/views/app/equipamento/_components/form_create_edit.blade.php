@@ -125,6 +125,7 @@
                     <option value="Terrenos">Terrenos</option>
                     <option value="Imóveis">Imóveis</option>
                     <option value="Máquina industrial">Máquina industrial</option>
+                    <option value="Reservatórios">Reservatórios</option>
                 </select>
                 {{ $errors->has('marca_id') ? $errors->first('marca_id') : '' }}
             </div>

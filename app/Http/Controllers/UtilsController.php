@@ -79,12 +79,17 @@ class UtilsController extends Controller
         // Encontre o registro pelo ID
         $id_os = $request->input('valor');
         $ordem_servico = OrdemServico::find($id_os); //procura o registro da ordem
-
+        //--------------------------------------------//
+        // Pega a maior data dos registros
+        //--------------------------------------------//
+        $data_fim = Servicos_executado::where('ordem_servico_id',$id_os)
+        ->orderBy('data_fim', 'desc')
+        ->value('data_fim');
         // Atualize o campo 'nome' com o valor enviado na requisição
         date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
         $today = date("Y-m-d"); //data de hoje
         $timeNew = date('H:i:s');
-        $ordem_servico->data_fim = $today;
+        $ordem_servico->data_fim =$data_fim ;
         $ordem_servico->hora_fim =  $timeNew;
         $ordem_servico->situacao = 'fechado'; //fecha a situação
         $ordem_servico->status_servicos = 100; //coloca o status em 100%
