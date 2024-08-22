@@ -819,9 +819,19 @@
         font-stretch: expanded;
     }
 
+    .item-week {
+        width: calc(33% - 20px);
+        height: 300px;
+        margin: 10px;
+        padding: 15px;
+        background-color: aliceblue;
+        overflow: auto;
+        /* Impede que o conteúdo transborde */
+    }
+
     .span-title-sm {
-        font-size:15px;
-        font-family:Arial,sans-serif;
-        font-weight:100;
+        font-size: 15px;
+        font-family: Arial, sans-serif;
+        font-weight: 100;
     }
 </style>

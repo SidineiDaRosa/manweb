@@ -133,11 +133,11 @@
             align-items: flex-start;
             background-color: #f2f2f2;
         }
-  
+
         .item {
             width: calc(33% - 5px);
             /* Ocupa toda a altura disponível */
-            height:870px;
+            height: 870px;
             margin: 5px;
             padding: 10px;
             background-color: white;
@@ -146,6 +146,7 @@
             overflow: auto;
             /* Impede que o conteúdo transborde */
         }
+
         .box {
             display: flex;
             width: 100%;
@@ -991,7 +992,7 @@
 
         }
     </script>
-    @endsection
+
     <style>
         table.condensed-table {
             line-height: 1;
@@ -1017,5 +1018,239 @@
             opacity: 0.9;
         }
     </style>
+    <style>
+        .container-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            background-color: white;
 
+        }
+
+        .item-25 {
+            width: calc(25% - 20px);
+            height: auto;
+            margin: 10px;
+            padding: 15px;
+            background-color: white;
+            overflow: auto;
+            /* Impede que o conteúdo transborde */
+            font-weight: 100;
+            font-family: Arial, sans-serif;
+            font-stretch: expanded;
+        }
+
+        .item-week {
+            width: calc(33% - 20px);
+            height: 300px;
+            margin: 10px;
+            padding: 15px;
+            background-color: aliceblue;
+            overflow: auto;
+            /* Impede que o conteúdo transborde */
+        }
+
+        .span-title-sm {
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+            font-weight: 100;
+        }
+
+        .today {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+    <?php
+    $today = \Carbon\Carbon::now()->format('l'); // Obtém o nome do dia da semana atual
+    ?>
+    <!------------------------------------------------------------->
+    <div class="container-month">
+        {{--Box 1--}}
+        <div class="item-week">
+        <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;">Domingo</h4>
+            @forelse ($sundayOrders as $order)
+            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            @empty
+            <li>Nenhuma ordem de serviço aberta neste domingo.</li>
+            @endforelse
+        </div>
+        {{--Box 2--}}
+        <div class="item-week">
+            <h4 class="{{ $today == 'Monday' ? 'today' : '' }}"style="font-weight:300;">Segunda-feira</h4>
+            @forelse ($mondayOrders as $order)
+            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            @empty
+            <li>Nenhuma ordem de serviço aberta nesta segunda-feira.</li>
+            @endforelse
+        </div>
+        {{--Box 3--}}
+        <div class="item-week">
+        <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}"style="font-weight:300;">Terça-feira</h4>
+            @forelse ($tuesdayOrders as $order)
+            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            @empty
+            <li>Nenhuma ordem de serviço aberta nesta terça-feira.</li>
+            @endforelse
+        </div>
+        {{--Box 4--}}
+        <div class="item-week">
+        <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}"style="font-weight:300;">Quarta-feira</h4>
+            @forelse ($wednesdayOrders as $order)
+            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            @empty
+            <li>Nenhuma ordem de serviço aberta nesta quarta-feira.</li>
+            @endforelse
+        </div>
+        {{--Box 5--}}
+        <div class="item-week">
+        <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}"style="font-weight:300;">Quinta-feira</h4>
+            @forelse ($thursdayOrders as $order)
+            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            @empty
+            <li>Nenhuma ordem de serviço aberta nesta quinta-feira.</li>
+            @endforelse
+        </div>
+        {{--Box 6--}}
+        <div class="item-week">
+        <h4 class="{{ $today == 'Friday' ? 'today' : '' }}"style="font-weight:300;">Sexta-feira</h4>
+            @forelse ($fridayOrders as $order)
+            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            @empty
+            <li>Nenhuma ordem de serviço aberta nesta sexta-feira.</li>
+            @endforelse
+        </div>
+        {{--Box 7--}}
+        <div class="item-week">
+        <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}"style="font-weight:300;">Sábado</h4>
+            @forelse ($saturdayOrders as $order)
+            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            @empty
+            <li>Nenhuma ordem de serviço aberta neste sábado.</li>
+            @endforelse
+        </div>
+        {{--fim card--}}
+    </div>
+    {{--//----------------------------------------------------//---}}
+    {{--//- Calendário mensal---------------------------------//---}}
+    {{--//----------------------------------------------------//---}}
+    <style>
+        .container-month {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            /* Alinha os itens à esquerda */
+            align-items: flex-start;
+            background-color: white;
+        }
+
+        .item-month {
+            width: calc(14.28% - 20px);
+            height: 300px;
+            margin: 5px;
+            padding: 5px;
+            background-color: aliceblue;
+            overflow: auto;
+            /* Impede que o conteúdo transborde */
+        }
+    </style>
+
+    <div class="container-month" hidden>
+        {{-- Box 1 --}}
+        <div class="item-month">
+            <h4>1</h4>
+        </div>
+        <div class="item-month">
+            <h4>2</h4>
+        </div>
+        <div class="item-month">
+            <h4>3</h4>
+        </div>
+        <div class="item-month">
+            <h4>4</h4>
+        </div>
+        <div class="item-month">
+            <h4>5</h4>
+        </div>
+        <div class="item-month">
+            <h4>6</h4>
+        </div>
+        <div class="item-month">
+            <h4>7</h4>
+        </div>
+        <div class="item-month">
+            <h4>8</h4>
+        </div>
+        <div class="item-month">
+            <h4>9</h4>
+        </div>
+        <div class="item-month">
+            <h4>10</h4>
+        </div>
+        <div class="item-month">
+            <h4>11</h4>
+        </div>
+        <div class="item-month">
+            <h4>12</h4>
+        </div>
+        <div class="item-month">
+            <h4>13</h4>
+        </div>
+        <div class="item-month">
+            <h4>14</h4>
+        </div>
+        <div class="item-month">
+            <h4>15</h4>
+        </div>
+        <div class="item-month">
+            <h4>16</h4>
+        </div>
+        <div class="item-month">
+            <h4>17</h4>
+        </div>
+        <div class="item-month">
+            <h4>18</h4>
+        </div>
+        <div class="item-month">
+            <h4>19</h4>
+        </div>
+        <div class="item-month">
+            <h4>20</h4>
+        </div>
+        <div class="item-month">
+            <h4>21</h4>
+        </div>
+        <div class="item-month">
+            <h4>22</h4>
+        </div>
+        <div class="item-month">
+            <h4>23</h4>
+        </div>
+        <div class="item-month">
+            <h4>24</h4>
+        </div>
+        <div class="item-month">
+            <h4>25</h4>
+        </div>
+        <div class="item-month">
+            <h4>26</h4>
+        </div>
+        <div class="item-month">
+            <h4>27</h4>
+        </div>
+        <div class="item-month">
+            <h4>28</h4>
+        </div>
+        <div class="item-month">
+            <h4>29</h4>
+        </div>
+        <div class="item-month">
+            <h4>30</h4>
+        </div>
+        <div class="item-month">
+            <h4>31</h4>
+        </div>
+    </div>
+    @endsection
 </main>

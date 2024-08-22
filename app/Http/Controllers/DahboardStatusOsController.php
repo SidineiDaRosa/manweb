@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Empresas;
@@ -302,20 +304,46 @@ class DahboardStatusOsController extends Controller
         $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
 
         // $produtos_estoque_critico= EstoqueProdutos::where('quantidade', '<=0')->get();
-       // $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
-           // ->orderBy('criticidade', 'desc')
-           // ->get();
+        // $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
+        // ->orderBy('criticidade', 'desc')
+        // ->get();
         $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
             ->where('criticidade', '>=', 1)
             ->orderBy('criticidade', 'desc')
             ->get();
         $produtos = Produto::all();
         $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
+        //---------------------------------------------------//
+        //  Pega as os da semana                            //
+        //--------------------------------------------------//
+        
+        // Obtém o início da semana atual
+        $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
+
+        // Variáveis para cada dia da semana
+        $mondayOrders = $this->getOrdersForDay($startOfWeek);
+        $tuesdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDay()->format('Y-m-d'));
+        $wednesdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(2)->format('Y-m-d'));
+        $thursdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(3)->format('Y-m-d'));
+        $fridayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(4)->format('Y-m-d'));
+        $saturdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(5)->format('Y-m-d'));
+        $sundayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(6)->format('Y-m-d'));
+        
+        //---------------------------------------------------//
+        //  envia dados para view                           //
+        //--------------------------------------------------//
         return view('app.ordem_servico.dashboard_status_os', [
-            'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
+            'equipamento' => $equipamento,
+            'ordens_servicos' => $ordens_servicos,
+            'funcionarios' => $funcionarios,
             'empresa' => $empresa,
-            'countos' => $countOS, 'data_inicio' => $dataInicio, 'data_fim' => $dataFim, 'countos_fechado' => $countOSFechado,
-            'total_aberto' => $countOSAberto, 'total_fechado' => $countOSFechado, 'ordens_servicos_hoje' => $ordens_servicos_hoje,
+            'countos' => $countOS,
+            'data_inicio' => $dataInicio,
+            'data_fim' => $dataFim,
+            'countos_fechado' => $countOSFechado,
+            'total_aberto' => $countOSAberto,
+            'total_fechado' => $countOSFechado,
+            'ordens_servicos_hoje' => $ordens_servicos_hoje,
             'ordens_servicos_hoje_fechado' => $ordens_servicos_hoje_fechado,
             'ordens_servicos_emandamento' => $ordens_servicos_emandamento,
             'pedidos_compra' => $pedidosCompraAberto,
@@ -335,7 +363,24 @@ class DahboardStatusOsController extends Controller
             'ordens_servicos_third_day' => $ordens_servicos_third_day,
             'produtos_estoque_critico' => $produtos_estoque_critico,
             'produtos' => $produtos,
-            'assets'=>$assets
+            'assets' => $assets,
+            'mondayOrders'=>$mondayOrders,
+            'tuesdayOrders'=>$tuesdayOrders,
+            'wednesdayOrders'=>$wednesdayOrders,
+            'thursdayOrders'=>$thursdayOrders,
+            'fridayOrders'=>$fridayOrders,
+            'saturdayOrders'=> $saturdayOrders,
+            'sundayOrders'=>$sundayOrders
         ]);
+    }
+    private function getOrdersForDay($date)
+    {
+        $dayStart = $date . ' 00:00:00';
+        $dayEnd = $date . ' 23:59:59';
+
+        // Filtra ordens de serviço para o dia especificado
+        return OrdemServico::whereBetween('data_inicio', [$dayStart, $dayEnd])
+                           ->where('situacao', 'aberto')
+                           ->get();
     }
 }
