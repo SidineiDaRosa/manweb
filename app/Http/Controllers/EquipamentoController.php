@@ -61,7 +61,8 @@ class EquipamentoController extends Controller
         $equipamentos = Equipamento::all();
         $empresas = Empresas::all();
         return view('app.equipamento.create', [
-            'marcas' => $marcas, 'equipamentos' => $equipamentos,
+            'marcas' => $marcas,
+            'equipamentos' => $equipamentos,
             'empresas' => $empresas
         ]);
     }
@@ -87,7 +88,9 @@ class EquipamentoController extends Controller
         $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
         return view('app.equipamento.show', [
-            'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
+            'equipamento' => $equipamento,
+            'pecas_equipamento' => $pecasEquip,
+            'ordens_servicos' => $ordens_servicos,
             'ordens_servicos_1' => $ordens_servicos_1
         ]);
     }
@@ -114,16 +117,17 @@ class EquipamentoController extends Controller
             $ordens_servicos = OrdemServico::where('equipamento_id', $equipamento->id)->where('situacao', 'fechado')->orderBy('data_fim', 'desc')->get();
             $servicos_executados_colecao = collect(); // Cria uma coleção vazia para colocar os serviços
             $usuarios = User::all(); // Obtém todos os usuários
-            $equipamento_filho=Equipamento::where('equipamento_pai', $equipamento->id)->get();
+            $equipamento_filho = Equipamento::where('equipamento_pai', $equipamento->id)->get();
             foreach ($ordens_servicos as $ordem_servico) {
                 $servicos_executados = Servicos_executado::where('ordem_servico_id', $ordem_servico->id)->get();
                 $servicos_executados_colecao = $servicos_executados_colecao->merge($servicos_executados); // Adiciona os serviços executados à coleção
             }
             return view('app.equipamento.os_fechadas_equipamento', [
-                'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos,
-                'servicos_executados_colecao' =>$servicos_executados_colecao,
-                'usuarios'=>$usuarios,
-                'equipamento_filho'=>$equipamento_filho
+                'equipamento' => $equipamento,
+                'ordens_servicos' => $ordens_servicos,
+                'servicos_executados_colecao' => $servicos_executados_colecao,
+                'usuarios' => $usuarios,
+                'equipamento_filho' => $equipamento_filho
 
             ]);
         } else {
@@ -131,21 +135,36 @@ class EquipamentoController extends Controller
             $todas = $Request->get('todas');
             $equipamento_id = $equipamento->id;
             if ($todas == 1) {
-                $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->get();
+                $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->where('tipo_componente','componente')->get();
                 $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
                 $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
-                
+                $chek_list = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','Chek-List')->get();
+                $lubrificacao = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','lubrificacao')->get();
+                $manutencao= PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','manutencao')->get();
                 return view('app.equipamento.show', [
-                    'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
-                    'ordens_servicos_1' => $ordens_servicos_1
+                    'equipamento' => $equipamento,
+                    'pecas_equipamento' => $pecasEquip,
+                    'ordens_servicos' => $ordens_servicos,
+                    'ordens_servicos_1' => $ordens_servicos_1,
+                    'chek_list' => $chek_list,
+                    'lubrificacao'=> $lubrificacao,
+                    'manutencao'=>$manutencao
                 ]);
             } else {
-                $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 72)->orderby('horas_proxima_manutencao')->get();
+                $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 72)->orderby('horas_proxima_manutencao')->where('tipo_componente','componente')->get();
                 $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
                 $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
+                $chek_list = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','Chek-List')->get();
+                $lubrificacao = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','lubrificacao')->get();
+                $manutencao= PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','manutencao')->get();
                 return view('app.equipamento.show', [
-                    'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
-                    'ordens_servicos_1' => $ordens_servicos_1
+                    'equipamento' => $equipamento,
+                    'pecas_equipamento' => $pecasEquip,
+                    'ordens_servicos' => $ordens_servicos,
+                    'ordens_servicos_1' => $ordens_servicos_1,
+                    'chek_list' => $chek_list,
+                    'lubrificacao'=> $lubrificacao,
+                    'manutencao'=>$manutencao
                 ]);
             }
         }
@@ -164,7 +183,8 @@ class EquipamentoController extends Controller
         $empresas = Empresas::all();
         return view('app.equipamento.edit', [
             'equipamento' => $equipamento,
-            'equipamentos' => $equipamentos, 'marcas' => $marcas,
+            'equipamentos' => $equipamentos,
+            'marcas' => $marcas,
             'empresas' => $empresas
 
         ]);
@@ -187,7 +207,9 @@ class EquipamentoController extends Controller
         $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
         return view('app.equipamento.show', [
-            'equipamento' => $equipamento, 'pecas_equipamento' => $pecasEquip, 'ordens_servicos' => $ordens_servicos,
+            'equipamento' => $equipamento,
+            'pecas_equipamento' => $pecasEquip,
+            'ordens_servicos' => $ordens_servicos,
             'ordens_servicos_1' => $ordens_servicos_1
         ]);
     }

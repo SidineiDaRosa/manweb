@@ -63,7 +63,7 @@
                     document.getElementById('horas_proxima_manutencao').value = `${remainingHours}`;
                     // Obter o campo pelo ID
                     const descricaoCampo = document.getElementById('descricao');
-                    document.getElementById('descricao').value='';
+                    document.getElementById('descricao').value = '';
 
                     // Remover o atributo readonly para habilitar o campo
                     descricaoCampo.removeAttribute('readonly');
@@ -242,9 +242,10 @@
                     <hr>
                     <div class="conteudo">
                         <select class="input-text" name="tipo_componente" id="tipo_componente" value="ativado">
+                            <option value="manutencao">manutencao</option>
+                            <option value="Componente">Componente</option>
                             <option value="lubrificação">lubrificação</option>
                             <option value="Chek-List">Chek-List</option>
-                            <option value="Componente">Componente</option>
                             <option value="mensalidade">Mensalidade</option>
                         </select>
                     </div>
@@ -471,4 +472,3 @@
             </tbody>
         </table>
     </div>
-   

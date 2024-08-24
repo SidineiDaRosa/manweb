@@ -720,12 +720,12 @@
 
 </table>
 <!------------------------------------------------------------->
-<div class="container-box" hidden>
+<div class="container-box">
     {{--Box 1--}}
-    <div class="item-25" style="font-size:15px;">
+    <div class="item-25">
         <h4>Componentes</h4>
         @foreach ($pecas_equipamento as $peca_equipamento)
-        <span>{{ $peca_equipamento->id }}--{{ $peca_equipamento->descricao}} <br></span>
+        {{ $peca_equipamento->id }}--{{ $peca_equipamento->descricao}} <br>
         <a class="txt-link" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
             {{ $peca_equipamento->produto->nome}}
         </a> <br>
@@ -733,64 +733,43 @@
         {{ $peca_equipamento->intervalo_manutencao}}hs <br>
         {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}} <br>
         {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
+
         <hr>
         @endforeach
     </div>
     {{--Box 2--}}
     <div class="item-25">
         <h4>Manutenção</h4>
-        @foreach ($pecas_equipamento as $peca_equipamento)
-        {{ $peca_equipamento->id }}--{{ $peca_equipamento->descricao}}<br>
-
-        {{ $peca_equipamento->produto->id}} <br>
-        <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
-            <i class="icofont-eye-alt"></i>
-        </a> <br>
-
-        {{ $peca_equipamento->produto->nome}} <br>
-        {{ $peca_equipamento->quantidade}} <br>
-        {{ $peca_equipamento->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}} <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
+        @foreach ($manutencao as $manutencao_f)
+        {{$manutencao_f->id}} <br>
+        {{$manutencao_f->descricao}} <br>
+        {{ $manutencao_f->intervalo_manutencao}}hs <br>
+        {{ date( 'd/m/Y' , strtotime($manutencao_f['data_substituicao']))}}-{{ $manutencao_f->hora_substituicao}} <br>
+        {{ date( 'd/m/Y' , strtotime($manutencao_f['data_proxima_manutencao']))}} <br>
         <hr>
         @endforeach
     </div>
     {{--Box 3--}}
     <div class="item-25">
         <h4>Check-list</h4>
-        @foreach ($pecas_equipamento as $peca_equipamento)
-        {{ $peca_equipamento->id }} <br>
-        {{ $peca_equipamento->descricao}} <br>
-        {{ $peca_equipamento->produto->id}} <br>
-        <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
-            <i class="icofont-eye-alt"></i>
-        </a> <br>
-
-        {{ $peca_equipamento->produto->nome}} <br>
-        {{ $peca_equipamento->quantidade}} <br>
-        {{ $peca_equipamento->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}} <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
+        @foreach ($chek_list as $chek_list_f)
+        {{ $chek_list_f->id }} <br>
+        {{ $chek_list_f->descricao}} <br>
+        {{ $chek_list_f->intervalo_manutencao}}hs <br>
+        {{ date( 'd/m/Y' , strtotime($chek_list_f['data_substituicao']))}}-{{ $chek_list_f->hora_substituicao}} <br>
+        {{ date( 'd/m/Y' , strtotime($chek_list_f['data_proxima_manutencao']))}} <br>
         <hr>
         @endforeach
     </div>
     {{--Box 4--}}
     <div class="item-25">
         <h4>Lubrificação</h4>
-        @foreach ($pecas_equipamento as $peca_equipamento)
-        <span></span>
-        {{ $peca_equipamento->id }} <br>
-        {{ $peca_equipamento->descricao}} <br>
-        {{ $peca_equipamento->produto->id}} <br>
-        <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
-            <i class="icofont-eye-alt"></i>
-        </a> <br>
-
-        {{ $peca_equipamento->produto->nome}} <br>
-        {{ $peca_equipamento->quantidade}} <br>
-        {{ $peca_equipamento->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}} <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
+        @foreach ($lubrificacao as $lubrificacao_f)
+        {{$lubrificacao_f->id}} <br>
+        {{$lubrificacao_f->descricao}}
+        {{ $lubrificacao_f->intervalo_manutencao}}hs <br>
+        {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_substituicao']))}}-{{ $lubrificacao_f->hora_substituicao}} <br>
+        {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_proxima_manutencao']))}} <br>
         <hr style="margin:10px;">
         @endforeach
     </div>
@@ -814,9 +793,9 @@
         background-color: white;
         overflow: auto;
         /* Impede que o conteúdo transborde */
+        font-size:15px;
+        font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-weight: 100;
-        font-family: Arial, sans-serif;
-        font-stretch: expanded;
     }
 
     .item-week {
