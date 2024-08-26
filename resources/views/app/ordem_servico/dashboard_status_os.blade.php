@@ -1071,19 +1071,6 @@
     ?>
     <!------------------------------------------------------------->
     <div class="container-month">
-        {{--Box 1--}}
-        <div class="item-week">
-            <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;">Domingo</h4>
-            @forelse ($sundayOrders as $order)
-            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
-            {{ $order->descricao}}
-            <hr style="color:green;">
-            @empty
-            Nenhuma ordem de serviço aberta neste domingo.
-            <hr>
-            @endforelse
-        </div>
         {{--Box 2--}}
         <div class="item-week">
 
@@ -1155,6 +1142,19 @@
             <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta neste sábado.
+            @endforelse
+        </div>
+        {{--Box 1--}}
+        <div class="item-week">
+            <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;">Domingo</h4>
+            @forelse ($sundayOrders as $order)
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
+            <hr style="color:green;">
+            @empty
+            Nenhuma ordem de serviço aberta neste domingo.
+            <hr>
             @endforelse
         </div>
         {{--fim card--}}
