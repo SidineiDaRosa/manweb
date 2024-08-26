@@ -357,7 +357,8 @@
                             let mes = mesesAno[dataAtual.getMonth()];
                             let ano = dataAtual.getFullYear();
 
-                            document.getElementById('dataCompleta').innerText = `O.S. PARA Hoje, ${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
+                            document.getElementById('dataCompleta').innerText = `O.S. Para Hoje, ${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
+                            document.getElementById('dataCompleta_semana').innerText = `${diaSemana}, ${diaMes} de ${mes} de ${ano}`;
                         }
 
                         // Chama a função para exibir a data completa ao carregar a página
@@ -1046,8 +1047,11 @@
             height: 300px;
             margin: 10px;
             padding: 15px;
-            background-color: aliceblue;
+            background-color: antiquewhite;
             overflow: auto;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: 200;
+            font-size: 15px;
             /* Impede que o conteúdo transborde */
         }
 
@@ -1069,65 +1073,82 @@
     <div class="container-month">
         {{--Box 1--}}
         <div class="item-week">
-        <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;">Domingo</h4>
+            <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;">Domingo</h4>
             @forelse ($sundayOrders as $order)
-            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
             @empty
-            <li>Nenhuma ordem de serviço aberta neste domingo.</li>
+            Nenhuma ordem de serviço aberta neste domingo.
+            <hr>
             @endforelse
         </div>
         {{--Box 2--}}
         <div class="item-week">
-            <h4 class="{{ $today == 'Monday' ? 'today' : '' }}"style="font-weight:300;">Segunda-feira</h4>
+
+            <h4 class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;">Segunda-feira</h4>
             @forelse ($mondayOrders as $order)
-            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
             @empty
-            <li>Nenhuma ordem de serviço aberta nesta segunda-feira.</li>
+            Nenhuma ordem de serviço aberta nesta segunda-feira.
             @endforelse
         </div>
         {{--Box 3--}}
         <div class="item-week">
-        <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}"style="font-weight:300;">Terça-feira</h4>
+            <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:300;">Terça-feira</h4>
             @forelse ($tuesdayOrders as $order)
-            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
             @empty
-            <li>Nenhuma ordem de serviço aberta nesta terça-feira.</li>
+            Nenhuma ordem de serviço aberta nesta terça-feira.
             @endforelse
         </div>
         {{--Box 4--}}
         <div class="item-week">
-        <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}"style="font-weight:300;">Quarta-feira</h4>
+            <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:300;">Quarta-feira</h4>
             @forelse ($wednesdayOrders as $order)
-            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
             @empty
-            <li>Nenhuma ordem de serviço aberta nesta quarta-feira.</li>
+            Nenhuma ordem de serviço aberta nesta quarta-feira.
             @endforelse
         </div>
         {{--Box 5--}}
         <div class="item-week">
-        <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}"style="font-weight:300;">Quinta-feira</h4>
+            <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}" style="font-weight:300;">Quinta-feira</h4>
             @forelse ($thursdayOrders as $order)
-            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
             @empty
-            <li>Nenhuma ordem de serviço aberta nesta quinta-feira.</li>
+            Nenhuma ordem de serviço aberta nesta quinta-feira.
             @endforelse
         </div>
         {{--Box 6--}}
         <div class="item-week">
-        <h4 class="{{ $today == 'Friday' ? 'today' : '' }}"style="font-weight:300;">Sexta-feira</h4>
+            <h4 class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:300;">Sexta-feira</h4>
             @forelse ($fridayOrders as $order)
-            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
             @empty
-            <li>Nenhuma ordem de serviço aberta nesta sexta-feira.</li>
+            Nenhuma ordem de serviço aberta nesta sexta-feira.
             @endforelse
         </div>
         {{--Box 7--}}
         <div class="item-week">
-        <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}"style="font-weight:300;">Sábado</h4>
+            <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:300;">Sábado</h4>
             @forelse ($saturdayOrders as $order)
-            <li>ID: {{ $order->id }} - Data de Início: {{ $order->data_inicio }}</li>
+            ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
+            {{ $order->equipamento->nome}} <br>
+            {{ $order->descricao}}
+            <hr style="color: chartreuse;">
             @empty
-            <li>Nenhuma ordem de serviço aberta neste sábado.</li>
+            Nenhuma ordem de serviço aberta neste sábado.
             @endforelse
         </div>
         {{--fim card--}}
