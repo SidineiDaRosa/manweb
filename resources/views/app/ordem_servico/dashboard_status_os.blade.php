@@ -1078,6 +1078,7 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             {{ $order->equipamento->nome}} <br>
             {{ $order->descricao}}
+            <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta neste domingo.
             <hr>
@@ -1091,6 +1092,7 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             {{ $order->equipamento->nome}} <br>
             {{ $order->descricao}}
+            <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta nesta segunda-feira.
             @endforelse
@@ -1102,6 +1104,7 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             {{ $order->equipamento->nome}} <br>
             {{ $order->descricao}}
+            <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta nesta terça-feira.
             @endforelse
@@ -1113,6 +1116,7 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             {{ $order->equipamento->nome}} <br>
             {{ $order->descricao}}
+            <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta nesta quarta-feira.
             @endforelse
@@ -1124,6 +1128,7 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             {{ $order->equipamento->nome}} <br>
             {{ $order->descricao}}
+            <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta nesta quinta-feira.
             @endforelse
@@ -1135,6 +1140,7 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             {{ $order->equipamento->nome}} <br>
             {{ $order->descricao}}
+            <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta nesta sexta-feira.
             @endforelse
@@ -1146,7 +1152,7 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             {{ $order->equipamento->nome}} <br>
             {{ $order->descricao}}
-            <hr style="color: chartreuse;">
+            <hr style="color:green;">
             @empty
             Nenhuma ordem de serviço aberta neste sábado.
             @endforelse
