@@ -377,7 +377,7 @@
             </button>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
             <button id="bt_iniciar_os" class="btn btn-outline-success mb-1" onclick="StartOs()" style="width:300px;">
-                <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
+                <img src="{{ asset('img/icon/rotate.png') }}" alt="" style="height:25px; width:25px;">
                 Iniciar OS
             </button>
             @endif
