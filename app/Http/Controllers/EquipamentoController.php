@@ -110,7 +110,7 @@ class EquipamentoController extends Controller
         $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
         if ($tipoFiltro == 1) {
             //------------------------------------//php
-            // Abre o.s. fehadas por equipamento
+            // Busca o.s. fehadas por equipamento
             //-----------------------------------//
 
             $equipamento = Equipamento::find($equipamento->id);
@@ -143,12 +143,12 @@ class EquipamentoController extends Controller
                 $manutencao= PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','manutencao')->get();
                 return view('app.equipamento.show', [
                     'equipamento' => $equipamento,
-                    'pecas_equipamento' => $pecasEquip,
                     'ordens_servicos' => $ordens_servicos,
                     'ordens_servicos_1' => $ordens_servicos_1,
+                    'pecas_equipamento' => $pecasEquip,
+                    'manutencao'=>$manutencao,
                     'chek_list' => $chek_list,
                     'lubrificacao'=> $lubrificacao,
-                    'manutencao'=>$manutencao
                 ]);
             } else {
                 $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 72)->orderby('horas_proxima_manutencao')->where('tipo_componente','componente')->get();
@@ -159,12 +159,12 @@ class EquipamentoController extends Controller
                 $manutencao= PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','manutencao')->get();
                 return view('app.equipamento.show', [
                     'equipamento' => $equipamento,
-                    'pecas_equipamento' => $pecasEquip,
                     'ordens_servicos' => $ordens_servicos,
                     'ordens_servicos_1' => $ordens_servicos_1,
+                    'pecas_equipamento' => $pecasEquip,
+                    'manutencao'=>$manutencao,
                     'chek_list' => $chek_list,
                     'lubrificacao'=> $lubrificacao,
-                    'manutencao'=>$manutencao
                 ]);
             }
         }

@@ -611,42 +611,58 @@
 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id,'todas'=>'1']) }}">
     <i class="icofont-eye-alt">Ver todas as peças</i>
 </a>
-<table class="table table-striped table-hover" id="tblPecas">
-    <thead>
-        <tr>
-            <th>ID RG</th>
-            <th>Descrição</th>
-            <th>ID Produto </th>
-            <th>Produto Nome</th>
-            <th>Quantidade</th>
-            <th>intervalo</th>
-            <th>data ultima substituação</th>
-            <th>data proxima</th>
-            <th>horas proxima</th>
-            <th>horimetro</th>
-            <th>status</th>
-            <th>Tipo de Ativo</th>
-            <th>Criticidade</th>
-            <th>Operaçoes</th>
 
-        </tr>
-    </thead>
-    <tbody>
+
+<script>
+    function DeletarPecaEquip(id) {
+        if (confirm('Você tem certeza que deseja deletar esta peça?')) {
+            // Envia uma requisição DELETE para deletar o item
+            fetch(`/peca-equipamento/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => {
+                    console.log('Resposta recebida:', response);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dados da resposta:', data);
+                    if (data.success) {
+                        alert('Peça deletada com sucesso!');
+                        location.reload();
+                    } else {
+                        alert('Ocorreu um erro ao tentar deletar a peça: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    alert('Erro ao tentar deletar a peça.');
+                });
+        }
+    }
+</script>
+
+<!------------------------------------------------------------->
+<div class="container-box">
+    {{--Box 1--}}
+    <div class="item-25">
+        <h4>Componentes</h4>
         @foreach ($pecas_equipamento as $peca_equipamento)
-        <tr>
-            <td scope="row">{{ $peca_equipamento->id }}</td>
-            <td scope="row">{{ $peca_equipamento->descricao}}</td>
-            <td>{{ $peca_equipamento->produto->id}}
-                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
-                    <i class="icofont-eye-alt"></i>
-                </a>
-            </td>
-            <td>{{ $peca_equipamento->produto->nome}}</td>
-            <td>{{ $peca_equipamento->quantidade}}</td>
-            <td>{{ $peca_equipamento->intervalo_manutencao}}hs</td>
-            <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}}</td>
-            <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}}</td>
-            <td class="
+        {{ $peca_equipamento->id }} | {{ $peca_equipamento->descricao}} <br>
+        @if(isset($peca_equipamento->produto))
+        <a class="txt-link" href="{{ route('produto.show', ['produto' => $peca_equipamento->produto->id]) }}">
+            {{ $peca_equipamento->produto->nome }}
+        </a>
+        @else
+        Produto não encontrado
+        @endif
+        {{ $peca_equipamento->quantidade}} <br>
+        {{ $peca_equipamento->intervalo_manutencao}}hs <br>
+        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}} <br>
+        Próxima manutenção: {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
+        <div class="
     @if($peca_equipamento->horas_proxima_manutencao >= 48)
         bg-success
     @elseif($peca_equipamento->horas_proxima_manutencao < 48 && $peca_equipamento->horas_proxima_manutencao > 0)
@@ -654,87 +670,21 @@
     @else
         bg-danger
     @endif
-">
-                {{ $peca_equipamento->horas_proxima_manutencao }}
-            </td>
-            <td>{{ $peca_equipamento->horimetro}}</td>
-            <td>{{ $peca_equipamento->status}}</td>
-            <td>{{ $peca_equipamento->tipo_componente}}</td>
-            <td>{{ $peca_equipamento->criticidade}}</td>
+" style="margin-bottom:5px;">Horas proxima:{{$peca_equipamento->horas_proxima_manutencao}}</div>
+        <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
+            <i class="icofont-eye-alt"></i>
+        </a>
+        {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
+        <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $peca_equipamento->id,'tipofiltro'=>1,'produto'=>0]) }}">
+            <i class="icofont-ui-edit"></i>
+        </a>
 
-
-            </div>
-            </td>
-            <!--Div operaçoes do registro da ordem des serviço-->
-            <td>
-                <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                    <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
-                        <i class="icofont-eye-alt"></i>
-                    </a>
-                    {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
-                    <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $peca_equipamento->id,'tipofiltro'=>1,'produto'=>0]) }}">
-                        <i class="icofont-ui-edit"></i>
-                    </a>
-
-                    <!--Condoçes para deletar a os-->
-                    <meta name="csrf-token" content="{{ csrf_token() }}">
-                    <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $peca_equipamento->id }})">
-                        <i class="icofont-ui-delete"></i>
-                    </a>
-                    <script>
-                        function DeletarPecaEquip(id) {
-                            if (confirm('Você tem certeza que deseja deletar esta peça?')) {
-                                // Envia uma requisição DELETE para deletar o item
-                                fetch(`/peca-equipamento/${id}`, {
-                                        method: 'DELETE',
-                                        headers: {
-                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                        }
-                                    })
-                                    .then(response => {
-                                        console.log('Resposta recebida:', response);
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        console.log('Dados da resposta:', data);
-                                        if (data.success) {
-                                            alert('Peça deletada com sucesso!');
-                                            location.reload();
-                                        } else {
-                                            alert('Ocorreu um erro ao tentar deletar a peça: ' + data.message);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Erro na requisição:', error);
-                                        alert('Erro ao tentar deletar a peça.');
-                                    });
-                            }
-                        }
-                    </script>
-
-                    </a>
-                    <!------------------------------>
-                </div>
-                @endforeach
-    </tbody>
-
-</table>
-<!------------------------------------------------------------->
-<div class="container-box">
-    {{--Box 1--}}
-    <div class="item-25">
-        <h4>Componentes</h4>
-        @foreach ($pecas_equipamento as $peca_equipamento)
-        {{ $peca_equipamento->id }}--{{ $peca_equipamento->descricao}} <br>
-        <a class="txt-link" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
-            {{ $peca_equipamento->produto->nome}}
-        </a> <br>
-        {{ $peca_equipamento->quantidade}} <br>
-        {{ $peca_equipamento->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}} <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
-
-        <hr>
+        <!--Condoçes para deletar a os-->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $peca_equipamento->id }})">
+            <i class="icofont-ui-delete"></i>
+        </a>
+        <hr style="margin-top:10px;">
         @endforeach
     </div>
     {{--Box 2--}}
@@ -746,7 +696,27 @@
         {{ $manutencao_f->intervalo_manutencao}}hs <br>
         {{ date( 'd/m/Y' , strtotime($manutencao_f['data_substituicao']))}}-{{ $manutencao_f->hora_substituicao}} <br>
         {{ date( 'd/m/Y' , strtotime($manutencao_f['data_proxima_manutencao']))}} <br>
-        <hr>
+        <div class="
+    @if($manutencao_f->horas_proxima_manutencao >= 48)
+        bg-success
+    @elseif($manutencao_f->horas_proxima_manutencao < 48 && $manutencao_f->horas_proxima_manutencao > 0)
+        bg-warning
+    @else
+        bg-danger
+    @endif
+" style="margin-bottom:5px;">Horas proxima:{{$manutencao_f->horas_proxima_manutencao}}</div>
+        <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$manutencao_f->id ,'chek_list'=>1])}}">
+            <i class="icofont-eye-alt"></i>
+        </a>
+        <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $manutencao_f->id,'tipofiltro'=>1,'produto'=>0]) }}">
+            <i class="icofont-ui-edit"></i>
+        </a>
+        <!--Condoçes para deletar a os-->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $manutencao_f->id }})">
+            <i class="icofont-ui-delete"></i>
+        </a>
+        <hr style="margin-top:10px;">
         @endforeach
     </div>
     {{--Box 3--}}
@@ -758,7 +728,29 @@
         {{ $chek_list_f->intervalo_manutencao}}hs <br>
         {{ date( 'd/m/Y' , strtotime($chek_list_f['data_substituicao']))}}-{{ $chek_list_f->hora_substituicao}} <br>
         {{ date( 'd/m/Y' , strtotime($chek_list_f['data_proxima_manutencao']))}} <br>
-        <hr>
+        <div class="
+    @if($chek_list_f->horas_proxima_manutencao >= 48)
+        bg-success
+    @elseif($chek_list_f->horas_proxima_manutencao < 48 && $chek_list_f->horas_proxima_manutencao > 0)
+        bg-warning
+    @else
+        bg-danger
+    @endif
+" style="margin-bottom:5px;">Horas proxima:{{$chek_list_f->horas_proxima_manutencao}}</div>
+        <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$chek_list_f->id ,'chek_list'=>1])}}">
+            <i class="icofont-eye-alt"></i>
+        </a>
+        {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
+        <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $chek_list_f->id,'tipofiltro'=>1,'produto'=>0]) }}">
+            <i class="icofont-ui-edit"></i>
+        </a>
+
+        <!--Condoçes para deletar a os-->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $chek_list_f->id }})">
+            <i class="icofont-ui-delete"></i>
+        </a>
+        <hr style="margin-top:5px;">
         @endforeach
     </div>
     {{--Box 4--}}
@@ -770,7 +762,16 @@
         {{ $lubrificacao_f->intervalo_manutencao}}hs <br>
         {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_substituicao']))}}-{{ $lubrificacao_f->hora_substituicao}} <br>
         {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_proxima_manutencao']))}} <br>
-        <hr style="margin:10px;">
+        <div class="
+    @if($lubrificacao_f->horas_proxima_manutencao >= 48)
+        bg-success
+    @elseif($lubrificacao_f->horas_proxima_manutencao < 48 && $lubrificacao_f->horas_proxima_manutencao > 0)
+        bg-warning
+    @else
+        bg-danger
+    @endif
+"style="margin-bottom:5px;" >Horas proxima:{{$lubrificacao_f->horas_proxima_manutencao}}</div>
+        <hr style="margin-top:10px;">
         @endforeach
     </div>
     {{--fim card--}}
@@ -793,8 +794,14 @@
         background-color: white;
         overflow: auto;
         /* Impede que o conteúdo transborde */
-        font-size:15px;
-        font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-size: 15px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight: 100;
+    }
+
+    .div-text-input {
+        font-size: 15px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-weight: 100;
     }
 
