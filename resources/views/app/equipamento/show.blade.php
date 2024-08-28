@@ -659,10 +659,10 @@
         Produto não encontrado
         @endif
         {{ $peca_equipamento->quantidade}} <br>
-        {{ $peca_equipamento->intervalo_manutencao}}hs <br>
-        Última susbstituaição foi em:{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}} às {{ $peca_equipamento->hora_substituicao}} <br>
+        Intervalo entre as trocas é de : {{ $peca_equipamento->intervalo_manutencao}}hs <br>
+        Última substituaição foi em: {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}} às {{ $peca_equipamento->hora_substituicao}} <br>
         Próxima troca programada para: {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
-        <div class="
+        Horas restante: <div class="
     @if($peca_equipamento->horas_proxima_manutencao >= 48)
         bg-success
     @elseif($peca_equipamento->horas_proxima_manutencao < 48 && $peca_equipamento->horas_proxima_manutencao > 0)
@@ -670,7 +670,7 @@
     @else
         bg-danger
     @endif
-" style="margin-bottom:5px;">Horas proxima:{{$peca_equipamento->horas_proxima_manutencao}}</div>
+" style="margin-bottom:5px;">{{$peca_equipamento->horas_proxima_manutencao}}</div>
         <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
             <i class="icofont-eye-alt"></i>
         </a>
@@ -693,9 +693,9 @@
         @foreach ($manutencao as $manutencao_f)
         {{$manutencao_f->id}} <br>
         {{$manutencao_f->descricao}} <br>
-        {{ $manutencao_f->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($manutencao_f['data_substituicao']))}}-{{ $manutencao_f->hora_substituicao}} <br>
-        {{ date( 'd/m/Y' , strtotime($manutencao_f['data_proxima_manutencao']))}} <br>
+        Intervalo entre os serviços é de : {{ $manutencao_f->intervalo_manutencao}}hs <br>
+        Última manutenção : {{ date( 'd/m/Y' , strtotime($manutencao_f['data_substituicao']))}} às {{ $manutencao_f->hora_substituicao}} <br>
+        Próxima manutenção está programada para:{{ date( 'd/m/Y' , strtotime($manutencao_f['data_proxima_manutencao']))}} <br>
         <div class="
     @if($manutencao_f->horas_proxima_manutencao >= 48)
         bg-success
@@ -725,7 +725,7 @@
         @foreach ($chek_list as $chek_list_f)
         {{ $chek_list_f->id }} <br>
         {{ $chek_list_f->descricao}} <br>
-        {{ $chek_list_f->intervalo_manutencao}}hs <br>
+         {{ $chek_list_f->intervalo_manutencao}}hs <br>
         {{ date( 'd/m/Y' , strtotime($chek_list_f['data_substituicao']))}}-{{ $chek_list_f->hora_substituicao}} <br>
         {{ date( 'd/m/Y' , strtotime($chek_list_f['data_proxima_manutencao']))}} <br>
         <div class="
@@ -758,10 +758,10 @@
         <h4>Lubrificação</h4>
         @foreach ($lubrificacao as $lubrificacao_f)
         {{$lubrificacao_f->id}} <br>
-        {{$lubrificacao_f->descricao}}
-        {{ $lubrificacao_f->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_substituicao']))}}-{{ $lubrificacao_f->hora_substituicao}} <br>
-        {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_proxima_manutencao']))}} <br>
+        {{$lubrificacao_f->descricao}} <br>
+        O intervalo entre a lubrificação é de: {{ $lubrificacao_f->intervalo_manutencao}}hs <br>
+       A última lubrificação foi em:  {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_substituicao']))}} às {{ $lubrificacao_f->hora_substituicao}} <br>
+       A próxima está programada para:  {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_proxima_manutencao']))}} <br>
         <div class="
     @if($lubrificacao_f->horas_proxima_manutencao >= 48)
         bg-success
@@ -820,6 +820,7 @@
         font-family: Arial, sans-serif;
         font-weight: 100;
     }
+
     @media (max-width: 900px) {
         .item-25 {
             width: 100%;
