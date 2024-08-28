@@ -609,7 +609,7 @@
 {{------------------------------------------------}}
 {{--Tabela de peças dos equipamento---------------}}
 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id,'todas'=>'1']) }}">
-    <i class="icofont-eye-alt">Ver todas as peças</i>
+    <i class="icofont-eye-alt">Visualisar todas</i>
 </a>
 
 
@@ -660,8 +660,8 @@
         @endif
         {{ $peca_equipamento->quantidade}} <br>
         {{ $peca_equipamento->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}} <br>
-        Próxima manutenção: {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
+        Última susbstituaição foi em:{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}} às {{ $peca_equipamento->hora_substituicao}} <br>
+        Próxima troca programada para: {{ date( 'd/m/Y' , strtotime($peca_equipamento['data_proxima_manutencao']))}} <br>
         <div class="
     @if($peca_equipamento->horas_proxima_manutencao >= 48)
         bg-success
@@ -770,7 +770,7 @@
     @else
         bg-danger
     @endif
-"style="margin-bottom:5px;" >Horas proxima:{{$lubrificacao_f->horas_proxima_manutencao}}</div>
+" style="margin-bottom:5px;">Horas proxima:{{$lubrificacao_f->horas_proxima_manutencao}}</div>
         <hr style="margin-top:10px;">
         @endforeach
     </div>
@@ -819,5 +819,11 @@
         font-size: 15px;
         font-family: Arial, sans-serif;
         font-weight: 100;
+    }
+    @media (max-width: 900px) {
+        .item-25 {
+            width: 100%;
+            margin: 0px -80;
+        }
     }
 </style>
