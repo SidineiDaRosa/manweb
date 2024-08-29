@@ -78,13 +78,14 @@
                     <label for="tipo_consulta" class="">Tipo de consulta:</label>
 
                     <select class="form-control" name="tipo_consulta" id="tipo_consulta" value="">
-                        <option value="1">Pelo ID</option>
+                        <option value="1">Pelo ID único</option>
                         <option value="2">>=Data inicial <= Data inicial </option>
                         <option value="3">>=Data inicial e <=Data final</option>
                         <option value="4">=Data final</option>
                         <option value="5">Data inicial e equipamento</option>
                         <option value="6">Data inicial e empresa</option>
                         <option value="7">Imprimir</option>
+                        <option value="8">Ordenado pelo ID Ascendente</option>
                     </select>
                 </div>
                 <!--------------------------------------------------------------------------------------->

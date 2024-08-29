@@ -47,7 +47,9 @@ class OrdemServicoController extends Controller
             $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
             //dd($servicos_executado );
             return view('app.ordem_servico.index', [
-                'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
+                'equipamento' => $equipamento,
+                'ordens_servicos' => $ordens_servicos,
+                'funcionarios' => $funcionarios,
                 'empresa' => $empresa,
                 'servicos_executado' => $servicos_executado
             ]);
@@ -73,7 +75,9 @@ class OrdemServicoController extends Controller
                     $valorTotal = OrdemServico::where('situacao', $situacao)->where('data_inicio', ('>='), $dataInicio)->sum('valor');
 
                     return view('app.ordem_servico.index', [
-                        'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
+                        'equipamento' => $equipamento,
+                        'ordens_servicos' => $ordens_servicos,
+                        'funcionarios' => $funcionarios,
                         'empresa' => $empresa,
                         'valorTotal' => $valorTotal,
                         'equipamentos' => $equipamentos
@@ -96,8 +100,11 @@ class OrdemServicoController extends Controller
 
             $valorTotal = 0;
             return view('app.ordem_servico.index', [
-                'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
-                'empresa' => $empresa, 'valorTotal' => $valorTotal
+                'equipamento' => $equipamento,
+                'ordens_servicos' => $ordens_servicos,
+                'funcionarios' => $funcionarios,
+                'empresa' => $empresa,
+                'valorTotal' => $valorTotal
             ]);
         }
         if ($tipo_consulta == 6) {
@@ -113,8 +120,11 @@ class OrdemServicoController extends Controller
 
             $valorTotal = 0;
             return view('app.ordem_servico.index', [
-                'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
-                'empresa' => $empresa, 'valorTotal' => $valorTotal
+                'equipamento' => $equipamento,
+                'ordens_servicos' => $ordens_servicos,
+                'funcionarios' => $funcionarios,
+                'empresa' => $empresa,
+                'valorTotal' => $valorTotal
             ]);
         }
 
@@ -137,12 +147,35 @@ class OrdemServicoController extends Controller
 
             );
         }
+        // ordennado pelo id asc
+        if ($tipo_consulta == 8) {
+            //filtro ordem de serviço pelo data inicial e situação e empresa
+            $funcionarios = Funcionario::all();
+            $dataInicio = $request->get("data_inicio");
+            $dataFim = $request->get("data_fim");
+            $empresa_id = $request->get("empresa_id");
+            $situacao = $request->get("situacao");
+            $ordens_servicos = OrdemServico::where('data_inicio', ('>='), $dataInicio)
+                ->where('data_inicio', ('<='), $dataFim)
+                ->where('empresa_id', $empresa_id)->where('situacao', $situacao)->orderby('data_inicio')->orderby('id','asc')->get();
+
+            $valorTotal = 0;
+            return view('app.ordem_servico.index', [
+                'equipamento' => $equipamento,
+                'ordens_servicos' => $ordens_servicos,
+                'funcionarios' => $funcionarios,
+                'empresa' => $empresa,
+                'valorTotal' => $valorTotal
+            ]);
+        }
         if (('teste')) {
             $funcionarios = Funcionario::all();
             $ordens_servicos = OrdemServico::where('id', 0)->get();
             $valorTotal = 0;
             return view('app.ordem_servico.index', [
-                'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
+                'equipamento' => $equipamento,
+                'ordens_servicos' => $ordens_servicos,
+                'funcionarios' => $funcionarios,
                 'empresa' => $empresa,
                 'valorTotal' => $valorTotal
             ]);
@@ -165,7 +198,9 @@ class OrdemServicoController extends Controller
         $ordem_servico = OrdemServico::all();
         $empresa = Empresas::where('id', $id)->get();
         return view('app.ordem_servico.create', [
-            'ordem_servico' =>  $ordem_servico, 'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios,
+            'ordem_servico' =>  $ordem_servico,
+            'equipamentos' => $equipamentos,
+            'funcionarios' => $funcionarios,
             'empresa' => $empresa,
             'equipamento' => $equipamento
 
@@ -243,7 +278,8 @@ class OrdemServicoController extends Controller
         //return response()->json($ordem_servico->toArray()); // Converte o objeto para um array e retorna como resposta
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $idLastOs)->get();
         return view('app.ordem_servico.show', [
-            'ordem_servico' => $ordem_servico_f, 'servicos_executado' => $servicos_executado,
+            'ordem_servico' => $ordem_servico_f,
+            'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
             'total_hs_os' => $total_hs_os
         ]);
@@ -260,13 +296,14 @@ class OrdemServicoController extends Controller
         $id = $ordem_servico->id;
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
         $total_hs_os = Servicos_executado::where('ordem_servico_id', $id)->sum('subtotal');
-        $equipamentos=Equipamento::all();
+        $equipamentos = Equipamento::all();
         //$total_hs_os=23;
         return view('app.ordem_servico.show', [
-            'ordem_servico' => $ordem_servico, 'servicos_executado' => $servicos_executado,
+            'ordem_servico' => $ordem_servico,
+            'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
             'total_hs_os' => $total_hs_os,
-            'equipamentos'=> $equipamentos
+            'equipamentos' => $equipamentos
         ]);
     }
     /**
