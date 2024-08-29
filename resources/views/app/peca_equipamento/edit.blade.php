@@ -133,6 +133,7 @@
         .box-conteudo {
             margin-left: 2px;
             justify-content: flex-start;
+
         }
 
         .titulo {
@@ -147,7 +148,7 @@
             font-size: 20px;
             font-family: 'Poppins', sans-serif;
             color: #007b00;
-            margin-bottom: 5px;
+            margin-bottom: 1px;
         }
 
         #patrimonio {
@@ -198,7 +199,7 @@
                 <div class="titulo">ID produto:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" type="text" name="produto_id" id="produto_id" value="{{$pecas_equipamentos_for->produto_id}}">
+                    <input class="input-text" type="text" name="produto_id" id="produto_id" value="{{$pecas_equipamentos_for->produto_id}}" readonly>
                     <input class="input-text" name="quantidade" id="quantidade" type="number" step="0.2" value="{{$pecas_equipamentos_for->quantidade}}" placeholder="--insira a quantidade--">
                 </div>
                 <div class="titulo">Data:</div>

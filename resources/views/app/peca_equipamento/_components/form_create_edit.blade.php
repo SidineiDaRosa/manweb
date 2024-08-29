@@ -1,154 +1,155 @@
 {{--Seta campos de preenchimentos necessários--}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            //chama função para setar os campos
-            alterarBackgroundCampos();
-        });
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        //chama função para setar os campos
+        alterarBackgroundCampos();
+    });
 
-        function alterarBackgroundCampos() {
-            document.getElementById('produto_id').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('quantidade').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('data_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('hora_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('intervalo_manutencao').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('status').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('criticidade').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('tipo_componente').style.background = "rgba(249, 187, 120, 0.2)";
-            document.getElementById('descricao').style.background = "rgba(249, 187, 120, 0.2)";
+    function alterarBackgroundCampos() {
+        document.getElementById('produto_id').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('quantidade').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('data_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('hora_substituicao').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('intervalo_manutencao').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('status').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('criticidade').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('tipo_componente').style.background = "rgba(249, 187, 120, 0.2)";
+        document.getElementById('descricao').style.background = "rgba(249, 187, 120, 0.2)";
 
+    }
+    //Fim da função que seta as cores dos campos
+    function AtualizaProxManut() {
+        // Obter os valores dos inputs
+        const lastMaintenanceDate = document.getElementById('data_substituicao').value;
+        const lastMaintenanceTime = document.getElementById('hora_substituicao').value;
+        const maintenanceInterval = parseFloat(document.getElementById('intervalo_manutencao').value);
+
+        if (lastMaintenanceDate && lastMaintenanceTime && !isNaN(maintenanceInterval)) {
+            // Combinar data e hora em um único objeto Date
+            const lastMaintenanceDateTime = new Date(`${lastMaintenanceDate}T${lastMaintenanceTime}`);
+
+            // Calcular o intervalo de manutenção em milissegundos
+            const maintenanceIntervalMs = maintenanceInterval * 60 * 60 * 1000;
+
+            // Calcular a data e hora da próxima manutenção
+            const nextMaintenanceDateTime = new Date(lastMaintenanceDateTime.getTime() + maintenanceIntervalMs);
+
+            // Obter a data e hora da próxima manutenção em formatos legíveis
+            const nextMaintenanceDate = nextMaintenanceDateTime.toISOString().split('T')[0];
+            const nextMaintenanceTime = nextMaintenanceDateTime.toTimeString().split(' ')[0];
+
+            // Calcular as horas restantes
+            const currentDateTime = new Date();
+            const remainingTimeMs = nextMaintenanceDateTime - currentDateTime;
+            const remainingHours = Math.max(Math.floor(remainingTimeMs / (1000 * 60 * 60)), 0);
+
+            // Exibir o alerta com a data e hora da próxima manutenção
+            console.log(`Próxima manutenção: ${nextMaintenanceDate} às ${nextMaintenanceTime} intervalo de:${remainingHours}`);
+            alert(`Próxima manutenção: ${nextMaintenanceDate} às ${nextMaintenanceTime} E restam: ${remainingHours} horas`);
+
+            // Definir o valor dos campos com a data e hora da próxima manutenção
+            document.getElementById('data_proxima_manutencao').value = `${nextMaintenanceDate}`;
+            document.getElementById('hora_proxima_manutencao').value = `${nextMaintenanceTime}`;
+
+            // Definir o valor do campo com as horas restantes
+            document.getElementById('horas_proxima_manutencao').value = `${remainingHours}`;
+            // Obter o campo pelo ID
+            const descricaoCampo = document.getElementById('descricao');
+            document.getElementById('descricao').value = '';
+
+            // Remover o atributo readonly para habilitar o campo
+            descricaoCampo.removeAttribute('readonly');
+
+            // Definir o foco no campo
+            descricaoCampo.focus();
+        } else {
+            alert('Por favor, preencha todos os campos corretamente.');
         }
-        //Fim da função que seta as cores dos campos
-        function AtualizaProxManut() {
-            // Obter os valores dos inputs
-            const lastMaintenanceDate = document.getElementById('data_substituicao').value;
-            const lastMaintenanceTime = document.getElementById('hora_substituicao').value;
-            const maintenanceInterval = parseFloat(document.getElementById('intervalo_manutencao').value);
+    }
+</script>
+{{--Continer box--}}
+<style>
+    .container-box {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: flex-start;
+        background-color: white;
+        margin: -1;
 
-            if (lastMaintenanceDate && lastMaintenanceTime && !isNaN(maintenanceInterval)) {
-                // Combinar data e hora em um único objeto Date
-                const lastMaintenanceDateTime = new Date(`${lastMaintenanceDate}T${lastMaintenanceTime}`);
+    }
 
-                // Calcular o intervalo de manutenção em milissegundos
-                const maintenanceIntervalMs = maintenanceInterval * 60 * 60 * 1000;
+    .item {
+        width: calc(33% - 20px);
+        height: auto;
+        margin: 10px;
+        padding: 15px;
+        background-color: white;
+        overflow: auto;
+        /* Impede que o conteúdo transborde */
+        font-weight: 500;
+    }
 
-                // Calcular a data e hora da próxima manutenção
-                const nextMaintenanceDateTime = new Date(lastMaintenanceDateTime.getTime() + maintenanceIntervalMs);
+    .box {
+        display: flex;
+        width: 100%;
+        height: auto;
+        margin-bottom: 1px;
+        background-color: #ccc;
+        border-radius: 5px;
+        padding: 5px;
 
-                // Obter a data e hora da próxima manutenção em formatos legíveis
-                const nextMaintenanceDate = nextMaintenanceDateTime.toISOString().split('T')[0];
-                const nextMaintenanceTime = nextMaintenanceDateTime.toTimeString().split(' ')[0];
 
-                // Calcular as horas restantes
-                const currentDateTime = new Date();
-                const remainingTimeMs = nextMaintenanceDateTime - currentDateTime;
-                const remainingHours = Math.max(Math.floor(remainingTimeMs / (1000 * 60 * 60)), 0);
+    }
 
-                // Exibir o alerta com a data e hora da próxima manutenção
-                console.log(`Próxima manutenção: ${nextMaintenanceDate} às ${nextMaintenanceTime} intervalo de:${remainingHours}`);
-                alert(`Próxima manutenção: ${nextMaintenanceDate} às ${nextMaintenanceTime} E restam: ${remainingHours} horas`);
-
-                // Definir o valor dos campos com a data e hora da próxima manutenção
-                document.getElementById('data_proxima_manutencao').value = `${nextMaintenanceDate}`;
-                document.getElementById('hora_proxima_manutencao').value = `${nextMaintenanceTime}`;
-
-                // Definir o valor do campo com as horas restantes
-                document.getElementById('horas_proxima_manutencao').value = `${remainingHours}`;
-                // Obter o campo pelo ID
-                const descricaoCampo = document.getElementById('descricao');
-                document.getElementById('descricao').value = '';
-
-                // Remover o atributo readonly para habilitar o campo
-                descricaoCampo.removeAttribute('readonly');
-
-                // Definir o foco no campo
-                descricaoCampo.focus();
-            } else {
-                alert('Por favor, preencha todos os campos corretamente.');
-            }
-        }
-    </script>
-     {{--Continer box--}}
-    <style>
-        .container-box {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: flex-start;
-            background-color: white;
-            margin: -1;
-
-        }
-
+    @media (max-width: 900px) {
         .item {
-            width: calc(33% - 20px);
-            height: auto;
-            margin: 10px;
-            padding: 15px;
-            background-color: white;
-            overflow: auto;
-            /* Impede que o conteúdo transborde */
-            font-weight: 500;
-        }
-
-        .box {
-            display: flex;
             width: 100%;
-            height: auto;
-            margin-bottom: 1px;
-            background-color: #ccc;
-            border-radius: 5px;
-            padding: 5px;
-
-
+            margin: 0px -80;
         }
+    }
 
-        @media (max-width: 900px) {
-            .item {
-                width: 100%;
-                margin: 0px -80;
-            }
-        }
+    hr {
+        margin: -5px;
+    }
 
-        hr {
-            margin: -5px;
-        }
+    .box-conteudo {
+        margin-left: 2px;
+        justify-content: flex-start;
+    }
 
-        .box-conteudo {
-            margin-left: 2px;
-            justify-content: flex-start;
-        }
+    .titulo {
+        display: flex;
+        font-size: 15px;
+        font-family: 'Poppins', sans-serif;
+        margin-top: -5px;
 
-        .titulo {
-            display: flex;
-            font-size: 15px;
-            font-family: 'Poppins', sans-serif;
+    }
 
-        }
+    .conteudo {
+        display: flex;
+        font-size: 20px;
+        font-family: 'Poppins', sans-serif;
+        color: #007b00;
+        margin-bottom: 5px;
+    }
 
-        .conteudo {
-            display: flex;
-            font-size: 20px;
-            font-family: 'Poppins', sans-serif;
-            color: #007b00;
-            margin-bottom: 5px;
-        }
+    #patrimonio {
+        color: #2174d4;
+    }
 
-        #patrimonio {
-            color: #2174d4;
-        }
-
-        .input-text {
-            margin-top: 5px;
-            width: 50%;
-            border: none;
-            color: #2174d4;
-            margin-right: 2px;
-        }
-    </style>
+    .input-text {
+        margin-top: 5px;
+        width: 50%;
+        border: none;
+        color: #2174d4;
+        margin-right: 2px;
+    }
+</style>
 <form action="{{ route('Peca-equipamento.store') }}" method="POST">
     @csrf
     <input type="hidden" name="form_token" value="{{ $formToken }}">
-   
+
     <div class="container-box">
         {{-- Box 1 --}}
         <div class="item">
@@ -157,7 +158,7 @@
                 <hr>
                 <div class="conteudo">
                     @php
-                        $equipamentoId = $equipamento->first()->id ?? ''; // Obtemos o primeiro ID
+                    $equipamentoId = $equipamento->first()->id ?? ''; // Obtemos o primeiro ID
                     @endphp
                     {{ $equipamentoId }}
                     <input type="text" name="equipamento" value="{{ $equipamentoId }}" hidden>
@@ -166,7 +167,7 @@
                 <hr>
                 <div class="conteudo">
                     @php
-                        $equipamentoNome = $equipamento->first()->nome ?? ''; // Obtemos o primeiro nome
+                    $equipamentoNome = $equipamento->first()->nome ?? ''; // Obtemos o primeiro nome
                     @endphp
                     {{ $equipamentoNome }}
                     <input id="equipamento_nome" type="text" name="equipamento_nome" value="{{ $equipamentoNome }}" hidden>
@@ -205,9 +206,9 @@
                     <input class="input-text" name="horas_proxima_manutencao" id="horas_proxima_manutencao" type="number" readonly>hs
                 </div>
                 <div class="titulo">Descrição do item</div>
-                <hr>
+                <hr style="margin-bottom:2px;">
                 <div class="conteudo">
-                    <input name="descricao" id="descricao" type="text" value="Descrição não inserido" placeholder="--insira uma descrição para o item--" readonly>
+                   <textarea name="descricao" id="descricao" cols="100" rows="4" readonly style="border-width: 0.5px;"></textarea>
                 </div>
             </div>
         </div>
@@ -368,16 +369,15 @@
     <table class="" id="tblProdutos">
         <thead>
             <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Qrcode</th>
-                <th scope="col">cod_fabricante</th>
-                <th scope="col">Nome</th>
-                <th scope="col">un medida</th>
-                <th scope="col">Fabricante</th>
-                <th scope="col">Ver peça</th>
-                <th scope="col">Imagem</th>
-                <th scope="col">Categoria</th>
-                <th scope="col">Operações</th>
+                <th>ID</th>
+                <th>cod_fabricante</th>
+                <th>Nome</th>
+                <th>Un medida</th>
+                <th>Fabricante</th>
+                <th>Ver peça</th>
+                <th>Imagem</th>
+                <th>Categoria</th>
+                <th>Operações</th>
 
             </tr>
         </thead>
@@ -385,8 +385,25 @@
         <tbody>
             @foreach ($produtos as $produto)
             <tr>
-                <th>{{ $produto->id }}</td>
-                <td> {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}</td>
+                <th>{{ $produto->id }} <button class=" btn btn-sm-template btn-outline-primary" id="add-product" value="{{ $produto->id }}" onclick="AddProduct();">Adicionar</button></td>
+
+                    <script>
+                        function AddProduct() {
+                            // Obtém o valor do input
+                            let productId = document.getElementById('add-product').value;
+
+                            // Pergunta ao usuário se deseja adicionar o produto
+                            if (confirm('Você realmente deseja adicionar o produto com ID: ' + productId + '?')) {
+                                // Se o usuário confirmar, mostra um alerta e limpa o campo
+                                alert('Produto adicionado com ID: ' + productId);
+                                document.getElementById('produto_id').value = productId;
+                                document.getElementById('produto_id').style.background = '#90EE90';
+                            } else {
+                                // Se o usuário cancelar, apenas mostra uma mensagem
+                                alert('A adição do produto foi cancelada.');
+                            }
+                        }
+                    </script>
                 <td>{{ $produto->cod_fabricante }}</td>
                 <td>{{ $produto->nome }}</td>
                 <td>{{ $produto->unidade_medida->nome}}</td>
@@ -410,42 +427,6 @@
                 <td>
                     <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
 
-                        <script>
-                            // JavaScript para manipular o clique do botão e preencher os inputs
-                            document.querySelectorAll('#select-btn').forEach(button => {
-                                button.addEventListener('click', function() {
-                                    // Obtendo a linha onde o botão foi clicado
-                                    const row = this.closest('tr');
-
-                                    // Obtendo o valor dos dados da linha
-                                    const produtoId = row.cells[0].textContent;
-                                    const produtoNome = row.cells[1].textContent;
-
-                                    // Preenchendo os inputs com os valores obtidos
-                                    document.getElementById('produto_id').value = produtoId;
-                                    // document.getElementById('produto_nome').value = produtoId;
-                                    //document.getElementById('produto_nome').value = produtoNome;
-
-                                });
-
-                            });
-                            //-----------------------------------
-                            // JavaScript para manipular o clique na linha e preencher os inputs
-                            document.querySelectorAll('#tblProdutos tr').forEach(row => {
-                                row.addEventListener('click', function() {
-                                    // Ignorando a linha do cabeçalho
-                                    if (this.rowIndex === 0) return;
-
-                                    // Obtendo o valor dos dados da linha
-                                    const produtoId = this.cells[0].textContent;
-                                    const produtoNome = this.cells[1].textContent;
-
-                                    // Preenchendo os inputs com os valores obtidos
-                                    document.getElementById('produto_id').value = produtoId;
-                                    //document.getElementById('produto_nome').value = produtoNome;
-                                });
-                            });
-                        </script>
                         <button class=" btn btn-sm-template btn-outline-primary" id="select-btn" hidden>Selecionar</button>
 
                         <a class=" btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $produto->id]) }}">
@@ -460,6 +441,7 @@
                 </td>
             </tr>
             @endforeach
+
         </tbody>
     </table>
 </div>

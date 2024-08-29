@@ -314,7 +314,7 @@ class DahboardStatusOsController extends Controller
         $produtos = Produto::all();
         $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
         //---------------------------------------------------//
-        //  Pega as os da semana                            //
+        //  Pega as os da semana                       //
         //--------------------------------------------------//
         
         // Obtém o início da semana atual
