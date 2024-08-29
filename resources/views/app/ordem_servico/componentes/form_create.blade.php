@@ -154,7 +154,8 @@
                 <div class="titulo">Previsão para início</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();">
+                  <!--  <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();"-->
+                    <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="">
                     <script>
                         document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
                     </script>
