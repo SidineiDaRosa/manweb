@@ -8,6 +8,7 @@ use App\Models\Equipamento;
 use App\Models\PecasEquipamentos;
 use App\Models\OrdemServico;
 use App\Models\Categoria;
+use Illuminate\Support\Str; // Certifique-se de incluir a classe Str
 
 class PecaEquipamentoController extends Controller
 {
@@ -56,28 +57,41 @@ class PecaEquipamentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $equipamento_id)
+
+    public function create(Request $request)
     {
-        $tipoFiltro = $equipamento_id->get('tipofiltro');
-        $nome_produto_like = $equipamento_id->get('produto');
-        $categoria_id = $equipamento_id->get('categoria_id');
-        //
+        // Gera um token único e armazena-o na sessão
+        $formToken = Str::random(40);
+        session()->put('form_token', $formToken);
+
+        // Obtém os parâmetros do request, se existirem
+        $tipoFiltro = $request->input('tipofiltro', 0); // Default to 0 if not present
+        $nome_produto_like = $request->input('produto', '');
+        $categoria_id = $request->input('categoria_id', 0);
+        $equipamentoId = $request->input('equipamento', 0);
+
+        // Obtém todos os dados necessários
         $categorias = Categoria::all();
-        $equipamentoId = $equipamento_id->get('equipamento');
+
         if ($tipoFiltro >= 1) {
-            //Verifica as condiçoes para filtrar os produtos
-            //$produtos = Produto::where('id', $nome_produto_like )->get();
+            // Filtra os produtos baseados no nome
             $produtos = Produto::where('nome', 'like', $nome_produto_like . '%')->get();
         } else {
+            // Retorna uma coleção vazia ou qualquer valor apropriado
             $produtos = Produto::where('id', 0)->get();
         }
-        $equipamento = Equipamento::where('id',  $equipamentoId)->get();
+
+        $equipamento = Equipamento::where('id', $equipamentoId)->get();
+
+        // Retorna a view com todos os dados necessários
         return view('app.peca_equipamento.create', [
+            'formToken' => $formToken,
             'produtos' => $produtos,
             'equipamento' => $equipamento,
             'categorias' => $categorias,
         ]);
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -85,7 +99,16 @@ class PecaEquipamentoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+
     {
+        // Validar o token do formulário
+        $request->validate([
+            'form_token' => 'required|in:' . session('form_token'),
+            // Outras validações conforme necessário
+        ]);
+
+        // Remover o token de formulário da sessão
+        session()->forget('form_token');
         // Verificar se um registro com os mesmos atributos já existe
         $existingRecord = PecasEquipamentos::where('descricao', $request->input('equipamento'))
             ->where('produto_id')
@@ -107,26 +130,61 @@ class PecaEquipamentoController extends Controller
 
         $equipamento_array = json_decode($json, true); // Decodificar o JSON para um array associativo
 
-        //--------------------
-        $equipamentos=Equipamento::all();
-        $produtos=Produto::all();
-        $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
-        $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
-        $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->orderby('horas_proxima_manutencao')->where('tipo_componente','componente')->get();
-        $manutencao= PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','manutencao')->get();
-        $chek_list = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','Chek-List')->get();
-        $lubrificacao = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','lubrificacao')->get();
-      
+        // Obtém todos os registros de equipamentos e produtos
+        $equipamentos = Equipamento::all();
+        $produtos = Produto::all();
+
+        // Obtém as ordens de serviço abertas e em andamento para o equipamento específico
+        $ordens_servicos = OrdemServico::where('equipamento_id', $equipamento_id)
+            ->where('situacao', 'aberto')
+            ->orderBy('data_inicio', 'asc')
+            ->orderBy('hora_inicio', 'asc')
+            ->get();
+
+        $ordens_servicos_1 = OrdemServico::where('equipamento_id', $equipamento_id)
+            ->where('situacao', 'em andamento')
+            ->orderBy('data_inicio', 'asc')
+            ->orderBy('hora_inicio', 'asc')
+            ->get();
+
+        // Obtém as peças do equipamento, manutenção, check-list e lubrificação
+        $pecasEquip = PecasEquipamentos::where('equipamento', $equipamento_id)
+            ->orderBy('horas_proxima_manutencao', 'asc')
+            ->where('tipo_componente', 'componente')
+            ->get();
+
+        $manutencao = PecasEquipamentos::where('equipamento', $equipamento_id)
+            ->where('status', 'ativado')
+            ->where('horas_proxima_manutencao', '<=', 5000)
+            ->orderBy('horas_proxima_manutencao', 'asc')
+            ->where('tipo_componente', 'manutencao')
+            ->get();
+
+        $chek_list = PecasEquipamentos::where('equipamento', $equipamento_id)
+            ->where('status', 'ativado')
+            ->where('horas_proxima_manutencao', '<=', 5000)
+            ->orderBy('horas_proxima_manutencao', 'asc')
+            ->where('tipo_componente', 'Chek-List')
+            ->get();
+
+        $lubrificacao = PecasEquipamentos::where('equipamento', $equipamento_id)
+            ->where('status', 'ativado')
+            ->where('horas_proxima_manutencao', '<=', 5000)
+            ->orderBy('horas_proxima_manutencao', 'asc')
+            ->where('tipo_componente', 'lubrificacao')
+            ->get();
+
+        // Retorna a view com os dados coletados
         return view('app.equipamento.show', [
             'equipamento' => $equipamento,
             'ordens_servicos' => $ordens_servicos,
             'ordens_servicos_1' => $ordens_servicos_1,
-            'equipamentos'=>$equipamentos,
-            'produtos'=>$produtos,
+            'equipamentos' => $equipamentos,
+            'produtos' => $produtos,
             'pecas_equipamento' => $pecasEquip,
-            'manutencao'=>$manutencao,
+            'manutencao' => $manutencao,
             'chek_list' => $chek_list,
-            'lubrificacao'=> $lubrificacao,
+            'lubrificacao' => $lubrificacao,
         ]);
     }
     /**
@@ -179,7 +237,7 @@ class PecaEquipamentoController extends Controller
         // echo ($request);
         $Equip_id = $request->get('equipamento'); //id do equipamento
         $descricao = $request->get('descricao');
-        $produto_id = $request->get('produto_id');//não requerido
+        $produto_id = $request->get('produto_id'); //não requerido
         $quantidade = $request->get('quantidade');
         $data_substituicao = $request->get('data_substituicao');
         $hora_substituicao = $request->get('hora_substituicao');
@@ -195,8 +253,8 @@ class PecaEquipamentoController extends Controller
         $validatedData = $request->validate([
             'equipamento' => 'required',
             'descricao' => 'required',
-            'produto_id' => 'required',
-            'quantidade' => 'required|numeric',
+            'produto_id' => 'nullable', // Campo não é obrigatório
+            'quantidade' => 'nullable|numeric', // Campo não é obrigatório, mas deve ser numérico se preenchido
             'data_substituicao' => 'required|date',
             'hora_substituicao' => 'required',
             'data_proxima_manutencao' => 'required|date',
@@ -215,23 +273,60 @@ class PecaEquipamentoController extends Controller
             // Atualizar os campos com os dados validados
             $pecaEquipamento->update($validatedData);
 
-            // Retornar uma resposta de sucesso
-            //return response()->json(['message' => 'Registro atualizado com sucesso', 'data' => $pecaEquipamento], 200);
-            $ordens_servicos = OrdemServico::where('equipamento_id',  $Equip_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $Equip_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
-            $equipamento = Equipamento::where('id', $Equip_id)->first(); // Obter o equipamento com o ID especificado
-            $pecasEquip = PecasEquipamentos::where('equipamento', $Equip_id)->where('status', 'ativado')->orderby('horas_proxima_manutencao','<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','componente')->get();
-            $chek_list = PecasEquipamentos::where('equipamento',  $Equip_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','Chek-List')->get();
-            $lubrificacao = PecasEquipamentos::where('equipamento',  $Equip_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','lubrificacao')->get();
-            $manutencao= PecasEquipamentos::where('equipamento',  $Equip_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 5000)->orderby('horas_proxima_manutencao')->where('tipo_componente','manutencao')->get();
+            // Obter as ordens de serviço abertas e em andamento
+            $ordens_servicos = OrdemServico::where('equipamento_id', $Equip_id)
+                ->where('situacao', 'aberto')
+                ->orderBy('data_inicio', 'asc')
+                ->orderBy('hora_inicio', 'asc')
+                ->get();
+
+            $ordens_servicos_1 = OrdemServico::where('equipamento_id', $Equip_id)
+                ->where('situacao', 'em andamento')
+                ->orderBy('data_inicio', 'asc')
+                ->orderBy('hora_inicio', 'asc')
+                ->get();
+
+            // Obter o equipamento especificado
+            $equipamento = Equipamento::where('id', $Equip_id)->first();
+
+            // Obter peças e equipamentos com condições específicas
+            $pecasEquip = PecasEquipamentos::where('equipamento', $Equip_id)
+                ->where('status', 'ativado')
+                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('tipo_componente', 'componente')
+                ->orderBy('horas_proxima_manutencao', 'asc')
+                ->get();
+
+            $chek_list = PecasEquipamentos::where('equipamento', $Equip_id)
+                ->where('status', 'ativado')
+                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('tipo_componente', 'Chek-List')
+                ->orderBy('horas_proxima_manutencao', 'asc')
+                ->get();
+
+            $lubrificacao = PecasEquipamentos::where('equipamento', $Equip_id)
+                ->where('status', 'ativado')
+                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('tipo_componente', 'lubrificacao')
+                ->orderBy('horas_proxima_manutencao', 'asc')
+                ->get();
+
+            $manutencao = PecasEquipamentos::where('equipamento', $Equip_id)
+                ->where('status', 'ativado')
+                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('tipo_componente', 'manutencao')
+                ->orderBy('horas_proxima_manutencao', 'asc')
+                ->get();
+
+            // Retornar a view com os dados carregados
             return view('app.equipamento.show', [
                 'equipamento' => $equipamento,
                 'ordens_servicos' => $ordens_servicos,
                 'ordens_servicos_1' => $ordens_servicos_1,
                 'pecas_equipamento' => $pecasEquip,
-                'manutencao'=>$manutencao,
+                'manutencao' => $manutencao,
                 'chek_list' => $chek_list,
-                'lubrificacao'=> $lubrificacao
+                'lubrificacao' => $lubrificacao,
             ]);
         } catch (\Exception $e) {
             // Em caso de erro, trate-o adequadamente (log, mensagem de erro, etc.)

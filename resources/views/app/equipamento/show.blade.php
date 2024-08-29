@@ -615,7 +615,7 @@
 
 <script>
     function DeletarPecaEquip(id) {
-        if (confirm('Você tem certeza que deseja deletar esta peça?')) {
+        if (confirm('Você tem certeza que deseja deletar este registro?')) {
             // Envia uma requisição DELETE para deletar o item
             fetch(`/peca-equipamento/${id}`, {
                     method: 'DELETE',
@@ -630,15 +630,15 @@
                 .then(data => {
                     console.log('Dados da resposta:', data);
                     if (data.success) {
-                        alert('Peça deletada com sucesso!');
+                        alert('Registro deletado com sucesso!');
                         location.reload();
                     } else {
-                        alert('Ocorreu um erro ao tentar deletar a peça: ' + data.message);
+                        alert('Ocorreu um erro ao tentar deletar o registro: ' + data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Erro na requisição:', error);
-                    alert('Erro ao tentar deletar a peça.');
+                    alert('Erro ao tentar deletar o registro.');
                 });
         }
     }
@@ -771,6 +771,19 @@
         bg-danger
     @endif
 " style="margin-bottom:5px;">Horas proxima:{{$lubrificacao_f->horas_proxima_manutencao}}</div>
+<a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$lubrificacao_f->id ,'chek_list'=>1])}}">
+            <i class="icofont-eye-alt"></i>
+        </a>
+        {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
+        <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $lubrificacao_f->id,'tipofiltro'=>1,'produto'=>0]) }}">
+            <i class="icofont-ui-edit"></i>
+        </a>
+
+        <!--Condoçes para deletar a os-->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $lubrificacao_f->id }})">
+            <i class="icofont-ui-delete"></i>
+        </a>
         <hr style="margin-top:10px;">
         @endforeach
     </div>
