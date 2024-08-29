@@ -147,19 +147,20 @@
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>
-                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao"  style="color:#4caf50;">
+                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" style="color:#4caf50;">
                     <input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly style="color:#4caf50;">
                 </div>
 
                 <div class="titulo">Previsão para início</div>
                 <hr>
                 <div class="conteudo">
-                  <!--  <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();"-->
+                    <!--  <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();"-->
                     <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="">
                     <script>
                         document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
                     </script>
-                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
+                    <!-- <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()"-->>
+                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="">
                     <script>
                         function ValidateHoraInicio() {
                             var dataInicioElement = document.getElementById('dataPrevista');
