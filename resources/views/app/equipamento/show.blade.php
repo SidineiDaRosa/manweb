@@ -645,12 +645,15 @@
 </script>
 
 <!------------------------------------------------------------->
+<!----Bloco que mostra componentes com periodicidade----------->
+<!------------------------------------------------------------->
 <div class="container-box">
     {{--Box 1--}}
     <div class="item-25">
         <h4>Componentes</h4>
         @foreach ($pecas_equipamento as $peca_equipamento)
-        {{ $peca_equipamento->id }} | {{ $peca_equipamento->descricao}} <br>
+        {{ $peca_equipamento->id }} <br>
+        <h6>{{ $peca_equipamento->descricao}} </h6>
         @if(isset($peca_equipamento->produto))
         <a class="txt-link" href="{{ route('produto.show', ['produto' => $peca_equipamento->produto->id]) }}">
             {{ $peca_equipamento->produto->nome }}
@@ -670,7 +673,7 @@
     @else
         bg-danger
     @endif
-" style="margin-bottom:5px;">{{$peca_equipamento->horas_proxima_manutencao}}</div>
+" style="margin-bottom:5px;">{{$peca_equipamento->horas_proxima_manutencao}} hs</div>
         <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
             <i class="icofont-eye-alt"></i>
         </a>
@@ -692,11 +695,11 @@
         <h4>Manutenção</h4>
         @foreach ($manutencao as $manutencao_f)
         {{$manutencao_f->id}} <br>
-        {{$manutencao_f->descricao}} <br>
+        <h6> {{$manutencao_f->descricao}} </h6>
         Intervalo entre os serviços é de : {{ $manutencao_f->intervalo_manutencao}}hs <br>
         Última manutenção : {{ date( 'd/m/Y' , strtotime($manutencao_f['data_substituicao']))}} às {{ $manutencao_f->hora_substituicao}} <br>
         Próxima manutenção está programada para:{{ date( 'd/m/Y' , strtotime($manutencao_f['data_proxima_manutencao']))}} <br>
-        <div class="
+        Horas restante: <div class="
     @if($manutencao_f->horas_proxima_manutencao >= 48)
         bg-success
     @elseif($manutencao_f->horas_proxima_manutencao < 48 && $manutencao_f->horas_proxima_manutencao > 0)
@@ -704,7 +707,7 @@
     @else
         bg-danger
     @endif
-" style="margin-bottom:5px;">Horas proxima:{{$manutencao_f->horas_proxima_manutencao}}</div>
+" style="margin-bottom:5px;">{{$manutencao_f->horas_proxima_manutencao}} hs</div>
         <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$manutencao_f->id ,'chek_list'=>1])}}">
             <i class="icofont-eye-alt"></i>
         </a>
@@ -724,11 +727,11 @@
         <h4>Check-list</h4>
         @foreach ($chek_list as $chek_list_f)
         {{ $chek_list_f->id }} <br>
-        {{ $chek_list_f->descricao}} <br>
-         {{ $chek_list_f->intervalo_manutencao}}hs <br>
-        {{ date( 'd/m/Y' , strtotime($chek_list_f['data_substituicao']))}}-{{ $chek_list_f->hora_substituicao}} <br>
-        {{ date( 'd/m/Y' , strtotime($chek_list_f['data_proxima_manutencao']))}} <br>
-        <div class="
+        <h6>{{ $chek_list_f->descricao}} </h6>
+        Intervalo entre a inspeção é de: {{ $chek_list_f->intervalo_manutencao}}hs <br>
+        A última verificação foi em: {{ date( 'd/m/Y' , strtotime($chek_list_f['data_substituicao']))}} às {{ $chek_list_f->hora_substituicao}} <br>
+        A próxima será em: {{ date( 'd/m/Y' , strtotime($chek_list_f['data_proxima_manutencao']))}} <br>
+        Horas restante: <div class="
     @if($chek_list_f->horas_proxima_manutencao >= 48)
         bg-success
     @elseif($chek_list_f->horas_proxima_manutencao < 48 && $chek_list_f->horas_proxima_manutencao > 0)
@@ -736,7 +739,7 @@
     @else
         bg-danger
     @endif
-" style="margin-bottom:5px;">Horas proxima:{{$chek_list_f->horas_proxima_manutencao}}</div>
+" style="margin-bottom:5px;">{{$chek_list_f->horas_proxima_manutencao}} hs</div>
         <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$chek_list_f->id ,'chek_list'=>1])}}">
             <i class="icofont-eye-alt"></i>
         </a>
@@ -758,11 +761,11 @@
         <h4>Lubrificação</h4>
         @foreach ($lubrificacao as $lubrificacao_f)
         {{$lubrificacao_f->id}} <br>
-        {{$lubrificacao_f->descricao}} <br>
+        <h6>{{$lubrificacao_f->descricao}}</h6>
         O intervalo entre a lubrificação é de: {{ $lubrificacao_f->intervalo_manutencao}}hs <br>
-       A última lubrificação foi em:  {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_substituicao']))}} às {{ $lubrificacao_f->hora_substituicao}} <br>
-       A próxima está programada para:  {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_proxima_manutencao']))}} <br>
-        <div class="
+        A última lubrificação foi em: {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_substituicao']))}} às {{ $lubrificacao_f->hora_substituicao}} <br>
+        A próxima está programada para: {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_proxima_manutencao']))}} <br>
+        Horas restante: <div class="
     @if($lubrificacao_f->horas_proxima_manutencao >= 48)
         bg-success
     @elseif($lubrificacao_f->horas_proxima_manutencao < 48 && $lubrificacao_f->horas_proxima_manutencao > 0)
@@ -770,8 +773,8 @@
     @else
         bg-danger
     @endif
-" style="margin-bottom:5px;">Horas proxima:{{$lubrificacao_f->horas_proxima_manutencao}}</div>
-<a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$lubrificacao_f->id ,'chek_list'=>1])}}">
+" style="margin-bottom:5px;">{{$lubrificacao_f->horas_proxima_manutencao}} hs</div>
+        <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$lubrificacao_f->id ,'chek_list'=>1])}}">
             <i class="icofont-eye-alt"></i>
         </a>
         {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}

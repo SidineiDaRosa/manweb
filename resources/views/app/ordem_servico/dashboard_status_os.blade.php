@@ -1045,9 +1045,11 @@
         .item-week {
             width: calc(33% - 20px);
             height: 300px;
-            margin: 10px;
-            padding: 15px;
-            background-color: antiquewhite;
+            margin: 5px;
+            padding: 5px;
+            background-color:ghostwhite;
+            border: solid 1px rgb(255, 0, 0, 0.2);
+            border-radius:5px;
             overflow: auto;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             font-weight: 200;
@@ -1077,7 +1079,7 @@
             <h4 class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;">Segunda-feira</h4>
             @forelse ($mondayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
+            <h6>{{ $order->equipamento->nome}} </h6>
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1089,7 +1091,8 @@
             <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:300;">Terça-feira</h4>
             @forelse ($tuesdayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
+            <h6>{{ $order->equipamento->nome}}</h6>
+            <h6>{{ $order->responsavel}}</h6>
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1099,9 +1102,10 @@
         {{--Box 4--}}
         <div class="item-week">
             <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:300;">Quarta-feira</h4>
+            
             @forelse ($wednesdayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
+             <h6>{{ $order->equipamento->nome}}</h6>
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1113,7 +1117,7 @@
             <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}" style="font-weight:300;">Quinta-feira</h4>
             @forelse ($thursdayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
+            <h6>{{ $order->equipamento->nome}} </h6>
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1123,9 +1127,10 @@
         {{--Box 6--}}
         <div class="item-week">
             <h4 class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:300;">Sexta-feira</h4>
+            
             @forelse ($fridayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
+            <h6>{{ $order->equipamento->nome}} </h6>
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1137,7 +1142,8 @@
             <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:300;">Sábado</h4>
             @forelse ($saturdayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
+           <h6>{{ $order->equipamento->nome}}</h6> 
+           <h6>{{ $order->responsavel}}</h6> 
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1149,13 +1155,14 @@
             <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;">Domingo</h4>
             @forelse ($sundayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-            {{ $order->equipamento->nome}} <br>
-            {{ $order->descricao}}
-            <hr style="color:green;">
-            @empty
-            Nenhuma ordem de serviço aberta neste domingo.
-            <hr>
-            @endforelse
+            <h6> {{ $order->equipamento->nome}}</h6>
+            <h6> {{ $order->responsavel}}</h6>
+                {{ $order->descricao}}
+                <hr style="color:green;">
+                @empty
+                Nenhuma ordem de serviço aberta neste domingo.
+                <hr>
+                @endforelse
         </div>
         {{--fim card--}}
     </div>
