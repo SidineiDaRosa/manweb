@@ -147,21 +147,38 @@
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>
-                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" style="color:#4caf50;">
+                <div class="conteudo"><input class="input-text" type="date" id="data_emissao" name="data_emissao" style="color:#4caf50;" readonly>
                     <input class="input-text" type="nuber" id="hora_emissao" name="hora_emissao" readonly style="color:#4caf50;">
                 </div>
 
                 <div class="titulo">Previsão para início</div>
                 <hr>
                 <div class="conteudo">
-                    <!--  <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();"-->
-                    <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="">
+                    <input class="input-text" type="date" name="data_inicio" id="dataPrevista" required value="" onchange="ValidateDatePrevista();" onkeypress="ValidateDatePrevista()">
+
                     <script>
                         document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
                     </script>
-                    <!-- <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()"-->>
-                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="">
+                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
+
                     <script>
+                        function ValidateDatePrevista() {
+                            let dataPrevista = document.getElementById('dataPrevista').value;
+                            let dataEmissao = document.getElementById('data_emissao').value;
+                            document.getElementById('dataFim').value = 'null';
+                            document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
+                            if (dataPrevista < dataEmissao) {
+                                //alert('Atenção! A data prevista que você está inserindo é anterior a data de emissão.');
+                                //document.getElementById('dataPrevista').value = 'null';
+
+                            } else {
+                                document.getElementById('dataPrevista').style.background = "rgb(150, 255, 150)";
+                                document.getElementById('dataFim').value = dataEmissao;
+                                document.getElementById('dataFim').style.background = "rgb(150, 255, 150)";
+                            }
+                        }
+
+                        //-----------------------------
                         function ValidateHoraInicio() {
                             var dataInicioElement = document.getElementById('dataPrevista');
                             var horaInicioElement = document.getElementById('hora_inicio');
@@ -179,7 +196,6 @@
                                 alert('Por favor, preencha todas as datas e horas.');
                                 return;
                             }
-
                             // Verifica se dataPrevista é igual a dataFim para validar as horas
                             if (dataInicio.getTime() === dataFim.getTime()) {
                                 // Verifica se horaFim é maior que horaInicio
@@ -208,28 +224,13 @@
         {{--Validação de datas--}}
 
         <script>
-            function ValidateDatePrevista() {
-                let dataPrevista = document.getElementById('dataPrevista').value;
-                let dataEmissao = document.getElementById('data_emissao').value;
-                document.getElementById('dataFim').value = 'null';
-                document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
-                if (dataPrevista < dataEmissao) {
-                    alert('Atenção! A data prevista que você está inserindo é anterior a data de emissão.');
-                    //document.getElementById('dataPrevista').value = 'null';
-
-
-                } else {
-                    document.getElementById('dataPrevista').style.background = "rgb(150, 255, 150)";
-                }
-            }
-
             function ValidateDateFim() {
                 let dataPrevista = document.getElementById('dataPrevista').value;
                 let dataFim = document.getElementById('dataFim').value;
                 if (dataFim < dataPrevista) {
-                    alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
-                    document.getElementById('dataFim').value = 'null';
-                    document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
+                   // alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
+                   // document.getElementById('dataFim').value = 'null';
+                   // document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
 
                 } else {
                     document.getElementById('dataFim').style.background = "rgb(150, 255, 150)";
@@ -463,7 +464,7 @@
         {{--fim card 3--}}
 
 </form>
-<button type="button" class="btn btn-outline-primary btn-sm" onclick="CadastraFormOs()">
+<button type="button" class="btn btn-outline-primary btn-bg" onclick="CadastraFormOs()" style="width:500px;">
     Cadastrar
 </button>
 

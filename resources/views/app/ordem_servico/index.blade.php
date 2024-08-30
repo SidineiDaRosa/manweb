@@ -85,7 +85,7 @@
                         <option value="5">Data inicial e equipamento</option>
                         <option value="6">Data inicial e empresa</option>
                         <option value="7">Imprimir</option>
-                        <option value="8">Ordenado pelo ID Ascendente</option>
+                        <option value="8">Ordenado pela Emissão</option>
                     </select>
                 </div>
                 <!--------------------------------------------------------------------------------------->
@@ -337,6 +337,7 @@
                     <thead>
                         <tr>
                             <th style="width:100px;">ID</th>
+                            <th>Emissão</th>
                             <th>Previsão para início</th>
                             <th>Previsão para conclusão</th>
                             <th>Empresa</th>
@@ -390,6 +391,9 @@
                         @endphp
                         <tr>
                             <td style="width:10px;">{{ $ordem_servico->id }}</td>
+                            <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}
+                                {{ $ordem_servico->hora_emissao }}
+                            </td>
                             <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}}
                                 {{ $ordem_servico->hora_inicio }}
                             </td>

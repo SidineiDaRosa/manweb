@@ -155,9 +155,9 @@ class OrdemServicoController extends Controller
             $dataFim = $request->get("data_fim");
             $empresa_id = $request->get("empresa_id");
             $situacao = $request->get("situacao");
-            $ordens_servicos = OrdemServico::where('data_inicio', ('>='), $dataInicio)
-                ->where('data_inicio', ('<='), $dataFim)
-                ->where('empresa_id', $empresa_id)->where('situacao', $situacao)->orderby('data_inicio')->orderby('id','asc')->get();
+            $ordens_servicos = OrdemServico::where('data_emissao', ('>='), $dataInicio)
+                ->where('data_emissao', ('<='), $dataFim)
+                ->where('empresa_id', $empresa_id)->where('situacao', $situacao)->orderby('data_emissao')->get();
 
             $valorTotal = 0;
             return view('app.ordem_servico.index', [
