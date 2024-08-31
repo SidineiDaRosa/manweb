@@ -208,7 +208,7 @@
                 <div class="titulo">Descrição do item</div>
                 <hr style="margin-bottom:2px;">
                 <div class="conteudo">
-                   <textarea name="descricao" id="descricao" cols="100" rows="4" readonly style="border-width: 0.5px;"></textarea>
+                    <textarea name="descricao" id="descricao" cols="100" rows="4" readonly style="border-width: 0.5px;"></textarea>
                 </div>
             </div>
         </div>
@@ -385,36 +385,58 @@
         <tbody>
             @foreach ($produtos as $produto)
             <tr>
-                <th>{{ $produto->id }} <button class=" btn btn-sm-template btn-outline-primary" id="add-product" value="{{ $produto->id }}" onclick="AddProduct();">Adicionar</button></td>
-
-                    <script>
-                        function AddProduct() {
-                            // Obtém o valor do input
-                            let productId = document.getElementById('add-product').value;
-
-                            // Pergunta ao usuário se deseja adicionar o produto
-                            if (confirm('Você realmente deseja adicionar o produto com ID: ' + productId + '?')) {
-                                // Se o usuário confirmar, mostra um alerta e limpa o campo
-                                alert('Produto adicionado com ID: ' + productId);
-                                document.getElementById('produto_id').value = productId;
-                                document.getElementById('produto_id').style.background = '#90EE90';
-                            } else {
-                                // Se o usuário cancelar, apenas mostra uma mensagem
-                                alert('A adição do produto foi cancelada.');
-                            }
-                        }
-                    </script>
+                <th>{{ $produto->id }}
+                    <!-- Passando o ID do produto via data-id no botão -->
+                    <button class="btn btn-sm-template btn-outline-primary" onclick="AddProduct({{ $produto->id }});">Adicionar</button>
+                </th>
                 <td>{{ $produto->cod_fabricante }}</td>
                 <td>{{ $produto->nome }}</td>
-                <td>{{ $produto->unidade_medida->nome}}</td>
-                <td>{{ $produto->marca->nome}}</td>
-                <td><a href="{{ $produto->link_peca}}" target="blank">Ver no site do fabricante
-                        <i class="icofont-arrow-right"></i>
-                    </a></td>
+                <td>{{ $produto->unidade_medida->nome }}</td>
+                <td>{{ $produto->marca->nome }}</td>
                 <td>
-                    <img src="/img/produtos/{{ $produto->image}}" alt="imagem" class="preview-image">
+                    <a href="{{ $produto->link_peca }}" target="blank">Ver no site do fabricante
+                        <i class="icofont-arrow-right"></i>
+                    </a>
                 </td>
-                <style>
+                <td>
+                    <img src="/img/produtos/{{ $produto->image }}" alt="imagem" class="preview-image">
+                </td>
+                <td>{{ $produto->categoria->nome }}</td>
+                <td>
+                    <div class="btn-group btn-group-actions visible-on-hover">
+                        <button class="btn btn-sm-template btn-outline-primary" id="select-btn" hidden>Selecionar</button>
+                        <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $produto->id]) }}">
+                            <i class="icofont-eye-alt"></i>
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    @if(isset($num_pedido) && $num_pedido >= 1)
+                    <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id, 'numpedidocompra' => $num_pedido]) }}">
+                        Adicionar ao pedido: {{ $num_pedido }}
+                    </a>
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+
+            <script>
+                function AddProduct(productId) {
+                    // Confirmação do usuário
+                    if (confirm('Você realmente deseja adicionar o produto com ID: ' + productId + '?')) {
+                        // Mostra um alerta com o ID do produto e realiza outras ações
+                        alert('Produto adicionado com ID: ' + productId);
+                        // Aqui você pode atualizar o campo com id 'produto_id'
+                        document.getElementById('produto_id').value = productId;
+                        document.getElementById('produto_id').style.background = '#90EE90';
+                        document.getElementById('quantidade').focus();
+                    } else {
+                        // Mensagem caso o usuário cancele a adição
+                        alert('A adição do produto foi cancelada.');
+                    }
+                }
+            </script>
+             <style>
                     .preview-image {
                         width: 100px;
                         height: 100px;
@@ -423,25 +445,6 @@
                         cursor: pointer;
                     }
                 </style>
-                <td>{{ $produto->categoria->nome}}</td>
-                <td>
-                    <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-
-                        <button class=" btn btn-sm-template btn-outline-primary" id="select-btn" hidden>Selecionar</button>
-
-                        <a class=" btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $produto->id]) }}">
-                            <i class="icofont-eye-alt"></i>
-                        </a>
-                    </div>
-                </td>
-                <td>
-                    @if(isset($num_pedido) && $num_pedido >= 1)
-                    <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}">Adicionar ao pedido:{{ $num_pedido }}</a>
-                    @endif
-                </td>
-            </tr>
-            @endforeach
-
         </tbody>
     </table>
 </div>

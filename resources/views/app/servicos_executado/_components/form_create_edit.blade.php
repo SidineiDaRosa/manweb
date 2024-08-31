@@ -85,7 +85,7 @@
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">descrição dos serviços executados</label>
         <div class="col-md-6">
-            <input type="text" id="executado" type="text" class="form-control" name="descricao" value="" rows="3" require>
+            <textarea class="form-control" id="executado" name="descricao" rows="5" cols="100" require style="height: 100px;"></textarea>
         </div>
         <div class="invalid-tooltip">
             Por favor, informe os dados.
@@ -149,6 +149,7 @@
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right"></label>
         <div class="col-md-6">
+            
             <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="CallSumHours()">
                 Cadastrar
             </button>
