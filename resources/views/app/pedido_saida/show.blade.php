@@ -75,6 +75,14 @@
                     <label for="data_inicio">Hora prevista:</label>
                     <input type="text" class="form-control -lg" name="data_emissao" id="data_emissao" value="{{$pedido_saida->hora_emissao}}" readonly>
                 </div>
+                <div class="col-md-1">
+                    <label for="data_inicio">Situação:</label>
+                    <input type="text" class="form-control -lg" name="situacao" id="situacao" value="{{$pedido_saida->status}}" readonly>
+                </div>
+                <div class="col-md-1">
+                    <label for="data_inicio">Emissor:</label>
+                    <input type="text" class="form-control -lg" name="situacao" id="situacao" value="{{$pedido_saida->funcionarios_id}}" readonly>
+                </div>
             </div>
             {{-- Formulário com os dados para adicionar o item --}}
             <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST">

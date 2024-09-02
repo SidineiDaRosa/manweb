@@ -103,7 +103,15 @@
                     </select>
                     {{ $errors->has('empresa_id') ? $errors->first('empresa_id') : '' }}
                 </div>
+                <script>
+                    function alterarTexto() {
+                        // Seleciona o elemento pelo ID
+                        alert();
+                        document.getElementById("empresa_id").value = 2;
 
+                        updateIdPatrimonio()
+                    }
+                </script>
                 {{----------------------------------------------------------------}}
                 {{--Select para escolher o patrimônio-----------------------------}}
                 <div class="col-md-3 mb-0">
@@ -111,9 +119,7 @@
                     <input type="number" class="form-control" id="patrimonio" name="patrimonio_id" placeholder="ID patrimonio" value="" hidden>
                     <select class="form-control" id="results" onchange="updateIdPatrimonio()">
                         <option class="form-control" value="" style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                         font-weight:300px;"
-                        
-                        >Selecione um resultado</option>
+                         font-weight:300px;">Selecione um resultado</option>
                     </select>
                 </div>
                 </form>
