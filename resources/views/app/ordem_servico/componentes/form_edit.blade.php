@@ -645,8 +645,8 @@
         {{--fim card 3--}}
         <div class="row sm-3 mb-0">
             <div class="col-md-12">
-                <button type="submit" class="btn btn-outline-primary btn-sm">
-                    Alterar ordem de serviço
+                <button type="submit" class="btn btn-outline-primary btn-bg" style="width:500px;">
+                    Salvar alteração da O.S.
                 </button>
             </div>
         </div>

@@ -152,11 +152,11 @@
         <thead>
 
             <tr>
-                <th scope="col" class="">cod fabricante</th>
-                <th scope="col" class="">Descrição</th>
-                <th scope="col" class="">unidade</th>
-                <th scope="col" class="">Quantidade</th>
-                <th scope="col" class="">Imagem</th>
+                <th style="width:150px;">cod fabricante</th>
+                <th >Descrição</th>
+                <th >unidade</th>
+                <th >Quantidade</th>
+                <th >Imagem</th>
             </tr>
         </thead>
         @foreach ($pedido_compra_lista as $pedido_compra_ls)
@@ -168,11 +168,14 @@
                 @endphp
 
             <tr>
+               
                 <td>{{ $produto->cod_fabricante}}</td>
-                <td>{{ $produto->nome ?? 'Produto não encontrado' }}</td>
-                <td>{{ $unidade ? $unidade->nome : 'Unidade não encontrada' }}</td>
-                <td>{{ $pedido_compra_ls->quantidade }}</td>
-                <td>
+                <td style="width:400px;text-align:left ;">{{ $produto->nome ?? 'Produto não encontrado' }} <br>
+                Dados técnicos: {{ $produto->descricao ?? 'Produto não encontrado' }}
+                </td>
+                <td style="width:5%;">{{ $unidade ? $unidade->nome : 'Unidade não encontrada' }}</td>
+                <td style="width:5%;">{{ $pedido_compra_ls->quantidade }}</td>
+                <td style="width:10%;" >
                     @if ($produto)
                     <img src="/img/produtos/{{ $produto->image }}" alt="Imagem do Produto" class="preview-image">
                     @endif
