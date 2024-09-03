@@ -4,10 +4,10 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-        Entradas de produtos
-            <form id="formSearchingProducts" action="{{'Ent-Produtos-filtro'}}" method="POST">
+            Entradas de produtos
+            <form id="formSearchingProducts" action="{{'Ent-Produtos-filtro'}}" method="POST" style="width: 75%;">
                 @csrf
-                
+
                 <!--------------------------------------------------------------------------------------->
                 <!---------Select empresa------------->
                 <!--------------------------------------------------------------------------------------->
@@ -20,16 +20,17 @@
 
                 <div class="col-md-4 mb-0">
                     <select name="empresa_id" id="empresa_id" class="form-control">
-                        <option value="2">Fapolpa Industria de Papel e embalagens Ltda</option>
+                        <option value=""></option>
                         @foreach ($empresa as $empresas_find)
-                        <option value="{{$empresas_find->id}}" {{($empresas_find->empresa_id ?? old('empresa_id')) == $empresas_find->id ? 'selected' : '' }}>
+                        <option value="{{$empresas_find->id}}"
+                            {{ $empresas_find->id == 2 ? 'selected' : '' }}>
                             {{$empresas_find->razao_social}}
                         </option>
                         @endforeach
                     </select>
                     {{ $errors->has('empresa_id') ? $errors->first('empresa_id') : '' }}
                 </div>
-                <div class="col-md-3 mb-0">
+                <div class="col-md-2 mb-0">
                     <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
                         <option value="5">Busca Pela empresa</option>
                         <option value="1">Busca pelo ID</option>
@@ -42,7 +43,8 @@
                 <style>
                     #formSearchingProducts {
                         background-color: white;
-                        width:800px;;
+                        width: 800px;
+                        ;
                         height: 44px;
                         border-radius: 5px;
                         display: flex;

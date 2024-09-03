@@ -96,7 +96,8 @@
                     <select name="empresa_id" id="empresa_id" class="form-control-template">
                         <option value=""> --Selecione a empresa--</option>
                         @foreach ($empresa as $empresas_find)
-                        <option value="{{ $empresas_find->id }}" {{ ($empresas_find->empresa_id ?? old('empresa_id')) == $empresas_find->id ? 'selected' : '' }}>
+                        <option value="{{ $empresas_find->id }}"
+                            {{ ($empresas_find->id == 2) ? 'selected' : (($empresas_find->empresa_id ?? old('empresa_id')) == $empresas_find->id ? 'selected' : '') }}>
                             {{ $empresas_find->razao_social }}
                         </option>
                         @endforeach
