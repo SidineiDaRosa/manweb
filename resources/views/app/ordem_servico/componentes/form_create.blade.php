@@ -159,7 +159,7 @@
                     <script>
                         document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
                     </script>
-                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" onchange="ValidateHoraInicio()" oninput="ValidateHoraInicio()">
+                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" >
 
                     <script>
                         function ValidateDatePrevista() {
