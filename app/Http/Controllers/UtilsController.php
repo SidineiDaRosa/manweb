@@ -11,6 +11,7 @@ use App\Models\PedidoSaida; //pedido de saída
 use Illuminate\Http\Request;
 use App\Models\Servicos_executado;
 use App\Models\PecasEquipamentos;
+use App\Models\Funcionario;
 use DateTime;
 use DateInterval;
 use Illuminate\Support\Facades\DB; // Importa a classe DB
@@ -269,6 +270,7 @@ class UtilsController extends Controller
     }
     public function create_solicitacao_os()
     {
-        return view('app.ordem_servico.solicitacao_os');
+        $funcionarios=Funcionario::where('funcao','supervisor')->get();;
+        return view('app.ordem_servico.solicitacao_os',['funcionarios'=>$funcionarios]);
     }
 }

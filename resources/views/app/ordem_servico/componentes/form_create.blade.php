@@ -143,7 +143,7 @@
                         @foreach ($funcionarios as $funcionario_find)
                         <option value="{{ $funcionario_find->primeiro_nome }}"
                             {{ 
-            $funcionario_find->id == 10 ? 'selected' : 
+            $funcionario_find->id == 13 ? 'selected' : 
             (($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '') 
         }}>
                             {{ $funcionario_find->primeiro_nome }}

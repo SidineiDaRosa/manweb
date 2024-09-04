@@ -13,6 +13,7 @@ use App\Http\Controllers\PedidoCompraAutoGenerateController;
 use App\Http\Controllers\EquipamentoHistoryController;
 use App\Http\Controllers\DahboardStatusOsController;
 use App\Http\Controllers\UtilsController;
+use App\Http\Controllers\SolicitacaoOsController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -309,3 +310,6 @@ Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])
 //---------------------------------------------------------//
 
 Route::get('/solicitacao-os', [UtilsController::class, 'create_solicitacao_os']);
+Route::post('solicitacao-os', [SolicitacaoOsController::class, 'store'])->name('solicitacao-os.store');
+Route::get('/solicitacoes-pendentes', [SolicitacaoOsController::class, 'cont']);
+Route::get('/solicitacoes-os', [SolicitacaoOsController::class, 'index']);

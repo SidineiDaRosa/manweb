@@ -23,19 +23,97 @@
         <div class="menu-toggle mx-3">
             <i class="icofont-navigation-menu"></i>
         </div>
-       
+
         <div class="logo">
-        <i class="icofont-architecture-alt icofont-2x wite"></i>
+            <i class="icofont-architecture-alt icofont-2x wite"></i>
             <span class="font-wheight-light">Manutenção Fapolpa</span>
         </div>
         <div class="spacer"></div>
+        <!-- HTML -->
+        <div class="dropdown" id="solicitacoes-count">
+            <a href="/solicitacoes-os" id="solicitacoes-link" class="dropdown" style="color: white;">
+                Solicitação pendente
+            </a>
+            <span class="badge" id="badge">0</span>
+        </div>
+
+        <!-- CSS -->
+        <style>
+            /* Estiliza o balão (badge) */
+            .badge {
+                display: inline-block;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                color: white;
+                text-align: center;
+                line-height: 24px;
+                font-size: 14px;
+                font-weight: bold;
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                z-index: 1000;
+                /* Garante que o balão fique acima de outros elementos */
+            }
+
+            /* Estilo do balão quando não há solicitações pendentes */
+            .badge.zero {
+                background-color: green;
+            }
+
+            /* Estilo do balão quando há solicitações pendentes */
+            .badge.non-zero {
+                background-color: red;
+            }
+
+            /* Estiliza a posição da div de contagem */
+            #solicitacoes-count {
+                position: relative;
+                display: inline-block;
+                /* Ajusta o contêiner para se ajustar ao balão */
+                margin-right: 100px;
+                cursor: pointer;
+            }
+        </style>
+
+        <!-- JavaScript -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Função para atualizar a contagem de solicitações pendentes
+                function atualizarContagem() {
+                    fetch('/solicitacoes-pendentes')
+                        .then(response => response.json())
+                        .then(data => {
+                            const badge = document.getElementById('badge');
+                            badge.innerText = data.pendentes;
+
+                            // Altera a classe do balão com base no número de solicitações
+                            if (data.pendentes > 0) {
+                                badge.classList.remove('zero');
+                                badge.classList.add('non-zero');
+                            } else {
+                                badge.classList.remove('non-zero');
+                                badge.classList.add('zero');
+                            }
+                        })
+                        .catch(error => console.error('Erro:', error));
+                }
+
+                // Atualiza a contagem a cada 30 segundos (30000 milissegundos)
+                setInterval(atualizarContagem, 30000);
+
+                // Atualiza a contagem imediatamente quando a página é carregada
+                atualizarContagem();
+            });
+        </script>
 
         <div class="dropdown">
             <div class="dropdown-button">
                 {{ Auth::user()->name }}
                 <span class="ml-3"
-                </span>
-                <i class="icofont-simple-down mx-2"></i>
+                    </span>
+                    <i class="icofont-simple-down mx-2"></i>
             </div>
 
 
@@ -50,7 +128,6 @@
                             @csrf
                         </form>
                     </li>
-
                 </ul>
             </div>
 
