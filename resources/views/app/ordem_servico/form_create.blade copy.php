@@ -104,24 +104,17 @@
                 <div class="conteudo">
                     <select class="input-text" name="emissor" id="emissor" required onchange="ValidateChangeEmissor()" style="background-color:rgba(249, 187, 120, 0.2);">
                         <option value=""> --Selecione o Responsável--</option>
-
                         <!-- Opção do usuário autenticado -->
-                        <option value="{{ auth()->user()->name }}"
-                            {{ (old('responsavel') ?? auth()->user()->name) == auth()->user()->name && auth()->user()->id != 4 ? 'selected' : '' }}>
+                        <option value="{{ auth()->user()->name }}" {{ (old('responsavel') ?? auth()->user()->name) == auth()->user()->name ? 'selected' : '' }}>
                             {{ auth()->user()->name }}
                         </option>
-
                         @foreach ($funcionarios as $funcionario_find)
                         <option value="{{ $funcionario_find->primeiro_nome }}"
-                            {{
-                $funcionario_find->id == 4 ? 'selected' : 
-                ((old('responsavel') ?? null) == $funcionario_find->primeiro_nome ? 'selected' : '')
-            }}>
+                            {{ (old('responsavel') ?? null) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
                             {{ $funcionario_find->primeiro_nome }}
                         </option>
                         @endforeach
                     </select>
-
                     <script>
                         function ValidateChangeEmissor() {
                             document.getElementById('emissor').style.background = "rgb(150, 255, 150)";
