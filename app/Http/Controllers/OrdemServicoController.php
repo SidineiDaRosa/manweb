@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Equipamento;
 use App\Models\OrdemServico;
 use App\Models\Funcionario;
+use App\Models\PedidoSaida;
+use App\Models\SaidaProduto;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
@@ -297,13 +299,35 @@ class OrdemServicoController extends Controller
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
         $total_hs_os = Servicos_executado::where('ordem_servico_id', $id)->sum('subtotal');
         $equipamentos = Equipamento::all();
+        // 1. Obter os pedidos com base na 'ordem_servico_id'
+        $pedidos_saida = PedidoSaida::where('ordem_servico_id', $id)->get();
+
+        // 2. Para cada pedido, buscar os produtos de saída correspondentes
+        foreach ($pedidos_saida as $pedido) {
+            // Supondo que a tabela SaidaProduto tem uma coluna 'pedido_saida_id' que referencia 'id' de PedidoSaida
+            $produtos = SaidaProduto::where('pedidos_saida_id', $pedido->id)->get();
+
+    // Exibir ou processar cada produto associado ao pedido
+    foreach ($produtos as $produto) {
+        // Aqui você pode processar ou exibir os dados do produto
+        echo "Pedido ID: " . $pedido->id . "<br>";
+        echo "Produto ID: " . $produto->produto->id . "<br>";
+        echo "Nome do Produto: " . $produto->produto->nome . "<br>";
+        echo "Quantidade: " . $produto->quantidade . "<br>";
+        echo "Unidade de Medida: " . $produto->unidade_medida . "<br>";
+        echo "<br>"; // Adicionar um espaço entre os produtos
+    }
+        }
+        //$saidas_produto=SaidaProduto::where('')
         //$total_hs_os=23;
+        
         return view('app.ordem_servico.show', [
             'ordem_servico' => $ordem_servico,
             'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
             'total_hs_os' => $total_hs_os,
-            'equipamentos' => $equipamentos
+            'equipamentos' => $equipamentos,
+            'produtos'=>$produtos
         ]);
     }
     /**

@@ -267,4 +267,8 @@ class UtilsController extends Controller
 
         return response()->json($results);
     }
+    public function create_solicitacao_os()
+    {
+        return view('app.ordem_servico.solicitacao_os');
+    }
 }

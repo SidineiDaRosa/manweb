@@ -7,7 +7,6 @@
             Entradas de produtos
             <form id="formSearchingProducts" action="{{'Ent-Produtos-filtro'}}" method="POST" style="width: 75%;">
                 @csrf
-
                 <!--------------------------------------------------------------------------------------->
                 <!---------Select empresa------------->
                 <!--------------------------------------------------------------------------------------->
@@ -17,7 +16,6 @@
                 <div class="col-md-2">
                     <input type="date" class="form-control" name="data_fim" id="data_fim" placeholder="dataPrevista" style="height: auto;">
                 </div>
-
                 <div class="col-md-4 mb-0">
                     <select name="empresa_id" id="empresa_id" class="form-control">
                         <option value=""></option>

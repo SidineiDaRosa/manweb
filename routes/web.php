@@ -12,6 +12,7 @@ use App\Http\Controllers\SaidaProdutoController;
 use App\Http\Controllers\PedidoCompraAutoGenerateController;
 use App\Http\Controllers\EquipamentoHistoryController;
 use App\Http\Controllers\DahboardStatusOsController;
+use App\Http\Controllers\UtilsController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -303,3 +304,8 @@ Route::get('/assets', [EquipamentoHistoryController::class, 'assets'])->name('as
 //    Status Os
 //---------------------------------------------------------//
 Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])->name('dashboard.status.os');
+//---------------------------------------------------------//
+//    Criar solicitação de Os
+//---------------------------------------------------------//
+
+Route::get('/solicitacao-os', [UtilsController::class, 'create_solicitacao_os']);
