@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-<img src="{{ asset('img/logo_fapolpa.jpeg') }}" alt="Logo Fapolpa">
+<img src="{{ asset('img/logo_fapolpa.jpeg') }}" alt="Logo Fapolpa" style="justify:center;">
     <h1>solicitacao</h1>
     
 </body>

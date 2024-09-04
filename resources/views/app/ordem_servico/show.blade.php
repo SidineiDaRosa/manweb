@@ -393,28 +393,7 @@
         <input type="number" class="form-control" id="ordem_servico_id" name="ordem_servico_id" required value="{{$ordem_servico->id}}" hidden>
     </form>
     <h6>Produtos usados</h6>
-    <table class="table" hidden>
-    <thead>
-        <tr>
-            <th>ID do Produto</th>
-            <th>Nome</th>
-            <th>Unid Medida</th>
-            <th>Quantidade</th>
-            <th>Pedido</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($produtos as $produto_f)
-        <tr>
-            <td>{{ $produto_f->produto->id ?? 'N/A' }} </td>
-            <td>{{ $produto_f->produto->nome ?? 'N/A' }}</td>
-            <td>{{ $produto_f->unidade_medida ?? 'N/A' }}</td>
-            <td>{{ $produto_f->quantidade ?? 'N/A' }}</td>
-            <td>{{ $produto_f->pedidos_saida_id ?? 'N/A' }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+
     <div id="mensagem"></div>
     <script>
         function StartOs() {

@@ -327,7 +327,7 @@ class OrdemServicoController extends Controller
             'funcionarios' => $funcionarios,
             'total_hs_os' => $total_hs_os,
             'equipamentos' => $equipamentos,
-            'produtos'=>$produtos
+            //'produtos'=>$produtos
         ]);
     }
     /**
