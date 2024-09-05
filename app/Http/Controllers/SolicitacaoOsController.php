@@ -16,8 +16,14 @@ class SolicitacaoOsController extends Controller
      */
     public function index()
     {
-      $solicitacoes=SolicitacaoOs::all();
-      echo($solicitacoes);
+        $solicitacoes = SolicitacaoOs::where('status', 'Em Espera')
+            ->orWhere('status', 'Aberta')
+            ->get();
+        $funcionarios = Funcionario::all();
+        return view('app.solicitacao_os.solicitacao_os_show', [
+            'solicitacoes' => $solicitacoes,
+            'funcionarios' => $funcionarios
+        ]);
     }
 
     /**
@@ -28,6 +34,8 @@ class SolicitacaoOsController extends Controller
     public function create()
     {
         //
+        $funcionarios = Funcionario::where('funcao', 'supervisor')->get();
+        return view('app.solicitacao_os.solicitacao_create', ['funcionarios' => $funcionarios]);
     }
 
     /**
@@ -44,19 +52,19 @@ class SolicitacaoOsController extends Controller
             'emissor' => 'nullable|exists:funcionarios,id',
             'descricao' => 'required|string|max:300',
         ]);
-    
+
         // Define o valor padrão para 'status'
-        $validated['status'] = 1; // Define o valor padrão para o campo 'status'
-    
+        $validated['status'] = 'Aberto'; // Define o valor padrão para o campo 'status'
+
         // Cria a nova solicitação com os dados validados e o status padrão
         $solicitacao = SolicitacaoOs::create($validated);
-    
+
         // Obtém o funcionário se o emissor estiver presente
         $funcionario = $validated['emissor'] ? Funcionario::find($validated['emissor']) : null;
-    
+
         // Obtém o último registro gravado
         $ultimoRegistro = SolicitacaoOs::latest()->first();
-    
+
         // Retorna uma resposta JSON com a mensagem de sucesso
         return response()->json([
             'status' => 'Solicitação salva com sucesso!',
@@ -112,13 +120,58 @@ class SolicitacaoOsController extends Controller
     {
         //
     }
-    public function cont(){
-  //
+    public function cont()
+    {
+        // Conta as solicitações com status diferente de "aceita" (ou o status correspondente)
+        $pendentes = SolicitacaoOs::where('status', '=', 'Aberta')->count();
 
-    // Conta as solicitações com status diferente de "aceita" (ou o status correspondente)
-    $pendentes = SolicitacaoOs::where('status', '=', '1')->count();
+        // Retorna a contagem como resposta JSON
+        return response()->json(['pendentes' => $pendentes]);
+    }
+    public function aceitar($id)
+    {
+        $solicitacao = SolicitacaoOs::find($id);
+        $solicitacao->status = 'Aceita'; // Status para "Aceita"
+        $solicitacao->save();
+
+        return redirect()->back()->with('success', 'Solicitação aceita com sucesso!');
+    }
+
+    public function espera($id)
+    {
+        $solicitacao = SolicitacaoOs::find($id);
+        $solicitacao->status = 'Em Espera'; // Status para "Em Espera"
+        $solicitacao->save();
+
+        return redirect()->back()->with('success', 'Solicitação colocada em espera!');
+    }
+
+    public function recusar($id)
+    {
+        $solicitacao = SolicitacaoOs::find($id);
+        $solicitacao->status = 'recusada'; // Status para "Recusada"
+        $solicitacao->save();
+
+        return redirect()->back()->with('success', 'Solicitação recusada com sucesso!');
+    }
+    public function solicitacoes(Request $request)
+    {
+        // Obtém o valor da data e hora do formulário
+        $datetime = $request->input('datetime');
     
-    // Retorna a contagem como resposta JSON
-    return response()->json(['pendentes' => $pendentes]);
+        // Converte a data e hora para o formato DateTime, se necessário
+        $date = \Carbon\Carbon::parse($datetime);
+    
+        // Faz a busca das solicitações com base na data e hora
+        $solicitacoes = SolicitacaoOs::where('created_at', '>=', $date)->get();
+    
+        // Obtém todos os funcionários
+        $funcionarios = Funcionario::all();
+    
+        // Retorna a view com os dados
+        return view('app.solicitacao_os.solicitacao_os_show', [
+            'solicitacoes' => $solicitacoes,
+            'funcionarios' => $funcionarios
+        ]);
     }
 }

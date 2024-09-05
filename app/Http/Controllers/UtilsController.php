@@ -268,9 +268,5 @@ class UtilsController extends Controller
 
         return response()->json($results);
     }
-    public function create_solicitacao_os()
-    {
-        $funcionarios=Funcionario::where('funcao','supervisor')->get();;
-        return view('app.ordem_servico.solicitacao_os',['funcionarios'=>$funcionarios]);
-    }
+
 }

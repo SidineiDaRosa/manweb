@@ -28,7 +28,7 @@ use App\Http\Controllers\SolicitacaoOsController;
 
 Route::get('/', function () {
     return view('site.home');
-})->name('site.home');// Dashboard principal
+})->name('site.home'); // Dashboard principal
 
 Route::get('/site/sobre_nos', function () {
     return view('site.sobre_nos');
@@ -74,8 +74,8 @@ Route::middleware('auth')->resource('/produto', 'App\Http\Controllers\ProdutoCon
 //                Equipamento
 //---------------------------------------------//
 Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\EquipamentoController');
-Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets');//acesso sem autenticação
-Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history');//acesso sem autenticação
+Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
+Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
 //---------------------------------------------//
 //             Ordem de serviço
 //---------------------------------------------//
@@ -308,8 +308,11 @@ Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])
 //---------------------------------------------------------//
 //    Criar solicitação de Os
 //---------------------------------------------------------//
-
-Route::get('/solicitacao-os', [UtilsController::class, 'create_solicitacao_os']);
+Route::get('/solicitacao-os', [SolicitacaoOsController::class, 'create']);
 Route::post('solicitacao-os', [SolicitacaoOsController::class, 'store'])->name('solicitacao-os.store');
 Route::get('/solicitacoes-pendentes', [SolicitacaoOsController::class, 'cont']);
 Route::get('/solicitacoes-os', [SolicitacaoOsController::class, 'index']);
+Route::post('/solicitacao_os/{id}/aceitar', [SolicitacaoOsController::class, 'aceitar'])->name('solicitacao_os.aceitar');
+Route::post('/solicitacao_os/{id}/espera', [SolicitacaoOsController::class, 'espera'])->name('solicitacao_os.espera');
+Route::post('/solicitacao_os/{id}/recusar', [SolicitacaoOsController::class, 'recusar'])->name('solicitacao_os.recusar');
+Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->name('solicitacoes-os');
