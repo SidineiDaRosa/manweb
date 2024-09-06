@@ -37,11 +37,12 @@
     @foreach($solicitacoes as $solicitacao)
     <div style="padding:20px; align-items: center;font-family:arial,sanserif;">
         ID: {{$solicitacao->id}} <br>
-        Data e hora: {{$solicitacao->datatime}} <br>
+        Emissão: {{ \Carbon\Carbon::parse($solicitacao->datetime)->format('d/m/Y H:i:s') }} <br>
+
         @foreach($funcionarios as $funcionario)
         @if ($funcionario->id == $solicitacao->emissor)
         Emissor: {{ $funcionario->primeiro_nome }} <br>
-        Aceito por: {{ $solicitacao->receptor}} <br>
+        Verificado Por: {{ $solicitacao->receptor}} <br>
         Atualizado: {{ $solicitacao->updated_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i:s') }} <br>
         @endif
         @endforeach

@@ -137,7 +137,7 @@ class SolicitacaoOsController extends Controller
         $solicitacao->status = 'Aceita'; // Status para "Aceita"
         $solicitacao->receptor = auth()->user()->name; // Grava o nome do usuário autenticado
         $solicitacao->save();
-        $solicitacaoOs = SolicitacaoOs::find($id);
+       $solicitacaoOs = SolicitacaoOs::find($id);
         $novaOs = $solicitacaoOs->descricao;
         $equipamentos = Equipamento::all();
         return view('app.solicitacao_os.nova_os', [
@@ -150,6 +150,7 @@ class SolicitacaoOsController extends Controller
     {
         $solicitacao = SolicitacaoOs::find($id);
         $solicitacao->status = 'Em Espera'; // Status para "Em Espera"
+        $solicitacao->receptor = auth()->user()->name; // Grava o nome do usuário autenticado
         $solicitacao->save();
 
         return redirect()->back()->with('success', 'Solicitação colocada em espera!');
@@ -159,6 +160,7 @@ class SolicitacaoOsController extends Controller
     {
         $solicitacao = SolicitacaoOs::find($id);
         $solicitacao->status = 'Recusada'; // Status para "Recusada"
+        $solicitacao->receptor = auth()->user()->name; // Grava o nome do usuário autenticado
         $solicitacao->save();
 
         return redirect()->back()->with('success', 'Solicitação recusada com sucesso!');
