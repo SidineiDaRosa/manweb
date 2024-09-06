@@ -51,7 +51,7 @@ class SolicitacaoOsController extends Controller
     {
         // Valida os dados recebidos da requisição
         $validated = $request->validate([
-            'datetime' => 'required|date',
+            'datetime' => 'required|date',//aqui date e time
             'emissor' => 'nullable|exists:funcionarios,id',
             'descricao' => 'required|string|max:300',
         ]);
