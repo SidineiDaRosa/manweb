@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Equipamento;
 use Illuminate\Http\Request;
 use App\Models\SolicitacaoOs;
 use App\Models\Funcionario;
+use App\Models\OrdemServico;
 use PhpParser\NodeVisitor\FirstFindingVisitor;
 
 class SolicitacaoOsController extends Controller
@@ -18,6 +20,8 @@ class SolicitacaoOsController extends Controller
     {
         $solicitacoes = SolicitacaoOs::where('status', 'Em Espera')
             ->orWhere('status', 'Aberta')
+            ->orderByRaw("FIELD(status, 'Aberta', 'Em Espera')")
+            ->orderBy('created_at', 'desc') // Ordenar pela data mais recente
             ->get();
         $funcionarios = Funcionario::all();
         return view('app.solicitacao_os.solicitacao_os_show', [
@@ -37,7 +41,6 @@ class SolicitacaoOsController extends Controller
         $funcionarios = Funcionario::where('funcao', 'supervisor')->get();
         return view('app.solicitacao_os.solicitacao_create', ['funcionarios' => $funcionarios]);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -132,9 +135,15 @@ class SolicitacaoOsController extends Controller
     {
         $solicitacao = SolicitacaoOs::find($id);
         $solicitacao->status = 'Aceita'; // Status para "Aceita"
+        $solicitacao->receptor = auth()->user()->name; // Grava o nome do usuário autenticado
         $solicitacao->save();
-
-        return redirect()->back()->with('success', 'Solicitação aceita com sucesso!');
+        $solicitacaoOs = SolicitacaoOs::find($id);
+        $novaOs = $solicitacaoOs->descricao;
+        $equipamentos = Equipamento::all();
+        return view('app.solicitacao_os.nova_os', [
+            'equipamentos' => $equipamentos,
+            'novaOs' => $novaOs
+        ]);
     }
 
     public function espera($id)
@@ -149,7 +158,7 @@ class SolicitacaoOsController extends Controller
     public function recusar($id)
     {
         $solicitacao = SolicitacaoOs::find($id);
-        $solicitacao->status = 'recusada'; // Status para "Recusada"
+        $solicitacao->status = 'Recusada'; // Status para "Recusada"
         $solicitacao->save();
 
         return redirect()->back()->with('success', 'Solicitação recusada com sucesso!');
@@ -158,16 +167,21 @@ class SolicitacaoOsController extends Controller
     {
         // Obtém o valor da data e hora do formulário
         $datetime = $request->input('datetime');
-    
+        $datetime_fim = $request->input('datetime_fim');
+        $options = $request->get('options');
+        echo($options );
         // Converte a data e hora para o formato DateTime, se necessário
         $date = \Carbon\Carbon::parse($datetime);
-    
+        $endDate = \Carbon\Carbon::parse($datetime_fim);
+
         // Faz a busca das solicitações com base na data e hora
-        $solicitacoes = SolicitacaoOs::where('created_at', '>=', $date)->get();
-    
+        $solicitacoes = SolicitacaoOs::where('datetime', '>=', $date)
+            ->where('datetime', '<=', $endDate)->where('status',$options)
+            ->get();
+
         // Obtém todos os funcionários
         $funcionarios = Funcionario::all();
-    
+
         // Retorna a view com os dados
         return view('app.solicitacao_os.solicitacao_os_show', [
             'solicitacoes' => $solicitacoes,

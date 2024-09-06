@@ -30,7 +30,8 @@
             @component('app.ordem_servico.componentes.form_create', ['ordem_servico'=>$ordem_servico,
             'equipamentos'=>$equipamentos,'funcionarios'=>$funcionarios,
             'empresa'=>$empresa,
-            'equipamento'=>$equipamento])
+            'equipamento'=>$equipamento,
+            'pre_descricao_os'=>$pre_descricao_os])
             @endcomponent
         </div>
     </div>

@@ -5,11 +5,26 @@
     <div class="titulo-main">
         Solicitações de O.S
     </div>
-    <form action="{{ route('solicitacoes-os') }}" method="get">
-        <input type="datetime-local" class="form-control-template" name="datetime" id="datetime" style="width:250px;height:30px;font-size:20px;"> <br>
+    <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
+        Entre:
+        <input type="datetime-local" class="form-control-template" name="datetime" id="datetime" style="width:250px;height:30px;font-size:20px;"> <br> 
+        <input type="datetime-local" class="form-control-template" name="datetime_fim" id="datetime_fim" style="width:250px;height:30px;font-size:20px;"> <br>
+        <label for="option-all">Todas</label>
+        <input type="radio" id="option-all" name="options" value="Todas" checked>
+
+        <label for="option-accepted">Aceitas</label>
+        <input type="radio" id="option-accepted" name="options" value="Aceita">
+
+        <label for="option-pending">Em espera</label>
+        <input type="radio" id="option-pending" name="options" value="Em Espera">
+
+        <label for="option-rejected">Recusada</label>
+        <input type="radio" id="option-rejected" name="options" value="Recusada">
+        <input type="hidden" name="receptor" value="{{ auth()->user()->nome }}">
         <button type="submit" class="btn btn-outline-primary mb-1">
             Buscar
         </button>
+
     </form>
     <style>
         .titulo-main {
@@ -20,16 +35,30 @@
         }
     </style>
     @foreach($solicitacoes as $solicitacao)
-    <div style="padding:20px; align-items: center;">
-        {{$solicitacao->id}} <br>
-        {{$solicitacao->datatime}} <br>
+    <div style="padding:20px; align-items: center;font-family:arial,sanserif;">
+        ID: {{$solicitacao->id}} <br>
+        Data e hora: {{$solicitacao->datatime}} <br>
         @foreach($funcionarios as $funcionario)
         @if ($funcionario->id == $solicitacao->emissor)
-        {{ $funcionario->primeiro_nome }}
+        Emissor: {{ $funcionario->primeiro_nome }} <br>
+        Aceito por: {{ $solicitacao->receptor}} <br>
+        Atualizado: {{ $solicitacao->updated_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i:s') }} <br>
         @endif
         @endforeach
-        {{$solicitacao->descricao}} <br>
-        {{$solicitacao->status}} <br>
+        Descrição: {!! nl2br(e($solicitacao->descricao)) !!} <br>
+        
+        <div style="
+        @if($solicitacao->status == 'Aberta') 
+          background-color: red; 
+        @elseif($solicitacao->status == 'Em Espera') 
+           background-color: orange; 
+        @else 
+           background-color: lightgrey;
+        @endif
+        width:50%;
+    ">
+        Status:  {{$solicitacao->status}} <br>
+    </div> <br>
         <!-- Botão para "Aceitar" -->
         <a class="btn btn-outline-primary mb-1" href="{{ route('solicitacao_os.aceitar', $solicitacao->id) }}"
             onclick="event.preventDefault(); document.getElementById('aceitar-form-{{ $solicitacao->id }}').submit();">

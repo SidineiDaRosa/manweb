@@ -251,7 +251,9 @@
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">
-                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--" onchange="valdDescr()"></textarea>
+                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--" onchange="valdDescr()">
+                    {{$pre_descricao_os}}
+                    </textarea>
                 </div>
                 <script>
                     function ValdDescr() {
@@ -384,9 +386,9 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" id="specialidade_do_servico" name="especialidade_do_servico">
+                    <option value="mecanica">Mecânica</option>
                     <option value="eletrica">Elétrica</option>
                     <option value="civil">Civil</option>
-                    <option value="mecanica">Mecânica</option>
                     <option value="sesmt">SESMT</option>
                     <!-- Outras especialidades conforme necessário -->
                 </select>

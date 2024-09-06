@@ -10,7 +10,7 @@ class SolicitacaoOs extends Model
     use HasFactory;
     protected $table = 'solicitacao_os';
     protected $fillable = [
-        'datatime',
+        'datetime',
         'emissor',
         'descricao',
         'status'
