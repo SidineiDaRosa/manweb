@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\SolicitacaoOs;
 use App\Models\Funcionario;
 use App\Models\OrdemServico;
+use Carbon\Carbon;
 use PhpParser\NodeVisitor\FirstFindingVisitor;
 
 class SolicitacaoOsController extends Controller
@@ -51,7 +52,7 @@ class SolicitacaoOsController extends Controller
     {
         // Valida os dados recebidos da requisição
         $validated = $request->validate([
-            'datetime' => 'required|date',//aqui date e time
+            'datetime' => 'required|date', //aqui date e time
             'emissor' => 'nullable|exists:funcionarios,id',
             'descricao' => 'required|string|max:300',
         ]);
@@ -68,14 +69,24 @@ class SolicitacaoOsController extends Controller
         // Obtém o último registro gravado
         $ultimoRegistro = SolicitacaoOs::latest()->first();
 
-        // Retorna uma resposta JSON com a mensagem de sucesso
-        return response()->json([
+
+        $dataHora = Carbon::parse($validated['datetime'])->format('d/m/Y H:i');
+
+        $response = [
             'status' => 'Solicitação salva com sucesso!',
             'ID' => $ultimoRegistro->id,
-            'Data Hora' => $validated['datetime'],
+            'Data Hora' => $dataHora,
             'Emissor' => $funcionario ? $funcionario->primeiro_nome : 'Não especificado',
             'Descrição' => $validated['descricao']
-        ], 200);
+        ];
+
+        echo "<div style='width: 100%; word-wrap: break-word;'>
+        <p><strong>Status:</strong> {$response['status']}</p>
+        <p><strong>ID:</strong> {$response['ID']}</p>
+        <p><strong>Data e Hora:</strong> {$response['Data Hora']}</p>
+        <p><strong>Emissor:</strong> {$response['Emissor']}</p>
+        <p style='word-wrap: break-word;'><strong>Descrição:</strong> {$response['Descrição']}</p>
+    </div>";
     }
 
 
@@ -137,7 +148,7 @@ class SolicitacaoOsController extends Controller
         $solicitacao->status = 'Aceita'; // Status para "Aceita"
         $solicitacao->receptor = auth()->user()->name; // Grava o nome do usuário autenticado
         $solicitacao->save();
-       $solicitacaoOs = SolicitacaoOs::find($id);
+        $solicitacaoOs = SolicitacaoOs::find($id);
         $novaOs = $solicitacaoOs->descricao;
         $equipamentos = Equipamento::all();
         return view('app.solicitacao_os.nova_os', [
@@ -171,14 +182,13 @@ class SolicitacaoOsController extends Controller
         $datetime = $request->input('datetime');
         $datetime_fim = $request->input('datetime_fim');
         $options = $request->get('options');
-        echo($options );
         // Converte a data e hora para o formato DateTime, se necessário
         $date = \Carbon\Carbon::parse($datetime);
         $endDate = \Carbon\Carbon::parse($datetime_fim);
 
         // Faz a busca das solicitações com base na data e hora
         $solicitacoes = SolicitacaoOs::where('datetime', '>=', $date)
-            ->where('datetime', '<=', $endDate)->where('status',$options)
+            ->where('datetime', '<=', $endDate)->where('status', $options)
             ->get();
 
         // Obtém todos os funcionários
