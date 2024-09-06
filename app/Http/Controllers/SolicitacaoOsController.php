@@ -57,7 +57,7 @@ class SolicitacaoOsController extends Controller
         ]);
 
         // Define o valor padrão para 'status'
-        $validated['status'] = 'Aberto'; // Define o valor padrão para o campo 'status'
+        $validated['status'] = 'Aberta'; // Define o valor padrão para o campo 'status'
 
         // Cria a nova solicitação com os dados validados e o status padrão
         $solicitacao = SolicitacaoOs::create($validated);
