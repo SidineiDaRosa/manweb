@@ -27,7 +27,7 @@
 
     <form action="{{ route('solicitacao-os.store') }}" method="post">
         @csrf
-        <input type="datetime-local" class="form-control-template" name="datatime" id="datatime" style="width:250px;height:30px;font-size:20px;" readonly> <br>
+        <input type="datetime-local" class="form-control-template" name="datetime" id="datatime" style="width:250px;height:30px;font-size:20px;" readonly> <br>
         <select class="form-control-template" name="emissor" id="emissor" style="width:250px;height:30px;font-size:15px;" required>
             <option value="">--Selecione o emissor</option>
             @foreach ($funcionarios as $funcionario)
