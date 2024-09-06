@@ -51,7 +51,7 @@ class SolicitacaoOsController extends Controller
     {
         // Valida os dados recebidos da requisição
         $validated = $request->validate([
-            'datatime' => 'required|date',
+            'datetime' => 'required|date',
             'emissor' => 'nullable|exists:funcionarios,id',
             'descricao' => 'required|string|max:300',
         ]);
@@ -72,7 +72,7 @@ class SolicitacaoOsController extends Controller
         return response()->json([
             'status' => 'Solicitação salva com sucesso!',
             'ID' => $ultimoRegistro->id,
-            'Data Hora' => $validated['datatime'],
+            'Data Hora' => $validated['datetime'],
             'Emissor' => $funcionario ? $funcionario->primeiro_nome : 'Não especificado',
             'Descrição' => $validated['descricao']
         ], 200);

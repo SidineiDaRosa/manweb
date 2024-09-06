@@ -36,7 +36,7 @@
             </option>
             @endforeach
         </select> <br>
-        <textarea name="descricao" id="" rows="5" cols="50" style="font-size:18px;margin:5px; width:auto;" minlength="100" required></textarea> <br>
+        <textarea name="descricao" id="" rows="5" cols="50" style="font-size:18px;margin:5px; width:auto;" minlength="50" required></textarea> <br>
         <button type="submit" class="btn btn-primary" style="width: 30%;">Enviar solicitação</button>
     </form>
 </body>
