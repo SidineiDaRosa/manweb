@@ -80,7 +80,7 @@ class SolicitacaoOsController extends Controller
             'Descrição' => $validated['descricao']
         ];
 
-        echo "<div style='width: 100%; word-wrap: break-word;'>
+        echo "<div style='width: 100%; word-wrap: break-word;font-size:30px;'>
         <p><strong>Status:</strong> {$response['status']}</p>
         <p><strong>ID:</strong> {$response['ID']}</p>
         <p><strong>Data e Hora:</strong> {$response['Data Hora']}</p>

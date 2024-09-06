@@ -25,7 +25,7 @@
         <h5 style="font-size:25px;font-family:'Arial', Times, serif;color:darkgrey;font-weight:300;margin-top:1px;">Solicitação de serviço</h5>
     </div>
 
-    <form action="{{ route('solicitacao-os.store') }}" method="post">
+    <form action="{{ route('solicitacao-os.store') }}" method="post" style="margin-right:10px;">
         @csrf
         <input type="datetime-local" class="form-control-template" name="datetime" id="datatime" style="width:250px;height:30px;font-size:20px;" readonly> <br>
         <select class="form-control-template" name="emissor" id="emissor" style="width:250px;height:30px;font-size:15px;" required>
@@ -36,7 +36,7 @@
             </option>
             @endforeach
         </select> <br>
-        <textarea name="descricao" id="" rows="5" cols="50" style="font-size:18px;margin:5px; width:auto;" minlength="50" required></textarea> <br>
+        <textarea name="descricao" id="descricao" rows="5" style="font-size:18px; margin-top:5px; margin-bottom:5px; margin-right:10px; margin-left:10px; width: 100%; min-width: 300px; resize: vertical;" minlength="50" required></textarea> <br>
         <button type="submit" class="btn btn-primary" style="width: 30%;">Enviar solicitação</button>
     </form>
 </body>
