@@ -251,8 +251,7 @@
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">
-                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--" onchange="valdDescr()">
-                    {{$pre_descricao_os}}
+                    <textarea id="descricao" class="form-control align-left" rows="6" style="color:crimson;" name="descricao" onchange="valdDescr()">{{$pre_descricao_os}}
                     </textarea>
                 </div>
                 <script>
