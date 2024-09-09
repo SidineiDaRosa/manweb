@@ -283,15 +283,12 @@
                 display: flex;
                 flex-direction: row;
             }
-
             .hr-sm {
                 margin-top: -10px;
             }
         </style>
         <div class="item">
             <h6 class="title-md">O.S. EM EXECUÇÃO </h6>&nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
-            <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Unidades</a> |
-            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Ativos/Nova O.S</a>
             <style>
                 #menu-ativos {
                     font-size: 50px;
@@ -431,7 +428,7 @@
         {{--Box 3--}}
         <style>
             .txt-conteudo-sm {
-                font-size: 13px;
+                font-size: 15px;
                 font-family: 'Poppins', sans-serif;
                 display: flex;
                 flex-direction: row;
@@ -500,7 +497,7 @@
                 $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                 $uniqueId = uniqid();
                 @endphp
-                <div class="div-tuggle-row" onclick="FunToggle('{{ $uniqueId }}')">
+                <div class="div-tuggle-row">
                     <div class="div-sm-cabecalho">
                         <div> </div>
                         <div class="div-font-sm-conteudo">{{$ordem_servico->id}}</div>
@@ -565,18 +562,10 @@
                         </style>
 
                         {{--------------------------------Fim GUT------------------------------------}}
-                        <div style="display:flex">
-                            <span id="stat0-{{ $uniqueId }}" class="material-symbols-outlined" style="display:none;">
-                                stat_1
-                            </span>
-                            <span id="stat1-{{ $uniqueId }}" class="material-symbols-outlined">
-                                stat_minus_1
-                            </span>
-                        </div>
                     </div>
                     <hr style="width: 50%; margin-left: 0;margin:-10px;">
-                    <div class="div-font-sm-conteudo" id="div-Toggle-{{ $uniqueId }}" style="height:auto; display:none;">
-                        <div style="color: green;">Descrição</div>
+                    <div class="div-font-sm-conteudo" id="div-Toggle-{{ $uniqueId }}" style="height:auto;">
+                        <div style="color: green;font-family:Arial">Descrição</div>
                         {{$ordem_servico->descricao}}
                     </div>
                     <hr style="margin:8px;">

@@ -306,17 +306,22 @@ class DahboardStatusOsController extends Controller
         // $produtos_estoque_critico= EstoqueProdutos::where('quantidade', '<=0')->get();
         // $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
         // ->orderBy('criticidade', 'desc')
-        // ->get();
         $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
             ->where('criticidade', '>=', 1)
-            ->orderBy('criticidade', 'desc')
+            ->orderByRaw('quantidade = 0 desc') // Garante que quantidade 0 apareça primeiro
+            ->orderBy('criticidade', 'desc') // Criticidade decrescente
+            ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
             ->get();
+        // Exibe os resultados
+        foreach ($produtos_estoque_critico as $produto) {
+            echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
+        }
         $produtos = Produto::all();
         $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
         //---------------------------------------------------//
         //  Pega as os da semana                       //
         //--------------------------------------------------//
-        
+
         // Obtém o início da semana atual
         $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
 
@@ -328,7 +333,7 @@ class DahboardStatusOsController extends Controller
         $fridayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(4)->format('Y-m-d'));
         $saturdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(5)->format('Y-m-d'));
         $sundayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(6)->format('Y-m-d'));
-        
+
         //---------------------------------------------------//
         //  envia dados para view                           //
         //--------------------------------------------------//
@@ -364,13 +369,13 @@ class DahboardStatusOsController extends Controller
             'produtos_estoque_critico' => $produtos_estoque_critico,
             'produtos' => $produtos,
             'assets' => $assets,
-            'mondayOrders'=>$mondayOrders,
-            'tuesdayOrders'=>$tuesdayOrders,
-            'wednesdayOrders'=>$wednesdayOrders,
-            'thursdayOrders'=>$thursdayOrders,
-            'fridayOrders'=>$fridayOrders,
-            'saturdayOrders'=> $saturdayOrders,
-            'sundayOrders'=>$sundayOrders
+            'mondayOrders' => $mondayOrders,
+            'tuesdayOrders' => $tuesdayOrders,
+            'wednesdayOrders' => $wednesdayOrders,
+            'thursdayOrders' => $thursdayOrders,
+            'fridayOrders' => $fridayOrders,
+            'saturdayOrders' => $saturdayOrders,
+            'sundayOrders' => $sundayOrders
         ]);
     }
     private function getOrdersForDay($date)
@@ -380,7 +385,7 @@ class DahboardStatusOsController extends Controller
 
         // Filtra ordens de serviço para o dia especificado
         return OrdemServico::whereBetween('data_inicio', [$dayStart, $dayEnd])
-                           ->where('situacao', 'aberto')
-                           ->get();
+            ->where('situacao', 'aberto')
+            ->get();
     }
 }

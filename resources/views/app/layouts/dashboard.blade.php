@@ -864,7 +864,7 @@
             </thead>
 
             <tbody>
-                @foreach ($produtos_estoque_critico as $produto_estoque_critico)
+               @foreach ($produtos_estoque_critico as $produto_estoque_critico)
                 <tr>
                     <td>
                         <a class="" href="{{ route('produto.show', ['produto' => $produto_estoque_critico->produto_id]) }}">
