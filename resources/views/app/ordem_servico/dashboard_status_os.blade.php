@@ -6,7 +6,7 @@
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
 
-    {{--teste de botão pulsante--}}
+    {{--sinalizador pulsante verde--}}
     <style>
         /* ---------------------------------------//
         // Alerta de green de uma tarefa em curso*/
@@ -30,7 +30,6 @@
             }
         }
     </style>
-    {{--teste de botão pulsante--}}
     <div class="card">
         <div class="card-body" hidden>
             <table id="tblOs">
@@ -288,7 +287,7 @@
             }
         </style>
         <div class="item">
-            <h6 class="title-md">O.S. EM EXECUÇÃO </h6>&nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
+            <h6 class="title-md">O.S. EM EXECUÇÃO </h6>
             <style>
                 #menu-ativos {
                     font-size: 50px;
@@ -609,14 +608,13 @@
                 <hr style="margin:-2px;">
                 @forelse($ordens_servicos_second_day as $seg_day)
                 <div class="div-font-sm-conteudo" style="margin: 5px;">
-
-                    {{$seg_day->id}}
+                    {{$seg_day->id}}-
                     {{$seg_day->data_inicio}} às {{$seg_day->hora_inicio}} até
                     {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
                     {{$seg_day->equipamento->nome}}
                 </div>
-                <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
-                <div class="div-font-sm-conteudo">{{$seg_day->descricao}}</div>
+                <div class="div-font-sm-conteudo" style="color: brown;margin-top:-10px;">Descrição</div>
+                <div class="div-font-sm-conteudo" style="margin-top:-10px;">{{$seg_day->descricao}}</div>
                 <hr>
                 @empty
                 @endforelse
@@ -994,7 +992,7 @@
         table.condensed-table td {
             padding: 2px;
             /* Define o padding como 0 para as células */
-            font-size: 12px;
+            font-size: 14px;
             border-bottom: 1px solid rgb(255, 255, 200, 0.3);
             /* Adiciona uma borda inferior de 1px sólida cinza */
         }

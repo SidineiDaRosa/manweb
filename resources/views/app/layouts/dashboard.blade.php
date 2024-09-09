@@ -1242,7 +1242,7 @@
         table.condensed-table td {
             padding: 2px;
             /* Define o padding como 0 para as células */
-            font-size: 12px;
+            font-size: 14px;
             border-bottom: 1px solid rgb(255, 255, 200, 0.3);
             /* Adiciona uma borda inferior de 1px sólida cinza */
         }
