@@ -303,19 +303,13 @@ class DahboardStatusOsController extends Controller
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
         $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
 
-        // $produtos_estoque_critico= EstoqueProdutos::where('quantidade', '<=0')->get();
-        // $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
-        // ->orderBy('criticidade', 'desc')
         $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
             ->where('criticidade', '>=', 1)
             ->orderByRaw('quantidade = 0 desc') // Garante que quantidade 0 apareça primeiro
             ->orderBy('criticidade', 'desc') // Criticidade decrescente
             ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
             ->get();
-        // Exibe os resultados
-        foreach ($produtos_estoque_critico as $produto) {
-            echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
-        }
+    
         $produtos = Produto::all();
         $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
         //---------------------------------------------------//
@@ -366,8 +360,6 @@ class DahboardStatusOsController extends Controller
             'ordens_servicos_next_day' => $ordens_servicos_next_day,
             'ordens_servicos_second_day' => $ordens_servicos_second_day,
             'ordens_servicos_third_day' => $ordens_servicos_third_day,
-            'produtos_estoque_critico' => $produtos_estoque_critico,
-            'produtos' => $produtos,
             'assets' => $assets,
             'mondayOrders' => $mondayOrders,
             'tuesdayOrders' => $tuesdayOrders,
