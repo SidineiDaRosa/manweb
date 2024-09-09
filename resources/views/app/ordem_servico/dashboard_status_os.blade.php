@@ -282,6 +282,7 @@
                 display: flex;
                 flex-direction: row;
             }
+
             .hr-sm {
                 margin-top: -10px;
             }
@@ -436,7 +437,6 @@
             }
         </style>
         <div class="item">
-            <h6 class="title-md">O.S. PARA AMANHÃ</h6>
             <div class="div-os-sm">
                 {{--div sm expan--}}
                 <style>
@@ -466,9 +466,9 @@
                     }
 
                     .div-font-sm-conteudo {
-                        font-size: 13px !important;
+                        font-size: 14px !important;
                         font-weight: 300 !important;
-                        font-family: 'Poppins', sans-serif !important;
+                        font-family: 'Arial', sans-serif !important;
                         margin: 10px;
                         text-align: left !important;
                         height: auto;
@@ -484,110 +484,85 @@
                 {{--------------------------------------}}
                 {{--Verifica se a variavel contém dados--}}
                 {{--------------------------------------}}
-                @if(empty($ordens_servicos_next_day) || $ordens_servicos_next_day->isEmpty())
-                <div class="alert alert-info">
-                    <div class="div-font-sm-conteudo">Nenhuma ordem de serviço prevista para o próximo dia.</div>
-                </div>
-                @else
-                @foreach($ordens_servicos_next_day as $ordem_servico)
-                @php
-                $dataPrevista = \Carbon\Carbon::parse($ordem_servico->data_fim);
-                $dataAtual = \Carbon\Carbon::today();
-                $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
-                $uniqueId = uniqid();
-                @endphp
-                <div class="div-tuggle-row">
-                    <div class="div-sm-cabecalho">
-                        <div> </div>
-                        <div class="div-font-sm-conteudo">{{$ordem_servico->id}}</div>
-                        <div class="div-font-sm-conteudo">
-                            <span class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-
-                                {{ \Carbon\Carbon::parse($ordem_servico->data_inicio)->format('d/m/Y') }} {{$ordem_servico->hora_inicio}}</span>
-                        </div>
-                        <div class="div-font-sm-conteudo">{{$ordem_servico->equipamento->nome}}</div>
-                        {{----------------------------------------------------------------------}}
-                        {{-- Progress bar GUT --------------------------------------------------}}
-                        <input type="text" value="{{ $ordem_servico->valor_gut }}" id="progress-input-{{ $ordem_servico->id }}" hidden>
-                        <div class="progress">
-                            <div id="progress-bar-{{ $ordem_servico->id }}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="125" style="color:black">
-                                {{ $ordem_servico->valor_gut }}
-                            </div>
-                        </div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var progressBar = document.getElementById('progress-bar-{{ $ordem_servico->id }}');
-                                var progressInput = document.getElementById('progress-input-{{ $ordem_servico->id }}');
-
-                                // Função para atualizar a barra de progresso
-                                function updateProgressBar(value) {
-                                    var numericValue = parseFloat(value);
-                                    progressBar.style.width = numericValue + '%';
-                                    progressBar.setAttribute('aria-valuenow', numericValue);
-                                    progressBar.textContent = numericValue; // Atualiza o texto da barra de progresso
-                                    updateProgressBarColor(numericValue);
-                                }
-
-                                // Função para atualizar a cor da barra de progresso
-                                function updateProgressBarColor(value) {
-                                    if (value <= 50) {
-                                        progressBar.style.backgroundColor = 'blue';
-                                    } else if (value > 50 && value <= 80) {
-                                        progressBar.style.backgroundColor = 'yellow';
-                                    } else {
-                                        progressBar.style.backgroundColor = 'orange';
-                                    }
-                                }
-
-                                // Chama a função de atualização da barra de progresso com o valor inicial do input
-                                updateProgressBar(progressInput.value);
-
-                                // Adiciona um ouvinte de eventos para o input
-                                progressInput.addEventListener('input', function() {
-                                    var value = parseFloat(progressInput.value);
-                                    updateProgressBar(value);
-                                });
-                            });
-                        </script>
-                        <style>
-                            .wide-progress {
-                                width: 100%;
-                                /* Ajuste esta largura conforme necessário */
-                            }
-
-                            .progress {
-                                width: 50px;
-                            }
-                        </style>
-
-                        {{--------------------------------Fim GUT------------------------------------}}
-                    </div>
-                    <hr style="width: 50%; margin-left: 0;margin:-10px;">
-                    <div class="div-font-sm-conteudo" id="div-Toggle-{{ $uniqueId }}" style="height:auto;">
-                        <div style="color: green;font-family:Arial">Descrição</div>
-                        {{$ordem_servico->descricao}}
-                    </div>
-                    <hr style="margin:8px;">
-                </div>
-                @endforeach
-                @endif
                 <script>
-                    function FunToggle(uniqueId) {
-                        let divToggle = document.getElementById('div-Toggle-' + uniqueId);
-                        let stat0 = document.getElementById('stat0-' + uniqueId);
-                        let stat1 = document.getElementById('stat1-' + uniqueId);
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var progressBar = document.getElementById('progress-bar-{{ $ordem_servico->id }}');
+                        var progressInput = document.getElementById('progress-input-{{ $ordem_servico->id }}');
 
-                        if (divToggle.style.display === 'none' || divToggle.style.display === '') {
-                            divToggle.style.display = 'block';
-                            stat0.style.display = 'inline';
-                            stat1.style.display = 'none';
-                        } else {
-                            divToggle.style.display = 'none';
-                            stat0.style.display = 'none';
-                            stat1.style.display = 'inline';
+                        // Função para atualizar a barra de progresso
+                        function updateProgressBar(value) {
+                            var numericValue = parseFloat(value);
+                            progressBar.style.width = numericValue + '%';
+                            progressBar.setAttribute('aria-valuenow', numericValue);
+                            progressBar.textContent = numericValue; // Atualiza o texto da barra de progresso
+                            updateProgressBarColor(numericValue);
                         }
-                    }
+
+                        // Função para atualizar a cor da barra de progresso
+                        function updateProgressBarColor(value) {
+                            if (value <= 50) {
+                                progressBar.style.backgroundColor = 'blue';
+                            } else if (value > 50 && value <= 80) {
+                                progressBar.style.backgroundColor = 'yellow';
+                            } else {
+                                progressBar.style.backgroundColor = 'orange';
+                            }
+                        }
+
+                        // Chama a função de atualização da barra de progresso com o valor inicial do input
+                        updateProgressBar(progressInput.value);
+
+                        // Adiciona um ouvinte de eventos para o input
+                        progressInput.addEventListener('input', function() {
+                            var value = parseFloat(progressInput.value);
+                            updateProgressBar(value);
+                        });
+                    });
                 </script>
+                <style>
+                    .wide-progress {
+                        width: 100%;
+                        /* Ajuste esta largura conforme necessário */
+                    }
+
+                    .progress {
+                        width: 50px;
+                    }
+                </style>
+                {{--//-----------------------------------------------------//--}}
+                {{--//---- O.S. Para amanha --------------------------//--}}
+                {{--//-----------------------------------------------------//--}}
+                @foreach($ordens_servicos_next_day as $ordens_servicos_next_day_title)
+                @endforeach
+                @if(isset($ordens_servicos_next_day_title))
+                <!-- Algum conteúdo -->
+                <h6 class="title-md" >
+                    O.S. PARA AMANHÃ ({{ \Carbon\Carbon::parse($ordens_servicos_next_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):
+                </h6>
+                @else
+                <!-- Outro conteúdo -->
+                <h6 class="title-md" >
+                    NÃO HÀ O.S. PARA AMANHÃ.
+                </h6>
+                @endif
+                <hr style="margin:-2px;">
+                @forelse($ordens_servicos_next_day as $next_day)
+                <div class="div-font-sm-conteudo" style="margin: 5px;">
+                    <span style="font-weight: 900; font-size:14px;"> {{$next_day->id}}</span>
+                    <span style="font-size:14px;"> {{ \Carbon\Carbon::parse($ordens_servicos_next_day_title->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="color: green;font-size:14px;">às</span>
+                    <span style="font-size:14px;">{{$next_day->hora_inicio}} </span> 
+                    <span style="color: green;font-size:14px;">até</span>
+                    <span style="font-size:14px;">{{ \Carbon\Carbon::parse($ordens_servicos_next_day_title->data_fim)->format('d/m/Y') }}</span>
+                    <span style="color: green;font-size:14px;">às</span>
+                    <span style="font-size:14px;">{{$next_day->hora_fim}}</span>
+                    <span style="margin-left:30px;font-size:16px;">{{$next_day->equipamento->nome}}</span>
+                </div>
+                <div class="div-font-sm-conteudo" style="color: brown;margin-top:-10px;">Descrição</div>
+                <div class="div-font-sm-conteudo" style="margin-top:-10px;">{{$next_day->descricao}}</div>
+                <hr>
+                @empty
+                @endforelse
                 {{--fim da div expan--}}
                 {{--//-----------------------------------------------------//--}}
                 {{--//---- O.S. Para segundo dia --------------------------//--}}
@@ -608,7 +583,7 @@
                 <hr style="margin:-2px;">
                 @forelse($ordens_servicos_second_day as $seg_day)
                 <div class="div-font-sm-conteudo" style="margin: 5px;">
-                    {{$seg_day->id}}-
+                    <span style="font-weight: 900; font-size:14px;"> {{$seg_day->id}}</span>
                     {{$seg_day->data_inicio}} às {{$seg_day->hora_inicio}} até
                     {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}
                     {{$seg_day->equipamento->nome}}
@@ -618,7 +593,6 @@
                 <hr>
                 @empty
                 @endforelse
-                <hr>
                 {{--//-----------------------------------------------------//--}}
                 {{--//---- Para daqui 3 dias ------------------------------//--}}
                 {{--//-----------------------------------------------------//--}}
@@ -632,14 +606,13 @@
                 @endif
                 @forelse($ordens_servicos_third_day as $terc_day)
                 <div class="div-font-sm-conteudo">
-
-                    {{$terc_day->id}}
+                <span style="font-weight: 900; font-size:14px;"> {{$terc_day->id}}</span>
                     {{$terc_day->data_inicio}} às {{$terc_day->hora_inicio}} até
                     {{$terc_day->data_fim}} às {{$terc_day->hora_fim}}
                     {{$terc_day->equipamento->nome}}
                 </div>
-                <div class="div-font-sm-conteudo" style="color: brown;">Descrição</div>
-                <div class="div-font-sm-conteudo">{{$terc_day->descricao}}</div>
+                <div class="div-font-sm-conteudo" style="color: brown;margin-top:-10px;">Descrição</div>
+                <div class="div-font-sm-conteudo" style="margin-top:-10px;">{{$terc_day->descricao}}</div>
                 <hr>
                 @empty
                 <hr>
@@ -1034,9 +1007,9 @@
             height: 300px;
             margin: 5px;
             padding: 5px;
-            background-color:ghostwhite;
+            background-color: ghostwhite;
             border: solid 1px rgb(255, 0, 0, 0.2);
-            border-radius:5px;
+            border-radius: 5px;
             overflow: auto;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             font-weight: 200;
@@ -1089,10 +1062,10 @@
         {{--Box 4--}}
         <div class="item-week">
             <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:300;">Quarta-feira</h4>
-            
+
             @forelse ($wednesdayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-             <h6>{{ $order->equipamento->nome}}</h6>
+            <h6>{{ $order->equipamento->nome}}</h6>
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1114,7 +1087,7 @@
         {{--Box 6--}}
         <div class="item-week">
             <h4 class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:300;">Sexta-feira</h4>
-            
+
             @forelse ($fridayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             <h6>{{ $order->equipamento->nome}} </h6>
@@ -1129,8 +1102,8 @@
             <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:300;">Sábado</h4>
             @forelse ($saturdayOrders as $order)
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
-           <h6>{{ $order->equipamento->nome}}</h6> 
-           <h6>{{ $order->responsavel}}</h6> 
+            <h6>{{ $order->equipamento->nome}}</h6>
+            <h6>{{ $order->responsavel}}</h6>
             {{ $order->descricao}}
             <hr style="color:green;">
             @empty
@@ -1144,12 +1117,12 @@
             ID:{{ $order->id }} - Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }} <br>
             <h6> {{ $order->equipamento->nome}}</h6>
             <h6> {{ $order->responsavel}}</h6>
-                {{ $order->descricao}}
-                <hr style="color:green;">
-                @empty
-                Nenhuma ordem de serviço aberta neste domingo.
-                <hr>
-                @endforelse
+            {{ $order->descricao}}
+            <hr style="color:green;">
+            @empty
+            Nenhuma ordem de serviço aberta neste domingo.
+            <hr>
+            @endforelse
         </div>
         {{--fim card--}}
     </div>
