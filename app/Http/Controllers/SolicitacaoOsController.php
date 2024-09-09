@@ -188,7 +188,7 @@ class SolicitacaoOsController extends Controller
 
         // Faz a busca das solicitações com base na data e hora
         $solicitacoes = SolicitacaoOs::where('datetime', '>=', $date)
-            ->where('datetime', '<=', $endDate)->where('status', $options)
+            ->where('datetime', '<=', $endDate)->where('status', $options)->orderBy('datetime','desc')
             ->get();
 
         // Obtém todos os funcionários
