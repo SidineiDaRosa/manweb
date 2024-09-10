@@ -7,6 +7,7 @@ use App\Models\Marca;
 use App\Models\Equipamento;
 use App\Models\PecasEquipamentos;
 use App\Models\OrdemServico;
+use App\Models\Funcionario;
 use App\Models\user;
 use App\Models\Servicos_executado; //serviços executados
 use Illuminate\Support\Arr;
@@ -67,13 +68,15 @@ class EquipamentoHistoryController extends Controller
             $servicos_executados = Servicos_executado::where('ordem_servico_id', $ordem_servico->id)->get();
             $servicos_executados_colecao = $servicos_executados_colecao->merge($servicos_executados); // Adiciona os serviços executados à coleção
         }
+        $funcionarios=Funcionario::all();
         // Código para o método
         return view('app.equipamento.os_fechadas_equipamento', [
             'equipamento' => $equipamento,
             'ordens_servicos' => $ordens_servicos,
             'servicos_executados_colecao' => $servicos_executados_colecao,
             'usuarios' => $usuarios,
-            'equipamento_filho' => $equipamento_filho
+            'equipamento_filho' => $equipamento_filho,
+            'funcionarios'=>$funcionarios
         ]);
     }
 }

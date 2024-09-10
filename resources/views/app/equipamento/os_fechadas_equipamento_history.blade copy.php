@@ -48,7 +48,7 @@
             }
         </style>
 
-        <div class="div-title-subtitle">{{$equipamento->nome}}</div>
+        <div class="div-title-subtitle">Ativo principal: {{$equipamento->nome}}</div>
         @foreach($equipamento_filho as $equipamento_filho_f)
         <h4 hidden>{{$equipamento_filho_f->nome}}</h4>
         @endforeach

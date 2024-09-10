@@ -12,5 +12,11 @@ class Funcionario extends Model
     protected $fillable = [
         'id', 'primeiro_nome', 'ultimo_nome', 'cpf', 'rg', 'endereco', 'num_casa', 'bairro', 'cidade', 'uf','funcao'
     ];
+     // Um funcionário pode ter muitos serviços executados
+     public function servicosExecutados()
+     {
+         return $this->hasMany(Servicos_Executado::class, 'funcionario_id');
+     }
+   
    
 }

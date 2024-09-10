@@ -1,4 +1,3 @@
-
 <main class="content">
     <div class="div-title-main">O.S. FECHADAS POR EQUIPAMENTO</div>
     <div class="container">
@@ -47,7 +46,6 @@
                 font-size: 18px;
             }
         </style>
-
         <div class="div-title-subtitle">{{$equipamento->nome}}</div>
         @foreach($equipamento_filho as $equipamento_filho_f)
         <h4 hidden>{{$equipamento_filho_f->nome}}</h4>
@@ -57,33 +55,30 @@
             @endforeach
             @foreach($ordens_servicos as $ordens_servico)
             <div style=" border: 1px solid darkgrey;border-radius:5px;padding:10px;">
-                <div>ID: {{$ordens_servico->id}}</div>
+                <span style="font-family: Arial, Helvetica, sans-serif;font-size:25px;">ID: {{$ordens_servico->id}}</span> <br>
+                <span style="color: green;font-family:Arial, Helvetica, sans-serif">Responsável: {{$ordens_servico->responsavel}}</span> <br>
                 <div>Data Fim: {{ \Carbon\Carbon::parse($ordens_servico->data_fim)->format('d/m/Y') }} às {{$ordens_servico->hora_fim}}</div>
                 <div style="color:darkblue;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
                     Descrição da solicitação:</div>
                 <div class="div-conteudo-md">
                     {{$ordens_servico->descricao}}
-                    <div style="color:darkblue;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
-                        Descrição dos serviços executados:
-                    </div>
-                    @php
-                    // Filtra serviços executados com base no 'ordem_servico_id'
-                    $servicosFiltrados = $servicos_executados_colecao->where('ordem_servico_id', $ordens_servico->id);
-                    @endphp
-                    @foreach($servicosFiltrados as $servico_executado)
-                    {{$servico_executado->descricao}} <br>
-                    @foreach($usuarios as $usuario)
-                    @if($servico_executado->funcionario_id == $usuario->id)
-                    <div style="color:darkblue;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;" hidden>
-                    {{ $usuario->name}}
-                    </div>
-                    @endif
-                    @endforeach
-                    @endforeach
-                    <hr>
-
                 </div>
-                <div style="color: green;">Emissor: {{$ordens_servico->responsavel}}</div>
+                <hr>
+                <div style="color:darkblue;font-family:Arial;">
+                    Serviços executados:
+                </div>
+                @php
+                // Filtra serviços executados com base no 'ordem_servico_id'
+                $servicosFiltrados = $servicos_executados_colecao->where('ordem_servico_id', $ordens_servico->id);
+                @endphp
+                @foreach($servicosFiltrados as $servico_executado)
+                <hr>
+                <span style="font-family:Arial, Helvetica, sans-serif">Executor: {{$servico_executado->funcionario->primeiro_nome}},
+                    {{ \Carbon\Carbon::parse($servico_executado->data_inicio)->format('d/m/Y') }} às {{$servico_executado->hora_inicio}} <br>
+                </span>
+                <span style="font-family:Arial, Helvetica, sans-serif;font-size:16px;">{{$servico_executado->descricao}} </span><br>
+
+                @endforeach
             </div>
             <hr>
 
