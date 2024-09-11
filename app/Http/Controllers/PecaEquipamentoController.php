@@ -207,7 +207,7 @@ class PecaEquipamentoController extends Controller
     public function edit($peca_equipamento_id)
     {
         $pecasEquip = PecasEquipamentos::where('id', $peca_equipamento_id)->get();
-
+        $pecaEquip = PecasEquipamentos::find($peca_equipamento_id);
         foreach ($pecasEquip as $pecaEquip_for) :
             $equipamentoId = $pecaEquip_for->equipamento; // Acessando como propriedade de objeto
         //echo "Equipamento ID: " . $equipamentoId . "\n";
@@ -221,8 +221,8 @@ class PecaEquipamentoController extends Controller
             'produtos' => $produtos,
             'equipamento' => $equipamento,
             'categorias' => $categorias,
-            'pecas_equipamentos' => $pecasEquip
-
+            'pecas_equipamentos' => $pecasEquip,
+            'produto_nome' => $pecaEquip
         ]);
     }
     /**
@@ -357,5 +357,23 @@ class PecaEquipamentoController extends Controller
         } else {
             return response()->json(['success' => false, 'message' => 'Você não tem permissão para deletar esta peça.']);
         }
+    }
+    public function searching_products(Request $request)
+    {
+        $peca_equip_id = $request->get('peca_equipamento_id'); //Pega o id do registro componente
+        $nome_produto_like = $request->get('query_like_producto_name');
+        $pecaEquip = PecasEquipamentos::find($peca_equip_id);
+        $pecasEquip = PecasEquipamentos::where('id', $peca_equip_id)->get();
+        $equipamento = Equipamento::where('id',  $pecaEquip->equipamento)->get();
+        $produtos = Produto::where('nome', 'like', $nome_produto_like . '%')->get();
+        $categorias = Categoria::all();
+        return view('app.peca_equipamento.edit_', [
+            'produtos' => $produtos,
+            'equipamento' => $equipamento,
+            'categorias' => $categorias,
+            'pecas_equipamentos' => $pecasEquip,
+            'produto_nome' => $pecaEquip
+
+        ]);
     }
 }

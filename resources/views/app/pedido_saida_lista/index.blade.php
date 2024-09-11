@@ -180,24 +180,23 @@
             </div>
         </div>
     </div>
-    </form>
     {{--fim card--}}
     {{--------------fim continer box----------------------------------------}}
-    <div class="card-body">
-        Produtos adicionados
-        <table class="table-template table-striped table-hover table-bordered">
-            <thead>
+    <div class="card-body" style="margin-top:-10px;">
+        <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Produtos adicionados ao pedido</h6>
+        <table class="table">
+            <thead style="background-color: #ccc;font-weight:300;font-family:Arial;">
                 <tr>
-                    <th scope="col" class="th-title">Id</th>
-                    <th scope="col" class="th-title">Cod fabricante</th>
-                    <th scope="col" class="th-title">Produto_ID</th>
-                    <th scope="col" class="th-title">Descrição</th>
-                    <th scope="col" class="th-title">Unidade</th>
-                    <th scope="col" class="th-title">Quantidade</th>
-                    <th scope="col" class="th-title">Valor Unit</th>
-                    <th scope="col" class="th-title">Subtotal</th>
-                    <th scope="col" class="th-title">Data</th>
-                    <th scope="col" class="th-title">Patrmônio</th>
+                    <th>Id</th>
+                    <th>Cod fabricante</th>
+                    <th>Produto_ID</th>
+                    <th>Descrição</th>
+                    <th>Unidade</th>
+                    <th>Quantidade</th>
+                    <th>Valor Unit</th>
+                    <th>Subtotal</th>
+                    <th>Data</th>
+                    <th>Patrmônio</th>
                 </tr>
             </thead>
             <tbody>
@@ -222,30 +221,29 @@
             </tbody>
         </table>
     </div>
-    <!--Iframe do subformulario de produtos-->
-    <!-- <iframe id="ifm1" src="{{route('item-produto-saida.index',['pedido' => $pedido_saida_f->id,'empresa_id'=>$pedido_saida_f->empresa->id,'equipamento'=>$pedido_saida_f->equipamento->id])}}" width="90%" height="600" style="border:1px solid black;">-->
-    <!-- <iframe id="ifm1" src="{{route('item-produto-saida.index',['pedido' => $pedido_saida_f->id,'empresa_id'=>$pedido_saida_f->empresa->id,'equipamento'=>$pedido_saida_f->equipamento->id])}}" width="90%" height="600" style="border:1px solid black;">  
-    </iframe>-->
+    <hr>
     @if($pedido_saida_f->status != 'fechado')
     <hr>
-
     {{-- Formulário com os dados para adicionar o item --}}
+    <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Adicionar Produto ao pedido</h6>
     <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST" style="margin-left:20PX;">
-        Adicionar um Produto
         @csrf
         <div class="form-row">
             <input type="number" name="componente_id" id="componente_id" value="" readonly hidden>
             <input type="number" name="pedido_id" id="pedido_id" value="{{$pedido_saida_f->id ?? old('id') }}" readonly hidden>
-            <input type="number" class="form-control" style="width:200px;" readonly name="produto_id" id="produto_id">
+            <input type="text" class="form-control" style="width:200px;" readonly name="produto_id" id="produto_id">
             <input type="text" class="form-control" style="width:50%;" readonly name="produto_nome" id="produto_nome">
             <input type="number" id="quantidade" name="quantidade" class="form-control" style="width:200px;" readonly>
             <!-- Botão de envio inicialmente oculto -->
             <button id="btnEnviar" class="btn btn-outline-primary" style="display: none;" onclick="">Adicionar</button>
         </div>
     </form>
+    <hr>
     {{------------------------------------------------}}
     {{--Tabela de peças dos equipamento---------------}}
-    <span style="margin-left:20px;"> Componentes cadastrados</span>
+    <span style="margin-left:20px;">
+        <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Componentes do equipamento com periodicidade programada</h5>
+    </span>
     <table class="table" id="tblPecas" style="margin-left:20px;">
         <thead>
             <tr>
@@ -325,19 +323,18 @@
                     // Exibe a mensagem de confirmação
                     let confirmacao = confirm("Deseja adicionar o produto " + produtoNome + " ao seu pedido?");
 
-                    // Define os valores nos campos ocultos do formulário
-                    document.getElementById('componente_id').value = componenteId;
-                    document.getElementById('produto_id').value = produtoId;
-                    document.getElementById('produto_nome').value = produtoNome;
-
                     if (confirmacao) {
                         // Lógica para adicionar o produto ao pedido
                         alert("Produto " + produtoNome + " foi adicionado ao seu pedido!");
-
+                        // Define os valores nos campos ocultos do formulário
+                        document.getElementById('componente_id').value = componenteId;
+                        document.getElementById('produto_id').value = produtoId;
+                        document.getElementById('produto_nome').value = produtoNome;
                         // Habilita o campo 'quantidade' e aplica o foco
                         let quantidadeField = document.getElementById('quantidade');
                         let btnEnviar = document.getElementById('btnEnviar');
-
+                        document.getElementById('produto_nome').style.background = '#a0d8a0';
+                        document.getElementById('produto_id').style.background = '#a0d8a0';
                         quantidadeField.removeAttribute('readonly'); // Remove o atributo readonly
                         quantidadeField.focus(); // Aplica o foco no campo
 
@@ -354,6 +351,7 @@
                 let quantidade = document.getElementById('quantidade').value;
                 let produtoNome = document.getElementById('produto_nome').value;
                 let produtoId = document.getElementById('produto_id').value;
+
 
                 if (quantidade) {
                     // Exemplo de lógica para enviar os dados
@@ -385,7 +383,133 @@
             });
         });
     </script>
+    {{--//----------------------------------------------------//--}}
+    {{-- Busca produtos que não estão na lista                ----}}
+    {{--//----------------------------------------------------//--}}
+    <hr>
+    <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Buscar no estoque de produtos</h6>
+    <div class="card-header-template" style="width:100%;display:flex;flex-direction:row;justify-content:center;">
+        <form id="formSearchingProducts" action="{{ route('pedido-saida-searching-products') }}" method="POST" style="width:100%;display:flex;flex-direction:row;justify-content:center;">
+            @csrf
+            <input type=" text" name="pedido_saida_id" value="{{$pedido_saida_f->id}}" hidden></input>
+            <div class="col-md-4 mb-0">
+                <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
+                    <option value="2">Busca Pelas inicias</option>
+                    <option value="1">Busca pelo ID</option>
+                    <option value="3">Busca pelo Código do Fabricante</option>
+                    <option value="4">Busca por categoria</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select name="categoria_id" id="" class="form-control-template">
+                    <option value=""> --Selecione a Categoria--</option>
+                    @foreach ($categorias as $categoria)
+                    <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
+                        {{ $categoria->nome }}
+                    </option>
+                    @endforeach
+                </select>
+                {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
+            </div>
+            <!--input box filtro buscar produto--------->
+            <input type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
+            <button type="submit">
+                <i class="icofont-search icofont-2x"></i>
+            </button>
+        </form>
+    </div>
 
+    <hr>
+    <div class="card-body">
+        <table class="table" id="tblProdutos">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>cod_fabricante</th>
+                    <th>Nome</th>
+                    <th>un medida</th>
+                    <th>Fabricante</th>
+                    <th>Ver peça</th>
+                    <th>Imagem</th>
+                    <th>Categoria</th>
+                    <th>Operações</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($produtos as $produto)
+                <tr>
+                    <th>{{ $produto->id }}</td>
+                    <td>{{ $produto->cod_fabricante }}</td>
+                    <td>{{ $produto->nome }}</td>
+                    <td>{{ $produto->unidade_medida->nome}}</td>
+                    <td>{{ $produto->marca->nome}}</td>
+                    <td><a href="{{ $produto->link_peca}}" target="blank">Ver no site do fabricante
+                            <i class="icofont-arrow-right"></i>
+                        </a></td>
+                    <td>
+                        <img src="/img/produtos/{{ $produto->image}}" alt="imagem" class="preview-image">
+                    </td>
+                    <style>
+                        .preview-image {
+                            width: 100px;
+                            height: 100px;
+                            object-fit: cover;
+                            margin: 0 5px;
+                            cursor: pointer;
+                        }
+                    </style>
+                    <td>{{ $produto->categoria->nome}}</td>
+                    <td>
+                        <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
+
+                            <script>
+                                // JavaScript para manipular o clique na linha e preencher os inputs
+                                document.querySelectorAll('#tblProdutos tr').forEach(row => {
+                                    row.addEventListener('dblclick', function() {
+                                        // Ignorando a linha do cabeçalho
+                                        if (this.rowIndex === 0) return;
+
+                                        // Obtendo o valor dos dados da linha
+                                        let produto_id = this.cells[0].textContent;
+                                        const produtoNome = this.cells[2].textContent;
+
+                                        // Preenchendo os inputs com os valores obtidos
+                                        document.getElementById('produto_id').value = produto_id;
+                                        document.getElementById('produto_nome').value = produtoNome;
+                                        document.getElementById('componente_id').value = 0;
+                                        document.getElementById('produto_nome').style.background = '#a0d8a0';
+                                        document.getElementById('produto_id').style.background = '#a0d8a0';
+                                        // Habilita o campo 'quantidade' e aplica o foco
+                                        let quantidadeField = document.getElementById('quantidade');
+                                        let btnEnviar = document.getElementById('btnEnviar');
+                                        quantidadeField.removeAttribute('readonly'); // Remove o atributo readonly
+                                        quantidadeField.focus(); // Aplica o foco no campo
+
+                                        // Mostra o botão de envio
+                                        btnEnviar.style.display = 'block';
+                                    });
+                                });
+                            </script>
+                            <button class=" btn btn-sm-template btn-outline-primary" id="select-btn" hidden>Selecionar</button>
+
+                            <a class=" btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $produto->id]) }}">
+                                <i class="icofont-eye-alt"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        @if(isset($num_pedido) && $num_pedido >= 1)
+                        <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}">Adicionar ao pedido:{{ $num_pedido }}</a>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    {{--Fim do if de estiver fechado--}}
     @endif
     @endsection
     <footer>

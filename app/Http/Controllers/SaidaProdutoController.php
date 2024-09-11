@@ -156,39 +156,42 @@ class SaidaProdutoController extends Controller
                 $estoque->save();
                 //-----------------------------------------//
                 //   Atualiza hora intervalod e manutenção
-                //   do registro
+                //   do registro Caso exitir a o cadastro
                 //-----------------------------------------//
                 $today = date("Y-m-d"); //data de hoje
                 $pecaEquipamento = PecasEquipamentos::find($request->input('componente_id')); //busca o registro do produto com o id da entrada do produto
-                $intervalo_horas = $pecaEquipamento->intervalo_manutencao; // Obtém o intervalo de horas do objeto
-                //--------------------------------------------------//
-                // Defina a data da última manutenção
-                $data_ultima_manutencao = new DateTime(); // Cria um objeto DateTime com a data e hora atuais
+                if ($pecaEquipamento >= 1) {
 
-                // Converte o intervalo de horas para dias inteiros
-                $intervalo_horas_d = intval($intervalo_horas / 24);
+                    $intervalo_horas = $pecaEquipamento->intervalo_manutencao; // Obtém o intervalo de horas do objeto
+                    //--------------------------------------------------//
+                    // Defina a data da última manutenção
+                    $data_ultima_manutencao = new DateTime(); // Cria um objeto DateTime com a data e hora atuais
 
-                // Clona a data da última manutenção para definir a próxima manutenção
-                $data_proxima_manutencao = clone $data_ultima_manutencao;
+                    // Converte o intervalo de horas para dias inteiros
+                    $intervalo_horas_d = intval($intervalo_horas / 24);
 
-                // Adiciona o intervalo de dias à data da próxima manutenção
-                $data_proxima_manutencao->add(new DateInterval('P' . $intervalo_horas_d . 'D'));
+                    // Clona a data da última manutenção para definir a próxima manutenção
+                    $data_proxima_manutencao = clone $data_ultima_manutencao;
 
-                // Adiciona as horas restantes (não múltiplos de 24) à data da próxima manutenção
-                $horas_restantes = $intervalo_horas % 24;
-                $data_proxima_manutencao->add(new DateInterval('PT' . $horas_restantes . 'H'));
+                    // Adiciona o intervalo de dias à data da próxima manutenção
+                    $data_proxima_manutencao->add(new DateInterval('P' . $intervalo_horas_d . 'D'));
 
-                // Calcula a diferença entre as datas
-                $diferenca = $data_ultima_manutencao->diff($data_proxima_manutencao);
+                    // Adiciona as horas restantes (não múltiplos de 24) à data da próxima manutenção
+                    $horas_restantes = $intervalo_horas % 24;
+                    $data_proxima_manutencao->add(new DateInterval('PT' . $horas_restantes . 'H'));
 
-                // Converte a diferença em dias e horas
-                $diferenca_horas = intval(($diferenca->days * 24) + $diferenca->h + ($diferenca->i / 60) + ($diferenca->s / 3600));
-                //---------------------------------------------------//
-                //   salva alteração em  peças equipamentos          //
-                $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
-                $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
-                $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
-                $pecaEquipamento->save(); //salva alteração em  peças equipamentos
+                    // Calcula a diferença entre as datas
+                    $diferenca = $data_ultima_manutencao->diff($data_proxima_manutencao);
+
+                    // Converte a diferença em dias e horas
+                    $diferenca_horas = intval(($diferenca->days * 24) + $diferenca->h + ($diferenca->i / 60) + ($diferenca->s / 3600));
+                    //---------------------------------------------------//
+                    //   salva alteração em  peças equipamentos          //
+                    $pecaEquipamento->data_substituicao = $today; // soma estoque antigo com a entrada de produto
+                    $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
+                    $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
+                    $pecaEquipamento->save(); //salva alteração em  peças equipamentos
+                }
 
                 echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
             }

@@ -196,7 +196,9 @@
         {{--Box 2--}}
         <div class="item">
             <div class="box-conteudo">
-                <div class="titulo">ID produto:</div>
+                <div class="titulo">ID produto:
+                {{$produto_nome->produto->nome}}
+                </div>
                 <hr>
                 <div class="conteudo">
                     <input class="input-text" type="text" name="produto_id" id="produto_id" value="{{$pecas_equipamentos_for->produto_id}}" readonly>
@@ -219,13 +221,11 @@
                     <input class="input-text" name="data_proxima_manutencao" id="data_proxima_manutencao" type="date" value="{{$pecas_equipamentos_for->data_proxima_manutencao}}" readonly>
                     <input class="input-text" name="horas_proxima_manutencao" id="horas_proxima_manutencao" type="number" value="{{$pecas_equipamentos_for->horas_proxima_manutencao}}" readonly>hs
                 </div>
-                <button type=" submit" class="btn btn-outline-primary btn-sm" style="height:20px;">
+                <button type=" submit" class="btn btn-outline-primary btn-sm" style="height:25px;width:95%;">
                     Salvar
                 </button>
-
             </div>
         </div>
-
         {{--Box 3--}}
         <div class="item">
             <div class="box-conteudo">
@@ -240,7 +240,7 @@
                 <hr>
                 <div class="conteudo">
                     <select class="input-text" name="status" id="status" value="">
-                    <option value="{{$pecas_equipamentos_for->status}}">{{$pecas_equipamentos_for->status}}</option>
+                        <option value="{{$pecas_equipamentos_for->status}}">{{$pecas_equipamentos_for->status}}</option>
                         <option value="ativado">Ativado</option>
                         <option value="desativado">Desativado</option>
                     </select>
@@ -251,10 +251,10 @@
                     <select class="input-text" name="tipo_componente" id="tipo_componente" value="">
                         <option value="{{$pecas_equipamentos_for->tipo_componente}}">{{$pecas_equipamentos_for->tipo_componente}}</option>
                         <option value="manutencao">manutencao</option>
-                            <option value="Componente">Componente</option>
-                            <option value="lubrificação">lubrificação</option>
-                            <option value="Chek-List">Chek-List</option>
-                            <option value="mensalidade">Mensalidade</option>
+                        <option value="Componente">Componente</option>
+                        <option value="lubrificação">lubrificação</option>
+                        <option value="Chek-List">Chek-List</option>
+                        <option value="mensalidade">Mensalidade</option>
                     </select>
                 </div>
                 <div class="titulo">Grau de criticidade</div>
@@ -347,12 +347,13 @@
             margin-bottom: 2px;
         }
     </style>
+    {{--//----------------------------------------------------//--}}
+    {{--  Busca produtos                                      ----}}
+    {{--//----------------------------------------------------//--}}
     <div class="card-header-template">
-        <form id="formSearchingProducts" action="{{ route('Produtos-filtro-componente') }}" method="POST">
+        <form id="formSearchingProducts" action="{{ route('Produtos-filtro-componente-edit') }}" method="POST">
             @csrf
-            <input type="text" name="equipamento" value="@foreach($equipamento as $equipamento_for)
-                        {{$equipamento_for['id']}}
-                        @endforeach" hidden>
+            <input type="text" name="peca_equipamento_id" value="{{$pecas_equipamentos_for->id}}" hidden></input>
             <div class="col-md-4 mb-0">
                 <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
                     <option value="2">Busca Pelas inicias</option>
@@ -373,7 +374,7 @@
                 {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
             </div>
             <!--input box filtro buscar produto--------->
-            <input type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
+            <input type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
             <button type="submit">
                 <i class="icofont-search icofont-2x"></i>
             </button>

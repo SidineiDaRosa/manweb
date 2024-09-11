@@ -166,7 +166,7 @@ class PedidosSaidaController extends Controller
 
         $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $id)->get();
         $equipamentos=Equipamento::all();
-           return view('app.pedido_saida.show', [
+           return view('app.pedido_saida.show', [// abre o pedido sem a O.S.
             'pedido_saida' => $pedido_saida,
              'categorias' => $categorias,
                 'produtos' => $produtos,

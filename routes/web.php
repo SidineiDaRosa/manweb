@@ -14,6 +14,7 @@ use App\Http\Controllers\EquipamentoHistoryController;
 use App\Http\Controllers\DahboardStatusOsController;
 use App\Http\Controllers\UtilsController;
 use App\Http\Controllers\SolicitacaoOsController;
+
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -197,9 +198,9 @@ Route::middleware('auth')->post('/peca-equpamento-filtro', [App\Http\Controllers
 
 use App\Http\Controllers\PecaEquipamentoController;
 use App\Models\PedidoCompraLista;
-
 Route::middleware(['auth'])->get('/peca-equipamento-editar/{peca_equipamento_id}', [PecaEquipamentoController::class, 'edit'])->name('Peca-equipamento-editar.edit');
 Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaEquipamentoController::class, 'update'])->name('Peca-equipamento.update');
+
 //------------------------------------------//
 //  Pedidos de compra                       //
 //------------------------------------------//
@@ -230,6 +231,10 @@ Route::middleware('auth')->resource('/pedido-saida', 'App\Http\Controllers\Pedid
 Route::middleware('auth')->resource('/pedido-saida-lista', 'App\Http\Controllers\PedidoSaidaListaController');
 Route::middleware('auth')->post('/pedido-saida-filtro', [App\Http\Controllers\PedidosSaidaController::class, 'index']);
 Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
+
+// Busca produtos para adicionar em pedidos de sáida com O.S.
+Route::middleware('auth')->post('/pedido-saida-searching-products', [App\Http\Controllers\PedidoSaidaListaController::class, 'searching_products'])->name('pedido-saida-searching-products');
+
 //----------------------------------------------------//
 //               Saida De produtos store        
 //----------------------------------------------------//
@@ -254,6 +259,8 @@ Route::delete('/delete-item-pedido-delete', 'App\Http\Controllers\PedidoCompraLi
 //---------------------------------------------------------------//
 //Filtro Produtos
 Route::middleware('auth')->post('/Produtos-filtro-componente', [App\Http\Controllers\PecaEquipamentoController::class, 'create'])->name('Produtos-filtro-componente');
+//Edita o componente
+Route::middleware('auth')->post('/Produtos-filtro-componente-edit', [App\Http\Controllers\PecaEquipamentoController::class, 'searching_products'])->name('Produtos-filtro-componente-edit');
 //---------------------------------------------------------------//
 // Envia requisição ajax para atualizar um chek-list
 //---------------------------------------------------------------//
