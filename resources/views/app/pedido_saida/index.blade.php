@@ -152,11 +152,12 @@
                                 <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcan" href="{{ route('pedido-saida.edit', ['pedido_saida' => $pedido_saida->id]) }}">
                                     <i class="icofont-ui-edit"></i>
                                 </a>
-                                <form id="form_{{ $pedido_saida->id }}" method="post" action="{{ route('pedido-saida.destroy', [$pedido_saida->id]) }}">
-                                    @method('POST')
+                                <form action="{{ route('pedidos-saida.destroy', $pedido_saida->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar este pedido?');">
                                     @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm-template btn-outline-danger" style="height:30px;">Deletar</button>
                                 </form>
-                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPedidoSaida({{ $pedido_saida->id }})">
+                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPedidoSaida({{ $pedido_saida->id }})"  hidden >
                                     <i class="icofont-ui-delete"></i>
                                 </a>
                             </div>

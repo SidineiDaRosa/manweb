@@ -232,6 +232,10 @@ Route::middleware('auth')->resource('/pedido-saida-lista', 'App\Http\Controllers
 Route::middleware('auth')->post('/pedido-saida-filtro', [App\Http\Controllers\PedidosSaidaController::class, 'index']);
 Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
 
+//Deletar o peidod de saida
+Route::middleware('auth')->delete('/pedidos-saida/{id}', [PedidosSaidaController::class, 'destroy'])->name('pedidos-saida.destroy');
+
+
 // Busca produtos para adicionar em pedidos de sáida com O.S.
 Route::middleware('auth')->post('/pedido-saida-searching-products', [App\Http\Controllers\PedidoSaidaListaController::class, 'searching_products'])->name('pedido-saida-searching-products');
 

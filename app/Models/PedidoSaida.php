@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class PedidoSaida extends Model
 {
     use HasFactory;
-    protected $table='pedidos_saida';
-    protected $fillable=[
+    protected $table = 'pedidos_saida';
+    protected $fillable = [
         'data_emissao',
         'hora_emissao',
         'data_prevista',
@@ -24,7 +24,8 @@ class PedidoSaida extends Model
         'ordem_servico_id'
 
     ];
-    public function Empresa(){
+    public function Empresa()
+    {
         return $this->belongsTo('App\Models\Empresas');
     }
     public function Equipamento()
@@ -35,11 +36,14 @@ class PedidoSaida extends Model
     {
         return $this->belongsTo('App\Models\Funcionario');
     }
-  
-    public function produto(){
+
+    public function produto()
+    {
         return $this->belongsTo('App\Models\Produto');
     }
-    public function ordens_servicos(){
+    public function ordens_servicos()
+    {
         return $this->belongsTo('App\Models\OrdemServico');
     }
+   
 }

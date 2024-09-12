@@ -17,6 +17,9 @@ use App\Models\Produto;
 use App\Models\UnidadeMedida;
 use App\Models\User;
 
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+
 class PedidosSaidaController extends Controller
 {
     /**
@@ -264,6 +267,11 @@ class PedidosSaidaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+            $pedido = PedidoSaida::findOrFail($id);
+            $pedido->delete();
+    
+            return back()->with('success', 'Pedido de saída deletado com sucesso!');
+       
     }
 }
