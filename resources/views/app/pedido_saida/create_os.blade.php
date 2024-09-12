@@ -107,7 +107,7 @@
                     <!------------------------------------------------------------------------------------------->
                     <div class="col-md-2 mt-3">
                         <div style="margin-top: 14px;">
-                            <button type="submit" class="btn btn-outline-primary">Salvar</button>
+                            <button type="submit" class="btn btn-outline-primary">Salvar Pedido de saída</button>
                         </div>
                     </div>
             </form>

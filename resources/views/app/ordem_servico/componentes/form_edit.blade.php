@@ -51,13 +51,13 @@
                         fechaModal();
                     }
                 </script>
-             <option value="aberto">Aberto</option>
-                    <option value="fechado">fechado</option>
-                    <option value="indefinido">indefinido</option>
-                    <option value="cancelada">cancelada</option>
-                    <option value="em andamento">Em andamento</option>
-                    <option value="pausado">pausado</option>
-                    <option value="rejeitada">rejeitada</option>
+                <option value="aberto">Aberto</option>
+                <option value="fechado">fechado</option>
+                <option value="indefinido">indefinido</option>
+                <option value="cancelada">cancelada</option>
+                <option value="em andamento">Em andamento</option>
+                <option value="pausado">pausado</option>
+                <option value="rejeitada">rejeitada</option>
                 {{ $errors->has('nome') ? $errors->first('nome') : '' }}
             </select>
             <div class="invalid-tooltip">
@@ -278,7 +278,7 @@
                     <div class="invalid-tooltip">
                         Por favor, informe data
                     </div>
-                    <input type="time" class="input-text" name="hora_inicio" id="hora_Inicio" required value="{{$ordem_servico->hora_inicio}}" onchange="ValidateHora()">
+                    <input type="time" class="input-text" name="hora_inicio" id="hora_Inicio" required value="{{ \Carbon\Carbon::parse($ordem_servico->hora_inicio)->format('H:i') }}" onchange="ValidateHora()">
                     <div class="invalid-tooltip">
                         Por favor, informe hora.
                     </div>
@@ -298,7 +298,7 @@
                         Por favor, informe dataFim.
                     </div>
 
-                    <input type="time" class="input-text" name="hora_fim" id="hora_Fim" value="{{$ordem_servico->hora_fim}}" onchange="ValidateHoraFim()">
+                    <input type="time" class="input-text" name="hora_fim" id="hora_Fim" value="{{ \Carbon\Carbon::parse($ordem_servico->hora_fim)->format('H:i') }}" onchange="ValidateHoraFim()">
                     <div class="invalid-tooltip">
                         Por favor, informe um estado válido.
                     </div>

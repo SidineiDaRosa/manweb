@@ -160,7 +160,8 @@ class SaidaProdutoController extends Controller
                 //-----------------------------------------//
                 $today = date("Y-m-d"); //data de hoje
                 $pecaEquipamento = PecasEquipamentos::find($request->input('componente_id')); //busca o registro do produto com o id da entrada do produto
-                if ($pecaEquipamento >= 1) {
+
+                if ($pecaEquipamento && $pecaEquipamento->id >= 1) {
 
                     $intervalo_horas = $pecaEquipamento->intervalo_manutencao; // Obtém o intervalo de horas do objeto
                     //--------------------------------------------------//
@@ -191,9 +192,11 @@ class SaidaProdutoController extends Controller
                     $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
                     $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
                     $pecaEquipamento->save(); //salva alteração em  peças equipamentos
+                    echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">
+                    Operação realizada com sucesso, e a manutenção do componente foi atualizada!</div>';
+                } else {
+                    echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
                 }
-
-                echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
             }
         } else {
             //----------------------------------------------------------//

@@ -5,8 +5,9 @@
     {{ session('error') }}
 </div>
 @endif
-<form action="{{route('Servicos-executado.store',['$ordem_servico'=>$ordem_servico_id])}}" method="POST">
+<form id="meuForm"  action="{{route('Servicos-executado.store',['$ordem_servico'=>$ordem_servico_id])}}" method="POST">
     @csrf
+
     <div class="row mb-1 ">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">ID Os</label>
         <div class="col-md-6">
@@ -68,7 +69,7 @@
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Executante da tarefa</label>
         <div class="col-md-6">
-            <select name="funcionario_id" id="funcionario_id" class="form-control-template">
+            <select name="funcionario_id" id="funcionario_id" class="form-control-template" required>
                 <option value=""> --Selecione o Responsável--</option>
                 @foreach ($funcionarios as $funcionario_find)
                 <option value="{{$funcionario_find->id}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
@@ -85,7 +86,7 @@
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">descrição dos serviços executados</label>
         <div class="col-md-6">
-            <textarea class="form-control" id="executado" name="descricao" rows="5" cols="100" require style="height: 100px;"></textarea>
+            <textarea class="form-control" id="executado" name="descricao" rows="5" cols="100" require style="height: 100px;" required></textarea>
         </div>
         <div class="invalid-tooltip">
             Por favor, informe os dados.
@@ -148,11 +149,40 @@
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right"></label>
+        <!-- Modal -->
+ <div class="modal fade" id="modalOpcoes" tabindex="-1" aria-labelledby="modalOpcoesLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalOpcoesLabel">Escolha uma opção</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Selecione apenas uma opção:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" value="1" id="opcao1" name="option" required>
+                        <label class="form-check-label" for="opcao1">Lançar os serviços apenas</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" value="2" id="opcao2" name="option" required>
+                        <label class="form-check-label" for="opcao2">Criar um pedido de saída, e lançar os materias utilizados</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" value="3" id="opcao3" name="option" required>
+                        <label class="form-check-label" for="opcao3">Selecionar um pedido já aberto, e lançar os materiais</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmarOpcoes">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
         <div class="col-md-6">
-            
-            <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="CallSumHours()">
-                Cadastrar
-            </button>
+            <!-- Botão para abrir a modal -->
+            <button type="button" class="btn btn-primary" id="btnModal" onclick="CallSumHours()">Cadastrar</button>
         </div>
     </div>
 </form>
@@ -189,7 +219,7 @@
 {{---------------------------------------------------------------------}}
 {{--Jason que verifica se as datas são válidas-------------------------}}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src=" https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // Função para executar o código após a atualização da select
     function executarAposAtualizarSelect() {
@@ -289,4 +319,49 @@
         }
     });
 </script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form com Modal</title>
+    <!-- Incluindo o CSS do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+ 
+    <!-- Incluindo o JavaScript do Bootstrap e JavaScript personalizado -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Obtém o botão que abre a modal e o form
+        const btnModal = document.getElementById('btnModal');
+        const meuForm = document.getElementById('meuForm');
+
+        // Referência para a modal
+        const modalOpcoes = new bootstrap.Modal(document.getElementById('modalOpcoes'));
+
+        // Abre a modal ao clicar no botão de envio
+        btnModal.addEventListener('click', function() {
+            modalOpcoes.show();
+        });
+
+        // Ao confirmar a seleção na modal, verifica se uma opção foi escolhida
+        document.getElementById('confirmarOpcoes').addEventListener('click', function() {
+            const radioSelecionado = document.querySelector('input[name="option"]:checked');
+            if (radioSelecionado) {
+                // Se uma opção estiver selecionada, submete o formulário
+                meuForm.submit();
+            } else {
+                alert('Por favor, selecione uma opção.');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
+
 </body>

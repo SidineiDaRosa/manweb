@@ -466,14 +466,19 @@
 
                             <script>
                                 // JavaScript para manipular o clique na linha e preencher os inputs
-                                document.querySelectorAll('#tblProdutos tr').forEach(row => {
+                                document.querySelectorAll('#tblProdutos tbody tr').forEach(row => { // Seleciona apenas as linhas do corpo da tabela
                                     row.addEventListener('dblclick', function() {
-                                        // Ignorando a linha do cabeçalho
-                                        if (this.rowIndex === 0) return;
-
                                         // Obtendo o valor dos dados da linha
                                         let produto_id = this.cells[0].textContent;
                                         const produtoNome = this.cells[2].textContent;
+
+                                        // Verifica se os valores estão preenchidos
+                                        if (!produto_id || !produtoNome) {
+                                            alert("Os dados do produto estão incompletos.");
+                                            return;
+                                        }
+
+                                        
 
                                         // Preenchendo os inputs com os valores obtidos
                                         document.getElementById('produto_id').value = produto_id;
@@ -481,6 +486,7 @@
                                         document.getElementById('componente_id').value = 0;
                                         document.getElementById('produto_nome').style.background = '#a0d8a0';
                                         document.getElementById('produto_id').style.background = '#a0d8a0';
+
                                         // Habilita o campo 'quantidade' e aplica o foco
                                         let quantidadeField = document.getElementById('quantidade');
                                         let btnEnviar = document.getElementById('btnEnviar');
@@ -492,6 +498,7 @@
                                     });
                                 });
                             </script>
+
                             <button class=" btn btn-sm-template btn-outline-primary" id="select-btn" hidden>Selecionar</button>
 
                             <a class=" btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $produto->id]) }}">

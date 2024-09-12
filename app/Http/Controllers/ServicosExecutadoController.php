@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
 use App\Models\Servicos_executado;
 use Illuminate\Http\Request;
+use PhpOption\Option;
 
 class ServicosExecutadoController extends Controller
 {
@@ -52,6 +53,8 @@ class ServicosExecutadoController extends Controller
      */
     public function store(Request $request)
     {
+        $option = $request->get('option');
+
         // Verifica se já existe um registro com os mesmos dados
         $existing = Servicos_executado::where([
             'ordem_servico_id' => $request->get("ordem_servico_id"),
@@ -71,13 +74,20 @@ class ServicosExecutadoController extends Controller
         $total_hs_os = Servicos_executado::where('ordem_servico_id', $id)->sum('subtotal');
 
         $funcionarios = Funcionario::all();
-
-        return view('app.ordem_servico.show', [
-            'ordem_servico' => $ordem_servico,
-            'servicos_executado' => $servicos_executado,
-            'funcionarios' => $funcionarios,
-            'total_hs_os' => $total_hs_os
-        ]);
+        if ($option == 1) {
+            return view('app.ordem_servico.show', [
+                'ordem_servico' => $ordem_servico,
+                'servicos_executado' => $servicos_executado,
+                'funcionarios' => $funcionarios,
+                'total_hs_os' => $total_hs_os
+            ]);
+        };
+        if ($option == 2) {
+            return redirect()->route('pedido-saida.create', ['ordem_servico' => $ordem_servico->id]);
+        };
+        if ($option == 3){
+            return redirect()->route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4]);
+        };
     }
     /**
      * Display the specified resource.
