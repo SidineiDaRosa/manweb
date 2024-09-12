@@ -219,7 +219,7 @@
                         <td>{{ $saida_produto->subtotal }}</td>
                         <td>{{ $saida_produto->data }}</td>
                         <td>{{ $saida_produto->equipamento_id }}</td>
-                        <td>
+                        <td><!--//---------------------------//--->
                             <!-- Botão de exclusão -->
                             <form id="delete-form-{{ $saida_produto->id }}" action="{{ route('saida-produto.destroy', $saida_produto->id) }}" method="POST" style="display: inline;">
                                 @csrf

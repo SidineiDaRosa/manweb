@@ -325,14 +325,18 @@ class SaidaProdutoController extends Controller
         $produtos = Produto::orderBy('nome')->get();
         $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $pedidos_saida_id)->get();
         $equipamentos = Equipamento::all();
-
+        $pedido_saida_find = PedidoSaida::find($pedidos_saida_id);
         // Redirecionar para a view com as variáveis necessárias
-        return view('app.pedido_saida.show', [
-            'pedido_saida' => $pedido_saida,
-            'categorias' => $categorias,
-            'produtos' => $produtos,
-            'saidas_produtos' => $saidas_produtos,
-            'equipamentos' => $equipamentos
-        ]);
+        if ($pedido_saida_find->ordem_servico_id >= 1) {
+            echo ('Registro deletado com sucesso! E o produto foi extornado para o estoque novamente!');
+        } else {
+            return view('app.pedido_saida.show', [
+                'pedido_saida' => $pedido_saida,
+                'categorias' => $categorias,
+                'produtos' => $produtos,
+                'saidas_produtos' => $saidas_produtos,
+                'equipamentos' => $equipamentos
+            ]);
+        }
     }
 }

@@ -144,6 +144,11 @@
                 <div class="conteudo">
                     <input type="text" class="input-bordernone" name="emissor" id="emissor" value="{{$pedido_saida_f->funcionarios_id}}" required autocomplete="funcionarios_id " autofocus readonly>
                 </div>
+                <div class="titulo">Descrição</div>
+                <hr>
+                <div class="conteudo">
+                    <input type="text" class="input-bordernone" name="descricao" id="descricao" value="{{$pedido_saida_f->descricao}}" required autocomplete="funcionarios_id " autofocus readonly>
+                </div>
             </div>
         </div>
         {{--Box 3--}}
@@ -172,19 +177,18 @@
                 <div class="conteudo">
                     <input type="text" class="input-bordernone" name="equipamento" id="equipamento" value="{{$pedido_saida_f->equipamento->nome ?? old('hora_prevista') }}" required autocomplete="funcionarios_id " autofocus readonly>
                 </div>
-                <div class="titulo">Descrição</div>
-                <hr>
-                <div class="conteudo">
-                    <input type="text" class="input-bordernone" name="descricao" id="descricao" value="{{$pedido_saida_f->descricao}}" required autocomplete="funcionarios_id " autofocus readonly>
-                </div>
+
             </div>
         </div>
     </div>
     {{--fim card--}}
     {{--------------fim continer box----------------------------------------}}
-    <div class="card-body" style="margin-top:-10px;">
+
+    <!--  Tabela de produtos adicionados ao pedido-->
+
+    <div class="card-body" style="border:solid #007b00 1px;margin-top:40px;">
         <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Produtos adicionados ao pedido</h6>
-        <table class="table">
+        <table class="table" style="">
             <thead style="background-color: #ccc;font-weight:300;font-family:Arial;">
                 <tr>
                     <th>Id</th>
@@ -197,6 +201,7 @@
                     <th>Subtotal</th>
                     <th>Data</th>
                     <th>Patrmônio</th>
+                    <th>Operações</th>
                 </tr>
             </thead>
             <tbody>
@@ -216,17 +221,50 @@
                     <td>{{ $saida_produto->subtotal}}</td>
                     <td>{{ $saida_produto->data }}</td>
                     <td>{{ $saida_produto->equipamento->nome}}</td>
+                    <td>
+                        <!-- Botão de exclusão -->
+                        <form id="delete-form-{{ $saida_produto->id }}" action="{{ route('saida-produto.destroy', $saida_produto->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="pedidos_saida_id" value="{{ $saida_produto->pedidos_saida_id }}">
+                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $saida_produto->id }})">Deletar</button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+        <!--Fim da tabela de produtos adicionados ao pedido-->
+
+        <!--Inicio de exlcusão do item e extrono para o estoque-->
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: 'Deseja excluir este item do pedido? Neste caso o item será extornado para o estoque novamente.',
+                    text: "Você não poderá reverter isso!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submete o formulário
+                        document.getElementById('delete-form-' + id).submit();
+                    }
+                });
+            }
+        </script>
     </div>
     <hr>
     @if($pedido_saida_f->status != 'fechado')
     <hr>
     {{-- Formulário com os dados para adicionar o item --}}
     <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Adicionar Produto ao pedido</h6>
-    <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST" style="margin-left:20PX;">
+    <form id="form_add_item" action="{{ route('saida-produto-add-item.store') }}" method="POST" style="margin-left:20px;">
         @csrf
         <div class="form-row">
             <input type="number" name="componente_id" id="componente_id" value="" readonly hidden>
@@ -244,7 +282,7 @@
     <span style="margin-left:20px;">
         <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Componentes do equipamento com periodicidade programada</h5>
     </span>
-    <table class="table" id="tblPecas" style="margin-left:20px;">
+    <table class="table" id="tblPecas" style="margin-left:1px; border:solid 1px blue; margin-top:10px;">
         <thead>
             <tr>
                 <th>ID</th>
@@ -478,7 +516,7 @@
                                             return;
                                         }
 
-                                        
+
 
                                         // Preenchendo os inputs com os valores obtidos
                                         document.getElementById('produto_id').value = produto_id;
