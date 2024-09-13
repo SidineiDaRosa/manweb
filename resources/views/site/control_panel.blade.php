@@ -135,7 +135,12 @@
                         <td> {{$ordem_servico_f->criticidade}}</td>
                         <td> {{$ordem_servico_f->tipo_componente}}</td>
                         <td>{{ date( 'd/m/Y' , strtotime($ordem_servico_f['data_proxima_manutencao']))}}</td>
-                        <td>{{ $ordem_servico_f->produto->nome}}</td>
+                        <td>@if(isset($ordem_servico_f->produto->nome))
+                            {{ $ordem_servico_f->produto->nome}}
+                            @else
+                            Produto ausente
+                            @endif
+                        </td>
                         <td> <a class="btn btn-secondary btn-sm" href="{{route('Peca-equipamento.index', ['equipamento' =>$ordem_servico_f->equipamento]) }}">
                                 <i class="icofont-search-document"></i></i></a>{{ $ordem_servico_f->equipamento}}
                         </td>

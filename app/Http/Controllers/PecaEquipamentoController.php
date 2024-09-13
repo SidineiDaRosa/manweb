@@ -37,7 +37,7 @@ class PecaEquipamentoController extends Controller
             return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         }
         if (!isset($categoria)) {
-            $pecasEquip = PecasEquipamentos::where('tipo_componente', 'Chek-List')->where('horas_proxima_manutencao', '<=', 3000)->orderby('horas_proxima_manutencao')->get();
+            $pecasEquip = PecasEquipamentos::where('tipo_componente', 'Chek-List')->where('horas_proxima_manutencao', '<=',48)->orderby('horas_proxima_manutencao')->get();
             return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         } else {
             switch ($opcao) {
@@ -234,7 +234,7 @@ class PecaEquipamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // echo ($request);
+    
         $Equip_id = $request->get('equipamento'); //id do equipamento
         $descricao = $request->get('descricao');
         $produto_id = $request->get('produto_id'); //não requerido
@@ -292,28 +292,28 @@ class PecaEquipamentoController extends Controller
             // Obter peças e equipamentos com condições específicas
             $pecasEquip = PecasEquipamentos::where('equipamento', $Equip_id)
                 ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('horas_proxima_manutencao', '<=', 48)
                 ->where('tipo_componente', 'componente')
                 ->orderBy('horas_proxima_manutencao', 'asc')
                 ->get();
 
             $chek_list = PecasEquipamentos::where('equipamento', $Equip_id)
                 ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('horas_proxima_manutencao', '<=', 48)
                 ->where('tipo_componente', 'Chek-List')
                 ->orderBy('horas_proxima_manutencao', 'asc')
                 ->get();
 
             $lubrificacao = PecasEquipamentos::where('equipamento', $Equip_id)
                 ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('horas_proxima_manutencao', '<=', 48)
                 ->where('tipo_componente', 'lubrificacao')
                 ->orderBy('horas_proxima_manutencao', 'asc')
                 ->get();
 
             $manutencao = PecasEquipamentos::where('equipamento', $Equip_id)
                 ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=', 5000)
+                ->where('horas_proxima_manutencao', '<=',48)
                 ->where('tipo_componente', 'manutencao')
                 ->orderBy('horas_proxima_manutencao', 'asc')
                 ->get();

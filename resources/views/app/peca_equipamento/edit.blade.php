@@ -197,7 +197,12 @@
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">ID produto:
-                {{$produto_nome->produto->nome}}
+
+                    <!-- Mostra a peça caso esteja cadastrado, no contrário ignora-->
+                     
+                    @if(isset($produto_nome->produto->nome))
+                    {{$produto_nome->produto->nome}}
+                    @endif
                 </div>
                 <hr>
                 <div class="conteudo">
@@ -348,7 +353,7 @@
         }
     </style>
     {{--//----------------------------------------------------//--}}
-    {{--  Busca produtos                                      ----}}
+    {{-- Busca produtos                                      ----}}
     {{--//----------------------------------------------------//--}}
     <div class="card-header-template">
         <form id="formSearchingProducts" action="{{ route('Produtos-filtro-componente-edit') }}" method="POST">
