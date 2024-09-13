@@ -148,33 +148,36 @@ class PecaEquipamentoController extends Controller
             ->get();
 
         // Obtém as peças do equipamento, manutenção, check-list e lubrificação
+        
         $pecasEquip = PecasEquipamentos::where('equipamento', $equipamento_id)
+            ->orderBy('horas_proxima_manutencao', 'asc')
+            ->where('horas_proxima_manutencao', '<=', 72)
             ->orderBy('horas_proxima_manutencao', 'asc')
             ->where('tipo_componente', 'componente')
             ->get();
 
         $manutencao = PecasEquipamentos::where('equipamento', $equipamento_id)
             ->where('status', 'ativado')
-            ->where('horas_proxima_manutencao', '<=', 5000)
+            ->where('horas_proxima_manutencao', '<=', 72)
             ->orderBy('horas_proxima_manutencao', 'asc')
             ->where('tipo_componente', 'manutencao')
             ->get();
 
         $chek_list = PecasEquipamentos::where('equipamento', $equipamento_id)
             ->where('status', 'ativado')
-            ->where('horas_proxima_manutencao', '<=', 5000)
+            ->where('horas_proxima_manutencao', '<=', 72)
             ->orderBy('horas_proxima_manutencao', 'asc')
             ->where('tipo_componente', 'Chek-List')
             ->get();
 
         $lubrificacao = PecasEquipamentos::where('equipamento', $equipamento_id)
             ->where('status', 'ativado')
-            ->where('horas_proxima_manutencao', '<=', 5000)
-            ->orderBy('horas_proxima_manutencao', 'asc')
+            ->where('horas_proxima_manutencao', '<=', 72)
+            ->orderBy('horas_proxima_manutencao', 'dsc')
             ->where('tipo_componente', 'lubrificacao')
             ->get();
-
-        // Retorna a view com os dados coletados
+        
+        // Retorna a view com os dados coletados 
         return view('app.equipamento.show', [
             'equipamento' => $equipamento,
             'ordens_servicos' => $ordens_servicos,
