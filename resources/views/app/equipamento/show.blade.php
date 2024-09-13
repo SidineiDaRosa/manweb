@@ -193,13 +193,12 @@
             </div>
             <div class="titulo">Arquivos anexados</div>
             <hr>
-            <a href="" target="_blank">Anexo 1 | {{$equipamento->anexo_1}}<span class="material-symbols-outlined">
-                    open_in_new
-                </span></a>
+            <a class="txt-link" href="{{$equipamento->anexo_1}}" target="_blank">
+                Documentos anexados link 1
+            </a>
             <p></p>
-            <a href="" target="_blank">
-                Anexo 2 | {{$equipamento->anexo_2}}
-                <span class="material-symbols-outlined">open_in_new</span>
+            <a class="txt-link" href="{{$equipamento->anexo_2}}" target="_blank">
+                Documentos anexados link 2
             </a>
         </div>
         {{--fim card--}}
