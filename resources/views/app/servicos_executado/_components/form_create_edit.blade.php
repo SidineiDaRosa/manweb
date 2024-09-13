@@ -10,28 +10,28 @@
 
     <div class="row mb-1 ">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">ID Os</label>
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input id="idOs" type="nuber" class="form-control custom-font-size 40" name="ordem_servico_id" value="{{$ordem_servico_id}}" readonly>
         </div>
     </div>
     <div class="row mb-1">
         <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Data Emissão</label>
 
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input type="date" class="form-control" id="data_emissao" name="data_emissao" placeholder="dataEmissao" value="" readonly>
         </div>
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Hora emissão</label>
 
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input type="time" class="form-control" name=hora_emissao id="hora_emissao" placeholder="horaEmissao" required value="" readonly>
         </div>
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Data início</label>
 
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input type="date" class="form-control" name="data_inicio" id="data_inicio" placeholder="dataPrevista" required value="" onchange="ValidateDatePrevista()">
         </div>
         <div class="invalid-tooltip">
@@ -40,7 +40,7 @@
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Hora início</label>
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input type="time" class="form-control" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="">
         </div>
         <div class="invalid-tooltip">
@@ -50,7 +50,7 @@
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Data fim</label>
 
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input type="date" class="form-control" name="data_fim" id="data_fim" placeholder="dataFim" required value="" onchange="ValidateDateFim()">
         </div>
         <div class="invalid-tooltip">
@@ -59,7 +59,7 @@
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Hora fim</label>
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input type="time" class="form-control" name="hora_fim" id="hora_fim" placeholder="horaFim" required value="">
         </div>
         <div class="invalid-tooltip">
@@ -120,7 +120,7 @@
     </script>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Tipo de serviço</label>
-        <div class="col-md-6">
+        <div class="col-md-2">
             <select class="form-control" name="tipo_de_servico" id="tipo_de_servico" name="tipo_de_servio" style="background-color: rgba(249, 187, 120, 0.2) ;">
                 <option value="Corretiva">Corretiva</option>
                 <option value="Preventiva">Preventiva</option>
@@ -132,7 +132,7 @@
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Estado avaliação</label>
-        <div class="col-md-6">
+        <div class="col-md-2">
             <select class="form-control" name="estado" id="estado" name="estado" style="background-color: rgba(249, 187, 120, 0.2) ;">
                 <option value="Bom">Bom</option>
                 <option value="Regular">Regular</option>
@@ -143,7 +143,7 @@
     <div class="row mb-1">
         <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Total horas</label>
 
-        <div class="col-md-6">
+        <div class="col-md-2">
             <input type="number" class="form-control" id="total_horas" name="subtotal" value="" readonly>
         </div>
     </div>

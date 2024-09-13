@@ -3,7 +3,6 @@
 
 <head>
     <title>Ordem de Serviço #{{ $ordemServico->id }}</title>
-
     <style>
         body {
             font-family: Arial, sans-serif;
