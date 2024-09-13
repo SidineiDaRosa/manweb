@@ -37,7 +37,7 @@ class PecaEquipamentoController extends Controller
             return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         }
         if (!isset($categoria)) {
-            $pecasEquip = PecasEquipamentos::where('tipo_componente', 'Chek-List')->where('horas_proxima_manutencao', '<=',48)->orderby('horas_proxima_manutencao')->get();
+            $pecasEquip = PecasEquipamentos::where('tipo_componente', 'Chek-List')->where('horas_proxima_manutencao', '<=', 48)->orderby('horas_proxima_manutencao')->get();
             return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         } else {
             switch ($opcao) {
@@ -148,7 +148,7 @@ class PecaEquipamentoController extends Controller
             ->get();
 
         // Obtém as peças do equipamento, manutenção, check-list e lubrificação
-        
+
         $pecasEquip = PecasEquipamentos::where('equipamento', $equipamento_id)
             ->orderBy('horas_proxima_manutencao', 'asc')
             ->where('horas_proxima_manutencao', '<=', 72)
@@ -176,7 +176,7 @@ class PecaEquipamentoController extends Controller
             ->orderBy('horas_proxima_manutencao', 'dsc')
             ->where('tipo_componente', 'lubrificacao')
             ->get();
-        
+
         // Retorna a view com os dados coletados 
         return view('app.equipamento.show', [
             'equipamento' => $equipamento,
@@ -237,13 +237,14 @@ class PecaEquipamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-    
+
         $Equip_id = $request->get('equipamento'); //id do equipamento
         $descricao = $request->get('descricao');
         $produto_id = $request->get('produto_id'); //não requerido
         $quantidade = $request->get('quantidade');
         $data_substituicao = $request->get('data_substituicao');
         $hora_substituicao = $request->get('hora_substituicao');
+        $intervalo_manutencao = $request->get('intervalo_manutencao');
         $data_proxima_manutencao = $request->get('data_proxima_manutencao');
         $horas_proxima_manutencao = $request->get('horas_proxima_manutencao');
         $horimetro = $request->get('horimetro');
@@ -260,6 +261,7 @@ class PecaEquipamentoController extends Controller
             'quantidade' => 'nullable|numeric', // Campo não é obrigatório, mas deve ser numérico se preenchido
             'data_substituicao' => 'required|date',
             'hora_substituicao' => 'required',
+            'intervalo_manutencao' => 'required|numeric',
             'data_proxima_manutencao' => 'required|date',
             'horas_proxima_manutencao' => 'required',
             'horimetro' => 'required',
@@ -292,33 +294,34 @@ class PecaEquipamentoController extends Controller
             // Obter o equipamento especificado
             $equipamento = Equipamento::where('id', $Equip_id)->first();
 
-            // Obter peças e equipamentos com condições específicas
+            // Obtém as peças do equipamento, manutenção, check-list e lubrificação
+
             $pecasEquip = PecasEquipamentos::where('equipamento', $Equip_id)
-                ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=', 48)
+                ->orderBy('horas_proxima_manutencao', 'asc')
+                ->where('horas_proxima_manutencao', '<=', 72)
+                ->orderBy('horas_proxima_manutencao', 'asc')
                 ->where('tipo_componente', 'componente')
-                ->orderBy('horas_proxima_manutencao', 'asc')
-                ->get();
-
-            $chek_list = PecasEquipamentos::where('equipamento', $Equip_id)
-                ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=', 48)
-                ->where('tipo_componente', 'Chek-List')
-                ->orderBy('horas_proxima_manutencao', 'asc')
-                ->get();
-
-            $lubrificacao = PecasEquipamentos::where('equipamento', $Equip_id)
-                ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=', 48)
-                ->where('tipo_componente', 'lubrificacao')
-                ->orderBy('horas_proxima_manutencao', 'asc')
                 ->get();
 
             $manutencao = PecasEquipamentos::where('equipamento', $Equip_id)
                 ->where('status', 'ativado')
-                ->where('horas_proxima_manutencao', '<=',48)
-                ->where('tipo_componente', 'manutencao')
+                ->where('horas_proxima_manutencao', '<=', 72)
                 ->orderBy('horas_proxima_manutencao', 'asc')
+                ->where('tipo_componente', 'manutencao')
+                ->get();
+
+            $chek_list = PecasEquipamentos::where('equipamento', $Equip_id)
+                ->where('status', 'ativado')
+                ->where('horas_proxima_manutencao', '<=', 72)
+                ->orderBy('horas_proxima_manutencao', 'asc')
+                ->where('tipo_componente', 'Chek-List')
+                ->get();
+
+            $lubrificacao = PecasEquipamentos::where('equipamento', $Equip_id)
+                ->where('status', 'ativado')
+                ->where('horas_proxima_manutencao', '<=', 72)
+                ->orderBy('horas_proxima_manutencao', 'asc')
+                ->where('tipo_componente', 'lubrificacao')
                 ->get();
 
             // Retornar a view com os dados carregados
