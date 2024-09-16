@@ -120,11 +120,12 @@
                             <th scope="col" class="th-title">Estado</th>
                             <th scope="col" class="th-title">criticidade</th>
                             <th scope="col" class="th-title">Categoria</th>
+                            <th scope="col" class="th-title">Ultima manutenção</th>
                             <th scope="col" class="th-title">Data_proxima_manutencao</th>
                             <th scope="col" class="th-title">Produto_id</th>
                             <th scope="col" class="th-title">Equipamento</th>
                             <th scope="col" class="th-title">Intervalo_manutencao</th>
-                            <th scope="col" class="th-title">Próxima_manutencao</th>
+                            <th scope="col" class="th-title">horas restante</th>
                         </tr>
                     </thead>
                     @foreach ($ordens_servicos as $ordem_servico_f)
@@ -134,6 +135,7 @@
                         <td> {{$ordem_servico_f->status}}</td>
                         <td> {{$ordem_servico_f->criticidade}}</td>
                         <td> {{$ordem_servico_f->tipo_componente}}</td>
+                        <td>{{ date( 'd/m/Y' , strtotime($ordem_servico_f['data_substituicao']))}}</td>
                         <td>{{ date( 'd/m/Y' , strtotime($ordem_servico_f['data_proxima_manutencao']))}}</td>
                         <td>@if(isset($ordem_servico_f->produto->nome))
                             {{ $ordem_servico_f->produto->nome}}
