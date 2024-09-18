@@ -170,7 +170,7 @@
         {{--Box 1--}}
         <div class="item">
             <form action="" class="scrollable">
-                <h6 class="title-md">O.S. FECHADAS HOJE</h6>
+                <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. FECHADAS HOJE</h6>
                 <div class="div-os-sm">
                     <table class="condensed-table">
                         <thead>
@@ -221,7 +221,7 @@
                 </div>
             </form>
             <form action="" class="scrollable">
-                <h6 class="title-md">O.S VENCIDAS E PENDENTES </h6>
+                <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S VENCIDAS E PENDENTES </h6>
                 <div class="div-os-sm" style="background-color:rgb(251,170,153);">
                     <table class="condensed-table">
                         <thead>
@@ -288,7 +288,7 @@
             }
         </style>
         <div class="item">
-            <h6 class="title-md">O.S. EM EXECUÇÃO </h6>&nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
+            <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. EM EXECUÇÃO </h6>&nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
             <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Unidades</a> |
             <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Ativos/Nova O.S</a>
             <style>
@@ -679,7 +679,7 @@
         </div>
         {{--Box 4--}}
         <div class="item">
-            <h6>O.S FECHADA POR MÁQUINA</h6> <!-- Ajuste a margem superior conforme necessário -->
+            <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S FECHADA POR MÁQUINA</h6> <!-- Ajuste a margem superior conforme necessário -->
             <div id="graficoPizza" class="box" hidden></div>
             {{--//-------------------------------------------------//--}}
             {{--//--------------------------//--}}
@@ -708,7 +708,7 @@
         {{--Box 5--}}
         {{--Box que contém a lista de pedidos abertos--}}
         <div class="item">
-            <span class="title-md">PEDIDOS</span> &nbsp&nbsp&nbsp&nbsp
+            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">PEDIDOS</span> &nbsp&nbsp&nbsp&nbsp
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
             <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a> |
             <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
@@ -853,7 +853,7 @@
             }
         </style>
         <div class="item">
-            <span class="title-md">ESTOQUE ALMOXARIFADO</span>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">ESTOQUE ALMOXARIFADO</span>
             <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
             <a class="sidebar-submenu-expanded-a" href="{{route('Estoque-produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Estoque de produtos</a>
             <hr>
