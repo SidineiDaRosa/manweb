@@ -297,7 +297,10 @@ class DahboardStatusOsController extends Controller
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
-
+        $ordens_servicos_next = OrdemServico::where('data_inicio', '>', $today->copy()->addDays(3)) // Os após 3 dias a partir de hoje
+            ->where('situacao', 'aberto') // Filtra pela situação "aberto"
+            ->where('empresa_id', '<=', 2) // Filtra por empresa_id menor ou igual a 2
+            ->get();
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
@@ -309,7 +312,7 @@ class DahboardStatusOsController extends Controller
             ->orderBy('criticidade', 'desc') // Criticidade decrescente
             ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
             ->get();
-    
+
         $produtos = Produto::all();
         $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
         //---------------------------------------------------//
@@ -360,6 +363,7 @@ class DahboardStatusOsController extends Controller
             'ordens_servicos_next_day' => $ordens_servicos_next_day,
             'ordens_servicos_second_day' => $ordens_servicos_second_day,
             'ordens_servicos_third_day' => $ordens_servicos_third_day,
+            'ordens_servicos_next' => $ordens_servicos_next,
             'assets' => $assets,
             'mondayOrders' => $mondayOrders,
             'tuesdayOrders' => $tuesdayOrders,

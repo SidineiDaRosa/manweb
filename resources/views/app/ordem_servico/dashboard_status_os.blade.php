@@ -536,12 +536,12 @@
                 @endforeach
                 @if(isset($ordens_servicos_next_day_title))
                 <!-- Algum conteúdo -->
-                <h6 class="title-md" >
+                <h6 class="title-md">
                     O.S. PARA AMANHÃ ({{ \Carbon\Carbon::parse($ordens_servicos_next_day_title->data_inicio)->locale('pt_BR')->isoFormat('dddd') }}):
                 </h6>
                 @else
                 <!-- Outro conteúdo -->
-                <h6 class="title-md" >
+                <h6 class="title-md">
                     NÃO HÀ O.S. PARA AMANHÃ.
                 </h6>
                 @endif
@@ -551,7 +551,7 @@
                     <span style="font-weight: 900; font-size:14px;"> {{$next_day->id}}</span>
                     <span style="font-size:14px;"> {{ \Carbon\Carbon::parse($ordens_servicos_next_day_title->data_inicio)->format('d/m/Y') }}</span>
                     <span style="color: green;font-size:14px;">às</span>
-                    <span style="font-size:14px;">{{$next_day->hora_inicio}} </span> 
+                    <span style="font-size:14px;">{{$next_day->hora_inicio}} </span>
                     <span style="color: green;font-size:14px;">até</span>
                     <span style="font-size:14px;">{{ \Carbon\Carbon::parse($ordens_servicos_next_day_title->data_fim)->format('d/m/Y') }}</span>
                     <span style="color: green;font-size:14px;">às</span>
@@ -606,7 +606,7 @@
                 @endif
                 @forelse($ordens_servicos_third_day as $terc_day)
                 <div class="div-font-sm-conteudo">
-                <span style="font-weight: 900; font-size:14px;"> {{$terc_day->id}}</span>
+                    <span style="font-weight: 900; font-size:14px;"> {{$terc_day->id}}</span>
                     {{$terc_day->data_inicio}} às {{$terc_day->hora_inicio}} até
                     {{$terc_day->data_fim}} às {{$terc_day->hora_fim}}
                     {{$terc_day->equipamento->nome}}
@@ -618,6 +618,18 @@
                 <hr>
                 @endforelse
             </div>
+            <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">ORDENS FUTURAS</h6>
+            @if(isset($ordens_servicos_next))
+            @foreach($ordens_servicos_next as $ordem_servico_next)
+            <a href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}">
+                <span class="material-symbols-outlined">
+                    open_in_new
+                </span>
+            </a> <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">{{$ordem_servico_next->id}}</span> <span>{{$ordem_servico_next->data_inicio}}</span> <br>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$ordem_servico_next->descricao}}</span> <br>
+            <hr style="margin:5px;">
+            @endforeach
+            @endif
         </div>
 
         {{--fim do item 3--}}
