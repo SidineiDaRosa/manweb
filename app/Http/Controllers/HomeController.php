@@ -294,30 +294,40 @@ class HomeController extends Controller
             ->where('situacao', 'aberto')
             ->where('empresa_id', '<=', 2)
             ->get();
-
+        $ordens_servicos_next = OrdemServico::where('data_inicio', '>', $today->copy()->addDays(3)) // Os após 3 dias a partir de hoje
+            ->where('situacao', 'aberto') // Filtra pela situação "aberto"
+            ->where('empresa_id', '<=', 2) // Filtra por empresa_id menor ou igual a 2
+            ->get();
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
         $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
 
-           $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
-           ->where('criticidade', '>=', 1)
-           ->orderByRaw('quantidade = 0 desc') // Garante que quantidade 0 apareça primeiro
-           ->orderBy('criticidade', 'desc') // Criticidade decrescente
-           ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
-           ->get();
-       
-       // Exibe os resultados
-      // foreach ($produtos_estoque_critico as $produto) {
-         //  echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
-       //}
+        $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
+            ->where('criticidade', '>=', 1)
+            ->orderByRaw('quantidade = 0 desc') // Garante que quantidade 0 apareça primeiro
+            ->orderBy('criticidade', 'desc') // Criticidade decrescente
+            ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
+            ->get();
+
+        // Exibe os resultados
+        // foreach ($produtos_estoque_critico as $produto) {
+        //  echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
+        //}
         $produtos = Produto::all();
         $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
         return view('app.layouts.dashboard', [
-            'equipamento' => $equipamento, 'ordens_servicos' => $ordens_servicos, 'funcionarios' => $funcionarios,
+            'equipamento' => $equipamento,
+            'ordens_servicos' => $ordens_servicos,
+            'funcionarios' => $funcionarios,
             'empresa' => $empresa,
-            'countos' => $countOS, 'data_inicio' => $dataInicio, 'data_fim' => $dataFim, 'countos_fechado' => $countOSFechado,
-            'total_aberto' => $countOSAberto, 'total_fechado' => $countOSFechado, 'ordens_servicos_hoje' => $ordens_servicos_hoje,
+            'countos' => $countOS,
+            'data_inicio' => $dataInicio,
+            'data_fim' => $dataFim,
+            'countos_fechado' => $countOSFechado,
+            'total_aberto' => $countOSAberto,
+            'total_fechado' => $countOSFechado,
+            'ordens_servicos_hoje' => $ordens_servicos_hoje,
             'ordens_servicos_hoje_fechado' => $ordens_servicos_hoje_fechado,
             'ordens_servicos_emandamento' => $ordens_servicos_emandamento,
             'pedidos_compra' => $pedidosCompraAberto,
@@ -335,9 +345,10 @@ class HomeController extends Controller
             'ordens_servicos_next_day' => $ordens_servicos_next_day,
             'ordens_servicos_second_day' => $ordens_servicos_second_day,
             'ordens_servicos_third_day' => $ordens_servicos_third_day,
+            'ordens_servicos_next' => $ordens_servicos_next,
             'produtos_estoque_critico' => $produtos_estoque_critico,
             'produtos' => $produtos,
-            'assets'=>$assets
+            'assets' => $assets
         ]);
     }
 }
