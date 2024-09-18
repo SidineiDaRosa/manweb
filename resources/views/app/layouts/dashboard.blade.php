@@ -673,7 +673,7 @@
                     open_in_new
                 </span>
             </a> <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">{{$ordem_servico_next->id}}</span> <br>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$ordem_servico_next->descricao}}
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$ordem_servico_next->descricao}}</span> <br>
                 @endforeach
                 @endif
         </div>
