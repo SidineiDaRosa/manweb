@@ -676,7 +676,7 @@
             <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$ordem_servico_next->descricao}}</span> <br>
             <hr style="margin:5px;">
             @endforeach
-            @endifadd
+            @endif
         </div>
         {{--Box 4--}}
         <div class="item">
