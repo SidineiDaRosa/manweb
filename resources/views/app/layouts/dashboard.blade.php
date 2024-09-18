@@ -674,9 +674,9 @@
                 </span>
             </a> <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">{{$ordem_servico_next->id}}</span> <span>{{$ordem_servico_next->data_inicio}}</span> <br>
             <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$ordem_servico_next->descricao}}</span> <br>
-            <hr>
+            <hr style="margin:5px;">
             @endforeach
-            @endif
+            @endifadd
         </div>
         {{--Box 4--}}
         <div class="item">
