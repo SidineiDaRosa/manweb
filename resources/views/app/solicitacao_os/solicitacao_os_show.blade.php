@@ -7,7 +7,7 @@
     </div>
     <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
         Entre:
-        <input type="datetime-local" class="form-control-template" name="datetime" id="datetime" style="width:250px;height:30px;font-size:20px;"> <br> 
+        <input type="datetime-local" class="form-control-template" name="datetime" id="datetime" style="width:250px;height:30px;font-size:20px;"> <br>
         <input type="datetime-local" class="form-control-template" name="datetime_fim" id="datetime_fim" style="width:250px;height:30px;font-size:20px;"> <br>
         <label for="option-all">Todas</label>
         <input type="radio" id="option-all" name="options" value="Todas" checked>
@@ -46,20 +46,24 @@
         Atualizado: {{ $solicitacao->updated_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i:s') }} <br>
         @endif
         @endforeach
-        Descrição: {!! nl2br(e($solicitacao->descricao)) !!} <br>
-        
+        <div style="width: 60%; word-wrap: break-word;font-family:Arial, Helvetica, sans-serif">
+           <span style="font-family:Arial;font-weight:bold;">Descrição: </span> {!! nl2br(e($solicitacao->descricao)) !!}
+        </div><br>
+
         <div style="
-        @if($solicitacao->status == 'Aberta') 
-          background-color: red; 
-        @elseif($solicitacao->status == 'Em Espera') 
-           background-color: orange; 
-        @else 
-           background-color: lightgrey;
-        @endif
-        width:50%;
-    ">
-        Status:  {{$solicitacao->status}} <br>
-    </div> <br>
+    @if($solicitacao->status == 'Aberta') 
+        background-color: red; 
+    @elseif($solicitacao->status == 'Em Espera') 
+        background-color: orange; 
+    @elseif($solicitacao->status == 'Aceita') 
+        background-color: green; 
+    @else 
+        background-color: lightgrey; 
+    @endif
+    width: 50%;
+">
+            Status: {{$solicitacao->status}} <br>
+        </div> <br>
         <!-- Botão para "Aceitar" -->
         <a class="btn btn-outline-primary mb-1" href="{{ route('solicitacao_os.aceitar', $solicitacao->id) }}"
             onclick="event.preventDefault(); document.getElementById('aceitar-form-{{ $solicitacao->id }}').submit();">
