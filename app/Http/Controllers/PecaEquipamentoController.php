@@ -173,7 +173,7 @@ class PecaEquipamentoController extends Controller
         $lubrificacao = PecasEquipamentos::where('equipamento', $equipamento_id)
             ->where('status', 'ativado')
             ->where('horas_proxima_manutencao', '<=', 72)
-            ->orderBy('horas_proxima_manutencao', 'dsc')
+            ->orderBy('horas_proxima_manutencao', 'asc')
             ->where('tipo_componente', 'lubrificacao')
             ->get();
 
