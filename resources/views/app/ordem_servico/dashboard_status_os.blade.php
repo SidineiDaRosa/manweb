@@ -1049,32 +1049,76 @@
     <?php
     $today = \Carbon\Carbon::now()->format('l'); // Obtém o nome do dia da semana atual
     ?>
+    <!--  Ao clicar na div week-->
+    <style>
+        .item-week {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .item-week.expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 999;
+            overflow: auto;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .item-week h4:hover {
+            background-color: greenyellow;
+            opacity: 0.5;
+            /* Define a opacidade corretamente */
+            cursor: pointer;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+            /* Suaviza tanto a cor de fundo quanto a opacidade */
+        }
+
+        .item-week h4 {
+            cursor: pointer;
+
+        }
+    </style>
+    <script>
+        function toggleExpand(boxId) {
+            const box = document.getElementById(boxId);
+
+            // Alterna entre as classes para expandir/recolher
+            box.classList.toggle('expanded');
+        }
+    </script>
+
     <!------------------------------------------------------------->
     <div class="container-month">
         {{--Box 2--}}
-        <div class="item-week">
-
-            <h4 class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;">Segunda-feira</h4>
-            @forelse ($mondayOrders as $order)
-            <!-----Segunda Feira ------->
-            <div style="display:flex;">
-                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+        <div class="item-week" id="box-2">
+            <h4 class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">Segunda-feira</h4>
+            <div class="orders">
+                @forelse ($mondayOrders as $order)
+                <div style="display:flex;">
+                    <div style="width:65%;">
+                        ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                        <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                        <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                    </div>
+                    <div style="width:35%; text-align: right;">
+                        <h6>{{ $order->equipamento->nome }} </h6>
+                    </div>
                 </div>
-                <div style="width:35%; text-align: right;">
-                    <h6>{{ $order->equipamento->nome }} </h6>
-                </div>
+                <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta nesta segunda-feira.
+                @endforelse
             </div>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
-            <hr style="color:green;margin:1px;">
-            @empty
-            Nenhuma ordem de serviço aberta nesta segunda-feira.
-            @endforelse
         </div>
+
         {{--Box 3 terça feira--}}
-        <div class="item-week">
-            <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:300;">Terça-feira</h4>
+        <div id="box-3" class="item-week">
+            <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-3')" title="Expandir/Recolher">Terça-feira</h4>
             @forelse ($tuesdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
@@ -1092,8 +1136,8 @@
             @endforelse
         </div>
         {{--Box 4 Quarta-feira--}}
-        <div class="item-week">
-            <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:300;">Quarta-feira</h4>
+        <div id="box-4" class="item-week">
+            <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-4')" title="Expandir/Recolher">Quarta-feira</h4>
             @forelse ($wednesdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
@@ -1111,8 +1155,8 @@
             @endforelse
         </div>
         {{--Box 5 Quinta-feira--}}
-        <div class="item-week">
-            <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}" style="font-weight:300;">Quinta-feira</h4>
+        <div id="box-5" class="item-week">
+            <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-5')" title="Expandir/Recolher">Quinta-feira</h4>
             @forelse ($thursdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
@@ -1130,8 +1174,8 @@
             @endforelse
         </div>
         {{--Box 6 Sexta-feira--}}
-        <div class="item-week">
-            <h4 class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:300;">Sexta-feira</h4>
+        <div id="box-6" class="item-week">
+            <h4 class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-6')" title="Expandir/Recolher">Sexta-feira</h4>
 
             @forelse ($fridayOrders as $order)
             <div style="display:flex;">
@@ -1150,8 +1194,8 @@
             @endforelse
         </div>
         {{--Box 7 Sábado--}}
-        <div class="item-week">
-            <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:300;">Sábado</h4>
+        <div id="box-7" class="item-week">
+            <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-7')" title="Expandir/Recolher">Sábado</h4>
             @forelse ($saturdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
@@ -1169,8 +1213,8 @@
             @endforelse
         </div>
         {{--Box 1 Domingo--}}
-        <div class="item-week">
-            <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;">Domingo</h4>
+        <div id="box-1" class="item-week">
+            <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-1')" title="Expandir/Recolher">Domingo</h4>
             @forelse ($sundayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
