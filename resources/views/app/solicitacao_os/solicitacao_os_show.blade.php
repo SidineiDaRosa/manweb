@@ -56,11 +56,11 @@
     @elseif($solicitacao->status == 'Em Espera') 
         background-color: orange; 
     @elseif($solicitacao->status == 'Aceita') 
-        background-color: green; 
+        background-color: #6aa9e9; 
     @else 
         background-color: lightgrey; 
     @endif
-    width: 50%;
+    width: 50%;border-radius:5px;
 ">
             Status: {{$solicitacao->status}} <br>
         </div> <br>
