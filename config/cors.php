@@ -19,11 +19,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*'], // Permitir qualquer origem
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['*'], // Permitir qualquer cabeçalho
 
     'exposed_headers' => [],
 
@@ -32,3 +32,4 @@ return [
     'supports_credentials' => false,
 
 ];
+

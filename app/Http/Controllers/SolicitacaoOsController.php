@@ -50,9 +50,10 @@ class SolicitacaoOsController extends Controller
      */
     public function store(Request $request)
     {
+        echo('teste app');
         // Valida os dados recebidos da requisição
         $validated = $request->validate([
-            'datetime' => 'required|date', //aqui date e time
+            'datetime' => 'required|date', //aqui date e time4
             'emissor' => 'nullable|exists:funcionarios,id',
             'descricao' => 'required|string|max:300',
         ]);
