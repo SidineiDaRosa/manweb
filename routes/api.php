@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 use App\Http\Controllers\SolicitacaoOsController;
 
-Route::post('/solicitacao-os', [SolicitacaoOsController::class, 'store'])->name('solicitacao-os');
+Route::post('/solicitacao-os', [SolicitacaoOsController::class, 'store'])->name('solicitacao-os');//Rota que cadstra a solictação
+
+Route::get('/employees', [SolicitacaoOsController::class, 'get_employee']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

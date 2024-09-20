@@ -200,4 +200,10 @@ class SolicitacaoOsController extends Controller
             'funcionarios' => $funcionarios
         ]);
     }
+    public function get_employee(){
+        $employee = Funcionario::where('funcao','supervisor')->get(); // Certifique-se de que o modelo Funcionario está correto
+        return response()->json($employee);
+        echo($employee);
+
+    }
 }
