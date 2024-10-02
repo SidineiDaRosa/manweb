@@ -206,4 +206,11 @@ class SolicitacaoOsController extends Controller
         echo($employee);
 
     }
+    public function cont_request_os_open()
+    {
+        // Conta as solicitações com status "Aberta"
+        $pendentes = SolicitacaoOs::where('status', '=', 'Aberta')->count();
+        // Retorna a contagem como resposta JSON
+        return response()->json(['pendentes' => $pendentes]);
+    }
 }

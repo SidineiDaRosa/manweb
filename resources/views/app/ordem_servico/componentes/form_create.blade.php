@@ -250,101 +250,112 @@
         {{--Box 2--}}
         <div class="item">
             <div class="box-conteudo">
-                <div class="titulo">
-                    <textarea id="descricao" class="form-control align-left" rows="6" style="color:crimson;" name="descricao" onchange="valdDescr()">{{$pre_descricao_os}}
-                    </textarea>
-                </div>
-                <script>
-                    function ValdDescr() {
-                        document.getElementById('descricao').style.background = "rgb(150, 255, 150)";
-                    }
-                </script>
+                <textarea name="descricao" id="" style="font-family: Arial, Helvetica, sans-serif;width:100%;border:solid 1px;" rows="5" cols="30">{!! $pre_descricao_os !!}</textarea>
+                <!----------------------------------------------------------------------->
                 <style>
-                    #txt-area {
-                        height: auto;
-                        width: 100%;
-                        border: 1px solid rgba(33, 116, 212, 0.3);
-                        border-radius: 5px;
-                        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-                        background-color: transparent;
-                        /* Transparent background */
-
+                    #descricao_os {
+                        border: 1px solid #ccc;
+                        min-height: 200px;
+                        padding: 10px;
+                        margin-top: 10px;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 15px;
+                        font-weight: 400;
+                        color: black;
                     }
 
-                    #txt-area:focus {
-                        border-color: rgba(33, 116, 212, 0.5);
-                        /* Use the same rgba color but with a different opacity */
-                        box-shadow: 0 0 0 0.1rem rgba(33, 116, 212, 0.25);
-                        /* Add a shadow to match Bootstrap */
-                        outline: none;
-                        /* Remove the default outline */
-
+                    button {
+                        margin-right: 5px;
                     }
                 </style>
+                </head>
 
-                {{---------------------------------------------------------------------}}
-                <div class="titulo">Progresso do serviço:</div>
-                <hr>
-                <div class="conteudo">
-                    <input class="input-text" id="status_servicos" type="text" name="status_servicos" value="1" readonly style="display: flex; justify-content:center;">%
-                </div>
-                <div class="titulo"></div>
-                <hr>
-                <div class="conteudo">
-                    <style>
-                        .progress-bar {
-                            width: 100%;
-                            background-color: #f1f1f1;
-                        }
+                <body>
+                    <div hidden>
+                        <!-- Botões de formatação -->
+                        <button onclick="document.execCommand('bold')"><b>Negrito</b></button>
+                        <button onclick="document.execCommand('italic')"><i>Itálico</i></button>
+                        <button onclick="document.execCommand('underline')"><u>Sublinhado</u></button>
+                        <button onclick="document.execCommand('insertOrderedList')">Lista Numerada</button>
+                        <button onclick="document.execCommand('insertUnorderedList')">Lista com Marcadores</button>
+                        <button onclick="document.execCommand('createLink', false, prompt('Digite a URL:', 'https://'))">Link</button>
+                    </div>
+                    <!-- Área editável -->
+                    <!-- O div com o editor -->
+                    <div id="descricao_os" contenteditable="true" hidden>
+                      
+                    </div>
 
-                        .progress {
-                            height: 30px;
-                            background-color: #4caf50;
-                            text-align: center;
-                            line-height: 30px;
-                            color: white;
-                        }
+                    <!-- Input oculto para enviar o valor do div -->
+                    <input type="hidden" id="descricao_input" name="descricao_os">
 
-                        .progress-container {
-                            width: 100%;
-                            margin: 20px auto;
-                        }
 
-                        input[type="range"] {
-                            width: 100%;
-                        }
-                    </style>
-                    <div class="progress-container">
-                        <input type="range" min="0" max="100" value="1" class="slider" id="progressSlider" onchange="updateProgress()" name="status_servicos">
+                    <script>
+
+                    </script>
+                    {{---------------------------------------------------------------------}}
+                    <div class="titulo">Progresso do serviço:</div>
+                    <hr>
+                    <div class="conteudo">
+                        <input class="input-text" id="status_servicos" type="text" name="status_servicos" value="1" readonly style="display: flex; justify-content:center;">%
+                    </div>
+                    <div class="titulo"></div>
+                    <hr>
+                    <div class="conteudo">
+                        <style>
+                            .progress-bar {
+                                width: 100%;
+                                background-color: #f1f1f1;
+                            }
+
+                            .progress {
+                                height: 30px;
+                                background-color: #4caf50;
+                                text-align: center;
+                                line-height: 30px;
+                                color: white;
+                            }
+
+                            .progress-container {
+                                width: 100%;
+                                margin: 20px auto;
+                            }
+
+                            input[type="range"] {
+                                width: 100%;
+                            }
+                        </style>
+                        <div class="progress-container">
+                            <input type="range" min="0" max="100" value="1" class="slider" id="progressSlider" onchange="updateProgress()" name="status_servicos">
+                        </div>
+                        <script>
+                            function updateProgress() {
+                                // Obtém o valor do controle deslizante
+                                let progresServ = document.getElementById('progressSlider').value;
+                                // Atualiza o valor do campo de entrada
+                                document.getElementById('status_servicos').value = progresServ;
+                            }
+                        </script>
+                    </div>
+                    {{----------------------------------------------------------------------}}
+                    <div class="form-group">
+                        <label for="imagem">Imagem:</label>
+                        <input type="file" class="form-control-file" id="imagem" name="imagem">
                     </div>
                     <script>
-                        function updateProgress() {
-                            // Obtém o valor do controle deslizante
-                            let progresServ = document.getElementById('progressSlider').value;
-                            // Atualiza o valor do campo de entrada
-                            document.getElementById('status_servicos').value = progresServ;
+                        function validateImageSize() {
+                            var input = document.getElementById('imagem');
+                            var fileSize = input.files[0].size; // Tamanho do arquivo em bytes
+                            var maxSize = 1024 * 1024; // Tamanho máximo permitido (1MB, por exemplo)
+
+                            if (fileSize < maxSize) {
+                                document.getElementById('error-message').innerText = 'A imagem deve ter no mínimo 1MB.';
+                                input.value = ''; // Limpa o campo de arquivo selecionado
+                            } else {
+                                document.getElementById('error-message').innerText = '';
+                            }
                         }
                     </script>
-                </div>
-                {{----------------------------------------------------------------------}}
-                <div class="form-group">
-                    <label for="imagem">Imagem:</label>
-                    <input type="file" class="form-control-file" id="imagem" name="imagem">
-                </div>
-                <script>
-                    function validateImageSize() {
-                        var input = document.getElementById('imagem');
-                        var fileSize = input.files[0].size; // Tamanho do arquivo em bytes
-                        var maxSize = 1024 * 1024; // Tamanho máximo permitido (1MB, por exemplo)
-
-                        if (fileSize < maxSize) {
-                            document.getElementById('error-message').innerText = 'A imagem deve ter no mínimo 1MB.';
-                            input.value = ''; // Limpa o campo de arquivo selecionado
-                        } else {
-                            document.getElementById('error-message').innerText = '';
-                        }
-                    }
-                </script>
             </div>
         </div>
         {{--Box 3--}}
@@ -482,6 +493,11 @@
 <script>
     function CadastraFormOs() {
         document.getElementById("frmCadOs").submit();
+        // Ao enviar o formulário, capturamos o conteúdo do div e passamos para o input oculto
+        var descricao = document.getElementById('descricao_os').innerHTML;
+        // Atribui ao input oculto
+        document.getElementById('descricao_input').value = descricao;
+
     }
 </script>
 <script>

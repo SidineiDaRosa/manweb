@@ -315,7 +315,7 @@ class HomeController extends Controller
         //  echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
         //}
         $produtos = Produto::all();
-        $assets = Equipamento::whereRaw('equipamento_pai = id')->get();
+        $assets = Equipamento::whereRaw('equipamento_pai = id')->orderBy('nome','asc')->get();
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento,
             'ordens_servicos' => $ordens_servicos,

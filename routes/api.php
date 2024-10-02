@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 use App\Http\Controllers\SolicitacaoOsController;
 
-Route::post('/solicitacao-os', [SolicitacaoOsController::class, 'store'])->name('solicitacao-os');//Rota que cadstra a solictação
+Route::post('/solicitacao-os', [SolicitacaoOsController::class, 'store'])->name('solicitacao-os');//Rota que cadastra a solictação
 
-Route::get('/employees', [SolicitacaoOsController::class, 'get_employee']);
-
+Route::get('/employees', [SolicitacaoOsController::class, 'get_employee']);//envia lista de funcionarios para app solictação os
+Route::get('/solicitacoes-os-abertas', [SolicitacaoOsController::class, 'cont_request_os_open']);// cont os 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
