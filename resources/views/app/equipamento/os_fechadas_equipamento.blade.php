@@ -31,6 +31,10 @@
                 font-weight: 500;
                 font-size: 25px;
                 text-transform: uppercase;
+                color:orchid;
+            }
+            .div-title-subtitle :hover{
+                color:red;
             }
 
             .div-title-subtitle-md {
@@ -45,12 +49,21 @@
                 font-weight: 300;
                 font-size: 18px;
             }
+
+            @media (max-width: 900px) {
+                .div-box-main {
+                    height: 300px;
+                }
+            }
         </style>
-        <div class="div-title-subtitle">{{$equipamento->nome}}</div>
+        <div class="div-title-subtitle"> <a href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">
+                {{$equipamento->nome}}
+            </a></div>
+
         @foreach($equipamento_filho as $equipamento_filho_f)
         <h4 hidden>{{$equipamento_filho_f->nome}}</h4>
         @endforeach
-        <div style="font-size: 20px; margin: 10px;">
+        <div class="div-box-main" style="font-size: 20px; margin: 10px;">
             @foreach($usuarios as $usuario_f)
             @endforeach
             @foreach($ordens_servicos as $ordens_servico)
@@ -81,7 +94,6 @@
                 @endforeach
             </div>
             <hr>
-
             @endforeach
         </div>
     </div>

@@ -327,3 +327,6 @@ Route::post('/solicitacao_os/{id}/aceitar', [SolicitacaoOsController::class, 'ac
 Route::post('/solicitacao_os/{id}/espera', [SolicitacaoOsController::class, 'espera'])->name('solicitacao_os.espera');
 Route::post('/solicitacao_os/{id}/recusar', [SolicitacaoOsController::class, 'recusar'])->name('solicitacao_os.recusar');
 Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->name('solicitacoes-os');
+//----------------------------------------------------------//
+//   USERS
+//

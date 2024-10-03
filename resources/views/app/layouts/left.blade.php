@@ -149,10 +149,18 @@
             <li class="nav-item">
                 <a href="{{ route('register') }}">
                     <i class="icofont-users mr-2 icofont-2x"></i>
-                    &nbspUsuários
+                    &nbsp Criar Usuários
                     <i class="icofont-caret-down icofont-2x"></i>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('register') }}">
+                    <i class="icofont-users mr-2 icofont-2x"></i>
+                    &nbspEditar Usuário
+                    <i class="icofont-caret-down icofont-2x"></i>
+                </a>
+            </li>
+
             @endif
             @endauth
 
