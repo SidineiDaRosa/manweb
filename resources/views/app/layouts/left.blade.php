@@ -46,7 +46,7 @@
                     <i class="icofont-caret-down icofont-2x"></i>
                 </a>
                 <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-dashboard">
-                    <a href="{{ route('dashboard.status.os') }}" class="title-menu">Painel de Visualização O.S.</a>
+                    <a href="{{ route('dashboard-status-os') }}" class="title-menu">Painel de Visualização O.S.</a>
                     <hr>
                     <a class="sidebar-submenu-expanded-a" href="{{ route('control-panel.index') }}">Painel de controle</a><br>
                     <hr>

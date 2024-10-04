@@ -40,6 +40,10 @@ Route::get('/site-panel', function () {
 Route::get('/configuracoes', function () {
     return view('site.configuracoes');
 })->name('site.configuracoes');
+//---------------------------------------------------------//
+//    Status Os
+//---------------------------------------------------------//
+Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])->name('dashboard-status-os');
 
 //Route::get('/', function () {
 //return view('auth.login');
@@ -312,10 +316,7 @@ Route::delete('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'dest
 //    QRcode equipamentos history
 //---------------------------------------------------------//
 Route::get('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets');
-//---------------------------------------------------------//
-//    Status Os
-//---------------------------------------------------------//
-Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])->name('dashboard.status.os');
+
 //---------------------------------------------------------//
 //    Criar solicitação de Os
 //---------------------------------------------------------//

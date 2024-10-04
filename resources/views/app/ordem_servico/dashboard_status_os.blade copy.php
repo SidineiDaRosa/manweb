@@ -1,26 +1,9 @@
-@extends('app.layouts.footer')
-
-</html>
-<meta charset="utf-8">
+@extends('app.layouts.app')
+@section('content')
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <meta http-equiv="refresh" content="60">
 <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="{{ asset('css/comum.css') }}">
-<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/template.css') }}">
-<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-<script src="{{ asset('js/date_time.js') }}"></script>{{--arquivo de atualização de datas e hora--}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<div style="display: flex; justify-content: center; text-align: center;">
-    <h4>Painel de Visualização de O.S.</h4>
-</div>
 <main class="content">
 
     {{--sinalizador pulsante verde--}}
@@ -147,13 +130,7 @@
             flex-wrap: wrap;
             justify-content: space-around;
             align-items: flex-start;
-            background-color: gray;
-            /* Cor cinza */
-            /* Cor dark */
-            color: inherit;
-            /* Preserva a cor do texto, caso seja definida */
-            mix-blend-mode: normal;
-            /* Altera a cor do texto para ser visível em fundos escuros */
+            background-color: #f2f2f2;
         }
 
         .item {
@@ -162,7 +139,7 @@
             height: 870px;
             margin: 5px;
             padding: 10px;
-            background-color: aliceblue;
+            background-color: white;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             overflow: auto;
@@ -178,6 +155,7 @@
             border-radius: 5px;
             padding: 5px;
         }
+
 
         @media (max-width: 900px) {
             .item {
@@ -462,6 +440,31 @@
             <div class="div-os-sm">
                 {{--div sm expan--}}
                 <style>
+                    /* estilização da div expandede*/
+                    .div-tuggle-row {
+                        font-size: 15px;
+                        font-weight: 300;
+                        font-family: 'Poppins', sans-serif;
+                        cursor: pointer;
+                    }
+
+                    .div-tuggle {
+                        display: flex;
+                        flex-direction: row;
+                    }
+
+                    .hr-sm-tuggle {
+                        margin-top: -4px;
+                        margin-bottom: -4px;
+                    }
+
+                    .div-sm-cabecalho {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        width: 100%;
+                    }
+
                     .div-font-sm-conteudo {
                         font-size: 14px !important;
                         font-weight: 300 !important;
@@ -619,6 +622,9 @@
             @if(isset($ordens_servicos_next))
             @foreach($ordens_servicos_next as $ordem_servico_next)
             <a href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}">
+                <span class="material-symbols-outlined">
+                    open_in_new
+                </span>
             </a> <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">{{$ordem_servico_next->id}}</span>
             <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">({{ \Carbon\Carbon::parse($ordem_servico_next->data_inicio)->locale('pt_BR')->Format('d/m/yy') }})</span>
             <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;font-weight:bold;">
@@ -633,8 +639,337 @@
 
         {{--fim do item 3--}}
     </div>
-  
+    </div>
+    <script>
+        //-------------------------------------------------------------------------------------------------------
+        function VerTabela() {
+            agruparNumerosIguais() //chama criar tabela
+            table1 = document.getElementById("tblOs");
+            let totalColumnsTbOs = (table1.rows.length);
 
+            for (var i = 1; i < table1.rows.length; i++) {
+                let equipamentoId =
+                    document.getElementById("tblOs").rows[i].cells[9].innerHTML;
+                //FunAjaxGetcontEquip()
+            };
+            if (i = totalColumnsTbOs) {}
+        }
+        //Funçoes em ajax
+        //$(document).ready(function()
+        function FunAjaxGetcontEquip(url, sidinei, sucessoCallback, erroCallback) {
+            let valorInput = $("#os1").val(); //pega o valor do input
+            let date1 = $("#date1").val(); //pega o valor do input
+            let date2 = $("#date2").val(); //pega o valor do input
+            var linha = $("#tblOs tr:eq(1)"); // Pega a segunda linha da tabela (índice 1)
+            var equipamentoId = linha.find("td:eq(8)").text(); // Pega o texto da segunda célula (índice 1) da linha
+            var dataInicio = linha.find("td:eq(1)").text(); // Pega o texto da terceira célula (índice 2) da linha
+            var dataFim = linha.find("td:eq(3)").text(); // Pega o texto da terceira célula (índice 2) da linha
+
+            // Exibe um alerta com os valores obtidos
+            alert("esta fução busca e conta registros de equipaento nesta data-Equipamento id: " + equipamentoId +
+                "Datas: " + date1 + '...' + date2);
+            $.ajax({
+
+                // url: "route('get-cont-os-equip'", // Substitua 'pagina.php' pelo URL da sua página de destino
+                type: "get", // Ou "GET" dependendo do tipo de requisição que você deseja fazer
+                data: {
+
+                    parametro1: date1,
+                    parametro2: date2,
+                    parametro3: equipamentoId
+                }, // Se necessário, envie parâmetros para a página de destino
+                success: function(response) {
+                    // Executa essa função quando a requisição for bem-sucedida
+                    alert("Requisição bem-sucedida! Resposta: " +
+                        response); // Mostra um alerta com a resposta da requisição
+                    document.getElementById('os1').value = response;
+                    // Alterando a cor de fundo do input
+                    $("#os1").css("background-color", "#ff0000");
+                },
+                error: function(xhr, status, error) {
+                    // Executa essa função se houver um erro na requisição
+                    // alert("Ocorreu um erro na requisição: " + xhr.responseText); // Mostra um alerta com a mensagem de erro
+                }
+            });
+        };
+    </script>
+
+    <script>
+        //Cria uma tabela que agrupa os registros iguais e conta quantos registros iguais.
+        function agruparNumerosIguais1() {
+            agruparNumerosIguais2() //chama para gerar a segunda tabela
+            var tabela = document.getElementById("tblOs");
+            var numeros = {};
+
+            for (var i = 1; i < tabela.rows.length; i++) {
+                var nome = tabela.rows[i].cells[8].innerHTML;
+                var numero = tabela.rows[i].cells[9].innerHTML;
+                if (!numeros[nome]) {
+                    numeros[nome] = {};
+                }
+                if (!numeros[nome][numero]) {
+                    numeros[nome][numero] = 1;
+                } else {
+                    numeros[nome][numero]++;
+                }
+            }
+            var tabelaAgrupada = document.getElementById("tabelaAgrupada");
+            var corpoTabelaAgrupada = document.getElementById("corpoTabelaAgrupada");
+            corpoTabelaAgrupada.innerHTML = "";
+
+            for (var nome in numeros) {
+                for (var numero in numeros[nome]) {
+                    var row = corpoTabelaAgrupada.insertRow();
+                    var cellNome = row.insertCell(0);
+                    var cellNumero = row.insertCell(1);
+                    var cellQuantidade = row.insertCell(2);
+                    cellNome.innerHTML = nome;
+                    cellNumero.innerHTML = numero;
+                    cellQuantidade.innerHTML = numeros[nome][numero];
+
+                }
+            }
+            // Criar gráfico de pizza
+            // Obter os dados da tabela
+            const table = document.getElementById('tabelaAgrupada');
+            const rows = table.getElementsByTagName('tr');
+            const data = {
+                labels: [],
+                values: []
+            };
+
+            // Iterar sobre as linhas da tabela e extrair os dados
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                data.labels.push(cells[0].innerText);
+                const value1 = parseInt(cells[0].innerText);
+                const value2 = parseInt(cells[2].innerText);
+                data.values.push(value1 + value2);
+            }
+            GeraGraficoPizza() //chama gerar gráfico pie chart google  após ter gerado a tebela agrupada
+            //GerarGráficoLinhas() //chama função para gerar gráfico de linhas após ter gerado a tabela agrupada
+        }
+        //Fim da função que gera tabela agrupada
+
+        //-----------------------------------------------------------------------------------//
+        //gera uma tabela agrupada que conta mostra quantidade de ordens por data------------//
+        function agruparNumerosIguais2() {
+            var tabela = document.getElementById("tblOs");
+            var numeros = {};
+
+            for (var i = 1; i < tabela.rows.length; i++) {
+                var nome = tabela.rows[i].cells[3].innerHTML;
+                var numero = tabela.rows[i].cells[3].innerHTML;
+                if (!numeros[nome]) {
+                    numeros[nome] = {};
+                }
+                if (!numeros[nome][numero]) {
+                    numeros[nome][numero] = 1;
+                } else {
+                    numeros[nome][numero]++;
+                }
+            }
+
+            var tabelaAgrupada = document.getElementById("tabelaAgrupada2");
+            var corpoTabelaAgrupada = document.getElementById("corpoTabelaAgrupada2");
+            corpoTabelaAgrupada.innerHTML = "";
+
+            for (var nome in numeros) {
+                for (var numero in numeros[nome]) {
+                    var row = corpoTabelaAgrupada.insertRow();
+                    var cellNome = row.insertCell(0);
+                    var cellNumero = row.insertCell(1);
+                    var cellQuantidade = row.insertCell(2);
+                    cellNome.innerHTML = nome;
+                    cellNumero.innerHTML = numero;
+                    cellQuantidade.innerHTML = numeros[nome][numero];
+
+                }
+            }
+            //GerarGráficoLinhas()
+            GeraGraficoLinhaQntOsData()
+        }
+        //fim gera uma tabela agrupada que conta mostra quantidade de ordens por data------------//
+        //-----------------------------------------------------------------------------------//
+        function GerarGráficoLinhas() {
+            // Extrai os dados da tabela HTML
+            const table = document.getElementById('tblOs');
+            const data = Array.from(table.querySelectorAll('tbody tr')).map(row => {
+                const cells = Array.from(row.cells);
+                return {
+                    data: cells[2].textContent,
+                    gasto: parseFloat(cells[1].textContent)
+                };
+            });
+            // Prepara os dados para o gráfico
+            const labels = data.map(item => item.data);
+            const dataset = {
+                label: 'Gasto',
+                data: data.map(item => item.gasto),
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
+            };
+
+            // Cria o gráfico de linhas
+            const ctx = document.getElementById('myChart2').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [dataset]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        //-------------------------------------------------------------------//
+        //Evento so executa após ter carregado todo os elementos do Dom
+        //-------------------------------------------------------------------//
+        document.addEventListener('DOMContentLoaded', (event) => {
+            agruparNumerosIguais1() //executa a função que gera uma tabela agrupada
+            // Extrai os dados da tabela HTML
+            //Gera um gráfico de barras apartir da biblioteca chart.js
+            const table = document.getElementById('tblOs');
+            const data = Array.from(table.querySelectorAll('tbody tr')).map(row => {
+                const cells = Array.from(row.cells);
+                return {
+                    data: cells[1].textContent,
+                    gasto: parseFloat(cells[16].textContent)
+                };
+            });
+
+            // Prepara os dados para o gráfico
+            const labels = data.map(item => item.data);
+            const dataset = {
+                label: 'Gasto',
+                data: data.map(item => item.gasto),
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
+            };
+
+            // Cria o gráfico de barras
+            const ctx = document.getElementById('myChart3').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar', // Altera o tipo de gráfico para barras
+                data: {
+                    labels: labels,
+                    datasets: [dataset]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            })
+        });
+    </script>
+    <!-- Importar a biblioteca do Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        //document.addEventListener("DOMContentLoaded", function() {
+        function GeraGraficoPizza() {
+            // Carregar a biblioteca de visualização e preparar para desenhar o gráfico
+            google.charts.load('current', {
+                'packages': ['corechart']
+            });
+            google.charts.setOnLoadCallback(desenharGrafico);
+
+            function desenharGrafico() {
+                // Obter os dados da tabela
+                var dadosTabela = [];
+                var table = document.getElementById('tabelaAgrupada');
+                var linhas = table.getElementsByTagName('tr');
+                for (var i = 1; i < linhas.length; i++) { // Começar do índice 1 para pular a linha de cabeçalho
+                    var celulas = linhas[i].getElementsByTagName('td');
+                    if (celulas.length === 3) {
+                        dadosTabela.push([celulas[0].textContent, parseFloat(celulas[2].textContent), parseFloat(celulas[1].textContent)]);
+                    }
+                }
+
+                // Criar e preencher a DataTable
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Total de O.S');
+                data.addColumn('number', 'Horas por Dia');
+                data.addColumn('number', 'Outro Valor'); // Adicionar um terceiro valor
+                data.addRows(dadosTabela);
+
+                // Configurar as opções do gráfico
+                var options = {
+                    title: 'Total de O.S',
+                    width: 500,
+                    height: 380,
+                    is3D: true,
+                    backgroundColor: 'darkgrey',
+                };
+
+                // Instanciar e desenhar o gráfico, passando os dados e opções
+                var chart = new google.visualization.PieChart(document.getElementById('graficoPizza'));
+                chart.draw(data, options);
+            }
+            // }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            max-width: 100%;
+            margin: 1px;
+        }
+    </style>
+    <script>
+        function GeraGraficoLinhaQntOsData() { //Gráfico gerado pelo google chart para contar os por periodo
+            const table = document.getElementById('tabelaAgrupada2');
+            const data = [];
+            for (let i = 1; i < table.rows.length; i++) {
+                const row = table.rows[i];
+                data.push({
+                    data: row.cells[0].textContent,
+                    quantidade: parseInt(row.cells[2].textContent)
+                });
+            }
+
+            // Extrair datas e quantidades da tabela
+            const dates = data.map(item => item.data);
+            const quantities = data.map(item => item.quantidade);
+
+            // Criar gráfico
+            const ctx = document.getElementById('myChart2').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: quantities,
+                        borderColor: 'rgba(0, 51, 102, 1)', // Azul escuro
+                        backgroundColor: 'rgba(0, 51, 102, 0.2)',
+                        cubicInterpolationMode: 'default',
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        }
+    </script>
 
     <style>
         table.condensed-table {
@@ -711,5 +1046,313 @@
             font-family: Arial, Helvetica, sans-serif;
         }
     </style>
+    <?php
+    $today = \Carbon\Carbon::now()->format('l'); // Obtém o nome do dia da semana atual
+    ?>
+    <!--  Ao clicar na div week-->
+    <style>
+        .item-week {
+            transition: all 0.3s ease-in-out;
+        }
 
+        .item-week.expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 999;
+            overflow: auto;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .item-week h4:hover {
+            background-color: greenyellow;
+            opacity: 0.5;
+            /* Define a opacidade corretamente */
+            cursor: pointer;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+            /* Suaviza tanto a cor de fundo quanto a opacidade */
+        }
+
+        .item-week h4 {
+            cursor: pointer;
+
+        }
+    </style>
+    <script>
+        function toggleExpand(boxId) {
+            const box = document.getElementById(boxId);
+
+            // Alterna entre as classes para expandir/recolher
+            box.classList.toggle('expanded');
+        }
+    </script>
+
+    <!------------------------------------------------------------->
+    <div class="container-month">
+        {{--Box 2--}}
+        <div class="item-week" id="box-2">
+            <h4 class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">Segunda-feira</h4>
+            <div class="orders">
+                @forelse ($mondayOrders as $order)
+                <div style="display:flex;">
+                    <div style="width:65%;">
+                        ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                        <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                        <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                    </div>
+                    <div style="width:35%; text-align: right;">
+                        <h6>{{ $order->equipamento->nome }} </h6>
+                    </div>
+                </div>
+                <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta nesta segunda-feira.
+                @endforelse
+            </div>
+        </div>
+
+        {{--Box 3 terça feira--}}
+        <div id="box-3" class="item-week">
+            <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-3')" title="Expandir/Recolher">Terça-feira</h4>
+            @forelse ($tuesdayOrders as $order)
+            <div style="display:flex;">
+                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                </div>
+                <div style="width:35%; text-align: right;">
+                    <h6>{{ $order->equipamento->nome }} </h6>
+                </div>
+            </div>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+            <hr style="color:green;margin:1px;">
+            @empty
+            Nenhuma ordem de serviço aberta nesta terça-feira.
+            @endforelse
+        </div>
+        {{--Box 4 Quarta-feira--}}
+        <div id="box-4" class="item-week">
+            <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-4')" title="Expandir/Recolher">Quarta-feira</h4>
+            @forelse ($wednesdayOrders as $order)
+            <div style="display:flex;">
+                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                </div>
+                <div style="width:35%; text-align: right;">
+                    <h6>{{ $order->equipamento->nome }} </h6>
+                </div>
+            </div>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+            <hr style="color:green;margin:1px;">
+            @empty
+            Nenhuma ordem de serviço aberta nesta quarta-feira.
+            @endforelse
+        </div>
+        {{--Box 5 Quinta-feira--}}
+        <div id="box-5" class="item-week">
+            <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-5')" title="Expandir/Recolher">Quinta-feira</h4>
+            @forelse ($thursdayOrders as $order)
+            <div style="display:flex;">
+                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                </div>
+                <div style="width:35%; text-align: right;">
+                    <h6>{{ $order->equipamento->nome }} </h6>
+                </div>
+            </div>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+            <hr style="color:green;margin:1px;">
+            @empty
+            Nenhuma ordem de serviço aberta nesta quinta-feira.
+            @endforelse
+        </div>
+        {{--Box 6 Sexta-feira--}}
+        <div id="box-6" class="item-week">
+            <h4 class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-6')" title="Expandir/Recolher">Sexta-feira</h4>
+
+            @forelse ($fridayOrders as $order)
+            <div style="display:flex;">
+                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                </div>
+                <div style="width:35%; text-align: right;">
+                    <h6>{{ $order->equipamento->nome }} </h6>
+                </div>
+            </div>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+            <hr style="color:green;margin:1px;">
+            @empty
+            Nenhuma ordem de serviço aberta nesta sexta-feira.
+            @endforelse
+        </div>
+        {{--Box 7 Sábado--}}
+        <div id="box-7" class="item-week">
+            <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-7')" title="Expandir/Recolher">Sábado</h4>
+            @forelse ($saturdayOrders as $order)
+            <div style="display:flex;">
+                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                </div>
+                <div style="width:35%; text-align: right;">
+                    <h6>{{ $order->equipamento->nome }} </h6>
+                </div>
+            </div>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+            <hr style="color:green;margin:1px;">
+            @empty
+            Nenhuma ordem de serviço aberta neste sábado.
+            @endforelse
+        </div>
+        {{--Box 1 Domingo--}}
+        <div id="box-1" class="item-week">
+            <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-1')" title="Expandir/Recolher">Domingo</h4>
+            @forelse ($sundayOrders as $order)
+            <div style="display:flex;">
+                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                </div>
+                <div style="width:35%; text-align: right;">
+                    <h6>{{ $order->equipamento->nome }} </h6>
+                </div>
+            </div>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
+            <hr style="color:green;margin:1px;">
+            @empty
+            Nenhuma ordem de serviço aberta neste domingo.
+            <hr>
+            @endforelse
+        </div>
+        {{--fim card--}}
+    </div>
+    {{--//----------------------------------------------------//---}}
+    {{--//- Calendário mensal---------------------------------//---}}
+    {{--//----------------------------------------------------//---}}
+    <style>
+        .container-month {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            /* Alinha os itens à esquerda */
+            align-items: flex-start;
+            background-color: white;
+        }
+
+        .item-month {
+            width: calc(14.28% - 20px);
+            height: 300px;
+            margin: 5px;
+            padding: 5px;
+            background-color: aliceblue;
+            overflow: auto;
+            /* Impede que o conteúdo transborde */
+        }
+    </style>
+
+    <div class="container-month" hidden>
+        {{-- Box 1 --}}
+        <div class="item-month">
+            <h4>1</h4>
+        </div>
+        <div class="item-month">
+            <h4>2</h4>
+        </div>
+        <div class="item-month">
+            <h4>3</h4>
+        </div>
+        <div class="item-month">
+            <h4>4</h4>
+        </div>
+        <div class="item-month">
+            <h4>5</h4>
+        </div>
+        <div class="item-month">
+            <h4>6</h4>
+        </div>
+        <div class="item-month">
+            <h4>7</h4>
+        </div>
+        <div class="item-month">
+            <h4>8</h4>
+        </div>
+        <div class="item-month">
+            <h4>9</h4>
+        </div>
+        <div class="item-month">
+            <h4>10</h4>
+        </div>
+        <div class="item-month">
+            <h4>11</h4>
+        </div>
+        <div class="item-month">
+            <h4>12</h4>
+        </div>
+        <div class="item-month">
+            <h4>13</h4>
+        </div>
+        <div class="item-month">
+            <h4>14</h4>
+        </div>
+        <div class="item-month">
+            <h4>15</h4>
+        </div>
+        <div class="item-month">
+            <h4>16</h4>
+        </div>
+        <div class="item-month">
+            <h4>17</h4>
+        </div>
+        <div class="item-month">
+            <h4>18</h4>
+        </div>
+        <div class="item-month">
+            <h4>19</h4>
+        </div>
+        <div class="item-month">
+            <h4>20</h4>
+        </div>
+        <div class="item-month">
+            <h4>21</h4>
+        </div>
+        <div class="item-month">
+            <h4>22</h4>
+        </div>
+        <div class="item-month">
+            <h4>23</h4>
+        </div>
+        <div class="item-month">
+            <h4>24</h4>
+        </div>
+        <div class="item-month">
+            <h4>25</h4>
+        </div>
+        <div class="item-month">
+            <h4>26</h4>
+        </div>
+        <div class="item-month">
+            <h4>27</h4>
+        </div>
+        <div class="item-month">
+            <h4>28</h4>
+        </div>
+        <div class="item-month">
+            <h4>29</h4>
+        </div>
+        <div class="item-month">
+            <h4>30</h4>
+        </div>
+        <div class="item-month">
+            <h4>31</h4>
+        </div>
+    </div>
+    @endsection
 </main>
