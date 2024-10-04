@@ -620,11 +620,10 @@
             @foreach($ordens_servicos_next as $ordem_servico_next)
             <a href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}">
             </a> <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">{{$ordem_servico_next->id}}</span>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">({{ \Carbon\Carbon::parse($ordem_servico_next->data_inicio)->locale('pt_BR')->Format('d/m/yy') }})</span>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">({{ \Carbon\Carbon::parse($ordem_servico_next->data_inicio)->format('d/m/Y') }})</span>
             <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;font-weight:bold;">
                 {{$ordem_servico_next->equipamento->nome}}</span>
             <br>
-
             <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$ordem_servico_next->descricao}}</span> <br>
             <hr style="margin:5px;">
             @endforeach
