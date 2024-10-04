@@ -31,10 +31,11 @@
                 font-weight: 500;
                 font-size: 25px;
                 text-transform: uppercase;
-                color:orchid;
+                color: orchid;
             }
-            .div-title-subtitle :hover{
-                color:red;
+
+            .div-title-subtitle :hover {
+                color: red;
             }
 
             .div-title-subtitle-md {
@@ -50,6 +51,14 @@
                 font-size: 18px;
             }
 
+            .txt-link {
+                color:cornflowerblue;
+                font-family:Arial, Helvetica, sans-serif;
+                font-size:18px;
+            }
+            .txt-link:hover{
+                color:red;
+            }
             @media (max-width: 900px) {
                 .div-box-main {
                     height: 300px;
@@ -59,7 +68,13 @@
         <div class="div-title-subtitle"> <a href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">
                 {{$equipamento->nome}}
             </a></div>
-
+        <a class="txt-link" href="{{$equipamento->anexo_1}}" target="_blank">
+            Documentos anexados, Manual
+        </a>
+        <p></p>
+        <a class="txt-link" href="{{$equipamento->anexo_2}}" target="_blank">
+            Documentos anexados, Diagrama elétrico
+        </a>
         @foreach($equipamento_filho as $equipamento_filho_f)
         <h4 hidden>{{$equipamento_filho_f->nome}}</h4>
         @endforeach

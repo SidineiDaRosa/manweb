@@ -14,7 +14,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <title>Gestão de Manutenção Fapolpa</title>
 </head>
 
@@ -23,7 +23,6 @@
         <div class="menu-toggle mx-3">
             <i class="icofont-navigation-menu"></i>
         </div>
-
         <div class="logo">
             <i class="icofont-architecture-alt icofont-2x wite"></i>
             <span class="font-wheight-light">Manutenção Fapolpa</span>
@@ -115,8 +114,6 @@
                     </span>
                     <i class="icofont-simple-down mx-2"></i>
             </div>
-
-
             <div class="dropdown-content">
                 <ul class="nav-item">
                     <li class="nav-item">
@@ -130,7 +127,6 @@
                     </li>
                 </ul>
             </div>
-
         </div>
-
     </header>
+ 
