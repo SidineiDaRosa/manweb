@@ -96,11 +96,18 @@
         <style>
             .img {
                 max-width: 100%;
-                max-height: 500px;
+                /* A largura da imagem será ajustada ao máximo da tela */
+                height: auto;
+                /* A altura será ajustada automaticamente para manter a proporção */
+                max-height: 100vh;
+                /* A altura máxima será o tamanho da tela (viewport height) */
             }
         </style>
+
         <hr>
-        <img id="img" src="{{ asset('img/request_os/' . $solicitacao->imagem) }}" alt="Imagem da Solicitação">
+
+        <!-- A imagem será ajustada para caber na tela e será dimensionada proporcionalmente -->
+        <img id="img" src="{{ asset('img/request_os/' . $solicitacao->imagem) }}" alt="Imagem da Solicitação" class="img">
     </div>
     <hr>
     @endforeach
