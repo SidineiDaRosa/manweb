@@ -115,7 +115,7 @@ class SolicitacaoOsController extends Controller
             $imagemUrl = asset('img/request_os/' . $solicitacao->imagem);
             $html .= "
     <p><strong>Imagem:</strong></p>
-    <img src='{$imagemUrl}' alt='Imagem da Solicitação' style='max-width: 400px;'>";
+    <img src='{$imagemUrl}' alt='Imagem da Solicitação' style='max-width: 500px;'>";
         }
 
         $html .= "</div>";
