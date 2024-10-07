@@ -484,7 +484,6 @@
             </div>
         </div>
         {{--fim card 3--}}
-
 </form>
 <button type="button" class="btn btn-outline-primary btn-bg" onclick="CadastraFormOs()" style="width:500px;">
     Cadastrar

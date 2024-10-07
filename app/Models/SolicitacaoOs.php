@@ -13,7 +13,8 @@ class SolicitacaoOs extends Model
         'datetime',
         'emissor',
         'descricao',
-        'status'
+        'status',
+        'imagem'
     ];
 
     public function funcionario()

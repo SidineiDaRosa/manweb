@@ -8,6 +8,8 @@ use App\Models\SolicitacaoOs;
 use App\Models\Funcionario;
 use App\Models\OrdemServico;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 use PhpParser\NodeVisitor\FirstFindingVisitor;
 
 class SolicitacaoOsController extends Controller
@@ -52,9 +54,10 @@ class SolicitacaoOsController extends Controller
     {
         // Valida os dados recebidos da requisição
         $validated = $request->validate([
-            'datetime' => 'required|date', //aqui date e time4
+            'datetime' => 'required|date',
             'emissor' => 'nullable|exists:funcionarios,id',
             'descricao' => 'required|string|max:300',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validação da imagem
         ]);
 
         // Define o valor padrão para 'status'
@@ -66,27 +69,59 @@ class SolicitacaoOsController extends Controller
         // Obtém o funcionário se o emissor estiver presente
         $funcionario = $validated['emissor'] ? Funcionario::find($validated['emissor']) : null;
 
-        // Obtém o último registro gravado
-        $ultimoRegistro = SolicitacaoOs::latest()->first();
+        // Manipula o upload da imagem
+        if ($request->hasFile('imagem')) {
+            // Obtém o arquivo
+            $imagem = $request->file('imagem');
 
+            // Verifica se o arquivo foi enviado e é válido
+            if ($imagem->isValid()) {
+                // Gera o nome da imagem com o número da solicitação anexado
+                $numeroSolicitacao = $solicitacao->id; // Usa o ID da solicitação criada
+                $imagemNome = $numeroSolicitacao . '_' . md5($imagem->getClientOriginalName() . strtotime("now")) . "." . $imagem->extension();
 
+                // Move a imagem para o diretório público com o nome gerado
+                $imagem->move(public_path('img/request_os'), $imagemNome);
+
+                // Atualiza o nome da imagem na solicitação
+                $solicitacao->imagem = $imagemNome;
+                $solicitacao->save();
+            }
+        }
+
+        // Formata a data e hora
         $dataHora = Carbon::parse($validated['datetime'])->format('d/m/Y H:i');
 
         $response = [
             'status' => 'Solicitação salva com sucesso!',
-            'ID' => $ultimoRegistro->id,
+            'ID' => $solicitacao->id,
             'Data Hora' => $dataHora,
             'Emissor' => $funcionario ? $funcionario->primeiro_nome : 'Não especificado',
             'Descrição' => $validated['descricao']
         ];
 
-        echo "<div style='width: 100%; word-wrap: break-word;font-size:30px;'>
-        <p><strong>Status:</strong> {$response['status']}</p>
-        <p><strong>ID:</strong> {$response['ID']}</p>
-        <p><strong>Data e Hora:</strong> {$response['Data Hora']}</p>
-        <p><strong>Emissor:</strong> {$response['Emissor']}</p>
-        <p style='word-wrap: break-word;'><strong>Descrição:</strong> {$response['Descrição']}</p>
-    </div>";
+        // Gera o HTML para exibição
+        $html = "
+<div style='width: 100%; word-wrap: break-word; font-size: 20px;font-family:Arial,sanserif;'>
+    <h3>Detalhes da Solicitação</h3>
+    <p><strong>Status:</strong> {$response['status']}</p>
+    <p><strong>ID:</strong> {$response['ID']}</p>
+    <p><strong>Data e Hora:</strong> {$response['Data Hora']}</p>
+    <p><strong>Emissor:</strong> {$response['Emissor']}</p>
+    <p style='word-wrap: break-word;'><strong>Descrição:</strong> {$response['Descrição']}</p>";
+
+        // Se houver uma imagem, adiciona ao HTML
+        if (!empty($solicitacao->imagem)) {
+            $imagemUrl = asset('img/request_os/' . $solicitacao->imagem);
+            $html .= "
+    <p><strong>Imagem:</strong></p>
+    <img src='{$imagemUrl}' alt='Imagem da Solicitação' style='max-width: 400px;'>";
+        }
+
+        $html .= "</div>";
+
+        // Retorna o HTML gerado
+        return $html;
     }
 
 
@@ -188,7 +223,7 @@ class SolicitacaoOsController extends Controller
 
         // Faz a busca das solicitações com base na data e hora
         $solicitacoes = SolicitacaoOs::where('datetime', '>=', $date)
-            ->where('datetime', '<=', $endDate)->where('status', $options)->orderBy('datetime','desc')
+            ->where('datetime', '<=', $endDate)->where('status', $options)->orderBy('datetime', 'desc')
             ->get();
 
         // Obtém todos os funcionários
@@ -200,11 +235,11 @@ class SolicitacaoOsController extends Controller
             'funcionarios' => $funcionarios
         ]);
     }
-    public function get_employee(){
-        $employee = Funcionario::where('funcao','supervisor')->get(); // Certifique-se de que o modelo Funcionario está correto
+    public function get_employee()
+    {
+        $employee = Funcionario::where('funcao', 'supervisor')->get(); // Certifique-se de que o modelo Funcionario está correto
         return response()->json($employee);
-        echo($employee);
-
+        echo ($employee);
     }
     public function cont_request_os_open()
     {

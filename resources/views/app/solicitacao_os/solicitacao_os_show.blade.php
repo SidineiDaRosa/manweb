@@ -47,7 +47,7 @@
         @endif
         @endforeach
         <div style="width: 60%; word-wrap: break-word;font-family:Arial, Helvetica, sans-serif">
-           <span style="font-family:Arial;font-weight:bold;">Descrição: </span> {!! nl2br(e($solicitacao->descricao)) !!}
+            <span style="font-family:Arial;font-weight:bold;">Descrição: </span> {!! nl2br(e($solicitacao->descricao)) !!}
         </div><br>
 
         <div style="
@@ -93,6 +93,14 @@
         <form id="recusar-form-{{ $solicitacao->id }}" action="{{ route('solicitacao_os.recusar', $solicitacao->id) }}" method="POST" style="display: none;">
             @csrf
         </form>
+        <style>
+            .img {
+                width:90%;
+                height:90%;
+            }
+        </style>
+        <hr>
+        <img id="img" src="{{ asset('img/request_os/' . $solicitacao->imagem) }}" alt="Imagem da Solicitação">
     </div>
     <hr>
     @endforeach
