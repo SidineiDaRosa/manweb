@@ -95,8 +95,8 @@
         </form>
         <style>
             .img {
-                width:80%;
-                height:80%;
+                max-width: 100%;
+                max-height: 500px;
             }
         </style>
         <hr>
