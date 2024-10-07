@@ -69,7 +69,7 @@
         </div>
 
 
-        <button type="submit" class="btn btn-primary" style="width: 30%;">Enviar solicitação</button>
+        <button type="submit" class="btn btn-primary" style="width: 50%;">Enviar solicitação</button>
     </form>
     <script>
         function previewImage(event) {
