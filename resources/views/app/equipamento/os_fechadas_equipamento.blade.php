@@ -69,11 +69,11 @@
                 {{$equipamento->nome}}
             </a></div>
         <a class="txt-link" href="{{$equipamento->anexo_1}}" target="_blank">
-            Documentos anexados, Manual
+            Documentos anexados, Manual, Digrama elétrico.
         </a>
         <p></p>
         <a class="txt-link" href="{{$equipamento->anexo_2}}" target="_blank">
-            Documentos anexados, Diagrama elétrico
+            Documentos anexados, Procedimentos de Manutenção
         </a>
         @foreach($equipamento_filho as $equipamento_filho_f)
         <h4 hidden>{{$equipamento_filho_f->nome}}</h4>
