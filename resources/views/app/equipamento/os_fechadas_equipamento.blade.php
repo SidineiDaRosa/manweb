@@ -52,16 +52,19 @@
             }
 
             .txt-link {
-                color:cornflowerblue;
-                font-family:Arial, Helvetica, sans-serif;
-                font-size:18px;
+                color: cornflowerblue;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 18px;
             }
-            .txt-link:hover{
-                color:red;
+
+            .txt-link:hover {
+                color: red;
             }
+
             @media (max-width: 900px) {
                 .div-box-main {
                     height: 300px;
+
                 }
             }
         </style>
@@ -85,7 +88,7 @@
             <div style=" border: 1px solid darkgrey;border-radius:5px;padding:10px;">
                 <span style="font-family: Arial, Helvetica, sans-serif;font-size:25px;">ID: {{$ordens_servico->id}}</span> <br>
                 <span style="color: green;font-family:Arial, Helvetica, sans-serif">Responsável: {{$ordens_servico->responsavel}}</span> <br>
-                <div>Data Fim: {{ \Carbon\Carbon::parse($ordens_servico->data_fim)->format('d/m/Y') }} às {{$ordens_servico->hora_fim}}</div>
+                <span style="color: blue;font-family:Arial, Helvetica, sans-serif">Data e hora: {{ \Carbon\Carbon::parse($ordens_servico->data_fim)->format('d/m/Y') }} às {{$ordens_servico->hora_fim}}</span>
                 <div style="color:darkblue;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
                     Descrição da solicitação:</div>
                 <div class="div-conteudo-md">
@@ -104,11 +107,12 @@
                 <span style="font-family:Arial, Helvetica, sans-serif">Executor: {{$servico_executado->funcionario->primeiro_nome}},
                     {{ \Carbon\Carbon::parse($servico_executado->data_inicio)->format('d/m/Y') }} às {{$servico_executado->hora_inicio}} <br>
                 </span>
-                <span style="font-family:Arial, Helvetica, sans-serif;font-size:16px;">{{$servico_executado->descricao}} </span><br>
+                <span style="font-family:Arial, Helvetica, sans-serif;font-size:16px; font-weight:300;">{{$servico_executado->descricao}} </span><br>
 
                 @endforeach
+                <div style="height:20px;background-color:green;"></div>
             </div>
-            <hr>
+
             @endforeach
         </div>
     </div>
