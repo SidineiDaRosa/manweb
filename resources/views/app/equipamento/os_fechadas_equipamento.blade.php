@@ -110,9 +110,9 @@
                 <span style="font-family:Arial, Helvetica, sans-serif;font-size:16px; font-weight:300;">{{$servico_executado->descricao}} </span><br>
 
                 @endforeach
-                <div style="height:20px;background-color:green;"></div>
-            </div>
 
+            </div>
+            <div style="height:20px;background-color:lightgreen;margin:5px;"></div>
             @endforeach
         </div>
     </div>
