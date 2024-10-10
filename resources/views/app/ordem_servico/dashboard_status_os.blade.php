@@ -69,7 +69,7 @@
                 </thead>
                 @foreach ($ordens_servicos as $ordem_servico)
                 <tbody>
-                    <tr>
+                    <tr style="border: solid 2px red;">
                         <td>{{ $ordem_servico->id }}</td>
                         <td hidden>{{ $ordem_servico->data_emissao }}</td>
                         <td hidden>{{ $ordem_servico->hora_emissao }}</td>
@@ -179,6 +179,15 @@
             padding: 5px;
         }
 
+        .scrollable {
+            border: 1px solid #ccc;
+            /* Borda do formulário */
+            padding: 10px;
+            /* Espaçamento interno */
+            border-radius: 5px;
+            /* Bordas arredondadas */
+        }
+
         @media (max-width: 900px) {
             .item {
                 width: 100%;
@@ -197,7 +206,7 @@
                     <table class="condensed-table">
                         <thead>
                             <tr>
-                                <th>#</th>
+
                                 <th>ID</th>
                                 <th>Finalização</th>
                                 <th>Descrição</th>
@@ -215,16 +224,11 @@
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
                             <tr>
-                                <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_fech->id])}}" hidden>
-                                        <span class="material-symbols-outlined">
-                                            open_in_new
-                                        </span>
-                                    </a>
-                                </td>
                                 <td>{{$ordens_servicos_fech->id}}</td>
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($ordens_servicos_fech->data_fim)->format('d/m/Y') }} {{$ordens_servicos_fech->hora_fim}}
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_fech->data_fim)->format('d/m/y') }} <br>
+
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_fech->hora_fim)->format('H:i') }}
                                 </td>
                                 <td>{{$ordens_servicos_fech->descricao}}</td>
                                 <td>{{$ordens_servicos_fech->equipamento->nome}}</td>
@@ -242,15 +246,14 @@
                     </table>
                 </div>
             </form>
-            <form action="" class="scrollable">
-                <h6 class="title-md">O.S VENCIDAS E PENDENTES </h6>
+            <form action="" class="scrollable" style="max-height:auto; overflow-y: auto;">
+                <h6 class="title-md">O.S VENCIDAS E PENDENTES</h6>
                 <div class="div-os-sm">
-                    <table class="condensed-table" style="background-color:rgb(251,170,153);">
+                    <table class="condensed-table" style="background-color:rgb(251,170,153); width: 100%; table-layout: fixed;">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>ID</th>
-                                <th>Finalização prevista</th>
+                                <th style="width:50px;">ID</th>
+                                <th style="width:90px;">Data e Hora</th>
                                 <th>Descrição</th>
                                 <th>Patrimônio</th>
 
@@ -261,40 +264,34 @@
                             @php
                             $dataPrevista = \Carbon\Carbon::parse($ordens_servicos_venc->data_fim);
                             $dataAtual = \Carbon\Carbon::today();
-                            $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
                             <tr>
-                                <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_venc->id])}}" hidden>
-                                        <span class="material-symbols-outlined">
-                                            open_in_new
-                                        </span>
-                                    </a>
-                                </td>
-                                <td>{{$ordens_servicos_venc->id}}</td>
+                                <td style="color: blue;">{{$ordens_servicos_venc->id}}</td>
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->data_fim)->format('d/m/Y') }} {{$ordens_servicos_venc->hora_fim}}
-
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->data_fim)->format('d/m/y') }} <br>
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->hora_fim)->format('H:i') }}
                                 </td>
-                                <td style="word-wrap: break-word; white-space: normal;border-right:10px;">
+                                <td style="word-wrap: break-word; white-space: normal; border-right: 10px;">
                                     {{$ordens_servicos_venc->descricao}}
                                 </td>
-                                <td>{{$ordens_servicos_venc->equipamento->nome}}</td>
-                                <td><img src="{{ asset('img/warning.png') }}" alt="" id="imgwarning"></td>
-                                <style>
-                                    #imgwarning {
-                                        height: 15;
-                                        width: 15;
-                                        background-color: darkgrey;
-
-                                    }
-                                </style>
+                                <td>{{$ordens_servicos_venc->equipamento->nome}}<img src="{{ asset('img/warning.png') }}" alt="" id="imgwarning" style="float: right;"> </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </form>
+
+            <style>
+                #imgwarning {
+                    height: 15px;
+                    /* Corrigido para incluir 'px' */
+                    width: 15px;
+                    /* Corrigido para incluir 'px' */
+                    background-color: darkgrey;
+                }
+            </style>
+
         </div>
         {{--Box 2--}}
         {{-- Satus de Tarefas iniciadas, pausadas, e em excução--}}
@@ -323,13 +320,11 @@
                     <table class="condensed-table">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>ID</th>
                                 <th>Previsão de fim</th>
                                 <th>Descrição</th>
                                 <th>Patrimônio</th>
                                 <th>Executante</th>
-                                <th></th>
 
                             </tr>
                         </thead>
@@ -342,16 +337,10 @@
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
                             <tr>
-                                <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_emandamento->id])}}" hidden>
-                                        <span class="material-symbols-outlined">
-                                            open_in_new
-                                        </span>
-                                    </a>
-                                </td>
                                 <td>{{$os_emandamento->id}}</td>
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/Y') }} {{$os_emandamento->hora_fim}}
+                                    {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/y') }} <br>
+                                    {{ \Carbon\Carbon::parse($os_emandamento->hora_fim)->format('m:i') }}
 
                                 </td>
                                 <td>{{$os_emandamento->descricao}}</td>
@@ -416,12 +405,12 @@
                                     </td>
                                     <td>{{$os_hoje->id}}</td>
                                     <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{$os_hoje->hora_inicio}}
+                                        {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
                                     </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }}
-                                        <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"> às </span>
-                                        {{$os_hoje->hora_fim}}
+                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }} <br>
+
+                                        {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td>{{$os_hoje->equipamento->nome}}</td>
