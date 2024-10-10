@@ -244,8 +244,8 @@
             </form>
             <form action="" class="scrollable">
                 <h6 class="title-md">O.S VENCIDAS E PENDENTES </h6>
-                <div class="div-os-sm" style="background-color:rgb(251,170,153);">
-                    <table class="condensed-table">
+                <div class="div-os-sm">
+                    <table class="condensed-table" style="background-color:rgb(251,170,153);">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -276,7 +276,9 @@
                                     {{ \Carbon\Carbon::parse($ordens_servicos_venc->data_fim)->format('d/m/Y') }} {{$ordens_servicos_venc->hora_fim}}
 
                                 </td>
-                                <td>{{$ordens_servicos_venc->descricao}}</td>
+                                <td style="word-wrap: break-word; white-space: normal;border-right:10px;">
+                                    {{$ordens_servicos_venc->descricao}}
+                                </td>
                                 <td>{{$ordens_servicos_venc->equipamento->nome}}</td>
                                 <td><img src="{{ asset('img/warning.png') }}" alt="" id="imgwarning"></td>
                                 <style>
@@ -463,7 +465,7 @@
                 {{--div sm expan--}}
                 <style>
                     .div-font-sm-conteudo {
-                        font-size: 14px !important;
+                        font-size: 20px !important;
                         font-weight: 300 !important;
                         font-family: 'Arial', sans-serif !important;
                         margin: 10px;
@@ -472,8 +474,8 @@
                     }
 
                     .title-md {
-                        font-family: 'Poppins', sans-serif !important;
-                        font-size: 18px !important;
+                        font-family: 'Arial', sans-serif !important;
+                        font-size: 25px !important;
                         font-weight: 300 !important;
                     }
                 </style>
@@ -632,7 +634,7 @@
 
         {{--fim do item 3--}}
     </div>
-  
+
 
 
     <style>
@@ -646,7 +648,7 @@
         table.condensed-table td {
             padding: 2px;
             /* Define o padding como 0 para as células */
-            font-size: 14px;
+            font-size: 20px;
             border-bottom: 1px solid rgb(255, 255, 200, 0.3);
             /* Adiciona uma borda inferior de 1px sólida cinza */
         }
