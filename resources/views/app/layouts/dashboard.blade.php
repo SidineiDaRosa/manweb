@@ -289,6 +289,7 @@
         </style>
         <div class="item">
             <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. EM EXECUÇÃO </h6>&nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
+            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('program_os')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Semana O.S</a> |
             <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Unidades</a> |
             <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Ativos/Nova O.S</a>
             <style>
