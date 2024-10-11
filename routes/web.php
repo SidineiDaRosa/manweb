@@ -88,7 +88,8 @@ Route::middleware('auth')->resource('/ordem-servico', 'App\Http\Controllers\Orde
 Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 'update'])->name('ordem_servico.update');
 //ordem de serviço rota de pesquisas
 Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
-
+// Programação de os e visualização semanal O.S.
+Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStatusOsController::class, 'programer_os']);
 //ordem de produção
 
 Route::middleware('auth')->resource('/ordem-producao', 'App\Http\Controllers\OrdemProducaoController');

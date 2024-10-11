@@ -23,7 +23,7 @@ use App\Models\Servicos_executado;
 
 class DahboardStatusOsController extends Controller
 {
-  /**
+    /**
      * Display a listing of the resource.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -373,5 +373,75 @@ class DahboardStatusOsController extends Controller
         return OrdemServico::whereBetween('data_inicio', [$dayStart, $dayEnd])
             ->where('situacao', 'aberto')
             ->get();
+    }
+    public function programer_os()
+    {
+        // Verificar resultados
+        // Variáveis para armazenar a contagem das ordens de serviço para cada dia
+        $today = Carbon::now()->startOfDay(); // Data de hoje, sem componentes de hora/minuto/segundo
+        // Define o fuso horário para São Paulo
+        $timezone = 'America/Sao_Paulo';
+        $ordens_servicos_next_day = OrdemServico::whereDate('data_inicio', $today->copy()->addDays(1))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+        $ordens_servicos_second_day = OrdemServico::whereDate('data_inicio', $today->copy()->addDays(2))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+        $ordens_servicos_third_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(3))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_fourth_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(4))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_fifth_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(5))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+
+        $ordens_servicos_sixth_day = OrdemServico::where('data_inicio', '=', $today->copy()->addDays(6))
+            ->where('situacao', 'aberto')
+            ->where('empresa_id', '<=', 2)
+            ->get();
+        //---------------------------------------------------//
+        //  Pega as os da semana                       //
+        //--------------------------------------------------//
+
+        // Obtém o início da semana atual
+        $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
+
+        // Variáveis para cada dia da semana
+        $mondayOrders = $this->getOrdersForDay($startOfWeek);
+        $tuesdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDay()->format('Y-m-d'));
+        $wednesdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(2)->format('Y-m-d'));
+        $thursdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(3)->format('Y-m-d'));
+        $fridayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(4)->format('Y-m-d'));
+        $saturdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(5)->format('Y-m-d'));
+        $sundayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(6)->format('Y-m-d'));
+        // ordem para cada semana  em 52 semanas
+        $ordens_servicos_por_semana = [];
+
+        for ($week = 1; $week <= 52; $week++) {
+            $ordens_servicos_por_semana[$week] = OrdemServico::whereRaw('WEEK(data_inicio, 1) = ?', [$week])
+                ->where('situacao', 'aberto')
+                ->where('empresa_id', '<=', 2)
+                ->get();
+        }
+
+        return view('app.ordem_servico.programer_os', [
+            'mondayOrders' => $mondayOrders,
+            'tuesdayOrders' => $tuesdayOrders,
+            'wednesdayOrders' => $wednesdayOrders,
+            'thursdayOrders' => $thursdayOrders,
+            'fridayOrders' => $fridayOrders,
+            'saturdayOrders' => $saturdayOrders,
+            'sundayOrders' => $sundayOrders,
+            'ordens_servicos_por_semana'=>$ordens_servicos_por_semana
+        ]);
     }
 }
