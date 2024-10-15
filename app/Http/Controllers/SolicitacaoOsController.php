@@ -57,7 +57,7 @@ class SolicitacaoOsController extends Controller
             'datetime' => 'required|date',
             'emissor' => 'nullable|exists:funcionarios,id',
             'descricao' => 'required|string|max:300',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validação da imagem
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // Validação da imagem com 10MB
         ]);
 
         // Define o valor padrão para 'status'

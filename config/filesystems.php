@@ -40,7 +40,7 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-            'timeout' => 150,  // 5 minutos
+            'timeout' => 150,  // 3 minutos
         ],
 
         's3' => [
