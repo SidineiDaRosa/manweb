@@ -27,7 +27,7 @@ class CreateProdutosTable extends Migration
             $table->integer('estoque_minimo')->nullable();
             $table->integer('estoque_ideal')->nullable();
             $table->integer('estoque_maximo')->nullable();
-            $table->string('link_peca',200)->after('estoque_maximo');
+            $table->string('link_peca',200)->nullable('estoque_maximo');
             $table->timestamps();
         });
     }

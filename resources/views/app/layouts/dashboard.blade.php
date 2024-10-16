@@ -82,7 +82,6 @@
                     </tr>
                 </tbody>
                 @endforeach
-
             </table>
         </div>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -288,10 +287,22 @@
             }
         </style>
         <div class="item">
-            <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. EM EXECUÇÃO </h6>&nbsp&nbsp&nbsp&nbsp<a class="sidebar-submenu-expanded-a" href="{{ route('ordem-servico.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Filtrar Ordens</a> |
-            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('program_os')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Semana O.S</a> |
-            <a class="sidebar-submenu-expanded-a" href="{{ route('empresas.index') }}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Unidades</a> |
-            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione nova ordem de serviço.">Ativos/Nova O.S</a>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. EM EXECUÇÃO</span> &nbsp&nbsp&nbsp&nbsp
+            <button class="btn btn-outline-primary btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('ordem-servico.index') }}'">
+                Filtrar O.S.
+            </button>
+            <button class="btn btn-outline-info btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('program_os') }}'">
+                Distribuição O.S.
+            </button>
+            <button class="btn btn-outline-dark btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('equipamento.index', ['empresa'=>2]) }}'">
+                Ativos/Nova O.S.
+            </button>
             <style>
                 #menu-ativos {
                     font-size: 50px;
@@ -681,13 +692,13 @@
         </div>
         {{--Box 4--}}
         <div class="item">
-            <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S FECHADA POR MÁQUINA</h6> <!-- Ajuste a margem superior conforme necessário -->
+            <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. FECHADA POR MÁQUINA</h6> <!-- Ajuste a margem superior conforme necessário -->
             <div id="graficoPizza" class="box" hidden></div>
             {{--//-------------------------------------------------//--}}
             {{--//--------------------------//--}}
             {{--//-------------------------------------------------//--}}
             @foreach($assets as $equipamentos)
-            <div style="display:flex; align-items:center; flex-direction:row;">
+            <div style="display:flex; align-items:center; flex-direction:row;font-family:Arial, Helvetica, sans-serif;">
                 {{$equipamentos->nome}}
                 <div style="flex-grow:1;"></div> <!-- Este div empurra o link para a direita -->
                 <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;" hidden>
@@ -711,10 +722,22 @@
         {{--Box que contém a lista de pedidos abertos--}}
         <div class="item">
             <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">PEDIDOS</span> &nbsp&nbsp&nbsp&nbsp
-            <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Pedidos de compra</a> |
-            <a id="menu-ativos" class="sidebar-submenu-expanded-a" href="{{route('equipamento.index', ['empresa'=>2])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;" title="Clique para abrir o ativo, e selecione novo pedido de compra.">Novo pedido de compra</a> |
-            <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.create', ['ordem_servico'=>0])}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Criar novo pedido de saída</a>
-            <hr>
+            <button class="btn btn-outline-primary btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('pedido-compra.index') }}'">
+                Pedidos de compra
+            </button>
+            <button class="btn btn-outline-info btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('equipamento.index', ['empresa'=>2]) }}'">
+                Novo Pedido de compra
+            </button>
+            <button class="btn btn-outline-dark btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('pedido-saida.create', ['ordem_servico'=>0]) }}'">
+                Novo Pedido de saída
+            </button>
+            <hr style="margin-bottom:2px;margin-top:2px;">
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">
                 <div class="card-body">
                     <div class="container">
@@ -723,6 +746,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>ID</th>
+
                                     <th>Emissão</th>
                                     <th>Previsão</th>
                                     <th>Destino</th>
@@ -856,9 +880,17 @@
         </style>
         <div class="item">
             <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">ESTOQUE ALMOXARIFADO</span>
-            <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Produtos</a> |
-            <a class="sidebar-submenu-expanded-a" href="{{route('Estoque-produto.index')}}" style="text-decoration: underline; font-size: 17px;vertical-align: middle;">Estoque de produtos</a>
-            <hr>
+            <button class="btn btn-outline-primary btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('produto.index') }}'">
+                Produtos
+            </button>
+            <button class="btn btn-outline-Success btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('Estoque-produto.index') }}'">
+                Estoque de produtos
+            </button>
+            <hr style="margin-bottom:2px;margin-top:2px;">
             <table class="condensed-table" id="tb_pedidos_compra" style="background-color: burlywood;">
                 <thead>
                     <tr>

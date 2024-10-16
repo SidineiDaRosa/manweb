@@ -16,16 +16,16 @@ class CreateEstoqueProdutosTable extends Migration
         Schema::create('estoque_produtos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('empresa_id');
-            $table->foreign('empresa_id')->references('id')->on('empresas');
+            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade'); // Adicionando onDelete
             $table->unsignedBigInteger('produto_id');
-            $table->foreign('produto_id')->references('id')->on('produtos');
-            $table->string('unidade_medida',10);
-            $table->double('quantidade', 8,2);//comprimento 8 com 2 digitos
-            $table->unsignedBigInteger('estoque_minimo')->after('valor');
-            $table->unsignedBigInteger('estoque_maximo')->after('estoque_minimo');
-            $table->string('local',10)->after('estoque_maximo');
+            $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('cascade'); // Adicionando onDelete
+            $table->string('unidade_medida', 10);
+            $table->double('quantidade', 8, 2); // Comprimento 8 com 2 dígitos decimais
+            $table->unsignedBigInteger('estoque_minimo');
+            $table->unsignedBigInteger('estoque_maximo');
+            $table->string('local', 10);
             $table->unsignedBigInteger('categoria_id');
-            $table->foreign('categoria_id')->references('id')->on('categorias');
+            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade'); // Adicionando onDelete
             $table->timestamps();
         });
     }
