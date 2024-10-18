@@ -14,6 +14,8 @@ use App\Http\Controllers\EquipamentoHistoryController;
 use App\Http\Controllers\DahboardStatusOsController;
 use App\Http\Controllers\UtilsController;
 use App\Http\Controllers\SolicitacaoOsController;
+use App\Http\Controllers\CheckListController;
+use App\Http\Controllers\CheckListExecutadoController;
 
 //use Illuminate\Support\Facades\Route;
 /*
@@ -203,6 +205,7 @@ Route::middleware('auth')->post('/peca-equpamento-filtro', [App\Http\Controllers
 
 use App\Http\Controllers\PecaEquipamentoController;
 use App\Models\PedidoCompraLista;
+
 Route::middleware(['auth'])->get('/peca-equipamento-editar/{peca_equipamento_id}', [PecaEquipamentoController::class, 'edit'])->name('Peca-equipamento-editar.edit');
 Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaEquipamentoController::class, 'update'])->name('Peca-equipamento.update');
 
@@ -330,5 +333,18 @@ Route::post('/solicitacao_os/{id}/espera', [SolicitacaoOsController::class, 'esp
 Route::post('/solicitacao_os/{id}/recusar', [SolicitacaoOsController::class, 'recusar'])->name('solicitacao_os.recusar');
 Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->name('solicitacoes-os');
 //----------------------------------------------------------//
-//   USERS
-//
+//   CHECK LIST                 
+//----------------------------------------------------------//
+
+Route::get('/check-list-index', [CheckListController::class, 'index'])->name('check-list-index');
+Route::post('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');
+Route::post('/check-list-save', [CheckListController::class, 'store'])->name('check-list-gravar');
+Route::post('/check-list/gravar', [CheckListController::class, 'store'])->name('check-list-gravar');
+Route::get('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');
+//----------------------------------------------------------//
+//   CHECK LIST  EXECUTADOS             
+//----------------------------------------------------------//
+Route::post('/check-list-cheked', [CheckListExecutadoController::class, 'store'])->name('check-list-executado');
+Route::get('/check-list-cheked-index', [CheckListExecutadoController::class, 'index'])->name('check-list-cheked-index');
+Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'executado'])->name('check-list-finalizado');
+

@@ -287,7 +287,7 @@
             }
         </style>
         <div class="item">
-            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. EM EXECUÇÃO</span> &nbsp&nbsp&nbsp&nbsp
+            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. EM EXECUÇÃO</span> &nbsp
             <button class="btn btn-outline-primary btn-sm"
                 style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
                 onclick="window.location.href='{{ route('ordem-servico.index') }}'">
@@ -302,6 +302,11 @@
                 style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
                 onclick="window.location.href='{{ route('equipamento.index', ['empresa'=>2]) }}'">
                 Ativos/Nova O.S.
+            </button>
+            <button class="btn btn-outline-primary btn-sm"
+                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                onclick="window.location.href='{{ route('check-list-index') }}'">
+                Check-List
             </button>
             <style>
                 #menu-ativos {

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Equipamento extends Model
 {
     use HasFactory;
-    protected $table='equipamentos';
-    protected $fillable =[
+    protected $table = 'equipamentos';
+    protected $fillable = [
         'nome',
         'descricao',
         'marca_id',
@@ -51,5 +51,9 @@ class Equipamento extends Model
     public function equipamentos()
     {
         return $this->belongsTo('App\Models\PecasEquipamentos');
+    }
+    public function checklists()
+    {
+        return $this->hasMany(CheckList::class, 'equipamento_id');
     }
 }

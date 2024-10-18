@@ -14,11 +14,13 @@ class CheckList extends Model
         'equipamento_id',
         'intervalo',
         'data_verificacao',
-        'hora_verificacao'
+        'hora_verificacao',
+        'natureza'
     ];
 
     public function executados()
     {
         return $this->hasMany(CheckListExecutado::class, 'checklist_id');
     }
+  
 }

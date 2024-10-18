@@ -4,7 +4,7 @@
     <main class="content">
         <div class="card">
             <div class="card-header pb-2">
-                <p class="mb-0">Produtos Fronecidos por cada fornecedor</p>
+                <p class="mb-0">Produtos Fronecidos por cada fornecedor individual</p>
 
             </div>
             <div class="card-header justify-content-left py-0">
