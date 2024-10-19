@@ -38,7 +38,7 @@
                     <select class="form-control" name="intervalo" id="intervalo" style="width: 250px;">
                         <option value="24">Diário</option>
                         <option value="168">Semanal</option>
-                        <option value="360" selected>Quinzenal</option> <!-- Define "360" como selecionado -->
+                        <option value="360">Quinzenal</option>
                         <option value="720">Mensal</option>
                     </select>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;"> Tipo:</span>
@@ -50,6 +50,7 @@
                 </div>
                 <hr>
                 <button type="submit" class="btn btn-primary">Adicionar Check-List</button>
+                <a href="{{ route('check-list-cheked-index',['equipamento_id'=>$equipamento->id]) }}" class="btn btn-dark">Iniciar Check-List</a>
                 <a href="{{ route('check-list-finalizado',['equipamento_id'=>$equipamento->id]) }}" class="btn btn-dark">Check-List Executado</a>
                 @endif
             </form>

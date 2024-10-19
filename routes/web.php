@@ -337,6 +337,8 @@ Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->n
 //----------------------------------------------------------//
 
 Route::get('/check-list-index', [CheckListController::class, 'index'])->name('check-list-index');
+//rota acessada pelos executante de check list
+Route::get('/check-list-index-executar', [CheckListController::class, 'executar'])->name('check-list-index-executar');
 Route::post('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');
 Route::post('/check-list-save', [CheckListController::class, 'store'])->name('check-list-gravar');
 Route::post('/check-list/gravar', [CheckListController::class, 'store'])->name('check-list-gravar');
@@ -347,4 +349,5 @@ Route::get('/check-list-show', [CheckListController::class, 'show'])->name('chec
 Route::post('/check-list-cheked', [CheckListExecutadoController::class, 'store'])->name('check-list-executado');
 Route::get('/check-list-cheked-index', [CheckListExecutadoController::class, 'index'])->name('check-list-cheked-index');
 Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'executado'])->name('check-list-finalizado');
+Route::get('/check-list-funcionario', [CheckListExecutadoController::class, 'funcionario'])->name('check-list-funcionario');
 

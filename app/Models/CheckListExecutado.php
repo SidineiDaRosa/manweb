@@ -17,7 +17,8 @@ class CheckListExecutado extends Model
         'temperatura',
         'vibracao',
         'data_verificacao',
-        'hora_verificacao'
+        'hora_verificacao',
+        'funcionario'
     ];
     public function checklist()
     {

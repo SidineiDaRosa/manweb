@@ -7,6 +7,7 @@ use App\Models\CheckListExecutado;
 use App\Models\Equipamento;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CheckList;
+use App\Models\Funcionario;
 use Carbon\Carbon; // Certifique-se de importar a classe Carbon
 
 class CheckListExecutadoController extends Controller
@@ -22,10 +23,13 @@ class CheckListExecutadoController extends Controller
         $equipamentos = Equipamento::all();
         $equipamento = Equipamento::find($request->equipamento_id);
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+        $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
+        $funcionario = $request->funcionario;
         return view('app.check_list.check_list_open', [
             'equipamentos' => $equipamentos,
             'equipamento' => $equipamento,
-            'check_list' => $check_list
+            'check_list' => $check_list,
+            'funcionario' => $funcionario
         ]);
     }
 
@@ -56,6 +60,7 @@ class CheckListExecutadoController extends Controller
             'observacao' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
             'temperatura' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
             'vibracao' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
+            'funcionario' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
             // 'data_verificacao' e 'hora_verificacao' não precisam ser validados, pois serão definidos automaticamente
         ]);
 
@@ -65,8 +70,9 @@ class CheckListExecutadoController extends Controller
         $checkListCheked->equipamento_id = $validated['equipamento_id']; // Salva o equipamento_id
         $checkListCheked->gravidade = $validated['gravidade']; // Salva a gravidade
         $checkListCheked->observacao = $validated['observacao'];
-        $checkListCheked->temperatura= $validated['temperatura'];
+        $checkListCheked->temperatura = $validated['temperatura'];
         $checkListCheked->vibracao = $validated['vibracao'];
+        $checkListCheked->funcionario = $validated['funcionario'];
 
         // Define a data e hora de verificação como a data/hora atual de São Paulo
         $checkListCheked->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString(); // Obtém apenas a data
@@ -82,7 +88,17 @@ class CheckListExecutadoController extends Controller
         }
         // dd($request->all()); // Isso mostrará todos os dados recebidos
         // Retorna uma resposta, pode ser um redirecionamento ou uma resposta JSON
-        return redirect()->back()->with('success', 'Checklist executado salvo com sucesso!');
+        //return redirect()->back()->with('success', 'Checklist executado salvo com sucesso!');
+        $equipamentos = Equipamento::all();
+        $equipamento = Equipamento::find($request->equipamento_id);
+        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+        $funcionario = $request->funcionario;
+        return view('app.check_list.check_list_open', [
+            'equipamentos' => $equipamentos,
+            'equipamento' => $equipamento,
+            'check_list' => $check_list,
+            'funcionario' => $funcionario
+        ]);
         // ou
         // return response()->json(['message' => 'Checklist executado salvo com sucesso!'], 201);
     }
@@ -144,6 +160,23 @@ class CheckListExecutadoController extends Controller
         return view('app.check_list.check_list_executado', [
             'equipamento' => $equipamento,
             'check_list_executado' => $check_list_executado
+        ]);
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function funcionario(Request $request)
+    {
+        //dd($request->all()); // Verifique se check_list_id é um número
+        $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
+        $equipamento = Equipamento::find($request->equipamento_id);
+      
+        return view('app.check_list.check_list_funcionario', [
+            'funcionarios' =>  $funcionarios,
+            'equipamento' => $equipamento
         ]);
     }
 }

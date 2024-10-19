@@ -77,7 +77,9 @@
         <p></p>
         <a class="txt-link" href="{{$equipamento->anexo_2}}" target="_blank">
             Documentos anexados, Procedimentos de Manutenção
-        </a>
+        </a> 
+        <p></p>
+        <a href="{{ route('check-list-funcionario',['equipamento_id'=>$equipamento->id]) }}" class="txt-link">Iniciar Check-List</a>
         @foreach($equipamento_filho as $equipamento_filho_f)
         <h4 hidden>{{$equipamento_filho_f->nome}}</h4>
         @endforeach

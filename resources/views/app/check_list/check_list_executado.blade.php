@@ -18,6 +18,9 @@
             <div calss="div-row" style="display:flex;flex-direction:row;">
                 <div style="margin-right:20px;width:30px;margin:2px;"> <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;">{{$check_list_executado_f->id}}</span></div>
                 <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_executado_f->observacao}}</span>
+                <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_executado_f->funcionario}}</span> <br>
+                <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">Temperatura:{{$check_list_executado_f->temperatura}}</span>
+                <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">Vibração:{{$check_list_executado_f->vibracao}}</span>
                 <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
                     {{$check_list_executado_f->data_verificacao}}
                 </span>
