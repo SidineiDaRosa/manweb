@@ -22,9 +22,10 @@ class CheckListExecutadoController extends Controller
         //
         $equipamentos = Equipamento::all();
         $equipamento = Equipamento::find($request->equipamento_id);
-        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza',$request->natureza)->get();
         $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
         $funcionario = $request->funcionario;
+        //dd($check_list->all());
         return view('app.check_list.check_list_open', [
             'equipamentos' => $equipamentos,
             'equipamento' => $equipamento,

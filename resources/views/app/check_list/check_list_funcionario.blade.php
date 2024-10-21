@@ -62,12 +62,18 @@
                 </option>
                 @endforeach
             </select>
+            <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;"> Tipo:</span>
+            <select class="form-control" name="natureza" id="Natureza" style="width: 300px;">
+                <option value="Elétrico">Elétrico</option>
+                <option value="Mecânico">Mecânico</option>
+                <option value="Civíl">Civíl</option>
+            </select>
         </div>
 
         <!-- Botão para enviar os dados (inicialmente escondido) -->
         <div class="mb-3" id="divEnviar" style="display: none;">
             <div class="mb-3" id="divIniciarCheckList" style="display: none;">
-              <button class="btn btn-dark" style="height:200px;width:300px" type="submit">Iniciar</button>
+                <button class="btn btn-dark" style="height:200px;width:300px" type="submit">Iniciar</button>
             </div>
         </div>
     </form>
@@ -87,7 +93,7 @@
             }
         }
     </script>
-  
+
     <script>
         $(document).ready(function() {
             // Exibir o modal ao carregar a página

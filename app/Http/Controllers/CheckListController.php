@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CheckList;
 use App\Models\Equipamento;
 use App\Models\CheckListExecutado;
+use Carbon\Carbon; // Certifique-se de importar a classe Carbon
 
 class CheckListController extends Controller
 {
@@ -18,6 +19,7 @@ class CheckListController extends Controller
     {
         //
         $check_list = CheckList::where('id', 0)->get();
+        
         // $check_list = CheckList::all();
 
         $equipamentos = Equipamento::all();
@@ -56,13 +58,17 @@ class CheckListController extends Controller
             //'data_verificacao' => 'required|date',
             //'hora_verificacao' => 'required|date_format:H:i',
         ]);
-
+        $data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString(); // Obtém apenas a data
+        $hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString(); // Obtém apenas a hora
         // Criação do checklist
         $checkList = CheckList::create([
             'descricao' => $request->descricao,
             'equipamento_id' => $request->equipamento_id,
             'intervalo' => $request->intervalo,
             'natureza' => $request->natureza,
+            'data_verificacao' =>$data_verificacao,
+            'hora_verificacao' => $hora_verificacao
+            
             // 'data_verificacao' => $request->data_verificacao,
             //  'hora_verificacao' => $request->hora_verificacao,
         ]);
@@ -96,7 +102,8 @@ class CheckListController extends Controller
         // return redirect()->back()->with('error', 'CheckList não encontrado.');
         // }
         $equipamentos = Equipamento::all();
-        $check_list = CheckList::where('equipamento_id', $equipamento_id)->get();
+        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+        dd($check_list->all());
         return view(
             'app.check_list.index',
             [
@@ -136,7 +143,7 @@ class CheckListController extends Controller
             'id' => 'required|integer|exists:check_list,id',
             'descricao' => 'required|string|max:255',
             'intervalo' => 'required|integer',
-            'natureza' => 'required|string',
+            'natureza' => 'required|string'
         ]);
 
         // Atualizando o check-list

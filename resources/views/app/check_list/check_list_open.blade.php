@@ -17,8 +17,7 @@
     <title>Check-List</title>
 </head>
 
-<body style="background-color:antiquewhite;">
-
+<body style="background-color:antiquewhite;height:auto;">
     <div>
         <div class="card-header pb-2">
             <h2 style="font-family: Arial, Helvetica, sans-serif;">Check-List</h2>
@@ -39,14 +38,15 @@
         <!-- JS do Bootstrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <div style="">
-            <div style="box-sizing: border-box; width: 100vw; height: 100vh; padding: 10px; overflow: hidden;">
+            <div style="box-sizing: border-box; width: 100vw; height:auto; padding: 10px; overflow: hidden;">
                 @if(isset($check_list))
                 @foreach($check_list as $check_list_f)
                 <div calss="div-row" style="display:flex;flex-direction:row;">
                     <div style="margin-right:20px;width:30px;margin:2px;"> <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;">{{$check_list_f->id}}</span></div>
                     <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_f->descricao}}</span>
+                    <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_f->natureza}}</span>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                        {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }}
+                        {{$check_list_f->data_verificacao}}
                     </span>
 
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
@@ -68,9 +68,7 @@
                     @endphp
 
                     <!-- Para depuração: exibe a diferença em horas -->
-
-
-                    @if ($horasDiferenca >= $intervaloVerificacao)
+                    @if (empty($check_list_f->data_verificacao) || $horasDiferenca >= $intervaloVerificacao)
                     <!-- Mostrar a imagem de "warning" se já tiver passado mais de 360 horas -->
                     <img style="height:30px; width:auto;" src="{{ asset('img/warning.png') }}" alt="Aviso">
                     @else
