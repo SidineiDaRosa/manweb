@@ -85,7 +85,7 @@
                         function DeletarEquipamento() {
                             var x;
                             var r = confirm("Deseja deletar o equipamento?");
-                            if (r == true) {
+                            if (r == true) {git 
 
                                 //document.getElementById('form_{{ $equipamento->id}}').submit()
                             } else {
