@@ -18,7 +18,7 @@ class CheckList extends Model
         'natureza'
     ];
 
-    public function executados()
+    public function check_list()
     {
         return $this->hasMany(CheckListExecutado::class, 'checklist_id');
     }

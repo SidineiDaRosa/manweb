@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CheckListExecutado extends Model
 {
     use HasFactory;
-    protected $table = 'checklist_executado';
+
+    protected $table = 'checklist_executado'; // Nome da tabela
+
     protected $fillable = [
         'check_list_id',
         'equipamento_id',
@@ -19,9 +21,11 @@ class CheckListExecutado extends Model
         'data_verificacao',
         'hora_verificacao',
         'funcionario'
-    ];
-    public function checklist()
+    ]; // Campos que podem ser preenchidos em massa (mass assignment)
+
+    // Definição do relacionamento belongsTo com a tabela CheckList
+    public function checkList()
     {
-        return $this->belongsTo(CheckList::class, 'checklist_id');
+        return $this->belongsTo(CheckList::class, 'check_list_id');//liga ao campo check_list_id
     }
 }

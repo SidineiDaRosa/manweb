@@ -25,7 +25,7 @@ class CheckListController extends Controller
         return view('app.check_list.index', [
             'equipamentos' => $equipamentos,
             'check_list' => $check_list,
-            '$equipamento'=>$equipamento
+            '$equipamento' => $equipamento
         ]);
     }
 
@@ -72,7 +72,7 @@ class CheckListController extends Controller
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
         $equipamento = Equipamento::find($request->equipamento_id);
-        
+
         return view(
             'app.check_list.index',
             [
@@ -112,11 +112,17 @@ class CheckListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
         //
+        $check_list = CheckList::find($request->check_list);
+        //dd($check_list)::all();
+        $equipamento = $check_list->equipamento_id;
+        return view('app.check_list.check_list_edit', [
+            'check_list' => $check_list,
+            'equipamento' => $equipamento
+        ]);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -124,10 +130,37 @@ class CheckListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request)
+    { // Validação dos dados recebidos
+        $request->validate([
+            'id' => 'required|integer|exists:check_list,id',
+            'descricao' => 'required|string|max:255',
+            'intervalo' => 'required|integer',
+            'natureza' => 'required|string',
+        ]);
+
+        // Atualizando o check-list
+        $checkList = CheckList::find($request->id);
+        $checkList->descricao = $request->descricao;
+        $checkList->intervalo = $request->intervalo;
+        $checkList->natureza = $request->natureza;
+        $checkList->save();
+
+        // Redirecionando de volta com uma mensagem de sucesso
+        $equipamentos = Equipamento::all();
+        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+        $equipamento = Equipamento::find($request->equipamento_id);
+
+        return view(
+            'app.check_list.index',
+            [
+                'equipamentos' => $equipamentos,
+                'equipamento' => $equipamento,
+                'check_list' => $check_list
+            ]
+        );
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -135,8 +168,15 @@ class CheckListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($check_list_id)
     {
-        //
+        $checklist = CheckList::find($check_list_id);
+
+        if ($checklist) {
+            $checklist->delete();
+            return response()->json(['message' => 'Checklist deletado com sucesso.'], 200);
+        }
+
+        return response()->json(['message' => 'Checklist não encontrado.'], 404);
     }
 }

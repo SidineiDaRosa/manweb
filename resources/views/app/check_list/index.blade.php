@@ -26,7 +26,7 @@
             </form>
             <br>
             <!-- Gravar um novo check list para o equipamento -->
-            <form action="{{ route('check-list-gravar') }}" method="POST">
+            <form id="form_store" action="{{ route('check-list-gravar') }}" method="POST">
                 @csrf
                 <div style="display: flex; flex-direction: row;">
                     @if(isset($equipamento))
@@ -66,34 +66,53 @@
                         <h5>Descrição: </h5>{{$check_list_f->descricao}}
                     </span>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                        <h5>Intervalo: </h5> {{$check_list_f->intervalo}}hs
+                        <h5>Natureza: </h5>{{$check_list_f->natureza}}
                     </span>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
+                        <h5>Intervalo: </h5> {{$check_list_f->intervalo}}hs
+                    </span>
+                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:30%;">
                         <h5>Data hora: </h5>
-                        {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }} as {{$check_list_f->hora_verificacao}}
+                        {{$check_list_f->data_verificacao}} as
+                         {{$check_list_f->hora_verificacao}}
                     </span>
                     <!-- operações de edição-->
-                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="">
+                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('check-list-edit',['check_list'=>$check_list_f->id])}}">
                         <i class="icofont-ui-edit"></i> </a>
-                    <form id="form_{{ $equipamento->id }}" method="post" action="{{ route('check-list-delete', ['check_list_id' => $check_list_f->id]) }}">
-                        @method('DELETE')
-                        @csrf
-                    </form>
-                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarEquipamento()">
-                        <i class="icofont-ui-delete"></i></a>
-                    <script>
-                        function DeletarEquipamento() {
-                            var x;
-                            var r = confirm("Deseja deletar o equipamento?");
-                            if (r == true) {git 
+                        <!--------------------------------------------------------------------------------->
+                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarEquipamento({{ $check_list_f->id }})">
+                        <i class="icofont-ui-delete"></i>
+                    </a>
 
-                                //document.getElementById('form_{{ $equipamento->id}}').submit()
-                            } else {
-                                x = "Você pressionou Cancelar!";
+                    <script>
+                        function DeletarEquipamento(checkListId) {
+                            var r = confirm("Deseja deletar o checklist com ID: " + checkListId + "?");
+                            if (r == true) {
+                                // Chamada AJAX para deletar o checklist
+                                fetch(`{{ url('check-list-delete') }}/${checkListId}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            alert("Checklist deletado com sucesso!");
+                                            // Atualize a página ou remova o item da lista, se necessário
+                                            location.reload(); // Por exemplo, recarregue a página
+                                        } else {
+                                            alert("Erro ao deletar o checklist.");
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Erro:', error);
+                                        alert("Ocorreu um erro ao deletar o checklist.");
+                                    });
                             }
-                            document.getElementById("demo").innerHTML = x;
                         }
                     </script>
+
 
                 </div>
                 <hr style="margin-top:2px;">
