@@ -24,6 +24,7 @@
                 <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
                     {{$check_list_executado_f->data_verificacao}}
                 </span>
+                
                 <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
                     {{ $check_list_executado_f->hora_verificacao }}
                 </span>

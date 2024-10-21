@@ -343,6 +343,7 @@ Route::post('/check-list-show', [CheckListController::class, 'show'])->name('che
 Route::post('/check-list-save', [CheckListController::class, 'store'])->name('check-list-gravar');
 Route::post('/check-list/gravar', [CheckListController::class, 'store'])->name('check-list-gravar');
 Route::get('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');
+Route::get('/check-list-delete', [CheckListController::class, 'destroy'])->name('check-list-delete');
 //----------------------------------------------------------//
 //   CHECK LIST  EXECUTADOS             
 //----------------------------------------------------------//

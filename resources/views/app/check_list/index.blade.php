@@ -54,20 +54,50 @@
                 @endif
             </form>
             <hr>
-            <div>
+            <div calss="div-row">
                 @if(isset($equipamento))
                 @if(isset($check_list))
                 @foreach($check_list as $check_list_f)
-                <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;">{{$check_list_f->id}}</span>
-                <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;">{{$check_list_f->descricao}}</span>
-                <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;">{{$check_list_f->intervalo}}</span>
-                <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                    {{$check_list_f->data_verificacao}}
-                </span>
-                <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                    {{$check_list_f->hora_verificacao}}
-                </span>
+                <div style="display:flex;flex-direction:row;">
+                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
+                        <h5> ID:</h5> {{$check_list_f->id}}
+                    </span>
+                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
+                        <h5>Descrição: </h5>{{$check_list_f->descricao}}
+                    </span>
+                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
+                        <h5>Intervalo: </h5> {{$check_list_f->intervalo}}hs
+                    </span>
+                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
+                        <h5>Data hora: </h5>
+                        {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }} as {{$check_list_f->hora_verificacao}}
+                    </span>
+                    <!-- operações de edição-->
+                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="">
+                        <i class="icofont-ui-edit"></i> </a>
+                    <form id="form_{{ $equipamento->id }}" method="post" action="{{ route('check-list-delete', ['check_list_id' => $check_list_f->id]) }}">
+                        @method('DELETE')
+                        @csrf
+                    </form>
+                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarEquipamento()">
+                        <i class="icofont-ui-delete"></i></a>
+                    <script>
+                        function DeletarEquipamento() {
+                            var x;
+                            var r = confirm("Deseja deletar o equipamento?");
+                            if (r == true) {
+
+                                //document.getElementById('form_{{ $equipamento->id}}').submit()
+                            } else {
+                                x = "Você pressionou Cancelar!";
+                            }
+                            document.getElementById("demo").innerHTML = x;
+                        }
+                    </script>
+
+                </div>
                 <hr style="margin-top:2px;">
+
                 @endforeach
                 @endif
                 @endif
