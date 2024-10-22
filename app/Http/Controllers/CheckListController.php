@@ -66,8 +66,8 @@ class CheckListController extends Controller
             'equipamento_id' => $request->equipamento_id,
             'intervalo' => $request->intervalo,
             'natureza' => $request->natureza,
-            'data_verificacao' =>$data_verificacao,
-            'hora_verificacao' => $hora_verificacao
+            //'data_verificacao' =>$data_verificacao,
+            //'hora_verificacao' => $hora_verificacao
             
             // 'data_verificacao' => $request->data_verificacao,
             //  'hora_verificacao' => $request->hora_verificacao,

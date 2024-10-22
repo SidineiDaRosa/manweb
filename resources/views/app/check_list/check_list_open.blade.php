@@ -140,35 +140,12 @@
                                             <div class="col-6 col-md-3">
                                                 <div id="div-gravissimo" class="gravidade-div" style="border: 2px solid red; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('gravissimo');">
                                                     <label class="form-check-label">Gravíssimo</label>
-                                                    <input type="checkbox" name="gravidade" id="ch-gravissimo" value="4" style="background-color:red;height:30px;width:30px;">
+                                                    <input type="checkbox" name="gravidade" id="ch-gravissimo" value="4" style="height:30px;width:30px;">
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <script>
-                                        function selectGravidade(selectedId) {
-                                            // Obter todos os checkboxes
-                                            const checkboxes = ['ch-baixo', 'ch-medio', 'ch-alto', 'ch-gravissimo'];
-
-                                            // Verificar se o checkbox selecionado já está marcado
-                                            const selectedCheckbox = document.getElementById(selectedId);
-                                            const alreadyChecked = selectedCheckbox.checked;
-
-                                            // Desmarcar todos os checkboxes
-                                            checkboxes.forEach(id => {
-                                                const checkbox = document.getElementById(id);
-                                                checkbox.checked = false; // Desmarcar todos
-                                            });
-
-                                            // Se não estava marcado, marque o checkbox selecionado
-                                            if (!alreadyChecked) {
-                                                selectedCheckbox.checked = true;
-                                            }
-                                        }
-
-                                    </script>
 
                                     <!-- Observações -->
                                     <div class="mb-3 mt-4">
