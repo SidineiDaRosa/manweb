@@ -34,6 +34,9 @@
                 <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">
                     <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkblue;">Vibração: </h6> {{$check_list_executado_f->vibracao}}
                 </span>
+                <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">
+                    <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkblue;">Vibração: </h6> {{$check_list_executado_f->gravidade}}
+                </span>
                 <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
                     <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkblue;">Data e hora: </h6> {{$check_list_executado_f->data_verificacao}} às {{ $check_list_executado_f->hora_verificacao }}
                 </span>

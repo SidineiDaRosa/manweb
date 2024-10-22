@@ -115,35 +115,60 @@
                                         <input type="number" id="vibracao" class="form-control" name="vibracao" value="">
                                     </div>
                                     <!-- Seção de Gravidade -->
+
                                     <div>
                                         <label class="form-label">Gravidade</label>
                                         <div class="row g-2">
                                             <div class="col-6 col-md-3">
-                                                <div class="form-check" style="border: 2px solid green; padding: 10px; border-radius: 5px;">
-                                                    <input class="form-check-input" type="radio" name="gravidade" id="gravidade-baixo" value="1" checked>
-                                                    <label class="form-check-label" for="gravidade-baixo">Baixo</label>
+                                                <div id="div-baixo" class="gravidade-div" style="border: 2px solid green; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('baixo');">
+                                                    <label class="form-check-label">Baixo</label>
+                                                    <input type="checkbox" name="gravidade" id="ch-baixo" value="1" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
                                             <div class="col-6 col-md-3">
-                                                <div class="form-check" style="border: 2px solid orange; padding: 10px; border-radius: 5px;">
-                                                    <input class="form-check-input" type="radio" name="gravidade" id="gravidade-medio" value="2">
-                                                    <label class="form-check-label" for="gravidade-medio">Médio</label>
+                                                <div id="div-medio" class="gravidade-div" style="border: 2px solid orange; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('medio');">
+                                                    <label class="form-check-label">Médio</label>
+                                                    <input type="checkbox" name="gravidade" id="ch-medio" value="2" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
                                             <div class="col-6 col-md-3">
-                                                <div class="form-check" style="border: 2px solid yellow; padding: 10px; border-radius: 5px;">
-                                                    <input class="form-check-input" type="radio" name="gravidade" id="gravidade-alto" value="3">
-                                                    <label class="form-check-label" for="gravidade-alto">Alto</label>
+                                                <div id="div-alto" class="gravidade-div" style="border: 2px solid yellow; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('alto');">
+                                                    <label class="form-check-label">Alto</label>
+                                                    <input type="checkbox" name="gravidade" id="ch-alto" value="3" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
                                             <div class="col-6 col-md-3">
-                                                <div class="form-check" style="background-color:red; color:white; border-radius: 5px; padding: 10px;">
-                                                    <input class="form-check-input" type="radio" name="gravidade" id="gravidade-gravissimo" value="4">
-                                                    <label class="form-check-label" for="gravidade-gravissimo">Gravíssimo</label>
+                                                <div id="div-gravissimo" class="gravidade-div" style="border: 2px solid red; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('gravissimo');">
+                                                    <label class="form-check-label">Gravíssimo</label>
+                                                    <input type="checkbox" name="gravidade" id="ch-gravissimo" value="4" style="background-color:red;height:30px;width:30px;">
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <script>
+                                        function selectGravidade(selectedId) {
+                                            // Obter todos os checkboxes
+                                            const checkboxes = ['ch-baixo', 'ch-medio', 'ch-alto', 'ch-gravissimo'];
+
+                                            // Verificar se o checkbox selecionado já está marcado
+                                            const selectedCheckbox = document.getElementById(selectedId);
+                                            const alreadyChecked = selectedCheckbox.checked;
+
+                                            // Desmarcar todos os checkboxes
+                                            checkboxes.forEach(id => {
+                                                const checkbox = document.getElementById(id);
+                                                checkbox.checked = false; // Desmarcar todos
+                                            });
+
+                                            // Se não estava marcado, marque o checkbox selecionado
+                                            if (!alreadyChecked) {
+                                                selectedCheckbox.checked = true;
+                                            }
+                                        }
+
+                                    </script>
 
                                     <!-- Observações -->
                                     <div class="mb-3 mt-4">
@@ -154,7 +179,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                         <!-- Adicionando o atributo 'form' para garantir que o botão submeta o formulário correto -->
-                                        <button type="submit" form="checkListForm-{{$check_list_f->id}}" class="btn btn-primary">Salvar</button>
+                                        <button type="submit" form="checkListForm-{{$check_list_f->id}}" class="btn btn-primary" onclick="validarFormulario()">Salvar</button>
                                     </div>
                                 </form>
                             </div>
