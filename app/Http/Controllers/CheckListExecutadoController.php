@@ -22,7 +22,7 @@ class CheckListExecutadoController extends Controller
         //
         $equipamentos = Equipamento::all();
         $equipamento = Equipamento::find($request->equipamento_id);
-        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza',$request->natureza)->get();
+        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
         $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
         $funcionario = $request->funcionario;
         //dd($check_list->all());
@@ -79,29 +79,49 @@ class CheckListExecutadoController extends Controller
         $checkListCheked->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString(); // Obtém apenas a data
         $checkListCheked->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString(); // Obtém apenas a hora
         // Salva os dados da verificação
-        $checkListCheked->save();
-        // Atualiza os dados da verificação
-        $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
-        if ($checkList) {
-            $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
-            $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
-            $checkList->save(); // Atualiza o registro existente no banco de dados
+        if ($request->input('gravidade') == 4) {
+            // Verifica se a observação é 'normal' e tem mais de 20 caracteres
+            $observacao = $request->input('observacao');
+
+            if (strlen($observacao) > 15) {
+                // Lógica quando a gravidade é 4 e a observação é 'normal' com mais de 15 caracteres
+                $checkListCheked->save();
+                $equipamentos = Equipamento::all();
+                $equipamento = Equipamento::find($request->equipamento_id);
+                $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+                $funcionario = $request->funcionario;
+                return view('app.check_list.check_list_open', [
+                    'equipamentos' => $equipamentos,
+                    'equipamento' => $equipamento,
+                    'check_list' => $check_list,
+                    'funcionario' => $funcionario
+                ]);
+            } else {
+                return response()->json(['message' => 'Checklist  não salvo, verifique os dados!'], 201);
+                
+            }
+        } else {
+            // Atualiza os dados da verificação
+            $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
+            if ($checkList) {
+                $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
+                $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
+                // Salva os dados da verificação
+                $checkList->save(); // Atualiza o registro existente no banco de dados
+            }
+            // dd($request->all()); // Isso mostrará todos os dados recebidos
+            //return redirect()->back()->with('success', 'Checklist executado salvo com sucesso!');
+            $equipamentos = Equipamento::all();
+            $equipamento = Equipamento::find($request->equipamento_id);
+            $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+            $funcionario = $request->funcionario;
+            return view('app.check_list.check_list_open', [
+                'equipamentos' => $equipamentos,
+                'equipamento' => $equipamento,
+                'check_list' => $check_list,
+                'funcionario' => $funcionario
+            ]);
         }
-        // dd($request->all()); // Isso mostrará todos os dados recebidos
-        // Retorna uma resposta, pode ser um redirecionamento ou uma resposta JSON
-        //return redirect()->back()->with('success', 'Checklist executado salvo com sucesso!');
-        $equipamentos = Equipamento::all();
-        $equipamento = Equipamento::find($request->equipamento_id);
-        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
-        $funcionario = $request->funcionario;
-        return view('app.check_list.check_list_open', [
-            'equipamentos' => $equipamentos,
-            'equipamento' => $equipamento,
-            'check_list' => $check_list,
-            'funcionario' => $funcionario
-        ]);
-        // ou
-        // return response()->json(['message' => 'Checklist executado salvo com sucesso!'], 201);
     }
 
     /**
@@ -174,7 +194,7 @@ class CheckListExecutadoController extends Controller
         //dd($request->all()); // Verifique se check_list_id é um número
         $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
         $equipamento = Equipamento::find($request->equipamento_id);
-      
+
         return view('app.check_list.check_list_funcionario', [
             'funcionarios' =>  $funcionarios,
             'equipamento' => $equipamento

@@ -118,30 +118,29 @@
 
                                     <div>
                                         <label class="form-label">Gravidade</label>
-                                        <div class="row g-2">
-                                            <div class="col-6 col-md-3">
-                                                <div id="div-baixo" class="gravidade-div" style="border: 2px solid green; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('baixo');">
+                                        <div class="row g-3">
+                                            <div class="col-5 col-md-3">
+                                                <div id="div-baixo" class="gravidade-div" style="border: 2px solid green; padding: 10px; border-radius: 5px; cursor: pointer;" >
                                                     <label class="form-check-label">Baixo</label>
                                                     <input type="checkbox" name="gravidade" id="ch-baixo" value="1" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
-                                            <div class="col-6 col-md-3">
-                                                <div id="div-medio" class="gravidade-div" style="border: 2px solid orange; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('medio');">
+                                            <div class="col-5 col-md-3">
+                                                <div id="div-medio" class="gravidade-div" style="border: 2px solid orange; padding: 10px; border-radius: 5px; cursor: pointer;" >
                                                     <label class="form-check-label">Médio</label>
                                                     <input type="checkbox" name="gravidade" id="ch-medio" value="2" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
-                                            <div class="col-6 col-md-3">
-                                                <div id="div-alto" class="gravidade-div" style="border: 2px solid yellow; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('alto');">
+                                            <div class="col-5 col-md-3">
+                                                <div id="div-alto" class="gravidade-div" style="border: 2px solid yellow; padding: 10px; border-radius: 5px; cursor: pointer;" >
                                                     <label class="form-check-label">Alto</label>
                                                     <input type="checkbox" name="gravidade" id="ch-alto" value="3" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
-                                            <div class="col-6 col-md-3">
-                                                <div id="div-gravissimo" class="gravidade-div" style="border: 2px solid red; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="selectGravidade('gravissimo');">
+                                            <div class="col-5 col-md-3">
+                                                <div id="div-gravissimo" class="gravidade-div" style="border: 2px solid red; padding: 10px; border-radius: 5px; cursor: pointer;" >
                                                     <label class="form-check-label">Gravíssimo</label>
                                                     <input type="checkbox" name="gravidade" id="ch-gravissimo" value="4" style="height:30px;width:30px;">
-
                                                 </div>
                                             </div>
                                         </div>
