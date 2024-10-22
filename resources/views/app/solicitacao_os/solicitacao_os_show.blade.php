@@ -4,6 +4,9 @@
 <main class="content">
     <div class="titulo-main">
         Solicitações de O.S
+        <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
+            <i class="icofont-dashboard"></i> dashboard
+        </a>
     </div>
     <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
         Entre:

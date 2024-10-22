@@ -8,9 +8,15 @@
             <h6> {{$equipamento->nome}}</h6>
             <button type="button" class="btn btn-outline-success open-modal-btn"
                 onclick="window.location.href='{{ route('check-list-index') }}'"
-                style="float:right">
+                style="float:right;margin-left:5px;">
                 Check-List índice
             </button>
+            <button type="button" class="btn btn-outline-success open-modal-btn"
+                onclick="window.location.href='{{ route('app.home') }}'"
+                style="float:right;margin-left:5px;">
+                Dashboard
+            </button>
+          
         </div>
         <div>
             @if(isset($check_list_executado))

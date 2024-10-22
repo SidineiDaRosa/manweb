@@ -4,7 +4,10 @@
 <main class="content">
     <div class="card">
         <div class="card-header pb-2">
-            <p class="mb-0">Check-List</p>
+            Check-List
+            <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
+                <i class="icofont-dashboard"></i> dashboard
+            </a>
         </div>
 
         <div class="card-header justify-content-left pt-1">
@@ -74,12 +77,12 @@
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:30%;">
                         <h5>Data hora: </h5>
                         {{$check_list_f->data_verificacao}} as
-                         {{$check_list_f->hora_verificacao}}
+                        {{$check_list_f->hora_verificacao}}
                     </span>
                     <!-- operações de edição-->
                     <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('check-list-edit',['check_list'=>$check_list_f->id])}}">
                         <i class="icofont-ui-edit"></i> </a>
-                        <!--------------------------------------------------------------------------------->
+                    <!--------------------------------------------------------------------------------->
                     <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarEquipamento({{ $check_list_f->id }})">
                         <i class="icofont-ui-delete"></i>
                     </a>
