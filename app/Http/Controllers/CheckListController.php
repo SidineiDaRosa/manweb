@@ -103,7 +103,7 @@ class CheckListController extends Controller
         // }
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
-        dd($check_list->all());
+       // dd($check_list->all());
         return view(
             'app.check_list.index',
             [
