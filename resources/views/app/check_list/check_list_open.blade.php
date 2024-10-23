@@ -36,14 +36,15 @@
             #back {
                 width: 400px;
                 height: 400px;
-                background-image:url('{{ asset("img/logo_fapolpa_1.jpeg") }}');  /* Usando asset() para o caminho da imagem */
+                background-image:url('{{ asset("img/logo_fapolpa_1.jpeg") }}');
+                /* Usando asset() para o caminho da imagem */
                 /* Caminho da imagem */
                 /* Ajusta o tamanho da imagem para cobrir a div */
                 background-position: center;
                 /* Centraliza a imagem */
                 background-repeat: no-repeat;
                 /* Evita repetição da imagem */
-                margin-top:20px;
+                margin-top: 20px;
             }
         </style>
         <!-- CSS do Bootstrap -->
@@ -51,8 +52,8 @@
 
         <!-- JS do Bootstrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <div >
-            <div id="back"  style="box-sizing: border-box; width: 100vw; height:auto; padding: 10px; overflow: hidden;">
+        <div>
+            <div id="back" style="box-sizing: border-box; width: 100vw; height:auto; padding: 10px; overflow: hidden;">
                 @if(isset($check_list))
                 @foreach($check_list as $check_list_f)
                 <div calss="div-row" style="display:flex;flex-direction:row;">
@@ -60,7 +61,8 @@
                     <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_f->descricao}}</span>
                     <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_f->natureza}}</span>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                        {{$check_list_f->data_verificacao}}
+                     
+                        {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }}
                     </span>
 
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
@@ -113,6 +115,7 @@
                                     <input type="hidden" name="check_list_id" value="{{$check_list_f->id}}">
                                     <input type="hidden" name="equipamento_id" value="{{$check_list_f->equipamento_id}}">
                                     <input type="text" name="funcionario" value="{{$funcionario}}" class="form-control" readonly>
+                                    <input type="text" name="natureza" value="{{$natureza}}" class="form-control" readonly>
                                     <!-- Descrição -->
                                     <div class="mb-3">
                                         <label for="descricao" class="form-label">Descrição</label>

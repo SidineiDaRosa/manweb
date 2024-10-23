@@ -30,7 +30,8 @@ class CheckListExecutadoController extends Controller
             'equipamentos' => $equipamentos,
             'equipamento' => $equipamento,
             'check_list' => $check_list,
-            'funcionario' => $funcionario
+            'funcionario' => $funcionario,
+            'natureza'=>$request->natureza
         ]);
     }
 
@@ -92,23 +93,29 @@ class CheckListExecutadoController extends Controller
                     $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
                     $checkList->save(); // Atualiza o registro existente no banco de dados
                 }
-                // Salva a execução do check-list
+                //-------------------------------------------------------------------------------------//
+                // Salva a execução do check-list atendenedo os critérios se Gravissímo for selecionado
+                //
                 $checkListCheked->save();
                 $equipamentos = Equipamento::all();
                 $equipamento = Equipamento::find($request->equipamento_id);
-                $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+               // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+                $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
                 $funcionario = $request->funcionario;
                 return view('app.check_list.check_list_open', [
                     'equipamentos' => $equipamentos,
                     'equipamento' => $equipamento,
                     'check_list' => $check_list,
-                    'funcionario' => $funcionario
+                    'funcionario' => $funcionario,
+                    'natureza'=>$request->natureza
                 ]);
             } else {
                 return response()->json(['message' => 'Checklist '.$checkListCheked->check_list_id .' não salvo, verifique os dados!'], 201);
             }
         } else {
-            // Atualiza a data da ultima verificação
+            //-------------------------------------------------------------------------------------//
+            // Atualiza a data da ultima verificação  diferente de gravissímo
+            //
             $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
             if ($checkList) {
                 $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
@@ -120,13 +127,15 @@ class CheckListExecutadoController extends Controller
             // dd($request->all()); // Isso mostrará todos os dados recebidos
             $equipamentos = Equipamento::all();
             $equipamento = Equipamento::find($request->equipamento_id);
-            $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+           // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+            $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
             $funcionario = $request->funcionario;
             return view('app.check_list.check_list_open', [
                 'equipamentos' => $equipamentos,
                 'equipamento' => $equipamento,
                 'check_list' => $check_list,
-                'funcionario' => $funcionario
+                'funcionario' => $funcionario,
+                'natureza'=>$request->natureza
             ]);
         }
     }
