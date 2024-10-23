@@ -22,7 +22,7 @@ class CheckListController extends Controller
         
         // $check_list = CheckList::all();
 
-        $equipamentos = Equipamento::all();
+        $equipamentos = Equipamento::orderBy('nome', 'asc')->get();
         $equipamento = Equipamento::find(0);
         return view('app.check_list.index', [
             'equipamentos' => $equipamentos,
