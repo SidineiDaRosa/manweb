@@ -32,13 +32,27 @@
             <h5>{{$equipamento->nome}}</h5>
             {{$funcionario}}
         </div>
+        <style>
+            #back {
+                width: 400px;
+                height: 400px;
+                background-image:url('{{ asset("img/logo_fapolpa_1.jpeg") }}');  /* Usando asset() para o caminho da imagem */
+                /* Caminho da imagem */
+                /* Ajusta o tamanho da imagem para cobrir a div */
+                background-position: center;
+                /* Centraliza a imagem */
+                background-repeat: no-repeat;
+                /* Evita repetição da imagem */
+                margin-top:20px;
+            }
+        </style>
         <!-- CSS do Bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- JS do Bootstrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <div style="">
-            <div style="box-sizing: border-box; width: 100vw; height:auto; padding: 10px; overflow: hidden;">
+        <div >
+            <div id="back"  style="box-sizing: border-box; width: 100vw; height:auto; padding: 10px; overflow: hidden;">
                 @if(isset($check_list))
                 @foreach($check_list as $check_list_f)
                 <div calss="div-row" style="display:flex;flex-direction:row;">
@@ -120,25 +134,25 @@
                                         <label class="form-label">Gravidade</label>
                                         <div class="row g-3">
                                             <div class="col-5 col-md-3">
-                                                <div id="div-baixo" class="gravidade-div" style="border: 2px solid green; padding: 10px; border-radius: 5px; cursor: pointer;" >
+                                                <div id="div-baixo" class="gravidade-div" style="border: 2px solid green; padding: 10px; border-radius: 5px; cursor: pointer;">
                                                     <label class="form-check-label">Baixo</label>
                                                     <input type="checkbox" name="gravidade" id="ch-baixo" value="1" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
                                             <div class="col-5 col-md-3">
-                                                <div id="div-medio" class="gravidade-div" style="border: 2px solid orange; padding: 10px; border-radius: 5px; cursor: pointer;" >
+                                                <div id="div-medio" class="gravidade-div" style="border: 2px solid orange; padding: 10px; border-radius: 5px; cursor: pointer;">
                                                     <label class="form-check-label">Médio</label>
                                                     <input type="checkbox" name="gravidade" id="ch-medio" value="2" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
                                             <div class="col-5 col-md-3">
-                                                <div id="div-alto" class="gravidade-div" style="border: 2px solid yellow; padding: 10px; border-radius: 5px; cursor: pointer;" >
+                                                <div id="div-alto" class="gravidade-div" style="border: 2px solid yellow; padding: 10px; border-radius: 5px; cursor: pointer;">
                                                     <label class="form-check-label">Alto</label>
                                                     <input type="checkbox" name="gravidade" id="ch-alto" value="3" style="height:30px;width:30px;">
                                                 </div>
                                             </div>
                                             <div class="col-5 col-md-3">
-                                                <div id="div-gravissimo" class="gravidade-div" style="border: 2px solid red; padding: 10px; border-radius: 5px; cursor: pointer;" >
+                                                <div id="div-gravissimo" class="gravidade-div" style="border: 2px solid red; padding: 10px; border-radius: 5px; cursor: pointer;">
                                                     <label class="form-check-label">Gravíssimo</label>
                                                     <input type="checkbox" name="gravidade" id="ch-gravissimo" value="4" style="height:30px;width:30px;">
                                                 </div>
