@@ -78,13 +78,21 @@ class CheckListExecutadoController extends Controller
         // Define a data e hora de verificação como a data/hora atual de São Paulo
         $checkListCheked->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString(); // Obtém apenas a data
         $checkListCheked->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString(); // Obtém apenas a hora
-        // Salva os dados da verificação
+        // Salva os dados da verificação se ==4  gravissimo
         if ($request->input('gravidade') == 4) {
             // Verifica se a observação é 'normal' e tem mais de 20 caracteres
             $observacao = $request->input('observacao');
-
+            // Lógica quando a gravidade é 4 e a observação é 'normal' com mais de 15 caracteres
             if (strlen($observacao) > 15) {
-                // Lógica quando a gravidade é 4 e a observação é 'normal' com mais de 15 caracteres
+                //-------------------------------------------------------------------------------//
+                // Atualiza a data da ultima verificação
+                $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
+                if ($checkList) {
+                    $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
+                    $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
+                    $checkList->save(); // Atualiza o registro existente no banco de dados
+                }
+                // Salva a execução do check-list
                 $checkListCheked->save();
                 $equipamentos = Equipamento::all();
                 $equipamento = Equipamento::find($request->equipamento_id);
@@ -97,20 +105,19 @@ class CheckListExecutadoController extends Controller
                     'funcionario' => $funcionario
                 ]);
             } else {
-                return response()->json(['message' => 'Checklist  não salvo, verifique os dados!'], 201);
-                
+                return response()->json(['message' => 'Checklist '.$checkListCheked->check_list_id .' não salvo, verifique os dados!'], 201);
             }
         } else {
-            // Atualiza os dados da verificação
+            // Atualiza a data da ultima verificação
             $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
             if ($checkList) {
                 $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
                 $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
-                // Salva os dados da verificação
                 $checkList->save(); // Atualiza o registro existente no banco de dados
             }
+            // Salva a execução do check-list
+            $checkListCheked->save();
             // dd($request->all()); // Isso mostrará todos os dados recebidos
-            //return redirect()->back()->with('success', 'Checklist executado salvo com sucesso!');
             $equipamentos = Equipamento::all();
             $equipamento = Equipamento::find($request->equipamento_id);
             $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
