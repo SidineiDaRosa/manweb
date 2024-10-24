@@ -4,7 +4,7 @@
 <main class="content">
     <div class="card">
         <div class="card-header pb-2">
-            Check-List
+            Check-List índice
             <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
                 <i class="icofont-dashboard"></i> dashboard
             </a>
@@ -62,7 +62,7 @@
                 @if(isset($check_list))
                 @foreach($check_list as $check_list_f)
                 <div style="display:flex;flex-direction:row;">
-                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
+                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:100px;">
                         <h5> ID:</h5> {{$check_list_f->id}}
                     </span>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
@@ -79,6 +79,29 @@
                         {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }}as
                         {{$check_list_f->hora_verificacao}}
                     </span>
+                    @php
+                    // Converte a data de verificação para um objeto DateTime (apenas a data, sem hora)
+                    $dataVerificacao = new DateTime($check_list_f->data_verificacao); // A data de verificação
+                    $dataAtual = new DateTime(); // Obtém a data atual
+
+                    // Calcula a diferença entre a data atual e a data de verificação
+                    $diferenca = $dataAtual->diff($dataVerificacao);
+
+                    // Converte a diferença total para horas (apenas usando dias)
+                    $horasDiferenca = ($diferenca->days * 24); // Converte os dias para horas
+
+                    // Defina o intervalo de verificação em horas (360hs no seu caso)
+                    $intervaloVerificacao = 25;
+                    @endphp
+
+                    <!-- Para depuração: exibe a diferença em horas -->
+                    @if (empty($check_list_f->data_verificacao) || $horasDiferenca >= $intervaloVerificacao)
+                    <!-- Mostrar a imagem de "warning" se já tiver passado mais de 360 horas -->
+                    <img style="height:30px; width:auto;" src="{{ asset('img/warning.png') }}" alt="Aviso">
+                    @else
+                    <!-- Mostrar a imagem de "check-mark" se a diferença for de 360 horas ou menos -->
+                    <img style="height:30px; width:auto;" src="{{ asset('img/check-mark.png') }}" alt="Checado">
+                    @endif
                     <!-- operações de edição-->
                     <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('check-list-edit',['check_list'=>$check_list_f->id])}}">
                         <i class="icofont-ui-edit"></i> </a>
