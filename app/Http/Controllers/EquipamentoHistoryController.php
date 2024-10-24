@@ -62,7 +62,7 @@ class EquipamentoHistoryController extends Controller
         $equipamento = Equipamento::find($asset_id);
         $ordens_servicos = OrdemServico::where('equipamento_id', $equipamento->id)->where('situacao', 'fechado')->orderBy('data_fim', 'desc')->get();
         $servicos_executados_colecao = collect(); // Cria uma coleção vazia para colocar os serviços
-        $usuarios = User::all(); // Obtém todos os usuários
+        $usuarios = User::all(); // Obtém todos os usuários da tabela
         $equipamento_filho = Equipamento::where('equipamento_pai', $equipamento->id)->get();
         foreach ($ordens_servicos as $ordem_servico) {
             $servicos_executados = Servicos_executado::where('ordem_servico_id', $ordem_servico->id)->get();
