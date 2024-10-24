@@ -294,8 +294,9 @@
             <ul>
                 @foreach($ordens as $ordem)
                 <li>
-                    ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem->id])}}" title="Click para abrir a O.S.">{{ $ordem->id }}</a>
-                    Data de Início: {{ $ordem->data_inicio }}, Situação: {{ $ordem->situacao }}
+                    <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem->id])}}" title="Click para abrir a O.S.">{{ $ordem->id }}</a>
+                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;">{{ \Carbon\Carbon::parse($ordem->data_inicio)->format('d/m/Y') }}</span> 
+                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:darkblue;">{{ $ordem->situacao }}</span> 
                 </li>
                 @endforeach
             </ul>
@@ -311,7 +312,7 @@
         }
 
         .item-52-week {
-            width: 150px;
+            width: 180px;
             height: 150px;
             margin: 2px;
             padding: 2px;
