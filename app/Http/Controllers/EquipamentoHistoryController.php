@@ -8,7 +8,7 @@ use App\Models\Equipamento;
 use App\Models\PecasEquipamentos;
 use App\Models\OrdemServico;
 use App\Models\Funcionario;
-use App\Models\user;
+use App\Models\User;
 use App\Models\Servicos_executado; //serviços executados
 use Illuminate\Support\Arr;
 use Picqer\Barcode\BarcodeGeneratorHTML;
