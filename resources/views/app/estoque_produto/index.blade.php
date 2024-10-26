@@ -108,7 +108,7 @@
                         <td>{{ $estoque_produto->id }}</td>
                         <td>
                             <a href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank"><span class="text-link" style="font-size:17px;;">
-                            {{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}
+                                    {{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}
                                 </span></a>
                         </td>
 
@@ -128,7 +128,7 @@
                             @foreach($produtos as $produto)
                             @endforeach
                             <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn-sm btn-success">
-                                <i class="icofont-database-add">Inserir Estoque</i>
+                                Inserir Estoque
                             </a>
                             {{--//-----------------------------------------//--}}
                             {{--// Cria automaticamente um pedido de compra//--}}

@@ -39,9 +39,7 @@ class EstoqueProdutoController extends Controller
                 //--------------------------------------------------------------//
                 $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)
                     ->where('produto_id', 'like', $nome_produto_like)
-                    ->orderByRaw('(CASE WHEN quantidade = 0 THEN 0 WHEN quantidade < estoque_minimo THEN 1 ELSE 2 END)')
                     ->orderBy('criticidade', 'asc')
-                    ->orderBy('es', 'desc')
                     ->get();
 
                 //dd($estoque_produtos);
@@ -73,12 +71,6 @@ class EstoqueProdutoController extends Controller
                     'categorias' => $categorias
                 ]);
             }
-            // if ($tipoFiltro == 10) {
-            // $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)->get();
-            //return view('app.estoque_produto.index', [
-            // 'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos
-            //]);
-            //}
 
         } else {
             $estoque_produtos = EstoqueProdutos::where('empresa_id', 0)->get();
