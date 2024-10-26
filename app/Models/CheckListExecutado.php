@@ -23,7 +23,8 @@ class CheckListExecutado extends Model
         'funcionario'
     ]; // Campos que podem ser preenchidos em massa (mass assignment)
 
-    // Definição do relacionamento belongsTo com a tabela CheckList
+    // Definição do relacionamento belongsTo com a tabela CheckList, sendo possível usar esta variaável
+    // dentro do blade   exemplo    {{$checklist_executado->$checkList->descricao}} onde descrição está na tabela check_list
     public function checkList()
     {
         return $this->belongsTo(CheckList::class, 'check_list_id');//liga ao campo check_list_id

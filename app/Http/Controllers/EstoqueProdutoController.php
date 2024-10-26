@@ -34,24 +34,43 @@ class EstoqueProdutoController extends Controller
 
         if ($empresa_id >= 1) {
             if ($tipoFiltro == 1) {
-
+                //--------------------------------------------------------------//
+                //  status geral do estoque tabela
+                //--------------------------------------------------------------//
                 $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)
                     ->where('produto_id', 'like', $nome_produto_like)
-                    ->orderBy('criticidade','desc')
+                    ->orderByRaw('(CASE WHEN quantidade = 0 THEN 0 WHEN quantidade < estoque_minimo THEN 1 ELSE 2 END)')
+                    ->orderBy('criticidade', 'asc')
+                    ->orderBy('es', 'desc')
                     ->get();
+
                 //dd($estoque_produtos);
                 return view('app.estoque_produto.index', [
-                    'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias
+                    'estoque_produtos' => $estoque_produtos,
+                    'empresas' => $empresas,
+                    'produtos' => $produtos,
+                    'categorias' => $categorias
                 ]);
             }
-
+            //--------------------------------------------------------------//
+            //  Busca estoque mínimo
+            //--------------------------------------------------------------//
             if ($tipoFiltro == 2) {
                 $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)
-                ->orderByRaw('(quantidade <= estoque_minimo) DESC')
-                ->orderBy('criticidade', 'desc')
-                ->get();
+                    ->orderByRaw('(CASE 
+                                    WHEN quantidade = 0 AND criticidade > 0 THEN 0  -- Prioriza estoque 0 com criticidade alta
+                                    WHEN quantidade <= estoque_minimo AND criticidade > 0 THEN 1  -- Em seguida, estoque baixo com criticidade alta
+                                    WHEN criticidade = 0 THEN 2  -- Por último, criticidade zero
+                                    ELSE 3  -- Todos os demais casos
+                                END)')
+                    ->orderBy('criticidade', 'desc') // Ordena criticidade em ordem decrescente
+                    ->orderBy('quantidade', 'desc') // E em seguida, pela quantidade em ordem decrescente
+                    ->get();
                 return view('app.estoque_produto.index', [
-                    'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias
+                    'estoque_produtos' => $estoque_produtos,
+                    'empresas' => $empresas,
+                    'produtos' => $produtos,
+                    'categorias' => $categorias
                 ]);
             }
             // if ($tipoFiltro == 10) {
@@ -64,7 +83,10 @@ class EstoqueProdutoController extends Controller
         } else {
             $estoque_produtos = EstoqueProdutos::where('empresa_id', 0)->get();
             return view('app.estoque_produto.index', [
-                'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias
+                'estoque_produtos' => $estoque_produtos,
+                'empresas' => $empresas,
+                'produtos' => $produtos,
+                'categorias' => $categorias
             ]);
         }
     }
@@ -214,7 +236,10 @@ class EstoqueProdutoController extends Controller
         $estoque_produtos = EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
         $categorias = Categoria::all();
         return view('app.estoque_produto.index', [
-            'estoque_produtos' => $estoque_produtos, 'empresas' => $empresa, 'produtos' => $produto, 'categorias' => $categorias
+            'estoque_produtos' => $estoque_produtos,
+            'empresas' => $empresa,
+            'produtos' => $produto,
+            'categorias' => $categorias
         ]);
     }
 

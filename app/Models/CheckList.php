@@ -20,7 +20,7 @@ class CheckList extends Model
 
     public function check_list()
     {
-        return $this->hasMany(CheckListExecutado::class, 'checklist_id');
+        return $this->hasMany(CheckListExecutado::class, 'checklist_id');//
     }
   
 }

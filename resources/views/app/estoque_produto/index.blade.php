@@ -4,10 +4,7 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div> Lista do estoque de produtos
-                <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
-                </a>
+            <div> <span style="font-family:Arial, Helvetica, sans-serif">Lista do estoque de produtos</span>
             </div>
 
             <form id="formSearchingProducts" action="{{'Estoque-Produtos-filtro'}}" method="POST" style="margin-right:10%;">
@@ -78,28 +75,31 @@
                 </button>
 
             </form>
-            <div>
-                <a href="{{ route('produto.index') }}" class="btn btn-sm btn-primary">
+            <div> <a href="{{ route('produto.index') }}" class="btn btn-sm btn-primary">
                     Lista de produtos
                 </a>
             </div>
+            <div> <a class="btn btn-sm btn-outline-dark mb-1" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> dashboard
+                </a></div>
+
         </div>
         <div class="card-body">
             {{--Table stock os products searching--}}
-            <table class="table-template table-striped table-hover table-bordered">
+            <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th scope="col" class="th-title">Estoque_Id</th>
-                        <th scope="col" class="th-title">Produto</th>
-                        <th scope="col" class="th-title">Unid</th>
-                        <th scope="col" class="th-title">Quantidade</th>
-                        <th scope="col" class="th-title">Valor</th>
-                        <th scope="col" class="th-title">Estoque Minimo</th>
-                        <th scope="col" class="th-title">Estoque Máximo</th>
-                        <th scope="col" class="th-title">Local</th>
-                        <th scope="col" class="th-title">Criticidade</th>
-                        <th scope="col" class="th-title">Empresa</th>
-                        <th scope="col" class="th-title">Operações</th>
+                        <th>Estoque_Id</th>
+                        <th>Produto</th>
+                        <th>Unid</th>
+                        <th>Quantidade</th>
+                        <th>Valor</th>
+                        <th>Estoque Minimo</th>
+                        <th>Estoque Máximo</th>
+                        <th>Local</th>
+                        <th>Criticidade</th>
+                        <th>Empresa</th>
+                        <th>Operações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,8 +107,8 @@
                     <tr>
                         <td>{{ $estoque_produto->id }}</td>
                         <td>
-                            <a href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank">{{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}<span class="material-symbols-outlined">
-                                    open_in_new
+                            <a href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank"><span class="text-link" style="font-size:17px;;">
+                            {{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}
                                 </span></a>
                         </td>
 
