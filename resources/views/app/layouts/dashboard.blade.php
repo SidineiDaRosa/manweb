@@ -174,7 +174,6 @@
                     <table class="condensed-table">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>ID</th>
                                 <th>Finalização</th>
                                 <th>Descrição</th>
@@ -193,15 +192,14 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_fech->id])}}">
-                                        <span class="material-symbols-outlined">
-                                            open_in_new
-                                        </span>
+                                    <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_fech->id])}}">
+                                        {{$ordens_servicos_fech->id}}
                                     </a>
                                 </td>
-                                <td>{{$ordens_servicos_fech->id}}</td>
+
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($ordens_servicos_fech->data_fim)->format('d/m/Y') }} {{$ordens_servicos_fech->hora_fim}}
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_fech->data_fim)->format('d/m/y')}}
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_fech->hora_fim)->format('H:i') }}
                                 </td>
                                 <td>{{$ordens_servicos_fech->descricao}}</td>
                                 <td>{{$ordens_servicos_fech->equipamento->nome}}</td>
@@ -225,7 +223,7 @@
                     <table class="condensed-table">
                         <thead>
                             <tr>
-                                <th>#</th>
+                            
                                 <th>ID</th>
                                 <th>Finalização prevista</th>
                                 <th>Descrição</th>
@@ -241,17 +239,13 @@
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
                             <tr>
-                                <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_venc->id])}}">
-                                        <span class="material-symbols-outlined">
-                                            open_in_new
-                                        </span>
-                                    </a>
-                                </td>
-                                <td>{{$ordens_servicos_venc->id}}</td>
+                              
+                                <td>   <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_venc->id])}}">
+                                    {{$ordens_servicos_venc->id}}
+                                    </a></td>
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->data_fim)->format('d/m/Y') }} {{$ordens_servicos_venc->hora_fim}}
-
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->data_fim)->format('d/m/y') }}
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->hora_fim)->format('h:i') }} 
                                 </td>
                                 <td>{{$ordens_servicos_venc->descricao}}</td>
                                 <td>{{$ordens_servicos_venc->equipamento->nome}}</td>
@@ -318,7 +312,6 @@
                     <table class="condensed-table">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>ID</th>
                                 <th>Previsão de fim</th>
                                 <th>Descrição</th>
@@ -338,15 +331,13 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_emandamento->id])}}">
-                                        <span class="material-symbols-outlined">
-                                            open_in_new
-                                        </span>
+                                    <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_emandamento->id])}}">
+                                        {{$os_emandamento->id}}
                                     </a>
                                 </td>
-                                <td>{{$os_emandamento->id}}</td>
+
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/Y') }} {{$os_emandamento->hora_fim}}
+                                    {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/y') }} {{ \Carbon\Carbon::parse($os_emandamento->hora_fim)->format('H:i') }}
 
                                 </td>
                                 <td>{{$os_emandamento->descricao}}</td>
@@ -383,7 +374,6 @@
                         <table class="condensed-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>ID</th>
                                     <th>Previsão de início</th>
                                     <th>Previsão de fim</th>
@@ -402,18 +392,17 @@
                                 @endphp
                                 <tr>
                                     <td>
-                                        <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
-                                            <span class="material-symbols-outlined">
-                                                open_in_new
-                                            </span>
+                                        <a  style="font-size: 17px;"  href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
+                                        {{$os_hoje->id}}
                                         </a>
                                     </td>
-                                    <td>{{$os_hoje->id}}</td>
+                                
                                     <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{$os_hoje->hora_inicio}}
+                                    {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
+                                     
                                     </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/Y') }}
+                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
                                         <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"> às </span>
                                         {{$os_hoje->hora_fim}}
                                     </td>
