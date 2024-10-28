@@ -297,11 +297,6 @@
                 onclick="window.location.href='{{ route('equipamento.index', ['empresa'=>2]) }}'">
                 Ativos/Nova O.S.
             </button>
-            <button class="btn btn-outline-primary btn-sm"
-                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                onclick="window.location.href='{{ route('check-list-index') }}'">
-                Check-List
-            </button>
             <style>
                 #menu-ativos {
                     font-size: 50px;

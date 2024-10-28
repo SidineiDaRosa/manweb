@@ -61,12 +61,13 @@
                     <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_f->descricao}}</span>
                     <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">{{$check_list_f->natureza}}</span>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                     
+                        @if(!empty($check_list_f->data_verificacao))
                         {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }}
+                        @endif
                     </span>
 
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                        {{ $check_list_f->hora_verificacao }}
+                        {{$check_list_f->hora_verificacao}}
                     </span>
                     @php
                     // Converte a data de verificação para um objeto DateTime (apenas a data, sem hora)
@@ -80,7 +81,7 @@
                     $horasDiferenca = ($diferenca->days * 24); // Converte os dias para horas
 
                     // Defina o intervalo de verificação em horas (360hs no seu caso)
-                    $intervaloVerificacao = 25;
+                    $intervaloVerificacao = 360;
                     @endphp
 
                     <!-- Para depuração: exibe a diferença em horas -->

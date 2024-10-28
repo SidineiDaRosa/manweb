@@ -91,7 +91,7 @@
                     $horasDiferenca = ($diferenca->days * 24); // Converte os dias para horas
 
                     // Defina o intervalo de verificação em horas (360hs no seu caso)
-                    $intervaloVerificacao = 25;
+                    $intervaloVerificacao = 360;
                     @endphp
 
                     <!-- Para depuração: exibe a diferença em horas -->

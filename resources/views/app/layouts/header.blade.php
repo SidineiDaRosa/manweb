@@ -28,21 +28,29 @@
             <span class="font-wheight-light">Manutenção Fapolpa</span>
         </div>
         <div class="spacer"></div>
-        <!-- HTML -->
+        <!-- Notificação de Check list -->
+        <!-- Notificação de Check list -->
+        <div class="dropdown" id="checklist-count">
+            <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: white;">
+                Check-list
+            </a>&nbsp&nbsp
+            <span style="margin-top:-5px;"  class="badge" id="checklist-badge">0</span>
+        </div>
+
+        <!-- Notificação de SS -->
         <div class="dropdown" id="solicitacoes-count">
             <a href="/solicitacoes-os" id="solicitacoes-link" class="dropdown" style="color: white;">
-                Solicitação pendente
-            </a>
-            <span class="badge" id="badge">0</span>
+                SS pendente
+            </a>&nbsp&nbsp
+            <span style="margin-top:-5px;"  class="badge" id="solicitacoes-badge">0</span>
         </div>
 
         <!-- CSS -->
         <style>
-            /* Estiliza o balão (badge) */
             .badge {
                 display: inline-block;
-                width: 24px;
-                height: 24px;
+                width: 30px;
+                height: 30px;
                 border-radius: 50%;
                 color: white;
                 text-align: center;
@@ -53,41 +61,41 @@
                 top: -10px;
                 right: -10px;
                 z-index: 1000;
-                /* Garante que o balão fique acima de outros elementos */
             }
 
-            /* Estilo do balão quando não há solicitações pendentes */
             .badge.zero {
                 background-color: green;
             }
 
-            /* Estilo do balão quando há solicitações pendentes */
             .badge.non-zero {
                 background-color: red;
             }
 
-            /* Estiliza a posição da div de contagem */
-            #solicitacoes-count {
+            .badge.warning {
+                background-color: orange;
+                /* Nova classe para laranja */
+            }
+
+            #solicitacoes-count,
+            #checklist-count {
                 position: relative;
                 display: inline-block;
-                /* Ajusta o contêiner para se ajustar ao balão */
                 margin-right: 100px;
                 cursor: pointer;
             }
         </style>
 
-        <!-- JavaScript -->
+        <!-- JavaScript para atualização das contagens -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Função para atualizar a contagem de solicitações pendentes
-                function atualizarContagem() {
+                function atualizarContagemSolicitacoes() {
                     fetch('/solicitacoes-pendentes')
                         .then(response => response.json())
                         .then(data => {
-                            const badge = document.getElementById('badge');
+                            const badge = document.getElementById('solicitacoes-badge');
                             badge.innerText = data.pendentes;
 
-                            // Altera a classe do balão com base no número de solicitações
                             if (data.pendentes > 0) {
                                 badge.classList.remove('zero');
                                 badge.classList.add('non-zero');
@@ -99,13 +107,37 @@
                         .catch(error => console.error('Erro:', error));
                 }
 
-                // Atualiza a contagem a cada 30 segundos (30000 milissegundos)
-                setInterval(atualizarContagem, 30000);
+                // Função para atualizar a contagem de checklists pendentes
+                function atualizarContagemChecklists() {
+                    fetch('/check-list-pendentes')
+                        .then(response => response.json())
+                        .then(data => {
+                            const badge = document.getElementById('checklist-badge');
+                            badge.innerText = data.pendentes;
 
-                // Atualiza a contagem imediatamente quando a página é carregada
-                atualizarContagem();
+                            if (data.pendentes > 0) {
+                                badge.classList.remove('zero');
+                                badge.classList.remove('non-zero');
+                                badge.classList.add('warning'); // Adiciona a classe warning
+                            } else {
+                                badge.classList.remove('non-zero');
+                                badge.classList.remove('warning'); // Remove a classe warning
+                                badge.classList.add('zero');
+                            }
+                        })
+                        .catch(error => console.error('Erro:', error));
+                }
+
+                // Atualiza as contagens a cada 30 segundos
+                setInterval(atualizarContagemSolicitacoes, 30000);
+                setInterval(atualizarContagemChecklists, 30000);
+
+                // Atualiza as contagens imediatamente quando a página é carregada
+                atualizarContagemSolicitacoes();
+                atualizarContagemChecklists();
             });
         </script>
+
 
         <div class="dropdown">
             <div class="dropdown-button">

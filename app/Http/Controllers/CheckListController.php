@@ -19,7 +19,7 @@ class CheckListController extends Controller
     {
         //
         $check_list = CheckList::where('id', 0)->get();
-        
+
         // $check_list = CheckList::all();
 
         $equipamentos = Equipamento::orderBy('nome', 'asc')->get();
@@ -68,7 +68,7 @@ class CheckListController extends Controller
             'natureza' => $request->natureza,
             //'data_verificacao' =>$data_verificacao,
             //'hora_verificacao' => $hora_verificacao
-            
+
             // 'data_verificacao' => $request->data_verificacao,
             //  'hora_verificacao' => $request->hora_verificacao,
         ]);
@@ -103,7 +103,7 @@ class CheckListController extends Controller
         // }
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
-       // dd($check_list->all());
+        // dd($check_list->all());
         return view(
             'app.check_list.index',
             [
@@ -185,5 +185,19 @@ class CheckListController extends Controller
         }
 
         return response()->json(['message' => 'Checklist não encontrado.'], 404);
+    }
+    public function cont()
+    {
+
+        // Define a data limite como 4 dias antes da data atual
+        $dataLimite = Carbon::now()->subDays(13);
+
+        // Conta os registros onde data_verificacao é anterior ou igual à data limite ou está nulo
+        $pendentes = CheckList::where('data_verificacao', '<=', $dataLimite)
+            ->orWhereNull('data_verificacao')
+            ->count();
+
+        // Retorna a contagem como resposta JSON
+        return response()->json(['pendentes' => $pendentes]);
     }
 }
