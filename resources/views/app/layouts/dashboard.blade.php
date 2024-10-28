@@ -223,7 +223,7 @@
                     <table class="condensed-table">
                         <thead>
                             <tr>
-                            
+
                                 <th>ID</th>
                                 <th>Finalização prevista</th>
                                 <th>Descrição</th>
@@ -239,13 +239,13 @@
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
                             <tr>
-                              
-                                <td>   <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_venc->id])}}">
-                                    {{$ordens_servicos_venc->id}}
+
+                                <td> <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordens_servicos_venc->id])}}">
+                                        {{$ordens_servicos_venc->id}}
                                     </a></td>
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
                                     {{ \Carbon\Carbon::parse($ordens_servicos_venc->data_fim)->format('d/m/y') }}
-                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->hora_fim)->format('h:i') }} 
+                                    {{ \Carbon\Carbon::parse($ordens_servicos_venc->hora_fim)->format('h:i') }}
                                 </td>
                                 <td>{{$ordens_servicos_venc->descricao}}</td>
                                 <td>{{$ordens_servicos_venc->equipamento->nome}}</td>
@@ -392,19 +392,19 @@
                                 @endphp
                                 <tr>
                                     <td>
-                                        <a  style="font-size: 17px;"  href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
-                                        {{$os_hoje->id}}
+                                        <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
+                                            {{$os_hoje->id}}
                                         </a>
                                     </td>
-                                
+
                                     <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
-                                     
+                                        {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
+
                                     </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
                                         {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
                                         <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"> às </span>
-                                        {{$os_hoje->hora_fim}}
+                                        {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('h:i') }}
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td>{{$os_hoje->equipamento->nome}}</td>
@@ -425,12 +425,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-
                     </div>
                     <hr>
-
             </div>
-
         </div>
         {{--Box 3--}}
         <style>
@@ -440,7 +437,6 @@
                 display: flex;
                 flex-direction: row;
                 font-weight: 300;
-
             }
         </style>
         <div class="item">
@@ -506,16 +502,15 @@
                 @endphp
                 <div class="div-tuggle-row" onclick="FunToggle('{{ $uniqueId }}')">
                     <div class="div-sm-cabecalho">
-                        <div> <a href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}">
-                                <span class="material-symbols-outlined">
-                                    open_in_new
-                                </span>
+                        <div> <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}">
+                                {{$ordem_servico->id}}
                             </a></div>
-                        <div class="div-font-sm-conteudo">{{$ordem_servico->id}}</div>
                         <div class="div-font-sm-conteudo">
-                            <span class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
+                            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;" class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
 
-                                {{ \Carbon\Carbon::parse($ordem_servico->data_inicio)->format('d/m/Y') }} {{$ordem_servico->hora_inicio}}</span>
+                                {{ \Carbon\Carbon::parse($ordem_servico->data_inicio)->format('d/m/y') }}
+                                {{ \Carbon\Carbon::parse($ordem_servico->hora_inicio)->format('h:i') }}
+                            </span>
                         </div>
                         <div class="div-font-sm-conteudo">{{$ordem_servico->equipamento->nome}}</div>
                         {{----------------------------------------------------------------------}}
@@ -628,15 +623,21 @@
                 <hr style="margin:-2px;">
                 @forelse($ordens_servicos_second_day as $seg_day)
                 <div class="div-font-sm-conteudo" style="margin: 5px;">
-                    <a href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>
-                    <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;font-size:16px;"> {{$seg_day->id}}</span>
-                    <span style="font-family: Arial, Helvetica, sans-serif;font-weight:300;font-size:16px;">{{$seg_day->data_inicio}} às {{$seg_day->hora_inicio}} até</span>
-                    <span style="font-family: Arial, Helvetica, sans-serif;font-weight:300;font-size:16px;"> {{$seg_day->data_fim}} às {{$seg_day->hora_fim}}</span>
-                    <span style="font-family: Arial, sans-serif, bold; font-size: 16px;font-weight: bold;">{{$seg_day->equipamento->nome}}</span>
+                    <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$seg_day->id])}}">
+                        {{$seg_day->id}}
+                    </a>&nbsp
+                    <span style="font-family: Arial, Helvetica, sans-serif;font-weight:300;font-size:16px;">
+                        {{ \Carbon\Carbon::parse($seg_day->data_inicio)->format('d/m/y') }}
+                        às
+                        {{ \Carbon\Carbon::parse($seg_day->hora_inicio)->format('h:i') }}
+                        até
+                    </span>
+                    <span style="font-family: Arial, Helvetica, sans-serif;font-weight:300;font-size:16px;">
+                        {{ \Carbon\Carbon::parse($seg_day->data_fim)->format('d/m/y') }}
+                        às
+                        {{ \Carbon\Carbon::parse($seg_day->hora_fim)->format('h:i') }}
+                    </span>
+                    <span style="font-family: Arial, sans-serif, bold; font-size: 16px;font-weight: bold;float:right;">{{$seg_day->equipamento->nome}}</span>
                 </div>
                 <div class="div-font-sm-conteudo"><span style="font-family: Arial, sans-serif; font-size: 16px;">{{$seg_day->descricao}}</span></div>
                 <hr>
@@ -655,16 +656,19 @@
                 @endif
                 @forelse($ordens_servicos_third_day as $terc_day)
                 <div>
-                    <a href="{{route('ordem-servico.show', ['ordem_servico' => $terc_day->id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
-                    </a>
-
-                    {{$terc_day->id}}
-                    {{$terc_day->data_inicio}} às {{$terc_day->hora_inicio}} até
-                    {{$terc_day->data_fim}} às {{$terc_day->hora_fim}}
-                    {{$terc_day->equipamento->nome}}
+                    <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $terc_day->id])}}">
+                        {{$terc_day->id}}
+                    </a>&nbsp
+                    <span style="font-family: Arial, Helvetica, sans-serif;font-weight:300;font-size:16px;">
+                        {{ \Carbon\Carbon::parse($terc_day->data_inicio)->format('d/m/y') }}
+                        às
+                        {{ \Carbon\Carbon::parse($terc_day->hora_inicio)->format('h:i') }}
+                        até
+                        {{ \Carbon\Carbon::parse($terc_day->data_fim)->format('d/m/y') }}
+                        às
+                        {{ \Carbon\Carbon::parse($terc_day->hora_fim)->format('h:i') }}
+                    </span>
+                    <span style="font-family: Arial, sans-serif, bold; font-size: 16px;font-weight: bold;float:right;">{{$terc_day->equipamento->nome}}</span>
                 </div>
                 <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$terc_day->descricao}}</span>
                 @empty
@@ -674,11 +678,16 @@
             <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">ORDENS FUTURAS</h6>
             @if(isset($ordens_servicos_next))
             @foreach($ordens_servicos_next as $ordem_servico_next)
-            <a href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}">
-                <span class="material-symbols-outlined">
-                    open_in_new
-                </span>
-            </a> <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">{{$ordem_servico_next->id}}</span> <span>{{$ordem_servico_next->data_inicio}}</span> <br>
+            <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem_servico_next->id])}}">
+                {{$ordem_servico_next->id}}
+            </a>&nbsp
+            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:300;font-size:16px;">
+                {{ \Carbon\Carbon::parse($ordem_servico_next->data_inicio)->format('d/m/y') }}
+                às
+                {{ \Carbon\Carbon::parse($ordem_servico_next->hora_inicio)->format('h:i') }}
+            </span>
+            <span style="font-family: Arial, sans-serif, bold; font-size: 16px;font-weight: bold;float:right;">{{$ordem_servico_next->equipamento->nome}}</span>
+            <br>
             <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;">{{$ordem_servico_next->descricao}}</span> <br>
             <hr style="margin:5px;">
             @endforeach
