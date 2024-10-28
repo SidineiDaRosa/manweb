@@ -16,12 +16,12 @@
                     <th>Equipamento</th>
                     <th>Pendentes</th>
                     <th>Executadas</th>
-                    <th>Ações</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($check_lists_status as $checkListsStatus_f)
-                <tr>
+                <tr >
                     <td>{{ $checkListsStatus_f->equipamento->nome }}</td>
                     <td style="background-color: orange; color: white;">{{ $checkListsStatus_f->pendentes }}</td>
                     <td style="background-color: lightgreen; color: black;">{{ $checkListsStatus_f->executados }}</td>
@@ -29,7 +29,7 @@
                         <form action="{{ route('check-list-show') }}" method="POST" style="display:inline;">
                             @csrf
                             <input type="hidden" name="equipamento_id" value="{{ $checkListsStatus_f->equipamento->id }}">
-                            <button type="submit" class="btn btn-outline-dark mb-1" style="width:200px;">
+                            <button type="submit" class="btn btn-outline-dark mb-1" style="width:200px;float:right;">
                                 Visualizar
                             </button>
                         </form>
@@ -39,6 +39,7 @@
             </tbody>
         </table>
         @endif
+
 
         <hr>
         <div class="card-header justify-content-left pt-1">
