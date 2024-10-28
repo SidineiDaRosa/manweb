@@ -17,17 +17,26 @@ class CheckListController extends Controller
      */
     public function index()
     {
+        $dataLimite = Carbon::now()->subDays(13);
         //
         $check_list = CheckList::where('id', 0)->get();
-
-        // $check_list = CheckList::all();
-
+        // Busca check lists status
+        $checkListsStatus = CheckList::selectRaw("
+        equipamento_id,
+        SUM(CASE WHEN data_verificacao <= ? OR data_verificacao IS NULL THEN 1 ELSE 0 END) AS pendentes,
+        SUM(CASE WHEN data_verificacao > ? THEN 1 ELSE 0 END) AS executados
+    ", [$dataLimite, $dataLimite])
+            ->with('equipamento') // Carregar equipamento
+            ->groupBy('equipamento_id')
+            ->get();
+        //dd($checkListsStatus->all());
         $equipamentos = Equipamento::orderBy('nome', 'asc')->get();
         $equipamento = Equipamento::find(0);
         return view('app.check_list.index', [
             'equipamentos' => $equipamentos,
             'check_list' => $check_list,
-            '$equipamento' => $equipamento
+            '$equipamento' => $equipamento,
+            'check_lists_status' => $checkListsStatus
         ]);
     }
 
@@ -92,24 +101,19 @@ class CheckListController extends Controller
     {
         $equipamento_id = $request->get('equipamento_id');
         $equipamento = Equipamento::find($equipamento_id);
+        //
+        $dataLimite = Carbon::now()->subDays(13);
 
-        // $id = $request->input('id'); // ou outro nome de campo do formulário
-
-        // Buscar o recurso pelo ID
-        // $checklist = CheckList::find($id);
-
-        // if (!$checklist) {
-        // return redirect()->back()->with('error', 'CheckList não encontrado.');
-        // }
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
-        // dd($check_list->all());
+        // dd($check_lists_pendentes->all());
         return view(
             'app.check_list.index',
             [
                 'equipamentos' => $equipamentos,
                 'equipamento' => $equipamento,
-                'check_list' => $check_list
+                'check_list' => $check_list,
+                
             ]
         );
     }

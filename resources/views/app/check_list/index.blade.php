@@ -6,10 +6,41 @@
         <div class="card-header pb-2">
             Check-List índice
             <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
-                <i class="icofont-dashboard"></i> dashboard
+                <i class="icofont-dashboard"></i> Dashboard
             </a>
         </div>
+        @if(isset($check_lists_status))
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Equipamento</th>
+                    <th>Pendentes</th>
+                    <th>Executadas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($check_lists_status as $checkListsStatus_f)
+                <tr>
+                    <td>{{ $checkListsStatus_f->equipamento->nome }}</td>
+                    <td style="background-color: orange; color: white;">{{ $checkListsStatus_f->pendentes }}</td>
+                    <td style="background-color: lightgreen; color: black;">{{ $checkListsStatus_f->executados }}</td>
+                    <td>
+                        <form action="{{ route('check-list-show') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <input type="hidden" name="equipamento_id" value="{{ $checkListsStatus_f->equipamento->id }}">
+                            <button type="submit" class="btn btn-outline-dark mb-1" style="width:200px;">
+                                Visualizar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endif
 
+        <hr>
         <div class="card-header justify-content-left pt-1">
             {{--//------------------------------------------------//--}}
             {{--Filtrar o check list por equipamento--}}
