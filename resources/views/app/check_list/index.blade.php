@@ -9,8 +9,25 @@
                 <i class="icofont-dashboard"></i> Dashboard
             </a>
         </div>
+        {{--//------------------------------------------------//--}}
+        {{--Filtrar o check list por equipamento--}}
+        {{--//------------------------------------------------//--}}
+        <form action="{{ route('check-list-show') }}" method="POST" id="form_fornecedor">
+            @csrf
+            <select name="equipamento_id" id="equipamento_id" class="form-control"
+                onchange="document.getElementById('form_fornecedor').submit();">
+                <option value=""> --Selecione O Ativo--</option>
+                @foreach ($equipamentos as $equipamento_f)
+                <option value="{{ $equipamento_f->id }}"
+                    {{ isset($fornecedor) ? ($fornecedor == $equipamento_f->id ? 'selected' : '') : '' }}>
+                    {{ $equipamento_f->nome }}
+                </option>
+                @endforeach
+            </select>
+        </form>
+        <br>
         @if(isset($check_lists_status))
-        <table class="table">
+        <table class="table table-sm" style="table-layout: fixed;">
             <thead>
                 <tr>
                     <th>Equipamento</th>
@@ -21,7 +38,7 @@
             </thead>
             <tbody>
                 @foreach($check_lists_status as $checkListsStatus_f)
-                <tr >
+                <tr>
                     <td>{{ $checkListsStatus_f->equipamento->nome }}</td>
                     <td style="background-color: orange; color: white;">{{ $checkListsStatus_f->pendentes }}</td>
                     <td style="background-color: lightgreen; color: black;">{{ $checkListsStatus_f->executados }}</td>
@@ -43,23 +60,6 @@
 
         <hr>
         <div class="card-header justify-content-left pt-1">
-            {{--//------------------------------------------------//--}}
-            {{--Filtrar o check list por equipamento--}}
-            {{--//------------------------------------------------//--}}
-            <form action="{{ route('check-list-show') }}" method="POST" id="form_fornecedor">
-                @csrf
-                <select name="equipamento_id" id="equipamento_id" class="form-control"
-                    onchange="document.getElementById('form_fornecedor').submit();">
-                    <option value=""> --Selecione O Ativo--</option>
-                    @foreach ($equipamentos as $equipamento_f)
-                    <option value="{{ $equipamento_f->id }}"
-                        {{ isset($fornecedor) ? ($fornecedor == $equipamento_f->id ? 'selected' : '') : '' }}>
-                        {{ $equipamento_f->nome }}
-                    </option>
-                    @endforeach
-                </select>
-            </form>
-            <br>
             <!-- Gravar um novo check list para o equipamento -->
             <form id="form_store" action="{{ route('check-list-gravar') }}" method="POST">
                 @csrf
