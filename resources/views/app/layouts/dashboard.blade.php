@@ -747,9 +747,7 @@
                         <table class="condensed-table" id="tb_pedidos_compra">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>ID</th>
-
                                     <th>Emissão</th>
                                     <th>Previsão</th>
                                     <th>Destino</th>
@@ -764,19 +762,21 @@
                                 $dataAtual = \Carbon\Carbon::today();
                                 $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                                 @endphp
-                                <tr>
+                                <tr style="padding:10px;">
                                     <td>
-                                        <a class="" href="{{route('pedido-compra-lista.index', ['numpedidocompra'=>$pedido_compra->id ])}}">
-                                            <span class="material-symbols-outlined">open_in_new</span>
-                                        </a>
+                                        <a style="font-size: 17px;" class="txt-link" href="{{route('pedido-compra-lista.index', ['numpedidocompra'=>$pedido_compra->id ])}}">
+                                            {{ $pedido_compra->id }}
+                                        </a> &nbsp&nbsp <br>
                                     </td>
-                                    <td>{{ $pedido_compra->id }}</td>
-                                    <td>{{\Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y')}} {{ $pedido_compra->hora_emissao}}</td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/y') }} <br>
+                                        {{ \Carbon\Carbon::parse($pedido_compra->hora_emissao)->format('h:i') }}
+                                    </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}
+                                        {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/y') }}
+                                        {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('h:i') }}
 
                                     </td>
-
                                     <td>{{ $pedido_compra->equipamento->nome }}</td>
                                     <td hidden>{{ $pedido_compra->descricao}}</td>
                                 </tr>
@@ -894,48 +894,47 @@
                 Estoque de produtos
             </button>
             <hr style="margin-bottom:2px;margin-top:2px;">
-            <table class="condensed-table" id="tb_pedidos_compra" style="background-color: burlywood;">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>ID</th>
-                        <th>Produto_id</th>
-                        <th>Estoque</th>
-                        <th>Estoque_minimo</th>
-                        <th>Estoque_máximo</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($produtos_estoque_critico as $produto_estoque_critico)
-                    <tr>
-                        <td>
-                            <a class="" href="{{ route('produto.show', ['produto' => $produto_estoque_critico->produto_id]) }}">
-                                <span class="material-symbols-outlined">open_in_new</span>
-                            </a>
-                        </td>
-                        <td>{{ $produto_estoque_critico->id }}</td>
-                        @php
-                        $produtoNome = $produtos->firstWhere('id', $produto_estoque_critico->produto_id)->nome ?? 'Produto não encontrado';
-                        @endphp
-                        <style>
-                            .bg-light-warning {
-                                background-color: rgba(173, 255, 47, 0.5);
-                                /* cor amarelo claro */
-                            }
-                        </style>
-                        <td>{{ $produtoNome }}</td>
-                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
-                            {{ $produto_estoque_critico->quantidade }}
-                        </td>
-                        <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
-                            {{ $produto_estoque_critico->estoque_minimo }}
-                        </td>
-                        <td> {{$produto_estoque_critico->estoque_maximo}}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="container" style="background-color: burlywood;">
+                <table class="condensed-table" id="tb_pedidos_compra" >
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produto_id</th>
+                            <th>Estoque</th>
+                            <th>Estoque_minimo</th>
+                            <th>Estoque_máximo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($produtos_estoque_critico as $produto_estoque_critico)
+                        <tr>
+                            <td>
+                                <a style="font-size: 17px;" class="txt-link" href="{{ route('produto.show', ['produto' => $produto_estoque_critico->produto_id]) }}">
+                                    {{ $produto_estoque_critico->id }}
+                                </a>
+                            </td>
+                            @php
+                            $produtoNome = $produtos->firstWhere('id', $produto_estoque_critico->produto_id)->nome ?? 'Produto não encontrado';
+                            @endphp
+                            <style>
+                                .bg-light-warning {
+                                    background-color: rgba(173, 255, 47, 0.5);
+                                    /* cor amarelo claro */
+                                }
+                            </style>
+                            <td>{{ $produtoNome }}</td>
+                            <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
+                                {{ $produto_estoque_critico->quantidade }}
+                            </td>&nbsp
+                            <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
+                                {{ $produto_estoque_critico->estoque_minimo }}
+                            </td>
+                            <td> {{$produto_estoque_critico->estoque_maximo}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <canvas id="myChart2" class="box" hidden></canvas>
         </div>
     </div>
@@ -1288,6 +1287,7 @@
             font-size: 14px;
             border-bottom: 1px solid rgb(255, 255, 200, 0.3);
             /* Adiciona uma borda inferior de 1px sólida cinza */
+            height: 28px;
         }
 
         /* Altera a cor de fundo da linha quando o mouse passar sobre ela */
