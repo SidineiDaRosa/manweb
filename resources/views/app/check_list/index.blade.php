@@ -76,8 +76,12 @@
                     </span>
                     <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:30%;">
                         <h5>Data hora: </h5>
+                        @if(!empty($check_list_f->data_verificacao))
                         {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }}as
                         {{$check_list_f->hora_verificacao}}
+                        @else
+                        Data não informada ainda.
+                        @endif
                     </span>
                     @php
                     // Converte a data de verificação para um objeto DateTime (apenas a data, sem hora)
