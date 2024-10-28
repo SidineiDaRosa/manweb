@@ -40,8 +40,8 @@
                 @foreach($check_lists_status as $checkListsStatus_f)
                 <tr>
                     <td>{{ $checkListsStatus_f->equipamento->nome }}</td>
-                    <td style="background-color: orange; color: black;font-size:25px;">{{ $checkListsStatus_f->pendentes }}</td>
-                    <td style="background-color: lightgreen; color: black;font-size:25px;">{{ $checkListsStatus_f->executados }}</td>
+                    <td style="background-color: orange; color: black;font-size:20px;">{{ $checkListsStatus_f->pendentes }}</td>
+                    <td style="background-color: lightgreen; color: black;font-size:20px;">{{ $checkListsStatus_f->executados }}</td>
                     <td>
                         <form action="{{ route('check-list-show') }}" method="POST" style="display:inline;">
                             @csrf
