@@ -315,7 +315,17 @@ class HomeController extends Controller
         //  echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
         //}
         $produtos = Produto::all();
-        $assets = Equipamento::whereRaw('equipamento_pai = id')->orderBy('nome','asc')->get();
+        $assets = Equipamento::whereRaw('equipamento_pai = id')->orderBy('nome', 'asc')->get();
+        // Busca os de 2 dias fechadas
+        $last_2day = Carbon::now()->subDays(2);
+        $add_2day = Carbon::now()->addDays(2);
+        // Definindo a data de hoje
+        $today = now()->format('Y-m-d'); // ou use date('Y-m-d') se não usar Carbon
+        $os_fechadas_2dias = OrdemServico::where('data_fim', '>=', $last_2day)->where('situacao', 'Fechado')->count();
+        $os_abertas = OrdemServico::where('data_fim', '>=', $last_2day)->where('situacao', 'aberto')->count();
+        $os_em_andamento = OrdemServico::where('situacao', 'em andamento')->count();
+        $os_today = OrdemServico::where('data_inicio', '=', $today)->count();
+        // dd($os_hoje);
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento,
             'ordens_servicos' => $ordens_servicos,
@@ -348,7 +358,12 @@ class HomeController extends Controller
             'ordens_servicos_next' => $ordens_servicos_next,
             'produtos_estoque_critico' => $produtos_estoque_critico,
             'produtos' => $produtos,
-            'assets' => $assets
+            'assets' => $assets,
+            //  Var gera o chart
+            'os_fechadas_2dias' => $os_fechadas_2dias,
+            'os_abertas' => $os_abertas,
+            'os_em_andamento' => $os_em_andamento,
+            'os_today' => $os_today,
         ]);
     }
 }

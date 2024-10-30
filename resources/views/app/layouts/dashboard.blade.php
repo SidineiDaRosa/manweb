@@ -31,92 +31,6 @@
         }
     </style>
     {{--teste de botão pulsante--}}
-    <div class="card">
-        <div class="card-body" hidden>
-            <table id="tblOs">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th hidden>Data emissao</th>
-                        <th hidden>Hora</th>
-                        <th>Data prevista</th>
-                        <th>Hora prevista</th>
-                        <th>Data fim</th>
-                        <th>Hora fim</th>
-                        <th>Empresa</th>
-                        <th>Patrimônio</th>
-                        <th>Emissor</th>
-                        <th>Responsável</th>
-                        <th>Descrição</th>
-                        <th>Executado</th>
-                    </tr>
-                </thead>
-                @foreach ($ordens_servicos as $ordem_servico)
-                <tbody>
-                    <tr>
-                        <td>{{ $ordem_servico->id }}</td>
-                        <td hidden>{{ $ordem_servico->data_emissao }}</td>
-                        <td hidden>{{ $ordem_servico->hora_emissao }}</td>
-                        <td>{{ $ordem_servico->data_inicio }}</td>
-                        <td>{{ $ordem_servico->hora_inicio }}</td>
-                        <td>{{ $ordem_servico->data_fim }}</td>
-                        <td>{{ $ordem_servico->hora_fim }}</td>
-                        <td>
-
-                            {{ $ordem_servico->Empresa->razao_social }}
-
-                        </td>
-                        <td>{{ $ordem_servico->equipamento->nome }}</td>
-                        <td>{{ $ordem_servico->equipamento->id }}</td>
-                        <td>{{ $ordem_servico->emissor }}</td>
-                        <td>{{ $ordem_servico->responsavel }}</td>
-                        <td id="descricao">
-
-                            {{ $ordem_servico->descricao }}
-
-                        </td>
-                        <td>
-                            {{ $ordem_servico->Executado }}
-
-                        </td>
-                    </tr>
-                </tbody>
-                @endforeach
-            </table>
-        </div>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <!--------------------------------------------------------------------->
-        <!--Código que gera o gáfico de pizza-->
-        <!--------------------------------------------------------------------->
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <table id="tabelaAgrupada" hidden>
-        <caption>Tabela Agrupada</caption>
-        <thead>
-            <tr>
-                <th>Nome do equipamento</th>
-                <th>Id</th>
-                <th>Quantidade de ordens geradas</th>
-            </tr>
-        </thead>
-        <tbody id="corpoTabelaAgrupada">
-            <!-- Aqui será preenchido dinamicamente com JavaScript -->
-        </tbody>
-    </table>
-    <!-------------------------------------------------------------------------->
-    <table id="tabelaAgrupada2" hidden>
-        <caption>Tabela Agrupada</caption>
-        <thead>
-            <tr>
-                <th>Nome do equipamento</th>
-                <th>Id</th>
-                <th>Quantidade de ordens geradas</th>
-            </tr>
-        </thead>
-        <tbody id="corpoTabelaAgrupada2">
-            <!-- Aqui será preenchido dinamicamente com JavaScript -->
-        </tbody>
-    </table>
     <style>
         body,
         html {
@@ -689,14 +603,160 @@
             @endif
         </div>
         {{--Box 4--}}
-        <div class="item">
+        <div class="item" style="background-color: rgb(245, 246, 248);">
             <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. FECHADA POR MÁQUINA</h6> <!-- Ajuste a margem superior conforme necessário -->
-            <div id="graficoPizza" class="box" hidden></div>
+            <!-- Bootstrap CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <!-- Div de alinhamento row dos cards-->
+            <div style="display: flex;flex-direction:row;">
+                <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
+                    <div style="">
+                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Fechadas</Span><br>
+                    </div>
+                    <hr style="margin-top: -2px; color:#ccc;">
+                    <div style="display: flex; justify-content: center;">
+                        <h6>
+                            @if(isset($os_fechadas_2dias))
+                            {{ $os_fechadas_2dias }}
+
+                            @else
+                            0
+                            $os_fechadas_2dias=0;
+                            @endif
+                        </h6>
+                        <input type="number" id="os_fechadas" value="{{$os_fechadas_2dias}}" hidden>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
+                    <div style="">
+                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Abertas</Span><br>
+                    </div>
+                    <hr style="margin-top: -2px; color:#ccc;">
+                    <div style="display: flex; justify-content: center;">
+                        <h6>
+                            @if(isset($os_abertas))
+                            {{$os_abertas}}
+                            @else
+                            0
+                            @endif
+                        </h6>
+                        <input type="number" id="os_abertas" value="{{$os_abertas}}" hidden>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
+                    <div style="">
+                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Em andamento</Span><br>
+                    </div>
+                    <hr style="margin-top: -2px; color:#ccc;">
+                    <div style="display: flex; justify-content: center;">
+                        <h6>
+                            @if(isset($os_em_andamento))
+                            {{$os_em_andamento}}
+                            @else
+                            0
+                            @endif
+                        </h6>
+                        <input type="number" id="os_em_andamento" value="{{$os_em_andamento}}" hidden>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
+                    <div style="">
+                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Para hoje</Span><br>
+                    </div>
+                    <hr style="margin-top: -2px; color:#ccc;">
+                    <div style="display: flex; justify-content: center;">
+                        <h6>
+                            @if(isset($os_today))
+                            {{$os_today}}
+                            @else
+                            0
+                            @endif
+                        </h6>
+                        <input type="number" id="os_hoje" value="{{$os_today}}" hidden>
+                    </div>
+                </div>
+            </div>
+            <!--Chart ------------------------------------------------------>
+
+            <!--Chart ------------------------------------------------------>
+
+            <body style="height: 100%; margin: 0">
+                <div id="container" style="height: 100%"></div>
+
+                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+
+                <script type="text/javascript">
+                    var dom = document.getElementById('container');
+                    var myChart = echarts.init(dom, null, {
+                        renderer: 'canvas',
+                        useDirtyRect: false
+                    });
+
+                    // Supondo que esses valores sejam gerados no Blender
+
+                    var os_em_andamento = document.getElementById('os_em_andamento').value; // Exemplo: valor da variável
+                    var os_fechadas = document.getElementById('os_fechadas').value; // Exemplo: valor da variável
+                    var os_abertas = document.getElementById('os_abertas').value; // Exemplo: valor da variável
+                    var os_hoje = document.getElementById('os_hoje').value; // Exemplo: valor da variável
+
+                    var option;
+
+                    // Este exemplo requer ECharts v5.5.0 ou posterior
+                    option = {
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            top: '5%',
+                            left: 'center'
+                        },
+                        series: [{
+                            name: 'Status das Solicitações',
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            center: ['50%', '70%'],
+                            // ajuste o ângulo inicial e final
+                            startAngle: 180,
+                            endAngle: 360,
+                            data: [{
+                                    value: os_abertas,
+                                    name: 'Solicitações Abertas'
+                                },
+                                {
+                                    value: os_em_andamento,
+                                    name: 'Solicitações em Andamento'
+                                },
+                                {
+                                    value: os_fechadas,
+                                    name: 'Solicitações Fechadas'
+                                },
+                                {
+                                    value: os_fechadas,
+                                    name: 'Solicitações Hoje'
+                                }
+                            ],
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }]
+                    };
+
+                    if (option && typeof option === 'object') {
+                        myChart.setOption(option);
+                    }
+
+                    window.addEventListener('resize', myChart.resize);
+                </script>
+
             {{--//-------------------------------------------------//--}}
             {{--//--------------------------//--}}
             {{--//-------------------------------------------------//--}}
             @foreach($assets as $equipamentos)
-            <div style="display:flex; align-items:center; flex-direction:row;font-family:Arial, Helvetica, sans-serif;">
+            <div style="display:flex; align-items:center; flex-direction:row;font-family:Arial, Helvetica, sans-serif;" hidden>
                 {{$equipamentos->nome}}
                 <div style="flex-grow:1;"></div> <!-- Este div empurra o link para a direita -->
                 <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;" hidden>
@@ -711,7 +771,6 @@
                     <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
                 </form>
             </div>
-            <hr style="margin:2px;">
             @endforeach
 
             {{--//-------------------------------------------------//--}}
@@ -890,7 +949,7 @@
             </button>
             <hr style="margin-bottom:2px;margin-top:2px;">
             <div class="container" style="background-color: burlywood;">
-                <table class="condensed-table" id="tb_pedidos_compra" >
+                <table class="condensed-table" id="tb_pedidos_compra">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -930,295 +989,10 @@
                     </tbody>
                 </table>
             </div>
-            <canvas id="myChart2" class="box" hidden></canvas>
         </div>
     </div>
-
     {{--fim do item 6--}}
     </div>
-    </div>
-    <script>
-        //-------------------------------------------------------------------------------------------------------
-        function VerTabela() {
-            agruparNumerosIguais() //chama criar tabela
-            table1 = document.getElementById("tblOs");
-            let totalColumnsTbOs = (table1.rows.length);
-
-            for (var i = 1; i < table1.rows.length; i++) {
-                let equipamentoId =
-                    document.getElementById("tblOs").rows[i].cells[9].innerHTML;
-                //FunAjaxGetcontEquip()
-            };
-            if (i = totalColumnsTbOs) {}
-        }
-        //Funçoes em ajax
-        //$(document).ready(function()
-        function FunAjaxGetcontEquip(url, sidinei, sucessoCallback, erroCallback) {
-            let valorInput = $("#os1").val(); //pega o valor do input
-            let date1 = $("#date1").val(); //pega o valor do input
-            let date2 = $("#date2").val(); //pega o valor do input
-            var linha = $("#tblOs tr:eq(1)"); // Pega a segunda linha da tabela (índice 1)
-            var equipamentoId = linha.find("td:eq(8)").text(); // Pega o texto da segunda célula (índice 1) da linha
-            var dataInicio = linha.find("td:eq(1)").text(); // Pega o texto da terceira célula (índice 2) da linha
-            var dataFim = linha.find("td:eq(3)").text(); // Pega o texto da terceira célula (índice 2) da linha
-
-            // Exibe um alerta com os valores obtidos
-            alert("esta fução busca e conta registros de equipaento nesta data-Equipamento id: " + equipamentoId +
-                "Datas: " + date1 + '...' + date2);
-            $.ajax({
-
-                // url: "route('get-cont-os-equip'", // Substitua 'pagina.php' pelo URL da sua página de destino
-                type: "get", // Ou "GET" dependendo do tipo de requisição que você deseja fazer
-                data: {
-
-                    parametro1: date1,
-                    parametro2: date2,
-                    parametro3: equipamentoId
-                }, // Se necessário, envie parâmetros para a página de destino
-                success: function(response) {
-                    // Executa essa função quando a requisição for bem-sucedida
-                    alert("Requisição bem-sucedida! Resposta: " +
-                        response); // Mostra um alerta com a resposta da requisição
-                    document.getElementById('os1').value = response;
-                    // Alterando a cor de fundo do input
-                    $("#os1").css("background-color", "#ff0000");
-                },
-                error: function(xhr, status, error) {
-                    // Executa essa função se houver um erro na requisição
-                    // alert("Ocorreu um erro na requisição: " + xhr.responseText); // Mostra um alerta com a mensagem de erro
-                }
-            });
-        };
-    </script>
-
-    <script>
-        //Cria uma tabela que agrupa os registros iguais e conta quantos registros iguais.
-        function agruparNumerosIguais1() {
-            agruparNumerosIguais2() //chama para gerar a segunda tabela
-            var tabela = document.getElementById("tblOs");
-            var numeros = {};
-
-            for (var i = 1; i < tabela.rows.length; i++) {
-                var nome = tabela.rows[i].cells[8].innerHTML;
-                var numero = tabela.rows[i].cells[9].innerHTML;
-                if (!numeros[nome]) {
-                    numeros[nome] = {};
-                }
-                if (!numeros[nome][numero]) {
-                    numeros[nome][numero] = 1;
-                } else {
-                    numeros[nome][numero]++;
-                }
-            }
-            var tabelaAgrupada = document.getElementById("tabelaAgrupada");
-            var corpoTabelaAgrupada = document.getElementById("corpoTabelaAgrupada");
-            corpoTabelaAgrupada.innerHTML = "";
-
-            for (var nome in numeros) {
-                for (var numero in numeros[nome]) {
-                    var row = corpoTabelaAgrupada.insertRow();
-                    var cellNome = row.insertCell(0);
-                    var cellNumero = row.insertCell(1);
-                    var cellQuantidade = row.insertCell(2);
-                    cellNome.innerHTML = nome;
-                    cellNumero.innerHTML = numero;
-                    cellQuantidade.innerHTML = numeros[nome][numero];
-
-                }
-            }
-            // Criar gráfico de pizza
-            // Obter os dados da tabela
-            const table = document.getElementById('tabelaAgrupada');
-            const rows = table.getElementsByTagName('tr');
-            const data = {
-                labels: [],
-                values: []
-            };
-
-            // Iterar sobre as linhas da tabela e extrair os dados
-            for (let i = 1; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                data.labels.push(cells[0].innerText);
-                const value1 = parseInt(cells[0].innerText);
-                const value2 = parseInt(cells[2].innerText);
-                data.values.push(value1 + value2);
-            }
-            GeraGraficoPizza() //chama gerar gráfico pie chart google  após ter gerado a tebela agrupada
-            //GerarGráficoLinhas() //chama função para gerar gráfico de linhas após ter gerado a tabela agrupada
-        }
-        //Fim da função que gera tabela agrupada
-
-        //-----------------------------------------------------------------------------------//
-        //gera uma tabela agrupada que conta mostra quantidade de ordens por data------------//
-        function agruparNumerosIguais2() {
-            var tabela = document.getElementById("tblOs");
-            var numeros = {};
-
-            for (var i = 1; i < tabela.rows.length; i++) {
-                var nome = tabela.rows[i].cells[3].innerHTML;
-                var numero = tabela.rows[i].cells[3].innerHTML;
-                if (!numeros[nome]) {
-                    numeros[nome] = {};
-                }
-                if (!numeros[nome][numero]) {
-                    numeros[nome][numero] = 1;
-                } else {
-                    numeros[nome][numero]++;
-                }
-            }
-
-            var tabelaAgrupada = document.getElementById("tabelaAgrupada2");
-            var corpoTabelaAgrupada = document.getElementById("corpoTabelaAgrupada2");
-            corpoTabelaAgrupada.innerHTML = "";
-
-            for (var nome in numeros) {
-                for (var numero in numeros[nome]) {
-                    var row = corpoTabelaAgrupada.insertRow();
-                    var cellNome = row.insertCell(0);
-                    var cellNumero = row.insertCell(1);
-                    var cellQuantidade = row.insertCell(2);
-                    cellNome.innerHTML = nome;
-                    cellNumero.innerHTML = numero;
-                    cellQuantidade.innerHTML = numeros[nome][numero];
-
-                }
-            }
-            //GerarGráficoLinhas()
-            GeraGraficoLinhaQntOsData()
-        }
-        //fim gera uma tabela agrupada que conta mostra quantidade de ordens por data------------//
-        //-----------------------------------------------------------------------------------//
-        function GerarGráficoLinhas() {
-            // Extrai os dados da tabela HTML
-            const table = document.getElementById('tblOs');
-            const data = Array.from(table.querySelectorAll('tbody tr')).map(row => {
-                const cells = Array.from(row.cells);
-                return {
-                    data: cells[2].textContent,
-                    gasto: parseFloat(cells[1].textContent)
-                };
-            });
-            // Prepara os dados para o gráfico
-            const labels = data.map(item => item.data);
-            const dataset = {
-                label: 'Gasto',
-                data: data.map(item => item.gasto),
-                backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                borderColor: 'rgba(0, 123, 255, 1)',
-                borderWidth: 1
-            };
-
-            // Cria o gráfico de linhas
-            const ctx = document.getElementById('myChart2').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [dataset]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-    </script>
-
-    <script>
-        //-------------------------------------------------------------------//
-        //Evento so executa após ter carregado todo os elementos do Dom
-        //-------------------------------------------------------------------//
-        document.addEventListener('DOMContentLoaded', (event) => {
-            agruparNumerosIguais1() //executa a função que gera uma tabela agrupada
-            // Extrai os dados da tabela HTML
-            //Gera um gráfico de barras apartir da biblioteca chart.js
-            const table = document.getElementById('tblOs');
-            const data = Array.from(table.querySelectorAll('tbody tr')).map(row => {
-                const cells = Array.from(row.cells);
-                return {
-                    data: cells[1].textContent,
-                    gasto: parseFloat(cells[16].textContent)
-                };
-            });
-
-            // Prepara os dados para o gráfico
-            const labels = data.map(item => item.data);
-            const dataset = {
-                label: 'Gasto',
-                data: data.map(item => item.gasto),
-                backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                borderColor: 'rgba(0, 123, 255, 1)',
-                borderWidth: 1
-            };
-
-            // Cria o gráfico de barras
-            const ctx = document.getElementById('myChart3').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'bar', // Altera o tipo de gráfico para barras
-                data: {
-                    labels: labels,
-                    datasets: [dataset]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            })
-        });
-    </script>
-    <!-- Importar a biblioteca do Google Charts -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        //document.addEventListener("DOMContentLoaded", function() {
-        function GeraGraficoPizza() {
-            // Carregar a biblioteca de visualização e preparar para desenhar o gráfico
-            google.charts.load('current', {
-                'packages': ['corechart']
-            });
-            google.charts.setOnLoadCallback(desenharGrafico);
-
-            function desenharGrafico() {
-                // Obter os dados da tabela
-                var dadosTabela = [];
-                var table = document.getElementById('tabelaAgrupada');
-                var linhas = table.getElementsByTagName('tr');
-                for (var i = 1; i < linhas.length; i++) { // Começar do índice 1 para pular a linha de cabeçalho
-                    var celulas = linhas[i].getElementsByTagName('td');
-                    if (celulas.length === 3) {
-                        dadosTabela.push([celulas[0].textContent, parseFloat(celulas[2].textContent), parseFloat(celulas[1].textContent)]);
-                    }
-                }
-
-                // Criar e preencher a DataTable
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Total de O.S');
-                data.addColumn('number', 'Horas por Dia');
-                data.addColumn('number', 'Outro Valor'); // Adicionar um terceiro valor
-                data.addRows(dadosTabela);
-
-                // Configurar as opções do gráfico
-                var options = {
-                    title: 'Total de O.S',
-                    width: 500,
-                    height: 380,
-                    is3D: true,
-                    backgroundColor: 'darkgrey',
-                };
-
-                // Instanciar e desenhar o gráfico, passando os dados e opções
-                var chart = new google.visualization.PieChart(document.getElementById('graficoPizza'));
-                chart.draw(data, options);
-            }
-            // }
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         canvas {
             max-width: 100%;

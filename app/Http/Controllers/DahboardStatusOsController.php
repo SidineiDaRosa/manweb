@@ -432,7 +432,6 @@ class DahboardStatusOsController extends Controller
                 ->where('empresa_id', '<=', 2)
                 ->get();
         }
-
         return view('app.ordem_servico.programer_os', [
             'mondayOrders' => $mondayOrders,
             'tuesdayOrders' => $tuesdayOrders,
@@ -442,6 +441,7 @@ class DahboardStatusOsController extends Controller
             'saturdayOrders' => $saturdayOrders,
             'sundayOrders' => $sundayOrders,
             'ordens_servicos_por_semana'=>$ordens_servicos_por_semana
+           
         ]);
     }
 }
