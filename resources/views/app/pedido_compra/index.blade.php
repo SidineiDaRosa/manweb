@@ -2,9 +2,10 @@
 
 @section('content')
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<main class="content">
-    <div class="card">
-        <div class="card-header-template" id="frm-cabecalho">
+<main class="content" style="background-color: rgb(245, 246, 248);">
+    <div class="card" style="background-color: rgb(245, 246, 248);">
+        <div class="card-header-template" id="frm-cabecalho" style="background-color: rgb(245, 246, 248);">
+
             <style>
                 #frm-cabecalho {
                     display: flex;
@@ -18,23 +19,24 @@
                     <div class="col-md-4">
                         <label for="situacao">Situação:</label>
                         <select class="form-control" name="situacao" id="situacao" value="">
-                            <option value="aberto">aberto</option>
-                            <option value="fechado">fechado</option>
-                            <option value="indefinido">indefinido</option>
-                            <option value="cancelado">cancelado</option>
+                            <option value="aberto">Aberto</option>
+                            <option value="fechado">Fechado</option>
+                            <option value="indefinido">Indefinido</option>
+                            <option value="cancelado">Cancelado</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label for="data_inicio">Data inicial:</label>
-                        <input type="date" class="form-control" name="data_inicio" id="data_inicio" >
+                        <input type="date" class="form-control" name="data_inicio" id="data_inicio">
                     </div>
                     <div class="col-md-4">
                         <label for="data_inicio">Data final:</label>
                         <input type="date" class="form-control" name="data_fim" id="data_fim">
+
                     </div>
-                    <div class="col-md-4">
-                        <label for="data_inicio">Buscar:</label>
-                        <input type="submit" value="buscar">
+                    <div class="col-md-6">
+                        <input class="btn btn-outline-primary btn-bg" type="submit" value="buscar" style="width: 220px;margin-top:5px;">
+
                     </div>
 
                 </div>

@@ -324,7 +324,7 @@ class HomeController extends Controller
         $os_fechadas_2dias = OrdemServico::where('data_fim', '>=', $last_2day)->where('situacao', 'Fechado')->count();
         $os_abertas = OrdemServico::where('data_fim', '>=', $last_2day)->where('situacao', 'aberto')->count();
         $os_em_andamento = OrdemServico::where('situacao', 'em andamento')->count();
-        $os_today = OrdemServico::where('data_inicio', '=', $today)->count();
+        $os_today = OrdemServico::where('data_inicio', '=', $today)->where('situacao',['aberto','em andamento'])->count();
         // dd($os_hoje);
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento,

@@ -2,105 +2,103 @@
 
 @section('content')
 
-<main class="content" style="background-color: transparent;">
-    <div>Lista de equipamentos</div>
+<main class="content" style="">
+    <div style="font-family: Arial, Helvetica, sans-serif;color:#333333">Lista de Equipamentos</div>
     <div class="card">
-        <div class="card-header-template">
-
+        <div class="card-header-template" style="background-color:rgb(245, 246, 248);">
             <!--------------------------------------------->
             <div class="col-md-0">
-                <label for="btFiltrar" class=""> Novo </label>
-                <p>
-                    <a href="{{ route('equipamento.create') }}" class="btn btn-info btn-icon-split">
-                        <span class="icon text-white-50">
-                            <i class="icofont-plus-circle"></i>
-                        </span>
-                        <span class="text">Novo equipamento</span>
-                    </a>
+
+                <a href="{{ route('equipamento.create') }}" class="btn btn-outline-primary">
+                    <i class="icofont-plus-circle"></i>
+
+                    <span class="text">Novo Ativo/equipamento</span>
+                </a>
+                <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> dashboard
+                </a>
             </div>
-            <div class="col-md-0">
+            <!-- determina a largura do form-->
+            <div class="col-md-0" style="width: 400px;">
                 <form action="{{route('equipamento.index',['empresa'=>2])}}">
-                    <label for="btFiltrar" class="">id da empresa</label>
                     {{---------------------------------------------------}}
                     {{--Teste de searching equipamentos------------------}}
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="digite aqui..." aria-label="digite" aria-describedby="button-addon2" name="empresa" value="{{ $empresa_id}}" readonly>
+                        <input type="text" class="form-control" placeholder="digite aqui..." aria-label="digite" aria-describedby="button-addon2" name="empresa" value="{{ $empresa_id}}" readonly hidden>
 
-                        <input type="text" class="form-control" placeholder="digite aqui..." aria-label="digite" aria-describedby="button-addon2" name="searching">
-                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Busca</button>
-                    </div>
-                    {{---fim----------------------------------------------}}
+                        <input type="text" class="form-control" placeholder="--Digite o nome parcial--" aria-label="" aria-describedby="button-addon2" name="searching">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Busca Ativo/equipamento</button>
+                </form>
             </div>
+            {{---fim----------------------------------------------}}
             </form>
-            <div class="col-md-0">
-
-                <label for="btFiltrar" class="">Empresas</label>
-                <p>
-                    <a href="{{route('empresas.index')}}" class="btn btn-info btn-icon-split">
-                        <span class="text">Empresas</span>
-                    </a>
-            </div>
-
+        </div>
+        <div class="col-md-0">
+            <a href="{{route('empresas.index')}}" class="btn btn-outline-success">
+                <span class="text">Unidades Empresariais</span>
+            </a>
         </div>
 
-        <div class="card-body">
+    </div>
 
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Descrição</th>
-                        <th scope="col">Marca</th>
-                        <th scope="col">Equipamento Pai</th>
-                        <th scope="col">Empresa</th>
-                        <th scope="col">Operações</th>
-                    </tr>
-                </thead>
+    <div class="card-body">
 
-                <tbody>
-                    @foreach ($equipamentos as $equipamento)
-                    <tr>
-                        <th scope="row">{{ $equipamento->id }}</td>
-                        <td>{{ $equipamento->nome }}</td>
-                        <td>{{ $equipamento->descricao }}</td>
-                        <td>{{ $equipamento->marca->nome }}</td>
-                        <td>{{ $equipamento->equip_pai->nome ?? '' }}</td>
-                        <td>{{ $equipamento->Empresa->razao_social }}</td>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Equipamento Pai</th>
+                    <th scope="col">Empresa</th>
+                    <th scope="col">Operações</th>
+                </tr>
+            </thead>
 
-                        <td>
-                            <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">
-                                    <i class="icofont-eye-alt"></i>
-                                </a>
-                                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
-                                    <i class="icofont-ui-edit"></i> </a>
-                                <form id="form_{{ $equipamento->id }}" method="post" action="{{ route('equipamento.destroy', ['equipamento' => $equipamento->id]) }}">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarEquipamento()">
-                                    <i class="icofont-ui-delete"></i></a>
-                                <script>
-                                    function DeletarEquipamento() {
-                                        var x;
-                                        var r = confirm("Deseja deletar o equipamento?");
-                                        if (r == true) {
+            <tbody>
+                @foreach ($equipamentos as $equipamento)
+                <tr>
+                    <th scope="row">{{ $equipamento->id }}</td>
+                    <td>{{ $equipamento->nome }}</td>
+                    <td>{{ $equipamento->descricao }}</td>
+                    <td>{{ $equipamento->marca->nome }}</td>
+                    <td>{{ $equipamento->equip_pai->nome ?? '' }}</td>
+                    <td>{{ $equipamento->Empresa->razao_social }}</td>
 
-                                            //document.getElementById('form_{{ $equipamento->id}}').submit()
-                                        } else {
-                                            x = "Você pressionou Cancelar!";
-                                        }
-                                        document.getElementById("demo").innerHTML = x;
+                    <td>
+                        <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
+                            <a class="btn btn-sm-template btn-outline-primary" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">
+                                <i class="icofont-eye-alt"></i>
+                            </a>
+                            <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
+                                <i class="icofont-ui-edit"></i> </a>
+                            <form id="form_{{ $equipamento->id }}" method="post" action="{{ route('equipamento.destroy', ['equipamento' => $equipamento->id]) }}">
+                                @method('DELETE')
+                                @csrf
+                            </form>
+                            <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarEquipamento()">
+                                <i class="icofont-ui-delete"></i></a>
+                            <script>
+                                function DeletarEquipamento() {
+                                    var x;
+                                    var r = confirm("Deseja deletar o equipamento?");
+                                    if (r == true) {
+
+                                        //document.getElementById('form_{{ $equipamento->id}}').submit()
+                                    } else {
+                                        x = "Você pressionou Cancelar!";
                                     }
-                                </script>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                                    document.getElementById("demo").innerHTML = x;
+                                }
+                            </script>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     </div>
 

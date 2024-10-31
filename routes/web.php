@@ -16,7 +16,7 @@ use App\Http\Controllers\UtilsController;
 use App\Http\Controllers\SolicitacaoOsController;
 use App\Http\Controllers\CheckListController;
 use App\Http\Controllers\CheckListExecutadoController;
-
+use App\Http\Controllers\CustosController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -355,4 +355,8 @@ Route::post('/check-list-cheked', [CheckListExecutadoController::class, 'store']
 Route::get('/check-list-cheked-index', [CheckListExecutadoController::class, 'index'])->name('check-list-cheked-index');
 Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'executado'])->name('check-list-finalizado');
 Route::get('/check-list-funcionario', [CheckListExecutadoController::class, 'funcionario'])->name('check-list-funcionario');
+//----------------------------------------------------------//
+//   CUSTOS GERAIS           
+//----------------------------------------------------------//
 
+Route::get('/dashboard-custos', [CustosController::class, 'dashboard'])->name('custos.dashboard');
