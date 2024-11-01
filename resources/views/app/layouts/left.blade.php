@@ -83,6 +83,7 @@
                     <a class="sidebar-submenu-expanded-a" href="#">Cadastro de Segmentos</a>
                 </div>
             </li>
+
             <!--Menu recursos-->
             <li class="nav-item">
                 <a onclick="FunExpandMenuRecursos();">
@@ -91,6 +92,8 @@
                     <i class="icofont-caret-down icofont-2x"></i>
                 </a>
                 <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-recursos">
+                    <a class="sidebar-submenu-expanded-a" href="{{route('custos.dashboard')}}">Custos</a><br><!--chama pela segunda opção Name  da rota-->
+                    <hr>
                     <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}">Produtos</a><br>
                     <hr>
                     <a class="sidebar-submenu-expanded-a" href="{{route('Estoque-produto.index')}}">Estoque de produtos</a><br>
