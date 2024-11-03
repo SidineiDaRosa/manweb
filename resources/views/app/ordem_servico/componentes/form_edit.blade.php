@@ -37,7 +37,7 @@
 </style>
 <div class="bg-modal" id="bg-modal">
     <div class="modal-md">
-        <h6>Alteração do status da ordem de serviço</h6>
+        <h6>Alteração do Status da O.S.</h6>
         <div class="col-md-12 mb-4">
             <select class="form-control" name="situacao" id="situacao2" value="option">
                 <script>
@@ -52,12 +52,12 @@
                     }
                 </script>
                 <option value="aberto">Aberto</option>
-                <option value="fechado">fechado</option>
-                <option value="indefinido">indefinido</option>
-                <option value="cancelada">cancelada</option>
+                <option value="fechado">Fechado</option>
+                <option value="indefinido">Indefinido</option>
+                <option value="cancelada">Cancelada</option>
                 <option value="em andamento">Em andamento</option>
-                <option value="pausado">pausado</option>
-                <option value="rejeitada">rejeitada</option>
+                <option value="pausado">Pausado</option>
+                <option value="rejeitada">Rejeitada</option>
                 {{ $errors->has('nome') ? $errors->first('nome') : '' }}
             </select>
             <div class="invalid-tooltip">
