@@ -5,11 +5,11 @@
     {{ session('error') }}
 </div>
 @endif
-<form id="meuForm"  action="{{route('Servicos-executado.store',['$ordem_servico'=>$ordem_servico_id])}}" method="POST">
+<form id="meuForm" action="{{route('Servicos-executado.store',['$ordem_servico'=>$ordem_servico_id])}}" method="POST">
     @csrf
 
     <div class="row mb-1 ">
-        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">ID Os</label>
+        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">ID O.S.</label>
         <div class="col-md-2">
             <input id="idOs" type="nuber" class="form-control custom-font-size 40" name="ordem_servico_id" value="{{$ordem_servico_id}}" readonly>
         </div>
@@ -68,7 +68,7 @@
     </div>
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Executante da tarefa</label>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <select name="funcionario_id" id="funcionario_id" class="form-control-template" required>
                 <option value=""> --Selecione o Responsável--</option>
                 @foreach ($funcionarios as $funcionario_find)
@@ -82,20 +82,91 @@
         <div class="invalid-tooltip">
             Por favor, informe os dados.
         </div>
-    </div>
-    <div class="row mb-1">
-        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">descrição dos serviços executados</label>
-        <div class="col-md-6">
-            <textarea class="form-control" id="executado" name="descricao" rows="5" cols="100" require style="height: 100px;" required></textarea>
-        </div>
-        <div class="invalid-tooltip">
-            Por favor, informe os dados.
-        </div>
         <style>
-            #executado {
-                height: 50px;
+            .div-description {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: auto;
+                /* Garante que o contêiner ocupe a altura total da viewport */
+            }
+
+            .form-control-txt {
+                height: 100px;
+                font-family: Arial, sans-serif;
+                overflow: auto;
+                white-space: pre-wrap;
+                width: 50%;
+                border: 1px solid blue;
+                /* Ajusta a largura da borda */
+                border-radius: 5px;
+            }
+
+            .form-control-txt:focus {
+                border: 1px solid red;
+                /* Borda vermelha quando o campo está em foco */
+                outline: none;
+                /* Remove o contorno padrão do navegador */
+                box-shadow: 0 0 5px #721c24;
+                /* Adiciona uma sombra à borda */
+            }
+
+            @media (max-width: 900px) {
+                .form-control-txt {
+                    width: 100%;
+                    /* Ajusta a largura do textarea em telas menores */
+                }
             }
         </style>
+    </div>
+
+    <div class="div-description"> <textarea class="form-control-txt" id="descricao" name="descricao" rows="5" cols="50" required placeholder="--descreva os serviços executados--"></textarea> </div>
+    <script>
+        //-----------------------------------------------------------//
+
+        //   Desabilita o texto descrição 
+        //----------------------------------------------------------//]
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            function disableDesc() {
+                const descriptionElement = document.getElementById('descricao');
+                const divDescriptionElement = document.getElementById('div-description');
+                const divButtonElement = document.getElementById('div-button-send');
+                // divDescriptionElement.style.display = 'none'; // Oculta a descrição ao iniciar
+                divButtonElement.style.display = 'none'; // Oculta a descrição ao iniciar  
+                descriptionElement.style.display = 'none'; // Oculta a descrição ao iniciar  
+
+
+
+
+            }
+
+            // Chama a função disableDesc ao carregar a página
+            disableDesc();
+        });
+
+        function EnableDesc() {
+
+            const descriptionElement = document.getElementById('descricao');
+            //const divDescriptionElement = document.getElementById('div-description');
+            const divButtonElement = document.getElementById('div-button-send');
+            //divDescriptionElement.style.display = 'block'; // Exibe a descrição ao habilitar
+            divButtonElement.style.display = 'block'; // Exibe a descrição ao habilitar  
+            descriptionElement.style.display = 'block'; // Exibe a descrição ao habilitar  
+            descriptionElement.focus(); // Chama a função focus() corretamente
+        }
+    </script>
+    <div class="invalid-tooltip">Por favor,
+        informe os dados. </div>
+    <style>
+        #executado {
+            height: 50px;
+        }
+    </style>
     </div>
 
     <script>
@@ -150,37 +221,37 @@
     <div class="row mb-1">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right"></label>
         <!-- Modal -->
- <div class="modal fade" id="modalOpcoes" tabindex="-1" aria-labelledby="modalOpcoesLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalOpcoesLabel">Escolha uma opção</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Selecione apenas uma opção:</p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="1" id="opcao1" name="option" required>
-                        <label class="form-check-label" for="opcao1">Lançar os serviços apenas</label>
+        <div class="modal fade" id="modalOpcoes" tabindex="-1" aria-labelledby="modalOpcoesLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalOpcoesLabel">Escolha uma opção</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="2" id="opcao2" name="option" required>
-                        <label class="form-check-label" for="opcao2">Criar um pedido de saída, e lançar os materias utilizados</label>
+                    <div class="modal-body">
+                        <p>Selecione apenas uma opção:</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="1" id="opcao1" name="option" required>
+                            <label class="form-check-label" for="opcao1">Lançar os serviços apenas</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="2" id="opcao2" name="option" required>
+                            <label class="form-check-label" for="opcao2">Criar um pedido de saída, e lançar os materias utilizados</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="3" id="opcao3" name="option" required>
+                            <label class="form-check-label" for="opcao3">Selecionar um pedido já aberto, e lançar os materiais</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="3" id="opcao3" name="option" required>
-                        <label class="form-check-label" for="opcao3">Selecionar um pedido já aberto, e lançar os materiais</label>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="confirmarOpcoes">Confirmar</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="confirmarOpcoes">Confirmar</button>
                 </div>
             </div>
         </div>
-    </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6" id="div-button-send">
             <!-- Botão para abrir a modal -->
             <button type="button" class="btn btn-primary" id="btnModal" onclick="CallSumHours()">Cadastrar</button>
         </div>
@@ -251,7 +322,7 @@
                     var inputHoraInicio = document.getElementById("hora_inicio");
                     inputHoraInicio.style.backgroundColor = "rgb(150, 255, 150)";
                     inputHoraInicio.readOnly = true;
-
+                    EnableDesc()
                     var inputDesc = document.getElementById("executado");
                     inputDesc.focus();
                 } else {
@@ -331,7 +402,7 @@
 </head>
 
 <body>
- 
+
     <!-- Incluindo o JavaScript do Bootstrap e JavaScript personalizado -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 

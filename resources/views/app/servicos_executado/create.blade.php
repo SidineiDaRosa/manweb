@@ -4,6 +4,7 @@
 
 @section('content')
 <main class="content">
+        
     <div class="card">
         <div class="card-header-template">
             <div>
@@ -11,7 +12,7 @@
             </div>
             <div>
             <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
-                        <i class="icofont-dashboard"></i> dashboard
+                        <i class="icofont-dashboard"></i> Dashboard
                     </a>
             </div>
         </div>
