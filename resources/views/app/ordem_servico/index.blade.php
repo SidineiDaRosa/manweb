@@ -4,14 +4,14 @@
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <main class="content">
-    <div class="card">
+    <div class="card" style="background-color: rgb(245, 246, 248);">
         <style>
             .card-header {
                 background-color: rgb(211, 211, 211);
                 opacity: 0.95;
             }
         </style>
-        <div class="card-header">
+        <div class="card-header" style="background-color: rgb(245, 246, 248);">
             <script>
                 function Funcao() {
                     alert('teste');
@@ -66,12 +66,12 @@
                 <div class="col-md-2 mb-0">
                     <label for="situacao" class="">Situação:</label>
                     <select class="form-control" name="situacao" id="situacao" value="">
-                        <option value="aberto">aberto</option>
-                        <option value="fechado">fechado</option>
-                        <option value="indefinido">indefinido</option>
-                        <option value="cancelada">cancelada</option>
-                        <option value="em andamento">em andamento</option>
-                        <option value="pausado">pausado</option>
+                        <option value="aberto">Aberto</option>
+                        <option value="fechado">Fechado</option>
+                        <option value="indefinido">Indefinido</option>
+                        <option value="cancelada">Cancelada</option>
+                        <option value="em andamento">Em andamento</option>
+                        <option value="pausado">Pausado</option>
                     </select>
                 </div>
                 <div class="col-md-2 mb-0">
@@ -129,33 +129,32 @@
                 <div class="col-md-0">
                     <label for="btFiltrar" class="">Filtrar:</label>
                     <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="FiltraOs()">
-                            <span class="icon text-white-50">
-                                <i class="icofont-filter"></i>
-                            </span>
-                            <span class="text">Filtrar seleção</span>
+                        <a href="#" class="btn btn-outline-warning btn-bg" onclick="FiltraOs()" style="color: orangered;"
+                        title="Alpicar filtro">
+                            <span class="text">
+                                <i class="icofont-filter"></i>Filtrar</span>
                         </a>
 
                         </input>
                 </div>
                 <div class="col-md-0">
-                    <label for="btFiltrar" class="">hoje</label>
+                    <label for="btFiltrar" class="">Hoje</label>
                     <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetDataHoje()">
+                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetDataHoje()" >
                             <span class="icon text-white-50">
                                 <i class="icofont-filter"></i>
                             </span>
-                            <span class="text">Busca os pra hoje</span>
+                            <span class="text">O.S. hoje</span>
                         </a>
                 </div>
                 <div class="col-md-0">
-                    <label for="btFiltrar" class="">Em andamento</label>
+                    <label for="btFiltrar" class="">O.S. Em andamento</label>
                     <p>
                         <a href="#" class="btn btn-info btn-icon-split" onclick="GetOsEmAndamento()">
                             <span class="icon text-white-50">
                                 <i class="icofont-filter"></i>
                             </span>
-                            <span class="text">Busca os Em Andamento</span>
+                            <span class="text">O.S. Em Andamento</span>
                         </a>
                 </div>
                 <div class="col-md-0">
@@ -165,27 +164,27 @@
                             <span class="icon text-white-50">
                                 <i class="icofont-filter"></i>
                             </span>
-                            <span class="text">Busca os aberta</span>
+                            <span class="text">O.S. aberta</span>
                         </a>
                 </div>
                 <div class="col-md-0">
-                    <label for="btFiltrar" class="">Busca os semana</label>
+                    <label for="btFiltrar" class="">O.S. semana</label>
                     <p>
                         <a href="#" class="btn btn-info btn-icon-split" onclick="exibirIntervaloSemanaAtual()">
                             <span class="icon text-white-50">
                                 <i class="icofont-filter"></i>
                             </span>
-                            <span class="text">Busca os semana</span>
+                            <span class="text">O.S semana</span>
                         </a>
                 </div>
                 <div class="col-md-0">
-                    <label for="btFiltrar" class="">Vencidas</label>
+                    <label for="btFiltrar" class="">O.S. Vencidas</label>
                     <p>
                         <a href="#" class="btn btn-info btn-icon-split" onclick="SetOsVencidas()">
                             <span class="icon text-white-50">
                                 <i class="icofont-filter"></i>
                             </span>
-                            <span class="text">Busca os Vencidas</span>
+                            <span class="text">O.S. Vencidas</span>
                         </a>
                 </div>
                 <!--------------------------------Ajax para pesquisa------------------------------------->
@@ -281,7 +280,7 @@
                     }
                 </script>
                 <div class="col-md-0">
-                    <label for="btFiltrar" class="">Nova O.S</label>
+                    <label for="btFiltrar" class="">Nova O.S.</label>
                     <p>
                         <a href="{{ route('empresas.index') }}" class="btn btn-info btn-icon-split">
                             <span class="material-symbols-outlined">
@@ -292,8 +291,8 @@
                 <div class="col-md-0">
                     <label for="btFiltrar" class="">dashboard</label>
                     <p>
-                        <a class="btn btn-info btn-icon-split btn-warning" href="{{ route('app.home') }}">
-                            <i class="icofont-dashboard"></i> dashboard
+                        <a class="btn btn-info btn-icon-split btn-dark" href="{{ route('app.home') }}">
+                            <i class="icofont-dashboard"></i> Dashboard
                         </a>
                 </div>
             </div>
