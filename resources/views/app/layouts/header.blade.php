@@ -23,26 +23,33 @@
         <div class="menu-toggle mx-3">
             <i class="icofont-navigation-menu"></i>
         </div>
-        <div class="logo">
-            <i class="icofont-architecture-alt icofont-2x wite"></i>
-            <span class="font-wheight-light">Manutenção Fapolpa</span>
+        <div class="logo" id="logo">
+            <i class="icofont-architecture-alt icofont-1x " style="color:lightgrey;"></i>
+            <span style="font-family: Arial, Helvetica, sans-serif;color:lightgrey;font-size:20px;font-stretch:condensed;">Manutenção Fapolpa</span>
         </div>
+        <style>
+            @media (max-width: 900px) {
+                #logo {
+                    display: none;
+                }
+            }
+        </style>
         <div class="spacer"></div>
         <!-- Notificação de Check list -->
         <!-- Notificação de Check list -->
-        <div class="dropdown" id="checklist-count">
+        <div class="dropdown" id="checklist-count" style="margin-top:20px;">
             <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: white;">
                 Check-list
             </a>&nbsp&nbsp
-            <span style="margin-top:-5px;"  class="badge" id="checklist-badge">0</span>
+            <span style="margin-top:-5px;" class="badge" id="checklist-badge">0</span>
         </div>
 
         <!-- Notificação de SS -->
-        <div class="dropdown" id="solicitacoes-count">
+        <div class="dropdown" id="solicitacoes-count" style="margin-top:20px;">
             <a href="/solicitacoes-os" id="solicitacoes-link" class="dropdown" style="color: white;">
                 SS pendente
             </a>&nbsp&nbsp
-            <span style="margin-top:-5px;"  class="badge" id="solicitacoes-badge">0</span>
+            <span style="margin-top:-5px;" class="badge" id="solicitacoes-badge">0</span>
         </div>
 
         <!-- CSS -->
