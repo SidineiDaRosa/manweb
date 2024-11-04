@@ -66,25 +66,24 @@
             Por favor, informe hora.
         </div>
     </div>
-    <div class="row mb-1">
-        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Executante da tarefa</label>
-        <div class="col-md-5">
-            <select name="funcionario_id" id="funcionario_id" class="form-control-template" required>
-                <option value=""> --Selecione o Responsável--</option>
+
+    <div class="div-description">
+        <div id="div-executante">
+            <select name="funcionario_id" id="funcionario_id" class="form-control-template" required style="font-family: Arial, Helvetica, sans-serif;">
+                <option value="" style="font-family: Arial, Helvetica, sans-serif;"> --Selecione o Responsável--</option>
                 @foreach ($funcionarios as $funcionario_find)
-                <option value="{{$funcionario_find->id}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
+                <option value="{{$funcionario_find->id}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}
+                    style="font-family: Arial, Helvetica, sans-serif;">
                     {{$funcionario_find->primeiro_nome}}
                 </option>
                 @endforeach
             </select>
             {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
         </div>
-        <div class="invalid-tooltip">
-            Por favor, informe os dados.
-        </div>
         <style>
             .div-description {
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 width: 100%;
@@ -111,24 +110,28 @@
                 box-shadow: 0 0 5px #721c24;
                 /* Adiciona uma sombra à borda */
             }
+            #div-executante{
+                    width:33%;
+                }
 
             @media (max-width: 900px) {
                 .form-control-txt {
                     width: 100%;
                     /* Ajusta a largura do textarea em telas menores */
                 }
+                #div-executante{
+                    width:100%;
+                }
             }
         </style>
-    </div>
 
-    <div class="div-description"> <textarea class="form-control-txt" id="descricao" name="descricao" rows="5" cols="50" required placeholder="--descreva os serviços executados--"></textarea> </div>
+        <textarea class="form-control-txt" id="descricao" name="descricao" rows="5" cols="50" required placeholder="--descreva os serviços executados--"></textarea>
+    </div>
     <script>
         //-----------------------------------------------------------//
 
         //   Desabilita o texto descrição 
         //----------------------------------------------------------//]
-
-
 
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -136,13 +139,11 @@
                 const descriptionElement = document.getElementById('descricao');
                 const divDescriptionElement = document.getElementById('div-description');
                 const divButtonElement = document.getElementById('div-button-send');
+                const divExecutanteElement = document.getElementById('div-executante');
                 // divDescriptionElement.style.display = 'none'; // Oculta a descrição ao iniciar
                 divButtonElement.style.display = 'none'; // Oculta a descrição ao iniciar  
                 descriptionElement.style.display = 'none'; // Oculta a descrição ao iniciar  
-
-
-
-
+                divExecutanteElement.style.display = 'none'; // Oculta a descrição ao iniciar  
             }
 
             // Chama a função disableDesc ao carregar a página
@@ -156,7 +157,7 @@
             const divButtonElement = document.getElementById('div-button-send');
             //divDescriptionElement.style.display = 'block'; // Exibe a descrição ao habilitar
             divButtonElement.style.display = 'block'; // Exibe a descrição ao habilitar  
-            descriptionElement.style.display = 'block'; // Exibe a descrição ao habilitar  
+            descriptionElement.style.display = 'block'; // Exibe a descrição ao habilitar 
             descriptionElement.focus(); // Chama a função focus() corretamente
         }
     </script>
@@ -186,6 +187,8 @@
             if (dataFim < dataPrevista) {
                 alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
                 document.getElementById('dataFim').value = 'null';
+            } else {
+
             }
         }
     </script>
@@ -366,7 +369,7 @@
         }
     });
     //---------------------------------------------------------------------------------------//
-    //verifica  a hora fim
+    // Validação de hora de fim
     document.getElementById('hora_fim').addEventListener('change', function() {
         var dataInicio = document.getElementById('data_inicio').value;
         var dataFim = document.getElementById('data_fim').value;
@@ -384,8 +387,11 @@
             document.getElementById('hora_fim').style.backgroundColor = 'rgb(255, 150, 150)';
             document.getElementById('hora_fim').focus();
         } else {
+
             document.getElementById('data_fim').style.backgroundColor = 'rgb(150, 255, 150)';
             document.getElementById('hora_fim').style.backgroundColor = 'rgb(150, 255, 150)';
+
+            document.getElementById('div-executante').style.display = 'block'; // Oculta a descrição ao iniciar   
             CallSumHours()
         }
     });
