@@ -158,7 +158,7 @@
                     <li class="nav-item">
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('form_logout').submit();">
-                            Sair
+                            Saír
                         </a>
                         <form action="{{ route('logout') }}" method="POST" id="form_logout">
                             @csrf

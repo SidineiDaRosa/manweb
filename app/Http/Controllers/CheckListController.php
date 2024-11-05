@@ -29,7 +29,12 @@ class CheckListController extends Controller
             ->with('equipamento') // Carregar equipamento
             ->groupBy('equipamento_id')
             ->get();
+        // Ordena os checkListsStatus pelo nome do equipamento
+        $checkListsStatus = $checkListsStatus->sortBy(function ($checkList) {
+            return $checkList->equipamento->nome; // Acessa o nome do equipamento relacionado
+        });
         //dd($checkListsStatus->all());
+        // Obtém todos os equipamentos ordenados pelo nome
         $equipamentos = Equipamento::orderBy('nome', 'asc')->get();
         $equipamento = Equipamento::find(0);
         return view('app.check_list.index', [
@@ -113,7 +118,7 @@ class CheckListController extends Controller
                 'equipamentos' => $equipamentos,
                 'equipamento' => $equipamento,
                 'check_list' => $check_list,
-                
+
             ]
         );
     }

@@ -355,6 +355,7 @@ Route::post('/check-list-cheked', [CheckListExecutadoController::class, 'store']
 Route::get('/check-list-cheked-index', [CheckListExecutadoController::class, 'index'])->name('check-list-cheked-index');
 Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'executado'])->name('check-list-finalizado');
 Route::get('/check-list-funcionario', [CheckListExecutadoController::class, 'funcionario'])->name('check-list-funcionario');
+Route::delete('/check-list-exec-delete/{id}', [CheckListExecutadoController::class, 'destroy'])->name('check-list-exec-delete');
 //----------------------------------------------------------//
 //   CUSTOS GERAIS           
 //----------------------------------------------------------//

@@ -31,7 +31,7 @@ class CheckListExecutadoController extends Controller
             'equipamento' => $equipamento,
             'check_list' => $check_list,
             'funcionario' => $funcionario,
-            'natureza'=>$request->natureza
+            'natureza' => $request->natureza
         ]);
     }
 
@@ -99,7 +99,7 @@ class CheckListExecutadoController extends Controller
                 $checkListCheked->save();
                 $equipamentos = Equipamento::all();
                 $equipamento = Equipamento::find($request->equipamento_id);
-               // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+                // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
                 $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
                 $funcionario = $request->funcionario;
                 return view('app.check_list.check_list_open', [
@@ -107,10 +107,10 @@ class CheckListExecutadoController extends Controller
                     'equipamento' => $equipamento,
                     'check_list' => $check_list,
                     'funcionario' => $funcionario,
-                    'natureza'=>$request->natureza
+                    'natureza' => $request->natureza
                 ]);
             } else {
-                return response()->json(['message' => 'Checklist '.$checkListCheked->check_list_id .' não salvo, verifique os dados!'], 201);
+                return response()->json(['message' => 'Checklist ' . $checkListCheked->check_list_id . ' não salvo, verifique os dados!'], 201);
             }
         } else {
             //-------------------------------------------------------------------------------------//
@@ -127,7 +127,7 @@ class CheckListExecutadoController extends Controller
             // dd($request->all()); // Isso mostrará todos os dados recebidos
             $equipamentos = Equipamento::all();
             $equipamento = Equipamento::find($request->equipamento_id);
-           // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+            // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
             $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
             $funcionario = $request->funcionario;
             return view('app.check_list.check_list_open', [
@@ -135,7 +135,7 @@ class CheckListExecutadoController extends Controller
                 'equipamento' => $equipamento,
                 'check_list' => $check_list,
                 'funcionario' => $funcionario,
-                'natureza'=>$request->natureza
+                'natureza' => $request->natureza
             ]);
         }
     }
@@ -183,6 +183,9 @@ class CheckListExecutadoController extends Controller
     public function destroy($id)
     {
         //
+        $checkListExecutado = CheckListExecutado::findOrFail($id);
+        $checkListExecutado->delete();
+        return response()->json(['message' => 'Registro deletado com sucesso!']);
     }
     /**
      * Store a newly created resource in storage.
