@@ -97,7 +97,7 @@
             <table class="table table-hover" style="text-transform: none;">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>ID Entrada</th>
                         <th>Produto</th>
                         <th>Quantidade</th>
                         <th>Valor</th>
@@ -112,7 +112,7 @@
                         <th>{{ $entrada_produto->id }}</td>
                         <td>
                             <a class="txt-link" href="{{ route('produto.show', ['produto' => $entrada_produto->produto->id]) }}" target="blank">
-                                ID: &nbsp{{ $entrada_produto->produto->id }} &nbspNome:&nbsp{{ $entrada_produto->produto->nome }}
+                                ID: &nbsp{{ $entrada_produto->produto->id }}, &nbsp{{ $entrada_produto->produto->nome }}
                             </a>
                         </td>
                         <td>{{ $entrada_produto->quantidade }}</td>
