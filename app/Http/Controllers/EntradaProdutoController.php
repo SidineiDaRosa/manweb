@@ -46,7 +46,6 @@ class EntradaProdutoController extends Controller
             if ($tipoFiltro == 2) {
                 
                 $entradas_produtos = EntradaProduto::where('produto_id',$request->produto_id)->where('empresa_id', 2)->get();
-                echo($entradas_produtos);
                 if (!empty($entradas_produtos)) {
                     return view('app.entrada_produto.index', [
                         'entradas_produtos' => $entradas_produtos,
