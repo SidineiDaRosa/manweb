@@ -20,17 +20,19 @@ class EntradaProdutoController extends Controller
      */
     public function index(Request $request)
     {
+        //----------------------------------------------//
+        //    Entradas de produtos 
+        //----------------------------------------------//
         $tipoFiltro = $request->get('tipofiltro');
         $nome_produto_like = $request->get('produto');
         $empresa_id = $request->get('empresa_id');
         $data_inicio = $request->get('data_inicio');
         $data_fim = $request->get('data_fim');
         $empresa = Empresas::all();
-        //$fornecedores=Fornecedor::all();
+        // Verifica o tipo de filtro aplicado se >=1
         if ($tipoFiltro >= 1) {
-
+            // Se = 1  busca pela empresa e nome
             if ($tipoFiltro == 1) {
-                //$entradas_produtos = EntradaProduto::all();
                 //$entradas_produtos = EntradaProduto::where('nome', 'like', $nome_produto_like . '%')->get();
                 $entradas_produtos = EntradaProduto::where('produto_id', $nome_produto_like)->where('empresa_id', $empresa_id)->get();
                 if (!empty($entradas_produtos)) {
@@ -39,17 +41,20 @@ class EntradaProdutoController extends Controller
                         'empresa' => $empresa
                     ]);
                 }
-                //if ($tipoFiltro == 2) {
-                //$entradas_produtos = EntradaProduto::all();
-                //$entradas_produtos = EntradaProduto::where('nome', 'like', $nome_produto_like . '%')->get();
-                //$valorTotal = OrdemServico::where('data_inicio', ('>='), $dataFim)->where('empresa_id', $empresa_id)->where('situacao', $situacao)->sum('valor');
-                // echo($entradas_produtos);
-                // if (!empty($entradas_produtos )) {
-                //return view('app.entrada_produto.index', [
-                //'entradas_produtos' => $entradas_produtos,
-                // ]);
-                // }
             }
+            // Se = 2  busca pelo ID
+            if ($tipoFiltro == 2) {
+                
+                $entradas_produtos = EntradaProduto::where('produto_id',$request->produto_id)->where('empresa_id', 2)->get();
+                echo($entradas_produtos);
+                if (!empty($entradas_produtos)) {
+                    return view('app.entrada_produto.index', [
+                        'entradas_produtos' => $entradas_produtos,
+                        'empresa' => $empresa
+                    ]);
+                }
+            }
+            // Se = 5  busca pela data de inicio
             if ($tipoFiltro == 5) {
                 $entradas_produtos = EntradaProduto::where('empresa_id', $empresa_id)
                     ->whereBetween('data', [$data_inicio, $data_fim])
@@ -105,17 +110,19 @@ class EntradaProdutoController extends Controller
         $estoque = EstoqueProdutos::find($request->input('estoque_id')); //busca o registro do produto com o id da entrada do produto
         $estoque->quantidade = $estoque->quantidade + $request->input('quantidade'); // soma estoque antigo com a entrada de produto
         $estoque->save();
-        $produto_id=$estoque->produto_id;
-        $empresa=Empresas::all();
-        $entradas_produtos = EntradaProduto::where('produto_id', $produto_id)->where('empresa_id',2)->where('empresa_id',2)->get();
-        $produto= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
-        $estoque_produtos= EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
-        $categorias=Categoria::all();
+        $produto_id = $estoque->produto_id;
+        $empresa = Empresas::all();
+        $entradas_produtos = EntradaProduto::where('produto_id', $produto_id)->where('empresa_id', 2)->where('empresa_id', 2)->get();
+        $produto = EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $estoque_produtos = EstoqueProdutos::where('empresa_id', 2)->where('produto_id', $estoque->produto_id)->get();
+        $categorias = Categoria::all();
         //dd($estoque_produtos);
         return view('app.estoque_produto.index', [
-            'estoque_produtos' => $estoque_produtos, 'empresas' => $empresa, 'produtos' => $produto, 'categorias' => $categorias
+            'estoque_produtos' => $estoque_produtos,
+            'empresas' => $empresa,
+            'produtos' => $produto,
+            'categorias' => $categorias
         ]);
-
     }
     /**
      * Display the specified resource.

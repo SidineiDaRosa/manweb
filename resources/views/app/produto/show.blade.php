@@ -167,6 +167,9 @@
                 <a href="{{route('pedido-saida-lista.index', ['produto_id'=>$produto->id])}}" target="blank">Consultar saídas<span class="material-symbols-outlined">
                         open_in_new
                     </span></a>
+                    <a href="{{route('entrada-produto.index', ['produto_id'=>$produto->id,'tipofiltro'=>2])}}" target="blank">Consultar Entradas<span class="material-symbols-outlined">
+                        open_in_new
+                    </span></a>
                 <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" class="btn btn-outline-success btn-sm">
                     <i class="icofont-cubes"></i>
                     </span>

@@ -84,7 +84,7 @@ Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\Equipa
 Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
 Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
 //---------------------------------------------//
-//             Ordem de serviço
+//                Ordem de serviço
 //---------------------------------------------//
 Route::middleware('auth')->resource('/ordem-servico', 'App\Http\Controllers\OrdemServicoController');
 Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 'update'])->name('ordem_servico.update');
@@ -92,19 +92,22 @@ Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 
 Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
 // Programação de os e visualização semanal O.S.
 Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStatusOsController::class, 'programer_os'])->name('program_os');
-//ordem de produção
-
+//--------------------------------------------------------//
+//                  Ordem de produção
+//--------------------------------------------------------//
 Route::middleware('auth')->resource('/ordem-producao', 'App\Http\Controllers\OrdemProducaoController');
-
-//entrada de produto
+//--------------------------------------------------------//
+//                 Entrada de produtos
+//--------------------------------------------------------//
 Route::middleware('auth')->resource('/entrada-produto', 'App\Http\Controllers\EntradaProdutoController');
 
 Route::middleware('auth')->get(
     'produto_fornecedor/create',
     'App\Http\Controllers\ProdutoFornecedorController@create'
 )->name('produto-fornecedor.create');
-
+//------------------------------------------------//
 //produto-fornecedor
+//------------------------------------------------//
 Route::middleware('auth')->post(
     'produto_fornecedor/store',
     'App\Http\Controllers\ProdutoFornecedorController@store'
@@ -137,7 +140,8 @@ Route::middleware('auth')->post(
 )->name('parada-equipamento.store');
 //---------------------------------------------------------//
 //------------------Utilis controller---------------------//
-//busca o horimetro inicial de Ordem de produção via ajax
+//   Busca o horimetro inicial de Ordem de produção via ajax
+
 Route::middleware('auth')->get(
     'utils/get-horimetro-inicial',
     'App\Http\Controllers\UtilsController@getHorimetroInicial'
@@ -180,7 +184,8 @@ Route::middleware('auth')->post(
     'App\Http\Controllers\UtilsController@validarDataHoraTermino'
 )->name('validar-data-hora-termino');
 //-------------------------------------------------------------//
-//busca empresas
+//                Busca empresas
+//-------------------------------------------------------------//
 Route::middleware('auth')->post('/Empresas-filtro', [App\Http\Controllers\EmpresasController::class, 'index']);
 Route::middleware('auth')->resource('/empresas', 'App\Http\Controllers\EmpresasController');
 //Filtro Produtos
@@ -223,15 +228,7 @@ Route::middleware('auth')->resource('/control-panel', 'App\Http\Controllers\Cont
 Route::middleware('auth')->resource('/item-produto', 'App\Http\Controllers\ItemProdutoController');
 //Filtro Produtos item
 Route::middleware('auth')->post('/item-produto-filtro', [App\Http\Controllers\ItemProdutoController::class, 'index']);
-//rota qrcode
-///Route::get('qrcode', function () {
-///return QrCode::size(300)->generate('A basic example of QR code!');//https://morioh.com/p/5f7b3d064fb9----https://techvblogs.com/blog/generate-qr-code-laravel-8
-///});
-///Route::get('qrcode-with-color', function () {
-/// return \QrCode::size(300)
-/// ->backgroundColor(255,55,0)
-///  ->generate('A simple example of QR code');
-///});
+
 //--------------------------------------------------------//
 //               Pedidos de saida
 //--------------------------------------------------------//
@@ -239,12 +236,14 @@ Route::middleware('auth')->resource('/pedido-saida', 'App\Http\Controllers\Pedid
 Route::middleware('auth')->resource('/pedido-saida-lista', 'App\Http\Controllers\PedidoSaidaListaController');
 Route::middleware('auth')->post('/pedido-saida-filtro', [App\Http\Controllers\PedidosSaidaController::class, 'index']);
 Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
-
-//Deletar o peidod de saida
+//--------------------------------------------------------//
+//   Deletar o pedido de saida
+//--------------------------------------------------------//
 Route::middleware('auth')->delete('/pedidos-saida/{id}', [PedidosSaidaController::class, 'destroy'])->name('pedidos-saida.destroy');
 
-
+//--------------------------------------------------------//
 // Busca produtos para adicionar em pedidos de sáida com O.S.
+//--------------------------------------------------------//
 Route::middleware('auth')->post('/pedido-saida-searching-products', [App\Http\Controllers\PedidoSaidaListaController::class, 'searching_products'])->name('pedido-saida-searching-products');
 
 //----------------------------------------------------//

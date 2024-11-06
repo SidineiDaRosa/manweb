@@ -92,7 +92,7 @@
                     <i class="icofont-cubes"></i>
                 </a>
                 <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
+                    <i class="icofont-dashboard"></i> Dashboard
                 </a>
             </div>
         </div>
@@ -101,11 +101,10 @@
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Produto Id</th>
                         <th>Produto</th>
                         <th>Quantidade</th>
                         <th>Valor</th>
-                        <th>Data</th>
+                        <th>Lançamento</th>
                         <th>Fornecedor</th>
                         <th>Empresa</th>
 
@@ -116,11 +115,10 @@
                     <tr>
                         <th>{{ $entrada_produto->id }}</td>
                         <td>
-                            <a href="{{ route('produto.show', ['produto' => $entrada_produto->produto->id]) }}" target="blank">{{ $entrada_produto->produto->id }}{{ $entrada_produto->produto->nome }}<span class="material-symbols-outlined">
-                                    open_in_new
-                                </span></a>
+                            <a class="txt-link" href="{{ route('produto.show', ['produto' => $entrada_produto->produto->id]) }}" target="blank">
+                                {{ $entrada_produto->produto->id }} &nbsp{{ $entrada_produto->produto->nome }}
+                            </a>
                         </td>
-                        <td>{{ $entrada_produto->produto->nome }}</td>
                         <td>{{ $entrada_produto->quantidade }}</td>
                         <td>{{ $entrada_produto->valor }}</td>
                         <td>{{ \Carbon\Carbon::parse($entrada_produto->data)->format('d/m/Y') }}</td>
