@@ -90,6 +90,12 @@
                 margin-right: 100px;
                 cursor: pointer;
             }
+
+            /*  Estilização de cor de fundos de formulários */
+            .backgrund-primary {
+                background-color: rgb(245, 246, 248);
+                
+            }
         </style>
 
         <!-- JavaScript para atualização das contagens -->

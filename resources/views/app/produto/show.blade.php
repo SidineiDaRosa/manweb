@@ -167,19 +167,21 @@
                 <a href="{{route('pedido-saida-lista.index', ['produto_id'=>$produto->id])}}" target="blank">Consultar saídas<span class="material-symbols-outlined">
                         open_in_new
                     </span></a>
-                    <a href="{{route('entrada-produto.index', ['produto_id'=>$produto->id,'tipofiltro'=>2])}}" target="blank">Consultar Entradas<span class="material-symbols-outlined">
+                <a href="{{route('entrada-produto.index', ['produto_id'=>$produto->id,'tipofiltro'=>2])}}" target="blank">Consultar Entradas<span class="material-symbols-outlined">
                         open_in_new
                     </span></a>
-                <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" class="btn btn-outline-success btn-sm">
+                <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" class="btn btn-outline-success btn-md">
                     <i class="icofont-cubes"></i>
                     </span>
                     <span class="text">Criar estoque</span>
                 </a>
-                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.edit', ['produto' => $produto->id]) }}" title="editar dados do produto">
 
-                    <i class="icofont-ui-edit"></i> </a>
                 <a class="btn btn-bg-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto">
                     <span class="text">Onde é aplicado este produto</span></a>
+                <a class="btn btn-md-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.edit', ['produto' => $produto->id]) }}"
+                    title="editar dados do produto">
+
+                    <i class="icofont-ui-edit"></i> </a>
                 {{--//-----------------------------------------//--}}
                 {{--// Cria automaticamente um pedido de compra//--}}
                 {{--//-----------------------------------------//--}}
@@ -280,8 +282,8 @@
                     //echo $protocolo.$url;
                     ?>
                     <p>
-                      {{-- {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}--}} 
-                      {{--{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}--}}  
+                        {{-- {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}--}}
+                        {{--{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}--}}
                     <p>
                 </div>
             </div>

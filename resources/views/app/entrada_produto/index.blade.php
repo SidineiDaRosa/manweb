@@ -2,9 +2,9 @@
 
 @section('content')
 <main class="content">
-    <div class="card">
+    <div class="card" style="background-color: rgb(245, 246, 248)">
         <div class="card-header-template">
-            Entradas de produtos
+           <span style="font-family: Arial, Helvetica, sans-serif;">Entradas de produtos</span> 
             <form id="formSearchingProducts" action="{{'Ent-Produtos-filtro'}}" method="POST" style="width: 75%;">
                 @csrf
                 <!--------------------------------------------------------------------------------------->
@@ -81,23 +81,20 @@
                 </button>
             </form>
             <div>
-                <a href="{{ route('produto.index') }}" class="btn btn-sm btn-primary">
-                    Lista de produtos
-                    <span class="material-symbols-outlined">
-                        format_list_bulleted
-                    </span>
+                <a href="{{ route('produto.index') }}" class="btn btn-md btn-outline-primary">
+                    Produtos
                 </a>
-                <a href="{{route('Estoque-produto.index')}}" class="btn btn-sm btn-primary">
-                    Estoque produtos
+                <a href="{{route('Estoque-produto.index')}}" class="btn btn-md btn-outline-primary">
+                    Estoque
                     <i class="icofont-cubes"></i>
                 </a>
-                <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
+                <a class="btn btn-outline-dark btn-md" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> Dashboard
                 </a>
             </div>
         </div>
         <div class="card-body">
-            <table class="table-template table-striped table-hover table-bordered" style="text-transform: none;">
+            <table class="table table-hover" style="text-transform: none;">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -107,7 +104,6 @@
                         <th>Lançamento</th>
                         <th>Fornecedor</th>
                         <th>Empresa</th>
-
                     </tr>
                 </thead>
                 <tbody>
