@@ -112,7 +112,7 @@
                         <th>{{ $entrada_produto->id }}</td>
                         <td>
                             <a class="txt-link" href="{{ route('produto.show', ['produto' => $entrada_produto->produto->id]) }}" target="blank">
-                                {{ $entrada_produto->produto->id }} &nbsp{{ $entrada_produto->produto->nome }}
+                                ID: &nbsp{{ $entrada_produto->produto->id }} &nbspNome:&nbsp{{ $entrada_produto->produto->nome }}
                             </a>
                         </td>
                         <td>{{ $entrada_produto->quantidade }}</td>
