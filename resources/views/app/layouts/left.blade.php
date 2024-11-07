@@ -130,9 +130,9 @@
                         <a class="sidebar-submenu-expanded-a" href="{{route('ordem-servico.index')}}">
                             <i class="icofont-repair"></i>
                             &nbsp&nbspOrdem de Serviço</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="{{route('kpys.dashboard')}}">
+                        <a class="sidebar-submenu-expanded-a" href="{{route('kpis.dashboard')}}">
                             <i class="icofont-dashboard-web"></i>
-                            &nbsp&nbspKPYs</a><br>
+                            &nbsp&nbspKPIs</a><br>
                         <a class="sidebar-submenu-expanded-a" href="#">
                             <i class="icofont-bars"></i>
                             &nbsp&nbspGráficos</a>

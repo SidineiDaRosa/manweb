@@ -363,6 +363,6 @@ Route::get('/dashboard-custos', [CustosController::class, 'dashboard'])->name('c
 //----------------------------------------------------------//
 //   KPYs          
 //----------------------------------------------------------//
-use App\Http\Controllers\KPYsController;
+use App\Http\Controllers\KPIsController;
 
-Route::get('/dashboard-kpys', [KPYsController::class, 'index'])->name('kpys.dashboard');
+Route::get('/dashboard-kpis', [KPIsController::class, 'index'])->name('kpis.dashboard');

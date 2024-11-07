@@ -11,7 +11,7 @@ use App\Models\OrdemServico;
 use Carbon\Carbon; // Certifique-se de importar a classe Carbon
 use Illuminate\Support\Facades\DB;
 
-class KPYscontroller extends Controller
+class KPIscontroller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,7 +39,7 @@ class KPYscontroller extends Controller
             ->OrderBy('total_horas','asc')
             ->get();
         // Retorna a view com os dados de serviços executados
-        return view('app.KPYs.dashboard', [
+        return view('app.KPIs.dashboard', [
             'servicos_executados' => $servicos_executados,
             'ordens_servico' => $ordens_servico
         ]);
