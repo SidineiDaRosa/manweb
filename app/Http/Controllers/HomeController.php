@@ -113,7 +113,8 @@ class HomeController extends Controller
 
         // Busca as ordens de serviço que atendem aos critérios
         $ordens_servicos_aberta_hoje = OrdemServico::where('situacao', 'Aberto')
-            ->whereDate('data_inicio', '=', $dataHoje)
+            ->whereDate('data_inicio', '<=', $dataHoje)
+            ->whereDate('data_fim', '>=', $dataHoje)
             ->where('empresa_id', 2)
             ->get();
 
@@ -319,12 +320,16 @@ class HomeController extends Controller
         // Busca os de 2 dias fechadas
         $last_2day = Carbon::now()->subDays(2);
         $add_2day = Carbon::now()->addDays(2);
-        // Definindo a data de hoje
+        //----------------------------------------//
+        // Totalização de O.S em números
+         //----------------------------------------//
         $today = now()->format('Y-m-d'); // ou use date('Y-m-d') se não usar Carbon
         $os_fechadas_2dias = OrdemServico::where('data_fim', '>=', $last_2day)->where('situacao', 'Fechado')->count();
-        $os_abertas = OrdemServico::where('data_fim', '>=', $last_2day)->where('situacao', 'aberto')->count();
+        $os_abertas = OrdemServico::where('situacao', 'aberto')->count();
         $os_em_andamento = OrdemServico::where('situacao', 'em andamento')->count();
-        $os_today = OrdemServico::where('data_inicio', '=', $today)->where('situacao',['aberto','em andamento'])->count();
+        $os_today = OrdemServico::where('data_inicio', '<=', $today)
+        ->where('data_fim', '>=', $today)
+        ->where('situacao',['aberto','em andamento'])->count();
         // dd($os_hoje);
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento,

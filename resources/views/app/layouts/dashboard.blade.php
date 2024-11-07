@@ -307,16 +307,20 @@
                                     </td>
 
                                     <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
+                                    {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}    
+                                    {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
 
                                     </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
                                         {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
-                                        <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"> às </span>
+                                        <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"></span>
                                         {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('h:i') }}
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
-                                    <td>{{$os_hoje->equipamento->nome}}</td>
+                                    <td>
+                                     <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;font-stretch:extra-condensed;">
+                                        {{$os_hoje->equipamento->nome}}</span>   
+                                    </td>
                                     <td>
                                         {{-- Valor GUT --}}
                                         @php
@@ -611,13 +615,13 @@
             <div style="display: flex;flex-direction:row;">
                 <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
                     <div style="">
-                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Fechadas</Span><br>
+                        <Span style="font-size:12px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">Fechadas últimos 2 dias</Span><br>
                     </div>
                     <hr style="margin-top: -2px; color:#ccc;">
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_fechadas_2dias))
-                            {{ $os_fechadas_2dias }}
+                            {{ $os_fechadas_2dias }}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
 
                             @else
                             0
@@ -629,13 +633,13 @@
                 </div>
                 <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
                     <div style="">
-                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Abertas</Span><br>
+                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">Total Abertas </Span><br>
                     </div>
                     <hr style="margin-top: -2px; color:#ccc;">
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_abertas))
-                            {{$os_abertas}}
+                            {{$os_abertas}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
                             @else
                             0
                             @endif
@@ -645,13 +649,13 @@
                 </div>
                 <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
                     <div style="">
-                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Em andamento</Span><br>
+                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">Em andamento</Span><br>
                     </div>
                     <hr style="margin-top: -2px; color:#ccc;">
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_em_andamento))
-                            {{$os_em_andamento}}
+                            {{$os_em_andamento}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
                             @else
                             0
                             @endif
@@ -661,13 +665,13 @@
                 </div>
                 <div style="display:flex;flex-direction:column;height:80px;width:150px;background-color:#FFFFFF; border-radius:5px;height:60px;box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);margin:5px;">
                     <div style="">
-                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">O.S. Para hoje</Span><br>
+                        <Span style="font-size:14px;font-family: Arial, Helvetica, sans-serif;color: #333333; ">Neste intervalo</Span><br>
                     </div>
                     <hr style="margin-top: -2px; color:#ccc;">
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_today))
-                            {{$os_today}}
+                            {{$os_today}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
                             @else
                             0
                             @endif
@@ -1055,6 +1059,7 @@
             border-bottom: 1px solid rgb(255, 255, 200, 0.3);
             /* Adiciona uma borda inferior de 1px sólida cinza */
             height: 28px;
+            border-left:1px;
         }
 
         /* Altera a cor de fundo da linha quando o mouse passar sobre ela */

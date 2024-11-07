@@ -378,7 +378,6 @@
                         <table class="condensed-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>ID</th>
                                     <th>Previsão de início</th>
                                     <th>Previsão de fim</th>
@@ -396,15 +395,10 @@
                                 $horaInicio = \Carbon\Carbon::parse($os_hoje->hora_inicio);
                                 @endphp
                                 <tr>
-                                    <td>
-                                        <a class="" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}" hidden>
-                                            <span class="material-symbols-outlined">
-                                                open_in_new
-                                            </span>
-                                        </a>
-                                    </td>
+
                                     <td>{{$os_hoje->id}}</td>
                                     <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
+                                        {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                         {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
                                     </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
@@ -413,7 +407,9 @@
                                         {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
-                                    <td>{{$os_hoje->equipamento->nome}}</td>
+                                    <td style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;font-stretch:extra-condensed;">
+                                        {{$os_hoje->equipamento->nome}}
+                                    </td>
                                     <td>
                                         {{-- Valor GUT --}}
                                         @php
@@ -421,7 +417,7 @@
 
                                         // Determina a cor da barra de progresso
                                         if ($valorGUT <= 50) { $progressColor='blue' ; } elseif ($valorGUT> 50 && $valorGUT <= 80) { $progressColor='yellow' ; } else { $progressColor='orange' ; } @endphp <input type="text" value="{{ $valorGUT }}" id="progress-input-today" hidden>
-                                                <div class="progress">
+                                                <div class="progress" style="width:35px;">
                                                     <div id="progress-bar-today" class="progress-bar" role="progressbar" aria-valuenow="{{ $valorGUT }}" aria-valuemin="0" aria-valuemax="125" style="width: {{ $valorGUT }}%; background-color: {{ $progressColor }}; color: black;">
                                                         {{ $valorGUT }}
                                                     </div>

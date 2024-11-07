@@ -49,14 +49,16 @@ class DahboardStatusOsController extends Controller
         //$dataInicio = '2023-01-01';
         $dataInicio = $data;
         $dataFim = $hoje; //formato en
+        $today = $hoje; //formato en
         $dataFim_1 = date("Y-m-d", strtotime("+500 days")); //formato en
         $dataFutura_1_days = date("Y-m-d", strtotime("+1 days")); //formato en
         $dataFutura_5_days = date("Y-m-d", strtotime("+5 days")); //formato en
         $funcionarios = Funcionario::all();
         $situacao = 'aberto';
-        //Busca ordens do dia abertas
-        $ordens_servicos_hoje = OrdemServico::where('situacao', $situacao)
-            ->where('data_inicio', ('='), $dataFim)
+        //Busca ordens do dia abertas conta
+        $ordens_servicos_hoje = OrdemServico::where('situacao', 'aberto')
+            ->where('data_inicio', ('>='), $today)
+            //->where('data_fim', ('<='), $dataFim)
             ->where('empresa_id', ('='), 2)
             ->orderby('data_inicio')->orderby('hora_inicio')->count();
         //Busca ordens do dia fehadas
@@ -104,12 +106,12 @@ class DahboardStatusOsController extends Controller
         // Busca as ordens de serviço que atendem aos critérios
         $dataHoje = Carbon::now()->format('Y-m-d');
 
-        // Busca as ordens de serviço que atendem aos critérios
+        // Busca as ordens de serviço abertas que esta no intervalo de excução e não venceu ainda
         $ordens_servicos_aberta_hoje = OrdemServico::where('situacao', 'Aberto')
-            ->whereDate('data_inicio', '=', $dataHoje)
+            ->whereDate('data_inicio', '<=', $dataHoje)
+            ->whereDate('data_fim', '>=', $dataHoje)
             ->where('empresa_id', 2)
             ->get();
-
         // Calcula o valor GUT para cada ordem de serviço e armazena em uma coleção
         $ordens_servicos_aberta_hoje = $ordens_servicos_aberta_hoje->map(function ($ordem) {
             $ordem->valor_gut = $ordem->gravidade * $ordem->urgencia * $ordem->tendencia;
@@ -440,8 +442,8 @@ class DahboardStatusOsController extends Controller
             'fridayOrders' => $fridayOrders,
             'saturdayOrders' => $saturdayOrders,
             'sundayOrders' => $sundayOrders,
-            'ordens_servicos_por_semana'=>$ordens_servicos_por_semana
-           
+            'ordens_servicos_por_semana' => $ordens_servicos_por_semana
+
         ]);
     }
 }
