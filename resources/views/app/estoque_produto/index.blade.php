@@ -75,12 +75,12 @@
                 </button>
 
             </form>
-            <div> <a href="{{ route('produto.index') }}" class="btn btn-sm btn-primary">
-                    Lista de produtos
+            <div> <a href="{{ route('produto.index') }}" class="btn btn-sm btn-outline-primary">
+                    Produtos
                 </a>
             </div>
             <div> <a class="btn btn-sm btn-outline-dark mb-1" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
+                    <i class="icofont-dashboard"></i> Dashboard
                 </a></div>
 
         </div>
@@ -99,7 +99,7 @@
                         <th>Local</th>
                         <th>Criticidade</th>
                         <th>Empresa</th>
-                        <th>Operações</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,9 +107,9 @@
                     <tr>
                         <td>{{ $estoque_produto->id }}</td>
                         <td>
-                            <a href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank"><span class="text-link" style="font-size:17px;;">
-                                    {{ $estoque_produto->produto->id}} {{ $estoque_produto->produto->nome }}
-                                </span></a>
+                            <a class="txt-link" href="{{ route('produto.show', ['produto' => $estoque_produto->produto->id]) }}" target="blank">
+                                    ID:&nbsp{{ $estoque_produto->produto->id}},&nbsp{{ $estoque_produto->produto->nome }}
+                                </a>
                         </td>
 
                         <td>{{ $estoque_produto->unidade_medida }}</td>

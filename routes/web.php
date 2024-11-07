@@ -360,3 +360,9 @@ Route::delete('/check-list-exec-delete/{id}', [CheckListExecutadoController::cla
 //----------------------------------------------------------//
 
 Route::get('/dashboard-custos', [CustosController::class, 'dashboard'])->name('custos.dashboard');
+//----------------------------------------------------------//
+//   KPYs          
+//----------------------------------------------------------//
+use App\Http\Controllers\KPYsController;
+
+Route::get('/dashboard-kpys', [KPYsController::class, 'index'])->name('kpys.dashboard');

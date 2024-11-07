@@ -17,6 +17,9 @@ class Funcionario extends Model
      {
          return $this->hasMany(Servicos_Executado::class, 'funcionario_id');
      }
-   
+     public function funcionario()
+     {
+         return $this->hasMany(Servicos_Executado::class, 'funcionario_id');
+     }
    
 }

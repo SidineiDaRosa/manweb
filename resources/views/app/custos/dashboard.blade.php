@@ -1,3 +1,5 @@
+@extends('app.layouts.app')
+@section('content')
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -9,8 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script> <!-- Biblioteca ECharts -->
 </head>
 
-<body>
-    <div class="container mt-5" style="width: 50%;">
+<body style="width: 100%;background-color: rgb(245, 246, 248)">
+    <div class="container mt-5" style="width: 100%;background-color: rgb(245, 246, 248)">
        
         <h2>Custos por Equipamento</h2>
         <table class="table" >

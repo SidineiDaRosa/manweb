@@ -245,7 +245,7 @@
                                 <div class="titulo">Sistemas de Gestão</div>
                                 <p></p>
                                 <div class="conteudo">
-                                    <a href="{{ route('app.home') }}" class="title-menu" caption="erp">Acesso ERP ManWEB</a>
+                                    <a href="{{ route('app.home') }}" class="title-menu" caption="erp">CMMS ManWEB</a>
                                 </div>
                             </div>
                         </div>

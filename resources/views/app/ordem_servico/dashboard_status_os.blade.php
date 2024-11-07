@@ -472,6 +472,7 @@
                 {{--------------------------------------}}
                 {{--Verifica se a variavel contém dados--}}
                 {{--------------------------------------}}
+                @if(isset($ordem_servico))
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         var progressBar = document.getElementById('progress-bar-{{ $ordem_servico->id }}');
@@ -507,6 +508,7 @@
                         });
                     });
                 </script>
+                @endif
                 <style>
                     .wide-progress {
                         width: 100%;
