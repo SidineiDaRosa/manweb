@@ -248,11 +248,9 @@
                 <div class="conteudo">
                     <select class="input-text" name="tipo_componente" id="tipo_componente" value="">
                         <option value="{{$pecas_equipamentos_for->tipo_componente}}">{{$pecas_equipamentos_for->tipo_componente}}</option>
-                        <option value="manutencao">manutencao</option>
+                        <option value="manutencao">Manutenção</option>
                         <option value="Componente">Componente</option>
                         <option value="lubrificação">lubrificação</option>
-                        <option value="Chek-List">Chek-List</option>
-                        <option value="mensalidade">Mensalidade</option>
                     </select>
                 </div>
                 <div class="titulo">Grau de criticidade</div>

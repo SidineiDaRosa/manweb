@@ -236,8 +236,6 @@
                         <option value="manutencao">Manutenção</option>
                         <option value="Componente">Componente</option>
                         <option value="lubrificação">Lubrificação</option>
-                        <option value="Chek-List">Check-List</option>
-                        <option value="mensalidade">Mensalidade</option>
                     </select>
                 </div>
                 <div class="titulo">Grau de criticidade</div>
