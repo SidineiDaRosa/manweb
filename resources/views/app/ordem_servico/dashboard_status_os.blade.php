@@ -26,7 +26,7 @@
     <div style="width: 100px;margin-left:300px;">
         <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: black;margin-top:20px;">
             Check-list <p></p>
-           &nbsp <span style="margin-top:35px;" class="badge" id="checklist-badge">0</span>
+            &nbsp <span style="margin-top:35px;" class="badge" id="checklist-badge">0</span>
         </a>
     </div>
     <!-- CSS -->
@@ -180,7 +180,7 @@
                         <td>{{ $ordem_servico->id }}</td>
                         <td hidden>{{ $ordem_servico->data_emissao }}</td>
                         <td hidden>{{ $ordem_servico->hora_emissao }}</td>
-                        <td >{{ $ordem_servico->data_inicio }}</td>
+                        <td>{{ $ordem_servico->data_inicio }}</td>
                         <td>{{ $ordem_servico->hora_inicio }}</td>
                         <td>{{ $ordem_servico->data_fim }}</td>
                         <td>{{ $ordem_servico->hora_fim }}</td>
@@ -332,7 +332,7 @@
                         <tr>
                             <td>{{$os_emandamento->id}}</td>
                             <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}"
-                            style="font-size: 15px;width:40px;" >
+                                style="font-size: 15px;width:40px;">
                                 {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/y') }} <br>
                                 {{ \Carbon\Carbon::parse($os_emandamento->hora_fim)->format('m:i') }}
 
@@ -485,7 +485,7 @@
                         exibirDataCompleta();
                     </script>
                     <div class="div-os-sm">
-                        <table class="condensed-table">
+                        <table class="condensed-table" style="border-bottom:black;">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -503,16 +503,16 @@
                                 $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                                 $horaInicio = \Carbon\Carbon::parse($os_hoje->hora_inicio);
                                 @endphp
-                                <tr>
+                                <tr  style="border-bottom: 2px solid #F7E8C4;">
                                     <td>{{$os_hoje->id}}</td>
                                     <td>
                                         <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}"
-                                        style="font-size:15px;font-family:Arial, Helvetica, sans-serif;" >
+                                            style="font-size:15px;font-family:Arial, Helvetica, sans-serif;">
                                             {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
                                         </div>
                                         <div class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}"
-                                        style="font-size:15px;font-family:Arial, Helvetica, sans-serif" >
+                                            style="font-size:15px;font-family:Arial, Helvetica, sans-serif">
                                             {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
                                         </div>
@@ -537,7 +537,9 @@
                                     </td>
                                 </tr>
                                 @endforeach
+
                             </tbody>
+
                         </table>
                     </div>
                     <hr>
