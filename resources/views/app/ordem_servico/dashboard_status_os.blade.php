@@ -329,7 +329,7 @@
                         $dataAtual = \Carbon\Carbon::today();
                         $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                         @endphp
-                        <tr>
+                        <tr style="border-bottom: 2px solid #F7E8C4;">
                             <td>{{$os_emandamento->id}}</td>
                             <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}"
                                 style="font-size: 15px;width:40px;">
