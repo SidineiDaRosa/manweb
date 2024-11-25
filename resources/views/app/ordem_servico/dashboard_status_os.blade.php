@@ -503,19 +503,18 @@
                                 $horaInicio = \Carbon\Carbon::parse($os_hoje->hora_inicio);
                                 @endphp
                                 <tr>
-
                                     <td>{{$os_hoje->id}}</td>
                                     <td>
-                                        <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
+                                        <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}"
+                                        style="font-size:15px;" >
                                             {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
                                         </div>
-                                        <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
+                                        <div class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}"
+                                        style="font-size:15px;" >
                                             {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
                                         </div>
-
-
                                     </td>
 
                                     <td>{{$os_hoje->descricao}}</td>
