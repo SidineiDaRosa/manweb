@@ -488,8 +488,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Previsão de início</th>
-                                    <th>Previsão de fim</th>
+                                    <th>Datas</th>
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
                                     <th>GUT</th>
@@ -506,15 +505,19 @@
                                 <tr>
 
                                     <td>{{$os_hoje->id}}</td>
-                                    <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
-                                        {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
-                                    </td>
-                                    <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }} <br>
+                                    <td>
+                                        <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
+                                            {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
+                                            {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
+                                        </div>
+                                        <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
+                                            {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
+                                            {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
+                                        </div>
 
-                                        {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
+
                                     </td>
+
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;font-stretch:extra-condensed;">
                                         {{$os_hoje->equipamento->nome}}
