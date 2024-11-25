@@ -36,7 +36,6 @@
         </style>
         <div class="spacer"></div>
         <!-- Notificação de Check list -->
-        <!-- Notificação de Check list -->
         <div class="dropdown" id="checklist-count" style="margin-top:20px;">
             <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: white;">
                 Check-list

@@ -20,6 +20,113 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <div style="display: flex; justify-content: center; text-align: center;">
     <h4>Painel de Visualização de O.S.</h4>
+    <!-- Notificação de Check list -->
+    <div class="dropdown" id="checklist-count" style="margin-top:20px;margin-right:50px">
+    </div>
+    <div style="width: 100px;margin-left:300px;">
+        <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: white;margin-top:20px;">
+            Check-list
+        </a>&nbsp&nbsp
+        <span style="margin-top:20px;margin-right:500px;" class="badge" id="checklist-badge">0</span>
+    </div>
+    <!-- CSS -->
+    <style>
+        .badge {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: bold;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            z-index: 1000;
+        }
+
+        .badge.zero {
+            background-color: green;
+        }
+
+        .badge.non-zero {
+            background-color: red;
+        }
+
+        .badge.warning {
+            background-color: orange;
+            /* Nova classe para laranja */
+        }
+
+        #solicitacoes-count,
+        #checklist-count {
+            position: relative;
+            display: inline-block;
+            margin-right: 100px;
+            cursor: pointer;
+        }
+
+        /*  Estilização de cor de fundos de formulários */
+        .backgrund-primary {
+            background-color: rgb(245, 246, 248);
+
+        }
+    </style>
+
+    <!-- JavaScript para atualização das contagens -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para atualizar a contagem de solicitações pendentes
+            function atualizarContagemSolicitacoes() {
+                fetch('/solicitacoes-pendentes')
+                    .then(response => response.json())
+                    .then(data => {
+                        const badge = document.getElementById('solicitacoes-badge');
+                        badge.innerText = data.pendentes;
+
+                        if (data.pendentes > 0) {
+                            badge.classList.remove('zero');
+                            badge.classList.add('non-zero');
+                        } else {
+                            badge.classList.remove('non-zero');
+                            badge.classList.add('zero');
+                        }
+                    })
+                    .catch(error => console.error('Erro:', error));
+            }
+
+            // Função para atualizar a contagem de checklists pendentes
+            function atualizarContagemChecklists() {
+                fetch('/check-list-pendentes')
+                    .then(response => response.json())
+                    .then(data => {
+                        const badge = document.getElementById('checklist-badge');
+                        badge.innerText = data.pendentes;
+
+                        if (data.pendentes > 0) {
+                            badge.classList.remove('zero');
+                            badge.classList.remove('non-zero');
+                            badge.classList.add('warning'); // Adiciona a classe warning
+                        } else {
+                            badge.classList.remove('non-zero');
+                            badge.classList.remove('warning'); // Remove a classe warning
+                            badge.classList.add('zero');
+                        }
+                    })
+                    .catch(error => console.error('Erro:', error));
+            }
+
+            // Atualiza as contagens a cada 30 segundos
+            setInterval(atualizarContagemSolicitacoes, 30000);
+            setInterval(atualizarContagemChecklists, 30000);
+
+            // Atualiza as contagens imediatamente quando a página é carregada
+            atualizarContagemSolicitacoes();
+            atualizarContagemChecklists();
+        });
+    </script>
 </div>
 <main class="content">
 
@@ -200,8 +307,8 @@
     <div class="container-box">
         {{--Box 1--}}
         <div class="item">
-              <!--Os em excução-->
-              <h6 class="title-md">O.S. EM EXECUÇÃO </h6>
+            <!--Os em excução-->
+            <h6 class="title-md">O.S. EM EXECUÇÃO </h6>
             <div class="div-os-sm">
                 <table class="condensed-table">
                     <thead>
