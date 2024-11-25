@@ -510,7 +510,7 @@
                                             {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
                                         </div>
-                                        <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horafim->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
+                                        <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horanicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
                                             {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
                                         </div>
