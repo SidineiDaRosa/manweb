@@ -200,6 +200,46 @@
     <div class="container-box">
         {{--Box 1--}}
         <div class="item">
+              <!--Os em excução-->
+              <h6 class="title-md">O.S. EM EXECUÇÃO </h6>
+            <div class="div-os-sm">
+                <table class="condensed-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Previsão de fim</th>
+                            <th>Descrição</th>
+                            <th>Patrimônio</th>
+                            <th>Executante</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach($ordens_servicos_emandamento as $os_emandamento)
+                        @php
+                        $dataPrevista = \Carbon\Carbon::parse($os_emandamento->data_fim);
+                        $dataAtual = \Carbon\Carbon::today();
+                        $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
+                        @endphp
+                        <tr>
+                            <td>{{$os_emandamento->id}}</td>
+                            <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
+                                {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/y') }} <br>
+                                {{ \Carbon\Carbon::parse($os_emandamento->hora_fim)->format('m:i') }}
+
+                            </td>
+                            <td>{{$os_emandamento->descricao}}</td>
+                            <td>{{$os_emandamento->equipamento->nome}}</td>
+                            <td>{{$os_emandamento->responsavel}}</td>
+                            <td>
+                                <div class="circle"></div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <form action="" class="scrollable">
                 <h6 class="title-md">O.S. FECHADAS HOJE</h6>
                 <div class="div-os-sm">
@@ -309,51 +349,13 @@
             }
         </style>
         <div class="item">
-            <h6 class="title-md">O.S. EM EXECUÇÃO </h6>
             <style>
                 #menu-ativos {
                     font-size: 50px;
                 }
             </style>
             <div class="" style="max-width:100%;background-color:rgb(255,255,224)">
-                <div class="div-os-sm">
-                    <table class="condensed-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Previsão de fim</th>
-                                <th>Descrição</th>
-                                <th>Patrimônio</th>
-                                <th>Executante</th>
 
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach($ordens_servicos_emandamento as $os_emandamento)
-                            @php
-                            $dataPrevista = \Carbon\Carbon::parse($os_emandamento->data_fim);
-                            $dataAtual = \Carbon\Carbon::today();
-                            $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
-                            @endphp
-                            <tr>
-                                <td>{{$os_emandamento->id}}</td>
-                                <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/y') }} <br>
-                                    {{ \Carbon\Carbon::parse($os_emandamento->hora_fim)->format('m:i') }}
-
-                                </td>
-                                <td>{{$os_emandamento->descricao}}</td>
-                                <td>{{$os_emandamento->equipamento->nome}}</td>
-                                <td>{{$os_emandamento->responsavel}}</td>
-                                <td>
-                                    <div class="circle"></div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
                 <hr>
                 <span class="title-md" id="dataCompleta">
                     <script>
