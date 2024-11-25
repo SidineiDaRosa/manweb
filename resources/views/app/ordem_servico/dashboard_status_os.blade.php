@@ -24,10 +24,10 @@
     <div class="dropdown" id="checklist-count" style="margin-top:20px;margin-right:50px">
     </div>
     <div style="width: 100px;margin-left:300px;">
-        <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: white;margin-top:20px;">
-            Check-list
-        </a>&nbsp&nbsp
-        <span style="margin-top:20px;margin-right:500px;" class="badge" id="checklist-badge">0</span>
+        <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: black;margin-top:20px;">
+            Check-list <p></p>
+           &nbsp <span style="margin-top:35px;" class="badge" id="checklist-badge">0</span>
+        </a>
     </div>
     <!-- CSS -->
     <style>
