@@ -366,3 +366,8 @@ Route::get('/dashboard-custos', [CustosController::class, 'dashboard'])->name('c
 use App\Http\Controllers\KPIsController;
 
 Route::get('/dashboard-kpis', [KPIsController::class, 'index'])->name('kpis.dashboard');
+//----------------------------------------------------------//
+//   Atualizar orímetro        
+//----------------------------------------------------------//
+use App\Http\Controllers\EquipamentoController;
+Route::post('/update-horimetro', [EquipamentoController::class, 'update_hour_meter']);

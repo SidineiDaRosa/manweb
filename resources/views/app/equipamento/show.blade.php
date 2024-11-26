@@ -36,7 +36,7 @@
                     </span>
                     <span class="text">Nova O.S</span>
                     <span class="material-symbols-outlined">
-                        add_ad
+                        assignment_add
                     </span>
                 </a>
                 <a class="btn btn-outline-success btn-bg" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}">
@@ -174,18 +174,62 @@
                 <hr>
                 <div class="conteudo">
                     <style>
-                        .input-text {
+                        #input-text {
                             margin-top: 5px;
-                            width: 50%;
-                            border: none;
-                            color: #2174d4;
+                            width: 95%;
+                            height: 30px;
                         }
                     </style>
-
-                    <input class="input-text" type="text" value="{{$equipamento->horimetro}}" readonly>
-                    <div style="margin-top:10px;"><a class="btn btn-outline-primary btn-sm" href="">
+                    <div style="margin-top:2px;">
+                        <input id="input-text" class="form-control" type="number" value="{{$equipamento->horimetro}}">
+                    </div>
+                    <div style="margin-top:2px;">
+                        <a class="btn btn-outline-primary btn-sm" href="javascript:void(0);" id="update-btn">
                             Atualizar Horímetro
-                        </a></div>
+                        </a>
+                    </div>
+
+                    <script>
+                        document.getElementById('update-btn').addEventListener('click', function() {
+                            // Pega o valor do ID do equipamento diretamente da div com id="idOs"
+                            var equipamentoId = document.getElementById('idOs').innerText.replace('ID:', '').trim();
+
+                            // Pega o valor do horímetro
+                            var horimetro = document.getElementById('input-text').value;
+
+                            // Exibe um alert com os valores para verificação
+                            alert('Equipamento ID: ' + equipamentoId + '\nHorímetro: ' + horimetro);
+
+                            // Cria um objeto JSON com os dados para enviar
+                            var data = {
+                                id: equipamentoId,
+                                horimetro: horimetro
+                            };
+
+                            // Envia os dados via AJAX
+                            fetch('/update-horimetro', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Token CSRF para segurança
+                                    },
+                                    body: JSON.stringify(data)
+                                })
+                                .then(response => response.json())
+                                .then(result => {
+                                    if (result.success) {
+                                        alert('Horímetro atualizado com sucesso!');
+                                    } else {
+                                        alert('Erro ao atualizar o horímetro');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Erro:', error);
+                                    alert('Erro ao tentar atualizar o horímetro');
+                                });
+                        });
+                    </script>
+
 
                 </div>
                 <div class="titulo">Arquivos anexados</div>
@@ -486,7 +530,6 @@
     </table>
 </body>
 <style>
-
     body,
     html {
         height: 100%;
@@ -503,6 +546,7 @@
         background-color: white;
 
     }
+
     .item {
         width: calc(33% - 20px);
         height: auto;
@@ -512,7 +556,7 @@
         overflow: auto;
         /* Impede que o conteúdo transborde */
         font-weight: 500;
-        border-radius:5px;
+        border-radius: 5px;
     }
 
     .box {
@@ -803,7 +847,7 @@
         overflow: auto;
         /* Impede que o conteúdo transborde */
         font-size: 15px;
-        border-radius:5px;
+        border-radius: 5px;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-weight: 100;
     }

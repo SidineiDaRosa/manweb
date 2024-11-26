@@ -241,4 +241,27 @@ class EquipamentoController extends Controller
             return response()->json(['success' => false, 'message' => 'Você não tem permissão para deletar este equipamento.']);
         }
     }
+    public function update_hour_meter(Request $request)
+    {
+        // Valida os dados recebidos
+        $request->validate([
+            'id' => 'required|exists:equipamentos,id', // Verifica se o ID existe na tabela
+            'horimetro' => 'required|numeric', // Verifica se o horímetro é um número
+        ]);
+
+        try {
+            // Busca o equipamento pelo ID
+            $equipamento = Equipamento::find($request->id);
+
+            // Atualiza o valor do horímetro
+            $equipamento->horimetro = $request->horimetro;
+            $equipamento->save();
+
+            // Retorna uma resposta JSON com sucesso
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // Caso haja um erro, retorna um erro
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
 }
