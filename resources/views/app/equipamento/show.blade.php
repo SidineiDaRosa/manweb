@@ -45,7 +45,7 @@
                     </span>
                 </a>
                 <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
+                    <i class="icofont-dashboard"></i> Dashboard
                 </a>
                 <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
                     <i class="icofont-ui-edit"></i> </a>

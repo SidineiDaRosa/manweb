@@ -15,7 +15,7 @@
                     <span class="text">Novo Ativo/equipamento</span>
                 </a>
                 <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
+                    <i class="icofont-dashboard"></i> Dashboard
                 </a>
             </div>
             <!-- determina a largura do form-->
@@ -27,7 +27,7 @@
                         <input type="text" class="form-control" placeholder="digite aqui..." aria-label="digite" aria-describedby="button-addon2" name="empresa" value="{{ $empresa_id}}" readonly hidden>
 
                         <input type="text" class="form-control" placeholder="--Digite o nome parcial--" aria-label="" aria-describedby="button-addon2" name="searching">
-                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Busca Ativo/equipamento</button>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Busca Ativo/Equipamento</button>
                 </form>
             </div>
             {{---fim----------------------------------------------}}
@@ -92,6 +92,21 @@
                                     document.getElementById("demo").innerHTML = x;
                                 }
                             </script>
+                            <a class="btn btn-outline-primary btn-bg" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}"
+                                title="Cria nova O.S.">
+                                <span class="icon text-white-50">
+                                </span>
+                                <span class="text">o.s.</span>
+                                <span class="material-symbols-outlined">
+                                    assignment_add
+                                </span>
+                            </a>
+                            <a class="btn btn-outline-success btn-bg" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}"
+                            title="Cria novo Pedido de compra">
+                                P.C.<span class="material-symbols-outlined">
+                                    list_alt_add
+                                </span>
+                            </a>
                         </div>
                     </td>
                 </tr>
