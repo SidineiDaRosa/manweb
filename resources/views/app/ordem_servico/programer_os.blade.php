@@ -113,7 +113,7 @@
                 <div style="display:flex;">
                     <div style="width:65%;">
                         ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                        <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                        <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
                         <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
                     </div>
                     <div style="width:35%; text-align: right;">
@@ -286,17 +286,17 @@
         @foreach($ordens_servicos_por_semana as $week => $ordens)
         {{-- Verifique se esta é a semana que deseja destacar --}}
         <div class="item-52-week {{ $week == now()->weekOfYear ? 'highlight' : '' }}">
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{ $week }}</h6>
+            <h6 style="font-family: Arial, Helvetica, sans-serif;margin-left:-1px;">{{ $week }}</h6>
 
             @if($ordens->isEmpty())
             <p>...</p>
             @else
-            <ul>
+            <ul style="margin-left: -20px;">
                 @foreach($ordens as $ordem)
                 <li>
                     <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem->id])}}" title="Click para abrir a O.S.">{{ $ordem->id }}</a>
-                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;">{{ \Carbon\Carbon::parse($ordem->data_inicio)->format('d/m/Y') }}</span> 
-                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:darkblue;">{{ $ordem->situacao }}</span> 
+                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;">{{ \Carbon\Carbon::parse($ordem->data_inicio)->format('d/m/y') }}</span> 
+                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:darkblue;">{{ $ordem->equipamento->nome}}</span> 
                 </li>
                 @endforeach
             </ul>
