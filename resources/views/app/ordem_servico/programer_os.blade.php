@@ -134,7 +134,7 @@
             @forelse ($tuesdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' =>  $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
                     <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
                 </div>
                 <div style="width:35%; text-align: right;">
@@ -153,7 +153,7 @@
             @forelse ($wednesdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' =>  $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
                     <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
                 </div>
                 <div style="width:35%; text-align: right;">
@@ -172,7 +172,7 @@
             @forelse ($thursdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
                     <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
                 </div>
                 <div style="width:35%; text-align: right;">
@@ -192,7 +192,7 @@
             @forelse ($fridayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
                     <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
                 </div>
                 <div style="width:35%; text-align: right;">
@@ -211,7 +211,7 @@
             @forelse ($saturdayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' =>  $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
                     <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
                 </div>
                 <div style="width:35%; text-align: right;">
@@ -230,7 +230,7 @@
             @forelse ($sundayOrders as $order)
             <div style="display:flex;">
                 <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Data de Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/Y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
                     <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
                 </div>
                 <div style="width:35%; text-align: right;">
