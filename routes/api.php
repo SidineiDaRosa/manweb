@@ -22,3 +22,10 @@ Route::get('/solicitacoes-os-abertas', [SolicitacaoOsController::class, 'cont_re
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+//------------------------------------------------------------//
+//
+//------------------------------------------------------------//
+
+use App\Http\Controllers\EquipamentoController;
+
+Route::post('/update-horimetro', [EquipamentoController::class, 'update_hour_meter']);
