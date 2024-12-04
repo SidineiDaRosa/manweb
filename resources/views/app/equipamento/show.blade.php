@@ -241,6 +241,10 @@
                 <a class="txt-link" href="{{$equipamento->anexo_2}}" target="_blank">
                     Documentos anexados link 2
                 </a>
+                <p></p>
+                <a class="txt-link" href="{{$equipamento->anexo_3}}" target="_blank">
+                    Procedimento de manutenção
+                </a>
             </div>
             {{--fim card--}}
 

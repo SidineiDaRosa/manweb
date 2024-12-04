@@ -29,7 +29,8 @@ class Equipamento extends Model
         'localizacao',
         'valor_estimado',
         'anexo_1',
-        'anexo_2'
+        'anexo_2',
+        'anexo_3'
     ];
 
     public function marca()

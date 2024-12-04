@@ -181,6 +181,13 @@
             </div>
         </div>
         <div class="row mb-1">
+            <label for="anexo_3" class="col-md-4 col-form-label text-md-end text-right">Anexo 3</label>
+            <div class="col-md-6">
+                <input id="anexo_3" type="text" class="form-control-template" name="anexo_3" value="{{$equipamento->anexo_3 ?? old('anexo_3') }}">
+                {{ $errors->has('anexo_3') ? $errors->first('anexo_3') : '' }}
+            </div>
+        </div>
+        <div class="row mb-1">
             <label for="anexo_2" class="col-md-4 col-form-label text-md-end text-right">Valor estimado</label>
             <div class="col-md-6">
                 <input id="valor_estimado" type="text" class="form-control-template" name="valor_estimado" value="{{$equipamento->valor_estimado?? old('valor_estimado') }}" autocomplete="" autofocus>
