@@ -22,9 +22,11 @@ class CheckListExecutadoController extends Controller
         //
         $equipamentos = Equipamento::all();
         $equipamento = Equipamento::find($request->equipamento_id);
+
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
         $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
         $funcionario = $request->funcionario;
+
         //dd($check_list->all());
         return view('app.check_list.check_list_open', [
             'equipamentos' => $equipamentos,
@@ -195,12 +197,47 @@ class CheckListExecutadoController extends Controller
      */
     public function executado(Request $request)
     {
+
         $equipamento = Equipamento::find($request->equipamento_id);
-        $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->get();
-        return view('app.check_list.check_list_executado', [
-            'equipamento' => $equipamento,
-            'check_list_executado' => $check_list_executado
-        ]);
+
+        $dataInicioStr = $request->data_inicio; // Data para teste
+
+        // Tentamos criar uma instância do Carbon com o formato 'Y-m-d'
+        try {
+            $dataInicio = Carbon::createFromFormat('Y-m-d', $dataInicioStr);
+
+            // Verificamos se a data é válida
+            if ($dataInicio->format('Y-m-d') === $dataInicioStr) {
+               
+                $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)
+                ->whereBetween('data_verificacao', [$request->data_inicio, $request->data_fim])
+                ->where('gravidade', $request->natureza)
+                ->get();
+                
+                return view('app.check_list.check_list_executado', [
+                    'equipamento' => $equipamento,
+                    'check_list_executado' => $check_list_executado
+                ]);
+            } else {
+                $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->get();
+                return view('app.check_list.check_list_executado', [
+                    'equipamento' => $equipamento,
+                    'check_list_executado' => $check_list_executado
+                ]);
+            }
+        } catch (\Exception $e) {
+            $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->get();
+            return view('app.check_list.check_list_executado', [
+                'equipamento' => $equipamento,
+                'check_list_executado' => $check_list_executado
+            ]);
+        }
+
+        // $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->get();
+        //return view('app.check_list.check_list_executado', [
+        // 'equipamento' => $equipamento,
+        // 'check_list_executado' => $check_list_executado
+        // ]);
     }
     /**
      * Store a newly created resource in storage.

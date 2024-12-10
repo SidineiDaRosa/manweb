@@ -84,6 +84,7 @@
                     </select>
                 </div>
                 <hr>
+
                 <button type="submit" class="btn btn-primary">Adicionar Check-List</button>
                 <a href="{{ route('check-list-finalizado',['equipamento_id'=>$equipamento->id]) }}" class="btn btn-dark">Check-List Executado</a>
                 @endif

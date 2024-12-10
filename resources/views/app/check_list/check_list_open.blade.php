@@ -139,7 +139,7 @@
                                         <div class="row g-3">
                                             <div class="col-5 col-md-3">
                                                 <div id="div-baixo" class="gravidade-div" style="border: 2px solid green; padding: 10px; border-radius: 5px; cursor: pointer;">
-                                                    <label class="form-check-label">Baixo</label>
+                                                    <label class="form-check-label">Normal</label>
                                                     <input type="checkbox" name="gravidade" id="ch-baixo" value="1" style="height:30px;width:30px;">
                                                 </div>
                                             </div>

@@ -4,7 +4,7 @@
 <main class="content">
     <div class="card">
         <div class="card-header pb-2">
-            <p class="mb-0">Check-List</p>
+
             <h6> {{$equipamento->nome}}</h6>
             <button type="button" class="btn btn-outline-success open-modal-btn"
                 onclick="window.location.href='{{ route('check-list-index') }}'"
@@ -16,7 +16,26 @@
                 style="float:right;margin-left:5px;">
                 Dashboard
             </button>
-
+            <!-- aplica filtro de check=-list-->
+            <form action="{{ route('check-list-filter',['equipamento_id'=>$equipamento->id]) }}" method="post" id="form_filter_check_list">
+                @csrf
+                <div style="display: flex;flex-direction:row;">
+                <input type="text" class="form-control " name="equipamento_id" id="equipamento_id" value="{{$equipamento->id}}" hidden>
+                    <input type="date" class="form-control " name="data_inicio" id="data_inicio" value="" style="width: 200px">
+                    <input type="date" class="form-control" name="data_fim" id="data+_fim" value="" style="width: 200px">
+                    <select class="form-control" name="natureza" id="Natureza" style="width: 300px;">
+                        <option value="Elétrico">--Selecione a gravidade--</option>
+                        <option value="1">Normal</option>
+                        <option value="2">Médio</option>
+                        <option value="3">Alto</option>
+                        <option value="4">Gravíssimo</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-success open-modal-btn" name="check_list_filter"
+                        style="float:right;margin-left:5px;">
+                        Filtrar
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div>
