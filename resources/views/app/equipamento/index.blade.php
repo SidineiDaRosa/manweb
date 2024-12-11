@@ -102,12 +102,24 @@
                                 </span>
                             </a>
                             <a class="btn btn-outline-success btn-bg" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}"
-                            title="Cria novo Pedido de compra">
+                                title="Cria novo Pedido de compra">
                                 P.C.<span class="material-symbols-outlined">
                                     list_alt_add
                                 </span>
                             </a>
-                        </div>
+                            <div class="form-row">
+                                <form action="{{ 'filtro-os' }}" method="POST" id="form_filt_os" style="margin-left:6px;">
+                                
+                                    @csrf
+                                    <input type="number" id="patrimonio" name="patrimonio_id" value="{{$equipamento->id}}" hidden>
+                                    <input name="number" name="empresa_id" id="empresa_id" value="2" hidden>
+                                    <input name="date" id="data_inicio" name="data_inicio" value="fechado" hidden>
+                                    <input name="date" id="data_fim" name="data_fim" value="fechado" hidden>
+                                    <input name="situacao" id="situacao" value="fechado" hidden>
+                                    <input type="number" name="tipo_consulta" id="tipo_consulta" value="5" hidden>
+                                    <input type="submit" value="O.S Fechadas" class="btn btn-outline-success btn-bg">
+                                </form>
+                            </div>
                     </td>
                 </tr>
                 @endforeach

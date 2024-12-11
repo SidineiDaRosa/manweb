@@ -28,6 +28,7 @@ class OrdemServicoController extends Controller
     //public function index(Request $request)
     public function index(Request $request)
     {
+        echo ($request->tipo_consulta);
         //Mail::to('sidineidarosa201@gmail.com')->send(new ExampleMail());
 
         // return "Email enviado com sucesso!";
@@ -89,25 +90,51 @@ class OrdemServicoController extends Controller
         }
         //Patrimonio
         if ($tipo_consulta == 5) {
-            //filtro ordem de serviço pelo data inicial e situação e patrimonio
-            $funcionarios = Funcionario::all();
-            $dataInicio = $request->get("data_inicio");
-            $dataFim = $request->get("data_fim");
-            // $empresa_id = $request->get("empresa_id");
-            $patrimonio = $request->get("patrimonio_id");
-            $situacao = $request->get("situacao");
-            $ordens_servicos = OrdemServico::where('data_inicio', ('>='), $dataInicio)
-                ->where('data_inicio', ('<='), $dataFim)
-                ->where('equipamento_id', $patrimonio)->where('situacao', $situacao)->orderby('data_inicio')->orderby('hora_inicio')->get();
 
-            $valorTotal = 0;
-            return view('app.ordem_servico.index', [
-                'equipamento' => $equipamento,
-                'ordens_servicos' => $ordens_servicos,
-                'funcionarios' => $funcionarios,
-                'empresa' => $empresa,
-                'valorTotal' => $valorTotal
-            ]);
+            $dataInicio = $request->input('data_inicio');
+
+            if (Carbon::hasFormat($dataInicio, 'Y-m-d')) {
+                // A data é válida, execute sua ação aqui
+                // Adicione seu código aqui para quando a data for válida
+
+                //filtro ordem de serviço pelo data inicial e situação e patrimonio
+                $funcionarios = Funcionario::all();
+                $dataInicio = $request->get("data_inicio");
+                $dataFim = $request->get("data_fim");
+                // $empresa_id = $request->get("empresa_id");
+                $patrimonio = $request->get("patrimonio_id");
+                $situacao = $request->get("situacao");
+                $ordens_servicos = OrdemServico::where('data_inicio', ('>='), $dataInicio)
+                    ->where('data_inicio', ('<='), $dataFim)
+                    ->where('equipamento_id', $patrimonio)->where('situacao', $situacao)->orderby('data_inicio')->orderby('hora_inicio')->get();
+
+                $valorTotal = 0;
+                return view('app.ordem_servico.index', [
+                    'equipamento' => $equipamento,
+                    'ordens_servicos' => $ordens_servicos,
+                    'funcionarios' => $funcionarios,
+                    'empresa' => $empresa,
+                    'valorTotal' => $valorTotal
+                ]);
+            } else {
+                // A data não é válida, não faça nada
+
+                //filtro ordem de serviço pelo data inicial e situação e patrimonio
+                $funcionarios = Funcionario::all();
+                $dataInicio = $request->get("data_inicio");
+                $dataFim = $request->get("data_fim");
+                // $empresa_id = $request->get("empresa_id");
+                $patrimonio = $request->get("patrimonio_id");
+                $ordens_servicos = OrdemServico::where('equipamento_id', $patrimonio)->where('situacao','fechado')->orderby('data_fim', 'desc')->get();
+                $valorTotal = 0;
+                return view('app.ordem_servico.index', [
+                    'equipamento' => $equipamento,
+                    'ordens_servicos' => $ordens_servicos,
+                    'funcionarios' => $funcionarios,
+                    'empresa' => $empresa,
+                    'valorTotal' => $valorTotal
+                ]);
+            }
         }
         if ($tipo_consulta == 6) {
             //filtro ordem de serviço pelo data inicial e situação e empresa
@@ -476,5 +503,4 @@ class OrdemServicoController extends Controller
         // Parar a execução para garantir que a mensagem seja exibida
         exit;
     }
- 
 }
