@@ -107,7 +107,7 @@
                     data-bs-toggle="modal" data-bs-target="#dateTimeModal"
                     data-id="{{ $check_list_executado_f->id }}"
                     style="float:right;margin-left:5px;height:38px;margin-right:5px;">
-                    Filtros
+                    Criar O.S.
                 </button>
                 <form action="{{ route('check-list-exec-delete', $check_list_executado_f->id) }}" method="POST" onsubmit="return confirm('Tem certeza de que deseja deletar este registro: {{$check_list_executado_f->id}}?');">
                     @csrf
@@ -139,7 +139,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="dateTimeModalLabel">Filtrar por Data e Hora</h5>
+                        <h5 class="modal-title" id="dateTimeModalLabel">Criar O.S.</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     </div>
                     <div class="modal-body">
@@ -159,6 +159,10 @@
                             <div class="mb-3">
                                 <label for="endDateTime" class="form-label">Data e Hora Final</label>
                                 <input type="datetime-local" class="form-control" id="endDateTime" name="endDateTime" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="endDateTime" class="form-label">Descrição</label>
+                                <input type="text" class="form-control" value=" {{ $check_list_executado_f->observacao }}" >
                             </div>
                         </form>
                     </div>
