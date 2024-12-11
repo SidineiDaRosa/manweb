@@ -212,21 +212,21 @@ class CheckListExecutadoController extends Controller
                 $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)
                 ->whereBetween('data_verificacao', [$request->data_inicio, $request->data_fim])
                 ->where('gravidade', $request->natureza)
-                ->get();
+                ->orderBy('data_verificacao', 'desc')->get();
                 
                 return view('app.check_list.check_list_executado', [
                     'equipamento' => $equipamento,
                     'check_list_executado' => $check_list_executado
                 ]);
             } else {
-                $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->get();
+                $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->orderBy('data_verificacao', 'desc')->get();
                 return view('app.check_list.check_list_executado', [
                     'equipamento' => $equipamento,
                     'check_list_executado' => $check_list_executado
                 ]);
             }
         } catch (\Exception $e) {
-            $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->get();
+            $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->orderBy('data_verificacao', 'desc')->get();
             return view('app.check_list.check_list_executado', [
                 'equipamento' => $equipamento,
                 'check_list_executado' => $check_list_executado
