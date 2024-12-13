@@ -36,7 +36,7 @@ class CheckListController extends Controller
         $contChListOpe = CheckList::where('natureza', 'Operacional')->where('data_verificacao', '<=', $dataLimite)->count();
 
         if ($type >= 1) {
-            $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->get();
+            $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->where('data_verificacao', '<=', $dataLimite)->get();
             return view('app.check_list.index', [
                 'equipamentos' => $equipamentos,
                 'check_list' => $check_list,
