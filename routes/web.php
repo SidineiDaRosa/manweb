@@ -336,6 +336,7 @@ Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->n
 //----------------------------------------------------------//
 
 Route::get('/check-list-index', [CheckListController::class, 'index'])->name('check-list-index');
+Route::get('/check-list-index-nat', [CheckListController::class, 'index'])->name('check-list-nat');
 //rota acessada pelos executante de check list
 Route::get('/check-list-index-executar', [CheckListController::class, 'executar'])->name('check-list-index-executar');
 Route::post('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');

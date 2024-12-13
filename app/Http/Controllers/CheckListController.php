@@ -15,34 +15,62 @@ class CheckListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
         $dataLimite = Carbon::now()->subDays(13);
         //
         $check_list = CheckList::where('id', 0)->get();
-        // Busca check lists status
-        $checkListsStatus = CheckList::selectRaw("
-        equipamento_id,
-        SUM(CASE WHEN data_verificacao <= ? OR data_verificacao IS NULL THEN 1 ELSE 0 END) AS pendentes,
-        SUM(CASE WHEN data_verificacao > ? THEN 1 ELSE 0 END) AS executados
-    ", [$dataLimite, $dataLimite])
-            ->with('equipamento') // Carregar equipamento
-            ->groupBy('equipamento_id')
-            ->get();
-        // Ordena os checkListsStatus pelo nome do equipamento
-        $checkListsStatus = $checkListsStatus->sortBy(function ($checkList) {
-            return $checkList->equipamento->nome; // Acessa o nome do equipamento relacionado
-        });
-        //dd($checkListsStatus->all());
+        $type = $request->type;
+
+
         // Obtém todos os equipamentos ordenados pelo nome
         $equipamentos = Equipamento::orderBy('nome', 'asc')->get();
         $equipamento = Equipamento::find(0);
-        return view('app.check_list.index', [
-            'equipamentos' => $equipamentos,
-            'check_list' => $check_list,
-            '$equipamento' => $equipamento,
-            'check_lists_status' => $checkListsStatus
-        ]);
+        //-------------------------------------//
+        //  Cont check-list group
+        //-------------------------------------//
+        $contChListMec = CheckList::where('natureza', 'Mecânico')->where('data_verificacao', '<=', $dataLimite)->count();
+        $contChListElet = CheckList::where('natureza', 'Elétrico')->where('data_verificacao', '<=', $dataLimite)->count();
+        $contChListCiv = CheckList::where('natureza', 'Civíl')->where('data_verificacao', '<=', $dataLimite)->count();
+        $contChListOpe = CheckList::where('natureza', 'Operacional')->where('data_verificacao', '<=', $dataLimite)->count();
+
+        if ($type >= 1) {
+            $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->get();
+            return view('app.check_list.index', [
+                'equipamentos' => $equipamentos,
+                'check_list' => $check_list,
+                'equipamento' => $equipamento,
+                'check_lists_open' => $checkListsOpen,
+                'contChListMec' =>  $contChListMec,
+                'contChListElet' => $contChListElet,
+                'contChListCiv' => $contChListCiv,
+                'contChListOpe' => $contChListOpe
+            ]);
+        } else {
+            $checkListsStatus = CheckList::selectRaw("
+            equipamento_id,
+            SUM(CASE WHEN data_verificacao <= ? OR data_verificacao IS NULL THEN 1 ELSE 0 END) AS pendentes,
+            SUM(CASE WHEN data_verificacao > ? THEN 1 ELSE 0 END) AS executados
+        ", [$dataLimite, $dataLimite])
+                ->with('equipamento') // Carregar equipamento
+                ->groupBy('equipamento_id')
+                ->get();
+            // Ordena os checkListsStatus pelo nome do equipamento
+            $checkListsStatus = $checkListsStatus->sortBy(function ($checkList) {
+                return $checkList->equipamento->nome; // Acessa o nome do equipamento relacionado
+            });
+            return view('app.check_list.index', [
+                'equipamentos' => $equipamentos,
+                'check_list' => $check_list,
+                'equipamento' => $equipamento,
+                'check_lists_status' => $checkListsStatus,
+                'contChListMec' =>  $contChListMec,
+                'contChListElet' => $contChListElet,
+                'contChListCiv' => $contChListCiv,
+                'contChListOpe' => $contChListOpe
+            ]);
+        }
     }
 
     /**

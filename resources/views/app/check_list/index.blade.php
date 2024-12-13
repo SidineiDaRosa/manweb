@@ -26,6 +26,58 @@
             </select>
         </form>
         <br>
+        @if(isset($contChListMec))
+        <span style="font-family: Arial, Helvetica, sans-serif;height:40px;font-weight:bold;">Check-Lists pendentes</span>
+        <div style="display:flex;flex-direction:row;">
+            <div class="btn btn-success mb-1" style="width:200px;margin:5px;">
+                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Mecanico'])}}" style="color: white; text-decoration: none;">Mecânico: {{$contChListMec}}</a>
+            </div>
+            <div class="btn btn-warning mb-1" style="width:200px;margin:5px;">
+                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Eletrico'])}}" style="color: white; text-decoration: none;">Elétrico: {{$contChListElet}}</a>
+            </div>
+            <div class="btn btn-primary mb-1" style="width:200px;margin:5px;">
+                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Civil'])}}" style="color: white; text-decoration: none;">Civíl: {{$contChListCiv}}</a>
+            </div>
+            <div class="btn btn-dark mb-1" style="width:200px;margin:5px;">
+                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Operacional'])}}" style="color: white; text-decoration: none;">Operacional: {{$contChListOpe}}</a>
+            </div>
+        </div>
+        @endif
+        @isset($check_lists_open)
+        <table  class="table table-sm" style="table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descrição</th>
+                    <th>Equipamento</th>
+                    <th>Intervalo</th>
+                    <th>Data de Verificação</th>
+                    <th>Hora de Verificação</th>
+                    <th>Natureza</th>
+                    <th>Criado em</th>
+                    <th>Atualizado em</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($check_lists_open as $check_lists_open_f)
+                <tr>
+                    <td>{{$check_lists_open_f->id}}</td>
+                    <td>{{$check_lists_open_f->descricao}}</td>
+                    <td>{{$check_lists_open_f->equipamento_id}}</td>
+                    <td>{{$check_lists_open_f->intervalo}}</td>
+                    <td>{{$check_lists_open_f->data_verificacao}}</td>
+                    <td>{{$check_lists_open_f->hora_verificacao}}</td>
+                    <td>{{$check_lists_open_f->natureza}}</td>
+                    <td>{{$check_lists_open_f->created_at}}</td>
+                    <td>{{$check_lists_open_f->updated_at}}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        @endisset
+
+        <hr>
         @if(isset($check_lists_status))
         <table class="table table-sm" style="table-layout: fixed;">
             <thead>
@@ -56,7 +108,7 @@
             </tbody>
         </table>
         @endif
-
+        <!--  tabela mostra os check list aberto-->
 
         <hr>
         <div class="card-header justify-content-left pt-1">
