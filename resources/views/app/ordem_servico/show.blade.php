@@ -85,15 +85,17 @@
                 .titulo {
                     display: flex;
                     font-size: 15px;
-                    font-family: 'Poppins', sans-serif;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: 500;
+                    color: #4F4F4F;
                 }
 
                 .conteudo {
                     display: flex;
-                    font-size: 18px;
+                    font-size: 17px;
                     font-weight: 400;
-                    font-family: 'Poppins', sans-serif;
-                    color: #007b00;
+                    font-family: Arial, Helvetica, sans-serif;
+                    color: #999999;
                     margin-bottom: -1px;
                     align-items: flex-end;
                 }
@@ -114,9 +116,18 @@
                 {{--Box 1--}}
                 <div class="item">
                     <div class="box-conteudo">
+                        <div class="titulo">ID:</div>
+                        <hr>
+                        <div id=idOs class="conteudo" style="color:mediumblue">
+                            {{$ordem_servico->id}}
+                        </div>
+                        <div class="titulo">Emissão</div>
+                        <hr>
+                        <div class="conteudo" style="color: #2174d4;"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp às &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
                         <div class="titulo"> Empresa</div>
                         <hr>
                         <div class="conteudo">{{$ordem_servico->Empresa->razao_social}}</div>
+
 
                         <div class="titulo">Patrimônio/Ativo</div>
                         <hr>
@@ -132,7 +143,8 @@
                         <div class="titulo">Situação</div>
                         <hr>
                         <div class="conteudo">{{$ordem_servico->situacao}}</div>
-                        <div id=qrCodes>
+                        <!--QR code hidden-->
+                        <div id=qrCodes hidden>
                             {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $ordem_servico->id) !!}
                             <?php
                             $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");
@@ -147,11 +159,7 @@
                 {{--Box 2--}}
                 <div class="item">
                     <div class="box-conteudo">
-                        <div class="titulo">ID:</div>
-                        <hr>
-                        <div id=idOs class="conteudo" style="color:mediumblue">
-                            {{$ordem_servico->id}}
-                        </div>
+
                         {{--//------------------------------------------//--}}
                         {{--//Datas de inico e fim, progress bar        //--}}
                         {{--//------------------------------------------//--}}
@@ -201,7 +209,7 @@
                         <p>
                         <div class="titulo">Descrição dos serviços a serem executados</div>
                         <div class="titulo">
-                            <textarea name="" id="txt-area" class="form-control" rows="6" readonly style="color:crimson">{{$ordem_servico->descricao}}</textarea>
+                            <textarea name="" id="txt-area" class="form-control" rows="6" readonly style="color:#333333;font-weight:500;font-family:Arial, Helvetica, sans-serif">{{$ordem_servico->descricao}}</textarea>
                         </div>
                         <style>
                             #txt-area {
@@ -229,9 +237,7 @@
                 {{--Box 3--}}
                 <div class="item">
                     <div class="box-conteudo">
-                        <div class="titulo">Emissão</div>
-                        <hr>
-                        <div class="conteudo" style="color: #2174d4;"> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}<span class="span-texto-sm "> &nbsp às &nbsp</span> {{$ordem_servico->hora_emissao}}</div>
+
                         <div class="titulo">Natureza do serviço</div>
                         <hr>
                         <div class="conteudo">{{$ordem_servico->natureza_do_servico}}</div>
