@@ -128,7 +128,6 @@
                         <hr>
                         <div class="conteudo">{{$ordem_servico->Empresa->razao_social}}</div>
 
-
                         <div class="titulo">Patrimônio/Ativo</div>
                         <hr>
                         <div class="conteudo" id="patrimonio">{{$ordem_servico->equipamento->nome}}</div>
@@ -286,9 +285,10 @@
 
             {{----------------------------------------------------------}}
             {{--------------------//Serviços executados//---------------}}
-            Serviços executados
+            <hr style="margin-top:1px;">
+            <span>Serviços executados</span>
             @foreach($servicos_executado as $servicos_executados)
-            <div class="container-item" style="border: 1px solid rgba(0, 0, 0, 0.3); border-radius: 5px;">
+            <div class="container-item" style="border: 1px solid rgba(20, 19, 19, 0.3); border-radius: 5px;">
                 <div class="item">
                     <div class="box-conteudo">
                         <div class="titulo">ID</div>
@@ -569,7 +569,9 @@
         justify-content: space-around;
         align-items: flex-start;
         background-color: white;
-        margin: -1;
+        margin: 1px;
+        margin-bottom: 1px;
+        padding: 1px;
 
     }
 
@@ -589,8 +591,8 @@
     .item {
         width: calc(33% - 20px);
         height: auto;
-        margin: 5px;
-        padding: 15px;
+        margin: -1px;
+        padding: 10px;
         background-color: white;
         overflow: auto;
         /* Impede que o conteúdo transborde */
@@ -642,8 +644,6 @@
         margin-bottom: 1rem;
         line-height: 3rem;
         color: #2C2A2A;
-
-
 
     }
 
