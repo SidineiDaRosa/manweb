@@ -112,13 +112,17 @@
                     margin-bottom: 1px;
                 }
             </style>
+            <!----------------------------------------------------------->
+            <!--Divs dos dados da os-->
+            <!----------------------------------------------------------->
+
             <div class="container-item">
                 {{--Box 1--}}
                 <div class="item">
                     <div class="box-conteudo">
                         <div class="titulo">ID:</div>
                         <hr>
-                        <div id=idOs class="conteudo" style="color:mediumblue">
+                        <div id=idOs class="conteudo" style="color:mediumblue;font-size:20px;font:bold;">
                             {{$ordem_servico->id}}
                         </div>
                         <div class="titulo">Emissão</div>
