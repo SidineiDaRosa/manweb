@@ -577,6 +577,7 @@
         margin-bottom: 1px;
         padding: 1px;
 
+
     }
 
     .card-header:first-child {
@@ -590,8 +591,9 @@
     .my-3 {
         border-bottom: none;
     }
-
-
+/*-----------------------------------------------------------/
+/* Box responsivos warp 
+/*---------------------------------------------------------*/
     .item {
         width: calc(33% - 20px);
         height: auto;

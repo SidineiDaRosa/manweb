@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <main class="content">
     <div class="titulo-main">
-        Pedido de compra
+        Pedido de compra teste
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -395,7 +395,12 @@
                         <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" onclick="confirmDelete({{ $pedido_compra_ls->id }})">
                             <i class="icofont-ui-delete"></i>
                         </a>
+                        <a href="{{ route('entrada-produto.create',['produto' => $pedido_compra_ls->produto_id,'estoque_id'=>$pedido_compra_ls->produto_id ]) }}" class="btn btn-sm-template btn-outline-primary  @can('user') disabled @endcan">
 
+                            <i class="icofont-database-add"></i>
+                            </span>
+                            <span class="text">Inserir estoque</span>
+                        </a>
                         <script>
                             function confirmDelete(itemId) {
                                 if (confirm('Você tem certeza que deseja deletar este item?')) {
