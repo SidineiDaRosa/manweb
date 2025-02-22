@@ -5,7 +5,7 @@
 <main class="content">
 
     <div class="titulo-main">
-        Pedido de saída produtos com O.S.
+        Pedido saída de produto com O.S.
     </div>
     <style>
         .titulo-main {
@@ -118,7 +118,7 @@
                     <input type="date" class="input-bordernone" name="data_inicio" id="data_inicio" value="{{$pedido_saida_f->data_emissao ?? old('data_emissao') }}" readonly>
                     <input type="time" class="input-bordernone" name="hora_inicio" id="hora_inicio" value="{{$pedido_saida_f->hora_emissao ?? old('hora_emissao') }}" required autocomplete="hora_emissao" autofocus readonly>
                 </div>
-                <div class="titulo">Emissão</div>
+                <div class="titulo">Previsão para a utilização</div>
                 <hr>
                 <div class="conteudo">
                     <input type="date" class="input-bordernone" name="data_fim" id="dataFim" value="{{$pedido_saida_f->data_prevista ?? old('data_prevista') }}" required autocomplete="data_prevista" autofocus readonly>
@@ -279,8 +279,26 @@
     <hr>
     {{------------------------------------------------}}
     {{--Tabela de peças dos equipamento---------------}}
+    {{------------------------------------------------}}
     <span style="margin-left:20px;">
         <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Componentes do equipamento com periodicidade programada</h5>
+            <input type="button" id="Btn-togglePecas" class="btn btn-warning btn-sm" value="Exibir peças do equipamento" onclick="togglePecas()">
+            <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('tblPecas').style.display = 'none';
+        });
+
+        function togglePecas() {
+            let tabela = document.getElementById('tblPecas');
+            if (tabela.style.display === 'none' || tabela.style.display === '') {
+                tabela.style.display = 'block';
+                document.getElementById('Btn-togglePecas').value='Ocultar peças do equipamento'
+            } else {
+                tabela.style.display = 'none';
+                document.getElementById('Btn-togglePecas').value='Exibir peças do equipamento'
+            }
+        }
+    </script>
     </span>
     <table class="table" id="tblPecas" style="margin-left:1px; border:solid 1px blue; margin-top:10px;">
         <thead>

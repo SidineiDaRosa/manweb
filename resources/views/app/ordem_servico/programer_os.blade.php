@@ -80,7 +80,7 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .item-week h4:hover {
+        .item-week span:hover {
             background-color: greenyellow;
             opacity: 0.5;
             /* Define a opacidade corretamente */
@@ -89,7 +89,7 @@
             /* Suaviza tanto a cor de fundo quanto a opacidade */
         }
 
-        .item-week h4 {
+        .item-week span {
             cursor: pointer;
 
         }
@@ -104,10 +104,14 @@
     </script>
 
     <!------------------------------------------------------------->
+    <!--Semanal -->
+    <!------------------------------------------------------------->
     <div class="container-month">
         {{--Box 2--}}
         <div class="item-week" id="box-2">
-            <h4 class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">Segunda-feira</h4>
+            <span class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">Segunda-feira
+                <i class="icofont-expand"></i>
+            </span>
             <div class="orders">
                 @forelse ($mondayOrders as $order)
                 <div style="display:flex;">
@@ -295,8 +299,8 @@
                 @foreach($ordens as $ordem)
                 <li>
                     <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem->id])}}" title="Click para abrir a O.S.">{{ $ordem->id }}</a>
-                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;">{{ \Carbon\Carbon::parse($ordem->data_inicio)->format('d/m/y') }}</span> 
-                   <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:darkblue;">{{ $ordem->equipamento->nome}}</span> 
+                    <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;">{{ \Carbon\Carbon::parse($ordem->data_inicio)->format('d/m/y') }}</span>
+                    <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:darkblue;">{{ $ordem->equipamento->nome}}</span>
                 </li>
                 @endforeach
             </ul>
