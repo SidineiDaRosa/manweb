@@ -16,7 +16,7 @@
                 <span class="text">Filtros OS</span>
             </a>
 
-            <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}"style="float: left;display:flex;">
+            <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}" style="float: left;display:flex;">
                 <i class="icofont-dashboard"></i> dashboard
             </a>
         </div>
@@ -31,7 +31,9 @@
             'equipamentos'=>$equipamentos,'funcionarios'=>$funcionarios,
             'empresa'=>$empresa,
             'equipamento'=>$equipamento,
-            'pre_descricao_os'=>$pre_descricao_os])
+            'pre_descricao_os'=>$pre_descricao_os,
+            'ss_id'=>$ss_id
+            ])
             @endcomponent
         </div>
     </div>

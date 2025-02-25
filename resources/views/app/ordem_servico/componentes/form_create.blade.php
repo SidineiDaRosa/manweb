@@ -283,7 +283,7 @@
                     <!-- Área editável -->
                     <!-- O div com o editor -->
                     <div id="descricao_os" contenteditable="true" hidden>
-                      
+
                     </div>
 
                     <!-- Input oculto para enviar o valor do div -->
@@ -481,6 +481,11 @@
                 <div class="invalid-tooltip">
                     Por favor, informe a tendência.
                 </div>
+            </div>
+            <div class="titulo">SS de origem</div>
+            <hr>
+            <div class="conteudo">
+                <input type="text" name="ss_id" value="{{$ss_id}}">
             </div>
         </div>
         {{--fim card 3--}}

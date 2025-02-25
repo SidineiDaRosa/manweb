@@ -222,18 +222,21 @@ class OrdemServicoController extends Controller
         $id = $empresa->get('empresa');
         $equipamento = $empresa->get('equipamento');
         $pre_descricao_os = $empresa->get('descricao');
+        $ss_id=$empresa->get('ss_id');
         // $funcionarios=Funcionario::all();
         $funcionarios = Funcionario::all(); //Busca todos os funcionários
         $equipamentos = Equipamento::where('empresa_id', $id)->get();
         $ordem_servico = OrdemServico::all();
         $empresa = Empresas::where('id', $id)->get();
+
         return view('app.ordem_servico.create', [
             'ordem_servico' =>  $ordem_servico,
             'equipamentos' => $equipamentos,
             'funcionarios' => $funcionarios,
             'empresa' => $empresa,
             'equipamento' => $equipamento,
-            'pre_descricao_os' => $pre_descricao_os
+            'pre_descricao_os' => $pre_descricao_os,
+            'ss_id'=>$ss_id
 
         ]);
     }
@@ -289,7 +292,7 @@ class OrdemServicoController extends Controller
             'situacao' => $request->situacao,
             'natureza_do_servico' => $request->natureza_do_servico,
             'especialidade_do_servico' => $request->especialidade_do_servico,
-            'especialidade_do_servico' => $request->especialidade_do_servico
+            'ss_id' => $request->ss_id
 
 
         ]);

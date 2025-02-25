@@ -257,6 +257,14 @@
                         @else
                         <p>Assinatura não disponível</p>
                         @endif
+                    
+                        <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
+                            <input type="text" value="{{$ordem_servico->ss_id}}" name="id" hidden>
+                            <button type="submit" class="btn btn-outline-primary mb-1">
+                                SS: {{$ordem_servico->ss_id}}
+                            </button>
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -591,7 +599,8 @@
     .my-3 {
         border-bottom: none;
     }
-/*-----------------------------------------------------------/
+
+    /*-----------------------------------------------------------/
 /* Box responsivos warp 
 /*---------------------------------------------------------*/
     .item {

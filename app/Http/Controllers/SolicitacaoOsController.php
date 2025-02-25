@@ -20,7 +20,9 @@ class SolicitacaoOsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+
     {
+
         $solicitacoes = SolicitacaoOs::where('status', 'Em Espera')
             ->orWhere('status', 'Aberta')
             ->orderByRaw("FIELD(status, 'Aberta', 'Em Espera')")
@@ -184,11 +186,13 @@ class SolicitacaoOsController extends Controller
         $solicitacao->receptor = auth()->user()->name; // Grava o nome do usuário autenticado
         $solicitacao->save();
         $solicitacaoOs = SolicitacaoOs::find($id);
+        $solicitacaoOs_id = $solicitacaoOs->id;
         $novaOs = $solicitacaoOs->descricao;
         $equipamentos = Equipamento::all();
         return view('app.solicitacao_os.nova_os', [
             'equipamentos' => $equipamentos,
-            'novaOs' => $novaOs
+            'novaOs' => $novaOs,
+            'solicitacaoOs_id' => $solicitacaoOs_id
         ]);
     }
 
@@ -213,27 +217,41 @@ class SolicitacaoOsController extends Controller
     }
     public function solicitacoes(Request $request)
     {
-        // Obtém o valor da data e hora do formulário
-        $datetime = $request->input('datetime');
-        $datetime_fim = $request->input('datetime_fim');
-        $options = $request->get('options');
-        // Converte a data e hora para o formato DateTime, se necessário
-        $date = \Carbon\Carbon::parse($datetime);
-        $endDate = \Carbon\Carbon::parse($datetime_fim);
+        $id = $request->id;
+        if (isset($id)) {
 
-        // Faz a busca das solicitações com base na data e hora
-        $solicitacoes = SolicitacaoOs::where('datetime', '>=', $date)
-            ->where('datetime', '<=', $endDate)->where('status', $options)->orderBy('datetime', 'desc')
-            ->get();
+            // Faz a busca das solicitações com base na data e hora
+            $solicitacoes = SolicitacaoOs::where('id',$id)->get();
+            // Obtém todos os funcionários
+            $funcionarios = Funcionario::all();
 
-        // Obtém todos os funcionários
-        $funcionarios = Funcionario::all();
+            // Retorna a view com os dados
+            return view('app.solicitacao_os.solicitacao_os_show', [
+                'solicitacoes' => $solicitacoes,
+                'funcionarios' => $funcionarios
+            ]);
+        } else {
+            // Obtém o valor da data e hora do formulário
+            $datetime = $request->input('datetime');
+            $datetime_fim = $request->input('datetime_fim');
+            $options = $request->get('options');
+            // Converte a data e hora para o formato DateTime, se necessário
+            $date = \Carbon\Carbon::parse($datetime);
+            $endDate = \Carbon\Carbon::parse($datetime_fim);
 
-        // Retorna a view com os dados
-        return view('app.solicitacao_os.solicitacao_os_show', [
-            'solicitacoes' => $solicitacoes,
-            'funcionarios' => $funcionarios
-        ]);
+            // Faz a busca das solicitações com base na data e hora
+            $solicitacoes = SolicitacaoOs::where('datetime', '>=', $date)
+                ->where('datetime', '<=', $endDate)->where('status', $options)->orderBy('datetime', 'desc')
+                ->get();
+            // Obtém todos os funcionários
+            $funcionarios = Funcionario::all();
+
+            // Retorna a view com os dados
+            return view('app.solicitacao_os.solicitacao_os_show', [
+                'solicitacoes' => $solicitacoes,
+                'funcionarios' => $funcionarios
+            ]);
+        }
     }
     public function get_employee()
     {
