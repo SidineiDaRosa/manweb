@@ -64,6 +64,8 @@ Route::post('/Produtos-filtro-e-comerce', [App\Http\Controllers\ProdutoControlle
 //Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce');
 //Route::get('/filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
 Route::post('/comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
+Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
+Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
 //-------------------------------------------------------------------------------------------------
 // Rota do venda no site 
 //-------------------------------------------------------------------------------------------------
@@ -81,8 +83,6 @@ Route::middleware('auth')->resource('/produto', 'App\Http\Controllers\ProdutoCon
 //                Equipamento
 //---------------------------------------------//
 Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\EquipamentoController');
-Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
-Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
 //---------------------------------------------//
 //                Ordem de serviço
 //---------------------------------------------//
