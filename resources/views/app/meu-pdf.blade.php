@@ -4,7 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ordem de Serviço #{{ $ordemServico->id }}</title>
+  <title>Ordem de Serviço #{{ $ordemServico->id }}</title>
+
+<!-- Favicon -->
+ <!--
+<link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
+-->
+<link href="{{ asset('images/logo.png') }}" type="image/png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,6 +22,8 @@
             /* Espaçamento interno da div */
             margin: 5px;
             /* Espaçamento externo da div */
+          
+          
         }
 
         .header,
