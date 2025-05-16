@@ -312,7 +312,7 @@ class HomeController extends Controller
             ->orderBy('criticidade', 'desc') // Criticidade decrescente
             ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
             ->get();
-        $pedidos_por_produtos = PedidoCompra::where('')->get();
+       // $pedidos_por_produtos = PedidoCompra::where('')->get();
         // Exibe os resultados
         // foreach ($produtos_estoque_critico as $produto) {
         //  echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
