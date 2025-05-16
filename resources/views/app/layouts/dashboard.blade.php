@@ -992,8 +992,6 @@
 
                             <td>
                                 @if($produto_estoque_critico->nova_coluna > 0)
-                              
-
                                 <form action="{{ route('pedido-compra.index') }}">
                                     <div class="form-row">
                                         <input type="text" name="produto_id" value="{{ $produto_estoque_critico->produto_id }}" hidden>
@@ -1002,10 +1000,14 @@
                                         <input type="date" name="data_fim" value="2030-01-01" hidden>
 
                                         <div class="col-md-6">
-                                            <input class="btn btn-outline-primary btn-sm" type="submit" value=" {{$produto_estoque_critico->nova_coluna}} Pedido" style="width:100px; margin-top: 5px;">
+                                            <input class="btn btn-outline-primary btn-sm" type="submit" value="{{ $produto_estoque_critico->nova_coluna }} Pedido" style="width: 100px; margin-top: 5px;">
                                         </div>
                                     </div>
                                 </form>
+                                @else
+                                <button class="btn btn-warning btn-sm" style="width: 100px; margin-top: 5px;font-size:12px;">
+                                    Nenhum pedido
+                                </button>
                                 @endif
                             </td>
                         </tr>
