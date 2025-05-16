@@ -212,7 +212,7 @@ Descrição dos serviços executados:
 </table>
 @else
 <div class="message">
-    Início: ___/___/___, Fim: ___/___/___, Início: ___/___/___, Fim: ___/___/___
+    Início: __/__/__,__:__, Fim: __/__/__,__:__, Início: __/__/__,__:__, Fim: __/__/__,__:__
     <hr>
     Serviços executados:
     <hr class="linha-pontilhada-txt ">

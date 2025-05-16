@@ -937,6 +937,7 @@
 
             }
         </style>
+        <!-- continer products-->
         <div class="item">
             <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">ESTOQUE ALMOXARIFADO</span>
             <button class="btn btn-outline-primary btn-sm"
