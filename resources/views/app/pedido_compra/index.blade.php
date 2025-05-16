@@ -35,8 +35,7 @@
 
                     </div>
                     <div class="col-md-6">
-                        <input class="btn btn-outline-primary btn-bg" type="submit" value="buscar" style="width: 220px;margin-top:5px;">
-
+                        <input class="btn btn-outline-primary btn-bg" type="submit" value="Buscar" style="width: 220px;margin-top:5px;">
                     </div>
 
                 </div>

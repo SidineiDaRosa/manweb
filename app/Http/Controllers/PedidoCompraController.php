@@ -23,31 +23,57 @@ class PedidoCompraController extends Controller
     {
 
         $situacao = $request->get('situacao');
-        $data_inicio=$request->get('data_inicio');
-        $data_fim=$request->get('data_fim');
-        $emissores = User::all();
-        if (isset($situacao)) {
-            // A variável $situacao está declarada
-            // Faça alguma coisa aqui
+        $data_inicio = $request->get('data_inicio');
+        $data_fim = $request->get('data_fim');
+        $produto_id = $request->get('produto_id');
+        // Busca os pedidos de compra cuja qual contem os produtos situação Aberto
+        if (isset($produto_id)) {
+            $pedidos_compra_produto = PedidoCompraLista::where('produto_id', $produto_id)->get();
+
+            $pedido_ids = $pedidos_compra_produto->pluck('pedidos_compra_id')->toArray();
+
+            $pedido_compra = PedidoCompra::where('status', $situacao)
+                ->whereIn('id', $pedido_ids)
+                ->get();
+
+            $emissores = User::all();
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
-            $pedidos_compra = PedidoCompra::where('status', $situacao)
-                ->whereBetween('data_emissao', [$data_inicio, $data_fim])
-                ->get();
+
             return view('app.pedido_compra.index', [
-                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra,
-                'emissores'=>$emissores
+                'equipamentos' => $equipamentos,
+                'funcionarios' => $funcionarios,
+                'pedidos_compra' => $pedido_compra,
+                'emissores' => $emissores
             ]);
         } else {
-            // A variável $situacao não está declarada
-            // Faça alguma outra coisa aqui
-            $equipamentos = Equipamento::all();
-            $funcionarios = Funcionario::all();
-            $pedidos_compra = PedidoCompra::where('status', '')->get();
-            return view('app.pedido_compra.index', [
-                'equipamentos' => $equipamentos, 'funcionarios' => $funcionarios, 'pedidos_compra' => $pedidos_compra,
-                'emissores'=>$emissores
-            ]);
+            $emissores = User::all();
+            if (isset($situacao)) {
+                // A variável $situacao está declarada
+                $equipamentos = Equipamento::all();
+                $funcionarios = Funcionario::all();
+                $pedidos_compra = PedidoCompra::where('status', $situacao)
+                    ->whereBetween('data_emissao', [$data_inicio, $data_fim])
+                    ->get();
+                return view('app.pedido_compra.index', [
+                    'equipamentos' => $equipamentos,
+                    'funcionarios' => $funcionarios,
+                    'pedidos_compra' => $pedidos_compra,
+                    'emissores' => $emissores
+                ]);
+            } else {
+                // A variável $situacao não está declarada
+                // Faça alguma outra coisa aqui
+                $equipamentos = Equipamento::all();
+                $funcionarios = Funcionario::all();
+                $pedidos_compra = PedidoCompra::where('status', '')->get();
+                return view('app.pedido_compra.index', [
+                    'equipamentos' => $equipamentos,
+                    'funcionarios' => $funcionarios,
+                    'pedidos_compra' => $pedidos_compra,
+                    'emissores' => $emissores
+                ]);
+            }
         }
         //
     }
@@ -118,7 +144,7 @@ class PedidoCompraController extends Controller
             'produtos' => $produtos,
             'unidades_de_medida' => $unidades_de_medida,
             'produto_rg' => $produto_rg,
-            'emissores'=>$emissores
+            'emissores' => $emissores
         ]);
     }
 

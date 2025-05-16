@@ -11,6 +11,7 @@ use App\Models\EstoqueProdutos;
 use App\Models\OrdemServico;
 use App\Models\Funcionario;
 use App\Models\PedidoCompra;
+use App\Models\PedidoCompraLista;
 use App\Models\Prduto;
 use App\Models\Produto;
 use Carbon\Carbon;
@@ -312,7 +313,18 @@ class HomeController extends Controller
             ->orderBy('criticidade', 'desc') // Criticidade decrescente
             ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
             ->get();
-       // $pedidos_por_produtos = PedidoCompra::where('')->get();
+
+        foreach ($produtos_estoque_critico as $produto) {
+            // Buscar todos os pedidos de compra abertos relacionados a esse produto
+            $pedidos_abertos_count = PedidoCompraLista::where('produto_id', $produto->produto_id)
+                ->whereHas('pedidoCompra', function ($query) {
+                    $query->where('status', 'Aberto');
+                })
+                ->count();
+
+            // Adicionar nova coluna ao item
+            $produto->nova_coluna = $pedidos_abertos_count;
+        }
         // Exibe os resultados
         // foreach ($produtos_estoque_critico as $produto) {
         //  echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";

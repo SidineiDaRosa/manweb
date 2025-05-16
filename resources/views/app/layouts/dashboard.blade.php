@@ -307,8 +307,8 @@
                                     </td>
 
                                     <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
-                                    {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}    
-                                    {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
+                                        {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
+                                        {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
 
                                     </td>
                                     <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
@@ -318,8 +318,8 @@
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td>
-                                     <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;font-stretch:extra-condensed;">
-                                        {{$os_hoje->equipamento->nome}}</span>   
+                                        <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;font-stretch:extra-condensed;">
+                                            {{$os_hoje->equipamento->nome}}</span>
                                     </td>
                                     <td>
                                         {{-- Valor GUT --}}
@@ -621,7 +621,7 @@
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_fechadas_2dias))
-                            {{ $os_fechadas_2dias }}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
+                            {{ $os_fechadas_2dias }}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span>
 
                             @else
                             0
@@ -639,7 +639,7 @@
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_abertas))
-                            {{$os_abertas}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
+                            {{$os_abertas}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span>
                             @else
                             0
                             @endif
@@ -655,7 +655,7 @@
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_em_andamento))
-                            {{$os_em_andamento}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
+                            {{$os_em_andamento}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span>
                             @else
                             0
                             @endif
@@ -671,7 +671,7 @@
                     <div style="display: flex; justify-content: center;">
                         <h6>
                             @if(isset($os_today))
-                            {{$os_today}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span> 
+                            {{$os_today}}&nbsp <span style="font-family: Arial, Helvetica, sans-serif;color:blue;font-size:14;">O.S.</span>
                             @else
                             0
                             @endif
@@ -754,28 +754,28 @@
                     window.addEventListener('resize', myChart.resize);
                 </script>
 
-            {{--//-------------------------------------------------//--}}
-            {{--//--------------------------//--}}
-            {{--//-------------------------------------------------//--}}
-            @foreach($assets as $equipamentos)
-            <div style="display:flex; align-items:center; flex-direction:row;font-family:Arial, Helvetica, sans-serif;" hidden>
-                {{$equipamentos->nome}}
-                <div style="flex-grow:1;"></div> <!-- Este div empurra o link para a direita -->
-                <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;" hidden>
-                    <span class="material-symbols-outlined">
-                        open_in_new
-                    </span>
-                </a>
-                <!-- resources/views/example.blade.php -->
-                <form action="{{ route('assets') }}" method="POST">
-                    @csrf
-                    <input type="text" name="asset_id" placeholder="Digite o histórico do equipamento" required value="{{$equipamentos->id}}" hidden>
-                    <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
-                </form>
-            </div>
-            @endforeach
+                {{--//-------------------------------------------------//--}}
+                {{--//--------------------------//--}}
+                {{--//-------------------------------------------------//--}}
+                @foreach($assets as $equipamentos)
+                <div style="display:flex; align-items:center; flex-direction:row;font-family:Arial, Helvetica, sans-serif;" hidden>
+                    {{$equipamentos->nome}}
+                    <div style="flex-grow:1;"></div> <!-- Este div empurra o link para a direita -->
+                    <a href="{{ route('equipamento.show', ['equipamento' => $equipamentos->id,'tipofiltro'=>1]) }}" style="display:flex; align-items:center; margin-left:auto;" hidden>
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </a>
+                    <!-- resources/views/example.blade.php -->
+                    <form action="{{ route('assets') }}" method="POST">
+                        @csrf
+                        <input type="text" name="asset_id" placeholder="Digite o histórico do equipamento" required value="{{$equipamentos->id}}" hidden>
+                        <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
+                    </form>
+                </div>
+                @endforeach
 
-            {{--//-------------------------------------------------//--}}
+                {{--//-------------------------------------------------//--}}
         </div>
         {{--Box 5--}}
         {{--Box que contém a lista de pedidos abertos--}}
@@ -956,10 +956,11 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Produto_id</th>
-                            <th>Estoque</th>
-                            <th>Estoque_minimo</th>
-                            <th>Estoque_máximo</th>
+                            <th>Produto</th>
+                            <th>Estoque Atual</th>
+                            <th>Estoque Mínimo</th>
+                            <th>Estoque Máximo</th>
+                            <th>Pedido Compra</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -967,7 +968,8 @@
                         <tr>
                             <td>
                                 <a style="font-size: 17px;" class="txt-link" href="{{ route('produto.show', ['produto' => $produto_estoque_critico->produto_id]) }}">
-                                    {{ $produto_estoque_critico->id }}
+
+                                    {{$produto_estoque_critico->produto_id}}
                                 </a>
                             </td>
                             @php
@@ -987,6 +989,25 @@
                                 {{ $produto_estoque_critico->estoque_minimo }}
                             </td>
                             <td> {{$produto_estoque_critico->estoque_maximo}}</td>
+
+                            <td>
+                                @if($produto_estoque_critico->nova_coluna > 0)
+                              
+
+                                <form action="{{ route('pedido-compra.index') }}">
+                                    <div class="form-row">
+                                        <input type="text" name="produto_id" value="{{ $produto_estoque_critico->produto_id }}" hidden>
+                                        <input type="text" name="situacao" id="situacao" value="Aberto" hidden>
+                                        <input type="date" name="data_inicio" value="2000-01-01" hidden>
+                                        <input type="date" name="data_fim" value="2030-01-01" hidden>
+
+                                        <div class="col-md-6">
+                                            <input class="btn btn-outline-primary btn-sm" type="submit" value=" {{$produto_estoque_critico->nova_coluna}} Pedido" style="width:100px; margin-top: 5px;">
+                                        </div>
+                                    </div>
+                                </form>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -1060,7 +1081,7 @@
             border-bottom: 1px solid rgb(255, 255, 200, 0.3);
             /* Adiciona uma borda inferior de 1px sólida cinza */
             height: 28px;
-            border-left:1px;
+            border-left: 1px;
         }
 
         /* Altera a cor de fundo da linha quando o mouse passar sobre ela */
