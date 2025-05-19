@@ -51,6 +51,9 @@ Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])
 //return view('auth.login');
 //});
 Route::get('/asset-show', [EquipamentoHistoryController::class, 'asset_show'])->name('asset.show');
+//--------------------------------------------------------//
+// Autetication User
+//--------------------------------------------------------//
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
