@@ -18,6 +18,7 @@ class PedidoCompraAutoGenerateController extends Controller
         ]);
 
         // Obtenha o ID dos dados enviados
+        $patrimonio_id = $request->input('patrimonio_id');
         $produto_id = $request->input('id');
         $quantidade = $request->input('quantidade');
 
@@ -40,7 +41,7 @@ class PedidoCompraAutoGenerateController extends Controller
             'hora_emissao' => $hora_emissao,
             'data_prevista' => $data_prevista,
             'hora_prevista' => $hora_prevista,
-            'equipamento_id' => 70,                      // ID do equipamento
+            'equipamento_id' => $patrimonio_id,                      // ID do equipamento
             'funcionarios_id' => auth()->id(), // ID do funcionário usuário logado no momento
             'status' => 'aberto',                     // Status
             'descricao' => 'Descrição do pedido de compra gerado ', // Descrição

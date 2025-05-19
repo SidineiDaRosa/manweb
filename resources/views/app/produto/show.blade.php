@@ -22,7 +22,7 @@
                 <a class="btn btn-outline-primary btn-sm" href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
                     <i class="icofont-ui-edit"></i> Editar </a>
                 <a class="btn btn-outline-dark sm" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
+                    <i class="icofont-dashboard"></i> Dashboard
                 </a>
             </div>
         </div>
@@ -186,6 +186,7 @@
                 {{--// Cria automaticamente um pedido de compra//--}}
                 {{--//-----------------------------------------//--}}
                 <!-- jQuery -->
+                 
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <!-- Bootstrap JavaScript -->
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -207,9 +208,9 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Conteúdo do modal aqui -->
-                                Finalidade: ID:70 Amoxarifado <br>
+                                Aplicação!
                                 @if(isset($equipamentos) && $equipamentos->isNotEmpty())
-                                <select id="equipamento" name="equipamento_id" class="control-form" style="width:auto;" hidden>
+                                <select class="form-control-template" id="patrimonio_id" name="patrimonio_id">
                                     @foreach($equipamentos as $equipamento)
                                     <option value="{{ $equipamento->id }}">
                                         {{ $equipamento->nome }} <!-- Supondo que você tenha um campo 'nome' no modelo Equipamento -->
@@ -219,13 +220,13 @@
                                 @else
                                 <p>Não há equipamentos disponíveis.</p>
                                 @endif
-                                ID Produto:<input type="number" name="produto_id" id="produto_id" value="{{$produto->id}}" readonly><br>
+                                ID Produto:<input class="form-control-template" type="number" name="produto_id" id="produto_id" value="{{$produto->id}}" readonly><br>
                                 Nome:<div class="conteudo">{{$produto->nome}}
                                 </div><br>
                                 <hr>
                                 <p></p>
                                 Quantidade:
-                                <input type="number" name="quantidade" id="quantidade" value="" placeholder="--digite a quantidade--">
+                                <input class="form-control-template" type="number" name="quantidade" id="quantidade" value="" placeholder="--digite a quantidade--">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -234,20 +235,20 @@
                         </div>
                     </div>
                 </div>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
                     $(document).ready(function() {
                         $('#btnSalvar').click(function() {
+                            var patrimonioId = $('#patrimonio_id').val();
                             var produtoId = $('#produto_id').val();
                             var qnt = $('#quantidade').val();
                             var data = {
-                                id: produtoId, //id do produto
-                                quantidade: qnt //quantidade
-
+                                patrimonio_id: patrimonioId,
+                                id: produtoId,
+                                quantidade: qnt
                             };
 
                             $.ajax({
-                                url: '{{ route("pedido-compra-auto-generate") }}', // Certifique-se de que o nome da rota está correto
+                                url: '{{ route("pedido-compra-auto-generate") }}',
                                 type: 'POST',
                                 data: JSON.stringify(data),
                                 contentType: 'application/json',
@@ -256,12 +257,22 @@
                                 },
                                 success: function(response) {
                                     console.log('Resposta completa do controlador:', response);
-                                    if (response && response.message) {
-                                        alert('Resposta do controlador: ' + response.message);
-                                    } else {
-                                        alert('Resposta do controlador não contém a mensagem esperada.');
-                                    }
-                                    $('#myModal').modal('hide');
+
+                                    // Fecha a modal primeiro
+
+
+                                    // Mostra o alert após pequeno atraso (300ms)
+                                    setTimeout(function() {
+                                        if (response && response.message) {
+                                            alert('Resposta: ' + response.message);
+                                          //
+                                            $('#myModal').modal('hide');
+                                        } else {
+                                            alert('Resposta do controlador não contém a mensagem esperada.');
+
+                                        }
+
+                                    }, 300);
                                 },
                                 error: function(xhr, status, error) {
                                     console.error('Erro ao gerar pedido de compra', error);
@@ -271,6 +282,7 @@
                         });
                     });
                 </script>
+
                 {{--//-----------------Fim------------------------//--}}
                 <p>
                 <div>
@@ -304,6 +316,7 @@
                 <th scope="col" class="th-title">estoque máximo</th>
                 <th scope="col" class="th-title">Valor</th>
                 <th scope="col" class="th-title">Local do estoque</th>
+                <th scope="col" class="th-title">Criticidade</th>
                 <th scope="col" class="th-title">Empresa</th>
                 <th scope="col" class="th-title">Operações</th>
             </tr>
@@ -320,6 +333,7 @@
                 <td>{{ $estoque_produto->estoque_maximo}}</td>
                 <td>{{ $estoque_produto->valor }}</td>
                 <td>{{ $estoque_produto->local}}</td>
+                <td>{{ $estoque_produto->criticidade}}</td>
                 <td>{{ $estoque_produto->empresa->nome_fantasia}}</td>
                 <td>
                     <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn btn-bg-template btn-outline-primary  @can('user') disabled @endcan">
