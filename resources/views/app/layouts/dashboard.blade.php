@@ -963,7 +963,7 @@
                             <th>Pedido Compra</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                         @foreach ($produtos_estoque_critico as $produto_estoque_critico)
                         <tr>
                             <td>
@@ -990,19 +990,15 @@
                             </td>
                             <td> {{$produto_estoque_critico->estoque_maximo}}</td>
 
-                            <td>
+                            <td style="height:10px;">
                                 @if($produto_estoque_critico->nova_coluna > 0)
-                                <form action="{{ route('pedido-compra.index') }}">
+                                <form action="{{ route('pedido-compra.index') }}" style="height:15px;">
                                     <div class="form-row">
                                         <input type="text" name="produto_id" value="{{ $produto_estoque_critico->produto_id }}" hidden>
                                         <input type="text" name="situacao" id="situacao" value="Aberto" hidden>
                                         <input type="date" name="data_inicio" value="2000-01-01" hidden>
                                         <input type="date" name="data_fim" value="2030-01-01" hidden>
-
-                                        <div class="col-md-6">
-                                            <input class="btn btn-outline-primary btn-sm" type="submit" value="{{ $produto_estoque_critico->nova_coluna }} Pedido" style="width: 100px; margin-top: 5px;">
-                                        </div>
-                                    </div>
+                                        <input class="btn btn-primary btn-sm" type="submit" value="{{ $produto_estoque_critico->nova_coluna }} Pedido" style="width: 100px; margin-top: 0px;font-size:12px;">
                                 </form>
                                 @else
                                 <button class="btn btn-warning btn-sm" style="width: 100px; margin-top: 5px;font-size:12px;">
