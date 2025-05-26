@@ -9,6 +9,7 @@ use App\Models\Empresas;
 use App\Models\Servicos_executado;
 use App\Models\Funcionario;
 use PDF;
+use App\Models\SolicitacaoOs;
 
 class PdfController extends Controller
 {
@@ -20,6 +21,7 @@ class PdfController extends Controller
     public function gerarPDF(Request $request)
     {
         // Obter o ID da ordem de serviço a partir do request
+        
         $ordemServicoId = $request->input('ordem_servico_id');
         // Buscar a ordem de serviço no banco de dados
         $ordemServico = OrdemServico::findOrFail($ordemServicoId);
@@ -27,13 +29,18 @@ class PdfController extends Controller
         $empresa = Empresas::where('id', $ordemServico->empresa_id)->get();
         $servicos_executado= Servicos_executado::where('ordem_servico_id', $ordemServicoId)->get();
         $funcionarios=Funcionario::all();
+        //Pega os dadso da SS
+        $solicitacao_os=SolicitacaoOs::find($ordemServico->ss_id);
+
         // Preparar os dados para o PDF
+         
         $data = [
             'ordemServico' => $ordemServico,
             'equipamento' => $equipamento,
             'empresa'=>$empresa ,
             'servicos_executado'=>$servicos_executado,
-            'funcionarios'=>$funcionarios
+            'funcionarios'=>$funcionarios,
+            'solicitacao_os'=>$solicitacao_os
         ];
 
         // Carregar a view do PDF usando Dompdf

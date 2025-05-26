@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ordem de Serviço #{{ $ordemServico->id }}</title>
+    <title>Ordem de Serviço #{{ $ordemServico->id }}</title>
 
-<!-- Favicon -->
- <!--
+    <!-- Favicon -->
+    <!--
 <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
 -->
-<link href="{{ asset('images/logo.png') }}" type="image/png">
+    <link href="{{ asset('images/logo.png') }}" type="image/png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,8 +22,8 @@
             /* Espaçamento interno da div */
             margin: 5px;
             /* Espaçamento externo da div */
-          
-          
+
+
         }
 
         .header,
@@ -276,9 +276,18 @@ Descrição dos serviços executados:
         }
     }
 </style>
-<div class="container">
-    <img src="/{{$ordemServico->link_foto}}" alt="Imagem" id="imagem">
-</div>
+
+<style>
+    .img-ajustada {
+        width: 150px;
+        height: 150px;
+    }
+</style>
+<?php
+if (isset($solicitacao_os->imagem)) {
+    echo '<img src="' . public_path('img/request_os/' . $solicitacao_os->imagem) . '" alt="Imagem da Solicitação" class="img-ajustada">';
+}
+?>
 </body>
 
 </html>
