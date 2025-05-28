@@ -337,7 +337,7 @@ Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->n
 //----------------------------------------------------------//
 //   CHECK LIST                 
 //----------------------------------------------------------//
-
+//
 Route::get('/check-list-index', [CheckListController::class, 'index'])->name('check-list-index');
 Route::get('/check-list-index-nat', [CheckListController::class, 'index'])->name('check-list-nat');
 //rota acessada pelos executante de check list
@@ -361,6 +361,11 @@ Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'exec
 Route::post('/check-list-filter', [CheckListExecutadoController::class, 'executado'])->name('check-list-filter');
 Route::get('/check-list-funcionario', [CheckListExecutadoController::class, 'funcionario'])->name('check-list-funcionario');
 Route::delete('/check-list-exec-delete/{id}', [CheckListExecutadoController::class, 'destroy'])->name('check-list-exec-delete');
+//----------------------------------------------------------//
+//   Check-list  Criar O.S.            
+//----------------------------------------------------------//
+Route::middleware('auth')->post('/new_os_check_list', [OrdemServicoController::class, 'new_os_check_list'])->name('new_os_check_list');
+
 //----------------------------------------------------------//
 //   CUSTOS GERAIS           
 //----------------------------------------------------------//

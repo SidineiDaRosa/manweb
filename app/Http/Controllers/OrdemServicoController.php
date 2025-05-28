@@ -125,7 +125,7 @@ class OrdemServicoController extends Controller
                 $dataFim = $request->get("data_fim");
                 // $empresa_id = $request->get("empresa_id");
                 $patrimonio = $request->get("patrimonio_id");
-                $ordens_servicos = OrdemServico::where('equipamento_id', $patrimonio)->where('situacao','fechado')->orderby('data_fim', 'desc')->get();
+                $ordens_servicos = OrdemServico::where('equipamento_id', $patrimonio)->where('situacao', 'fechado')->orderby('data_fim', 'desc')->get();
                 $valorTotal = 0;
                 return view('app.ordem_servico.index', [
                     'equipamento' => $equipamento,
@@ -222,7 +222,7 @@ class OrdemServicoController extends Controller
         $id = $empresa->get('empresa');
         $equipamento = $empresa->get('equipamento');
         $pre_descricao_os = $empresa->get('descricao');
-        $ss_id=$empresa->get('ss_id');
+        $ss_id = $empresa->get('ss_id');
         // $funcionarios=Funcionario::all();
         $funcionarios = Funcionario::all(); //Busca todos os funcionários
         $equipamentos = Equipamento::where('empresa_id', $id)->get();
@@ -236,7 +236,7 @@ class OrdemServicoController extends Controller
             'empresa' => $empresa,
             'equipamento' => $equipamento,
             'pre_descricao_os' => $pre_descricao_os,
-            'ss_id'=>$ss_id
+            'ss_id' => $ss_id
 
         ]);
     }
@@ -505,5 +505,43 @@ class OrdemServicoController extends Controller
 
         // Parar a execução para garantir que a mensagem seja exibida
         exit;
+    }
+    public function new_os_check_list(Request $request)
+    {
+        // Define o fuso horário de São Paulo
+        $dataHoraAtual = Carbon::now('America/Sao_Paulo');
+
+        // Formata data e hora separadamente, se quiser
+
+        $dataFormatada = Carbon::now('America/Sao_Paulo')->format('Y-m-d');
+        $horaAtual = $dataHoraAtual->format('H:i:s');
+        $dataHoraMaisUma = Carbon::now('America/Sao_Paulo')->addHour();
+        // Criação da ordem de serviço
+        $ordemServico = OrdemServico::create([
+            'data_emissao' =>  $dataFormatada,
+            'hora_emissao' => $horaAtual,
+            'data_inicio' => $request->data_inicio,
+            'hora_inicio' => $horaAtual,
+            'data_fim' => $request->data_fim,
+            'hora_fim' =>  $dataHoraMaisUma,
+            'equipamento_id' => $request->equipamento_id,
+            'emissor' => 'Manutencao',
+            'responsavel' => 'Manutencao',
+            'descricao' => $request->descricao,
+            'status_servicos' => 1,
+            'gravidade' => 3,
+            'urgencia' => 3,
+            'tendencia' => 3,
+            'empresa_id' => 2,
+            'situacao' => 'Aberto',
+            'natureza_do_servico' => 'Preventiva',
+            'especialidade_do_servico' => $request->natureza,
+            //'ss_id' => $request->ss_id
+
+
+        ]);
+        echo 'Criar nova OS a partir do checklist';
+        // Para debug: dd($request->all());
+        return back(); // Volta para a página anterior (onde estava o formulário)
     }
 }

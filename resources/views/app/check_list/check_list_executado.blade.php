@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-header pb-2">
 
-            <h6> {{$equipamento->nome}}</h6>
+            <h6> {{$equipamento->id}}-{{$equipamento->nome}}</h6>
             <button type="button" class="btn btn-outline-success open-modal-btn"
                 onclick="window.location.href='{{ route('check-list-index') }}'"
                 style="float:right;margin-left:5px;">
@@ -20,7 +20,7 @@
             <form action="{{ route('check-list-filter',['equipamento_id'=>$equipamento->id]) }}" method="post" id="form_filter_check_list">
                 @csrf
                 <div style="display: flex;flex-direction:row;">
-                <input type="text" class="form-control " name="equipamento_id" id="equipamento_id" value="{{$equipamento->id}}" hidden>
+                    <input type="text" class="form-control " name="equipamento_id" id="equipamento_id" value="{{$equipamento->id}}" hidden>
                     <input type="date" class="form-control " name="data_inicio" id="data_inicio" value="" style="width: 200px">
                     <input type="date" class="form-control" name="data_fim" id="data+_fim" value="" style="width: 200px">
                     <select class="form-control" name="natureza" id="Natureza" style="width: 300px;">
@@ -102,10 +102,15 @@
                     <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkgrey;">Data e hora: </h6> {{ \Carbon\Carbon::parse($check_list_executado_f->data_verificacao)->format('d/m/Y') }} às {{ $check_list_executado_f->hora_verificacao }}
                 </span>
 
-                <!-- Botão para abrir a modal -->
+                <!-- Botão para abrir a modal de criação de uma nova O.S. -->
                 <button type="button" class="btn btn-outline-success open-modal-btn"
                     data-bs-toggle="modal" data-bs-target="#dateTimeModal"
                     data-id="{{ $check_list_executado_f->id }}"
+
+                    data-time="{{ \Carbon\Carbon::parse($check_list_executado_f->data_verificacao)->format('d/m/Y') }} às {{ $check_list_executado_f->hora_verificacao }}"
+                    check-list-id="{{ $check_list_executado_f->checkList->id}}"
+                    check-list-desc="{{ $check_list_executado_f->checkList->descricao }}"
+                    check-list-obs="{{$check_list_executado_f->observacao}}"
                     style="float:right;margin-left:5px;height:38px;margin-right:5px;">
                     Criar O.S.
                 </button>
@@ -131,9 +136,6 @@
         <!-- Bootstrap JS (para modais, precisa da biblioteca JS) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
-        <!-- Modal -->
-
         <!-- Modal -->
         <div class="modal fade" id="dateTimeModal" tabindex="-1" aria-labelledby="dateTimeModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -146,29 +148,49 @@
                         <!-- Exibindo o ID na modal via JavaScript -->
                         <div id="modalIdDisplay" style="font-family: Arial, Helvetica, sans-serif; margin-bottom: 15px;">
                             <h6 style="font-family: Arial, sans-serif; font-weight: 700; color: darkgrey;">
-                                ID: <span id="dynamicId"></span>
+
                             </h6>
                         </div>
 
                         <!-- Formulário de Data e Hora -->
-                        <form id="dateTimeForm">
+                        <form id="new-os-form" method="POST" action="{{route('new_os_check_list') }}">
+                            @csrf
+
+                            <span>{{$equipamento->id}}</span>
+                            <span>{{$equipamento->nome}}</span>
+                            <input type="text" id="equipamento_id" value="{{$equipamento->id}}" name="equipamento_id" hidden>
                             <div class="mb-3">
+
+                                Checagem ID: <input type="text" id="dynamicId" value="" readonly> <br>
+                                Data time: <input type="text" id="data_time_modal" value="" readonly> <br>
+                                Check list id: <input type="text" id="check_list_id" value="" readonly> <br>
+                                check list desc: <input type="text" id="check_list_desc" value="" readonly> <br>
                                 <label for="startDateTime" class="form-label">Data e Hora Inicial</label>
-                                <input type="datetime-local" class="form-control" id="startDateTime" name="startDateTime" required>
+                                <input type="datetime-local" class="form-control" id="startDateTime" name="data_inicio" required>
                             </div>
                             <div class="mb-3">
                                 <label for="endDateTime" class="form-label">Data e Hora Final</label>
-                                <input type="datetime-local" class="form-control" id="endDateTime" name="endDateTime" required>
+                                <input type="datetime-local" class="form-control" id="endDateTime" name="data_fim" required>
                             </div>
                             <div class="mb-3">
                                 <label for="endDateTime" class="form-label">Descrição</label>
-                                <input type="text" class="form-control" value=" {{ $check_list_executado_f->observacao }}" >
+                                <textarea class="form-control" rows="4" maxlength="300" id="text_area_desc" name="descricao">
+                                </textarea>
+                            </div>
+                            <div class="orm-control" style="width:300px;">
+                                <select class="orm-control" style="width:300px;" id="specialidade_do_servico" name="natureza">
+                                    <option value="mecanica">Mecânica</option>
+                                    <option value="eletrica">Elétrica</option>
+                                    <option value="civil">Civil</option>
+                                    <option value="sesmt">SESMT</option>
+                                    <!-- Outras especialidades conforme necessário -->
+                                </select>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" form="dateTimeForm">Visualisar</button>
+                        <button type="submit" class="btn btn-primary" form="new-os-form">Confirmar</button>
                     </div>
                 </div>
             </div>
@@ -182,15 +204,22 @@
                     // Obtém o botão que abriu a modal
                     const button = event.relatedTarget;
 
-                    // Pega o ID do atributo data-id do botão
+                    // Pega os dadso do registro de checagem que fica dentro do botão que gera a ordem
                     const itemId = button.getAttribute("data-id");
-
+                    const dataTime = button.getAttribute("data-time");
+                    const checkListId = button.getAttribute("check-list-id");
+                    const checkListDesc = button.getAttribute("check-list-desc");
+                    const checkListObs = button.getAttribute("check-list-obs");
                     // Atualiza o conteúdo do elemento com o ID dinâmico na modal
-                    document.getElementById("dynamicId").textContent = itemId;
+                    document.getElementById("dynamicId").value = itemId;
+                    document.getElementById("data_time_modal").value = dataTime;
+                    document.getElementById("check_list_id").value = checkListId;
+                    document.getElementById("check_list_desc").value = checkListDesc;
+                    // document.getElementById("check_list_obs").value = checkListObs;
+                    document.getElementById('text_area_desc').value = 'O.S. criado apartir da checagem ' + itemId + ', em: ' +
+                        dataTime + ', do Check-List ID:' + checkListId + ' Desc.: ' + checkListDesc + ', Obs.' + checkListObs
                 });
             });
         </script>
-
-
 </main>
 @endsection
