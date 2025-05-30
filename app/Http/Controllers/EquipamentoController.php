@@ -252,9 +252,9 @@ class EquipamentoController extends Controller
         try {
             // Busca o equipamento pelo ID
             $equipamento = Equipamento::find($request->id);
-
+            $hr_old = $equipamento->horimetro;
             // Atualiza o valor do horímetro
-            $equipamento->horimetro = $equipamento + $request->horimetro;
+            $equipamento->horimetro = $hr_old + $request->horimetro;
             $equipamento->save();
 
             // Retorna uma resposta JSON com sucesso
