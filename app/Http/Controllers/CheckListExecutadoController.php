@@ -24,9 +24,8 @@ class CheckListExecutadoController extends Controller
         $equipamento = Equipamento::find($request->equipamento_id);
 
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)
-        ->where('natureza', $request->natureza)
-        ->where('gravidade','>=',2)
-        ->get();
+            ->where('natureza', $request->natureza)
+            ->get();
         $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
         $funcionario = $request->funcionario;
 
@@ -211,36 +210,36 @@ class CheckListExecutadoController extends Controller
 
             // Verificamos se a data é válida
             if ($dataInicio->format('Y-m-d') === $dataInicioStr) {
-               
+
                 $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)
-                ->whereBetween('data_verificacao', [$request->data_inicio, $request->data_fim])
-                ->where('gravidade', $request->natureza)
-                ->orderBy('data_verificacao', 'desc')->get();
-                
+                    ->whereBetween('data_verificacao', [$request->data_inicio, $request->data_fim])
+                    ->where('gravidade', $request->natureza)
+                    ->orderBy('data_verificacao', 'desc')->get();
+
                 return view('app.check_list.check_list_executado', [
                     'equipamento' => $equipamento,
                     'check_list_executado' => $check_list_executado
                 ]);
             } else {
-                $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->orderBy('data_verificacao', 'desc')->get();
+                
+                $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)
+                    ->orderBy('data_verificacao', 'desc')->get();
                 return view('app.check_list.check_list_executado', [
                     'equipamento' => $equipamento,
                     'check_list_executado' => $check_list_executado
                 ]);
             }
         } catch (\Exception $e) {
-            $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->orderBy('data_verificacao', 'desc')->get();
+            //Caso a data não exitir busca todas com gravidade acima de 2
+            $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)
+             ->where('gravidade', '>=', 2)
+            ->orderBy('data_verificacao', 'desc')->get();
             return view('app.check_list.check_list_executado', [
                 'equipamento' => $equipamento,
                 'check_list_executado' => $check_list_executado
             ]);
         }
 
-        // $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)->get();
-        //return view('app.check_list.check_list_executado', [
-        // 'equipamento' => $equipamento,
-        // 'check_list_executado' => $check_list_executado
-        // ]);
     }
     /**
      * Store a newly created resource in storage.
