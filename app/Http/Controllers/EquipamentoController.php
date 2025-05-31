@@ -265,4 +265,28 @@ class EquipamentoController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+     public function update_timer_esp32(Request $request)
+    {
+        // Valida os dados recebidos
+        $request->validate([
+            'id' => 'required|exists:equipamentos,id', // Verifica se o ID existe na tabela
+            'horimetro' => 'required|numeric', // Verifica se o horímetro é um número
+        ]);
+
+        try {
+            // Busca o equipamento pelo ID
+            $equipamento = Equipamento::find($request->id);
+            $hr_old = $equipamento->horimetro;
+            // Atualiza o valor do horímetroadd .
+
+            $equipamento->horimetro =  $hr_old + ($request->horimetro *0.0002777);
+            $equipamento->save();
+
+            // Retorna uma resposta JSON com sucesso
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // Caso haja um erro, retorna um erro
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
 }
