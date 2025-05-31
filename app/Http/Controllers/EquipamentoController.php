@@ -255,7 +255,7 @@ class EquipamentoController extends Controller
             $hr_old = $equipamento->horimetro;
             // Atualiza o valor do horímetroadd .
 
-            $equipamento->horimetro =  $request->horimetro;
+            $equipamento->horimetro =  $hr_old + ($request->horimetro / 60);
             $equipamento->save();
 
             // Retorna uma resposta JSON com sucesso
