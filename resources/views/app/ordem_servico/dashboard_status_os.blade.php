@@ -374,7 +374,8 @@
                             <tr>
 
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                    ID: {{$ordens_servicos_fech->id}} <br>
+                                    <span style="color: blue;">ID: {{$ordens_servicos_fech->id}} </span> <br>
+
                                     {{ \Carbon\Carbon::parse($ordens_servicos_fech->data_fim)->format('d/m/y') }} <br>
 
                                     {{ \Carbon\Carbon::parse($ordens_servicos_fech->hora_fim)->format('H:i') }}
