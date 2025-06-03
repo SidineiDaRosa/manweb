@@ -338,7 +338,10 @@
                                             {{$os_hoje->equipamento->nome}}</span>
                                     </td>
                                     <td style="font-stretch:condensed;">
-                                        {{$os_hoje->especialidade_do_servico}}
+
+                                        <span style="display: inline-flex; align-items: center; gap: 4px;">
+                                            {{ Str::upper($os_hoje->especialidade_do_servico) }}
+                                        </span>
                                     </td>
                                     <td>
                                         {{-- Valor GUT --}}
@@ -361,7 +364,7 @@
                         <!--Troca cor das linha d tabela acima-->
                         <style>
                             .linha-eletrica {
-                                background-color:rgb(216, 216, 210);
+                                background-color: rgb(216, 216, 210);
                                 /* verde claro */
                             }
 
