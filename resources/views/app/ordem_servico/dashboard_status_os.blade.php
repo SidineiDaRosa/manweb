@@ -355,9 +355,9 @@
                         <thead>
                             <tr>
 
-                                <th>ID</th>
+
                                 <th>Finalização</th>
-                                <th >Descrição</th>
+                                <th>Descrição</th>
                                 <th>Patrimônio</th>
                                 <th> executante</th>
                                 <th>chk</th>
@@ -372,8 +372,9 @@
                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                             @endphp
                             <tr>
-                                <td>{{$ordens_servicos_fech->id}}</td>
+
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
+                                    ID: {{$ordens_servicos_fech->id}} <br>
                                     {{ \Carbon\Carbon::parse($ordens_servicos_fech->data_fim)->format('d/m/y') }} <br>
 
                                     {{ \Carbon\Carbon::parse($ordens_servicos_fech->hora_fim)->format('H:i') }}
@@ -402,7 +403,7 @@
                             <tr>
                                 <th style="width:90px;">Data e Hora</th>
                                 <th style="word-break: break-word; white-space: normal; width: 300px; max-width: 500px;">Descrição</th>
-                                <th >Patrimônio</th>
+                                <th>Patrimônio</th>
 
                             </tr>
                         </thead>
@@ -428,7 +429,7 @@
                                         <span style="font-weight: bold;">{{ $ordens_servicos_venc->equipamento->nome }}</span><br>
                                         <span style="display: inline-flex; align-items: center; gap: 4px;">
                                             {{ Str::upper($ordens_servicos_venc->especialidade_do_servico) }}
-                                          <!--  <img src="{{ asset('img/warning.png') }}" alt="" style="height: 20px;">-->
+                                            <!--  <img src="{{ asset('img/warning.png') }}" alt="" style="height: 20px;">-->
                                         </span>
                                     </div>
                                 </td>
