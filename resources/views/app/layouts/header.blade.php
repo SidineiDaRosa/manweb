@@ -35,6 +35,13 @@
             }
         </style>
         <div class="spacer"></div>
+          <!-- Notificação de Alarmes -->
+        <div class="dropdown" id="checklist-count" style="margin-top:20px;">
+            <a href="" id="alarmes-link" class="dropdown" style="color: white;">
+                Alarmes
+            </a>&nbsp&nbsp
+            <span style="margin-top:-5px;" class="badge" id="alarmes-badge">0</span>
+        </div>
         <!-- Notificação de Check list -->
         <div class="dropdown" id="checklist-count" style="margin-top:20px;">
             <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: white;">

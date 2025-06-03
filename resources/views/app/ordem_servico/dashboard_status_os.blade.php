@@ -357,7 +357,7 @@
 
                                 <th>ID</th>
                                 <th>Finalização</th>
-                                <th>Descrição</th>
+                                <th >Descrição</th>
                                 <th>Patrimônio</th>
                                 <th> executante</th>
                                 <th>chk</th>
@@ -400,10 +400,9 @@
                     <table class="condensed-table" style="background-color:rgb(251,170,153); width: 100%; table-layout: fixed;">
                         <thead>
                             <tr>
-                                <th style="width:50px;">ID</th>
                                 <th style="width:90px;">Data e Hora</th>
-                                <th>Descrição</th>
-                                <th>Patrimônio</th>
+                                <th style="word-break: break-word; white-space: normal; width: 300px; max-width: 500px;">Descrição</th>
+                                <th >Patrimônio</th>
 
                             </tr>
                         </thead>
@@ -414,15 +413,26 @@
                             $dataAtual = \Carbon\Carbon::today();
                             @endphp
                             <tr>
-                                <td style="color: blue;">{{$ordens_servicos_venc->id}}</td>
+
                                 <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
+                                    <span style="color: blue;">{{$ordens_servicos_venc->id}}</span>
                                     {{ \Carbon\Carbon::parse($ordens_servicos_venc->data_fim)->format('d/m/y') }} <br>
                                     {{ \Carbon\Carbon::parse($ordens_servicos_venc->hora_fim)->format('H:i') }}
                                 </td>
-                                <td style="word-wrap: break-word; white-space: normal; border-right: 10px;">
-                                    {{$ordens_servicos_venc->descricao}}
+                                <td style="word-break: break-word; white-space: normal; width: 300px; max-width: 500px;">
+                                    {{ $ordens_servicos_venc->descricao }}
                                 </td>
-                                <td>{{$ordens_servicos_venc->equipamento->nome}}<img src="{{ asset('img/warning.png') }}" alt="" id="imgwarning" style="float: right;"> </td>
+
+                                <td style="text-align: right;">
+                                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                        <span style="font-weight: bold;">{{ $ordens_servicos_venc->equipamento->nome }}</span><br>
+                                        <span style="display: inline-flex; align-items: center; gap: 4px;">
+                                            {{ Str::upper($ordens_servicos_venc->especialidade_do_servico) }}
+                                          <!--  <img src="{{ asset('img/warning.png') }}" alt="" style="height: 20px;">-->
+                                        </span>
+                                    </div>
+                                </td>
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -492,6 +502,7 @@
                                     <th>Datas</th>
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
+                                    <th>Tipo</th>
                                     <th>GUT</th>
                                 </tr>
                             </thead>
@@ -502,8 +513,23 @@
                                 $dataAtual = \Carbon\Carbon::today();
                                 $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                                 $horaInicio = \Carbon\Carbon::parse($os_hoje->hora_inicio);
+
+                                // Cor da linha com base na especialidade
+                                switch(strtolower($os_hoje->especialidade_do_servico)) {
+                                case 'elétrica':
+                                case 'eletrica':
+                                $linhaClasse = 'linha-eletrica';
+                                break;
+                                case 'mecânica':
+                                case 'mecanica':
+                                $linhaClasse = 'linha-mecanica';
+                                break;
+                                default:
+                                $linhaClasse = '';
+                                }
                                 @endphp
-                                <tr  style="border-bottom: 2px solid #F7E8C4;">
+
+                                <tr class="{{ $linhaClasse }}" style="border-bottom: 2px solid #F7E8C4;">
                                     <td>{{$os_hoje->id}}</td>
                                     <td>
                                         <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}"
@@ -522,6 +548,9 @@
                                     <td style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;font-stretch:extra-condensed;">
                                         {{$os_hoje->equipamento->nome}}
                                     </td>
+                                    <td style="font-stretch: ultra-condensed; font-size: 18px; letter-spacing: -0.5px; font-family: 'Arial Narrow', Arial, sans-serif;">
+                                        {{ Str::upper($os_hoje->especialidade_do_servico) }}
+                                    </td>
                                     <td>
                                         {{-- Valor GUT --}}
                                         @php
@@ -531,7 +560,7 @@
                                         if ($valorGUT <= 50) { $progressColor='blue' ; } elseif ($valorGUT> 50 && $valorGUT <= 80) { $progressColor='yellow' ; } else { $progressColor='orange' ; } @endphp <input type="text" value="{{ $valorGUT }}" id="progress-input-today" hidden>
                                                 <div class="progress" style="width:35px;">
                                                     <div id="progress-bar-today" class="progress-bar" role="progressbar" aria-valuenow="{{ $valorGUT }}" aria-valuemin="0" aria-valuemax="125" style="width: {{ $valorGUT }}%; background-color: {{ $progressColor }}; color: black;">
-                                                        {{ $valorGUT }}
+
                                                     </div>
                                                 </div>
                                     </td>
@@ -541,6 +570,18 @@
                             </tbody>
 
                         </table>
+                        <!--Troca cor das linha d tabela acima-->
+                        <style>
+                            .linha-eletrica {
+                                background-color: rgb(216, 216, 210);
+                                /* verde claro */
+                            }
+
+                            .linha-mecanica {
+                                background-color: #e0f0ff;
+                                /* azul claro */
+                            }
+                        </style>
                     </div>
                     <hr>
             </div>

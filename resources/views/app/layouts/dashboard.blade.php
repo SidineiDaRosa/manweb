@@ -30,7 +30,7 @@
             }
         }
     </style>
-    {{--teste de botão pulsante--}}
+    {{--Botão pulsante geen--}}
     <style>
         body,
         html {
@@ -288,6 +288,7 @@
                                     <th>Previsão de fim</th>
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
+                                    <th>Tipo</th>
                                     <th>GUT</th>
                                 </tr>
                             </thead>
@@ -298,8 +299,23 @@
                                 $dataAtual = \Carbon\Carbon::today();
                                 $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                                 $horaInicio = \Carbon\Carbon::parse($os_hoje->hora_inicio);
+
+                                // Cor da linha com base na especialidade
+                                switch(strtolower($os_hoje->especialidade_do_servico)) {
+                                case 'elétrica':
+                                case 'eletrica':
+                                $linhaClasse = 'linha-eletrica';
+                                break;
+                                case 'mecânica':
+                                case 'mecanica':
+                                $linhaClasse = 'linha-mecanica';
+                                break;
+                                default:
+                                $linhaClasse = '';
+                                }
                                 @endphp
-                                <tr>
+                                <tr class="{{ $linhaClasse }}">
+
                                     <td>
                                         <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
                                             {{$os_hoje->id}}
@@ -321,6 +337,9 @@
                                         <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;font-stretch:extra-condensed;">
                                             {{$os_hoje->equipamento->nome}}</span>
                                     </td>
+                                    <td style="font-stretch:condensed;">
+                                        {{$os_hoje->especialidade_do_servico}}
+                                    </td>
                                     <td>
                                         {{-- Valor GUT --}}
                                         @php
@@ -330,14 +349,27 @@
                                         if ($valorGUT <= 50) { $progressColor='blue' ; } elseif ($valorGUT> 50 && $valorGUT <= 80) { $progressColor='yellow' ; } else { $progressColor='orange' ; } @endphp <input type="text" value="{{ $valorGUT }}" id="progress-input-today" hidden>
                                                 <div class="progress">
                                                     <div id="progress-bar-today" class="progress-bar" role="progressbar" aria-valuenow="{{ $valorGUT }}" aria-valuemin="0" aria-valuemax="125" style="width: {{ $valorGUT }}%; background-color: {{ $progressColor }}; color: black;">
-                                                        {{ $valorGUT }}
+
                                                     </div>
                                                 </div>
                                     </td>
+
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        <!--Troca cor das linha d tabela acima-->
+                        <style>
+                            .linha-eletrica {
+                                background-color:rgb(216, 216, 210);
+                                /* verde claro */
+                            }
+
+                            .linha-mecanica {
+                                background-color: #e0f0ff;
+                                /* azul claro */
+                            }
+                        </style>
                     </div>
                     <hr>
             </div>
@@ -963,7 +995,7 @@
                             <th>Pedido Compra</th>
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         @foreach ($produtos_estoque_critico as $produto_estoque_critico)
                         <tr>
                             <td>
