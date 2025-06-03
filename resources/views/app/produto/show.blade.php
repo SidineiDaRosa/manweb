@@ -186,7 +186,7 @@
                 {{--// Cria automaticamente um pedido de compra//--}}
                 {{--//-----------------------------------------//--}}
                 <!-- jQuery -->
-                 
+
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <!-- Bootstrap JavaScript -->
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -206,11 +206,14 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            <!-------------------------->
+                            <!--Form  pedido de compra-->
+                            <!-------------------------->
                             <div class="modal-body">
                                 <!-- Conteúdo do modal aqui -->
                                 Aplicação!
                                 @if(isset($equipamentos) && $equipamentos->isNotEmpty())
-                                <select class="form-control-template" id="patrimonio_id" name="patrimonio_id">
+                                <select class="form-control-template" id="patrimonio_id" name="patrimonio_id" require>
                                     @foreach($equipamentos as $equipamento)
                                     <option value="{{ $equipamento->id }}">
                                         {{ $equipamento->nome }} <!-- Supondo que você tenha um campo 'nome' no modelo Equipamento -->
@@ -265,7 +268,7 @@
                                     setTimeout(function() {
                                         if (response && response.message) {
                                             alert('Resposta: ' + response.message);
-                                          //
+                                            //
                                             $('#myModal').modal('hide');
                                         } else {
                                             alert('Resposta do controlador não contém a mensagem esperada.');
@@ -276,7 +279,7 @@
                                 },
                                 error: function(xhr, status, error) {
                                     console.error('Erro ao gerar pedido de compra', error);
-                                    alert('Erro ao gerar pedido de compra: ' + error);
+                                    alert('Erro ao gerar pedido de compra, Atualize o formulário: ' + error);
                                 }
                             });
                         });

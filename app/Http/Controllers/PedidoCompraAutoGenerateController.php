@@ -15,6 +15,7 @@ class PedidoCompraAutoGenerateController extends Controller
         // Validação dos dados recebidos, se necessário
         $request->validate([
             'id' => 'required|integer', // Ajuste conforme sua necessidade
+            'patrimonio_id' => 'required|integer', // Ajuste conforme sua necessidade
         ]);
 
         // Obtenha o ID dos dados enviados
@@ -77,7 +78,7 @@ class PedidoCompraAutoGenerateController extends Controller
             return response()->json(['message' => 'Pedido de compra gerado com sucesso no controllador.'], 200);
         } catch (\Exception $e) {
             // Em caso de erro, responda com uma mensagem de erro
-            return response()->json(['message' => 'Erro ao gerar pedido de compra: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Erro ao gerar pedido de compra, Atualize o formulário: ' . $e->getMessage()], 500);
         }
     }
 }
