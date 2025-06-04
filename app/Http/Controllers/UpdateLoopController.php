@@ -30,24 +30,28 @@ class UpdateLoopController extends Controller
 
         $count = 0; // Contador de manutenções vencidas ou pendentes
         $agora = Carbon::now();
+        $count  = PecasEquipamentos::where('status', 'Ativado')
+            ->where('criticidade', '!=', 'baixa')
+            ->where('horas_proxima_manutencao','<=',0)
+            ->count();
 
         // Passo 2: Percorrer cada componente
-        foreach ($componentes as $componente) {
-            if ($componente->data_proxima_manutencao && $componente->horas_proxima_manutencao) {
-                // Calcular a data/hora da próxima manutenção
-                $dataProxima = Carbon::parse($componente->data_proxima_manutencao);
-                $horasProxima = (int)$componente->horas_proxima_manutencao;
+        //foreach ($componentes as $componente) {
+        // if ($componente->data_proxima_manutencao && $componente->horas_proxima_manutencao) {
+        // Calcular a data/hora da próxima manutenção
+        // $dataProxima = Carbon::parse($componente->data_proxima_manutencao);
+        // $horasProxima = (int)$componente->horas_proxima_manutencao;
 
-                $proximaManutencao = $dataProxima->copy()->addHours($horasProxima);
+        // $proximaManutencao = $dataProxima->copy()->addHours($horasProxima);
 
-                // Calcular a diferença em horas
-                $diferencaHoras = $agora->diffInHours($proximaManutencao, false); // negativo se já venceu
+        // Calcular a diferença em horas
+        //$diferencaHoras = $agora->diffInHours($proximaManutencao, false); // negativo se já venceu
 
-                if ($diferencaHoras < 0) {
-                    $count++; // Incrementa se a manutenção está vencida
-                }
-            }
-        }
+        //if ($diferencaHoras < 0) {
+        //$count++; // Incrementa se a manutenção está vencida
+        //}
+        //}
+        // }
 
         // Retorna o resultado em JSON
         return response()->json(['pendentes' => $count]);
