@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\UpdateLoop;
 use App\Http\Controllers\Check_listController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdemServicoController;
@@ -382,3 +383,13 @@ Route::get('/dashboard-kpis', [KPIsController::class, 'index'])->name('kpis.dash
 //----------------------------------------------------------//
 use App\Http\Controllers\EquipamentoController;
 Route::post('/update-horimetro', [EquipamentoController::class, 'update_hour_meter']);
+//----------------------------------------------------------//
+//   Controle Panel    
+//----------------------------------------------------------//
+
+use App\Http\Controllers\UpdateLoopController;
+
+Route::post('/loop/ativar', [UpdateLoopController::class, 'ativar'])->name('loop.ativar');
+Route::post('/loop/desativar', [UpdateLoopController::class, 'desativar'])->name('loop.desativar');
+//
+Route::get('/alarms-count', [UpdateLoopController::class, 'alarms_count']);

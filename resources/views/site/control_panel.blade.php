@@ -6,6 +6,21 @@
             <div> Painel de controle</div>
 
         </div>
+        @if(session('success'))
+        <div style="color:green;">{{ session('success') }}</div>
+        @endif
+
+        <form action="{{ route('loop.ativar') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit">Ativar Loop</button>
+        </form>
+
+        <form action="{{ route('loop.desativar') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit">Desativar Loop</button>
+        </form>
+
+
         <div class="card-body">
 
             <body onload="checkCookies()">

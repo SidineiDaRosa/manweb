@@ -35,12 +35,12 @@
             }
         </style>
         <div class="spacer"></div>
-          <!-- Notificação de Alarmes -->
-        <div class="dropdown" id="checklist-count" style="margin-top:20px;">
+        <!-- Notificação de Alarmes -->
+        <div class="dropdown" id="alarms-count" style="margin-top:20px;margin-right:20px;">
             <a href="" id="alarmes-link" class="dropdown" style="color: white;">
                 Alarmes
-            </a>&nbsp&nbsp
-            <span style="margin-top:-5px;" class="badge" id="alarmes-badge">0</span>
+            </a>&nbsp&nbsp&nbsp&nbsp
+            <span style="margin-top:-5px;" class="badge" id="alarms-badge">0</span>
         </div>
         <!-- Notificação de Check list -->
         <div class="dropdown" id="checklist-count" style="margin-top:20px;">
@@ -89,6 +89,11 @@
                 /* Nova classe para laranja */
             }
 
+            .badge.yellow {
+                background-color:gold;
+                /* Nova classe para laranja */
+            }
+
             #solicitacoes-count,
             #checklist-count {
                 position: relative;
@@ -100,11 +105,9 @@
             /*  Estilização de cor de fundos de formulários */
             .backgrund-primary {
                 background-color: rgb(245, 246, 248);
-                
+
             }
         </style>
-
-        <!-- JavaScript para atualização das contagens -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Função para atualizar a contagem de solicitações pendentes
@@ -147,13 +150,36 @@
                         .catch(error => console.error('Erro:', error));
                 }
 
+                // Função para atualizar a contagem de Alarmes
+                function UpdateAlarms() {
+                    fetch('/alarms-count')
+                        .then(response => response.json())
+                        .then(data => {
+                            const badge = document.getElementById('alarms-badge');
+                            badge.innerText = data.pendentes;
+
+                            if (data.pendentes > 0) {
+                                badge.classList.remove('zero');
+                                badge.classList.remove('non-zero');
+                                badge.classList.add('yellow'); // Adiciona a classe warning
+                            } else {
+                                badge.classList.remove('non-zero');
+                                badge.classList.remove('yellow'); // Remove a classe warning
+                                badge.classList.add('zero');
+                            }
+                        })
+                        .catch(error => console.error('Erro:', error));
+                }
+
                 // Atualiza as contagens a cada 30 segundos
                 setInterval(atualizarContagemSolicitacoes, 30000);
                 setInterval(atualizarContagemChecklists, 30000);
+                setInterval(UpdateAlarms, 30000); // adiciona atualização dos alarmes
 
                 // Atualiza as contagens imediatamente quando a página é carregada
                 atualizarContagemSolicitacoes();
                 atualizarContagemChecklists();
+                UpdateAlarms(); // chama o UpdateAlarms assim que a página carregar
             });
         </script>
 
