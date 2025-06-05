@@ -24,14 +24,15 @@ class PecasEquipamentos extends Model
         'tipo_componente',
         'criticidade',
         'descricao'
-       
+
     ];
 
-    public function equipamento(){
-        return $this->belongsTo('App\Models\Equipamento');
+    public function equipamento_id()
+    {
+        return $this->belongsTo('App\Models\Equipamento', 'equipamento');
     }
-    public function produto(){
-        return $this->belongsTo('App\Models\Produto');//busca regsitro atraves do modulo produtos
+    public function produto()
+    {
+        return $this->belongsTo('App\Models\Produto'); //busca regsitro atraves do modulo produtos
     }
-    
 }

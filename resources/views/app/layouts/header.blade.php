@@ -37,7 +37,7 @@
         <div class="spacer"></div>
         <!-- Notificação de Alarmes -->
         <div class="dropdown" id="alarms-count" style="margin-top:20px;margin-right:20px;">
-            <a href="" id="alarmes-link" class="dropdown" style="color: white;">
+            <a href="{{ route('notificacoes.index') }}" id="alarmes-link" class="dropdown" style="color: white;">
                 Alarmes
             </a>&nbsp&nbsp&nbsp&nbsp
             <span style="margin-top:-5px;" class="badge" id="alarms-badge">0</span>

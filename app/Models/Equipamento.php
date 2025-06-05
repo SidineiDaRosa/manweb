@@ -57,4 +57,8 @@ class Equipamento extends Model
     {
         return $this->hasMany(CheckList::class, 'equipamento_id');
     }
+    public function pecas()
+    {
+        return $this->hasMany('App\Models\PecasEquipamentos', 'equipamento', 'id');
+    }
 }
