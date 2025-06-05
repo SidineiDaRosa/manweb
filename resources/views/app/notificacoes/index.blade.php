@@ -40,6 +40,25 @@
         float: right;
         margin-top: -5px;
     }
+
+    .sub-title-sm {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        color: #0056b3;
+    }
+
+    .sub-title-sm {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        color: #0056b3;
+    }
+
+    .content-sm {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        color: rgb(148, 139, 141)
+    }
 </style>
 
 <main class="content">
@@ -57,15 +76,27 @@
         <div class="pecas-lista">
             @foreach($pecas as $peca)
             <div class="peca-card">
-                <strong>{{ $peca->descricao ?? 'Sem descrição' }}</strong>
+                <strong class="title-sm">{{ $peca->descricao ?? 'Sem descrição' }}</strong>
                 <hr>
-                <b>Status:</b> {{ $peca->status }}<br>
-                <b>Criticidade:</b> {{ $peca->criticidade }}<br>
-                <b>Data Substituição:</b> {{ $peca->data_substituicao }} {{ $peca->hora_substituicao }}<br>
-                <b>Próx. Manutenção:</b> {{ $peca->data_proxima_manutencao }}<br>
-                <b>Restam:</b> {{ $peca->horas_proxima_manutencao }}h<br>
-                <b>Horímetro:</b> {{ $peca->horimetro ?? 'N/A' }}<br>
-                <b>Componente:</b> {{ $peca->tipo_componente }}
+                <span class="sub-title-sm ">Data Substituição: </span>
+                <span class="content-sm">{{ $peca->data_substituicao }} as {{ $peca->hora_substituicao }}</span>
+
+                <span class="sub-title-sm "> Status: </span>
+                <span class="content-sm">{{ $peca->status }}</span>
+
+                <span class="sub-title-sm "> Criticidade:</span>
+                <span class="content-sm">{{ $peca->criticidade }}</span>
+
+                <span class="sub-title-sm "> Próx. Manutenção:</span>
+                <span class="content-sm">{{ $peca->data_proxima_manutencao }}</span>
+
+                <span class="sub-title-sm "> Restam:</span>
+                <span style="color: red;">{{ $peca->horas_proxima_manutencao }}h</span>
+                <span class="sub-title-sm "> Tipo:</span>
+                <span class="content-sm"> {{ $peca->tipo_componente }}</span>
+
+
+
             </div>
             @endforeach
         </div>
