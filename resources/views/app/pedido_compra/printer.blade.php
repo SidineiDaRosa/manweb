@@ -21,7 +21,7 @@
 </style>
 
 <body>
-    <img src="{{asset('img/logo_fapolpa.jpeg')}}" alt="Imagem do Produto" class="preview-image-logo">
+    <img src="{{asset('images/logo.png')}}" alt="Imagem do Produto" class="preview-image-logo">
     <style>
         .preview-image-logo {
             width: 400px;
