@@ -24,8 +24,8 @@
     <img src="{{asset('images/logo.png')}}" alt="Imagem do Produto" class="preview-image-logo">
     <style>
         .preview-image-logo {
-            width: 400px;
-            height: 200px;
+            width: 200px;
+            height: 100px;
             margin: 0 5px;
         }
     </style>
