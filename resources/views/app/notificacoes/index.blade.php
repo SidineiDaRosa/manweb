@@ -20,7 +20,9 @@
         display: flex;
         flex-direction: column;
         /* empilha verticalmente */
-        gap: 15px;
+        gap: -10px;
+
+        
     }
 
     .peca-card {
@@ -41,7 +43,7 @@
         margin-top: -5px;
     }
 
-    .sub-title-sm {
+    .title-sm {
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 600;
         font-size: 15px;
@@ -57,7 +59,7 @@
     .content-sm {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 15px;
-        color: rgb(148, 139, 141)
+        color: rgb(141, 132, 134)
     }
 </style>
 
@@ -76,8 +78,8 @@
         <div class="pecas-lista">
             @foreach($pecas as $peca)
             <div class="peca-card">
-                <strong class="title-sm">{{ $peca->descricao ?? 'Sem descrição' }}</strong>
-                <hr>
+                <strong class="title-sm">{{ $peca->descricao ?? 'Sem descrição' }}</strong><br>
+        
                 <span class="sub-title-sm ">Data Substituição: </span>
                 <span class="content-sm">{{ $peca->data_substituicao }} as {{ $peca->hora_substituicao }}</span>
 
@@ -94,10 +96,9 @@
                 <span style="color: red;">{{ $peca->horas_proxima_manutencao }}h</span>
                 <span class="sub-title-sm "> Tipo:</span>
                 <span class="content-sm"> {{ $peca->tipo_componente }}</span>
-
-
-
+                  <hr style="margin-top:5px;">
             </div>
+             
             @endforeach
         </div>
     </div>
