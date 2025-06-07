@@ -245,9 +245,8 @@
                     <div class="conteudo">
                         <select class="input-text" name="tipo_componente" id="tipo_componente" value="ativado">
                             <option value="lubrificação">lubrificação</option>
-                            <option value="Chek-List">Chek-List</option>
                             <option value="Componente">Componente</option>
-                            <option value="mensalidade">Mensalidade</option>
+                            <option value="mensalidade">Calibração</option>
                         </select>
                     </div>
                     <div class="titulo">Grau de criticidade</div>

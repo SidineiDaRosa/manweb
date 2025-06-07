@@ -98,7 +98,7 @@
                 <span class="content-sm"> {{ $peca->tipo_componente }}</span>
                   <hr style="margin-top:5px;">
             </div>
-             
+        
             @endforeach
         </div>
     </div>
