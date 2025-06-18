@@ -321,10 +321,10 @@ class PecaEquipamentoController extends Controller
                 ->where('status', 'ativado')
                 ->where('horas_proxima_manutencao', '<=', 72)
                 ->orderBy('horas_proxima_manutencao', 'asc')
-                ->where('tipo_componente', 'lubrificacao')
+                ->where('tipo_componente', 'lubrificação')
                 ->get();
 
-            // Retornar a view com os dados carregados
+            // Retornar a view com os dados carregados para exibir status de manutenção de componentes
             return view('app.equipamento.show', [
                 'equipamento' => $equipamento,
                 'ordens_servicos' => $ordens_servicos,

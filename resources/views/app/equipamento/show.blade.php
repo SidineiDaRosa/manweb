@@ -800,6 +800,7 @@
     {{--Box 4--}}
     <div class="item-25">
         <h4>Lubrificação</h4>
+      
         @foreach ($lubrificacao as $lubrificacao_f)
         {{$lubrificacao_f->id}} <br>
         <h6>{{$lubrificacao_f->descricao}}</h6>

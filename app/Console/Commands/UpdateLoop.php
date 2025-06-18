@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\Models\PecasEquipamentos;
+use Carbon\Carbon;
+
 class UpdateLoop extends Command
 {
     // Nome do comando para terminal
@@ -16,23 +18,38 @@ class UpdateLoop extends Command
 
     public function handle()
     {
-        $this->info('Loop de atualização iniciado...');
+        set_time_limit(0);
+        $this->info('Loop iniciado…');
 
         while (true) {
-            // Verifica no cache se ainda deve continuar
+            // Se desativado, dorme e continua
             if (!Cache::get('update_loop_active', false)) {
-                $this->info('Loop interrompido pelo sistema.');
-                break;
+                sleep(10);
+                continue;
             }
 
-            // AQUI VAI SUA LÓGICA DE ATUALIZAÇÃO
-            Log::info('Atualização automática executada às ' . now());
+            // Atualização
+            Log::info('Atualização automática às ' . now());
             $this->info('Atualizado às ' . now());
-            
 
-            // Aguarda 10 segundos antes de repetir
+            PecasEquipamentos::chunk(1000, function ($pecas) {
+                foreach ($pecas as $p) {
+                    $dataSub    = $p->data_substituicao;
+                    $intervalo  = $p->intervalo_manutencao;
 
-            sleep(10);
+                    if ($dataSub && $intervalo && is_numeric($intervalo)) {
+                        try {
+                            $diferenca = Carbon::now()->diffInHours(Carbon::parse($dataSub));
+                            $p->horas_proxima_manutencao = $intervalo - $diferenca;
+                            $p->save();
+                        } catch (\Throwable $e) {
+                            Log::error('Erro no cálculo de manutenção: ' . $e->getMessage());
+                        }
+                    }
+                }
+            });
+
+            sleep(60); // pausa entre execuções
         }
     }
 }

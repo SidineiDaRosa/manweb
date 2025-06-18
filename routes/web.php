@@ -382,6 +382,7 @@ Route::get('/dashboard-kpis', [KPIsController::class, 'index'])->name('kpis.dash
 //   Atualizar orímetro        
 //----------------------------------------------------------//
 use App\Http\Controllers\EquipamentoController;
+
 Route::post('/update-horimetro', [EquipamentoController::class, 'update_hour_meter']);
 //----------------------------------------------------------//
 //   Controle Panel    
@@ -389,8 +390,10 @@ Route::post('/update-horimetro', [EquipamentoController::class, 'update_hour_met
 
 use App\Http\Controllers\UpdateLoopController;
 use App\Http\Controllers\NotificationsController;
+
 Route::post('/loop/ativar', [UpdateLoopController::class, 'ativar'])->name('loop.ativar');
 Route::post('/loop/desativar', [UpdateLoopController::class, 'desativar'])->name('loop.desativar');
+Route::get('/loop', [UpdateLoopController::class, 'form'])->name('loop.form');
 //Adquire a contagem de notificações.
 Route::get('/alarms-count', [UpdateLoopController::class, 'alarms_count']);
 Route::get('/notificacoes', [NotificationsController::class, 'index'])->name('notificacoes.index');
