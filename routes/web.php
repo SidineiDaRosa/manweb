@@ -397,3 +397,4 @@ Route::get('/loop', [UpdateLoopController::class, 'form'])->name('loop.form');
 //Adquire a contagem de notificações.
 Route::get('/alarms-count', [UpdateLoopController::class, 'alarms_count']);
 Route::get('/notificacoes', [NotificationsController::class, 'index'])->name('notificacoes.index');
+

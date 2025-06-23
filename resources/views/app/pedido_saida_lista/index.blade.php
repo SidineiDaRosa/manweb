@@ -5,7 +5,7 @@
 <main class="content">
 
     <div class="titulo-main">
-        Pedido saída de produto com O.S.
+        Solicitação de Saída de Produto Vinculada à O.S.
     </div>
     <style>
         .titulo-main {

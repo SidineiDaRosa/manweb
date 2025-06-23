@@ -17,6 +17,7 @@
         </div>
         <!DOCTYPE html>
         <html lang="en">
+
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,6 +125,11 @@
                 <button type="button" class="btn btn-primary" onclick="confirmSave()">Cadastrar</button>
             </form>
 
+            <!-------------------------------------QR  code  teste---------------------------------------->
+
+          
+
+            <!----------------------------------------------------------------------------->
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
                 function confirmSave() {

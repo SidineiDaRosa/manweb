@@ -45,7 +45,9 @@ class PedidoSaidaListaController extends Controller
                 'categorias' => $categorias
             ]);
         } else {
-            // $pedidos_saida = PedidoSaida::all();
+            //--------------------------------------------//
+            // Envia para pedido de sáida com os anexada
+            //--------------------------------------------//
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
             $saidas_produto = SaidaProduto::where('pedidos_saida_id', $pedido_saida_id_1)->get();
@@ -54,10 +56,7 @@ class PedidoSaidaListaController extends Controller
             $Unidades_de_Medida = UnidadeMedida::all();
 
             $produtos = Produto::where('id', 0)->get(); // busca o id 0 para enviar para o pedio de saida com os.
-            // $produtos = Produto::all();
-            //$os = OrdemServico::find($ordem_servico_id);
-            //$pecas_equipamento= PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente','Componente')->get();
-            $pecas_equipamento = PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente', 'Componente')
+            $pecas_equipamento = PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)
                 ->where('status', 'ativado')->get();
             $patrimonio = Equipamento::where('id', $ped_said->equipamento_id)->get();
             return view('app.pedido_saida_lista.index', [
@@ -166,7 +165,7 @@ class PedidoSaidaListaController extends Controller
 
         // Realize a busca com LIKE para permitir buscas parciais
         $produtos = Produto::where('nome', 'LIKE', "%{$query_like_producto_name}%")->get();
-        
+
         $pecas_equipamento = PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente', 'Componente')
             ->where('status', 'ativado')->get();
         $patrimonio = Equipamento::where('id', $ped_said->equipamento_id)->get();

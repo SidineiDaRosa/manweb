@@ -299,12 +299,17 @@
                     <p>
                         {{-- {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}--}}
                         {{--{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}--}}
+                        {{-- {!! QrCode::size(100)->backgroundColor(255,255,255)->generate( $produto->id) !!}--}}
+                        
+
+
                     <p>
                 </div>
             </div>
         </div>
     </div>
     <hr>
+
     {{--------------------------------------------------------------------------------------------}}
     {{--Tabela que busca o status do estoque de produtos------------------------------------------}}
     <table class="table table-hover">
