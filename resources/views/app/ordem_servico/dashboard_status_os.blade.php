@@ -329,7 +329,7 @@
                         $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                         @endphp
                         <tr style="border-bottom: 2px solid #F7E8C4;">
-                            
+
                             <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}"
                                 style="font-size: 15px;width:40px;">
                                 <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;">{{$os_emandamento->id}}</span>
@@ -530,28 +530,35 @@
                                 @endphp
 
                                 <tr class="{{ $linhaClasse }}" style="border-bottom: 2px solid #F7E8C4;">
-                                    
+
                                     <td>
                                         <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}"
                                             style="font-size:15px;font-family:Arial, Helvetica, sans-serif;">
-                                         <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;"> {{$os_hoje->id}}</span>
-                                            {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
-                                            {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
+
+                                            <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;"> {{$os_hoje->id}}</span>
+                                            <div style="background-color:white;border-radius:4px;margin:2px;">
+                                                {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
+                                                <hr style="margin:1px;">
+                                                {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
+                                            </div>
                                         </div>
                                         <div class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}"
                                             style="font-size:15px;font-family:Arial, Helvetica, sans-serif">
-                                            {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
-                                            {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
+                                            <div style="background-color:white;border-radius:4px;margin:2px;">
+                                                {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
+                                                <hr style="margin:1px;">
+                                                {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('m:i') }}
+                                            </div>
                                         </div>
                                     </td>
 
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;font-stretch:extra-condensed;">
                                         {{$os_hoje->equipamento->nome}}
-                                        <hr style="margin:1px;">
+                                        <hr style="margin:4px;">
                                         {{ Str::upper($os_hoje->especialidade_do_servico) }}
                                     </td>
-                                   
+
                                     <td>
                                         {{-- Valor GUT --}}
                                         @php
