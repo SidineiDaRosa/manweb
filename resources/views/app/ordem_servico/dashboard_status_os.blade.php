@@ -500,11 +500,9 @@
                         <table class="condensed-table" style="border-bottom:black;">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Datas</th>
+                                    <th>Dados</th>
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
-                                    <th>Tipo</th>
                                     <th>GUT</th>
                                 </tr>
                             </thead>
@@ -532,10 +530,11 @@
                                 @endphp
 
                                 <tr class="{{ $linhaClasse }}" style="border-bottom: 2px solid #F7E8C4;">
-                                    <td>{{$os_hoje->id}}</td>
+                                    
                                     <td>
                                         <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}"
                                             style="font-size:15px;font-family:Arial, Helvetica, sans-serif;">
+                                          ID: <span style="font-weight: 800;color:blue;"> {{$os_hoje->id}}</span>
                                             {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
                                         </div>
@@ -549,10 +548,10 @@
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;font-stretch:extra-condensed;">
                                         {{$os_hoje->equipamento->nome}}
-                                    </td>
-                                    <td style="font-stretch: ultra-condensed; font-size: 18px; letter-spacing: -0.5px; font-family: 'Arial Narrow', Arial, sans-serif;">
+                                        <hr style="margin:1px;">
                                         {{ Str::upper($os_hoje->especialidade_do_servico) }}
                                     </td>
+                                   
                                     <td>
                                         {{-- Valor GUT --}}
                                         @php

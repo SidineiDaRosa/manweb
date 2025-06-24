@@ -280,26 +280,29 @@
     {{------------------------------------------------}}
     {{--Tabela de peças dos equipamento---------------}}
     {{------------------------------------------------}}
+  
+
     <span style="margin-left:20px;">
         <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Componentes do equipamento com periodicidade programada</h5>
             <input type="button" id="Btn-togglePecas" class="btn btn-warning btn-sm" value="Exibir peças do equipamento" onclick="togglePecas()">
             <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('tblPecas').style.display = 'none';
-        });
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.getElementById('tblPecas').style.display = 'none';
+                });
 
-        function togglePecas() {
-            let tabela = document.getElementById('tblPecas');
-            if (tabela.style.display === 'none' || tabela.style.display === '') {
-                tabela.style.display = 'block';
-                document.getElementById('Btn-togglePecas').value='Ocultar peças do equipamento'
-            } else {
-                tabela.style.display = 'none';
-                document.getElementById('Btn-togglePecas').value='Exibir peças do equipamento'
-            }
-        }
-    </script>
+                function togglePecas() {
+                    let tabela = document.getElementById('tblPecas');
+                    if (tabela.style.display === 'none' || tabela.style.display === '') {
+                        tabela.style.display = 'block';
+                        document.getElementById('Btn-togglePecas').value = 'Ocultar peças do equipamento'
+                    } else {
+                        tabela.style.display = 'none';
+                        document.getElementById('Btn-togglePecas').value = 'Exibir peças do equipamento'
+                    }
+                }
+            </script>
     </span>
+   
     <table class="table" id="tblPecas" style="margin-left:1px; border:solid 1px blue; margin-top:10px;">
         <thead>
             <tr>
@@ -316,9 +319,11 @@
                 <th>Criticidade</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach ($pecas_equipamento as $peca_equipamento)
-            <tr title="Ao clicar 2 vezes adiciona o produto">
+            <tr title="De um duplo Click para adicionar o ítem a lista.">
+
                 <td>{{$peca_equipamento->id}}</td>
                 @foreach ($patrimonio as $equipamento)
                 @if ($equipamento['id'] == $peca_equipamento->equipamento)
@@ -577,5 +582,7 @@
     @endsection
     <footer>
     </footer>
+
+
 
     </html>

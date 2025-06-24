@@ -121,6 +121,7 @@ class SaidaProdutoController extends Controller
             $estoque = EstoqueProdutos::where('produto_id', $produto_id)->first(); //busca o registro do produto com o id da entrada do produto
             //      comparador de estoque               //
             if ($request->quantidade > $estoque->quantidade) {
+
                 echo '<div class="message" style="background-color:red; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação negada para saída de produto com O.S.!
         Quantidade de saída:' . $request->quantidade . ', Estoque:' . $estoque->quantidade . '
         </div>';
@@ -155,7 +156,7 @@ class SaidaProdutoController extends Controller
                 $estoque->quantidade = $estoque->quantidade - $quantidade; // soma estoque antigo com a entrada de produto
                 $estoque->save();
                 //-----------------------------------------//
-                //   Atualiza hora intervalod e manutenção
+                //   Atualiza hora intervalo de e manutenção
                 //   do registro Caso exitir a o cadastro
                 //-----------------------------------------//
                 $today = date("Y-m-d"); //data de hoje
@@ -192,8 +193,12 @@ class SaidaProdutoController extends Controller
                     $pecaEquipamento->data_proxima_manutencao = $data_proxima_manutencao; // soma estoque antigo com a entrada de produto
                     $pecaEquipamento->horas_proxima_manutencao = $diferenca_horas;
                     $pecaEquipamento->save(); //salva alteração em  peças equipamentos
-                    echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">
-                    Operação realizada com sucesso, e a manutenção do componente foi atualizada!</div>';
+                    //---------------------------------------------------//
+                    // ReTRONA PARA A VIEW DA DO PEDIDO
+                    //---------------------------------------------------//
+                    return redirect()->route('pedido-saida-lista.index', ['pedido_saida' => $pedido_saida_id]);
+                    //echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">
+                    //Operação realizada com sucesso, e a manutenção do componente foi atualizada!</div>';
                 } else {
                     echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
                 }
@@ -238,8 +243,6 @@ class SaidaProdutoController extends Controller
                 //-----------------------------------------//
                 $estoque->quantidade = $estoque->quantidade - $quantidade; // soma estoque antigo com a entrada de produto
                 $estoque->save();
-
-                // echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
             }
             //-------------------------------------------//
             //    Redireciona para a view

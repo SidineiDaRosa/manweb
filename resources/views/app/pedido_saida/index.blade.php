@@ -4,7 +4,7 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div> Pedidos de saidas de produtos</div>
+            <div> Pedidos de saídas de produtos</div>
 
             <form id="formSearchingProducts" action="{{'pedido-saida-filtro'}}" method="POST">
                 @csrf
@@ -24,10 +24,10 @@
                 </div>
                 <div class="col-md-2 mb-0">
                     <select class="form-control" name="status" id="status" value="" placeholder="Selecione o estado do pedido">
-                        <option value="fechado">Busca Fechado</option>
-                        <option value="aberto">Busca Aberto</option>
-                        <option value="indefenido">Busca Indefinido</option>
-                        <option value="em andamento">Busca Em andamanto</option>
+                        <option value="fechado">Fechado</option>
+                        <option value="aberto">Aberto</option>
+                        <option value="indefenido">Indefinido</option>
+                        <option value="em andamento">Em andamanto</option>
                     </select>
                 </div>
                 <!--input box filtro buscar produto--------->
