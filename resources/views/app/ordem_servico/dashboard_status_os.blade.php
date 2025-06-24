@@ -313,7 +313,6 @@
                 <table class="condensed-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Previsão de fim</th>
                             <th>Descrição</th>
                             <th>Patrimônio</th>
@@ -330,9 +329,10 @@
                         $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                         @endphp
                         <tr style="border-bottom: 2px solid #F7E8C4;">
-                            <td>{{$os_emandamento->id}}</td>
+                            
                             <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}"
                                 style="font-size: 15px;width:40px;">
+                                <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;">{{$os_emandamento->id}}</span>
                                 {{ \Carbon\Carbon::parse($os_emandamento->data_fim)->format('d/m/y') }} <br>
                                 {{ \Carbon\Carbon::parse($os_emandamento->hora_fim)->format('m:i') }}
 
@@ -534,7 +534,7 @@
                                     <td>
                                         <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}"
                                             style="font-size:15px;font-family:Arial, Helvetica, sans-serif;">
-                                          ID: <span style="font-weight: 800;color:blue;"> {{$os_hoje->id}}</span>
+                                         <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;"> {{$os_hoje->id}}</span>
                                             {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                             {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('m:i') }}
                                         </div>
