@@ -181,6 +181,8 @@
         </div>
         {{--Box 2--}}
         {{-- Satus de Tarefas iniciadas, pausadas, e em excução--}}
+
+
         <style>
             .div-text-sm-row-15 {
                 font-family: arial, sans-serif;
@@ -283,9 +285,7 @@
                         <table class="condensed-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Previsão de início</th>
-                                    <th>Previsão de fim</th>
+                                    <th>Dados</th>
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
                                     <th>Tipo</th>
@@ -295,11 +295,74 @@
                             <tbody>
                                 @foreach($ordens_servicos_aberta_hoje as $os_hoje)
                                 @php
-                                $dataPrevista = \Carbon\Carbon::parse($os_hoje->data_fim);
-                                $dataAtual = \Carbon\Carbon::today();
-                                $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
+                                //---------------------------------------------//
+                                // Comparador de data e horas aplicando cores
+                                //---------------------------------------------//
+
+                                $agora = \Carbon\Carbon::now();
+
+                                // Data Início
+                                if ($os_hoje->data_inicio) {
+                                $dataInicio = \Carbon\Carbon::parse($os_hoje->data_inicio)->startOfDay();
+
+                                if ($dataInicio->equalTo($agora->copy()->startOfDay())) {
+                                $classeDataInicio = 'text-warning'; // amarelo
+                                } elseif ($dataInicio->lessThan($agora)) {
+                                $classeDataInicio = 'text-danger'; // vermelho
+                                } else {
+                                $classeDataInicio = 'text-primary'; // azul
+                                }
+                                } else {
+                                $classeDataInicio = ''; // classe padrão caso data_inicio seja nula
+                                }
+
+                                // Hora Início (somente se a data for hoje e hora_inicio existir)
+                                if ($os_hoje->hora_inicio && isset($dataInicio) && $dataInicio->equalTo($agora->copy()->startOfDay())) {
                                 $horaInicio = \Carbon\Carbon::parse($os_hoje->hora_inicio);
 
+                                if ($horaInicio->lessThan($agora)) {
+                                $classeHoraInicio = 'text-danger';
+                                } elseif ($horaInicio->equalTo($agora)) {
+                                $classeHoraInicio = 'text-warning';
+                                } else {
+                                $classeHoraInicio = 'text-primary';
+                                }
+                                } else {
+                                $classeHoraInicio = '';
+                                }
+
+                                // Data Fim
+                                if ($os_hoje->data_fim) {
+                                $dataFim = \Carbon\Carbon::parse($os_hoje->data_fim)->startOfDay();
+
+                                if ($dataFim->equalTo($agora->copy()->startOfDay())) {
+                                $classeDataFim = 'text-warning';
+                                } elseif ($dataFim->lessThan($agora)) {
+                                $classeDataFim = 'text-danger';
+                                } else {
+                                $classeDataFim = 'text-primary';
+                                }
+                                } else {
+                                $classeDataFim = '';
+                                }
+
+                                // Hora Fim (somente se a data for hoje e hora_fim existir)
+                                if ($os_hoje->hora_fim && isset($dataFim) && $dataFim->equalTo($agora->copy()->startOfDay())) {
+                                $horaFim = \Carbon\Carbon::parse($os_hoje->hora_fim);
+
+                                if ($horaFim->lessThan($agora)) {
+                                $classeHoraFim = 'text-danger';
+                                } elseif ($horaFim->equalTo($agora)) {
+                                $classeHoraFim = 'text-warning';
+                                } else {
+                                $classeHoraFim = 'text-primary';
+                                }
+                                } else {
+                                $classeHoraFim = '';
+                                }
+
+
+                                //---------------------------------------------//
                                 // Cor da linha com base na especialidade
                                 switch(strtolower($os_hoje->especialidade_do_servico)) {
                                 case 'elétrica':
@@ -316,21 +379,32 @@
                                 @endphp
                                 <tr class="{{ $linhaClasse }}">
 
+
+
                                     <td>
-                                        <a style="font-size: 17px;" class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id])}}">
-                                            {{$os_hoje->id}}
+                                        <a style="font-size: 18px;" class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico'=>$os_hoje->id]) }}">
+                                            {{ $os_hoje->id }}
                                         </a>
+                                        <hr style="margin: 2px; color: gray" hidden>
+                                       <div style="border: 1px solid rgba(0, 0, 0, 0.1);border-radius:3px;">
+                                            <div style="flex-direction: row;display:flex;"> <span style="font-weight:300;" class="{{ $classeDataInicio }}">
+                                                    {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
+                                                </span>
+                                                <span style="font-weight:300;" class="{{ $classeHoraInicio }}">
+                                                    -{{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('H:i') }}
+                                                </span>
+                                            </div>
+                                            <hr style="margin: 2px; color: gray">
+                                            <div style="flex-direction: row;display:flex;"> <span style="font-weight:300;" class="{{ $classeDataFim }}">
+                                                    {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
+                                                </span>
+                                                <span style="font-weight:300;" class="{{ $classeHoraFim }}">
+                                                    -{{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('H:i') }}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </td>
 
-                                    <td class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
-                                        {{ \Carbon\Carbon::parse($os_hoje->hora_inicio)->format('h:i') }}
-
-                                    </td>
-                                    <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($os_hoje->data_fim)->format('d/m/y') }}
-                                        <span style="color:black;font-size:12px;font-family: 'Poppins', sans-serif;font-weight: 300;"></span>
-                                        {{ \Carbon\Carbon::parse($os_hoje->hora_fim)->format('h:i') }}
                                     </td>
                                     <td>{{$os_hoje->descricao}}</td>
                                     <td>
@@ -1047,8 +1121,8 @@
                 </table>
             </div>
         </div>
-    </div>
-    {{--fim do item 6--}}
+
+        {{--fim do item 6--}}
     </div>
     <style>
         canvas {

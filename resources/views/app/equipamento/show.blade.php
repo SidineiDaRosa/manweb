@@ -649,8 +649,10 @@
 </style>
 {{------------------------------------------------}}
 {{--Tabela de peças dos equipamento---------------}}
-<a class="btn btn-sm-template btn-outline-primary" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id,'todas'=>'1']) }}">
-    <i class="icofont-eye-alt">Visualisar todas</i>
+<a class="btn btn-bg-template btn-outline-success" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id,'todas'=>'1']) }}"
+style="width:300px;" >
+    <i class="icofont-eye-alt"></i>
+    Visualisar todas
 </a>
 
 
@@ -800,7 +802,7 @@
     {{--Box 4--}}
     <div class="item-25">
         <h4>Lubrificação</h4>
-      
+
         @foreach ($lubrificacao as $lubrificacao_f)
         {{$lubrificacao_f->id}} <br>
         <h6>{{$lubrificacao_f->descricao}}</h6>

@@ -91,7 +91,7 @@
 
             .badge.yellow {
                 background-color:gold;
-                /* Nova classe para laranja */
+                /* Nova classe para amarelo */
             }
 
             #solicitacoes-count,

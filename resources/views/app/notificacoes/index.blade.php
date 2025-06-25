@@ -14,6 +14,7 @@
         font-weight: bold;
         color: #0056b3;
         margin-bottom: 15px;
+        float: right;
     }
 
     .pecas-lista {
@@ -22,7 +23,7 @@
         /* empilha verticalmente */
         gap: -10px;
 
-        
+
     }
 
     .peca-card {
@@ -68,18 +69,23 @@
 
     @foreach($agrupados as $nomeEquipamento => $pecas)
     <div class="equipamento-bloco">
+        <h6>{{ $nomeEquipamento }}</h6>
+
         <div class="equipamento-nome">
-            {{ $nomeEquipamento }}
-            <a class="btn btn-outline-success btn-equipamento" href="{{ route('equipamento.show', ['equipamento' => $pecas->first()->equipamento_id]) }}">
+            <a class="btn btn-outline-success btn-sm" href="{{ route('equipamento.show', ['equipamento' => $pecas->first()->equipamento_id]) }}">
                 <i class="icofont-tractor"></i> Ir para o equipamento
             </a>
+            <a class="btn btn-outline-primary btn-sm" href="{{route('ordem-servico.create', ['equipamento'=>$pecas->first()->equipamento_id,'empresa'=>2])}}">
+                Nova O.S
+            </a>
         </div>
+
 
         <div class="pecas-lista">
             @foreach($pecas as $peca)
             <div class="peca-card">
                 <strong class="title-sm">{{ $peca->descricao ?? 'Sem descrição' }}</strong><br>
-        
+
                 <span class="sub-title-sm ">Data Substituição: </span>
                 <span class="content-sm">{{ $peca->data_substituicao }} as {{ $peca->hora_substituicao }}</span>
 
@@ -96,9 +102,9 @@
                 <span style="color: red;">{{ $peca->horas_proxima_manutencao }}h</span>
                 <span class="sub-title-sm "> Tipo:</span>
                 <span class="content-sm"> {{ $peca->tipo_componente }}</span>
-                  <hr style="margin-top:5px;">
+                <hr style="margin-top:5px;">
             </div>
-        
+
             @endforeach
         </div>
     </div>
