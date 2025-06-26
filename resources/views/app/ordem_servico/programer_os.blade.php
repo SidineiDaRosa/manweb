@@ -80,7 +80,7 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .item-week span:hover {
+        .hover-alt:hover {
             background-color: greenyellow;
             opacity: 0.5;
             /* Define a opacidade corretamente */
@@ -102,29 +102,53 @@
             box.classList.toggle('expanded');
         }
     </script>
-
+    <style>
+        .highlight-today {
+            background-color:rgb(246, 248, 213);
+            /* amarelo claro, por exemplo */
+            border: 1px solidrgb(65, 63, 58);
+            /* borda amarela para destacar */
+            border-radius: 6px;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+    </style>
     <!------------------------------------------------------------->
-    <!--Semanal -->
+    <!--O.S Semanal -->
     <!------------------------------------------------------------->
+    @php
+    \Carbon\Carbon::setLocale('pt_BR');
+    @endphp
     <div class="container-month">
         {{--Box 2--}}
-        <div class="item-week" id="box-2">
-            <span class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">Segunda-feira
-                <i class="icofont-expand"></i>
+        @php
+        \Carbon\Carbon::setLocale('pt_BR');
+        @endphp
+        <div  class="item-week {{ $today == 'Monday' ? 'highlight-today' : '' }}" id="box-2">
+            <span class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">
+                Segunda-feira - {{ \Carbon\Carbon::now()->startOfWeek()->translatedFormat('d \d\e F') }}
             </span>
             <div class="orders">
                 @forelse ($mondayOrders as $order)
-                <div style="display:flex;">
-                    <div style="width:65%;">
-                        ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                        <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
-                        <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+                <div class="hover-alt" style="background-color:#C8E6C9; padding:1px; margin-bottom:5px; border-radius:4px;">
+                    <div style="display:flex; flex-direction:row;">
+                        <div style="width:65%;">
+                            <a class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico' => $order->id]) }}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}
+                                {{ \Carbon\Carbon::parse($order->hora_inicio)->format('H:i') }}
+                            </span>
+                            <span style="font-family:Arial, Helvetica, sans-serif;font-weight:600;">{{ $order->responsavel }}</span>
+                        </div>
+                        <div style="width:35%; text-align: right;">
+                            <h6>{{ $order->equipamento->nome }}</h6>
+                        </div>
                     </div>
-                    <div style="width:35%; text-align: right;">
-                        <h6>{{ $order->equipamento->nome }} </h6>
+                    <div style="margin-top:-2px;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size:15px;">
+                            {{ $order->descricao }}
+                        </span>
                     </div>
                 </div>
-                <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
                 <hr style="color:green;margin:1px;">
                 @empty
                 Nenhuma ordem de serviço aberta nesta segunda-feira.
@@ -132,122 +156,205 @@
             </div>
         </div>
 
-        {{--Box 3 terça feira--}}
-        <div id="box-3" class="item-week">
-            <h4 class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-3')" title="Expandir/Recolher">Terça-feira</h4>
-            @forelse ($tuesdayOrders as $order)
-            <div style="display:flex;">
-                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' =>  $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
-                </div>
-                <div style="width:35%; text-align: right;">
-                    <h6>{{ $order->equipamento->nome }} </h6>
-                </div>
-            </div>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
-            <hr style="color:green;margin:1px;">
-            @empty
-            Nenhuma ordem de serviço aberta nesta terça-feira.
-            @endforelse
-        </div>
-        {{--Box 4 Quarta-feira--}}
-        <div id="box-4" class="item-week">
-            <h4 class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-4')" title="Expandir/Recolher">Quarta-feira</h4>
-            @forelse ($wednesdayOrders as $order)
-            <div style="display:flex;">
-                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' =>  $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
-                </div>
-                <div style="width:35%; text-align: right;">
-                    <h6>{{ $order->equipamento->nome }} </h6>
-                </div>
-            </div>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
-            <hr style="color:green;margin:1px;">
-            @empty
-            Nenhuma ordem de serviço aberta nesta quarta-feira.
-            @endforelse
-        </div>
-        {{--Box 5 Quinta-feira--}}
-        <div id="box-5" class="item-week">
-            <h4 class="{{ $today == 'Thursday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-5')" title="Expandir/Recolher">Quinta-feira</h4>
-            @forelse ($thursdayOrders as $order)
-            <div style="display:flex;">
-                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
-                </div>
-                <div style="width:35%; text-align: right;">
-                    <h6>{{ $order->equipamento->nome }} </h6>
-                </div>
-            </div>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
-            <hr style="color:green;margin:1px;">
-            @empty
-            Nenhuma ordem de serviço aberta nesta quinta-feira.
-            @endforelse
-        </div>
-        {{--Box 6 Sexta-feira--}}
-        <div id="box-6" class="item-week">
-            <h4 class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-6')" title="Expandir/Recolher">Sexta-feira</h4>
 
-            @forelse ($fridayOrders as $order)
-            <div style="display:flex;">
-                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+        {{--Box 3 terça feira--}}
+        <div id="box-3"  class="item-week {{ $today == 'Tuesday' ? 'highlight-today' : '' }}">
+            <span class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-3')" title="Expandir/Recolher">
+                Terça-feira - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(1)->translatedFormat('d \d\e F') }}
+            </span>
+            <div class="orders">
+                @forelse ($tuesdayOrders as $order)
+                <div class="hover-alt" style="background-color:#C8E6C9; padding:1px; margin-bottom:5px; border-radius:4px;">
+                    <div style="display:flex; flex-direction:row;">
+                        <div style="width:65%;">
+                            <a class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico' => $order->id]) }}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> {{ \Carbon\Carbon::parse($order->hora_inicio)->format('H:i') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif; font-weight:600;">{{ $order->responsavel }}</span>
+                        </div>
+                        <div style="width:35%; text-align: right;">
+                            <h6>{{ $order->equipamento->nome }}</h6>
+                        </div>
+                    </div>
+                    <div style="margin-top:-2px;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size:15px;">
+                            {{ $order->descricao }}
+                        </span>
+                    </div>
                 </div>
-                <div style="width:35%; text-align: right;">
-                    <h6>{{ $order->equipamento->nome }} </h6>
-                </div>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta nesta terça-feira.
+                @endforelse
             </div>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
-            <hr style="color:green;margin:1px;">
-            @empty
-            Nenhuma ordem de serviço aberta nesta sexta-feira.
-            @endforelse
         </div>
+
+        {{--Box 4 Quarta-feira--}}
+        <div id="box-4"  class="item-week {{ $today == 'Wednesday' ? 'highlight-today' : '' }}">
+            <span class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-4')" title="Expandir/Recolher">
+                Quarta-feira - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(2)->translatedFormat('d \d\e F') }}
+            </span>
+            <div class="orders">
+                @forelse ($wednesdayOrders as $order)
+                <div class="hover-alt" style="background-color:#C8E6C9; padding:1px; margin-bottom:5px; border-radius:4px;">
+                    <div style="display:flex; flex-direction:row;">
+                        <div style="width:65%;">
+                            <a class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico' => $order->id]) }}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> {{ \Carbon\Carbon::parse($order->hora_inicio)->format('H:i') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif; font-weight:600;">{{ $order->responsavel }}</span>
+                        </div>
+                        <div style="width:35%; text-align: right;">
+                            <h6>{{ $order->equipamento->nome }}</h6>
+                        </div>
+                    </div>
+                    <div style="margin-top:-2px;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size:15px;">
+                            {{ $order->descricao }}
+                        </span>
+                    </div>
+                </div>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta nesta quarta-feira.
+                @endforelse
+            </div>
+        </div>
+
+        {{--Box 5 Quinta-feira--}}
+        <div id="box-5"
+            class="item-week {{ $today == 'Thursday' ? 'highlight-today' : '' }}">
+            <span class="{{ $today == 'Thursday' ? 'today' : '' }}"
+                style="font-weight:600;color:blue;"
+                onclick="toggleExpand('box-5')"
+                title="Expandir/Recolher">
+                Quinta-feira - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(3)->translatedFormat('d \d\e F') }}
+            </span>
+            <div class="orders">
+                @forelse ($thursdayOrders as $order)
+                <div class="hover-alt" style="background-color:#C8E6C9; padding:1px; margin-bottom:5px; border-radius:4px;">
+                    <div style="display:flex; flex-direction:row;">
+                        <div style="width:65%;">
+                            <a class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico' => $order->id]) }}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> {{ \Carbon\Carbon::parse($order->hora_inicio)->format('H:i') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif; font-weight:600;">{{ $order->responsavel }}</span>
+                        </div>
+                        <div style="width:35%; text-align: right;">
+                            <h6>{{ $order->equipamento->nome }}</h6>
+                        </div>
+                    </div>
+                    <div style="margin-top:-2px;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size:15px;">
+                            {{ $order->descricao }}
+                        </span>
+                    </div>
+                </div>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta nesta quinta-feira.
+                @endforelse
+            </div>
+        </div>
+
+
+        {{--Box 6 Sexta-feira--}}
+        <div id="box-6"  class="item-week {{ $today == 'Friday' ? 'highlight-today' : '' }}">
+            <span class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-6')" title="Expandir/Recolher">
+                Sexta-feira - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(4)->translatedFormat('d \d\e F') }}
+            </span>
+            <div class="orders">
+                @forelse ($fridayOrders as $order)
+                <div class="hover-alt" style="background-color:#C8E6C9; padding:1px; margin-bottom:5px; border-radius:4px;">
+                    <div style="display:flex; flex-direction:row;">
+                        <div style="width:65%;">
+                            <a class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico' => $order->id]) }}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> {{ \Carbon\Carbon::parse($order->hora_inicio)->format('H:i') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif; font-weight:600;">{{ $order->responsavel }}</span>
+                        </div>
+                        <div style="width:35%; text-align: right;">
+                            <h6>{{ $order->equipamento->nome }}</h6>
+                        </div>
+                    </div>
+                    <div style="margin-top:-2px;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size:15px;">
+                            {{ $order->descricao }}
+                        </span>
+                    </div>
+                </div>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta nesta sexta-feira.
+                @endforelse
+            </div>
+        </div>
+
         {{--Box 7 Sábado--}}
-        <div id="box-7" class="item-week">
-            <h4 class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-7')" title="Expandir/Recolher">Sábado</h4>
-            @forelse ($saturdayOrders as $order)
-            <div style="display:flex;">
-                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' =>  $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+        <div id="box-7"  class="item-week {{ $today == 'Saturday' ? 'highlight-today' : '' }}">
+            <span class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-7')" title="Expandir/Recolher">
+                Sábado - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(5)->translatedFormat('d \d\e F') }}
+            </span>
+            <div class="orders">
+                @forelse ($saturdayOrders as $order)
+                <div class="hover-alt" style="background-color:#C8E6C9; padding:1px; margin-bottom:5px; border-radius:4px;">
+                    <div style="display:flex; flex-direction:row;">
+                        <div style="width:65%;">
+                            <a class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico' => $order->id]) }}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> {{ \Carbon\Carbon::parse($order->hora_inicio)->format('H:i') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif; font-weight:600;">{{ $order->responsavel }}</span>
+                        </div>
+                        <div style="width:35%; text-align: right;">
+                            <h6>{{ $order->equipamento->nome }}</h6>
+                        </div>
+                    </div>
+                    <div style="margin-top:-2px;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size:15px;">
+                            {{ $order->descricao }}
+                        </span>
+                    </div>
                 </div>
-                <div style="width:35%; text-align: right;">
-                    <h6>{{ $order->equipamento->nome }} </h6>
-                </div>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta neste sábado.
+                @endforelse
             </div>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
-            <hr style="color:green;margin:1px;">
-            @empty
-            Nenhuma ordem de serviço aberta neste sábado.
-            @endforelse
         </div>
+
         {{--Box 1 Domingo--}}
-        <div id="box-1" class="item-week">
-            <h4 class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:300;" onclick="toggleExpand('box-1')" title="Expandir/Recolher">Domingo</h4>
-            @forelse ($sundayOrders as $order)
-            <div style="display:flex;">
-                <div style="width:65%;"> ID: <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $order->id])}}" title="Click para abrir a O.S.">{{ $order->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;">, Responsável: {{ $order->responsavel}}</span>
+        <div id="box-1"  class="item-week {{ $today == 'Sunday' ? 'highlight-today' : '' }}">
+            <span class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-1')" title="Expandir/Recolher">
+                Domingo - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(6)->translatedFormat('d \d\e F') }}
+            </span>
+            <div class="orders">
+                @forelse ($sundayOrders as $order)
+                <div class="hover-alt" style="background-color:#C8E6C9; padding:1px; margin-bottom:5px; border-radius:4px;">
+                    <div style="display:flex; flex-direction:row;">
+                        <div style="width:65%;">
+                            <a class="txt-link" href="{{ route('ordem-servico.show', ['ordem_servico' => $order->id]) }}" title="Click para abrir a O.S.">{{ $order->id }}</a>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> Início: {{ \Carbon\Carbon::parse($order->data_inicio)->format('d/m/y') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif;"> {{ \Carbon\Carbon::parse($order->hora_inicio)->format('H:i') }}</span>
+                            <span style="font-family:Arial, Helvetica, sans-serif; font-weight:600;">{{ $order->responsavel }}</span>
+                        </div>
+                        <div style="width:35%; text-align: right;">
+                            <h6>{{ $order->equipamento->nome }}</h6>
+                        </div>
+                    </div>
+                    <div style="margin-top:-2px;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size:15px;">
+                            {{ $order->descricao }}
+                        </span>
+                    </div>
                 </div>
-                <div style="width:35%; text-align: right;">
-                    <h6>{{ $order->equipamento->nome }} </h6>
-                </div>
+                <hr style="color:green;margin:1px;">
+                @empty
+                Nenhuma ordem de serviço aberta neste domingo.
+                <hr>
+                @endforelse
             </div>
-            <span style="font-family: Arial, Helvetica, sans-serif;font-size:15px;"> {{ $order->descricao}}</span>
-            <hr style="color:green;margin:1px;">
-            @empty
-            Nenhuma ordem de serviço aberta neste domingo.
-            <hr>
-            @endforelse
         </div>
+
         {{--fim card--}}
     </div>
     {{--//----------------------------------------------------//---}}

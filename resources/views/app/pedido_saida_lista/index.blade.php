@@ -363,6 +363,7 @@
                 @endforeach
         </tbody>
     </table>
+ 
     <style>
         tr:hover {
             background-color: rgba(255, 165, 0, 0.2);
