@@ -156,7 +156,7 @@
             </div>
         </div>
 
-
+<!--fim-->
         {{--Box 3 terça feira--}}
         <div id="box-3"  class="item-week {{ $today == 'Tuesday' ? 'highlight-today' : '' }}">
             <span class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-3')" title="Expandir/Recolher">
