@@ -104,7 +104,7 @@
     </script>
     <style>
         .highlight-today {
-            background-color:rgb(246, 248, 213);
+            background-color: rgb(246, 248, 213);
             /* amarelo claro, por exemplo */
             border: 1px solidrgb(65, 63, 58);
             /* borda amarela para destacar */
@@ -124,7 +124,7 @@
         @php
         \Carbon\Carbon::setLocale('pt_BR');
         @endphp
-        <div  class="item-week {{ $today == 'Monday' ? 'highlight-today' : '' }}" id="box-2">
+        <div class="item-week {{ $today == 'Monday' ? 'highlight-today' : '' }}" id="box-2">
             <span class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">
                 Segunda-feira - {{ \Carbon\Carbon::now()->startOfWeek()->translatedFormat('d \d\e F') }}
             </span>
@@ -156,9 +156,9 @@
             </div>
         </div>
 
-<!--fim-->
+        <!--fim-->
         {{--Box 3 terça feira--}}
-        <div id="box-3"  class="item-week {{ $today == 'Tuesday' ? 'highlight-today' : '' }}">
+        <div id="box-3" class="item-week {{ $today == 'Tuesday' ? 'highlight-today' : '' }}">
             <span class="{{ $today == 'Tuesday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-3')" title="Expandir/Recolher">
                 Terça-feira - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(1)->translatedFormat('d \d\e F') }}
             </span>
@@ -190,7 +190,7 @@
         </div>
 
         {{--Box 4 Quarta-feira--}}
-        <div id="box-4"  class="item-week {{ $today == 'Wednesday' ? 'highlight-today' : '' }}">
+        <div id="box-4" class="item-week {{ $today == 'Wednesday' ? 'highlight-today' : '' }}">
             <span class="{{ $today == 'Wednesday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-4')" title="Expandir/Recolher">
                 Quarta-feira - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(2)->translatedFormat('d \d\e F') }}
             </span>
@@ -259,7 +259,7 @@
 
 
         {{--Box 6 Sexta-feira--}}
-        <div id="box-6"  class="item-week {{ $today == 'Friday' ? 'highlight-today' : '' }}">
+        <div id="box-6" class="item-week {{ $today == 'Friday' ? 'highlight-today' : '' }}">
             <span class="{{ $today == 'Friday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-6')" title="Expandir/Recolher">
                 Sexta-feira - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(4)->translatedFormat('d \d\e F') }}
             </span>
@@ -291,7 +291,7 @@
         </div>
 
         {{--Box 7 Sábado--}}
-        <div id="box-7"  class="item-week {{ $today == 'Saturday' ? 'highlight-today' : '' }}">
+        <div id="box-7" class="item-week {{ $today == 'Saturday' ? 'highlight-today' : '' }}">
             <span class="{{ $today == 'Saturday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-7')" title="Expandir/Recolher">
                 Sábado - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(5)->translatedFormat('d \d\e F') }}
             </span>
@@ -323,7 +323,7 @@
         </div>
 
         {{--Box 1 Domingo--}}
-        <div id="box-1"  class="item-week {{ $today == 'Sunday' ? 'highlight-today' : '' }}">
+        <div id="box-1" class="item-week {{ $today == 'Sunday' ? 'highlight-today' : '' }}">
             <span class="{{ $today == 'Sunday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-1')" title="Expandir/Recolher">
                 Domingo - {{ \Carbon\Carbon::now()->startOfWeek()->addDays(6)->translatedFormat('d \d\e F') }}
             </span>
@@ -497,103 +497,366 @@
                 });
             });
         });
-    </script>
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Mês</h3>
-    <div class="container-month">
-        {{-- Box 1 --}}
-        <div class="item-month">
-            <h4>1</h4>
-        </div>
-        <div class="item-month">
-            <h4>2</h4>
-        </div>
-        <div class="item-month">
-            <h4>3</h4>
-        </div>
-        <div class="item-month">
-            <h4>4</h4>
-        </div>
-        <div class="item-month">
-            <h4>5</h4>
-        </div>
-        <div class="item-month">
-            <h4>6</h4>
-        </div>
-        <div class="item-month">
-            <h4>7</h4>
-        </div>
-        <div class="item-month">
-            <h4>8</h4>
-        </div>
-        <div class="item-month">
-            <h4>9</h4>
-        </div>
-        <div class="item-month">
-            <h4>10</h4>
-        </div>
-        <div class="item-month">
-            <h4>11</h4>
-        </div>
-        <div class="item-month">
-            <h4>12</h4>
-        </div>
-        <div class="item-month">
-            <h4>13</h4>
-        </div>
-        <div class="item-month">
-            <h4>14</h4>
-        </div>
-        <div class="item-month">
-            <h4>15</h4>
-        </div>
-        <div class="item-month">
-            <h4>16</h4>
-        </div>
-        <div class="item-month">
-            <h4>17</h4>
-        </div>
-        <div class="item-month">
-            <h4>18</h4>
-        </div>
-        <div class="item-month">
-            <h4>19</h4>
-        </div>
-        <div class="item-month">
-            <h4>20</h4>
-        </div>
-        <div class="item-month">
-            <h4>21</h4>
-        </div>
-        <div class="item-month">
-            <h4>22</h4>
-        </div>
-        <div class="item-month">
-            <h4>23</h4>
-        </div>
-        <div class="item-month">
-            <h4>24</h4>
-        </div>
-        <div class="item-month">
-            <h4>25</h4>
-        </div>
-        <div class="item-month">
-            <h4>26</h4>
-        </div>
-        <div class="item-month">
-            <h4>27</h4>
-        </div>
-        <div class="item-month">
-            <h4>28</h4>
-        </div>
-        <div class="item-month">
-            <h4>29</h4>
-        </div>
-        <div class="item-month">
-            <h4>30</h4>
-        </div>
-        <div class="item-month">
-            <h4>31</h4>
-        </div>
+    </script><!DOCTYPE html>
+<html lang="pt-br">
 
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .gantt-months,
+        .gantt-rows {
+            display: grid;
+            grid-template-columns: 150px repeat(var(--meses), 1fr);
+            width: 100vw;
+            max-width: 100vw;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .gantt-months div,
+        .gantt-rows div {
+            border-left: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 11px;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            user-select: none;
+        }
+
+        .gantt-months div:first-child,
+        .gantt-rows div:first-child {
+            border-left: none;
+            font-weight: bold;
+            background: #f5f5f5;
+        }
+
+        .gantt-months div {
+            background: #e6e6e6;
+            font-weight: bold;
+        }
+
+        .task-name {
+            background: #f5f5f5;
+            padding-left: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bar {
+            height: 10px;
+            margin-top: 10px;
+            border-radius: 0;
+            position: relative;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .bar:hover {
+            opacity: 0.7;
+        }
+
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #modalContent {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            width: 320px;
+            box-sizing: border-box;
+        }
+
+        #modalContent label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #modalContent input {
+            width: 100%;
+            padding: 6px;
+            margin-top: 4px;
+            box-sizing: border-box;
+        }
+
+        #modalContent button {
+            margin-top: 15px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        #modalContent .actions {
+            text-align: right;
+        }
+
+        /* Botão toggle */
+        #btnToggle {
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h5>Gantt Dinâmico com Edição</h5>
+
+    <!-- Botão para alternar visualização -->
+    <button id="btnToggle">Exibir: Semestral</button>
+
+    <div class="gantt-months" id="gantt-meses"></div>
+    <div id="gantt-tarefas"></div>
+
+    <!-- Modal -->
+    <div id="modal">
+        <div id="modalContent">
+            <h3>Editar Tarefa</h3>
+            <form id="formEdit">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required />
+
+                <label for="inicio">Início (aaaa-mm-dd):</label>
+                <input type="date" id="inicio" name="inicio" required />
+
+                <label for="fim">Fim (aaaa-mm-dd):</label>
+                <input type="date" id="fim" name="fim" required />
+
+                <div class="actions">
+                    <button type="button" id="cancelBtn">Cancelar</button>
+                    <button type="submit">Salvar</button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <script>
+        function diffMonths(d1, d2) {
+            return (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+        }
+
+        function diasNoMes(ano, mes) {
+            return new Date(ano, mes + 1, 0).getDate();
+        }
+
+        // Variáveis globais
+        let periodo = 'semestral'; // Começa mostrando semestral
+        let dataInicio, dataFim, totalMeses;
+
+        const cores = ["#3fa9f5", "#ff9800", "#8bc34a"];
+        const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+        const elMeses = document.getElementById("gantt-meses");
+        const elTarefas = document.getElementById("gantt-tarefas");
+        const modal = document.getElementById("modal");
+        const formEdit = document.getElementById("formEdit");
+        const inputNome = document.getElementById("nome");
+        const inputInicio = document.getElementById("inicio");
+        const inputFim = document.getElementById("fim");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const btnToggle = document.getElementById("btnToggle");
+
+        // Recebe array PHP convertido para JS (substitua $ordem_servico_gantt pela sua variável real)
+        const ordensServicos = @json($ordem_servico_gantt);
+
+        // Mapeia ordens para formato tarefas do gráfico
+        let tarefas = ordensServicos.map(os => ({
+            id: os.id,
+            nome: `OS #${os.id}`, 
+            inicio: os.data_inicio.substr(0, 10), 
+            fim: os.data_fim.substr(0, 10)
+        }));
+
+        // Função para atualizar datas conforme período
+        function atualizarDatas() {
+            if (periodo === 'anual') {
+                dataInicio = new Date("2025-01-01");
+                dataFim = new Date("2025-12-31");
+                btnToggle.innerText = "Exibir: Semestral";
+            } else {
+                dataInicio = new Date("2025-01-01");
+                dataFim = new Date("2025-06-30");
+                btnToggle.innerText = "Exibir: Anual";
+            }
+            totalMeses = diffMonths(dataInicio, dataFim) + 1;
+            elMeses.style.setProperty('--meses', totalMeses);
+        }
+
+        // Função para renderizar gráfico
+        function renderGantt() {
+            elMeses.innerHTML = '';
+            elTarefas.innerHTML = '';
+
+            // Cabeçalho meses
+            const firstCol = document.createElement("div");
+            firstCol.innerText = "Mês";
+            elMeses.appendChild(firstCol);
+
+            for (let i = 0; i < totalMeses; i++) {
+                const d = new Date(dataInicio.getFullYear(), dataInicio.getMonth() + i, 1);
+                const monthName = meses[d.getMonth()];
+                const cell = document.createElement("div");
+                cell.innerText = monthName + " " + d.getFullYear();
+                elMeses.appendChild(cell);
+            }
+
+            // Renderiza tarefas
+            tarefas.forEach((tarefa, i) => {
+                const row = document.createElement("div");
+                row.className = "gantt-rows";
+                row.style.gridTemplateColumns = `150px repeat(${totalMeses}, 1fr)`;
+
+                const nameCell = document.createElement("div");
+                nameCell.className = "task-name";
+                nameCell.innerText = tarefa.nome;
+                row.appendChild(nameCell);
+
+                const inicio = new Date(tarefa.inicio);
+                const fim = new Date(tarefa.fim);
+
+                // Se a tarefa está fora do período, não mostrar barra (pode ajustar)
+                if (fim < dataInicio || inicio > dataFim) {
+                    // preenche as células vazias da linha inteira
+                    for (let k = 0; k < totalMeses; k++) {
+                        const empty = document.createElement("div");
+                        row.appendChild(empty);
+                    }
+                    elTarefas.appendChild(row);
+                    return;
+                }
+
+                // Ajusta inicio/fim da barra para o período exibido
+                const start = inicio < dataInicio ? dataInicio : inicio;
+                const end = fim > dataFim ? dataFim : fim;
+
+                const diffInicio = diffMonths(dataInicio, start);
+                const duracao = diffMonths(start, end) + 1;
+
+                // Células vazias antes da barra
+                for (let j = 0; j < diffInicio; j++) {
+                    const empty = document.createElement("div");
+                    row.appendChild(empty);
+                }
+
+                // Barra mês a mês
+                for (let m = 0; m < duracao; m++) {
+                    const mesIndex = start.getMonth() + m;
+                    const ano = start.getFullYear() + Math.floor(mesIndex / 12);
+                    const mes = mesIndex % 12;
+                    const diasMes = diasNoMes(ano, mes);
+
+                    const cell = document.createElement("div");
+
+                    const barra = document.createElement("div");
+                    barra.className = "bar";
+                    barra.style.backgroundColor = cores[i % cores.length];
+                    barra.title = `${tarefa.nome} (${tarefa.inicio} → ${tarefa.fim})`;
+
+                    if (duracao === 1) {
+                        const diaIni = start.getDate();
+                        const diaFim = end.getDate();
+                        const margemEsq = ((diaIni - 1) / diasMes) * 100;
+                        const larguraBarra = ((diaFim - diaIni + 1) / diasMes) * 100;
+                        barra.style.marginLeft = margemEsq + "%";
+                        barra.style.width = larguraBarra + "%";
+                    } else {
+                        if (m === 0) {
+                            const diaIni = start.getDate();
+                            const margemEsq = ((diaIni - 1) / diasMes) * 100;
+                            const larguraBarra = 100 - margemEsq;
+                            barra.style.marginLeft = margemEsq + "%";
+                            barra.style.width = larguraBarra + "%";
+                        } else if (m === duracao - 1) {
+                            const diaFim = end.getDate();
+                            barra.style.marginLeft = "0%";
+                            barra.style.width = ((diaFim) / diasMes) * 100 + "%";
+                        } else {
+                            barra.style.marginLeft = "0%";
+                            barra.style.width = "100%";
+                        }
+                    }
+
+                    barra.addEventListener("click", () => abrirModal(i));
+
+                    cell.appendChild(barra);
+                    row.appendChild(cell);
+                }
+
+                // Células vazias depois da barra
+                const restantes = totalMeses - diffInicio - duracao;
+                for (let j = 0; j < restantes; j++) {
+                    const empty = document.createElement("div");
+                    row.appendChild(empty);
+                }
+
+                elTarefas.appendChild(row);
+            });
+        }
+
+        // Modal funções
+        function abrirModal(index) {
+            const tarefa = tarefas[index];
+            inputNome.value = tarefa.nome;
+            inputInicio.value = tarefa.inicio;
+            inputFim.value = tarefa.fim;
+            formEdit.dataset.index = index;
+            modal.style.display = "flex";
+        }
+
+        function fecharModal() {
+            modal.style.display = "none";
+        }
+
+        cancelBtn.addEventListener("click", fecharModal);
+
+        formEdit.addEventListener("submit", e => {
+            e.preventDefault();
+            const index = formEdit.dataset.index;
+            tarefas[index].nome = inputNome.value.trim();
+            tarefas[index].inicio = inputInicio.value;
+            tarefas[index].fim = inputFim.value;
+            fecharModal();
+            renderGantt();
+        });
+
+        // Evento toggle botão
+        btnToggle.addEventListener('click', () => {
+            periodo = (periodo === 'anual') ? 'semestral' : 'anual';
+            atualizarDatas();
+            renderGantt();
+        });
+
+        // Inicializa datas e desenha
+        atualizarDatas();
+        renderGantt();
+
+    </script>
+
+</body>
+
+</html>
+
 </main>

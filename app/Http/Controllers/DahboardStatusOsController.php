@@ -434,6 +434,8 @@ class DahboardStatusOsController extends Controller
                 ->where('empresa_id', '<=', 2)
                 ->get();
         }
+        $ordem_servico_gantt=OrdemServico::where('situacao','aberto')->get();
+       // echo ($ordem_servico_gantt);
         return view('app.ordem_servico.programer_os', [
             'mondayOrders' => $mondayOrders,
             'tuesdayOrders' => $tuesdayOrders,
@@ -442,7 +444,8 @@ class DahboardStatusOsController extends Controller
             'fridayOrders' => $fridayOrders,
             'saturdayOrders' => $saturdayOrders,
             'sundayOrders' => $sundayOrders,
-            'ordens_servicos_por_semana' => $ordens_servicos_por_semana
+            'ordens_servicos_por_semana' => $ordens_servicos_por_semana,
+            'ordem_servico_gantt'=>$ordem_servico_gantt
 
         ]);
     }
