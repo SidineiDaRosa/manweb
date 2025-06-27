@@ -18,6 +18,7 @@ use App\Http\Controllers\SolicitacaoOsController;
 use App\Http\Controllers\CheckListController;
 use App\Http\Controllers\CheckListExecutadoController;
 use App\Http\Controllers\CustosController;
+use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,10 @@ Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 
 Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
 // Programação de os e visualização semanal O.S.
 Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStatusOsController::class, 'programer_os'])->name('program_os');
+//Atualiza datas via jason gráfico Gantt
+
+Route::post('/ordem-servico/atualizar-intervalo', [OrdemServicoController::class, 'update_os_interval'])
+    ->name('update.os.interval');
 //--------------------------------------------------------//
 //                  Ordem de produção
 //--------------------------------------------------------//
@@ -397,4 +402,3 @@ Route::get('/loop', [UpdateLoopController::class, 'form'])->name('loop.form');
 //Adquire a contagem de notificações.
 Route::get('/alarms-count', [UpdateLoopController::class, 'alarms_count']);
 Route::get('/notificacoes', [NotificationsController::class, 'index'])->name('notificacoes.index');
-

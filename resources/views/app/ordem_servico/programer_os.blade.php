@@ -497,366 +497,428 @@
                 });
             });
         });
-    </script><!DOCTYPE html>
-<html lang="pt-br">
+    </script>
+    <!DOCTYPE html>
+    <html lang="pt-br">
 
-<head>
-    <meta charset="UTF-8" />
-    <style>
-        body {
-            font-family: sans-serif;
-            padding: 20px;
-            margin: 0;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+            body {
+                font-family: sans-serif;
+                padding: 20px;
+                margin: 0;
+            }
 
-        .gantt-months,
-        .gantt-rows {
-            display: grid;
-            grid-template-columns: 150px repeat(var(--meses), 1fr);
-            width: 100vw;
-            max-width: 100vw;
-            box-sizing: border-box;
-            overflow-x: hidden;
-        }
+            .gantt-months,
+            .gantt-rows {
+                display: grid;
+                grid-template-columns: 150px repeat(var(--meses), 1fr);
+                width: 100vw;
+                max-width: 100vw;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
 
-        .gantt-months div,
-        .gantt-rows div {
-            border-left: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            font-size: 11px;
-            box-sizing: border-box;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            user-select: none;
-        }
+            .gantt-months div,
+            .gantt-rows div {
+                border-left: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                font-size: 11px;
+                box-sizing: border-box;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                user-select: none;
+            }
 
-        .gantt-months div:first-child,
-        .gantt-rows div:first-child {
-            border-left: none;
-            font-weight: bold;
-            background: #f5f5f5;
-        }
+            .gantt-months div:first-child,
+            .gantt-rows div:first-child {
+                border-left: none;
+                font-weight: bold;
+                background: #f5f5f5;
+            }
 
-        .gantt-months div {
-            background: #e6e6e6;
-            font-weight: bold;
-        }
+            .gantt-months div {
+                background: #e6e6e6;
+                font-weight: bold;
+            }
 
-        .task-name {
-            background: #f5f5f5;
-            padding-left: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+            .task-name {
+                background: #f5f5f5;
+                padding-left: 5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
 
-        .bar {
-            height: 10px;
-            margin-top: 10px;
-            border-radius: 0;
-            position: relative;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
+            .bar {
+                height: 10px;
+                margin-top: 10px;
+                border-radius: 0;
+                position: relative;
+                cursor: pointer;
+                transition: opacity 0.2s;
+            }
 
-        .bar:hover {
-            opacity: 0.7;
-        }
+            .bar:hover {
+                opacity: 0.7;
+            }
 
-        #modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+            #modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
 
-        #modalContent {
-            background: white;
-            padding: 20px;
-            border-radius: 6px;
-            width: 320px;
-            box-sizing: border-box;
-        }
+            #modalContent {
+                background: white;
+                padding: 20px;
+                border-radius: 6px;
+                width: 320px;
+                box-sizing: border-box;
+            }
 
-        #modalContent label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
+            #modalContent label {
+                display: block;
+                margin-top: 10px;
+                font-weight: bold;
+            }
 
-        #modalContent input {
-            width: 100%;
-            padding: 6px;
-            margin-top: 4px;
-            box-sizing: border-box;
-        }
+            #modalContent input {
+                width: 100%;
+                padding: 6px;
+                margin-top: 4px;
+                box-sizing: border-box;
+            }
 
-        #modalContent button {
-            margin-top: 15px;
-            padding: 8px 15px;
-            cursor: pointer;
-        }
+            #modalContent button {
+                margin-top: 15px;
+                padding: 8px 15px;
+                cursor: pointer;
+            }
 
-        #modalContent .actions {
-            text-align: right;
-        }
+            #modalContent .actions {
+                text-align: right;
+            }
 
-        /* Botão toggle */
-        #btnToggle {
-            margin-bottom: 10px;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-    </style>
-</head>
+            /* Botão toggle */
+            #btnToggle {
+                margin-bottom: 10px;
+                padding: 8px 15px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+        </style>
+    </head>
 
-<body>
+    <body>
 
-    <h5>Gantt Dinâmico com Edição</h5>
+        <h5>Gantt Dinâmico com Edição</h5>
 
-    <!-- Botão para alternar visualização -->
-    <button id="btnToggle">Exibir: Semestral</button>
+        <!-- Botão para alternar visualização -->
+        <button id="btnToggle">Exibir: Semestral</button>
 
-    <div class="gantt-months" id="gantt-meses"></div>
-    <div id="gantt-tarefas"></div>
+        <div class="gantt-months" id="gantt-meses"></div>
+        <div id="gantt-tarefas"></div>
 
-    <!-- Modal -->
-    <div id="modal">
-        <div id="modalContent">
-            <h3>Editar Tarefa</h3>
-            <form id="formEdit">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required />
+        <!-- Meta tag CSRF obrigatória -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                <label for="inicio">Início (aaaa-mm-dd):</label>
-                <input type="date" id="inicio" name="inicio" required />
+        <!-- Meta tag CSRF obrigatória -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                <label for="fim">Fim (aaaa-mm-dd):</label>
-                <input type="date" id="fim" name="fim" required />
+        <!-- Modal Para atualizar a OS -->
+        <div id="modal" style="display:none;">
+            <div id="modalContent">
+                <h3>Editar O.S.</h3>
+                <form id="formEdit" data-id="123"> <!-- exemplo de data-id -->
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required />
 
-                <div class="actions">
-                    <button type="button" id="cancelBtn">Cancelar</button>
-                    <button type="submit">Salvar</button>
-                </div>
-            </form>
+                    <label for="inicio">Início:</label>
+                    <input type="date" id="inicio" name="inicio" required />
+
+                    <label for="fim">Fim:</label>
+                    <input type="date" id="fim" name="fim" required />
+
+                    <div class="actions">
+                        <button type="button" id="cancelBtn">Cancelar</button>
+                        <button type="submit">Salvar</button>
+                    </div>
+                </form>
+
+                <p id="respostaServidor"></p> <!-- para mostrar a resposta -->
+            </div>
         </div>
-    </div>
+        <script>
+            // Abrir modal para testes (você pode adaptar para sua lógica)
+            // document.getElementById('modal').style.display = 'block';
 
-    <script>
-        function diffMonths(d1, d2) {
-            return (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
-        }
+            // Cancelar botão fecha o modal
+            document.getElementById('cancelBtn').addEventListener('click', () => {
+                document.getElementById('modal').style.display = 'none';
+            });
 
-        function diasNoMes(ano, mes) {
-            return new Date(ano, mes + 1, 0).getDate();
-        }
+            // Submit do formulário
+            document.getElementById('formEdit').addEventListener('submit', function(event) {
+                event.preventDefault(); // previne recarregamento
 
-        // Variáveis globais
-        let periodo = 'semestral'; // Começa mostrando semestral
-        let dataInicio, dataFim, totalMeses;
+                const nome = document.getElementById('nome').value;
+                const inicio = document.getElementById('inicio').value;
+                const fim = document.getElementById('fim').value;
 
-        const cores = ["#3fa9f5", "#ff9800", "#8bc34a"];
-        const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+                // Pode pegar o id do registro a partir do data-id do form (se quiser)
+                const osId = this.getAttribute('data-id');
 
-        const elMeses = document.getElementById("gantt-meses");
-        const elTarefas = document.getElementById("gantt-tarefas");
-        const modal = document.getElementById("modal");
-        const formEdit = document.getElementById("formEdit");
-        const inputNome = document.getElementById("nome");
-        const inputInicio = document.getElementById("inicio");
-        const inputFim = document.getElementById("fim");
-        const cancelBtn = document.getElementById("cancelBtn");
-        const btnToggle = document.getElementById("btnToggle");
+                // Montar objeto para enviar
+                const dadosParaEnviar = {
+                    id: osId,
+                    nome: nome,
+                    inicio: inicio,
+                    fim: fim
+                };
 
-        // Recebe array PHP convertido para JS (substitua $ordem_servico_gantt pela sua variável real)
-        const ordensServicos = @json($ordem_servico_gantt);
+                fetch('{{ route("update.os.interval") }}', { // ou outra rota de update
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify(dadosParaEnviar)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('respostaServidor').textContent = 'Resposta do servidor: ' + data.retorno;
+                        // Aqui você pode fechar o modal, atualizar a tela, etc
+                        // Exemplo: fechar modal após sucesso
+                        // document.getElementById('modal').style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Erro ao enviar:', error);
+                        document.getElementById('respostaServidor').textContent = 'Erro ao enviar a requisição.';
+                    });
+            });
+        </script>
 
-        // Mapeia ordens para formato tarefas do gráfico
-        let tarefas = ordensServicos.map(os => ({
-            id: os.id,
-            nome: `OS #${os.id}`, 
-            inicio: os.data_inicio.substr(0, 10), 
-            fim: os.data_fim.substr(0, 10)
-        }));
+        
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        // Função para atualizar datas conforme período
-        function atualizarDatas() {
-            if (periodo === 'anual') {
-                dataInicio = new Date("2025-01-01");
-                dataFim = new Date("2025-12-31");
-                btnToggle.innerText = "Exibir: Semestral";
-            } else {
-                dataInicio = new Date("2025-01-01");
-                dataFim = new Date("2025-06-30");
-                btnToggle.innerText = "Exibir: Anual";
-            }
-            totalMeses = diffMonths(dataInicio, dataFim) + 1;
-            elMeses.style.setProperty('--meses', totalMeses);
-        }
 
-        // Função para renderizar gráfico
-        function renderGantt() {
-            elMeses.innerHTML = '';
-            elTarefas.innerHTML = '';
-
-            // Cabeçalho meses
-            const firstCol = document.createElement("div");
-            firstCol.innerText = "Mês";
-            elMeses.appendChild(firstCol);
-
-            for (let i = 0; i < totalMeses; i++) {
-                const d = new Date(dataInicio.getFullYear(), dataInicio.getMonth() + i, 1);
-                const monthName = meses[d.getMonth()];
-                const cell = document.createElement("div");
-                cell.innerText = monthName + " " + d.getFullYear();
-                elMeses.appendChild(cell);
+        <!--------------------------------------------->
+        <script>
+            function diffMonths(d1, d2) {
+                return (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
             }
 
-            // Renderiza tarefas
-            tarefas.forEach((tarefa, i) => {
-                const row = document.createElement("div");
-                row.className = "gantt-rows";
-                row.style.gridTemplateColumns = `150px repeat(${totalMeses}, 1fr)`;
+            function diasNoMes(ano, mes) {
+                return new Date(ano, mes + 1, 0).getDate();
+            }
 
-                const nameCell = document.createElement("div");
-                nameCell.className = "task-name";
-                nameCell.innerText = tarefa.nome;
-                row.appendChild(nameCell);
+            // Variáveis globais
+            let periodo = 'semestral'; // Começa mostrando semestral
+            let dataInicio, dataFim, totalMeses;
 
-                const inicio = new Date(tarefa.inicio);
-                const fim = new Date(tarefa.fim);
+            const cores = ["#3fa9f5", "#ff9800", "#8bc34a"];
+            const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
-                // Se a tarefa está fora do período, não mostrar barra (pode ajustar)
-                if (fim < dataInicio || inicio > dataFim) {
-                    // preenche as células vazias da linha inteira
-                    for (let k = 0; k < totalMeses; k++) {
+            const elMeses = document.getElementById("gantt-meses");
+            const elTarefas = document.getElementById("gantt-tarefas");
+            const modal = document.getElementById("modal");
+            const formEdit = document.getElementById("formEdit");
+            const inputNome = document.getElementById("nome");
+            const inputInicio = document.getElementById("inicio");
+            const inputFim = document.getElementById("fim");
+            const cancelBtn = document.getElementById("cancelBtn");
+            const btnToggle = document.getElementById("btnToggle");
+
+            // Recebe array PHP convertido para JS (substitua $ordem_servico_gantt pela sua variável real)
+            const ordensServicos = @json($ordem_servico_gantt);
+
+            // Mapeia ordens para formato tarefas do gráfico
+            let tarefas = ordensServicos.map(os => ({
+                id: os.id,
+                nome: `${os.id}`,
+                inicio: os.data_inicio.substr(0, 10),
+                fim: os.data_fim.substr(0, 10)
+            }));
+
+            // Função para atualizar datas conforme período
+            function atualizarDatas() {
+                if (periodo === 'anual') {
+                    dataInicio = new Date("2025-01-01");
+                    dataFim = new Date("2025-12-31");
+                    btnToggle.innerText = "Exibir: Semestral";
+                } else {
+                    dataInicio = new Date("2025-01-01");
+                    dataFim = new Date("2025-06-30");
+                    btnToggle.innerText = "Exibir: Anual";
+                }
+                totalMeses = diffMonths(dataInicio, dataFim) + 1;
+                elMeses.style.setProperty('--meses', totalMeses);
+            }
+
+            // Função para renderizar gráfico
+            function renderGantt() {
+                elMeses.innerHTML = '';
+                elTarefas.innerHTML = '';
+
+                // Cabeçalho meses
+                const firstCol = document.createElement("div");
+                firstCol.innerText = "Mês";
+                elMeses.appendChild(firstCol);
+
+                for (let i = 0; i < totalMeses; i++) {
+                    const d = new Date(dataInicio.getFullYear(), dataInicio.getMonth() + i, 1);
+                    const monthName = meses[d.getMonth()];
+                    const cell = document.createElement("div");
+                    cell.innerText = monthName + " " + d.getFullYear();
+                    elMeses.appendChild(cell);
+                }
+
+                // Renderiza tarefas
+                tarefas.forEach((tarefa, i) => {
+                    const row = document.createElement("div");
+                    row.className = "gantt-rows";
+                    row.style.gridTemplateColumns = `150px repeat(${totalMeses}, 1fr)`;
+
+                    const nameCell = document.createElement("div");
+                    nameCell.className = "task-name";
+                    nameCell.innerText = tarefa.nome;
+                    row.appendChild(nameCell);
+
+                    const inicio = new Date(tarefa.inicio);
+                    const fim = new Date(tarefa.fim);
+
+                    // Se a tarefa está fora do período, não mostrar barra (pode ajustar)
+                    if (fim < dataInicio || inicio > dataFim) {
+                        // preenche as células vazias da linha inteira
+                        for (let k = 0; k < totalMeses; k++) {
+                            const empty = document.createElement("div");
+                            row.appendChild(empty);
+                        }
+                        elTarefas.appendChild(row);
+                        return;
+                    }
+
+                    // Ajusta inicio/fim da barra para o período exibido
+                    const start = inicio < dataInicio ? dataInicio : inicio;
+                    const end = fim > dataFim ? dataFim : fim;
+
+                    const diffInicio = diffMonths(dataInicio, start);
+                    const duracao = diffMonths(start, end) + 1;
+
+                    // Células vazias antes da barra
+                    for (let j = 0; j < diffInicio; j++) {
                         const empty = document.createElement("div");
                         row.appendChild(empty);
                     }
-                    elTarefas.appendChild(row);
-                    return;
-                }
 
-                // Ajusta inicio/fim da barra para o período exibido
-                const start = inicio < dataInicio ? dataInicio : inicio;
-                const end = fim > dataFim ? dataFim : fim;
+                    // Barra mês a mês
+                    for (let m = 0; m < duracao; m++) {
+                        const mesIndex = start.getMonth() + m;
+                        const ano = start.getFullYear() + Math.floor(mesIndex / 12);
+                        const mes = mesIndex % 12;
+                        const diasMes = diasNoMes(ano, mes);
 
-                const diffInicio = diffMonths(dataInicio, start);
-                const duracao = diffMonths(start, end) + 1;
+                        const cell = document.createElement("div");
 
-                // Células vazias antes da barra
-                for (let j = 0; j < diffInicio; j++) {
-                    const empty = document.createElement("div");
-                    row.appendChild(empty);
-                }
+                        const barra = document.createElement("div");
+                        barra.className = "bar";
+                        barra.style.backgroundColor = cores[i % cores.length];
+                        barra.title = `${tarefa.nome} (${tarefa.inicio} → ${tarefa.fim})`;
 
-                // Barra mês a mês
-                for (let m = 0; m < duracao; m++) {
-                    const mesIndex = start.getMonth() + m;
-                    const ano = start.getFullYear() + Math.floor(mesIndex / 12);
-                    const mes = mesIndex % 12;
-                    const diasMes = diasNoMes(ano, mes);
-
-                    const cell = document.createElement("div");
-
-                    const barra = document.createElement("div");
-                    barra.className = "bar";
-                    barra.style.backgroundColor = cores[i % cores.length];
-                    barra.title = `${tarefa.nome} (${tarefa.inicio} → ${tarefa.fim})`;
-
-                    if (duracao === 1) {
-                        const diaIni = start.getDate();
-                        const diaFim = end.getDate();
-                        const margemEsq = ((diaIni - 1) / diasMes) * 100;
-                        const larguraBarra = ((diaFim - diaIni + 1) / diasMes) * 100;
-                        barra.style.marginLeft = margemEsq + "%";
-                        barra.style.width = larguraBarra + "%";
-                    } else {
-                        if (m === 0) {
+                        if (duracao === 1) {
                             const diaIni = start.getDate();
+                            const diaFim = end.getDate();
                             const margemEsq = ((diaIni - 1) / diasMes) * 100;
-                            const larguraBarra = 100 - margemEsq;
+                            const larguraBarra = ((diaFim - diaIni + 1) / diasMes) * 100;
                             barra.style.marginLeft = margemEsq + "%";
                             barra.style.width = larguraBarra + "%";
-                        } else if (m === duracao - 1) {
-                            const diaFim = end.getDate();
-                            barra.style.marginLeft = "0%";
-                            barra.style.width = ((diaFim) / diasMes) * 100 + "%";
                         } else {
-                            barra.style.marginLeft = "0%";
-                            barra.style.width = "100%";
+                            if (m === 0) {
+                                const diaIni = start.getDate();
+                                const margemEsq = ((diaIni - 1) / diasMes) * 100;
+                                const larguraBarra = 100 - margemEsq;
+                                barra.style.marginLeft = margemEsq + "%";
+                                barra.style.width = larguraBarra + "%";
+                            } else if (m === duracao - 1) {
+                                const diaFim = end.getDate();
+                                barra.style.marginLeft = "0%";
+                                barra.style.width = ((diaFim) / diasMes) * 100 + "%";
+                            } else {
+                                barra.style.marginLeft = "0%";
+                                barra.style.width = "100%";
+                            }
                         }
+
+                        barra.addEventListener("click", () => abrirModal(i));
+
+                        cell.appendChild(barra);
+                        row.appendChild(cell);
                     }
 
-                    barra.addEventListener("click", () => abrirModal(i));
+                    // Células vazias depois da barra
+                    const restantes = totalMeses - diffInicio - duracao;
+                    for (let j = 0; j < restantes; j++) {
+                        const empty = document.createElement("div");
+                        row.appendChild(empty);
+                    }
 
-                    cell.appendChild(barra);
-                    row.appendChild(cell);
-                }
+                    elTarefas.appendChild(row);
+                });
+            }
 
-                // Células vazias depois da barra
-                const restantes = totalMeses - diffInicio - duracao;
-                for (let j = 0; j < restantes; j++) {
-                    const empty = document.createElement("div");
-                    row.appendChild(empty);
-                }
+            // Modal funções
+            function abrirModal(index) {
+                const tarefa = tarefas[index];
+                inputNome.value = tarefa.nome;
+                inputInicio.value = tarefa.inicio;
+                inputFim.value = tarefa.fim;
+                formEdit.dataset.index = index;
+                modal.style.display = "flex";
+            }
 
-                elTarefas.appendChild(row);
+            function fecharModal() {
+                modal.style.display = "none";
+            }
+
+            cancelBtn.addEventListener("click", fecharModal);
+
+            formEdit.addEventListener("submit", e => {
+                e.preventDefault();
+                const index = formEdit.dataset.index;
+                tarefas[index].nome = inputNome.value.trim();
+                tarefas[index].inicio = inputInicio.value;
+                tarefas[index].fim = inputFim.value;
+                fecharModal();
+                renderGantt();
             });
-        }
 
-        // Modal funções
-        function abrirModal(index) {
-            const tarefa = tarefas[index];
-            inputNome.value = tarefa.nome;
-            inputInicio.value = tarefa.inicio;
-            inputFim.value = tarefa.fim;
-            formEdit.dataset.index = index;
-            modal.style.display = "flex";
-        }
+            // Evento toggle botão
+            btnToggle.addEventListener('click', () => {
+                periodo = (periodo === 'anual') ? 'semestral' : 'anual';
+                atualizarDatas();
+                renderGantt();
+            });
 
-        function fecharModal() {
-            modal.style.display = "none";
-        }
-
-        cancelBtn.addEventListener("click", fecharModal);
-
-        formEdit.addEventListener("submit", e => {
-            e.preventDefault();
-            const index = formEdit.dataset.index;
-            tarefas[index].nome = inputNome.value.trim();
-            tarefas[index].inicio = inputInicio.value;
-            tarefas[index].fim = inputFim.value;
-            fecharModal();
-            renderGantt();
-        });
-
-        // Evento toggle botão
-        btnToggle.addEventListener('click', () => {
-            periodo = (periodo === 'anual') ? 'semestral' : 'anual';
+            // Inicializa datas e desenha
             atualizarDatas();
             renderGantt();
-        });
+        </script>
 
-        // Inicializa datas e desenha
-        atualizarDatas();
-        renderGantt();
+    </body>
 
-    </script>
-
-</body>
-
-</html>
+    </html>
 
 </main>

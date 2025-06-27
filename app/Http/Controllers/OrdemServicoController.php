@@ -544,4 +544,47 @@ class OrdemServicoController extends Controller
         // Para debug: dd($request->all());
         return back(); // Volta para a página anterior (onde estava o formulário)
     }
+    public function update_ajax(Request $request)
+    {
+        // Validação dos dados recebidos via AJAX
+        $request->validate([
+            'id_os' => 'required|integer',          // id_os obrigatório e inteiro
+            'inicio' => 'required|date',             // inicio obrigatório e formato data válido
+            'fim' => 'required|date|after_or_equal:inicio', // fim obrigatório, data válida e >= inicio
+        ]);
+
+        // Busca a ordem de serviço pelo ID (passa o valor, não a string)
+        $ordem = OrdemServico::findOrFail($request->id_os);
+
+        // Atualiza os campos
+        $ordem->inicio = $request->inicio;
+        $ordem->fim = $request->fim;
+
+        // Salva as alterações no banco
+        $ordem->save();
+
+        // Retorna resposta JSON para o frontend
+        return response()->json(['message' => 'Ordem de Serviço atualizada com sucesso!']);
+    }
+    public function update_os_interval(Request $request)
+    {
+
+
+        $nome = $request->input('nome');
+        $inicio = $request->input('inicio');
+        $fim = $request->input('fim');
+        $id = $request->input('id');
+
+        // Busca a ordem de serviço pelo ID (passa o valor, não a string)
+        $os = OrdemServico::findOrFail($nome);
+        // Atualiza os campos
+        $os->data_inicio = $inicio;
+        $os->data_fim = $request->fim;
+
+        // Salva as alterações no banco
+        $os->save();
+        return response()->json([
+            'retorno' => "Ordem alterada!"
+        ]);
+    }
 }
