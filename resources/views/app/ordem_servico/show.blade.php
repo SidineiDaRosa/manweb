@@ -44,7 +44,7 @@
                 <a id="btn-edit" class="btn btn-outline-primary mb-1" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-ui-edit"></i>Editar</a>
                 <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
+                    <i class="icofont-dashboard"></i> Dashboard
                 </a>
             </div>
         </div>

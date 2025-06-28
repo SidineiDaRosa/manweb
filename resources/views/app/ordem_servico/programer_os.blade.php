@@ -357,149 +357,10 @@
 
         {{--fim card--}}
     </div>
-    {{--//----------------------------------------------------//---}}
-    {{--//- Calendário mensal---------------------------------//---}}
-    {{--//----------------------------------------------------//---}}
-    <style>
-        .container-month {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            /* Alinha os itens à esquerda */
-            align-items: flex-start;
-            background-color: white;
-        }
 
-        .item-month {
-            width: calc(14.28% - 20px);
-            height: 200px;
-            margin: 5px;
-            padding: 5px;
-            background-color: aliceblue;
-            overflow: auto;
-            /* Impede que o conteúdo transborde */
-        }
-
-        .item-52-week {
-            width: calc(14.28% - 20px);
-            height: 100px;
-            margin: 5px;
-            padding: 5px;
-            background-color: aliceblue;
-            overflow: auto;
-            /* Impede que o conteúdo transborde */
-        }
-    </style>
-
-    <h3 style="font-family:Arial, Helvetica, sans-serif">52 Semanas</h3>
-
-    <div class="container-month">
-        @foreach($ordens_servicos_por_semana as $week => $ordens)
-        {{-- Verifique se esta é a semana que deseja destacar --}}
-        <div class="item-52-week {{ $week == now()->weekOfYear ? 'highlight' : '' }}">
-            <h6 style="font-family: Arial, Helvetica, sans-serif;margin-left:-1px;">{{ $week }}</h6>
-
-            @if($ordens->isEmpty())
-            <p>...</p>
-            @else
-            <ul style="margin-left: -20px;">
-                @foreach($ordens as $ordem)
-                <li>
-                    <a class="txt-link" href="{{route('ordem-servico.show', ['ordem_servico' => $ordem->id])}}" title="Click para abrir a O.S.">{{ $ordem->id }}</a>
-                    <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;">{{ \Carbon\Carbon::parse($ordem->data_inicio)->format('d/m/y') }}</span>
-                    <span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:darkblue;">{{ $ordem->equipamento->nome}}</span>
-                </li>
-                @endforeach
-            </ul>
-            @endif
-        </div>
-        @endforeach
-    </div>
-
-    <style>
-        .container-month {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .item-52-week {
-            width: 180px;
-            height: 150px;
-            margin: 2px;
-            padding: 2px;
-            background-color: #f1f1f1;
-            border: 1px solid #ddd;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            transition-delay: 0.5s;
-            /* Atraso de 0.5s antes de iniciar a expansão */
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            /* Alinha o conteúdo no topo */
-            position: relative;
-        }
-
-        .item-52-week.highlight {
-            background-color: rgba(144, 238, 144, 0.5);
-            /* Verde fraco em RGBA */
-            /* Cor destaque para a semana correspondente */
-        }
-
-        .item-52-week:hover {
-            width: 400px;
-            height: 400px;
-            background-color: #e0e0e0;
-            overflow: auto;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .item-52-week h4 {
-            margin: 0;
-            position: absolute;
-            top: 10px;
-            /* Mantém o número no topo */
-            left: 50%;
-            transform: translateX(-50%);
-            /* Centraliza horizontalmente */
-        }
-
-        .item-52-week ul {
-            margin: 10px 0 0;
-            padding: 0;
-            list-style-type: none;
-            text-align: left;
-        }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const weekItems = document.querySelectorAll('.item-52-week');
-
-            weekItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Verifica se o item já está expandido
-                    const isExpanded = item.classList.contains('expanded');
-
-                    // Remove a classe expanded de todos os itens e redefine os tamanhos
-                    weekItems.forEach(i => {
-                        i.classList.remove('expanded');
-                        i.style.width = '150px'; // Redefine a largura para o tamanho original
-                        i.style.height = '150px'; // Redefine a altura para o tamanho original
-                    });
-
-                    // Se o item não estava expandido, expande-o; se estava, não faz nada
-                    if (!isExpanded) {
-                        item.classList.add('expanded');
-                        item.style.width = '400px'; // Expande o item clicado
-                        item.style.height = '400px'; // Expande o item clicado
-                    }
-                });
-            });
-        });
-    </script>
-    <!DOCTYPE html>
-    <html lang="pt-br">
+    <!------------------------------------------------------------->
+    <!----  Gráfico de gantt-->
+    <!------------------------------------------------------------->
 
     <head>
         <meta charset="UTF-8" />
@@ -623,17 +484,13 @@
     </head>
 
     <body>
-
-        <h5>Gantt Dinâmico com Edição</h5>
+        <h5>Gantt Dinâmico</h5>
 
         <!-- Botão para alternar visualização -->
-        <button id="btnToggle">Exibir: Semestral</button>
+        <button class="btn btn-outline-success mb-1" id="btnToggle">Exibir: Semestral</button>
 
         <div class="gantt-months" id="gantt-meses"></div>
         <div id="gantt-tarefas"></div>
-
-        <!-- Meta tag CSRF obrigatória -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Meta tag CSRF obrigatória -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -643,24 +500,41 @@
             <div id="modalContent">
                 <h3>Editar O.S.</h3>
                 <form id="formEdit" data-id="123"> <!-- exemplo de data-id -->
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" required />
-
-                    <label for="inicio">Início:</label>
-                    <input type="date" id="inicio" name="inicio" required />
-
-                    <label for="fim">Fim:</label>
-                    <input type="date" id="fim" name="fim" required />
-
-                    <div class="actions">
-                        <button type="button" id="cancelBtn">Cancelar</button>
-                        <button type="submit">Salvar</button>
+                    <label for="id">ID:</label>
+                    <input class="btn btn-outline-primary mb-1" type="text" id="id" name="nome" required />
+                    <div style="display:flex; flex-direction:row">
+                        <label for="inicio">Início:</label>
                     </div>
+
+                    <div style="display:flex; flex-direction:row">
+                        <input class="form-control" style="width:140px;" type="date" id="inicio" name="inicio" required />
+                        <input class="form-control" style="width:140px;" type="date" id="fim" name="fim" required />
+                    </div>
+                    <div class="actions">
+                        <div class="actions">
+                            <button class="btn btn-outline-primary mb-1" type="button" id="cancelBtn">Cancelar
+                                <i class="icofont-delete"></i>
+                            </button>
+                            <button class="btn btn-outline-success mb-1" type="submit">Salvar
+                                <i class="icofont-save"></i>
+                            </button>
+                        </div>
                 </form>
 
                 <p id="respostaServidor"></p> <!-- para mostrar a resposta -->
             </div>
         </div>
+        <script>
+            // botão ir para os
+            document.getElementById('id').addEventListener('click', function() {
+                const osId = document.getElementById('id').value;
+                if (osId) {
+                    window.location.href = `/ordem-servico/${osId}`;
+                } else {
+                    alert('Informe o ID da O.S. no campo "nome".');
+                }
+            });
+        </script>
         <script>
             // Abrir modal para testes (você pode adaptar para sua lógica)
             // document.getElementById('modal').style.display = 'block';
@@ -674,7 +548,7 @@
             document.getElementById('formEdit').addEventListener('submit', function(event) {
                 event.preventDefault(); // previne recarregamento
 
-                const nome = document.getElementById('nome').value;
+                const nome = document.getElementById('id').value;
                 const inicio = document.getElementById('inicio').value;
                 const fim = document.getElementById('fim').value;
 
@@ -711,7 +585,7 @@
             });
         </script>
 
-        
+
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -736,7 +610,7 @@
             const elTarefas = document.getElementById("gantt-tarefas");
             const modal = document.getElementById("modal");
             const formEdit = document.getElementById("formEdit");
-            const inputNome = document.getElementById("nome");
+            const inputNome = document.getElementById("id");
             const inputInicio = document.getElementById("inicio");
             const inputFim = document.getElementById("fim");
             const cancelBtn = document.getElementById("cancelBtn");
@@ -836,6 +710,7 @@
                         const barra = document.createElement("div");
                         barra.className = "bar";
                         barra.style.backgroundColor = cores[i % cores.length];
+                        //Exibe uma mensagem com os dados da os
                         barra.title = `${tarefa.nome} (${tarefa.inicio} → ${tarefa.fim})`;
 
                         if (duracao === 1) {
@@ -922,3 +797,4 @@
     </html>
 
 </main>
+@include('app.ordem_servico.52week')
