@@ -8,6 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
+    @foreach($ordem_servico_gantt as $ordem_servico_gantt_gnt)
+    {{$ordem_servico_gantt_gnt->equipamento->nome}} <br>
+    @endforeach
     <style>
         .container-box {
             display: flex;
@@ -482,6 +485,34 @@
             }
         </style>
     </head>
+    <!--mensagem de erro ou sucesso de alteração de os-->
+    <script>
+        function mostrarFeedback(mensagem, tipo) {
+            const feedback = document.getElementById('feedbackMensagem');
+            feedback.innerText = mensagem;
+            feedback.style.display = 'block';
+            feedback.style.padding = '10px';
+            feedback.style.borderRadius = '5px';
+            feedback.style.fontWeight = 'bold';
+            feedback.style.marginTop = '10px';
+
+            if (tipo === 'success') {
+                feedback.style.backgroundColor = '#d4edda';
+                feedback.style.color = '#155724';
+                feedback.style.border = '1px solid #c3e6cb';
+            } else {
+                feedback.style.backgroundColor = '#f8d7da';
+                feedback.style.color = '#721c24';
+                feedback.style.border = '1px solid #f5c6cb';
+            }
+
+            // Oculta após 5 segundos
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+    <div id="feedbackMensagem" style="display:none; margin-top:10px;"></div>
 
     <body>
         <h5>Gantt Dinâmico</h5>
@@ -639,28 +670,37 @@
             const ordensServicos = @json($ordem_servico_gantt);
 
             // Mapeia ordens para formato tarefas do gráfico
-            let tarefas = ordensServicos.map(os => ({
-                id: os.id,
-                nome: `${os.id}`,
-                inicio: os.data_inicio.substr(0, 10),
-                fim: os.data_fim.substr(0, 10)
-            }));
+            let tarefas = ordensServicos.map(os => {
+
+                return {
+                    id: os.id,
+                    nome: `${os.id}`,
+                    inicio: os.data_inicio.substr(0, 10),
+                    fim: os.data_fim.substr(0, 10),
+                    responsavel: os.responsavel,
+                    equipamento: os.equipamento.nome
+                };
+            });
 
             // Função para atualizar datas conforme período
             function atualizarDatas() {
+                const hoje = new Date();
+                const anoAtual = hoje.getFullYear();
+                const mesAtual = hoje.getMonth(); // 0 a 11
+
                 if (periodo === 'anual') {
-                    dataInicio = new Date("2025-01-01");
-                    dataFim = new Date("2025-12-31");
+                    dataInicio = new Date(anoAtual, mesAtual, 1); // Início do mês atual
+                    dataFim = new Date(anoAtual + 1, mesAtual, 0); // Último dia do mesmo mês do ano seguinte
                     btnToggle.innerText = "Exibir: Semestral";
                 } else {
-                    dataInicio = new Date("2025-01-01");
-                    dataFim = new Date("2025-06-30");
+                    dataInicio = new Date(anoAtual, mesAtual, 1); // Início do mês atual
+                    dataFim = new Date(anoAtual, mesAtual + 6, 0); // Último dia do 6º mês a partir de hoje
                     btnToggle.innerText = "Exibir: Anual";
                 }
+
                 totalMeses = diffMonths(dataInicio, dataFim) + 1;
                 elMeses.style.setProperty('--meses', totalMeses);
             }
-
             // Função para renderizar gráfico
             function renderGantt() {
                 elMeses.innerHTML = '';
@@ -684,10 +724,11 @@
                     const row = document.createElement("div");
                     row.className = "gantt-rows";
                     row.style.gridTemplateColumns = `150px repeat(${totalMeses}, 1fr)`;
-
+                    //aplica os dadsodentro da celula
                     const nameCell = document.createElement("div");
                     nameCell.className = "task-name";
-                    nameCell.innerText = tarefa.nome;
+                    nameCell.innerText = `#${tarefa.id} - ${tarefa.responsavel}-${tarefa.equipamento}`; // ← Aqui junta os dois/////////////////////////////////
+                    //nameCell.innerText = tarefa.nome;
                     row.appendChild(nameCell);
 
                     const inicio = new Date(tarefa.inicio);

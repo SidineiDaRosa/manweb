@@ -568,21 +568,29 @@ class OrdemServicoController extends Controller
     }
     public function update_os_interval(Request $request)
     {
-
-
         $nome = $request->input('nome');
         $inicio = $request->input('inicio');
         $fim = $request->input('fim');
         $id = $request->input('id');
 
-        // Busca a ordem de serviço pelo ID (passa o valor, não a string)
-        $os = OrdemServico::findOrFail($nome);
+        // Verifica se a data de início é menor ou igual à data de fim
+        if (strtotime($inicio) > strtotime($fim)) {
+            return response()->json([
+                'retorno' => "Erro: a data de início não pode ser maior que a data final."
+            ], 400); // Código 400 = erro de requisição
+        }
+
+        // Busca a ordem de serviço pelo ID correto
+        // Se o id é passado corretamente, prefira usar ele em vez de nome
+        $os = OrdemServico::findOrFail($id);
+
         // Atualiza os campos
         $os->data_inicio = $inicio;
-        $os->data_fim = $request->fim;
+        $os->data_fim = $fim;
 
-        // Salva as alterações no banco
+        // Salva as alterações
         $os->save();
+
         return response()->json([
             'retorno' => "Ordem alterada!"
         ]);
