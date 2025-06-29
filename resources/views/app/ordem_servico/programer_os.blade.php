@@ -9,7 +9,8 @@
 
 
     @foreach($ordem_servico_gantt as $ordem_servico_gantt_gnt)
-    {{$ordem_servico_gantt_gnt->equipamento->nome}} <br>
+    <span hidden>{{$ordem_servico_gantt_gnt->equipamento->nome}} <br></span>
+   
     @endforeach
     <style>
         .container-box {
