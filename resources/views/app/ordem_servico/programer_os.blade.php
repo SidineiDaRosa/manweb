@@ -8,9 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-    @foreach($ordem_servico_gantt as $ordem_servico_gantt_gnt)
-    {{$ordem_servico_gantt_gnt->equipamento->nome}} <br>
-    @endforeach
+  
     <style>
         .container-box {
             display: flex;
