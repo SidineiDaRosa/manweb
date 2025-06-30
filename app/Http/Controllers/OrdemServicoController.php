@@ -595,4 +595,50 @@ class OrdemServicoController extends Controller
             'retorno' => "Ordem alterada!"
         ]);
     }
+    // Chama a gantt
+    public function filter_os_timeline(Request $request)
+    {
+        $dataInicio = $request->input('data_inicio') ?: date('Y-m-01'); // default 1º dia do mês atual
+        $dataFim = $request->input('data_fim') ?: date('Y-m-t');       // default último dia do mês atual
+
+        $inicio = Carbon::parse($dataInicio);
+        $fim = Carbon::parse($dataFim);
+
+        // Trazer ordens com inicio dentro do intervalo (ou que começam antes e terminam depois, se quiser)
+        $ordens = OrdemServico::where(function ($q) use ($inicio, $fim) {
+            $q->whereBetween('data_inicio', [$inicio, $fim])
+                ->orWhere(function ($q2) use ($inicio, $fim) {
+                    $q2->where('data_inicio', '<', $inicio)
+                        ->where('data_fim', '>=', $inicio);
+                });
+        })->orderBy('data_inicio')->get();
+
+        $tarefas = $ordens->map(function ($ordem) use ($inicio, $fim) {
+            $dataInicioTarefa = Carbon::parse($ordem->data_inicio . ' ' . ($ordem->hora_inicio ?? '00:00:00'));
+            $dataFimTarefa = Carbon::parse($ordem->data_fim . ' ' . ($ordem->hora_fim ?? '23:59:59'));
+
+            // Ajustar início e fim para ficarem dentro do intervalo selecionado
+            if ($dataInicioTarefa < $inicio) {
+                $dataInicioTarefa = $inicio;
+            }
+            if ($dataFimTarefa > $fim) {
+                $dataFimTarefa = $fim;
+            }
+
+            $dia_inicio = $inicio->diffInDays($dataInicioTarefa);
+            $duracao = $dataInicioTarefa->diffInHours($dataFimTarefa) / 24;
+
+            return [
+                'id' => $ordem->id,
+                'responsavel' => $ordem->responsavel ?? 'N/A',
+                'descricao' => $ordem->descricao ?? '',
+                'dia_inicio' => $dia_inicio,
+                'duracao_dias' => round($duracao, 2),
+            ];
+        });
+
+        $diasIntervalo = $inicio->diffInDays($fim) + 1;
+
+        return view('app.ordem_servico.gantt_os', compact('tarefas', 'inicio', 'diasIntervalo', 'dataInicio', 'dataFim'));
+    }
 }
