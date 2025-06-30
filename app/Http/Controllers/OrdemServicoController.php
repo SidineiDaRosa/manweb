@@ -609,7 +609,8 @@ class OrdemServicoController extends Controller
             $q->whereBetween('data_inicio', [$inicio, $fim])
                 ->orWhere(function ($q2) use ($inicio, $fim) {
                     $q2->where('data_inicio', '<', $inicio)
-                        ->where('data_fim', '>=', $inicio);
+                        ->where('data_fim', '>=', $inicio)
+                        ->where('situacao', 'aberto');
                 });
         })->orderBy('data_inicio')->get();
 
