@@ -568,11 +568,11 @@ class OrdemServicoController extends Controller
     }
     public function update_os_interval(Request $request)
     {
-        $nome = $request->input('nome');
+        // Método usado pelo time line Gantt para atualizar a ordem.
         $inicio = $request->input('inicio');
         $fim = $request->input('fim');
         $id = $request->input('id');
-
+    
         // Verifica se a data de início é menor ou igual à data de fim
         if (strtotime($inicio) > strtotime($fim)) {
             return response()->json([
@@ -592,7 +592,7 @@ class OrdemServicoController extends Controller
         $os->save();
 
         return response()->json([
-            'retorno' => "Ordem alterada!"
+            'retorno' => "Ordem $id alterada comsucesso!"
         ]);
     }
     public function filter_os_timeline(Request $request)

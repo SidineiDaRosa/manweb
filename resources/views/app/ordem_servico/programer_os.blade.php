@@ -390,14 +390,14 @@
             .gantt-rows div {
                 border-left: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
-                height: 30px;
-                line-height: 30px;
+                min-height: 40px;
+                padding: 0px;
                 text-align: center;
                 font-size: 11px;
                 box-sizing: border-box;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
+                overflow-wrap: break-word;
+                word-break: break-word;
+                white-space: normal;
                 user-select: none;
             }
 
@@ -458,6 +458,10 @@
                 border-radius: 6px;
                 width: 320px;
                 box-sizing: border-box;
+                position: absolute;
+                /* ← mudado para permitir posicionamento */
+                z-index: 1001;
+                /* garantir sobreposição */
             }
 
             #modalContent label {
@@ -556,7 +560,7 @@
         <div id="modal" style="display:none;">
             <div id="modalContent">
                 <h3>Editar O.S.</h3>
-                <form id="formEdit" data-id="123"> <!-- exemplo de data-id -->
+                <form id="formEdit" data-id=""> <!-- exemplo de data-id -->
                     <label for="id">ID:</label>
                     <input class="btn btn-outline-primary mb-1" type="text" id="id" name="nome" required />
                     <div style="display:flex; flex-direction:row">
@@ -605,7 +609,7 @@
             document.getElementById('formEdit').addEventListener('submit', function(event) {
                 event.preventDefault(); // previne recarregamento
 
-                const nome = document.getElementById('id').value;
+                const id = document.getElementById('id').value;
                 const inicio = document.getElementById('inicio').value;
                 const fim = document.getElementById('fim').value;
 
@@ -614,8 +618,7 @@
 
                 // Montar objeto para enviar
                 const dadosParaEnviar = {
-                    id: osId,
-                    nome: nome,
+                    id: id,
                     inicio: inicio,
                     fim: fim
                 };
@@ -956,30 +959,6 @@
 
         <script>
             const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-
-            const tarefas = [{
-                    id: 1,
-                    responsavel: "João",
-                    equipamento: "Trator",
-                    inicio: 1,
-                    duracao: 3
-                },
-                {
-                    id: 2,
-                    responsavel: "Maria",
-                    equipamento: "Caminhão",
-                    inicio: 4,
-                    duracao: 2
-                },
-                {
-                    id: 3,
-                    responsavel: "Carlos",
-                    equipamento: "Colheitadeira",
-                    inicio: 6,
-                    duracao: 5
-                }
-            ];
-
             const ganttMeses = document.getElementById("gantt-meses");
             const ganttCorpo = document.getElementById("gantt-corpo");
 
@@ -1019,6 +998,6 @@
         </script>
     </body>
 
-    </html> 
+    </html>
 </main>
 @include('app.ordem_servico.52week')
