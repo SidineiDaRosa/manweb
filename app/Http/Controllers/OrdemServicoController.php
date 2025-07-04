@@ -544,31 +544,8 @@ class OrdemServicoController extends Controller
         // Para debug: dd($request->all());
         return back(); // Volta para a página anterior (onde estava o formulário)
     }
-    public function update_ajax(Request $request)
-    {
-        // Validação dos dados recebidos via AJAX
-        $request->validate([
-            'id_os' => 'required|integer',          // id_os obrigatório e inteiro
-            'inicio' => 'required|date',             // inicio obrigatório e formato data válido
-            'fim' => 'required|date|after_or_equal:inicio', // fim obrigatório, data válida e >= inicio
-        ]);
-
-        // Busca a ordem de serviço pelo ID (passa o valor, não a string)
-        $ordem = OrdemServico::findOrFail($request->id_os);
-
-        // Atualiza os campos
-        $ordem->inicio = $request->inicio;
-        $ordem->fim = $request->fim;
-
-        // Salva as alterações no banco
-        $ordem->save();
-
-        // Retorna resposta JSON para o frontend
-        return response()->json(['message' => 'Ordem de Serviço atualizada com sucesso!']);
-    }
     public function update_os_interval(Request $request)
     {
-        $nome = $request->input('nome');
         $inicio = $request->input('inicio');
         $fim = $request->input('fim');
         $id = $request->input('id');
@@ -594,5 +571,55 @@ class OrdemServicoController extends Controller
         return response()->json([
             'retorno' => "Ordem alterada!"
         ]);
+    }
+    public function filter_os_timeline(Request $request)
+    {
+        $dataInicio = $request->input('data_inicio') ?: date('Y-m-01');
+        $dataFim = $request->input('data_fim') ?: date('Y-m-t');
+
+        $inicio = Carbon::parse($dataInicio);
+        $fim = Carbon::parse($dataFim);
+
+        $ordens = OrdemServico::where('situacao', 'Aberto')  // filtro global
+            ->where(function ($q) use ($inicio, $fim) {
+                $q->whereBetween('data_inicio', [$inicio, $fim])
+                    ->orWhere(function ($q2) use ($inicio) {
+                        $q2->where('data_inicio', '<', $inicio)
+                            ->where('data_fim', '>=', $inicio);
+                    });
+            })
+            ->orderBy('data_inicio')
+            ->get();
+
+        $tarefas = $ordens->map(function ($ordem) use ($inicio, $fim) {
+            $dataInicioTarefa = Carbon::parse($ordem->data_inicio . ' ' . ($ordem->hora_inicio ?? '00:00:00'));
+            $dataFimTarefa = Carbon::parse($ordem->data_fim . ' ' . ($ordem->hora_fim ?? '23:59:59'));
+
+            if ($dataInicioTarefa < $inicio) {
+                $dataInicioTarefa = $inicio;
+            }
+            if ($dataFimTarefa > $fim) {
+                $dataFimTarefa = $fim;
+            }
+
+            $dia_inicio = $inicio->diffInDays($dataInicioTarefa);
+            $duracao = $dataInicioTarefa->diffInHours($dataFimTarefa) / 24;
+
+            return [
+                'id' => $ordem->id,
+                'responsavel' => $ordem->responsavel ?? 'N/A',
+                'descricao' => $ordem->descricao ?? '',
+                'dia_inicio' => $dia_inicio,
+                'duracao_dias' => round($duracao, 2),
+                // Adicione campos que precise no front, como equipamento, por exemplo
+                'equipamento' => $ordem->equipamento ?? null,
+                'data_inicio' => $dataInicioTarefa->toDateTimeString(),
+                'data_fim' => $dataFimTarefa->toDateTimeString(),
+            ];
+        });
+
+        $diasIntervalo = $inicio->diffInDays($fim) + 1;
+
+        return view('app.ordem_servico.gantt_os', compact('tarefas', 'inicio', 'diasIntervalo', 'dataInicio', 'dataFim'));
     }
 }

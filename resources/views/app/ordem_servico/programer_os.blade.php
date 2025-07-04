@@ -8,7 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-  
+    @foreach($ordem_servico_gantt as $ordem_servico_gantt_gnt)
+    <span hidden>{{$ordem_servico_gantt_gnt->equipamento->nome}} <br></span>
+
+    @endforeach
     <style>
         .container-box {
             display: flex;
@@ -373,6 +376,7 @@
             }
 
             .gantt-months,
+
             .gantt-rows {
                 display: grid;
                 grid-template-columns: 150px repeat(var(--meses), 1fr);
@@ -389,7 +393,9 @@
                 height: 30px;
                 line-height: 30px;
                 text-align: center;
-                font-size: 11px;
+                font-size: 12px;
+                font-family: Arial, Helvetica, sans-serif;
+              font-weight: 300;
                 box-sizing: border-box;
                 overflow: hidden;
                 white-space: nowrap;
@@ -411,10 +417,15 @@
 
             .task-name {
                 background: #f5f5f5;
-                padding-left: 5px;
+                padding: 4px 8px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 12px;
+                text-align: left;
+                border-right: 1px solid #ddd;
+
             }
 
             .bar {
@@ -441,6 +452,7 @@
                 justify-content: center;
                 align-items: center;
                 z-index: 1000;
+            
             }
 
             #modalContent {
@@ -596,7 +608,7 @@
             document.getElementById('formEdit').addEventListener('submit', function(event) {
                 event.preventDefault(); // previne recarregamento
 
-                const nome = document.getElementById('id').value;
+                const id = document.getElementById('id').value;
                 const inicio = document.getElementById('inicio').value;
                 const fim = document.getElementById('fim').value;
 
@@ -605,8 +617,7 @@
 
                 // Montar objeto para enviar
                 const dadosParaEnviar = {
-                    id: osId,
-                    nome: nome,
+                    id: id,
                     inicio: inicio,
                     fim: fim
                 };
@@ -851,8 +862,165 @@
         </script>
 
     </body>
+    <!------------------------------------------------------------------------>
+    <!-- nova Gantt----------------------------------------------------------->
+    <!DOCTYPE html>
+    <html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Gantt com DIVs</title>
+        <style>
+            :root {
+                --task-width: 250px;
+                --cell-width: 60px;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+
+            .gantt-container {
+                width: 100%;
+                overflow-x: auto;
+                border: 1px solid #ccc;
+            }
+
+            .gantt-header,
+            .gantt-row {
+                display: grid;
+                grid-template-columns: var(--task-width) repeat(12, var(--cell-width));
+                align-items: center;
+            }
+
+            .gantt-task-header,
+            .gantt-task {
+                padding: 8px;
+                background: #f5f5f5;
+                font-weight: bold;
+                border-right: 1px solid #ccc;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .gantt-timeline-header {
+                display: contents;
+            }
+
+            .gantt-time-cell {
+                padding: 8px;
+                text-align: center;
+                background: #e0e0e0;
+                border-left: 1px solid #ccc;
+                font-size: 12px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .gantt-body {
+                border-top: 1px solid #ccc;
+            }
+
+            .gantt-bar {
+                height: 24px;
+                background-color: steelblue;
+                border-radius: 4px;
+                margin: 4px;
+                grid-column: span 1;
+                transition: background-color 0.3s ease;
+            }
+
+            .gantt-bar:hover {
+                background-color: dodgerblue;
+                cursor: pointer;
+            }
+
+            /* Grade (colunas visuais) */
+            .gantt-row>div:not(.gantt-task) {
+                border-left: 1px solid #eee;
+                height: 32px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="gantt-container">
+            <div class="gantt-header">
+                <div class="gantt-task-header">Tarefa</div>
+                <div class="gantt-timeline-header" id="gantt-meses"></div>
+            </div>
+
+            <div class="gantt-body" id="gantt-corpo">
+                <!-- Linhas de tarefas são geradas via JS -->
+            </div>
+        </div>
+
+        <script>
+            const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+            const tarefas = [{
+                    id: 1,
+                    responsavel: "João",
+                    equipamento: "Trator",
+                    inicio: 1,
+                    duracao: 3
+                },
+                {
+                    id: 2,
+                    responsavel: "Maria",
+                    equipamento: "Caminhão",
+                    inicio: 4,
+                    duracao: 2
+                },
+                {
+                    id: 3,
+                    responsavel: "Carlos",
+                    equipamento: "Colheitadeira",
+                    inicio: 6,
+                    duracao: 5
+                }
+            ];
+
+            const ganttMeses = document.getElementById("gantt-meses");
+            const ganttCorpo = document.getElementById("gantt-corpo");
+
+            // Renderiza cabeçalho de meses
+            meses.forEach(mes => {
+                const cell = document.createElement("div");
+                cell.className = "gantt-time-cell";
+                cell.innerText = mes;
+                ganttMeses.appendChild(cell);
+            });
+
+            // Renderiza tarefas
+            tarefas.forEach(tarefa => {
+                const row = document.createElement("div");
+                row.className = "gantt-row";
+
+                const taskCell = document.createElement("div");
+                taskCell.className = "gantt-task";
+                taskCell.innerText = `#${tarefa.id} - ${tarefa.responsavel} - ${tarefa.equipamento}`;
+                row.appendChild(taskCell);
+
+                // Cria 12 células para a grade visual
+                for (let i = 1; i <= 12; i++) {
+                    const emptyCell = document.createElement("div");
+                    row.appendChild(emptyCell);
+                }
+
+                // Cria a barra da tarefa e posiciona corretamente
+                const bar = document.createElement("div");
+                bar.className = "gantt-bar";
+                bar.style.gridColumn = `${tarefa.inicio + 1} / span ${tarefa.duracao}`;
+                bar.title = `Início: ${meses[tarefa.inicio - 1]} - Duração: ${tarefa.duracao} meses`;
+                row.appendChild(bar);
+
+                ganttCorpo.appendChild(row);
+            });
+        </script>
+    </body>
 
     </html>
-
 </main>
 @include('app.ordem_servico.52week')

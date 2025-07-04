@@ -18,6 +18,7 @@ use App\Http\Controllers\SolicitacaoOsController;
 use App\Http\Controllers\CheckListController;
 use App\Http\Controllers\CheckListExecutadoController;
 use App\Http\Controllers\CustosController;
+use App\Models\OrdemServico;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Route;
 /*
@@ -101,6 +102,8 @@ Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStat
 
 Route::post('/ordem-servico/atualizar-intervalo', [OrdemServicoController::class, 'update_os_interval'])
     ->name('update.os.interval');
+    //   Abre os  gantt
+Route::get('/filter-os-timeline', [OrdemServicoController::class, 'filter_os_timeline'])->name('filter.os.timeline');
 //--------------------------------------------------------//
 //                  Ordem de produção
 //--------------------------------------------------------//
