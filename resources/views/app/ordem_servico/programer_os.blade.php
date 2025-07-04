@@ -393,7 +393,9 @@
                 min-height: 40px;
                 padding: 0px;
                 text-align: center;
-                font-size: 11px;
+                font-size: 12px;
+                font-family: Arial, Helvetica, sans-serif;
+              font-weight: 300;
                 box-sizing: border-box;
                 overflow-wrap: break-word;
                 word-break: break-word;
@@ -450,6 +452,7 @@
                 justify-content: center;
                 align-items: center;
                 z-index: 1000;
+            
             }
 
             #modalContent {

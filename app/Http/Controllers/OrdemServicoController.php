@@ -404,7 +404,7 @@ class OrdemServicoController extends Controller
 
         // Validação dos campos
         $request->validate([
-            'imagem' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validação da imagem
+            'imagem' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10240', // Validação da imagem
             // outras validações, se necessário
         ]);
 
@@ -544,31 +544,9 @@ class OrdemServicoController extends Controller
         // Para debug: dd($request->all());
         return back(); // Volta para a página anterior (onde estava o formulário)
     }
-    public function update_ajax(Request $request)
-    {
-        // Validação dos dados recebidos via AJAX
-        $request->validate([
-            'id_os' => 'required|integer',          // id_os obrigatório e inteiro
-            'inicio' => 'required|date',             // inicio obrigatório e formato data válido
-            'fim' => 'required|date|after_or_equal:inicio', // fim obrigatório, data válida e >= inicio
-        ]);
-
-        // Busca a ordem de serviço pelo ID (passa o valor, não a string)
-        $ordem = OrdemServico::findOrFail($request->id_os);
-
-        // Atualiza os campos
-        $ordem->inicio = $request->inicio;
-        $ordem->fim = $request->fim;
-
-        // Salva as alterações no banco
-        $ordem->save();
-
-        // Retorna resposta JSON para o frontend
-        return response()->json(['message' => 'Ordem de Serviço atualizada com sucesso!']);
-    }
     public function update_os_interval(Request $request)
     {
-        // Método usado pelo time line Gantt para atualizar a ordem.
+
         $inicio = $request->input('inicio');
         $fim = $request->input('fim');
         $id = $request->input('id');
