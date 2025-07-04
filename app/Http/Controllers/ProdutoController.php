@@ -43,7 +43,9 @@ class ProdutoController extends Controller
 
                     //return QrCode::size(300)->generate('$nome_produto_like');
                     return view('app.produto.index', [
-                        'produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
+                        'produtos' => $produtos,
+                        'unidades' => $unidades,
+                        'categorias' => $categorias,
                         'num_pedido' => $numPedido
                     ]);
                 }
@@ -54,7 +56,9 @@ class ProdutoController extends Controller
 
                 if (!empty($nome_produto_like)) {
                     return view('app.produto.index', [
-                        'produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
+                        'produtos' => $produtos,
+                        'unidades' => $unidades,
+                        'categorias' => $categorias,
                         'num_pedido' => $numPedido
                     ]);
                 }
@@ -66,7 +70,9 @@ class ProdutoController extends Controller
 
                 if (!empty($nome_produto_like)) {
                     return view('app.produto.index', [
-                        'produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
+                        'produtos' => $produtos,
+                        'unidades' => $unidades,
+                        'categorias' => $categorias,
                         'num_pedido' => $numPedido
                     ]);
                 }
@@ -78,7 +84,9 @@ class ProdutoController extends Controller
 
                 // if (!empty($nome_produto_like)) {
                 return view('app.produto.index', [
-                    'produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
+                    'produtos' => $produtos,
+                    'unidades' => $unidades,
+                    'categorias' => $categorias,
                     'num_pedido' => $numPedido
                 ]);
             }
@@ -88,14 +96,19 @@ class ProdutoController extends Controller
                 $categorias = Categoria::all();
                 $estoque_produtos = EstoqueProdutos::where('quantidade', '<=', 0)->get();
                 return view('app.estoque_produto.index', [
-                    'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias,
+                    'estoque_produtos' => $estoque_produtos,
+                    'empresas' => $empresas,
+                    'produtos' => $produtos,
+                    'categorias' => $categorias,
                     'num_pedido' => $numPedido
                 ]);
             }
             if ($tipoFiltro == 6) { //filtra pelo esoque minimo
                 $produtos = Produto::where('id', 0)->get();
                 return view('app.produto.index', [
-                    'produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
+                    'produtos' => $produtos,
+                    'unidades' => $unidades,
+                    'categorias' => $categorias,
                     'num_pedido' => $numPedido
                 ]);
             }
@@ -114,7 +127,9 @@ class ProdutoController extends Controller
         } else {
             $produtos = Produto::where('id', 0)->get();
             return view('app.produto.index', [
-                'produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias,
+                'produtos' => $produtos,
+                'unidades' => $unidades,
+                'categorias' => $categorias,
                 'num_pedido' => $numPedido
             ]);
         };
@@ -129,23 +144,35 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        $marcas = Marca::all();
-        $unidades = UnidadeMedida::all();
-        $categorias = Categoria::all();
-        return view('app.produto.create', ['marcas' => $marcas, 'unidades' => $unidades, 'categorias' => $categorias]);
+        $marcas = Marca::orderBy('nome', 'asc')->get();
+        $unidades = UnidadeMedida::orderBy('nome', 'asc')->get();
+        $categorias = Categoria::orderBy('nome', 'asc')->get();
+
+        return view('app.produto.create', compact('marcas', 'unidades', 'categorias'));
     }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+     */ public function store(Request $request)
     {
+        // ✅ Validação
+        $request->validate([
+            'cod_fabricante' => 'required',
+            'nome' => 'required',
+            'descricao' => 'nullable',
+            'marca_id' => 'required',
+            'unidade_medida_id' => 'required',
+            'categoria_id' => 'required',
+            'link_peca' => 'nullable',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // imagem obrigatória
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // opcional
+            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // opcional
+        ]);
 
-        //Image Upload
+        // Criação do produto
         $produto = new Produto;
-        //criando um objeto
         $produto->cod_fabricante = $request->cod_fabricante;
         $produto->nome = $request->nome;
         $produto->descricao = $request->descricao;
@@ -153,42 +180,46 @@ class ProdutoController extends Controller
         $produto->unidade_medida_id = $request->unidade_medida_id;
         $produto->categoria_id = $request->categoria_id;
         $produto->link_peca = $request->link_peca;
-        $produto->image = $request->image;
-        $produto->image2 = $request->image2;
-        $produto->image3 = $request->image3;
 
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $requestImage = $request->image;
+        // 🖼 Upload da imagem principal
+        if ($request->hasFile('image')) {
+            $requestImage = $request->file('image');
             $extension = $requestImage->extension();
             $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            $request->image->Move(public_path('img/produtos'), $imageName);
+            $requestImage->move(public_path('img/produtos'), $imageName);
             $produto->image = $imageName;
-        };
-        if ($request->hasFile('image2') && $request->file('image2')->isValid()) {
-            $requestImage = $request->image2;
-            $extension = $requestImage->extension();
-            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            $request->image2->Move(public_path('img/produtos'), $imageName);
-            $produto->image2 = $imageName;
-        };
-        if ($request->hasFile('image3') && $request->file('image3')->isValid()) {
-            $requestImage = $request->image3;
-            $extension = $requestImage->extension();
-            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            $request->image3->Move(public_path('img/produtos'), $imageName);
-            $produto->image3 = $imageName;
-        };
-        $produto->save();
-        // return redirect()->route('produto.index');
+        }
 
+        // 🖼 Upload da imagem 2 (opcional)
+        if ($request->hasFile('image2')) {
+            $requestImage2 = $request->file('image2');
+            $extension2 = $requestImage2->extension();
+            $imageName2 = md5($requestImage2->getClientOriginalName() . strtotime("now")) . "." . $extension2;
+            $requestImage2->move(public_path('img/produtos'), $imageName2);
+            $produto->image2 = $imageName2;
+        }
+
+        // 🖼 Upload da imagem 3 (opcional)
+        if ($request->hasFile('image3')) {
+            $requestImage3 = $request->file('image3');
+            $extension3 = $requestImage3->extension();
+            $imageName3 = md5($requestImage3->getClientOriginalName() . strtotime("now")) . "." . $extension3;
+            $requestImage3->move(public_path('img/produtos'), $imageName3);
+            $produto->image3 = $imageName3;
+        }
+
+        $produto->save();
+
+        // Recupera o último produto para exibir na view
         $ultimoProduto = Produto::latest('created_at')->first();
-        $estoque_produtos = EstoqueProdutos::where('produto_id',  $ultimoProduto->id)->get();
+        $estoque_produtos = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->get();
         $estoque_produtos_sum = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
-        $estoque_produtos_sum_v = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
-        $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
+        $estoque_produtos_sum_valor = $estoque_produtos_sum * $estoque_produtos_sum; // Verifique esse cálculo se está correto!
 
         return view('app.produto.show', [
-            'produto' =>  $ultimoProduto, 'estoque_produtos' => $estoque_produtos, 'estoque_produtos_sum' => $estoque_produtos_sum,
+            'produto' =>  $ultimoProduto,
+            'estoque_produtos' => $estoque_produtos,
+            'estoque_produtos_sum' => $estoque_produtos_sum,
             'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor
         ]);
     }
@@ -209,7 +240,9 @@ class ProdutoController extends Controller
         $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
         $equipamentos = Equipamento::all();
         return view('app.produto.show', [
-            'produto' => $produto, 'estoque_produtos' => $estoque_produtos, 'estoque_produtos_sum' => $estoque_produtos_sum,
+            'produto' => $produto,
+            'estoque_produtos' => $estoque_produtos,
+            'estoque_produtos_sum' => $estoque_produtos_sum,
             'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor,
             'equipamentos' => $equipamentos
         ]);
@@ -225,9 +258,9 @@ class ProdutoController extends Controller
      */
     public function edit(Produto $produto)
     {
-        $unidades = UnidadeMedida::all();
-        $categorias = Categoria::all();
-        $marcas = Marca::all();
+        $unidades = UnidadeMedida::orderBy('nome', 'asc')->get();
+        $categorias = Categoria::orderBy('nome', 'asc')->get();
+        $marcas = Marca::orderBy('nome', 'asc')->get();
         return view('app.produto.edit', ['produto' => $produto, 'marcas' => $marcas, 'unidades' => $unidades, 'categorias' => $categorias]);
     }
 
@@ -276,7 +309,9 @@ class ProdutoController extends Controller
         $estoque_produtos_sum_v = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
         $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
         return view('app.produto.show', [
-            'produto' =>  $ultimoProduto, 'estoque_produtos' => $estoque_produtos, 'estoque_produtos_sum' => $estoque_produtos_sum,
+            'produto' =>  $ultimoProduto,
+            'estoque_produtos' => $estoque_produtos,
+            'estoque_produtos_sum' => $estoque_produtos_sum,
             'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor
         ]);
     }
@@ -307,7 +342,5 @@ class ProdutoController extends Controller
         $produto->delete();
         return redirect()->route('produto.index');
     }
-    public function aplicacao_produto(Request $request)
-    {
-    }
+    public function aplicacao_produto(Request $request) {}
 }
