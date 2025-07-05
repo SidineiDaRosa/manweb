@@ -77,59 +77,36 @@ class CheckListController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
-     */
-    public function create()
+     */ public function store(Request $request)
     {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // Validação dos dados do request
-        $request->validate([
+        // Validação dos dados recebidos
+        $validatedData = $request->validate([
             'descricao' => 'required|string|max:255',
-            'equipamento_id' => 'required|integer',
-            'intervalo' => 'required|integer',
-            'natureza' => 'required',
-            //'data_verificacao' => 'required|date',
-            //'hora_verificacao' => 'required|date_format:H:i',
-        ]);
-        $data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString(); // Obtém apenas a data
-        $hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString(); // Obtém apenas a hora
-        // Criação do checklist
-        $checkList = CheckList::create([
-            'descricao' => $request->descricao,
-            'equipamento_id' => $request->equipamento_id,
-            'intervalo' => $request->intervalo,
-            'natureza' => $request->natureza,
-            //'data_verificacao' =>$data_verificacao,
-            //'hora_verificacao' => $hora_verificacao
-
-            // 'data_verificacao' => $request->data_verificacao,
-            //  'hora_verificacao' => $request->hora_verificacao,
+            'equipamento_id' => 'required|integer|exists:equipamentos,id',
+            'intervalo' => 'required|integer|min:1',
+            'natureza' => 'required|string',
         ]);
 
-        // Redirecionar ou retornar uma resposta
-        // return redirect()->back()->with('success', 'Checklist criado com sucesso!');
+        // Criação do checklist com os dados validados
+        $checkList = CheckList::create($validatedData);
+
+        // Consulta dos dados para a view
+        $equipamentos = Equipamento::all();
+        $equipamento = Equipamento::with('checkLists')->find($validatedData['equipamento_id']);
+        $check_list = $equipamento?->checkLists ?? collect();
+
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
         $equipamento = Equipamento::find($request->equipamento_id);
 
-        return view(
-            'app.check_list.index',
-            [
-                'equipamentos' => $equipamentos,
-                'equipamento' => $equipamento,
-                'check_list' => $check_list
-            ]
-        );
+        return view('app.check_list.index', [
+            'equipamentos' => $equipamentos,
+            'equipamento' => $equipamento,
+            'check_list' => $check_list,
+        ]);
     }
+
     public function show(Request $request)
     {
         $equipamento_id = $request->get('equipamento_id');
@@ -204,8 +181,6 @@ class CheckListController extends Controller
             ]
         );
     }
-
-
     /**
      * Remove the specified resource from storage.
      *

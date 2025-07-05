@@ -54,95 +54,59 @@ class CheckListExecutadoController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+     */ public function store(Request $request)
     {
-        //dd($request->all()); // Verifique se check_list_id é um número
-        // Validação dos dados do formulário
+      
+        // Validação básica
         $validated = $request->validate([
-            'check_list_id' => 'required|integer|exists:check_list,id', // Verifica se o check_list_id existe na tabela check_list
-            'equipamento_id' => 'required|exists:equipamentos,id', // Verifica se o equipamento_id existe na tabela equipamentos
-            'gravidade' => 'required|integer|between:1,4', // Verifica se a gravidade é um número inteiro entre 1 e 4
-            'observacao' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
-            'temperatura' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
-            'vibracao' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
-            'funcionario' => 'max:255', // Verifica se a descrição é uma string e tem um máximo de 255 caracteres
-            // 'data_verificacao' e 'hora_verificacao' não precisam ser validados, pois serão definidos automaticamente
+            'check_list_id' => 'required|integer|exists:check_list,id',
+            'equipamento_id' => 'required|exists:equipamentos,id',
+            'gravidade' => 'required|integer|between:1,4',
+            'observacao' => 'max:255',
+            'temperatura' => 'max:255',
+            'vibracao' => 'max:255',
+            'funcionario' => 'max:255',
         ]);
 
-        // Cria um novo registro no banco de dados
+        // Se gravidade é gravíssimo, valida e salva a imagem obrigatória
+        $imagemPath = null;
+        if ($request->gravidade == 4) {
+            $request->validate([
+                'imagem_checklist' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            ]);
+
+            if ($request->hasFile('imagem_checklist')) {
+                $file = $request->file('imagem_checklist');
+                $nomeArquivo = 'imagem_checklist_' . time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('images/checklist_img'), $nomeArquivo);
+                $imagemPath = 'images/checklist_img/' . $nomeArquivo;
+            } else {
+                return response()->json(['message' => 'Imagem obrigatória para gravidade Gravíssimo'], 422);
+            }
+        }
+
         $checkListCheked = new CheckListExecutado();
         $checkListCheked->check_list_id = $validated['check_list_id'];
-        $checkListCheked->equipamento_id = $validated['equipamento_id']; // Salva o equipamento_id
-        $checkListCheked->gravidade = $validated['gravidade']; // Salva a gravidade
-        $checkListCheked->observacao = $validated['observacao'];
-        $checkListCheked->temperatura = $validated['temperatura'];
-        $checkListCheked->vibracao = $validated['vibracao'];
-        $checkListCheked->funcionario = $validated['funcionario'];
+        $checkListCheked->equipamento_id = $validated['equipamento_id'];
+        $checkListCheked->gravidade = $validated['gravidade'];
+        $checkListCheked->observacao = $validated['observacao'] ?? null;
+        $checkListCheked->temperatura = $validated['temperatura'] ?? null;
+        $checkListCheked->vibracao = $validated['vibracao'] ?? null;
+        $checkListCheked->funcionario = $validated['funcionario'] ?? null;
+        $checkListCheked->imagem = $imagemPath; // Salva o caminho da imagem aqui
+        $checkListCheked->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
+        $checkListCheked->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
 
-        // Define a data e hora de verificação como a data/hora atual de São Paulo
-        $checkListCheked->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString(); // Obtém apenas a data
-        $checkListCheked->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString(); // Obtém apenas a hora
-        // Salva os dados da verificação se ==4  gravissimo
-        if ($request->input('gravidade') == 4) {
-            // Verifica se a observação é 'normal' e tem mais de 20 caracteres
-            $observacao = $request->input('observacao');
-            // Lógica quando a gravidade é 4 e a observação é 'normal' com mais de 15 caracteres
-            if (strlen($observacao) > 15) {
-                //-------------------------------------------------------------------------------//
-                // Atualiza a data da ultima verificação
-                $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
-                if ($checkList) {
-                    $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
-                    $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
-                    $checkList->save(); // Atualiza o registro existente no banco de dados
-                }
-                //-------------------------------------------------------------------------------------//
-                // Salva a execução do check-list atendenedo os critérios se Gravissímo for selecionado
-                //
-                $checkListCheked->save();
-                $equipamentos = Equipamento::all();
-                $equipamento = Equipamento::find($request->equipamento_id);
-                // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
-                $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
-                $funcionario = $request->funcionario;
-                return view('app.check_list.check_list_open', [
-                    'equipamentos' => $equipamentos,
-                    'equipamento' => $equipamento,
-                    'check_list' => $check_list,
-                    'funcionario' => $funcionario,
-                    'natureza' => $request->natureza
-                ]);
-            } else {
-                return response()->json(['message' => 'Checklist ' . $checkListCheked->check_list_id . ' não salvo, verifique os dados!'], 201);
-            }
-        } else {
-            //-------------------------------------------------------------------------------------//
-            // Atualiza a data da ultima verificação  diferente de gravissímo
-            //
-            $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
-            if ($checkList) {
-                $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
-                $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
-                $checkList->save(); // Atualiza o registro existente no banco de dados
-            }
-            // Salva a execução do check-list
-            $checkListCheked->save();
-            // dd($request->all()); // Isso mostrará todos os dados recebidos
-            $equipamentos = Equipamento::all();
-            $equipamento = Equipamento::find($request->equipamento_id);
-            // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
-            $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
-            $funcionario = $request->funcionario;
-            return view('app.check_list.check_list_open', [
-                'equipamentos' => $equipamentos,
-                'equipamento' => $equipamento,
-                'check_list' => $check_list,
-                'funcionario' => $funcionario,
-                'natureza' => $request->natureza
-            ]);
-        }
+        // ... seu restante de lógica para salvar, atualizar datas e retornar view
+
+        // Exemplo simples:
+        $checkListCheked->save();
+
+        // Atualize a data/hora do checklist original se quiser...
+
+        // Retorne a view normalmente
     }
+
 
     /**
      * Display the specified resource.
@@ -221,7 +185,7 @@ class CheckListExecutadoController extends Controller
                     'check_list_executado' => $check_list_executado
                 ]);
             } else {
-                
+
                 $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)
                     ->orderBy('data_verificacao', 'desc')->get();
                 return view('app.check_list.check_list_executado', [
@@ -232,14 +196,13 @@ class CheckListExecutadoController extends Controller
         } catch (\Exception $e) {
             //Caso a data não exitir busca todas com gravidade acima de 2
             $check_list_executado = CheckListExecutado::where('equipamento_id', $request->equipamento_id)
-             ->where('gravidade', '>=', 2)
-            ->orderBy('data_verificacao', 'desc')->get();
+                ->where('gravidade', '>=', 2)
+                ->orderBy('data_verificacao', 'desc')->get();
             return view('app.check_list.check_list_executado', [
                 'equipamento' => $equipamento,
                 'check_list_executado' => $check_list_executado
             ]);
         }
-
     }
     /**
      * Store a newly created resource in storage.

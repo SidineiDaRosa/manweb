@@ -101,7 +101,16 @@
                 <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-left:20px; width:20%;">
                     <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkgrey;">Data e hora: </h6> {{ \Carbon\Carbon::parse($check_list_executado_f->data_verificacao)->format('d/m/Y') }} às {{ $check_list_executado_f->hora_verificacao }}
                 </span>
+                <!-- Imagem -->
+                @php
+                $caminhoCompleto = public_path($check_list_executado_f->imagem);
+                @endphp
 
+                @if ($check_list_executado_f->imagem && file_exists($caminhoCompleto))
+                <img src="{{ asset($check_list_executado_f->imagem) }}" alt="Imagem checklist" style="max-width: 200px;">
+                @else
+                <p><i class="text-danger">Imagem não disponível.</i></p>
+                @endif
                 <!-- Botão para abrir a modal de criação de uma nova O.S. -->
                 <button type="button" class="btn btn-outline-success open-modal-btn"
                     data-bs-toggle="modal" data-bs-target="#dateTimeModal"

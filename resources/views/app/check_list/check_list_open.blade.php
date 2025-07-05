@@ -29,7 +29,7 @@
             {{--//------------------------------------------------//--}}
 
             <!-- Gravar um novo check list para o equipamento -->
-            <h5>{{$equipamento->nome}}</h5>
+            <h3>{{$equipamento->nome}}</h3>
             {{$funcionario}}
         </div>
         <style>
@@ -110,8 +110,10 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                <!-------------------------------------->
                                 <!-- Formulário para inserir os dados -->
-                                <form id="checkListForm-{{$check_list_f->id}}" method="post" action="{{ route('check-list-executado') }}">
+                                <form id="checkListForm-{{$check_list_f->id}}" method="post" enctype="multipart/form-data" action="{{ route('check-list-executado') }}">
+
                                     @csrf
                                     <input type="hidden" name="check_list_id" value="{{$check_list_f->id}}">
                                     <input type="hidden" name="equipamento_id" value="{{$check_list_f->equipamento_id}}">
@@ -169,6 +171,12 @@
                                         <label for="observacoes" class="form-label">Observações</label>
                                         <input type="text" id="observacao" class="form-control" name="observacao" value="Normal" required>
                                     </div>
+                                    <!-- Upload da Imagem -->
+                                    <div class="mb-3 mt-3" id="imagem-container" style="display: none;">
+                                        <label for="imagem" class="form-label">Imagem (obrigatória para Gravíssimo)</label>
+                                        <input type="file" class="form-control" id="imagem_checklist" name="imagem_checklist" accept="image/*">
+
+                                    </div>
                                     <!-- Botões -->
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -176,6 +184,38 @@
                                         <button type="submit" form="checkListForm-{{$check_list_f->id}}" class="btn btn-primary" onclick="validarFormulario()">Salvar</button>
                                     </div>
                                 </form>
+                                <!------------------------------------------------------------->
+                                <!---Condição se caso escolher gravidade máxima a inserção de uma imagem
+                                torna obrigatório-->
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // Para cada modal aberta
+                                        document.querySelectorAll('.modal').forEach(function(modal) {
+                                            const checkboxGravissimo = modal.querySelector('input#ch-gravissimo');
+                                            const campoImagem = modal.querySelector('#imagem');
+                                            const containerImagem = modal.querySelector('#imagem-container');
+
+                                            if (!checkboxGravissimo) return;
+
+                                            checkboxGravissimo.addEventListener('change', function() {
+                                                if (this.checked) {
+                                                    containerImagem.style.display = 'block';
+                                                    campoImagem.setAttribute('required', 'required');
+                                                } else {
+                                                    containerImagem.style.display = 'none';
+                                                    campoImagem.removeAttribute('required');
+                                                }
+                                            });
+
+                                            // Se já vier marcado (ao reabrir modal), ajusta o campo
+                                            if (checkboxGravissimo.checked) {
+                                                containerImagem.style.display = 'block';
+                                                campoImagem.setAttribute('required', 'required');
+                                            }
+                                        });
+                                    });
+                                </script>
+
                             </div>
                         </div>
                     </div>
