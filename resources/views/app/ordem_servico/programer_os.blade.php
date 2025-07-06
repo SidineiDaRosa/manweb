@@ -12,6 +12,9 @@
     <span hidden>{{$ordem_servico_gantt_gnt->equipamento->nome}} <br></span>
 
     @endforeach
+    <a href="{{ route('gantt.os.timeline') }}" class="btn btn-primary">
+        Ver Gráfico de Gantt
+    </a>
     <style>
         .container-box {
             display: flex;
@@ -395,7 +398,7 @@
                 text-align: center;
                 font-size: 12px;
                 font-family: Arial, Helvetica, sans-serif;
-              font-weight: 300;
+                font-weight: 300;
                 box-sizing: border-box;
                 overflow-wrap: break-word;
                 word-break: break-word;
@@ -452,7 +455,7 @@
                 justify-content: center;
                 align-items: center;
                 z-index: 1000;
-            
+
             }
 
             #modalContent {
@@ -1004,3 +1007,4 @@
     </html>
 </main>
 @include('app.ordem_servico.52week')
+@include('app.ordem_servico.gantt_os')

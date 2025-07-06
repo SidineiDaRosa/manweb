@@ -80,6 +80,7 @@ class CheckListController extends Controller
      */ public function store(Request $request)
     {
 
+        echo $request;
         // Validação dos dados recebidos
         $validatedData = $request->validate([
             'descricao' => 'required|string|max:255',

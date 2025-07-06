@@ -550,7 +550,7 @@ class OrdemServicoController extends Controller
         $inicio = $request->input('inicio');
         $fim = $request->input('fim');
         $id = $request->input('id');
-    
+
         // Verifica se a data de início é menor ou igual à data de fim
         if (strtotime($inicio) > strtotime($fim)) {
             return response()->json([
@@ -622,5 +622,21 @@ class OrdemServicoController extends Controller
         $diasIntervalo = $inicio->diffInDays($fim) + 1;
 
         return view('app.ordem_servico.gantt_os', compact('tarefas', 'inicio', 'diasIntervalo', 'dataInicio', 'dataFim'));
+    }
+
+    public function gantt_timeline()
+    {
+        $ordens = OrdemServico::where('situacao', 'aberto') // só as abertas
+            ->get()
+            ->map(function ($o) {
+                return [
+                    'id' => $o->id,
+                    'responsavel' => $o->responsavel,
+                    'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
+                    'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
+                ];
+            });
+
+        return view('app.ordem_servico.gantt_os', compact('ordens'));
     }
 }
