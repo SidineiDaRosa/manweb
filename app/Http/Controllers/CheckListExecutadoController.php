@@ -56,7 +56,7 @@ class CheckListExecutadoController extends Controller
      * @return \Illuminate\Http\Response
      */ public function store(Request $request)
     {
-      
+
         // Validação básica
         $validated = $request->validate([
             'check_list_id' => 'required|integer|exists:check_list,id',
@@ -102,9 +102,28 @@ class CheckListExecutadoController extends Controller
         // Exemplo simples:
         $checkListCheked->save();
 
+        //-------------------------------------------------------------------------------------//
+        // Atualiza a data da ultima verificação  diferente de gravissímo
+        //
+        $checkList = CheckList::find($request->check_list_id); // Encontra o registro pelo ID
+        if ($checkList) {
+            $checkList->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
+            $checkList->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
+            $checkList->save(); // Atualiza o registro existente no banco de dados
+        }
         // Atualize a data/hora do checklist original se quiser...
-
-        // Retorne a view normalmente
+        $equipamentos = Equipamento::all();
+        $equipamento = Equipamento::find($request->equipamento_id);
+        // $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->where('natureza', $request->natureza)->get();
+        $funcionario = $request->funcionario;
+        return view('app.check_list.check_list_open', [
+            'equipamentos' => $equipamentos,
+            'equipamento' => $equipamento,
+            'check_list' => $check_list,
+            'funcionario' => $funcionario,
+            'natureza' => $request->natureza
+        ]);
     }
 
 
