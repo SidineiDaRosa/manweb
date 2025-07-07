@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -317,218 +316,227 @@
         <label>Fim:
           <input type="datetime-local" id="modal-fim" required />
         </label>
+        <label>Descrição:
+          <input type="text" id="modal-descricao" required />
+        </label>
+        <label>Equipamento:
+          <input type="text" id="modal-equipamento" readonly />
+        </label>
         <div>
           <button type="submit" id="btn-salvar">Salvar</button>
           <button type="button" id="btn-cancelar">Cancelar</button>
         </div>
       </form>
     </div>
-  </div>
 
-  <script>const tarefas = @json($ordens);
 
-    const mesesNomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    <script>
+      const tarefas = @json($ordens);
 
-    const inputInicio = document.getElementById('inicio');
-    const inputFim = document.getElementById('fim');
-    const btnAtualizar = document.getElementById('btnAtualizar');
+      const mesesNomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-    const timelineYears = document.getElementById('timeline-years');
-    const timelineMonths = document.getElementById('timeline-months');
-    const timelineHeader = document.getElementById('timeline-header');
-    const tarefasContainer = document.getElementById('tarefas-container');
+      const inputInicio = document.getElementById('inicio');
+      const inputFim = document.getElementById('fim');
+      const btnAtualizar = document.getElementById('btnAtualizar');
 
-    // Modal elements
-    const modal = document.getElementById('modal');
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalId = document.getElementById('modal-id');
-    const modalResp = document.getElementById('modal-responsavel');
-    const modalInicio = document.getElementById('modal-inicio');
-    const modalFim = document.getElementById('modal-fim');
-    const btnCancelar = document.getElementById('btn-cancelar');
-    const btnFechar = document.getElementById('btn-fechar');
-    const formEditar = document.getElementById('form-editar');
+      const timelineYears = document.getElementById('timeline-years');
+      const timelineMonths = document.getElementById('timeline-months');
+      const timelineHeader = document.getElementById('timeline-header');
+      const tarefasContainer = document.getElementById('tarefas-container');
 
-    function abrirModal(tarefa) {
-      modalId.value = tarefa.id;
-      modalResp.value = tarefa.responsavel;
-      modalInicio.value = tarefa.inicio;
-      modalFim.value = tarefa.fim;
-      modal.style.display = 'block';
-      modalResp.focus();
-    }
+      // Modal elements
+      const modal = document.getElementById('modal');
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalId = document.getElementById('modal-id');
+      const modalResp = document.getElementById('modal-responsavel');
+      const modalInicio = document.getElementById('modal-inicio');
+      const modalFim = document.getElementById('modal-fim');
+      const modalDescricao = document.getElementById('modal-descricao');
+      const modalEquipamento = document.getElementById('modal-equipamento');
+      const btnCancelar = document.getElementById('btn-cancelar');
+      const btnFechar = document.getElementById('btn-fechar');
+      const formEditar = document.getElementById('form-editar');
 
-    function fecharModal() {
-      modal.style.display = 'none';
-    }
-
-    // Fecha modal clicando no overlay
-    modalOverlay.addEventListener('click', fecharModal);
-
-    // Fecha modal clicando no botão fechar
-    btnFechar.addEventListener('click', fecharModal);
-
-    // Fecha modal clicando no botão cancelar
-    btnCancelar.addEventListener('click', fecharModal);
-
-    // Fecha modal ao apertar ESC
-    document.addEventListener('keydown', e => {
-      if (e.key === "Escape") {
-        fecharModal();
-      }
-    });
-
-    // Atualiza dados da tarefa e timeline
-    formEditar.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const id = modalId.value;
-      const index = tarefas.findIndex(t => t.id === id);
-      if (index !== -1) {
-        tarefas[index].responsavel = modalResp.value;
-        tarefas[index].inicio = modalInicio.value;
-        tarefas[index].fim = modalFim.value;
-        atualizarTimeline(inputInicio.value, inputFim.value);
-        fecharModal();
-      }
-    });
-
-    function atualizarTimeline(inicioStr, fimStr) {
-      if (!inicioStr || !fimStr) return;
-      const inicio = new Date(inicioStr);
-      const fim = new Date(fimStr);
-      if (isNaN(inicio) || isNaN(fim) || fim <= inicio) return;
-
-      const intervaloHoras = (fim - inicio) / (1000 * 60 * 60);
-      const largura = window.innerWidth - 510;
-      const PIXELS_POR_HORA = largura / intervaloHoras;
-
-      timelineYears.innerHTML = '';
-      timelineMonths.innerHTML = '';
-      timelineHeader.innerHTML = '';
-      tarefasContainer.innerHTML = '';
-
-      // Anos
-      const anoInicio = inicio.getFullYear();
-      const anoFim = fim.getFullYear();
-      for (let ano = anoInicio; ano <= anoFim; ano++) {
-        const divAno = document.createElement('div');
-        divAno.className = 'year';
-        divAno.style.width = `${largura / (anoFim - anoInicio + 1)}px`;
-        divAno.textContent = ano;
-        timelineYears.appendChild(divAno);
+      function abrirModal(tarefa) {
+        modalId.value = tarefa.id;
+        modalResp.value = tarefa.responsavel;
+        modalInicio.value = tarefa.inicio;
+        modalFim.value = tarefa.fim;
+        modalDescricao.value = tarefa.descricao;
+        modalEquipamento.value = tarefa.equipamento.nome//Desta forma pega o nome 
+        modal.style.display = 'block';
+        modalResp.focus();
       }
 
-      // Meses
-      let mesAtual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
-      const fimMeses = new Date(fim.getFullYear(), fim.getMonth(), 1);
-      const meses = [];
+      function fecharModal() {
+        modal.style.display = 'none';
+      }
 
-      while (mesAtual <= fimMeses) {
-        const inicioMes = new Date(mesAtual);
-        const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 1);
+      // Fecha modal clicando no overlay
+      modalOverlay.addEventListener('click', fecharModal);
 
-        const inicioDentro = inicioMes < inicio ? inicio : inicioMes;
-        const fimDentro = fimMes > fim ? fim : fimMes;
+      // Fecha modal clicando no botão fechar
+      btnFechar.addEventListener('click', fecharModal);
 
-        const horas = (fimDentro - inicioDentro) / (1000 * 60 * 60);
+      // Fecha modal clicando no botão cancelar
+      btnCancelar.addEventListener('click', fecharModal);
 
-        meses.push({
-          nome: mesesNomes[mesAtual.getMonth()],
-          ano: mesAtual.getFullYear(),
-          horas
+      // Fecha modal ao apertar ESC
+      document.addEventListener('keydown', e => {
+        if (e.key === "Escape") {
+          fecharModal();
+        }
+      });
+
+      // Atualiza dados da tarefa e timeline
+      formEditar.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = modalId.value;
+        const index = tarefas.findIndex(t => t.id === id);
+        if (index !== -1) {
+          tarefas[index].responsavel = modalResp.value;
+          tarefas[index].inicio = modalInicio.value;
+          tarefas[index].fim = modalFim.value;
+          atualizarTimeline(inputInicio.value, inputFim.value);
+          fecharModal();
+        }
+      });
+
+      function atualizarTimeline(inicioStr, fimStr) {
+        if (!inicioStr || !fimStr) return;
+        const inicio = new Date(inicioStr);
+        const fim = new Date(fimStr);
+        if (isNaN(inicio) || isNaN(fim) || fim <= inicio) return;
+
+        const intervaloHoras = (fim - inicio) / (1000 * 60 * 60);
+        const largura = window.innerWidth - 510;
+        const PIXELS_POR_HORA = largura / intervaloHoras;
+
+        timelineYears.innerHTML = '';
+        timelineMonths.innerHTML = '';
+        timelineHeader.innerHTML = '';
+        tarefasContainer.innerHTML = '';
+
+        // Anos
+        const anoInicio = inicio.getFullYear();
+        const anoFim = fim.getFullYear();
+        for (let ano = anoInicio; ano <= anoFim; ano++) {
+          const divAno = document.createElement('div');
+          divAno.className = 'year';
+          divAno.style.width = `${largura / (anoFim - anoInicio + 1)}px`;
+          divAno.textContent = ano;
+          timelineYears.appendChild(divAno);
+        }
+
+        // Meses
+        let mesAtual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
+        const fimMeses = new Date(fim.getFullYear(), fim.getMonth(), 1);
+        const meses = [];
+
+        while (mesAtual <= fimMeses) {
+          const inicioMes = new Date(mesAtual);
+          const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 1);
+
+          const inicioDentro = inicioMes < inicio ? inicio : inicioMes;
+          const fimDentro = fimMes > fim ? fim : fimMes;
+
+          const horas = (fimDentro - inicioDentro) / (1000 * 60 * 60);
+
+          meses.push({
+            nome: mesesNomes[mesAtual.getMonth()],
+            ano: mesAtual.getFullYear(),
+            horas
+          });
+
+          mesAtual.setMonth(mesAtual.getMonth() + 1);
+        }
+
+        meses.forEach(mes => {
+          const divMes = document.createElement('div');
+          divMes.className = 'month';
+          divMes.style.width = `${mes.horas * PIXELS_POR_HORA}px`;
+          divMes.textContent = `${mes.nome} ${mes.ano}`;
+          timelineMonths.appendChild(divMes);
         });
 
-        mesAtual.setMonth(mesAtual.getMonth() + 1);
-      }
-
-      meses.forEach(mes => {
-        const divMes = document.createElement('div');
-        divMes.className = 'month';
-        divMes.style.width = `${mes.horas * PIXELS_POR_HORA}px`;
-        divMes.textContent = `${mes.nome} ${mes.ano}`;
-        timelineMonths.appendChild(divMes);
-      });
-
-      // Horas
-      const horasInteiras = Math.ceil(intervaloHoras);
-      for (let h = 0; h < horasInteiras; h++) {
-        const divHora = document.createElement('div');
-        divHora.className = 'hora';
-        divHora.style.width = `${PIXELS_POR_HORA}px`;
-        const horaReal = new Date(inicio.getTime() + h * 3600000).getHours();
-        divHora.textContent = horaReal + 'h';
-        timelineHeader.appendChild(divHora);
-      }
-
-      // Tarefas
-      tarefas.forEach(tarefa => {
-        const linha = document.createElement('div');
-        linha.className = 'linha-tarefa-container';
-
-        const dados = document.createElement('div');
-        dados.className = 'dados';
-        dados.innerHTML = `<div class="registro">id: ${tarefa.id} - responsável: ${tarefa.responsavel} - início: ${tarefa.inicio.replace('T', ' ')} - fim: ${tarefa.fim.replace('T', ' ')}</div>`;
-
-        const timeline = document.createElement('div');
-        timeline.className = 'timeline-container';
-        timeline.style.minWidth = `${largura}px`;
-
-        const grid = document.createElement('div');
-        grid.className = 'grid';
-        grid.style.minWidth = `${largura}px`;
-
-        for (let i = 0; i < horasInteiras; i++) {
-          const line = document.createElement('div');
-          line.className = 'grid-line';
-          line.style.width = `${PIXELS_POR_HORA}px`;
-          grid.appendChild(line);
+        // Horas
+        const horasInteiras = Math.ceil(intervaloHoras);
+        for (let h = 0; h < horasInteiras; h++) {
+          const divHora = document.createElement('div');
+          divHora.className = 'hora';
+          divHora.style.width = `${PIXELS_POR_HORA}px`;
+          const horaReal = new Date(inicio.getTime() + h * 3600000).getHours();
+          divHora.textContent = horaReal + 'h';
+          timelineHeader.appendChild(divHora);
         }
 
-        timeline.appendChild(grid);
+        // Tarefas
+        tarefas.forEach(tarefa => {
+          const linha = document.createElement('div');
+          linha.className = 'linha-tarefa-container';
 
-        const barra = document.createElement('div');
-        barra.className = 'registro-barra';
+          const dados = document.createElement('div');
+          dados.className = 'dados';
+          dados.innerHTML = `<div class="registro">id: ${tarefa.id} - responsável: ${tarefa.responsavel} - início: ${tarefa.inicio.replace('T', ' ')} - fim: ${tarefa.fim.replace('T', ' ')}</div>`;
 
-        const iniT = new Date(tarefa.inicio);
-        const fimT = new Date(tarefa.fim);
+          const timeline = document.createElement('div');
+          timeline.className = 'timeline-container';
+          timeline.style.minWidth = `${largura}px`;
 
-        if (fimT > inicio && iniT < fim) {
-          const inicioVisivel = iniT < inicio ? inicio : iniT;
-          const fimVisivel = fimT > fim ? fim : fimT;
+          const grid = document.createElement('div');
+          grid.className = 'grid';
+          grid.style.minWidth = `${largura}px`;
 
-          const duracao = (fimVisivel - inicioVisivel) / 3600000;
-          const desloc = (inicioVisivel - inicio) / 3600000;
+          for (let i = 0; i < horasInteiras; i++) {
+            const line = document.createElement('div');
+            line.className = 'grid-line';
+            line.style.width = `${PIXELS_POR_HORA}px`;
+            grid.appendChild(line);
+          }
 
-          barra.style.left = `${desloc * PIXELS_POR_HORA}px`;
-          barra.style.width = `${duracao * PIXELS_POR_HORA}px`;
+          timeline.appendChild(grid);
 
-          barra.title = `Tarefa ${tarefa.id}\nInício: ${tarefa.inicio}\nFim: ${tarefa.fim}`;
+          const barra = document.createElement('div');
+          barra.className = 'registro-barra';
 
-          // Ao clicar abre modal para editar
-          barra.addEventListener('click', () => abrirModal(tarefa));
+          const iniT = new Date(tarefa.inicio);
+          const fimT = new Date(tarefa.fim);
 
-          timeline.appendChild(barra);
-        }
+          if (fimT > inicio && iniT < fim) {
+            const inicioVisivel = iniT < inicio ? inicio : iniT;
+            const fimVisivel = fimT > fim ? fim : fimT;
 
-        linha.appendChild(dados);
-        linha.appendChild(timeline);
-        tarefasContainer.appendChild(linha);
+            const duracao = (fimVisivel - inicioVisivel) / 3600000;
+            const desloc = (inicioVisivel - inicio) / 3600000;
+
+            barra.style.left = `${desloc * PIXELS_POR_HORA}px`;
+            barra.style.width = `${duracao * PIXELS_POR_HORA}px`;
+
+            barra.title = `Tarefa ${tarefa.id}\nInício: ${tarefa.inicio}\nFim: ${tarefa.fim}`;
+
+            // Ao clicar abre modal para editar
+            barra.addEventListener('click', () => abrirModal(tarefa));
+
+            timeline.appendChild(barra);
+          }
+
+          linha.appendChild(dados);
+          linha.appendChild(timeline);
+          tarefasContainer.appendChild(linha);
+        });
+      }
+
+      // Valores iniciais padrão
+      inputInicio.value = '2025-07-06T00:00';
+      inputFim.value = '2025-07-06T23:59';
+
+      btnAtualizar.addEventListener('click', () => {
+        atualizarTimeline(inputInicio.value, inputFim.value);
       });
-    }
 
-    // Valores iniciais padrão
-    inputInicio.value = '2025-07-06T00:00';
-    inputFim.value = '2025-07-06T23:59';
-
-    btnAtualizar.addEventListener('click', () => {
+      // Inicializa a timeline
       atualizarTimeline(inputInicio.value, inputFim.value);
-    });
-
-    // Inicializa a timeline
-    atualizarTimeline(inputInicio.value, inputFim.value);
-
-
-  </script>
+    </script>
 </body>
 
 </html>

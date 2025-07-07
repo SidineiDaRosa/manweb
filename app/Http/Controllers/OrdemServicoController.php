@@ -634,9 +634,12 @@ class OrdemServicoController extends Controller
                     'responsavel' => $o->responsavel,
                     'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
                     'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
+                    'descricao' => $o->descricao,
+                    'equipamento' => $o->equipamento
                 ];
             });
-
+        
         return view('app.ordem_servico.gantt_os', compact('ordens'));
+        //echo( $ordens);
     }
 }
