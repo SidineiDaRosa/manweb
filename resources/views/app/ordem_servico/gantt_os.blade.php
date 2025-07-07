@@ -363,7 +363,7 @@
         modalInicio.value = tarefa.inicio;
         modalFim.value = tarefa.fim;
         modalDescricao.value = tarefa.descricao;
-        modalEquipamento.value = tarefa.equipamento.nome//Desta forma pega o nome 
+        modalEquipamento.value = tarefa.equipamento.nome //Desta forma pega o nome 
         modal.style.display = 'block';
         modalResp.focus();
       }
@@ -524,11 +524,35 @@
           linha.appendChild(timeline);
           tarefasContainer.appendChild(linha);
         });
+      } 
+      //------------------------------------//
+      //  Abre o gráfico com esse intervalo padrão
+      // Data atual
+      const agora = new Date();
+
+      // Uma semana antes
+      const umaSemanaAntes = new Date(agora);
+      umaSemanaAntes.setDate(agora.getDate() - 7);
+
+      // Um mês depois
+      const umMesDepois = new Date(agora);
+      umMesDepois.setMonth(agora.getMonth() + 1);
+
+      // Formatar para input datetime-local (formato 'YYYY-MM-DDTHH:MM')
+      function formatarData(data) {
+        const pad = num => String(num).padStart(2, '0');
+        const ano = data.getFullYear();
+        const mes = pad(data.getMonth() + 1);
+        const dia = pad(data.getDate());
+        const hora = pad(data.getHours());
+        const minuto = pad(data.getMinutes());
+        return `${ano}-${mes}-${dia}T${hora}:${minuto}`;
       }
 
-      // Valores iniciais padrão
-      inputInicio.value = '2025-07-06T00:00';
-      inputFim.value = '2025-07-06T23:59';
+      // Aplicar valores aos campos
+      inputInicio.value = formatarData(umaSemanaAntes);
+      inputFim.value = formatarData(umMesDepois);
+
 
       btnAtualizar.addEventListener('click', () => {
         atualizarTimeline(inputInicio.value, inputFim.value);
