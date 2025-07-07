@@ -1007,4 +1007,3 @@
     </html>
 </main>
 @include('app.ordem_servico.52week')
-@include('app.ordem_servico.gantt_os')
