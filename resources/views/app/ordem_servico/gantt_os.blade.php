@@ -280,7 +280,7 @@
   <div id="container">
     <div id="intervalo">
       <label for="inicio">Início:</label>
-      <input type="datetime-local" id="inicio" />
+      <input type="datetime-local" id="inicio" /> <br>
       <label for="fim">Fim:</label>
       <input type="datetime-local" id="fim" />
       <button id="btnAtualizar">Atualizar</button>
@@ -311,13 +311,14 @@
           <input type="text" id="modal-responsavel" required />
         </label>
         <label>Início:
-          <input type="datetime-local" id="modal-inicio" required />
+          <input style="width: 200px;" type="datetime-local" id="modal-inicio" required />
         </label>
         <label>Fim:
-          <input type="datetime-local" id="modal-fim" required />
+          <input style="width: 200px;" type="datetime-local" id="modal-fim" required />
         </label>
         <label>Descrição:
-          <input type="text" id="modal-descricao" required />
+          <textarea id="modal-descricao" required></textarea>
+
         </label>
         <label>Equipamento:
           <input type="text" id="modal-equipamento" readonly />
@@ -524,7 +525,7 @@
           linha.appendChild(timeline);
           tarefasContainer.appendChild(linha);
         });
-      } 
+      }
       //------------------------------------//
       //  Abre o gráfico com esse intervalo padrão
       // Data atual

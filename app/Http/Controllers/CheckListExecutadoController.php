@@ -72,7 +72,7 @@ class CheckListExecutadoController extends Controller
         $imagemPath = null;
         if ($request->gravidade == 4) {
             $request->validate([
-                'imagem_checklist' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                'imagem_checklist' => 'required|image|mimes:jpeg,png,jpg|max:10048',
             ]);
 
             if ($request->hasFile('imagem_checklist')) {
