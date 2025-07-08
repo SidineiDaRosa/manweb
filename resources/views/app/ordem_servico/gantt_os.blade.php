@@ -341,7 +341,7 @@
         <input type="datetime-local" id="modal-fim" required />
 
         <label for="modal-descricao">Descrição:</label>
-        <textarea id="modal-descricao" rows="3" required></textarea>
+        <textarea style="font-family:Arial, Helvetica, sans-serif;" id="modal-descricao" rows="3" required></textarea>
 
         <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
           <button type="submit" id="btn-salvar">Salvar</button>
@@ -351,11 +351,9 @@
     </div>
   </div>
 
-
-
+  <!-- Script que gera o gráfico de gantt -->
   <script>
     const tarefas = @json($ordens);
-
     const mesesNomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
     const inputInicio = document.getElementById('inicio');
@@ -386,7 +384,7 @@
       modalInicio.value = tarefa.inicio;
       modalFim.value = tarefa.fim;
       modalDescricao.value = tarefa.descricao;
-      modalEquipamento.value = tarefa.equipamento.nome //Desta forma pega o nome 
+      modalEquipamento.value = tarefa.equipamento.nome;
       modal.style.display = 'block';
       modalResp.focus();
     }
@@ -395,23 +393,15 @@
       modal.style.display = 'none';
     }
 
-    // Fecha modal clicando no overlay
     modalOverlay.addEventListener('click', fecharModal);
-
-    // Fecha modal clicando no botão fechar
     btnFechar.addEventListener('click', fecharModal);
-
-    // Fecha modal clicando no botão cancelar
     btnCancelar.addEventListener('click', fecharModal);
-
-    // Fecha modal ao apertar ESC
     document.addEventListener('keydown', e => {
       if (e.key === "Escape") {
         fecharModal();
       }
     });
 
-    // Atualiza dados da tarefa e timeline
     formEditar.addEventListener('submit', (e) => {
       e.preventDefault();
       const id = modalId.value;
@@ -420,6 +410,7 @@
         tarefas[index].responsavel = modalResp.value;
         tarefas[index].inicio = modalInicio.value;
         tarefas[index].fim = modalFim.value;
+        tarefas[index].descricao = modalDescricao.value;
         atualizarTimeline(inputInicio.value, inputFim.value);
         fecharModal();
       }
@@ -482,15 +473,17 @@
         timelineMonths.appendChild(divMes);
       });
 
-      // Horas
-      const horasInteiras = Math.ceil(intervaloHoras);
-      for (let h = 0; h < horasInteiras; h++) {
-        const divHora = document.createElement('div');
-        divHora.className = 'hora';
-        divHora.style.width = `${PIXELS_POR_HORA}px`;
-        const horaReal = new Date(inicio.getTime() + h * 3600000).getHours();
-        divHora.textContent = horaReal + 'h';
-        timelineHeader.appendChild(divHora);
+      // Horas (somente se intervalo <= 48 horas)
+      if (intervaloHoras <= 48) {
+        const horasInteiras = Math.ceil(intervaloHoras);
+        for (let h = 0; h < horasInteiras; h++) {
+          const divHora = document.createElement('div');
+          divHora.className = 'hora';
+          divHora.style.width = `${PIXELS_POR_HORA}px`;
+          const horaReal = new Date(inicio.getTime() + h * 3600000).getHours();
+          divHora.textContent = horaReal + 'h';
+          timelineHeader.appendChild(divHora);
+        }
       }
 
       // Tarefas
@@ -500,21 +493,26 @@
 
         const dados = document.createElement('div');
         dados.className = 'dados';
-        dados.innerHTML = `<div class="registro">ID:<strong> ${tarefa.id}</strong> - Res.: <strong>${tarefa.responsavel}</strong>- início: ${tarefa.inicio.replace('T', ' ')} - fim: ${tarefa.fim.replace('T', ' ')}</div>`;
-        //------------------------------------------------------//
-        // Timeline
+        dados.innerHTML = `<div class="registro">ID:<strong> ${tarefa.id}</strong> - Res.: <strong>${tarefa.responsavel}</strong> - início: ${tarefa.inicio.replace('T', ' ')} - fim: ${tarefa.fim.replace('T', ' ')}</div>`;
+
         const timeline = document.createElement('div');
         timeline.className = 'timeline-container';
         timeline.style.minWidth = `${largura}px`;
+        timeline.style.position = 'relative';
 
         const grid = document.createElement('div');
         grid.className = 'grid';
         grid.style.minWidth = `${largura}px`;
 
-        for (let i = 0; i < horasInteiras; i++) {
+        // Grid lines (somente se intervalo <= 48 horas)
+        const horasInteirasGrid = Math.ceil(intervaloHoras);
+        for (let i = 0; i < horasInteirasGrid; i++) {
           const line = document.createElement('div');
           line.className = 'grid-line';
           line.style.width = `${PIXELS_POR_HORA}px`;
+          if (intervaloHoras > 48) {
+            line.style.display = 'none';
+          }
           grid.appendChild(line);
         }
 
@@ -537,8 +535,7 @@
           barra.style.width = `${duracao * PIXELS_POR_HORA}px`;
 
           barra.title = `Tarefa ${tarefa.id}\nInício: ${tarefa.inicio}\nFim: ${tarefa.fim}`;
-          //-----------------Modal----------------//
-          // Ao clicar abre modal para editar
+
           barra.addEventListener('click', () => abrirModal(tarefa));
 
           timeline.appendChild(barra);
@@ -549,43 +546,23 @@
         tarefasContainer.appendChild(linha);
       });
     }
-    //------------------------------------//
-    //  Abre o gráfico com esse intervalo padrão
-    // Data atual
-    const agora = new Date();
-
-    // Uma semana antes
-    const umaSemanaAntes = new Date(agora);
-    umaSemanaAntes.setDate(agora.getDate() - 7);
-
-    // Um mês depois
-    const umMesDepois = new Date(agora);
-    umMesDepois.setMonth(agora.getMonth() + 1);
-
-    // Formatar para input datetime-local (formato 'YYYY-MM-DDTHH:MM')
-    function formatarData(data) {
-      const pad = num => String(num).padStart(2, '0');
-      const ano = data.getFullYear();
-      const mes = pad(data.getMonth() + 1);
-      const dia = pad(data.getDate());
-      const hora = pad(data.getHours());
-      const minuto = pad(data.getMinutes());
-      return `${ano}-${mes}-${dia}T${hora}:${minuto}`;
-    }
-
-    // Aplicar valores aos campos
-    inputInicio.value = formatarData(umaSemanaAntes);
-    inputFim.value = formatarData(umMesDepois);
-
 
     btnAtualizar.addEventListener('click', () => {
       atualizarTimeline(inputInicio.value, inputFim.value);
     });
 
-    // Inicializa a timeline
+    // Inicializa com valores padrão para teste
+    const agora = new Date();
+    const inicioPadrao = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), 6, 0);
+    const fimPadrao = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 1, 18, 0);
+
+    inputInicio.value = inicioPadrao.toISOString().slice(0, 16);
+    inputFim.value = fimPadrao.toISOString().slice(0, 16);
+
     atualizarTimeline(inputInicio.value, inputFim.value);
   </script>
-
+  <!------------------------------------------------->
+  <!-- Script que envia a requisição via jason-->
   <script>
     // Envia dados atualizados via fetch para o controller
     document.getElementById('form-editar').addEventListener('submit', function(event) {

@@ -54,6 +54,7 @@
         text-align: left;
     }
 </style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const weekItems = document.querySelectorAll('.item-52-week');
