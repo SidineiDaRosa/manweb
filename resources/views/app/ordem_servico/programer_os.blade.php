@@ -603,9 +603,6 @@
             });
         </script>
         <script>
-            // Abrir modal para testes (você pode adaptar para sua lógica)
-            // document.getElementById('modal').style.display = 'block';
-
             // Cancelar botão fecha o modal
             document.getElementById('cancelBtn').addEventListener('click', () => {
                 document.getElementById('modal').style.display = 'none';
@@ -618,7 +615,7 @@
                 const id = document.getElementById('id').value;
                 const inicio = document.getElementById('inicio').value;
                 const fim = document.getElementById('fim').value;
-
+                alert(id + inicio + fim)
                 // Pode pegar o id do registro a partir do data-id do form (se quiser)
                 const osId = this.getAttribute('data-id');
 

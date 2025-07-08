@@ -575,6 +575,7 @@ class OrdemServicoController extends Controller
     }
     public function filter_os_timeline(Request $request)
     {
+        dd($request);
         $dataInicio = $request->input('data_inicio') ?: date('Y-m-01');
         $dataFim = $request->input('data_fim') ?: date('Y-m-t');
 
