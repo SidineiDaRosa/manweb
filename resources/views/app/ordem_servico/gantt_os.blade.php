@@ -1,3 +1,5 @@
+@extends('app.layouts.app')
+@section('content')
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -65,7 +67,7 @@
     .dados {
       width: 510px;
       padding: 8px 10px;
-      background: rgb(230, 222, 222);
+      background: rgb(236, 230, 230);
       display: flex;
       align-items: center;
       border-right: 1px solid #bbb;
@@ -85,7 +87,7 @@
 
     .timeline-years {
       display: flex;
-      background: #c0c0c0;
+      background: rgb(224, 217, 217);
       color: #444;
       font-weight: bold;
       border-bottom: 1px solid #aaa;
@@ -288,6 +290,8 @@
       font-size: 14px;
       margin-top: 4px;
     }
+
+ 
   </style>
 </head>
 
@@ -300,12 +304,7 @@
       <input type="datetime-local" id="fim" />
       <button id="btnAtualizar">Atualizar</button>
     </div>
-    <div class="dados" id="dados-tarefa">
-      <div id="id-tarefa" style="font-weight: 900;"></div>
-      <div id="responsavel-tarefa"></div>
-      <div id="inicio-tarefa"></div>
-      <div id="fim-tarefa"></div>
-    </div>
+
     <div id="data-tasks">
       <div style="display: flex; width: 100%;">
         <div style="width: 510px; background: #f5f5f5; border-right: 1px solid #bbb;"></div>
@@ -486,7 +485,7 @@
         }
       }
 
-      // Tarefas
+      // dados das Tarefas
       tarefas.forEach(tarefa => {
         const linha = document.createElement('div');
         linha.className = 'linha-tarefa-container';
@@ -494,7 +493,7 @@
         const dados = document.createElement('div');
         dados.className = 'dados';
         dados.innerHTML = `<div class="registro">ID:<strong> ${tarefa.id}</strong> - Res.: <strong>${tarefa.responsavel}</strong> - início: ${tarefa.inicio.replace('T', ' ')} - fim: ${tarefa.fim.replace('T', ' ')}</div>`;
-
+        //--------------------
         const timeline = document.createElement('div');
         timeline.className = 'timeline-container';
         timeline.style.minWidth = `${largura}px`;
