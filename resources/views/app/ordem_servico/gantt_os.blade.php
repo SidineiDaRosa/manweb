@@ -290,19 +290,17 @@
       font-size: 14px;
       margin-top: 4px;
     }
-
- 
   </style>
 </head>
 
 <body>
   <div id="container">
-    <div id="intervalo">
+    <div id="intervalo" style="margin-left:500px">
       <label for="inicio">Início:</label>
-      <input type="datetime-local" id="inicio" /> <br>
+      <input class="form-control w-25" type="datetime-local" id="inicio" /> <br>
       <label for="fim">Fim:</label>
-      <input type="datetime-local" id="fim" />
-      <button id="btnAtualizar">Atualizar</button>
+      <input class="form-control w-25" type="datetime-local" id="fim" />
+      <button class="btn btn-primary" id="btnAtualizar">Atualizar</button>
     </div>
 
     <div id="data-tasks">
@@ -568,13 +566,24 @@
       event.preventDefault();
 
       const id = document.getElementById('modal-id').value;
-      const inicio = document.getElementById('modal-inicio').value.split('T')[0]; // só 'YYYY-MM-DD'
-      const fim = document.getElementById('modal-fim').value.split('T')[0]; // só 'YYYY-MM-DD'
 
+      const inicioCompleto = document.getElementById('modal-inicio').value;
+      const fimCompleto = document.getElementById('modal-fim').value;
+
+      // Separa data e hora
+      const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
+      const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
+
+      const fim = fimCompleto.split('T')[0]; // 'YYYY-MM-DD'
+      const horaFim = fimCompleto.split('T')[1]; // 'HH:MM'
+      //alert( inicio+ horaInicio+ fim+horaFim)
+      // Monta o objeto com todos os dados
       const dadosParaEnviar = {
         id: id,
         inicio: inicio,
-        fim: fim
+        horaInicio: horaInicio,
+        fim: fim,
+        horaFim: horaFim
       };
 
       fetch('{{ route("update.os.interval") }}', {
