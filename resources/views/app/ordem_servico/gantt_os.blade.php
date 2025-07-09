@@ -88,7 +88,7 @@
       flex: 1;
       position: relative;
       overflow-x: hidden;
-      background: rgb(241, 237, 237);
+      background: rgb(248, 246, 246);
     }
 
     .timeline-years {
@@ -311,7 +311,9 @@
 
     <div id="data-tasks">
       <div style="display: flex; width: 100%;">
-        <div style="width: 480px; background: #f5f5f5; border-right: 1px solid #bbb;"></div>
+        <div style="width: 480px; background: #f5f5f5; border-right: 1px solid #bbb;">
+          <h5>Dados da O.S.</h5>
+        </div>
         <div class="timeline-container" id="timeline-container">
           <div class="timeline-years" id="timeline-years"></div>
           <div class="timeline-months" id="timeline-months"></div>
@@ -496,8 +498,19 @@
 
         const dados = document.createElement('div');
         dados.className = 'dados';
-        dados.innerHTML = `<div class="registro">ID:<strong> ${tarefa.id}</strong> - Res.: <strong>${tarefa.responsavel}</strong> - início: ${tarefa.inicio.replace('T', ' ')} - fim: ${tarefa.fim.replace('T', ' ')}</div>`;
-        //--------------------
+        dados.innerHTML = `
+  <div class="registro-id"><strong>${tarefa.id}</strong></div>
+  <div class="registro-responsavel">Res.: <strong style="color:blue;">${tarefa.responsavel}</strong></div>
+  <div class="registro-inicio">Início: ${tarefa.inicio.replace('T', ' ')}</div>
+  <div class="registro-fim">Fim: ${tarefa.fim.replace('T', ' ')}</div>
+`;
+
+        const divBotao = document.createElement('div');
+        divBotao.style.marginLeft = 'auto';
+        divBotao.innerHTML = `<a href="/ordem-servico/${tarefa.id}" target="_blank" class="btn btn-sm btn-outline-primary">O.S.</a>`;
+
+        dados.appendChild(divBotao);
+        //----------------------------fim de dados----------------//
         const timeline = document.createElement('div');
         timeline.className = 'timeline-container';
         timeline.style.minWidth = `${largura}px`;
@@ -604,10 +617,17 @@
         .then(data => {
           console.log('Resposta do servidor:', data.retorno);
 
-          // Atualiza a timeline se necessário
-          // atualizarTimeline(inputInicio.value, inputFim.value);
-          atualizarTimeline(document.getElementById('modal-inicio').value, document.getElementById('modal-fim').value);
+          // Atualiza os dados no array tarefas para manter coerência
+          const id = document.getElementById('modal-id').value;
+          const index = tarefas.findIndex(t => t.id == id);
+          if (index !== -1) {
+            tarefas[index].inicio = document.getElementById('modal-inicio').value;
+            tarefas[index].fim = document.getElementById('modal-fim').value;
+            tarefas[index].descricao = document.getElementById('modal-descricao').value;
+          }
 
+          // Atualiza o gráfico usando o intervalo selecionado nos inputs 'inicio' e 'fim' principais
+          atualizarTimeline(inputInicio.value, inputFim.value);
           // Fecha o modal
           document.getElementById('modal').style.display = 'none';
         })
@@ -617,6 +637,29 @@
         });
     });
   </script>
+  <style>
+    .dados {
+      display: flex;
+      flex-direction: row;
+      /* <-- deixa em linha */
+      flex-wrap: wrap;
+      /* permite quebrar se faltar espaço */
+      gap: 12px;
+      align-items: center;
+      padding: 8px 10px;
+      background: rgb(243, 242, 242);
+      border-right: 1px solid #bbb;
+      width: 510px;
+    }
+
+    .dados .registro-id,
+    .dados .registro-responsavel,
+    .dados .registro-inicio,
+    .dados .registro-fim {
+      font-size: 14px;
+      color: #444;
+    }
+  </style>
 </body>
 
 </html>
