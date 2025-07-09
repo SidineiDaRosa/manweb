@@ -43,6 +43,7 @@
       font-weight: bold;
     }
 
+    /* inputs para selecionar o intervalo*/
     #intervalo input[type="datetime-local"] {
       padding: 4px 6px;
       font-size: 14px;
@@ -55,6 +56,7 @@
       flex-direction: column;
       flex: 1;
       overflow: hidden;
+
     }
 
     .linha-tarefa-container {
@@ -62,22 +64,26 @@
       width: 100%;
       height: 40px;
       border-bottom: 1px solid #bbb;
+
     }
 
+    /* Div que engloba todos os dados das os*/
     .dados {
       width: 510px;
       padding: 8px 10px;
-      background: rgb(236, 230, 230);
+      background: rgb(243, 242, 242);
       display: flex;
       align-items: center;
       border-right: 1px solid #bbb;
       color: #444;
     }
 
+    /*  Dados da O.S*/
     .registro {
       font-size: 14px;
     }
 
+    /* Div que contem os gráficos de barras */
     .timeline-container {
       flex: 1;
       position: relative;
@@ -295,7 +301,7 @@
 
 <body>
   <div id="container">
-    <div id="intervalo" style="margin-left:500px">
+    <div id="intervalo" style="margin-left:480px">
       <label for="inicio">Início:</label>
       <input class="form-control w-25" type="datetime-local" id="inicio" /> <br>
       <label for="fim">Fim:</label>
@@ -305,7 +311,7 @@
 
     <div id="data-tasks">
       <div style="display: flex; width: 100%;">
-        <div style="width: 510px; background: #f5f5f5; border-right: 1px solid #bbb;"></div>
+        <div style="width: 480px; background: #f5f5f5; border-right: 1px solid #bbb;"></div>
         <div class="timeline-container" id="timeline-container">
           <div class="timeline-years" id="timeline-years"></div>
           <div class="timeline-months" id="timeline-months"></div>
