@@ -346,7 +346,7 @@
         <input type="datetime-local" id="modal-fim" required />
 
         <label for="modal-descricao">Descrição:</label>
-        <textarea style="font-family:Arial, Helvetica, sans-serif;" id="modal-descricao" rows="3" required></textarea>
+        <textarea style="font-family:Arial, Helvetica, sans-serif;height:auto;" id="modal-descricao" rows="3" required></textarea>
 
         <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
           <button type="submit" id="btn-salvar">Salvar</button>
@@ -543,10 +543,10 @@
         // Define a cor com base na especialidade
         switch ((tarefa.especialidade || '').toLowerCase()) {
           case 'eletrica':
-            barra.style.backgroundColor = '#ffc107'; // amarelo tipo "warning"
+            barra.style.backgroundColor =  'rgba(255, 193, 7, 0.6)';
             break;
           case 'mecanica':
-            barra.style.backgroundColor = '#d9534f'; // vermelho
+            barra.style.backgroundColor = '#004466'; // azul petroleo
             break;
           case 'civil':
             barra.style.backgroundColor = '#0275d8'; // azul
