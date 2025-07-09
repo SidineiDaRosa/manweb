@@ -543,19 +543,19 @@
         // Define a cor com base na especialidade
         switch ((tarefa.especialidade || '').toLowerCase()) {
           case 'eletrica':
-            barra.style.backgroundColor =  'rgba(255, 193, 7, 0.6)';
+            barra.style.backgroundColor =  'rgba(255, 193, 7, 0.5)';
             break;
           case 'mecanica':
-            barra.style.backgroundColor = '#004466'; // azul petroleo
+            barra.style.backgroundColor = 'rgba(0, 68, 102, 0.5)'; // azul petroleo
             break;
           case 'civil':
-            barra.style.backgroundColor = '#0275d8'; // azul
+            barra.style.backgroundColor = 'rgba(2, 117, 216, 0.5)'; // azul
             break;
-          case 'seguranca':
-            barra.style.backgroundColor = '#f0ad4e'; // laranja
+          case 'sesmet':
+            barra.style.backgroundColor = 'rgba(76, 175, 80, 0.5)'; // verde folha
             break;
           default:
-            barra.style.backgroundColor = '#6ca06c'; // cor padrão
+           barra.style.backgroundColor = '#808080'; // cinza médio
         }
         //--------------------------------------------//
         const iniT = new Date(tarefa.inicio);
