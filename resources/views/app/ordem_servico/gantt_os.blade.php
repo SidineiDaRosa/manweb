@@ -499,10 +499,12 @@
         const dados = document.createElement('div');
         dados.className = 'dados';
         dados.innerHTML = `
-  <div class="registro-id"><strong>${tarefa.id}</strong></div>
-  <div class="registro-responsavel">Res.: <strong style="color:blue;">${tarefa.responsavel}</strong></div>
-  <div class="registro-inicio">Início: ${tarefa.inicio.replace('T', ' ')}</div>
-  <div class="registro-fim">Fim: ${tarefa.fim.replace('T', ' ')}</div>
+  <div styele="margin-top:0px" class="registro-id"><strong>${tarefa.id}</strong></div>
+  <div class="registro-responsavel">-<strong style="color:blue;">${tarefa.responsavel}</strong></div>
+  <div class="registro-inicio">- ${tarefa.inicio.replace('T', ' ')}</div>
+  <div class="registro-fim">- ${tarefa.fim.replace('T', ' ')}</div>
+  <hr style="margin=opx;">
+  <div class="registro-fim">${tarefa.especialidade}</div>
 `;
 
         const divBotao = document.createElement('div');
@@ -533,10 +535,29 @@
         }
 
         timeline.appendChild(grid);
-
+        //--------------------------------//
+        // Gera a barra de tarefas timeline
+        //-------------------------------//
         const barra = document.createElement('div');
         barra.className = 'registro-barra';
-
+        // Define a cor com base na especialidade
+        switch ((tarefa.especialidade || '').toLowerCase()) {
+          case 'eletrica':
+            barra.style.backgroundColor = '#ffc107'; // amarelo tipo "warning"
+            break;
+          case 'mecanica':
+            barra.style.backgroundColor = '#d9534f'; // vermelho
+            break;
+          case 'civil':
+            barra.style.backgroundColor = '#0275d8'; // azul
+            break;
+          case 'seguranca':
+            barra.style.backgroundColor = '#f0ad4e'; // laranja
+            break;
+          default:
+            barra.style.backgroundColor = '#6ca06c'; // cor padrão
+        }
+        //--------------------------------------------//
         const iniT = new Date(tarefa.inicio);
         const fimT = new Date(tarefa.fim);
 
