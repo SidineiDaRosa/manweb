@@ -552,6 +552,7 @@ class OrdemServicoController extends Controller
         $fim = $request->input('fim');
         $horaFim=$request->input('horaFim');
         $id = $request->input('id');
+        $status = $request->input('status');
 
         // Verifica se a data de início é menor ou igual à data de fim
         if (strtotime($inicio) > strtotime($fim)) {
@@ -569,6 +570,7 @@ class OrdemServicoController extends Controller
         $os->hora_inicio = $horaInicio;
         $os->data_fim = $fim;
         $os->hora_fim = $horaFim;
+         $os->status_servicos = $status;
 
         // Salva as alterações
         $os->save();
@@ -641,7 +643,8 @@ class OrdemServicoController extends Controller
                     'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
                     'descricao' => $o->descricao,
                     'equipamento' => $o->equipamento,
-                     'especialidade' => $o->especialidade_do_servico
+                     'especialidade' => $o->especialidade_do_servico,
+                       'status_servicos' => $o->status_servicos
                 ];
             });
         

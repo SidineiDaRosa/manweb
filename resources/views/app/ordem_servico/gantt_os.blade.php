@@ -224,7 +224,7 @@
     }
 
     #modal-content h2 {
-      margin: 0 0 10px 0;
+      margin: 0 0 2px 0;
       display: inline-block;
     }
 
@@ -250,12 +250,12 @@
       padding: 6px 8px;
       font-size: 14px;
       margin-top: 4px;
-      margin-bottom: 12px;
+      margin-bottom: 1px;
     }
 
     #modal-content button {
-      margin-top: 10px;
-      padding: 8px 14px;
+      margin-top: 5px;
+      padding: 5px 14px;
       font-size: 14px;
       border: none;
       border-radius: 4px;
@@ -284,8 +284,10 @@
 
     #form-editar label {
       display: block;
-      margin-top: 12px;
-      font-weight: bold;
+      margin-top: 5px;
+      margin-bottom: 0px;
+      font-weight: 400;
+
     }
 
     #form-editar input,
@@ -329,24 +331,23 @@
     <div id="modal-overlay"></div>
     <div id="modal-content">
       <button id="btn-fechar" aria-label="Fechar modal">×</button>
-      <h2>Editar Tarefa</h2>
       <form id="form-editar">
-        <input type="hidden" id="modal-id" />
-
+        <input class="form-control" id="modal-id" />
         <label for="modal-responsavel">Responsável:</label>
-        <input type="text" id="modal-responsavel" required readonly />
-
+        <input class="form-control" type="text" id="modal-responsavel" required readonly />
         <label for="modal-equipamento">Equipamento:</label>
-        <input type="text" id="modal-equipamento" readonly />
-
+        <input class="form-control" type="text" id="modal-equipamento" readonly />
         <label for="modal-inicio">Início:</label>
-        <input type="datetime-local" id="modal-inicio" required />
-
+        <input class="form-control" type="datetime-local" id="modal-inicio" required />
         <label for="modal-fim">Fim:</label>
-        <input type="datetime-local" id="modal-fim" required />
+        <input class="form-control" type="datetime-local" id="modal-fim" required />
+        <label for="modal-inicio">Status:</label>
+        <div style="display: flex;flex-direction:row;" ><input class="form-control" style="width: 60px;" type="number" id="modal-status" required />%</div>
+        
 
         <label for="modal-descricao">Descrição:</label>
-        <textarea style="font-family:Arial, Helvetica, sans-serif;height:auto;" id="modal-descricao" rows="3" required></textarea>
+
+        <textarea class="form-control" style="font-family:Arial, Helvetica, sans-serif;height:auto;" id="modal-descricao" rows="4" required></textarea>
 
         <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
           <button type="submit" id="btn-salvar">Salvar</button>
@@ -377,6 +378,7 @@
     const modalResp = document.getElementById('modal-responsavel');
     const modalInicio = document.getElementById('modal-inicio');
     const modalFim = document.getElementById('modal-fim');
+    const modalStatus = document.getElementById('modal-status'); //Satus do seviço
     const modalDescricao = document.getElementById('modal-descricao');
     const modalEquipamento = document.getElementById('modal-equipamento');
     const btnCancelar = document.getElementById('btn-cancelar');
@@ -390,6 +392,7 @@
       modalFim.value = tarefa.fim;
       modalDescricao.value = tarefa.descricao;
       modalEquipamento.value = tarefa.equipamento.nome;
+      modalStatus.value = tarefa.status_servicos; //atualiza o valor de statsu na modal.
       modal.style.display = 'block';
       modalResp.focus();
     }
@@ -543,7 +546,7 @@
         // Define a cor com base na especialidade
         switch ((tarefa.especialidade || '').toLowerCase()) {
           case 'eletrica':
-            barra.style.backgroundColor =  'rgba(255, 193, 7, 0.5)';
+            barra.style.backgroundColor = 'rgba(255, 193, 7, 0.5)';
             break;
           case 'mecanica':
             barra.style.backgroundColor = 'rgba(0, 68, 102, 0.5)'; // azul petroleo
@@ -555,8 +558,31 @@
             barra.style.backgroundColor = 'rgba(76, 175, 80, 0.5)'; // verde folha
             break;
           default:
-           barra.style.backgroundColor = '#808080'; // cinza médio
+            barra.style.backgroundColor = '#808080'; // cinza médio
         }
+        // Criar barra de progresso interna do status_servicos
+        const progresso = document.createElement('div');
+        progresso.style.height = '50%';
+        progresso.style.position = 'absolute';
+        progresso.style.top = '25%';
+        progresso.style.width = `${tarefa.status_servicos}%`;
+        progresso.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+        progresso.style.borderRadius = '4px 0 0 4px'; // bordas arredondadas no início
+        progresso.style.pointerEvents = 'none';
+
+        // Texto com o percentual
+        const textoStatus = document.createElement('span');
+        textoStatus.textContent = `${tarefa.status_servicos}%`;
+        textoStatus.style.fontSize = '12px';
+        textoStatus.style.color = '#000'; // ou '#fff' se o fundo for escuro
+        textoStatus.style.position = 'absolute';
+        textoStatus.style.right = '5px';
+        textoStatus.style.bottom = '4px';
+        textoStatus.style.opacity = '0.8';
+
+        // Adiciona na ordem certa
+        barra.appendChild(progresso);
+        barra.appendChild(textoStatus);
         //--------------------------------------------//
         const iniT = new Date(tarefa.inicio);
         const fimT = new Date(tarefa.fim);
@@ -599,7 +625,7 @@
     atualizarTimeline(inputInicio.value, inputFim.value);
   </script>
   <!------------------------------------------------->
-  <!-- Script que envia a requisição via jason-->
+  <!-- Script que envia a requisição via jason da modal-->
   <script>
     // Envia dados atualizados via fetch para o controller
     document.getElementById('form-editar').addEventListener('submit', function(event) {
@@ -609,7 +635,7 @@
 
       const inicioCompleto = document.getElementById('modal-inicio').value;
       const fimCompleto = document.getElementById('modal-fim').value;
-
+      const status = document.getElementById('modal-status').value;
       // Separa data e hora
       const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
       const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
@@ -623,7 +649,8 @@
         inicio: inicio,
         horaInicio: horaInicio,
         fim: fim,
-        horaFim: horaFim
+        horaFim: horaFim,
+        status: status
       };
 
       fetch('{{ route("update.os.interval") }}', {
