@@ -332,7 +332,7 @@
     <div id="modal-content">
       <button id="btn-fechar" aria-label="Fechar modal">×</button>
       <form id="form-editar">
-        <input class="form-control" id="modal-id" />
+        <input class="form-control" id="modal-id" readonly />
         <label for="modal-responsavel">Responsável:</label>
         <input class="form-control" type="text" id="modal-responsavel" required readonly />
         <label for="modal-equipamento">Equipamento:</label>
