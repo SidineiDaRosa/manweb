@@ -548,9 +548,9 @@ class OrdemServicoController extends Controller
     {
 
         $inicio = $request->input('inicio');
-        $horaInicio=$request->input('horaInicio');
+        $horaInicio = $request->input('horaInicio');
         $fim = $request->input('fim');
-        $horaFim=$request->input('horaFim');
+        $horaFim = $request->input('horaFim');
         $id = $request->input('id');
         $status = $request->input('status');
 
@@ -570,7 +570,7 @@ class OrdemServicoController extends Controller
         $os->hora_inicio = $horaInicio;
         $os->data_fim = $fim;
         $os->hora_fim = $horaFim;
-         $os->status_servicos = $status;
+        $os->status_servicos = $status;
 
         // Salva as alterações
         $os->save();
@@ -633,7 +633,7 @@ class OrdemServicoController extends Controller
 
     public function gantt_timeline()
     {
-        $ordens = OrdemServico::where('situacao', 'aberto') // só as abertas
+        $ordens = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
             ->get()
             ->map(function ($o) {
                 return [
@@ -643,11 +643,12 @@ class OrdemServicoController extends Controller
                     'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
                     'descricao' => $o->descricao,
                     'equipamento' => $o->equipamento,
-                     'especialidade' => $o->especialidade_do_servico,
-                       'status_servicos' => $o->status_servicos
+                    'especialidade' => $o->especialidade_do_servico,
+                    'status_servicos' => $o->status_servicos,
+                    'situacao' => $o->situacao
                 ];
             });
-        
+
         return view('app.ordem_servico.gantt_os', compact('ordens'));
         //echo( $ordens);
     }

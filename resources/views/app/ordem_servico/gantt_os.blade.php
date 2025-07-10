@@ -298,6 +298,17 @@
       font-size: 14px;
       margin-top: 4px;
     }
+
+    .status-badge {
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: #fff;
+    }
   </style>
 </head>
 
@@ -342,8 +353,15 @@
         <label for="modal-fim">Fim:</label>
         <input class="form-control" type="datetime-local" id="modal-fim" required />
         <label for="modal-inicio">Status:</label>
-        <div style="display: flex;flex-direction:row;" ><input class="form-control" style="width: 60px;" type="number" id="modal-status" required />%</div>
-        
+        <div style="display: flex;flex-direction:row;"><input class="form-control" style="width: 60px;" type="number" id="modal-status" required />%
+          &nbsp &nbsp &nbsp
+          <select class="form-control" style="width: 200px;" id="modal-situacao" required>
+            <option value="aberto">Aberto</option>
+            <option value="em andamento">Em andamento</option>
+            <option value="pausado">Pausado</option>
+          </select>
+        </div>
+
 
         <label for="modal-descricao">Descrição:</label>
 
@@ -379,6 +397,7 @@
     const modalInicio = document.getElementById('modal-inicio');
     const modalFim = document.getElementById('modal-fim');
     const modalStatus = document.getElementById('modal-status'); //Satus do seviço
+    const modalSituacao = document.getElementById('modal-situacao'); //Satus da os estado
     const modalDescricao = document.getElementById('modal-descricao');
     const modalEquipamento = document.getElementById('modal-equipamento');
     const btnCancelar = document.getElementById('btn-cancelar');
@@ -393,6 +412,7 @@
       modalDescricao.value = tarefa.descricao;
       modalEquipamento.value = tarefa.equipamento.nome;
       modalStatus.value = tarefa.status_servicos; //atualiza o valor de statsu na modal.
+      modalSituacao.value = tarefa.situacao; //atualiza o valor de situação na modal.
       modal.style.display = 'block';
       modalResp.focus();
     }
@@ -583,6 +603,41 @@
         // Adiciona na ordem certa
         barra.appendChild(progresso);
         barra.appendChild(textoStatus);
+        //
+        // Indicador de status da O.S.
+        const statusBadge = document.createElement('div');
+        statusBadge.style.position = 'absolute';
+        statusBadge.style.top = '0';
+        statusBadge.style.left = '5px';
+        statusBadge.style.fontSize = '11px';
+        statusBadge.style.fontWeight = 'bold';
+        statusBadge.style.padding = '1px 4px';
+        statusBadge.style.borderRadius = '4px';
+        statusBadge.style.backgroundColor = '#999';
+        statusBadge.style.color = '#fff';
+
+        switch ((tarefa.situacao || '').toLowerCase()) {
+          case 'aberto':
+            statusBadge.textContent = 'Aberto';
+            statusBadge.style.backgroundColor = '#17a2b8'; // azul claro
+            break;
+          case 'em andamento':
+            statusBadge.textContent = 'Executando';
+            statusBadge.style.backgroundColor = '#ffc107'; // amarelo
+            break;
+          case 'pausado':
+            statusBadge.textContent = 'Pausado';
+            statusBadge.style.backgroundColor = '#dc3545'; // vermelho
+            break;
+          default:
+            statusBadge.textContent = 'Desconhecido';
+            statusBadge.style.backgroundColor = '#6c757d'; // cinza
+            break;
+        }
+
+        barra.appendChild(statusBadge);
+
+
         //--------------------------------------------//
         const iniT = new Date(tarefa.inicio);
         const fimT = new Date(tarefa.fim);
