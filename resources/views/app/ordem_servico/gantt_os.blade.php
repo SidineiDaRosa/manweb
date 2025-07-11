@@ -87,8 +87,11 @@
     .timeline-container {
       flex: 1;
       position: relative;
-      overflow-x: hidden;
+      overflow-x: auto;
+      /* <- Habilita a rolagem horizontal */
       background: rgb(248, 246, 246);
+      white-space: nowrap;
+      /* Impede quebra de linha horizontal */
     }
 
     .timeline-years {
@@ -142,7 +145,7 @@
       display: flex;
       background: #ccc;
       color: #444;
-      font-weight: bold;
+      font-weight: 300;
       border-bottom: 1px solid #999;
       height: 25px;
       line-height: 25px;
@@ -154,7 +157,7 @@
       border-left: 1px solid #999;
       flex-shrink: 0;
       padding: 0 6px;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     .day:first-child {
@@ -356,6 +359,7 @@
         <div style="width: 480px; background: #f5f5f5; border-right: 1px solid #bbb;">
           <h5>Dados da O.S.</h5>
         </div>
+
         <div class="timeline-container" id="timeline-container">
           <div class="timeline-years" id="timeline-years"></div>
           <div class="timeline-months" id="timeline-months"></div>
@@ -534,7 +538,6 @@
       });
 
       //======  dias   ====//
-      //======  dias   ====//
       const timelineDays = document.getElementById('timeline-days');
       timelineDays.innerHTML = ''; // limpa antes
 
@@ -570,7 +573,28 @@
         // Incrementa 1 dia
         diaAtual.setDate(diaAtual.getDate() + 1);
       }
+      // Depois desse trecho que cria os dias:
+      while (diaAtual <= fim) {
+        const divDia = document.createElement('div');
+        divDia.className = 'day';
 
+        // ... código para ajustar largura e texto do dia ...
+
+        timelineDays.appendChild(divDia);
+
+        // Adiciona linha vertical tracejada para o dia
+        const linhaDia = document.createElement('div');
+        linhaDia.className = 'grid-line';
+        linhaDia.style.height = '100%'; // cobre toda a altura da barra de dias
+        linhaDia.style.position = 'absolute'; // posicionamento absoluto
+        linhaDia.style.left = divDia.offsetLeft + divDia.offsetWidth + 'px'; // posição após o dia
+        linhaDia.style.top = '0';
+        linhaDia.style.borderLeft = '1px dotted #999';
+
+        timelineDays.appendChild(linhaDia);
+
+        diaAtual.setDate(diaAtual.getDate() + 1);
+      }
       // ==========Horas (somente se intervalo <= 48 horas)======//
 
       if (intervaloHoras <= 48) {
