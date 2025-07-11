@@ -319,7 +319,11 @@
       <input class="form-control w-25" type="datetime-local" id="inicio" /> <br>
       <label for="fim">Fim:</label>
       <input class="form-control w-25" type="datetime-local" id="fim" />
-      <button class="btn btn-primary" id="btnAtualizar">Atualizar</button>
+      <button class="btn btn-primary btn-sm" id="btnAtualizar">Atualizar</button>
+      <button class="btn btn-outline-dark btn-sm"
+        onclick="window.open('{{ route('equipamento.index', ['empresa'=>2]) }}', '_blank')">
+        Ativos->Nova O.S.
+      </button>
     </div>
 
     <div id="data-tasks">
@@ -365,7 +369,7 @@
 
         <label for="modal-descricao">Descrição:</label>
 
-        <textarea class="form-control" style="font-family:Arial, Helvetica, sans-serif;height:auto;" id="modal-descricao" rows="4" required></textarea>
+        <textarea class="form-control" style="font-family:Arial, Helvetica, sans-serif;height:auto;" id="modal-descricao" rows="5" required></textarea>
 
         <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
           <button type="submit" id="btn-salvar">Salvar</button>
@@ -566,16 +570,16 @@
         // Define a cor com base na especialidade
         switch ((tarefa.especialidade || '').toLowerCase()) {
           case 'eletrica':
-            barra.style.backgroundColor = 'rgba(255, 193, 7, 0.5)';
+            barra.style.backgroundColor = 'rgba(255, 193, 7, 0.3)';
             break;
           case 'mecanica':
-            barra.style.backgroundColor = 'rgba(0, 68, 102, 0.5)'; // azul petroleo
+            barra.style.backgroundColor = 'rgba(0, 68, 102, 0.3)'; // azul petroleo
             break;
           case 'civil':
-            barra.style.backgroundColor = 'rgba(2, 117, 216, 0.5)'; // azul
+            barra.style.backgroundColor = 'rgba(2, 117, 216, 0.3)'; // azul
             break;
           case 'sesmet':
-            barra.style.backgroundColor = 'rgba(76, 175, 80, 0.5)'; // verde folha
+            barra.style.backgroundColor = 'rgba(76, 175, 80, 0.3)'; // verde folha
             break;
           default:
             barra.style.backgroundColor = '#808080'; // cinza médio
@@ -619,11 +623,11 @@
         switch ((tarefa.situacao || '').toLowerCase()) {
           case 'aberto':
             statusBadge.textContent = 'Aberto';
-            statusBadge.style.backgroundColor = '#17a2b8'; // azul claro
+            statusBadge.style.backgroundColor = '#d8c071ff'; // azul claro
             break;
           case 'em andamento':
             statusBadge.textContent = 'Executando';
-            statusBadge.style.backgroundColor = '#ffc107'; // amarelo
+            statusBadge.style.backgroundColor = '#169b12ff'; // verde
             break;
           case 'pausado':
             statusBadge.textContent = 'Pausado';
@@ -691,6 +695,7 @@
       const inicioCompleto = document.getElementById('modal-inicio').value;
       const fimCompleto = document.getElementById('modal-fim').value;
       const status = document.getElementById('modal-status').value;
+      const situacao = document.getElementById('modal-situacao').value;
       // Separa data e hora
       const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
       const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
@@ -705,7 +710,8 @@
         horaInicio: horaInicio,
         fim: fim,
         horaFim: horaFim,
-        status: status
+        status: status,
+        situacao_os: situacao
       };
 
       fetch('{{ route("update.os.interval") }}', {
@@ -727,10 +733,13 @@
             tarefas[index].inicio = document.getElementById('modal-inicio').value;
             tarefas[index].fim = document.getElementById('modal-fim').value;
             tarefas[index].descricao = document.getElementById('modal-descricao').value;
+            tarefas[index].status_servicos = document.getElementById('modal-status').value; // essa linha é opcional, mas já garante o status atualizado
+            tarefas[index].situacao = document.getElementById('modal-situacao').value; // ⬅️ esta é a que faltava!
           }
 
           // Atualiza o gráfico usando o intervalo selecionado nos inputs 'inicio' e 'fim' principais
           atualizarTimeline(inputInicio.value, inputFim.value);
+
           // Fecha o modal
           document.getElementById('modal').style.display = 'none';
         })

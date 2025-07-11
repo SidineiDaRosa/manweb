@@ -553,6 +553,7 @@ class OrdemServicoController extends Controller
         $horaFim = $request->input('horaFim');
         $id = $request->input('id');
         $status = $request->input('status');
+        $situacao= $request->input('situacao_os');
 
         // Verifica se a data de início é menor ou igual à data de fim
         if (strtotime($inicio) > strtotime($fim)) {
@@ -571,6 +572,7 @@ class OrdemServicoController extends Controller
         $os->data_fim = $fim;
         $os->hora_fim = $horaFim;
         $os->status_servicos = $status;
+        $os->situacao = $situacao;
 
         // Salva as alterações
         $os->save();
