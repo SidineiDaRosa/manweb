@@ -137,6 +137,31 @@
       border-left: none;
     }
 
+    /* =========Dias===========*/
+    .timeline-days {
+      display: flex;
+      background: #ccc;
+      color: #444;
+      font-weight: bold;
+      border-bottom: 1px solid #999;
+      height: 25px;
+      line-height: 25px;
+      user-select: none;
+    }
+
+    .day {
+      text-align: center;
+      border-left: 1px solid #999;
+      flex-shrink: 0;
+      padding: 0 6px;
+      font-size: 14px;
+    }
+
+    .day:first-child {
+      border-left: none;
+    }
+
+    /*==========================*/
     .timeline-header {
       display: flex;
       background: #eaeaea;
@@ -334,6 +359,7 @@
         <div class="timeline-container" id="timeline-container">
           <div class="timeline-years" id="timeline-years"></div>
           <div class="timeline-months" id="timeline-months"></div>
+          <div class="timeline-days" id="timeline-days"></div>
           <div class="timeline-header" id="timeline-header"></div>
         </div>
       </div>
@@ -463,7 +489,8 @@
       timelineHeader.innerHTML = '';
       tarefasContainer.innerHTML = '';
 
-      // Anos
+      //=========== Anos  ===============//
+
       const anoInicio = inicio.getFullYear();
       const anoFim = fim.getFullYear();
       for (let ano = anoInicio; ano <= anoFim; ano++) {
@@ -474,7 +501,8 @@
         timelineYears.appendChild(divAno);
       }
 
-      // Meses
+      //============= Meses==============//
+
       let mesAtual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
       const fimMeses = new Date(fim.getFullYear(), fim.getMonth(), 1);
       const meses = [];
@@ -505,7 +533,46 @@
         timelineMonths.appendChild(divMes);
       });
 
-      // Horas (somente se intervalo <= 48 horas)
+      //======  dias   ====//
+      //======  dias   ====//
+      const timelineDays = document.getElementById('timeline-days');
+      timelineDays.innerHTML = ''; // limpa antes
+
+      let diaAtual = new Date(inicio);
+
+      while (diaAtual <= fim) {
+        const divDia = document.createElement('div');
+        divDia.className = 'day';
+
+        // Formata o dia para aparecer (ex: 01, 02, 15...)
+        const diaNum = diaAtual.getDate().toString().padStart(2, '0');
+        divDia.textContent = diaNum;
+
+        // Calcula o início e fim do dia atual (meia-noite até meia-noite do próximo dia)
+        const inicioDia = new Date(diaAtual);
+        inicioDia.setHours(0, 0, 0, 0);
+
+        const fimDia = new Date(inicioDia);
+        fimDia.setHours(24, 0, 0, 0);
+
+        // Define o intervalo visível para o dia atual dentro do intervalo geral
+        const inicioVisivel = inicioDia < inicio ? inicio : inicioDia;
+        const fimVisivel = fimDia > fim ? fim : fimDia;
+
+        // Calcula quantas horas do dia estão visíveis
+        const horasVisiveis = (fimVisivel - inicioVisivel) / (1000 * 60 * 60);
+
+        // Define a largura proporcional da div do dia
+        divDia.style.width = `${PIXELS_POR_HORA * horasVisiveis}px`;
+
+        timelineDays.appendChild(divDia);
+
+        // Incrementa 1 dia
+        diaAtual.setDate(diaAtual.getDate() + 1);
+      }
+
+      // ==========Horas (somente se intervalo <= 48 horas)======//
+
       if (intervaloHoras <= 48) {
         const horasInteiras = Math.ceil(intervaloHoras);
         for (let h = 0; h < horasInteiras; h++) {
