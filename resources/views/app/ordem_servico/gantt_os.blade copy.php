@@ -7,8 +7,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gantt com intervalo dinâmico e cores cinza</title>
-  <svg id="svg-ligacoes" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 5;"></svg>
-
   <style>
     * {
       box-sizing: border-box;
@@ -341,7 +339,7 @@
     }
   </style>
 </head>
-<svg id="svg-ligacoes" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 5;"></svg>
+
 <body>
   <div id="container">
     <div id="intervalo" style="margin-left:480px;">
@@ -659,7 +657,6 @@
         // Gera a barra de tarefas timeline
         //--------------------------------//
         const barra = document.createElement('div');
-        
         barra.className = 'registro-barra';
         barra.style.position = 'relative'; // importante para posicionar elementos absolutos internamente
 
@@ -797,14 +794,6 @@
 
     btnAtualizar.addEventListener('click', () => {
       atualizarTimeline(inputInicio.value, inputFim.value);
-
-
-
-
-      
-
-
-
     });
 
     // Inicializa com valores padrão para teste

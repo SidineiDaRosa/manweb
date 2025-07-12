@@ -647,7 +647,10 @@ class OrdemServicoController extends Controller
                     'equipamento' => $o->equipamento,
                     'especialidade' => $o->especialidade_do_servico,
                     'status_servicos' => $o->status_servicos,
-                    'situacao' => $o->situacao
+                    'situacao' => $o->situacao,
+                    'gravidade' => $o->gravidade,
+                    'urgencia' => $o->urgencia,
+                    'tendencia' => $o->tendencia
                 ];
             });
 
