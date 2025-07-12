@@ -209,7 +209,7 @@
 
     .registro-barra {
       position: absolute;
-      height: 30px;
+      height: 20px;
       background-color: #6ca06c;
       border-radius: 4px;
       top: 5px;
