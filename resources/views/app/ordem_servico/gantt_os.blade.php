@@ -85,6 +85,29 @@
       font-size: 14px;
     }
 
+    .dados-base {
+      width: 510px;
+      padding: 8px 10px;
+      background: rgb(243, 242, 242);
+      display: flex;
+      align-items: center;
+      border-right: 1px solid #bbb;
+      color: #444;
+      flex-shrink: 0;
+    }
+
+    .dados-cabecalho {
+      width: 480px;
+      padding: 8px 10px;
+      background: rgb(243, 242, 242);
+      display: flex;
+      align-items: center;
+      border-right: 1px solid #bbb;
+      color: #444;
+      flex-shrink: 0;
+      /* importante para não encolher */
+    }
+
     /* Div que contem os gráficos de barras */
     .timeline-container {
       flex: 1;
@@ -342,6 +365,7 @@
   </style>
 </head>
 <svg id="svg-ligacoes" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 5;"></svg>
+
 <body>
   <div id="container">
     <div id="intervalo" style="margin-left:480px;">
@@ -358,7 +382,7 @@
 
     <div id="data-tasks">
       <div style="display: flex; width: 100%;">
-        <div style="width: 480px; background:rgb(102, 126, 153); border-right: 1px solid #bbb;margin-left:15px;">
+        <div class="dados-cabecalho">
           <h5>Dados da O.S.</h5>
         </div>
 
@@ -659,7 +683,7 @@
         // Gera a barra de tarefas timeline
         //--------------------------------//
         const barra = document.createElement('div');
-        
+
         barra.className = 'registro-barra';
         barra.style.position = 'relative'; // importante para posicionar elementos absolutos internamente
 
@@ -801,7 +825,7 @@
 
 
 
-      
+
 
 
 
