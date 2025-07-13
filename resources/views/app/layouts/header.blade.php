@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="utf-8">
@@ -20,6 +20,7 @@
 
 <body>
     <header class="header">
+       
         <div class="menu-toggle mx-3">
             <i class="icofont-navigation-menu"></i>
         </div>
@@ -90,7 +91,7 @@
             }
 
             .badge.yellow {
-                background-color:gold;
+                background-color: gold;
                 /* Nova classe para amarelo */
             }
 

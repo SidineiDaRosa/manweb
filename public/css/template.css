@@ -61,7 +61,7 @@ header.header {
     max-height: 100px;
     grid-area: header;
     display: flex;
-    background-color:#6d8ce8; /* Cor do Cabeçalho */
+    background-color:#454d66; /* Cor do Cabeçalho */
     align-items: center;
     z-index: 10;
 }
@@ -249,9 +249,6 @@ aside.sidebar .menu li.nav-item {
     color: #061d35;
     padding: 8px 0px 8px 20px;
     margin: 0;
-
-
-
 }
 
 /*lista de menus*/
