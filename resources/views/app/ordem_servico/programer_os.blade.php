@@ -12,9 +12,23 @@
     <span hidden>{{$ordem_servico_gantt_gnt->equipamento->nome}} <br></span>
 
     @endforeach
-    <a href="{{ route('gantt.os.timeline') }}" class="btn btn-primary">
-        Ver Gráfico de Gantt
-    </a>
+    <style>
+
+    </style>
+    <div id="intervalo" style="margin-left:480px;display:flex;flex-direction:row;>
+        <label for=" inicio">Início:</label>
+        <input class="form-control w-25" type="datetime-local" id="inicio" /> <br>
+        <label for="fim">Fim:</label>
+        <input class="form-control w-25" type="datetime-local" id="fim" />
+        <button class="btn btn-primary btn-sm" id="btnAtualizar">Atualizar</button>
+        <button class="btn btn-outline-dark btn-sm"
+            onclick="window.open('{{ route('equipamento.index', ['empresa'=>2]) }}', '_blank')">
+            Ativos->Nova O.S.
+        </button>
+        <a href="{{ route('gantt.os.timeline') }}" class="btn btn-primary">
+            Ver Gráfico de Gantt
+        </a>
+    </div>
     <style>
         .container-box {
             display: flex;

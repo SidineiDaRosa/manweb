@@ -50,6 +50,24 @@
             @csrf
             <button type="submit" class="btn btn-danger btn-bg" style="width: 200px; display: inline-block;">Desativar Loop</button>
         </form> <br>
+        <div style="background-color: #454d66;">
+            #454d66
+        </div>
+        <div style="background-color: #309975;">
+            #454d66
+        </div>
+        <div style="background-color: #58b368;">
+            #58b368
+        </div>
+        <div style="background-color:#dca63b;">
+            #dca63b
+        </div>
+        <div style="background-color:#efeeb4;">
+            #efeeb4
+        </div>
+        <div style="background-color:#efeeb4;">
+            #efeeb4
+        </div>
         <!--Atualiza peças pelo botão-->
         @foreach($ordens_servicos as $ordem_servico_r)
         @endforeach
