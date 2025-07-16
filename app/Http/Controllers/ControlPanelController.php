@@ -61,8 +61,15 @@ class ControlPanelController extends Controller
                 }
             }
         });
-        $ordens_servicos = PecasEquipamentos::where('horas_proxima_manutencao','<=',72)->get();
+        $ordens_servicos = PecasEquipamentos::where('horas_proxima_manutencao', '<=', 72)->get();
 
         return view('site.control_panel', ['ordens_servicos' =>  $ordens_servicos, 'equipamentos' => $equipamentos, 'produtos' => $produtos]);
+    }
+    public function users_management()
+    {
+      
+        // Retorna view com dados e links de configuração
+       return view('site.users_management');
+    
     }
 }

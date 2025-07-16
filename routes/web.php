@@ -18,6 +18,7 @@ use App\Http\Controllers\SolicitacaoOsController;
 use App\Http\Controllers\CheckListController;
 use App\Http\Controllers\CheckListExecutadoController;
 use App\Http\Controllers\CustosController;
+use App\Http\Controllers\ControlPanelController;
 use App\Models\OrdemServico;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Route;
@@ -58,6 +59,7 @@ Route::get('/asset-show', [EquipamentoHistoryController::class, 'asset_show'])->
 // Autetication User
 //--------------------------------------------------------//
 Auth::routes();
+Route::middleware('auth')->get('/users-management', [ControlPanelController::class, 'users_management'])->name('users.management');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

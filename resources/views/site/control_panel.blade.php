@@ -76,9 +76,7 @@
             Peças equipamentos
             <i class="icofont-search-document"></i>
         </a>
-
-
-
+        <a href="{{ route('users.management') }}">Gerenciar Usuários</a>
         <div class="card-body">
 
             <body onload="checkCookies()">
