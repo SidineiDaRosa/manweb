@@ -844,7 +844,6 @@
   <!------------------------------------------------->
   <!-- Script que envia a requisição via jason da modal-->
   <script>
-    // Envia dados atualizados via fetch para o controller
     document.getElementById('form-editar').addEventListener('submit', function(event) {
       event.preventDefault();
 
@@ -854,14 +853,23 @@
       const fimCompleto = document.getElementById('modal-fim').value;
       const status = document.getElementById('modal-status').value;
       const situacao = document.getElementById('modal-situacao').value;
-      // Separa data e hora
+
+      // ✅ Validação com data e hora
+      const dataHoraInicio = new Date(inicioCompleto);
+      const dataHoraFim = new Date(fimCompleto);
+
+      if (dataHoraInicio > dataHoraFim) {
+        alert('Erro: A data/hora de início não pode ser maior que a data/hora de fim.');
+        return; // ❌ interrompe o envio
+      }
+
+      // Separa data e hora (opcional, se você quiser continuar mandando separado)
       const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
       const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
 
       const fim = fimCompleto.split('T')[0]; // 'YYYY-MM-DD'
       const horaFim = fimCompleto.split('T')[1]; // 'HH:MM'
-      //alert( inicio+ horaInicio+ fim+horaFim)
-      // Monta o objeto com todos os dados
+
       const dadosParaEnviar = {
         id: id,
         inicio: inicio,
@@ -884,21 +892,16 @@
         .then(data => {
           console.log('Resposta do servidor:', data.retorno);
 
-          // Atualiza os dados no array tarefas para manter coerência
-          const id = document.getElementById('modal-id').value;
           const index = tarefas.findIndex(t => t.id == id);
           if (index !== -1) {
-            tarefas[index].inicio = document.getElementById('modal-inicio').value;
-            tarefas[index].fim = document.getElementById('modal-fim').value;
+            tarefas[index].inicio = inicioCompleto;
+            tarefas[index].fim = fimCompleto;
             tarefas[index].descricao = document.getElementById('modal-descricao').value;
-            tarefas[index].status_servicos = document.getElementById('modal-status').value; // essa linha é opcional, mas já garante o status atualizado
-            tarefas[index].situacao = document.getElementById('modal-situacao').value; // ⬅️ esta é a que faltava!
+            tarefas[index].status_servicos = status;
+            tarefas[index].situacao = situacao;
           }
 
-          // Atualiza o gráfico usando o intervalo selecionado nos inputs 'inicio' e 'fim' principais
           atualizarTimeline(inputInicio.value, inputFim.value);
-
-          // Fecha o modal
           document.getElementById('modal').style.display = 'none';
         })
         .catch(error => {
