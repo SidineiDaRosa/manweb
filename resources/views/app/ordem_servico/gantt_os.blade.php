@@ -20,7 +20,7 @@
       padding: 0;
       height: 100vh;
       font-family: Arial, sans-serif;
-      background: #ddd;
+      background: #e1e3ea;
       color: #333;
     }
 
@@ -29,11 +29,13 @@
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
+      background-color: #e1e3ea;
     }
 
+    /*  inputs datas*/
     #intervalo {
       padding: 10px;
-      background: #eee;
+      background: #e1e3ea;
       border-bottom: 1px solid #ccc;
       display: flex;
       gap: 10px;
@@ -73,7 +75,7 @@
     .dados {
       width: 510px;
       padding: 8px 10px;
-      background: rgb(243, 242, 242);
+      background: #868fac;
       display: flex;
       align-items: center;
       border-right: 1px solid #bbb;
@@ -88,7 +90,7 @@
     .dados-base {
       width: 510px;
       padding: 8px 10px;
-      background: rgb(243, 242, 242);
+      background: rgb(243, 242, 242), 0.5;
       display: flex;
       align-items: center;
       border-right: 1px solid #bbb;
@@ -99,7 +101,7 @@
     .dados-cabecalho {
       width: 480px;
       padding: 8px 10px;
-      background: rgb(243, 242, 242);
+      background: rgba(240, 241, 245, 0.5);
       display: flex;
       align-items: center;
       border-right: 1px solid #bbb;
@@ -112,19 +114,19 @@
     .timeline-container {
       flex: 1;
       position: relative;
-      overflow-x: auto;
       /* <- Habilita a rolagem horizontal */
-      background: rgb(248, 246, 246);
+      background: #f5f5f5;
       white-space: nowrap;
       /* Impede quebra de linha horizontal */
     }
 
+    /* Datas*/
     .timeline-years {
       display: flex;
-      background: rgb(224, 217, 217);
-      color: #444;
-      font-weight: bold;
-      border-bottom: 1px solid #aaa;
+      background: #FAFAFA;
+      color: #454d66;
+      font-weight: 400;
+      border: 1px solid rgba(164, 171, 193, .5);
       height: 25px;
       line-height: 25px;
       user-select: none;
@@ -132,10 +134,11 @@
 
     .year {
       text-align: center;
-      border-left: 1px solid #999;
+      border-left: 1px solid #a4abc1;
       flex-shrink: 0;
       padding: 0 10px;
-      font-size: 14px;
+      font-size: 12px;
+      font-weight: 300;
     }
 
     .year:first-child {
@@ -144,10 +147,10 @@
 
     .timeline-months {
       display: flex;
-      background: #d6d6d6;
-      color: #555;
-      font-weight: bold;
-      border-bottom: 1px solid #999;
+      background: #FAFAFA;
+      color: #454d66;
+      font-weight: 400;
+      border-bottom: 1px solid #a4abc1;
       height: 30px;
       line-height: 30px;
       user-select: none;
@@ -155,20 +158,22 @@
 
     .month {
       text-align: center;
-      border-left: 1px solid #999;
+      background-color: #FAFAFA;
+      border-left: 1px solid #a4abc1;
       flex-shrink: 0;
       padding: 0 10px;
-      font-size: 16px;
+      font-size: 12px;
     }
 
     .month:first-child {
       border-left: none;
+
     }
 
     /* =========Dias===========*/
     .timeline-days {
       display: flex;
-      background: #ccc;
+      background: #FAFAFA;
       color: #444;
       font-weight: 300;
       border-bottom: 1px solid #999;
@@ -178,6 +183,7 @@
     }
 
     .day {
+      background-color: #FAFAFA;
       text-align: center;
       border-left: 1px solid #999;
       flex-shrink: 0;
@@ -199,6 +205,7 @@
     }
 
     .hora {
+      background-color: #FAFAFA;
       line-height: 40px;
       text-align: center;
       border-left: 1px solid #999;
