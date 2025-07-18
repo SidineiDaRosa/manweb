@@ -838,13 +838,28 @@
 
     });
 
-    // Inicializa com valores padrão para teste
-    const agora = new Date();
-    const inicioPadrao = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), 6, 0);
-    const fimPadrao = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 1, 18, 0);
+    // Inicializa com valores padrão para teste// Pega as variáveis enviadas pelo controller
+    const inicioServidor = @json($inicioFiltro);
+    const fimServidor = @json($fimFiltro);
 
-    inputInicio.value = inicioPadrao.toISOString().slice(0, 16);
-    inputFim.value = fimPadrao.toISOString().slice(0, 16);
+    const agora = new Date();
+
+    function formatarParaInputDatetimeLocal(dataStr) {
+      if (!dataStr) return null;
+      // Garante o formato 'YYYY-MM-DDTHH:mm'
+      const dt = new Date(dataStr);
+      if (isNaN(dt)) return null;
+      return dt.toISOString().slice(0, 16);
+    }
+
+    const inicioPadrao = formatarParaInputDatetimeLocal(inicioServidor) ||
+      new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), 6, 0).toISOString().slice(0, 16);
+
+    const fimPadrao = formatarParaInputDatetimeLocal(fimServidor) ||
+      new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 1, 18, 0).toISOString().slice(0, 16);
+
+    inputInicio.value = inicioPadrao;
+    inputFim.value = fimPadrao;
 
     atualizarTimeline(inputInicio.value, inputFim.value);
   </script>

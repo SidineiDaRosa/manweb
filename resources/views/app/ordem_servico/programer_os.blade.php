@@ -15,19 +15,29 @@
     <style>
 
     </style>
-    <div id="intervalo" style="margin-left:480px;display:flex;flex-direction:row;>
-        <label for=" inicio">Início:</label>
-        <input class="form-control w-25" type="datetime-local" id="inicio" /> <br>
-        <label for="fim">Fim:</label>
-        <input class="form-control w-25" type="datetime-local" id="fim" />
-        <button class="btn btn-primary btn-sm" id="btnAtualizar">Atualizar</button>
-        <button class="btn btn-outline-dark btn-sm"
-            onclick="window.open('{{ route('equipamento.index', ['empresa'=>2]) }}', '_blank')">
-            Ativos->Nova O.S.
-        </button>
-        <a href="{{ route('gantt.os.timeline') }}" class="btn btn-primary">
-            Ver Gráfico de Gantt
-        </a>
+    <div id="intervalo" style="margin-left:480px;display:flex;flex-direction:row;">
+        <form style="display:flex;flex-direction:row;" action="{{ route('gantt.os.timeline') }}" method="GET">
+            <label for="inicio">Início:</label>
+            <input class="form-control w-50" type="datetime-local" id="inicio" name="inicio" />
+
+            <label for="fim">Fim:</label>
+            <input class="form-control w-50" type="datetime-local" id="fim" name="fim" />
+
+            <select class="form-control w-50" name="situacao" id="situacao">
+                <option value="">Todas</option> <!-- valor vazio como default -->
+                <option value="aberto">Aberto</option>
+                <option value="fechado">Fechado</option>
+                <option value="indefinido">Indefinido</option>
+                <option value="em andamento">Em andamento</option>
+                <option value="pausado">Pausado</option>
+                <option value="outro">Não fechada</option>
+            </select>
+
+            &nbsp;
+            <button class="btn btn-danger" type="submit">Ver Gráfico de Gantt</button>
+        </form>
+
+
     </div>
     <style>
         .container-box {
