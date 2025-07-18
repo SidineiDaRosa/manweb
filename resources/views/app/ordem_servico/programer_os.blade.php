@@ -25,10 +25,10 @@
 
             <select class="form-control w-50" name="situacao" id="situacao">
                 <option value="">Todas</option> <!-- valor vazio como default -->
-                <option value="aberto">Aberto</option>
+                <option value="Aberto">Aberto</option>
                 <option value="fechado">Fechado</option>
-                <option value="indefinido">Indefinido</option>
-                <option value="em andamento">Em andamento</option>
+                <option value="Indefinido">Indefinido</option>
+                <option value="Em andamento">Em andamento</option>
                 <option value="pausado">Pausado</option>
                 <option value="outro">Não fechada</option>
             </select>
