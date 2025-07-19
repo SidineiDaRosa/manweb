@@ -638,35 +638,30 @@ class OrdemServicoController extends Controller
         $inicioFiltro = $request->query('inicio');
         $fimFiltro = $request->query('fim');
 
-        $query = OrdemServico::query();
+        // Validação da janela de tempo
+        if (!$inicioFiltro || !$fimFiltro) {
+            // Retorna uma view simples com mensagem de erro
+           return redirect()->back()->with('erro', 'Data início não pode ser maior que data fim.');
 
-        // Verifica se a janela de tempo é válida
-        $janelaValida = false;
-        if ($inicioFiltro && $fimFiltro) {
-            $dtInicio = Carbon::parse($inicioFiltro);
-            $dtFim = Carbon::parse($fimFiltro);
-
-            if ($dtInicio->lessThanOrEqualTo($dtFim)) {
-                $janelaValida = true;
-            }
         }
 
-        if ($janelaValida) {
-            // Filtra pela janela de tempo
-            $query->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') >= ?", [$dtInicio])
-                ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
+        $dtInicio = Carbon::parse($inicioFiltro);
+        $dtFim = Carbon::parse($fimFiltro);
 
-            // Se enviou situação, filtra por ela também
-            if ($situacao) {
-                 $query->whereRaw('LOWER(situacao) = ?', [strtolower($situacao)]);
-            }
-        } else {
-            // Se não tem janela válida, filtra pela situação (se enviou)
-            if ($situacao) {
-                 $query->whereRaw('LOWER(situacao) = ?', [strtolower($situacao)]);
-            } else {
-                // Se não enviou situação, pega padrão
+        if ($dtInicio->greaterThan($dtFim)) {
+            return redirect()->back()->with('erro', 'Data início não pode ser maior que data fim.');
+        }
+
+        $query = OrdemServico::query();
+
+        $query->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') >= ?", [$dtInicio])
+            ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
+
+        if ($situacao) {
+            if ($situacao === 'padrao') {
                 $query->whereIn('situacao', ['aberto', 'em andamento', 'pausado']);
+            } else {
+                $query->whereRaw('LOWER(situacao) = ?', [strtolower($situacao)]);
             }
         }
 

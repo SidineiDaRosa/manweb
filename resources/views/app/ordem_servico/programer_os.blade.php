@@ -4,7 +4,18 @@
 <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
-
+    <!--mensagem de erro caso datas erradas-->
+    @if(session('erro'))
+    <div id="alerta-erro" style="padding:20px; background:#f8d7da; color:#842029; border:1px solid #f5c2c7; border-radius:4px; margin-bottom:15px; position: relative;">
+        {{ session('erro') }}
+        <button
+            onclick="document.getElementById('alerta-erro').style.display='none'"
+            style="position: absolute; top: 5px; right: 10px; background: transparent; border: none; font-weight: bold; font-size: 20px; line-height: 20px; cursor: pointer; color: #842029;"
+            aria-label="Fechar mensagem">
+            &times;
+        </button>
+    </div>
+    @endif
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
@@ -24,13 +35,12 @@
             <input class="form-control w-50" type="datetime-local" id="fim" name="fim" />
 
             <select class="form-control w-50" name="situacao" id="situacao">
-                <option value="">Todas</option> <!-- valor vazio como default -->
                 <option value="Aberto">Aberto</option>
                 <option value="fechado">Fechado</option>
                 <option value="Indefinido">Indefinido</option>
                 <option value="Em andamento">Em andamento</option>
                 <option value="pausado">Pausado</option>
-                <option value="outro">Não fechada</option>
+                <option value="padrao">Não fechada</option>
             </select>
 
             &nbsp;
