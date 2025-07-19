@@ -641,8 +641,7 @@ class OrdemServicoController extends Controller
         // Validação da janela de tempo
         if (!$inicioFiltro || !$fimFiltro) {
             // Retorna uma view simples com mensagem de erro
-           return redirect()->back()->with('erro', 'Data início não pode ser maior que data fim.');
-
+            return redirect()->back()->with('erro', 'Data início não pode ser maior que data fim.');
         }
 
         $dtInicio = Carbon::parse($inicioFiltro);
@@ -661,7 +660,7 @@ class OrdemServicoController extends Controller
             if ($situacao === 'padrao') {
                 $query->whereIn('situacao', ['aberto', 'em andamento', 'pausado']);
             } else {
-                $query->whereRaw('LOWER(situacao) = ?', [strtolower($situacao)]);
+                $query->whereRaw('LOWER(situacao) = LOWER(?)', [$situacao]);
             }
         }
 
