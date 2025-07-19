@@ -35,10 +35,10 @@
             <input class="form-control w-50" type="datetime-local" id="fim" name="fim" />
 
             <select class="form-control w-50" name="situacao" id="situacao">
-                <option value="Aberto">Aberto</option>
+                <option value="aberto">berto</option>
                 <option value="fechado">Fechado</option>
-                <option value="Indefinido">Indefinido</option>
-                <option value="Em andamento">Em andamento</option>
+                <option value="indefinido">Indefinido</option>
+                <option value="em andamento">Em andamento</option>
                 <option value="pausado">Pausado</option>
                 <option value="padrao">Não fechada</option>
             </select>
