@@ -658,12 +658,12 @@ class OrdemServicoController extends Controller
 
             // Se enviou situação, filtra por ela também
             if ($situacao) {
-                $query->where('situacao', $situacao);
+                 $query->whereRaw('LOWER(situacao) = ?', [strtolower($situacao)]);
             }
         } else {
             // Se não tem janela válida, filtra pela situação (se enviou)
             if ($situacao) {
-                $query->where('situacao', $situacao);
+                 $query->whereRaw('LOWER(situacao) = ?', [strtolower($situacao)]);
             } else {
                 // Se não enviou situação, pega padrão
                 $query->whereIn('situacao', ['aberto', 'em andamento', 'pausado']);
