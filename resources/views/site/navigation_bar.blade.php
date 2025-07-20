@@ -209,7 +209,7 @@
                             <div class="box-conteudo">
                                 <div class="titulo">Sobre</div>
                                 <div class="conteudo">
-                                <a href="#">Sobre nós</a>
+                                    <a href="#">Sobre nós</a>
                                 </div>
                             </div>
                         </div>
@@ -245,7 +245,11 @@
                                 <div class="titulo">Sistemas de Gestão</div>
                                 <p></p>
                                 <div class="conteudo">
-                                    <a href="{{ route('app.home') }}" class="title-menu" caption="erp">CMMS ManWEB</a>
+                                    @if (Auth::check())
+                                    <a href="{{ route('app.home') }}" class="title-menu">CMMS ManWEB</a>
+                                    @else
+                                    <a href="{{ route('login') }}" class="title-menu">Login</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -289,7 +293,7 @@
                                 <div class="titulo">Aqui história da empresa</div>
                                 <p></p>
                                 <div class="conteudo">
-                                Aqui história da empresa
+                                    Aqui história da empresa
                                 </div>
                             </div>
                         </div>

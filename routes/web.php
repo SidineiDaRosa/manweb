@@ -63,7 +63,6 @@ Route::middleware('auth')->get('/users-management', [ControlPanelController::cla
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home');
 
 Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce@index');
