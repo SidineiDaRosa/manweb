@@ -44,7 +44,7 @@
         </div>
         @endif
         @isset($check_lists_open)
-        <table  class="table table-sm" style="table-layout: fixed;">
+        <table class="table table-sm" style="table-layout: fixed;">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -78,6 +78,7 @@
         @endisset
 
         <hr>
+        <!-- Tabela que mostra os pendedntes e e executados-->
         @if(isset($check_lists_status))
         <table class="table table-sm" style="table-layout: fixed;">
             <thead>
@@ -85,7 +86,7 @@
                     <th>Equipamento</th>
                     <th>Pendentes</th>
                     <th>Executadas</th>
-                    <th></th>
+                    <th>Alertas</th>
                 </tr>
             </thead>
             <tbody>
@@ -104,12 +105,35 @@
                         </form>
                     </td>
                 </tr>
+                {{-- Linha para exibir os alertas específicos para este equipamento --}}
+                @php
+                // Filtrar os alertas para o equipamento atual dentro do loop
+                $alertasDoEquipamento = $checkListExcAlerts->where('equipamento_id', $checkListsStatus_f->equipamento->id);
+                @endphp
+
+                @if($alertasDoEquipamento->isNotEmpty())
+                <tr>
+                    <td colspan="4"> {{-- Colspan para ocupar todas as colunas --}}
+                        <div class="alert alert-warning mb-0" role="alert">
+                            <strong>Alertas de Gravidade Alta para {{ $checkListsStatus_f->equipamento->nome }}:</strong>
+                            <ul>
+                                @foreach($alertasDoEquipamento as $alerta)
+                                <li>
+                                    Checklist: {{ $alerta->checklist->nome ?? 'N/A' }} -
+                                    Gravidade: **{{ $alerta->gravidade }}** -
+                                    Data Fim: {{ \Carbon\Carbon::parse($alerta->data_fim)->format('d/m/Y H:i') }}
+                                    {{-- Adicione mais detalhes do alerta se precisar --}}
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                @endif
                 @endforeach
             </tbody>
         </table>
         @endif
-        <!--  tabela mostra os check list aberto-->
-
         <hr>
         <div class="card-header justify-content-left pt-1">
             <!-- Gravar um novo check list para o equipamento -->
@@ -142,7 +166,9 @@
                 @endif
             </form>
             <hr>
+            <!--  tabela mostra os check list aberto-->
             <div calss="div-row">
+
                 @if(isset($equipamento))
                 @if(isset($check_list))
                 @foreach($check_list as $check_list_f)

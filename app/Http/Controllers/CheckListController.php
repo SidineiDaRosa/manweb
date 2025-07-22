@@ -34,6 +34,14 @@ class CheckListController extends Controller
         $contChListElet = CheckList::where('natureza', 'Elétrico')->where('data_verificacao', '<=', $dataLimite)->count();
         $contChListCiv = CheckList::where('natureza', 'Civíl')->where('data_verificacao', '<=', $dataLimite)->count();
         $contChListOpe = CheckList::where('natureza', 'Operacional')->where('data_verificacao', '<=', $dataLimite)->count();
+        // Notificações de inregularidades encontradas nas checagens
+
+        $quinzeDiasAtras = Carbon::now()->subDays(15);
+
+        $checkListExcAlerts = CheckListExecutado::where('gravidade', '>=', 2)
+            ->whereNotNull('data_verificacao') // Ensures data_fim is not null, as you had before
+            ->where('data_verificacao', '>=', $quinzeDiasAtras)
+            ->get();
 
         if ($type >= 1) {
             $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->where('data_verificacao', '<=', $dataLimite)->get();
@@ -68,7 +76,8 @@ class CheckListController extends Controller
                 'contChListMec' =>  $contChListMec,
                 'contChListElet' => $contChListElet,
                 'contChListCiv' => $contChListCiv,
-                'contChListOpe' => $contChListOpe
+                'contChListOpe' => $contChListOpe,
+                'checkListExcAlerts' => $checkListExcAlerts
             ]);
         }
     }
