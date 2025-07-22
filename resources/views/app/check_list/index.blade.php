@@ -119,7 +119,7 @@
                             <ul>
                                 @foreach($alertasDoEquipamento as $alerta)
                                 <li>
-                                    Checklist: {{ $alerta->checklist->nome ?? 'N/A' }} -
+                                    Checklist: {{ $alerta->checklist->descricao ?? 'N/A' }} -
                                     Gravidade: **{{ $alerta->gravidade }}** -
                                     Data Fim: {{ \Carbon\Carbon::parse($alerta->data_fim)->format('d/m/Y H:i') }}
                                     {{-- Adicione mais detalhes do alerta se precisar --}}
