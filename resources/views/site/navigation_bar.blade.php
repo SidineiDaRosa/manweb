@@ -7,6 +7,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
+    
     <link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
     <style>
         body {
@@ -176,10 +177,13 @@
             margin-right: 2px;
         }
     </style>
+ 
     <nav class="navbar">
         <div class="menu" id="menu">
             <div class="menu-item">
                 <a href="#">Home</a>
+                   <img src="{{ asset('favicon.ico') }}" alt="Teste Favicon" style="width:32px; height:32px;">
+
             </div>
             <div class="menu-item">
                 <a href="#">Sobre nós</a>
