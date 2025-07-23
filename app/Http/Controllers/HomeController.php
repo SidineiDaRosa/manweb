@@ -11,6 +11,7 @@ use App\Models\EstoqueProdutos;
 use App\Models\OrdemServico;
 use App\Models\Funcionario;
 use App\Models\PedidoCompra;
+use App\Models\PedidoCompraLista;
 use App\Models\Prduto;
 use App\Models\Produto;
 use Carbon\Carbon;
@@ -25,7 +26,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-  
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -299,7 +304,9 @@ class HomeController extends Controller
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
         $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
         $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
-
+        //----------------------------------------------------------
+        //Busca status do estoque de produtos
+        //----------------------------------------------------------
         $produtos_estoque_critico = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
             ->where('criticidade', '>=', 1)
             ->orderByRaw('quantidade = 0 desc') // Garante que quantidade 0 apareça primeiro
@@ -307,6 +314,17 @@ class HomeController extends Controller
             ->orderBy('quantidade', 'asc') // Quantidade crescente para os demais itens
             ->get();
 
+        foreach ($produtos_estoque_critico as $produto) {
+            // Buscar todos os pedidos de compra abertos relacionados a esse produto
+            $pedidos_abertos_count = PedidoCompraLista::where('produto_id', $produto->produto_id)
+                ->whereHas('pedidoCompra', function ($query) {
+                    $query->where('status', 'Aberto');
+                })
+                ->count();
+
+            // Adicionar nova coluna ao item
+            $produto->nova_coluna = $pedidos_abertos_count;
+        }
         // Exibe os resultados
         // foreach ($produtos_estoque_critico as $produto) {
         //  echo "ID: {$produto->id}, Quantidade: {$produto->quantidade}, Criticidade: {$produto->criticidade}<br>";
@@ -318,14 +336,14 @@ class HomeController extends Controller
         $add_2day = Carbon::now()->addDays(2);
         //----------------------------------------//
         // Totalização de O.S em números
-         //----------------------------------------//
+        //----------------------------------------//
         $today = now()->format('Y-m-d'); // ou use date('Y-m-d') se não usar Carbon
         $os_fechadas_2dias = OrdemServico::where('data_fim', '>=', $last_2day)->where('situacao', 'Fechado')->count();
         $os_abertas = OrdemServico::where('situacao', 'aberto')->count();
         $os_em_andamento = OrdemServico::where('situacao', 'em andamento')->count();
         $os_today = OrdemServico::where('data_inicio', '<=', $today)
-        ->where('data_fim', '>=', $today)
-        ->where('situacao',['aberto','em andamento'])->count();
+            ->where('data_fim', '>=', $today)
+            ->where('situacao', ['aberto', 'em andamento'])->count();
         // dd($os_hoje);
         return view('app.layouts.dashboard', [
             'equipamento' => $equipamento,
