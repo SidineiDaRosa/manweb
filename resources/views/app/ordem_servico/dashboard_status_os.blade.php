@@ -73,6 +73,12 @@
             background-color: rgb(245, 246, 248);
 
         }
+           td{
+                font-weight: 300 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:15px !important;
+                margin:2px;
+            }
     </style>
 
     <!-- JavaScript para atualização das contagens -->

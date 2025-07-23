@@ -1035,7 +1035,7 @@
 
             .div-os-sm {
                 font-size: 12px;
-                font-weight: 400;
+                font-weight: 300 !important;
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
                 font-stretch: ultra-condensed;
                 color: black;
@@ -1044,6 +1044,12 @@
                 margin: 1px;
                 background-color: rgb(248, 248, 255, 0.7);
 
+            }
+            td{
+                font-weight: 300 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:15px !important;
+                margin:2px;
             }
         </style>
         <!-- continer products-->
