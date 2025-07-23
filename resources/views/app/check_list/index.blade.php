@@ -99,10 +99,11 @@
                         <form action="{{ route('check-list-show') }}" method="POST" style="display:inline;">
                             @csrf
                             <input type="hidden" name="equipamento_id" value="{{ $checkListsStatus_f->equipamento->id }}">
-                            <button type="submit" class="btn btn-outline-dark mb-1" style="width:200px;float:right;">
-                                Visualizar
+                            <button type="submit" class="btn btn-outline-dark sm" style="width:200px;float:right;">
+                                Chek-lists
                             </button>
                         </form>
+                        <a href="{{ route('check-list-finalizado',['equipamento_id'=>$checkListsStatus_f->equipamento->id]) }}" class="btn btn-primary sm">Check-List Executado</a>
                     </td>
                 </tr>
                 {{-- Linha para exibir os alertas específicos para este equipamento --}}
@@ -123,11 +124,14 @@
                                     Gravidade: **{{ $alerta->gravidade }}** -
                                     Data Fim: {{ \Carbon\Carbon::parse($alerta->data_fim)->format('d/m/Y H:i') }}
                                     {{-- Adicione mais detalhes do alerta se precisar --}}
+
                                 </li>
                                 @endforeach
                             </ul>
                         </div>
                     </td>
+
+
                 </tr>
                 @endif
                 @endforeach
