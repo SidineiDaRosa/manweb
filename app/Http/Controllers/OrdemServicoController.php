@@ -652,9 +652,10 @@ class OrdemServicoController extends Controller
         }
 
         $query = OrdemServico::query();
-
+        // busca apenas pela data inicial
         $query->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') >= ?", [$dtInicio])
-            ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
+            //->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
+            ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
 
         if ($situacao) {
             if ($situacao === 'padrao') {
