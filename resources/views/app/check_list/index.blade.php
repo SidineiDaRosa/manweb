@@ -123,6 +123,7 @@
                                     Checklist: {{ $alerta->checklist->descricao ?? 'N/A' }} -
                                     Gravidade: **{{ $alerta->gravidade }}** -
                                     Data Fim: {{ \Carbon\Carbon::parse($alerta->data_fim)->format('d/m/Y H:i') }}
+                                  <span style="color:darkblue;"> Obs.:</span>  {{$alerta->observacao}}
                                     {{-- Adicione mais detalhes do alerta se precisar --}}
 
                                 </li>
