@@ -153,7 +153,7 @@
             background-color: #1DA851;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             body {
                 padding: 0;
                 font-size: 1.6rem;
