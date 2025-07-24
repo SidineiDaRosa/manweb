@@ -151,15 +151,31 @@ form button {
 form button:hover {
     background-color: #1DA851;
 }
-
-@media (max-width: 600px) {
+edia (max-width: 600px) {
     body {
         padding: 0;
+        font-size: 1.05rem; /* Aumenta o tamanho base da fonte */
+    }
+
+    h1 {
+        font-size: 1.6rem; /* Título maior */
     }
 
     .messages-container {
-        max-height: 55vh; /* Altura ideal em celulares */
+        max-height: 55vh;
         padding: 8px;
+    }
+
+    .message .header {
+        font-size: 1rem; /* Nome e data maiores */
+    }
+
+    .message .subject {
+        font-size: 1.05rem; /* Assunto maior */
+    }
+
+    .message .body {
+        font-size: 1.1rem; /* Texto da mensagem mais legível */
     }
 
     form {
@@ -171,20 +187,25 @@ form button:hover {
     }
 
     form textarea {
-        height: 40px;
-        min-height: 40px;
+        height: 60px; /* um pouco maior para texto mais visível */
+        min-height: 60px;
+        font-size: 1.05rem;
         width: 100%;
     }
 
     form button {
-        width: 40px;
-        height: 40px;
-        font-size: 1.3rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1.4rem;
         align-self: flex-end;
     }
 
     .message {
         max-width: 90%;
+    }
+
+    .success {
+        font-size: 1rem;
     }
 }
 
