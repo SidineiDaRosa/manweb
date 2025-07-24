@@ -214,7 +214,9 @@
         @enderror
         <button type="submit" aria-label="Enviar mensagem">&#10148;</button>
     </form>
-
+ <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> Dashboard
+                </a>
     <script>
         // Scroll para o fim da lista de mensagens quando a página carregar
         document.addEventListener('DOMContentLoaded', function() {
