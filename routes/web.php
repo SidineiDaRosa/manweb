@@ -408,3 +408,10 @@ Route::get('/loop', [UpdateLoopController::class, 'form'])->name('loop.form');
 //Adquire a contagem de notificações.
 Route::get('/alarms-count', [UpdateLoopController::class, 'alarms_count']);
 Route::get('/notificacoes', [NotificationsController::class, 'index'])->name('notificacoes.index');
+//----------------------------------------------------------//
+//   Blog
+//----------------------------------------------------------//
+use App\Http\Controllers\PostController;
+
+Route::get('/blog/painel', [PostController::class, 'index'])->name('blog.painel');
+Route::post('/messages/painel', [PostController::class, 'store'])->name('messages.store');

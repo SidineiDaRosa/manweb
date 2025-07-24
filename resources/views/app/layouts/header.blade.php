@@ -90,7 +90,7 @@
             }
 
             .badge.yellow {
-                background-color:gold;
+                background-color: gold;
                 /* Nova classe para amarelo */
             }
 
@@ -183,7 +183,7 @@
             });
         </script>
 
-
+        <!--Usuario logado-->
         <div class="dropdown">
             <div class="dropdown-button">
                 {{ Auth::user()->name }}
@@ -198,11 +198,14 @@
                         document.getElementById('form_logout').submit();">
                             Saír
                         </a>
+                         <a href="{{ route('blog.painel') }}">Painel do Blog</a>
                         <form action="{{ route('logout') }}" method="POST" id="form_logout">
                             @csrf
                         </form>
                     </li>
                 </ul>
             </div>
+           
+
         </div>
     </header>
