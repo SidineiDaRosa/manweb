@@ -268,11 +268,15 @@
     <form action="{{ route('messages.store') }}" method="POST" aria-label="Formulário de envio de mensagem">
         @csrf
         <textarea name="message" placeholder="Digite sua mensagem..." required>{{ old('message') }}</textarea>
+
+        <input type="hidden" name="group_id" value="{{ $group->id ?? old('group_id') }}">
+
         @error('message')
         <div style="color: red; margin-top: 5px;">{{ $message }}</div>
         @enderror
         <button type="submit" aria-label="Enviar mensagem">&#10148;</button>
     </form>
+
 
     <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
         <i class="icofont-dashboard"></i> Dashboard
@@ -288,6 +292,72 @@
             });
         });
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const messagesContainer = document.getElementById('messages-container');
+
+        // Scroll automático no carregamento
+        messagesContainer.scrollTo({
+            top: messagesContainer.scrollHeight,
+            behavior: 'smooth'
+        });
+
+        // Envio do formulário via AJAX
+        document.getElementById('message-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const message = document.getElementById('message').value;
+            const group_id = document.getElementById('group_id').value;
+            const token = document.querySelector('input[name="_token"]').value;
+
+            fetch("{{ route('messages.store') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: message,
+                    group_id: group_id
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => Promise.reject(err));
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Criar o HTML da nova mensagem e adicionar ao chat
+                const div = document.createElement('div');
+                div.classList.add('message', 'my-message');
+                div.innerHTML = `
+                    <div class="header">
+                        ${data.user_name} (<span title="${data.timestamp_full}">${data.timestamp}</span>)
+                    </div>
+                    <div class="subject"><strong>Assunto:</strong> ${data.subject}</div>
+                    <div class="body">${data.message}</div>
+                `;
+                messagesContainer.appendChild(div);
+
+                // Scroll automático
+                messagesContainer.scrollTo({
+                    top: messagesContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+
+                // Limpa o campo
+                document.getElementById('message').value = '';
+            })
+            .catch(error => {
+                alert(error?.errors?.message?.[0] ?? 'Erro ao enviar a mensagem');
+            });
+        });
+    });
+</script>
+
+
 </body>
 
 </html>

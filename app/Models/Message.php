@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'user_id',   // adiciona user_id aqui
+        'user_id',
         'name',
         'email',
         'subject',
         'message',
+        'group_id',  // adiciona aqui
     ];
 
     // Opcional: relacionamento com o usuário (assumindo que tem model User)

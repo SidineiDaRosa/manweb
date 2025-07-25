@@ -415,3 +415,13 @@ use App\Http\Controllers\PostController;
 
 Route::get('/blog/painel', [PostController::class, 'index'])->name('blog.painel');
 Route::post('/messages/painel', [PostController::class, 'store'])->name('messages.store');
+use App\Http\Controllers\GroupController;
+Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
+Route::post('/groups/{group}/attach-users', [GroupController::class, 'attachUsers'])->name('groups.attachUsers');
+Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
+Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+
+
+
+
+

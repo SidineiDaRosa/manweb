@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -12,12 +13,36 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $messages = Message::all();  // pega todos os posts do banco
+        $groupId = $request->query('group_id');
+        $user = auth()->user();
 
-        return view('app.post.index', compact('messages')); // retorna a view com os posts
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Você precisa estar logado para acessar as mensagens.');
+        }
+
+        if ($groupId) {
+            $group = Group::find($groupId);
+
+            if (!$group) {
+                return redirect()->route('app.home')->with('error', 'Grupo não encontrado.');
+            }
+
+            // Aqui você verifica se o usuário pertence ao grupo
+            $isInGroup = $group->users->contains($user->id); // Supondo relação many-to-many com users()
+
+            if (!$isInGroup) {
+                return redirect()->route('app.home')->with('error', 'Você não tem permissão para acessar este grupo.');
+            }
+
+            $messages = Message::where('group_id', $groupId)->get();
+        } else {
+            // Se quiser permitir visualizar todos, ou bloquear completamente
+            return redirect()->route('app.home')->with('error', 'Grupo não especificado.');
+        }
+
+        return view('app.post.index', compact('messages', 'group'));
     }
 
     /**
@@ -40,20 +65,22 @@ class PostController extends Controller
     {
         $request->validate([
             'message' => 'required|string',
+            'group_id' => 'required|exists:groups,id', // validação do grupo
         ]);
 
         Message::create([
             'user_id' => auth()->id(),
-            'name' => auth()->user()->name,      // opcional, pra preencher nome
-            'email' => auth()->user()->email,    // opcional, email do usuário
-            'subject' => 'Nova mensagem',        // ou algo fixo, ou campo no form
+            'name' => auth()->user()->name,
+            'email' => auth()->user()->email,
+            'subject' => 'Nova mensagem',
             'message' => $request->message,
+            'group_id' => $request->group_id, // adiciona o group_id aqui
         ]);
 
-      
-        return redirect()->route('blog.painel')->with('success', 'Mensagem enviada!');
-
+        return redirect()->route('blog.painel', ['group_id' => $request->group_id])
+            ->with('success', 'Mensagem enviada!');
     }
+
 
     /**
      * Display the specified resource.

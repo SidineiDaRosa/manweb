@@ -198,7 +198,7 @@
                         document.getElementById('form_logout').submit();">
                             Saír
                         </a>
-                         <a href="{{ route('blog.painel') }}">Painel do Blog</a>
+                         <a href="{{ route('groups.index') }}">Ver grupos</a>
                         <form action="{{ route('logout') }}" method="POST" id="form_logout">
                             @csrf
                         </form>
