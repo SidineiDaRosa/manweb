@@ -101,6 +101,11 @@ class GroupController extends Controller
     {
         $authUserId = auth()->id();
 
+        // Se o grupo ainda não tem ninguém, adiciona o usuário autenticado como admin
+        if ($group->users()->count() === 0) {
+            $group->users()->attach($authUserId, ['role' => 'admin']);
+        }
+
         // Verifica se quem está tentando alterar é admin do grupo
         $isAdmin = $group->users()
             ->where('user_id', $authUserId)
@@ -123,7 +128,7 @@ class GroupController extends Controller
         // Garante que todos admins atuais continuam no grupo (mesmo se não vieram no form)
         $allUsersToSync = array_unique(array_merge($selectedUsers, $currentAdmins));
 
-        // *** GARANTE QUE O USUÁRIO AUTENTICADO SEMPRE SEJA ADMIN ***
+        // Garante que o usuário autenticado nunca seja removido e continue como admin
         if (!in_array($authUserId, $allUsersToSync)) {
             $allUsersToSync[] = $authUserId;
         }
@@ -134,11 +139,9 @@ class GroupController extends Controller
         $syncData = [];
 
         foreach ($allUsersToSync as $userId) {
-            // Mantém role dos admins atual, mesmo que o form envie diferente
             if (in_array($userId, $currentAdmins)) {
                 $syncData[$userId] = ['role' => 'admin'];
             } else {
-                // Usa o role enviado no formulário ou 'member' como padrão
                 $syncData[$userId] = ['role' => $roles[$userId] ?? 'member'];
             }
         }
