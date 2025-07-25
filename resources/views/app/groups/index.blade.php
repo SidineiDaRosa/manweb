@@ -48,7 +48,7 @@
     ...
 </form>
 @else
-<p>Nenhum grupo selecionado para anexar usuários.</p>
+
 @endif
 
 <body>
