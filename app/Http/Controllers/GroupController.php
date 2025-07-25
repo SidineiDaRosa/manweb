@@ -122,7 +122,7 @@ class GroupController extends Controller
         // Busca admins atuais do grupo para garantir que não serão removidos
         $currentAdmins = $group->users()
             ->wherePivot('role', 'admin')
-            ->pluck('id')
+            ->pluck('users.id')  // 👈 Corrige ambiguidade
             ->toArray();
 
         // Garante que todos admins atuais continuam no grupo (mesmo se não vieram no form)
