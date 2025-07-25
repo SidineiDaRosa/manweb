@@ -198,14 +198,16 @@
                         document.getElementById('form_logout').submit();">
                             Saír
                         </a>
-                         <a href="{{ route('groups.index') }}">Ver grupos</a>
+                        <a href="{{ route('groups.index') }}">Messeger
+                            <i class="icofont-facebook-messenger"></i>
+                        </a>
                         <form action="{{ route('logout') }}" method="POST" id="form_logout">
                             @csrf
                         </form>
                     </li>
                 </ul>
             </div>
-           
+
 
         </div>
     </header>
