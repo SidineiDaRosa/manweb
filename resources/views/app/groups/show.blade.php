@@ -98,36 +98,51 @@
     <hr>
 
     @if(session('success'))
-        <div class="success">{{ session('success') }}</div>
+    <div class="success">{{ session('success') }}</div>
     @endif
 
     <form action="{{ route('groups.attachUsers', $group->id) }}" method="POST" class="group-user-form">
         @csrf
 
         <label>Selecionar usuários e definir função:</label>
-
         @foreach ($users as $user)
-            @php
-                $pivot = $group->users->find($user->id)?->pivot;
-                $userRole = $pivot ? $pivot->role : 'member';
-                $isChecked = $pivot ? true : false;
-            @endphp
+        @php
+        $pivot = $group->users->find($user->id)?->pivot;
+        $userRole = $pivot ? $pivot->role : 'member';
+        $isChecked = $pivot ? true : false;
+        @endphp
 
-            <div class="user-entry">
-                <label class="user-name">
-                    <input type="checkbox" name="users[]" value="{{ $user->id }}" {{ $isChecked ? 'checked' : '' }}>
-                    {{ $user->name }}
-                </label>
+        <div class="user-entry">
+            <label class="user-name">
+                @if($userRole === 'admin')
+                <input type="checkbox" name="users[]" value="{{ $user->id }}" checked disabled>
+                {{ $user->name }} (Administrador)
+                <input type="hidden" name="users[]" value="{{ $user->id }}">
+                @else
+                <input type="checkbox" name="users[]" value="{{ $user->id }}" {{ $isChecked ? 'checked' : '' }}>
+                {{ $user->name }}
+                @endif
+            </label>
 
-                <select name="roles[{{ $user->id }}]" class="role-select">
-                    <option value="member" {{ $userRole === 'member' ? 'selected' : '' }}>Membro</option>
-                    <option value="admin" {{ $userRole === 'admin' ? 'selected' : '' }}>Administrador</option>
-                </select>
-            </div>
+            <select name="roles[{{ $user->id }}]" class="role-select" {{ $userRole === 'admin' ? 'disabled' : '' }}>
+                <option value="member" {{ $userRole === 'member' ? 'selected' : '' }}>Membro</option>
+                <option value="admin" {{ $userRole === 'admin' ? 'selected' : '' }}>Administrador</option>
+            </select>
+        </div>
         @endforeach
+
 
         <button type="submit" class="submit-btn">Anexar Usuários</button>
     </form>
-
+    @if ($errors->any())
+    <div style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 </body>
+
 </html>

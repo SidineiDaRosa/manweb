@@ -99,16 +99,29 @@ class GroupController extends Controller
     }
     public function attachUsers(Request $request, Group $group)
     {
+        $userId = auth()->id();
+
+        // Verifica se o usuário autenticado é admin no grupo
+        $isAdmin = $group->users()
+            ->where('user_id', $userId)
+            ->wherePivot('role', 'admin')
+            ->exists();
+
+        if (!$isAdmin) {
+            return redirect()->back()->withErrors('Apenas administradores podem modificar os participantes.');
+        }
+
         $users = $request->input('users', []);
         $roles = $request->input('roles', []);
 
         $syncData = [];
 
         foreach ($users as $userId) {
+            // Garante que não tire o papel de admin dos admins existentes
+            // Ou define role enviado no formulário
             $syncData[$userId] = ['role' => $roles[$userId] ?? 'member'];
         }
 
-        // Sincroniza os usuários e suas roles na tabela pivot
         $group->users()->sync($syncData);
 
         return redirect()->back()->with('success', 'Usuários atualizados com sucesso!');
