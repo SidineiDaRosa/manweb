@@ -99,11 +99,11 @@ class GroupController extends Controller
     }
     public function attachUsers(Request $request, Group $group)
     {
-        $userId = auth()->id();
+        $authUserId = auth()->id();
 
-        // Verifica se o usuário autenticado é admin no grupo
+        // Verifica se quem está tentando alterar é admin do grupo
         $isAdmin = $group->users()
-            ->where('user_id', $userId)
+            ->where('user_id', $authUserId)
             ->wherePivot('role', 'admin')
             ->exists();
 
@@ -111,15 +111,28 @@ class GroupController extends Controller
             return redirect()->back()->withErrors('Apenas administradores podem modificar os participantes.');
         }
 
-        $users = $request->input('users', []);
+        $selectedUsers = $request->input('users', []);  // IDs selecionados no form
         $roles = $request->input('roles', []);
+
+        // Busca admins atuais do grupo para garantir que não serão removidos
+        $currentAdmins = $group->users()
+            ->wherePivot('role', 'admin')
+            ->pluck('id')
+            ->toArray();
+
+        // Garante que todos admins atuais continuam no grupo (mesmo se não vieram no form)
+        $allUsersToSync = array_unique(array_merge($selectedUsers, $currentAdmins));
 
         $syncData = [];
 
-        foreach ($users as $userId) {
-            // Garante que não tire o papel de admin dos admins existentes
-            // Ou define role enviado no formulário
-            $syncData[$userId] = ['role' => $roles[$userId] ?? 'member'];
+        foreach ($allUsersToSync as $userId) {
+            // Mantém role dos admins atual, mesmo que o form envie diferente
+            if (in_array($userId, $currentAdmins)) {
+                $syncData[$userId] = ['role' => 'admin'];
+            } else {
+                // Usa o role enviado no formulário ou 'member' como padrão
+                $syncData[$userId] = ['role' => $roles[$userId] ?? 'member'];
+            }
         }
 
         $group->users()->sync($syncData);
