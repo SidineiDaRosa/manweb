@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <title>Gerenciar Usuários do Grupo</title>
 
-    <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -44,24 +41,28 @@
             color: #333;
         }
 
-        #users {
-            width: 100%;
+        .user-entry {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
         }
 
-        .select2-container--default .select2-selection--multiple {
-            background-color: #fff;
-            border: 1px solid #ccc;
+        .user-entry:last-child {
+            border-bottom: none;
+        }
+
+        .user-name {
+            flex-grow: 1;
+        }
+
+        .role-select {
+            margin-left: 10px;
+            padding: 5px 8px;
             border-radius: 6px;
-            padding: 5px;
-            min-height: 44px;
+            border: 1px solid #ccc;
             font-size: 0.95rem;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            font-weight: 600;
         }
 
         .submit-btn {
@@ -103,41 +104,30 @@
     <form action="{{ route('groups.attachUsers', $group->id) }}" method="POST" class="group-user-form">
         @csrf
 
-        <label for="users">Selecionar usuários:</label>
+        <label>Selecionar usuários e definir função:</label>
 
-        <select name="users[]" id="users" multiple>
-            @foreach ($users as $user)
-                <option 
-                    value="{{ $user->id }}"
-                    {{ $group->users->contains($user->id) ? 'selected' : '' }}
-                >
+        @foreach ($users as $user)
+            @php
+                $pivot = $group->users->find($user->id)?->pivot;
+                $userRole = $pivot ? $pivot->role : 'member';
+                $isChecked = $pivot ? true : false;
+            @endphp
+
+            <div class="user-entry">
+                <label class="user-name">
+                    <input type="checkbox" name="users[]" value="{{ $user->id }}" {{ $isChecked ? 'checked' : '' }}>
                     {{ $user->name }}
-                </option>
-            @endforeach
-        </select>
+                </label>
+
+                <select name="roles[{{ $user->id }}]" class="role-select">
+                    <option value="member" {{ $userRole === 'member' ? 'selected' : '' }}>Membro</option>
+                    <option value="admin" {{ $userRole === 'admin' ? 'selected' : '' }}>Administrador</option>
+                </select>
+            </div>
+        @endforeach
 
         <button type="submit" class="submit-btn">Anexar Usuários</button>
     </form>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('#users').select2({
-                placeholder: 'Selecione usuários',
-                width: '100%',
-                language: {
-                    noResults: function () {
-                        return "Nenhum usuário encontrado";
-                    }
-                }
-            });
-        });
-    </script>
 
 </body>
 </html>

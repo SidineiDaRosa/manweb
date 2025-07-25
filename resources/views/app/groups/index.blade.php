@@ -61,7 +61,9 @@
         <p>{{ $group->description }}</p>
         <a href="{{ route('groups.show', $group->id) }}">Ver detalhes</a>
         <hr>
-        <a href="{{ route('blog.painel', ['group_id' => $group->id]) }}">Painel do Blog</a>
+        <a href="{{ route('blog.painel', ['group_id' => $group->id]) }}">Chat
+            &nbsp; <i class="icofont-wechat"></i>
+        </a>
 
     </div>
     @endforeach

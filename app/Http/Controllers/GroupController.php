@@ -97,17 +97,20 @@ class GroupController extends Controller
     {
         //
     }
-
     public function attachUsers(Request $request, Group $group)
     {
-        $validated = $request->validate([
-            'users' => 'required|array',
-            'users.*' => 'exists:users,id',
-        ]);
+        $users = $request->input('users', []);
+        $roles = $request->input('roles', []);
 
-        // Anexa os usuários sem remover os existentes
-        $group->users()->syncWithoutDetaching($validated['users']);
+        $syncData = [];
 
-        return redirect()->back()->with('success', 'Usuários anexados com sucesso.');
+        foreach ($users as $userId) {
+            $syncData[$userId] = ['role' => $roles[$userId] ?? 'member'];
+        }
+
+        // Sincroniza os usuários e suas roles na tabela pivot
+        $group->users()->sync($syncData);
+
+        return redirect()->back()->with('success', 'Usuários atualizados com sucesso!');
     }
 }
