@@ -156,14 +156,15 @@
 
         form button:hover {
             background-color: #1DA851;
-        }@media (max-width: 900px) {
+        }
+        @media (max-width: 900px) {
     body {
         padding: 0;
-        font-size: 1.1rem; /* menor que antes */
+        font-size: 0.88rem; /* 1.1rem * 0.8 */
     }
 
     h1 {
-        font-size: 1.6rem;
+        font-size: 1.28rem; /* 1.6rem * 0.8 */
     }
 
     .messages-container {
@@ -172,15 +173,15 @@
     }
 
     .message .header {
-        font-size: 1.1rem;
+        font-size: 0.88rem; /* 1.1rem * 0.8 */
     }
 
     .message .subject {
-        font-size: 1.3rem;
+        font-size: 1.04rem; /* 1.3rem * 0.8 */
     }
 
     .message .body {
-        font-size: 1rem;
+        font-size: 0.8rem; /* 1rem * 0.8 */
         line-height: 1.3;
     }
 
@@ -195,14 +196,14 @@
     form textarea {
         height: 80px;
         min-height: 80px;
-        font-size: 1.1rem;
+        font-size: 0.88rem; /* 1.1rem * 0.8 */
         width: 100%;
     }
 
     form button {
-        width: 45px;
-        height: 45px;
-        font-size: 1.4rem;
+        width: 36px;  /* 45px * 0.8 */
+        height: 36px; /* 45px * 0.8 */
+        font-size: 1.12rem; /* 1.4rem * 0.8 */
         align-self: flex-end;
     }
 
@@ -211,10 +212,11 @@
     }
 
     .success {
-        font-size: 1rem;
+        font-size: 0.8rem; /* 1rem * 0.8 */
         padding: 15px;
     }
 }
+
 
     </style>
 </head>
