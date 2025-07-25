@@ -13,6 +13,11 @@
 
 </html>
 <style>
+    /* ===== Reset / base ===== */
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: #f0f2f5;
@@ -23,15 +28,20 @@
         display: flex;
         flex-direction: column;
         min-height: 95vh;
+        font-size: 1rem;
+        /* base */
     }
 
+    /* ===== Títulos ===== */
     h1 {
         color: #222;
         font-weight: 700;
         margin-bottom: 20px;
         text-align: center;
+        font-size: 1.5rem;
     }
 
+    /* ===== Container das mensagens ===== */
     .messages-container {
         display: flex;
         flex-direction: column;
@@ -42,10 +52,10 @@
         margin-bottom: 20px;
         flex-grow: 1;
         max-height: 65vh;
-        /* Responsivo: altura proporcional à tela */
         overflow-y: auto;
     }
 
+    /* ===== Mensagem ===== */
     .message {
         border: none;
         padding: 12px 18px;
@@ -53,11 +63,11 @@
         border-radius: 20px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         max-width: 80%;
-        position: relative;
         word-wrap: break-word;
         align-self: flex-start;
         margin-right: auto;
         background-color: #fff;
+        position: relative;
     }
 
     .message.my-message {
@@ -67,6 +77,7 @@
         align-self: flex-end;
     }
 
+    /* ===== Textos da mensagem ===== */
     .message .header {
         font-size: 0.85rem;
         color: #666;
@@ -91,8 +102,10 @@
         white-space: pre-wrap;
         line-height: 1.5;
         color: #444;
+        font-size: 1rem;
     }
 
+    /* ===== Mensagem de sucesso ===== */
     .success {
         background-color: #d4edda;
         border: 1px solid #c3e6cb;
@@ -104,8 +117,10 @@
         margin-left: auto;
         margin-right: auto;
         text-align: center;
+        font-size: 1rem;
     }
 
+    /* ===== Formulário ===== */
     form {
         max-width: 900px;
         margin: 0 auto;
@@ -117,25 +132,23 @@
         border-radius: 10px;
         box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
         margin-top: auto;
+        flex-wrap: nowrap;
     }
 
     form textarea {
-        width: 90vw;
-        /* 90% da largura da viewport */
-        max-width: 90vw;
-        /* para garantir que não ultrapasse */
-        min-width: 90vw;
-        /* para garantir o mínimo também */
+        width: 90%;
+        max-width: 810px;
+        /* 90% de 900px */
+        min-width: 90%;
         height: 100px;
-        /* altura que quiser */
         min-height: 80px;
-        /* altura mínima */
         border-radius: 22px;
         padding: 10px 20px;
         font-size: 1rem;
         border: 1px solid #ddd;
         resize: vertical;
         box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     form textarea:focus {
@@ -165,16 +178,15 @@
         background-color: #1DA851;
     }
 
+    /* ===== Responsivo para telas até 900px ===== */
     @media (max-width: 900px) {
         body {
             padding: 0;
             font-size: 0.88rem;
-            /* 1.1rem * 0.8 */
         }
 
         h1 {
             font-size: 1.28rem;
-            /* 1.6rem * 0.8 */
         }
 
         .messages-container {
@@ -184,17 +196,14 @@
 
         .message .header {
             font-size: 0.88rem;
-            /* 1.1rem * 0.8 */
         }
 
         .message .subject {
             font-size: 1.04rem;
-            /* 1.3rem * 0.8 */
         }
 
         .message .body {
             font-size: 0.8rem;
-            /* 1rem * 0.8 */
             line-height: 1.3;
         }
 
@@ -204,6 +213,7 @@
             gap: 12px;
             border-radius: 0;
             padding: 12px;
+            flex-wrap: nowrap;
         }
 
         form textarea {
@@ -212,16 +222,12 @@
             max-width: 90vw;
             height: 80px;
             font-size: 0.88rem;
-            /* ou o tamanho que ajustamos */
         }
 
         form button {
             width: 36px;
-            /* 45px * 0.8 */
             height: 36px;
-            /* 45px * 0.8 */
             font-size: 1.12rem;
-            /* 1.4rem * 0.8 */
             align-self: flex-end;
         }
 
@@ -231,12 +237,10 @@
 
         .success {
             font-size: 0.8rem;
-            /* 1rem * 0.8 */
             padding: 15px;
         }
     }
 </style>
-</head>
 
 <body>
     @if(session('success'))
@@ -244,11 +248,10 @@
     @endif
 
     <div class="messages-container" id="messages-container">
-        @foreach($messages as $msg)
+        @foreach ($messages as $msg)
         @php
         $isMyMessage = (auth()->check() && auth()->id() == $msg->user_id);
         @endphp
-
         <div class="message {{ $isMyMessage ? 'my-message' : 'other-message' }}">
             <div class="header">
                 {{ $msg->user ? $msg->user->name : $msg->name }}
@@ -262,7 +265,7 @@
         @endforeach
     </div>
 
-    <form action="{{ route('messages.store') }}" method="POST">
+    <form action="{{ route('messages.store') }}" method="POST" aria-label="Formulário de envio de mensagem">
         @csrf
         <textarea name="message" placeholder="Digite sua mensagem..." required>{{ old('message') }}</textarea>
         @error('message')
@@ -270,20 +273,21 @@
         @enderror
         <button type="submit" aria-label="Enviar mensagem">&#10148;</button>
     </form>
+
     <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
         <i class="icofont-dashboard"></i> Dashboard
     </a>
+
     <script>
         // Scroll para o fim da lista de mensagens quando a página carregar
         document.addEventListener('DOMContentLoaded', function() {
-            var messagesContainer = document.getElementById('messages-container');
+            const messagesContainer = document.getElementById('messages-container');
             messagesContainer.scrollTo({
                 top: messagesContainer.scrollHeight,
                 behavior: 'smooth'
             });
         });
     </script>
-
 </body>
 
 </html>
