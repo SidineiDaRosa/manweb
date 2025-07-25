@@ -157,68 +157,68 @@
         form button:hover {
             background-color: #1DA851;
         }
+@media (max-width: 900px) {
+    body {
+        padding: 0;
+        font-size: 1.4rem; /* antes 1.6rem */
+        /* Tamanho base menor para todo o corpo */
+    }
 
-        @media (max-width: 900px) {
-            body {
-                padding: 0;
-                font-size: 1.6rem;
-                /* Tamanho base maior para todo o corpo */
-            }
+    h1 {
+        font-size: 2rem; /* antes 2.4rem */
+        /* Título um pouco menor */
+    }
 
-            h1 {
-                font-size: 2.4rem;
-                /* Título grande */
-            }
+    .messages-container {
+        max-height: 55vh;
+        padding: 8px;
+    }
 
-            .messages-container {
-                max-height: 55vh;
-                padding: 8px;
-            }
+    .message .header {
+        font-size: 1.4rem; /* antes 1.6rem */
+    }
 
-            .message .header {
-                font-size: 1.6rem;
-            }
+    .message .subject {
+        font-size: 1.6rem; /* antes 1.8rem */
+    }
 
-            .message .subject {
-                font-size: 1.8rem;
-            }
+    .message .body {
+        font-size: 1.4rem; /* antes 1.8rem */
+        line-height: 1.3;  /* ajustado para melhorar leitura */
+    }
 
-            .message .body {
-                font-size: 1.8rem;
-                line-height: 1.1;
-            }
+    form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        border-radius: 0;
+        padding: 12px;
+    }
 
-            form {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-                border-radius: 0;
-                padding: 12px;
-            }
+    form textarea {
+        height: 80px;
+        min-height: 80px;
+        font-size: 1.4rem; /* antes 1.6rem */
+        width: 100%;
+    }
 
-            form textarea {
-                height: 80px;
-                min-height: 80px;
-                font-size: 1.6rem;
-                width: 100%;
-            }
+    form button {
+        width: 50px; /* antes 55px */
+        height: 50px; /* antes 55px */
+        font-size: 1.8rem; /* antes 2rem */
+        align-self: flex-end;
+    }
 
-            form button {
-                width: 55px;
-                height: 55px;
-                font-size: 2rem;
-                align-self: flex-end;
-            }
+    .message {
+        max-width: 90%;
+    }
 
-            .message {
-                max-width: 90%;
-            }
+    .success {
+        font-size: 1.3rem; /* antes 1.5rem */
+        padding: 15px;
+    }
+}
 
-            .success {
-                font-size: 1.5rem;
-                padding: 15px;
-            }
-        }
     </style>
 </head>
 
