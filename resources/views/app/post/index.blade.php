@@ -156,17 +156,14 @@
 
         form button:hover {
             background-color: #1DA851;
-        }
-@media (max-width: 900px) {
+        }@media (max-width: 900px) {
     body {
         padding: 0;
-        font-size: 1.4rem; /* antes 1.6rem */
-        /* Tamanho base menor para todo o corpo */
+        font-size: 1.1rem; /* menor que antes */
     }
 
     h1 {
-        font-size: 2rem; /* antes 2.4rem */
-        /* Título um pouco menor */
+        font-size: 1.6rem;
     }
 
     .messages-container {
@@ -175,16 +172,16 @@
     }
 
     .message .header {
-        font-size: 1.4rem; /* antes 1.6rem */
+        font-size: 1.1rem;
     }
 
     .message .subject {
-        font-size: 1.6rem; /* antes 1.8rem */
+        font-size: 1.3rem;
     }
 
     .message .body {
-        font-size: 1.4rem; /* antes 1.8rem */
-        line-height: 1.3;  /* ajustado para melhorar leitura */
+        font-size: 1rem;
+        line-height: 1.3;
     }
 
     form {
@@ -198,14 +195,14 @@
     form textarea {
         height: 80px;
         min-height: 80px;
-        font-size: 1.4rem; /* antes 1.6rem */
+        font-size: 1.1rem;
         width: 100%;
     }
 
     form button {
-        width: 50px; /* antes 55px */
-        height: 50px; /* antes 55px */
-        font-size: 1.8rem; /* antes 2rem */
+        width: 45px;
+        height: 45px;
+        font-size: 1.4rem;
         align-self: flex-end;
     }
 
@@ -214,7 +211,7 @@
     }
 
     .success {
-        font-size: 1.3rem; /* antes 1.5rem */
+        font-size: 1rem;
         padding: 15px;
     }
 }
