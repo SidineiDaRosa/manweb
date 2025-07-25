@@ -123,6 +123,14 @@ class GroupController extends Controller
         // Garante que todos admins atuais continuam no grupo (mesmo se não vieram no form)
         $allUsersToSync = array_unique(array_merge($selectedUsers, $currentAdmins));
 
+        // *** GARANTE QUE O USUÁRIO AUTENTICADO SEMPRE SEJA ADMIN ***
+        if (!in_array($authUserId, $allUsersToSync)) {
+            $allUsersToSync[] = $authUserId;
+        }
+        if (!in_array($authUserId, $currentAdmins)) {
+            $currentAdmins[] = $authUserId;
+        }
+
         $syncData = [];
 
         foreach ($allUsersToSync as $userId) {
