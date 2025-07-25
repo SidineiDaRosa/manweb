@@ -17,7 +17,7 @@ class PostController extends Controller
         //
         $messages = Message::all();  // pega todos os posts do banco
 
-        return view('app.post.index', compact('messages')); // retorna a view com os posts
+        return view('app.messages.index', compact('messages')); // retorna a view com os posts
     }
 
     /**
