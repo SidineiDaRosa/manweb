@@ -44,7 +44,7 @@
         }
 
         /* Responsivo para telas pequenas (celular) */
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             body {
                 font-size: 18px;
                 /* aumenta a fonte no celular para melhor leitura */
