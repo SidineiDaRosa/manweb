@@ -86,13 +86,20 @@
         <div class="card mb-3 p-3 shadow-sm" style="">
             <h5>{{ $checkListsStatus_f->equipamento->nome }}</h5>
             <div style="display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;" class="mb-3">
-
                 {{-- Pendentes --}}
+                @if($checkListsStatus_f->pendentes > 0)
                 <div style="display: flex; align-items: center; background-color: #fff3cd; color: #856404; padding: 6px 12px; border-radius: 6px; font-size: 14px; gap: 8px; min-height: 30px;">
                     <i class="bi bi-exclamation-circle-fill" style="font-size: 16px;"></i>
                     <span>Pendentes:</span>
                     <strong style="font-size: 16px;">{{ $checkListsStatus_f->pendentes }}</strong>
                 </div>
+                @else
+                <div style="display: flex; align-items: center; background-color: #d1e7dd; color: #0f5132; padding: 6px 12px; border-radius: 6px; font-size: 14px; gap: 8px; min-height: 30px;">
+                    <i class="bi bi-check-circle-fill" style="font-size: 18px;"></i>
+                    <span>Tudo OK</span>
+                </div>
+                @endif
+
 
                 {{-- Executadas --}}
                 <div style="display: flex; align-items: center; background-color: #d4edda; color: #155724; padding: 6px 12px; border-radius: 6px; font-size: 14px; gap: 8px; min-height: 30px;">
