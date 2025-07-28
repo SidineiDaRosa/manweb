@@ -120,7 +120,7 @@
                         class="btn d-flex align-items-center gap-2"
                         style="background-color: rgb(255, 243, 205); color: rgba(112, 112, 109, 1); border: 1px solid rgb(255, 221, 128);">
                         <i class="bi bi-exclamation-triangle-fill"></i>
-                        Pendências
+                      &nbsp;  Avarias encontradas
                     </a>
 
 
