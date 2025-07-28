@@ -79,66 +79,84 @@
 
         <hr>
         <!-- Tabela que mostra os pendedntes e e executados-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
         @if(isset($check_lists_status))
-        <table class="table table-sm" style="table-layout: fixed;">
-            <thead>
-                <tr>
-                    <th>Equipamento</th>
-                    <th>Pendentes</th>
-                    <th>Executadas</th>
-                    <th>Alertas</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($check_lists_status as $checkListsStatus_f)
-                <tr>
-                    <td>{{ $checkListsStatus_f->equipamento->nome }}</td>
-                    <td style="background-color: orange; color: black;font-size:20px;">{{ $checkListsStatus_f->pendentes }}</td>
-                    <td style="background-color: lightgreen; color: black;font-size:20px;">{{ $checkListsStatus_f->executados }}</td>
-                    <td>
-                        <form action="{{ route('check-list-show') }}" method="POST" style="display:inline;">
-                            @csrf
-                            <input type="hidden" name="equipamento_id" value="{{ $checkListsStatus_f->equipamento->id }}">
-                            <button type="submit" class="btn btn-outline-dark sm" style="width:200px;float:right;">
-                                Chek-lists
-                            </button>
-                        </form>
-                        <a href="{{ route('check-list-finalizado',['equipamento_id'=>$checkListsStatus_f->equipamento->id]) }}" class="btn btn-primary sm">Check-List Executado</a>
-                    </td>
-                </tr>
-                {{-- Linha para exibir os alertas específicos para este equipamento --}}
-                @php
-                // Filtrar os alertas para o equipamento atual dentro do loop
-                $alertasDoEquipamento = $checkListExcAlerts->where('equipamento_id', $checkListsStatus_f->equipamento->id);
-                @endphp
+        @foreach($check_lists_status as $checkListsStatus_f)
+        <div class="card mb-3 p-3 shadow-sm" style="">
+            <h5>{{ $checkListsStatus_f->equipamento->nome }}</h5>
+            <div style="display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;" class="mb-3">
 
-                @if($alertasDoEquipamento->isNotEmpty())
-                <tr>
-                    <td colspan="4"> {{-- Colspan para ocupar todas as colunas --}}
-                        <div class="alert alert-warning mb-0" role="alert">
-                            <strong>Alertas de Gravidade Alta para {{ $checkListsStatus_f->equipamento->nome }}:</strong>
-                            <ul>
-                                @foreach($alertasDoEquipamento as $alerta)
-                                <li>
-                                    Checklist: {{ $alerta->checklist->descricao ?? 'N/A' }} -
-                                    Gravidade: **{{ $alerta->gravidade }}** -
-                                    Data Fim: {{ \Carbon\Carbon::parse($alerta->data_fim)->format('d/m/Y H:i') }}
-                                  <span style="color:darkblue;"> Obs.:</span>  {{$alerta->observacao}}
-                                    {{-- Adicione mais detalhes do alerta se precisar --}}
+                {{-- Pendentes --}}
+                <div style="display: flex; align-items: center; background-color: #fff3cd; color: #856404; padding: 6px 12px; border-radius: 6px; font-size: 14px; gap: 8px; min-height: 30px;">
+                    <i class="bi bi-exclamation-circle-fill" style="font-size: 16px;"></i>
+                    <span>Pendentes:</span>
+                    <strong style="font-size: 16px;">{{ $checkListsStatus_f->pendentes }}</strong>
+                </div>
 
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </td>
+                {{-- Executadas --}}
+                <div style="display: flex; align-items: center; background-color: #d4edda; color: #155724; padding: 6px 12px; border-radius: 6px; font-size: 14px; gap: 8px; min-height: 30px;">
+                    <i class="bi bi-check-circle-fill" style="font-size: 16px;"></i>
+                    <span>Executadas:</span>
+                    <strong style="font-size: 16px;">{{ $checkListsStatus_f->executados }}</strong>
+                </div>
 
 
-                </tr>
-                @endif
+                {{-- Botões --}}
+                <div style="display: flex; gap: 10px;">
+                    <form action="{{ route('check-list-show') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="equipamento_id" value="{{ $checkListsStatus_f->equipamento->id }}">
+                        <button type="submit" class="btn btn-outline-dark">Check-lists</button>
+                    </form>
+                    <a href="{{ route('check-list-finalizado', ['equipamento_id' => $checkListsStatus_f->equipamento->id]) }}"
+                        class="btn d-flex align-items-center gap-2"
+                        style="background-color: rgb(255, 243, 205); color: rgba(112, 112, 109, 1); border: 1px solid rgb(255, 221, 128);">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        Pendências
+                    </a>
+
+
+                </div>
+            </div>
+
+
+
+            {{-- Alertas específicos --}}
+            @php
+            $alertasDoEquipamento = $checkListExcAlerts->where('equipamento_id', $checkListsStatus_f->equipamento->id);
+            @endphp
+            @if($alertasDoEquipamento->isNotEmpty())
+            <div class="alert alert-warning mt-3 mb-0" style="background-color: #f8f5efff; padding: 10px;">
+                @foreach($alertasDoEquipamento as $alerta)
+                <div style="background: white; padding: 10px 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px;">
+                    <div><strong>Checklist:</strong> {{ $alerta->checklist->descricao ?? 'N/A' }}</div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <strong>Gravidade:</strong>
+                        <span>{{ $alerta->gravidade }}</span>
+                        @php
+                        $nivelGravidade = intval($alerta->gravidade);
+                        @endphp
+                        @if($nivelGravidade >= 3 && $nivelGravidade <= 5)
+                            <i class="bi bi-exclamation-triangle-fill" style="color: orange; font-size: 18px;"></i>
+                            @else
+                            <i class="bi bi-info-circle-fill" style="color: gray; font-size: 18px;"></i>
+                            @endif
+                    </div>
+                    <div><strong>Data Fim:</strong> {{ \Carbon\Carbon::parse($alerta->data_fim)->format('d/m/Y H:i') }}</div>
+                    <div style="color: darkblue;"><strong>Obs.:</strong> {{ $alerta->observacao }}</div>
+                </div>
                 @endforeach
-            </tbody>
-        </table>
+            </div>
+            @endif
+
+
+
+
+        </div>
+        @endforeach
         @endif
+
         <hr>
         <div class="card-header justify-content-left pt-1">
             <!-- Gravar um novo check list para o equipamento -->
