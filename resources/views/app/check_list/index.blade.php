@@ -4,11 +4,11 @@
 <main class="content">
     <div class="card">
         <div class="card-header pb-2">
-            Check-List índice
             <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
                 <i class="icofont-dashboard"></i> Dashboard
             </a>
         </div>
+        <hr>
         {{--//------------------------------------------------//--}}
         {{--Filtrar o check list por equipamento--}}
         {{--//------------------------------------------------//--}}
@@ -107,8 +107,6 @@
                     <span>Executadas:</span>
                     <strong style="font-size: 16px;">{{ $checkListsStatus_f->executados }}</strong>
                 </div>
-
-
                 {{-- Botões --}}
                 <div style="display: flex; gap: 10px;">
                     <form action="{{ route('check-list-show') }}" method="POST">
