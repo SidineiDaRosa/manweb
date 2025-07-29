@@ -243,14 +243,18 @@ class CheckListController extends Controller
     public function cont()
     {
 
-        // Define a data limite como 4 dias antes da data atual
-        $dataLimite = Carbon::now()->subDays(13);
 
-        // Conta os registros onde data_verificacao é anterior ou igual à data limite ou está nulo
-        $pendentes = CheckList::where('data_verificacao', '<=', $dataLimite)
-            ->orWhereNull('data_verificacao')
-            ->count();
+        $vencidos = CheckList::all()->filter(function ($checkList) {
+            // Próxima verificação esperada
+            $proxima = Carbon::parse($checkList->updated_at)->addHours($checkList->intervalo);
 
+            return now()->greaterThanOrEqualTo($proxima);
+        });
+
+        //return response()->json([
+           $pendentes= $vencidos->count();
+          //  'vencidos' => $vencidos->values(),
+      //  ]);
         // Retorna a contagem como resposta JSON
         return response()->json(['pendentes' => $pendentes]);
     }
