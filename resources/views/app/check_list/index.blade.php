@@ -260,119 +260,99 @@
         </div>
         <style>
             .checklist-container {
-                padding: 15px;
-            }
+    padding: 15px;
+}
 
-            .checklist-item {
-                display: flex;
-                flex-wrap: wrap;
-                /* Allows items to wrap on smaller screens */
-                align-items: center;
-                justify-content: space-between;
-                /* Distributes space between main sections */
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 15px;
-                margin-bottom: 10px;
-                /* Space between checklist items */
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            }
+.checklist-item {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    align-items: center;
+    justify-content: space-between; /* Distributes space between main sections */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px; /* Space between checklist items */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
 
-            .checklist-details {
-                display: flex;
-                flex-wrap: wrap;
-                /* Allow details to wrap if necessary */
-                flex-grow: 1;
-                /* Allows details section to take available space */
-                gap: 15px;
-                /* Space between individual detail items */
-                margin-right: 20px;
-                /* Space before status icon */
-            }
+.checklist-details {
+    display: flex;
+    flex-wrap: wrap; /* Allow details to wrap if necessary */
+    flex-grow: 1; /* Allows details section to take available space */
+    gap: 15px; /* Space between individual detail items */
+    margin-right: 20px; /* Space before status icon */
+}
 
-            .detail-item {
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 0.95em;
-                min-width: 120px;
-                /* Ensures minimum width for each detail for better alignment */
-            }
+.detail-item {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.95em;
+    min-width: 120px; /* Ensures minimum width for each detail for better alignment */
+}
 
-            .detail-item h5 {
-                margin-bottom: 2px;
-                font-size: 1em;
-                color: #555;
-            }
+.detail-item h5 {
+    margin-bottom: 2px;
+    font-size: 1em;
+    color: #555;
+}
 
-            .detail-item.description {
-                flex-basis: 200px;
-                /* Give more space to description */
-                flex-grow: 1;
-                /* Allow it to grow */
-            }
+.detail-item.description {
+    flex-basis: 200px; /* Give more space to description */
+    flex-grow: 1; /* Allow it to grow */
+}
 
-            .detail-item.date-time {
-                flex-basis: 180px;
-                /* Give more space to date/time */
-                flex-grow: 1;
-            }
+.detail-item.date-time {
+    flex-basis: 180px; /* Give more space to date/time */
+    flex-grow: 1;
+}
 
-            .checklist-status {
-                margin-right: 20px;
-                /* Space before action buttons */
-            }
+.checklist-status {
+    margin-right: 20px; /* Space before action buttons */
+}
 
-            .status-icon {
-                height: 30px;
-                width: auto;
-            }
+.status-icon {
+    height: 30px;
+    width: auto;
+}
 
-            .checklist-actions {
-                display: flex;
-                gap: 8px;
-                /* Space between action buttons */
-            }
+.checklist-actions {
+    display: flex;
+    gap: 8px; /* Space between action buttons */
+}
 
-            .checklist-separator {
-                border: 0;
-                border-top: 1px solid #eee;
-                margin: 15px 0;
-            }
+.checklist-separator {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
 
-            /* Basic responsiveness for smaller screens */
-            @media (max-width: 768px) {
-                .checklist-item {
-                    flex-direction: column;
-                    /* Stack items vertically */
-                    align-items: flex-start;
-                    /* Align items to the start when stacked */
-                }
+/* Basic responsiveness for smaller screens */
+@media (max-width: 768px) {
+    .checklist-item {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align items to the start when stacked */
+    }
 
-                .checklist-details {
-                    width: 100%;
-                    /* Take full width */
-                    margin-bottom: 15px;
-                    margin-right: 0;
-                }
+    .checklist-details {
+        width: 100%; /* Take full width */
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
 
-                .detail-item {
-                    min-width: unset;
-                    /* Remove min-width for better stacking */
-                    width: 100%;
-                    /* Make each detail item take full width */
-                }
+    .detail-item {
+        min-width: unset; /* Remove min-width for better stacking */
+        width: 100%; /* Make each detail item take full width */
+    }
 
-                .checklist-status,
-                .checklist-actions {
-                    width: 100%;
-                    display: flex;
-                    /* Keep actions and status in a row */
-                    justify-content: flex-end;
-                    /* Push actions to the right */
-                    margin-top: 10px;
-                    margin-right: 0;
-                }
-            }
+    .checklist-status,
+    .checklist-actions {
+        width: 100%;
+        display: flex; /* Keep actions and status in a row */
+        justify-content: flex-end; /* Push actions to the right */
+        margin-top: 10px;
+        margin-right: 0;
+    }
+}
         </style>
         <!--------------------------------------------------->
         <!-- Deletar o check-list-->

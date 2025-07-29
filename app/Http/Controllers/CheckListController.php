@@ -35,6 +35,16 @@ class CheckListController extends Controller
         $contChListCiv = CheckList::where('natureza', 'Civíl')->where('data_verificacao', '<=', $dataLimite)->count();
         $contChListOpe = CheckList::where('natureza', 'Operacional')->where('data_verificacao', '<=', $dataLimite)->count();
 
+
+
+        $maxUpdatedAt = CheckListExecutado::max('updated_at');
+        
+        $dataMax = Carbon::parse($maxUpdatedAt)->toDateString();
+
+        $checkListExcAlerts = CheckListExecutado::where('gravidade', '>=', 2)
+            ->whereDate('updated_at', $dataMax)
+            ->get();
+
         if ($type >= 1) {
             $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->where('data_verificacao', '<=', $dataLimite)->get();
             return view('app.check_list.index', [
@@ -45,7 +55,8 @@ class CheckListController extends Controller
                 'contChListMec' =>  $contChListMec,
                 'contChListElet' => $contChListElet,
                 'contChListCiv' => $contChListCiv,
-                'contChListOpe' => $contChListOpe
+                'contChListOpe' => $contChListOpe,
+                'checkListExcAlerts' => $checkListExcAlerts
             ]);
         } else {
             $checkListsStatus = CheckList::selectRaw("
@@ -68,7 +79,8 @@ class CheckListController extends Controller
                 'contChListMec' =>  $contChListMec,
                 'contChListElet' => $contChListElet,
                 'contChListCiv' => $contChListCiv,
-                'contChListOpe' => $contChListOpe
+                'contChListOpe' => $contChListOpe,
+                'checkListExcAlerts' => $checkListExcAlerts
             ]);
         }
     }
