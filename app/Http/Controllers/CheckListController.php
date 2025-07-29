@@ -37,13 +37,18 @@ class CheckListController extends Controller
 
 
 
-        $maxUpdatedAt = CheckListExecutado::max('updated_at');
-        
-        $dataMax = Carbon::parse($maxUpdatedAt)->toDateString();
+        $checkLists = CheckList::all();
+        $checkListExcAlerts = collect(); // Coleção vazia para armazenar os alertas
 
-        $checkListExcAlerts = CheckListExecutado::where('gravidade', '>=', 2)
-            ->whereDate('updated_at', $dataMax)
-            ->get();
+        foreach ($checkLists as $checkList) {
+            $ultimoExecutado = CheckListExecutado::where('check_list_id', $checkList->id)
+                ->orderBy('updated_at', 'desc')
+                ->first();
+
+            if ($ultimoExecutado && $ultimoExecutado->gravidade >= 2) {
+                $checkListExcAlerts->push($ultimoExecutado);
+            }
+        }
 
         if ($type >= 1) {
             $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->where('data_verificacao', '<=', $dataLimite)->get();
