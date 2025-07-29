@@ -84,7 +84,7 @@
         @if(isset($check_lists_status))
         @foreach($check_lists_status as $checkListsStatus_f)
         <div class="card mb-3 p-3 shadow-sm" style="">
-            <h5>{{ $checkListsStatus_f->equipamento->nome }}</h5>
+            <h5>{{ $checkListsStatus_f->equipamento->id }}&nbsp;{{ $checkListsStatus_f->equipamento->nome }}</h5>
             <div style="display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;" class="mb-3">
                 {{-- Pendentes --}}
                 @if($checkListsStatus_f->pendentes > 0)
@@ -118,7 +118,7 @@
                         class="btn d-flex align-items-center gap-2"
                         style="background-color: rgb(255, 243, 205); color: rgba(112, 112, 109, 1); border: 1px solid rgb(255, 221, 128);">
                         <i class="bi bi-exclamation-triangle-fill"></i>
-                      &nbsp;  Avarias encontradas
+                        &nbsp; Avarias encontradas
                     </a>
 
 
@@ -194,103 +194,217 @@
                 @endif
             </form>
             <hr>
-            <!--  tabela mostra os check list aberto-->
-            <div calss="div-row">
+            <div class="checklist-container">
 
-                @if(isset($equipamento))
-                @if(isset($check_list))
+                @if(isset($equipamento) && isset($check_list))
                 @foreach($check_list as $check_list_f)
-                <div style="display:flex;flex-direction:row;">
-                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:100px;">
-                        <h5> ID:</h5> {{$check_list_f->id}}
-                    </span>
-                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                        <h5>Descrição: </h5>{{$check_list_f->descricao}}
-                    </span>
-                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                        <h5>Natureza: </h5>{{$check_list_f->natureza}}
-                    </span>
-                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:20%;">
-                        <h5>Intervalo: </h5> {{$check_list_f->intervalo}}hs
-                    </span>
-                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-right:20px; width:30%;">
-                        <h5>Data hora: </h5>
-                        @if(!empty($check_list_f->data_verificacao))
-                        {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }}as
-                        {{$check_list_f->hora_verificacao}}
-                        @else
-                        Data não informada ainda.
-                        @endif
-                    </span>
+                <div class="checklist-item">
+                    <div class="checklist-details">
+                        <span class="detail-item">
+                            <h5>ID:</h5> {{ $check_list_f->id }}
+                        </span>
+                        <span class="detail-item description">
+                            <h5>Descrição:</h5> {{ $check_list_f->descricao }}
+                        </span>
+                        <span class="detail-item">
+                            <h5>Natureza:</h5> {{ $check_list_f->natureza }}
+                        </span>
+                        <span class="detail-item">
+                            <h5>Intervalo:</h5> {{ $check_list_f->intervalo }}hs
+                        </span>
+                        <span class="detail-item date-time">
+                            <h5>Data/Hora:</h5>
+                            @if(!empty($check_list_f->data_verificacao))
+                            {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }} às
+                            {{ $check_list_f->hora_verificacao }}
+                            @else
+                            Data não informada ainda.
+                            @endif
+                        </span>
+                    </div>
+
                     @php
-                    // Converte a data de verificação para um objeto DateTime (apenas a data, sem hora)
-                    $dataVerificacao = new DateTime($check_list_f->data_verificacao); // A data de verificação
-                    $dataAtual = new DateTime(); // Obtém a data atual
+                    $dataVerificacao = !empty($check_list_f->data_verificacao) ? new DateTime($check_list_f->data_verificacao) : null;
+                    $dataAtual = new DateTime();
+                    $horasDiferenca = 0;
 
-                    // Calcula a diferença entre a data atual e a data de verificação
+                    if ($dataVerificacao) {
                     $diferenca = $dataAtual->diff($dataVerificacao);
+                    $horasDiferenca = ($diferenca->days * 24);
+                    }
 
-                    // Converte a diferença total para horas (apenas usando dias)
-                    $horasDiferenca = ($diferenca->days * 24); // Converte os dias para horas
-
-                    // Defina o intervalo de verificação em horas (360hs no seu caso)
                     $intervaloVerificacao = 330;
                     @endphp
 
-                    <!-- Para depuração: exibe a diferença em horas -->
-                    @if (empty($check_list_f->data_verificacao) || $horasDiferenca >= $intervaloVerificacao)
-                    <!-- Mostrar a imagem de "warning" se já tiver passado mais de 360 horas -->
-                    <img style="height:30px; width:auto;" src="{{ asset('img/warning.png') }}" alt="Aviso">
-                    @else
-                    <!-- Mostrar a imagem de "check-mark" se a diferença for de 360 horas ou menos -->
-                    <img style="height:30px; width:auto;" src="{{ asset('img/check-mark.png') }}" alt="Checado">
-                    @endif
-                    <!-- operações de edição-->
-                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('check-list-edit',['check_list'=>$check_list_f->id])}}">
-                        <i class="icofont-ui-edit"></i> </a>
-                    <!--------------------------------------------------------------------------------->
-                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarEquipamento({{ $check_list_f->id }})">
-                        <i class="icofont-ui-delete"></i>
-                    </a>
+                    <div class="checklist-status">
+                        @if (empty($check_list_f->data_verificacao) || $horasDiferenca >= $intervaloVerificacao)
+                        <img class="status-icon" src="{{ asset('img/warning.png') }}" alt="Aviso">
+                        @else
+                        <img class="status-icon" src="{{ asset('img/check-mark.png') }}" alt="Checado">
+                        @endif
+                    </div>
 
-                    <script>
-                        function DeletarEquipamento(checkListId) {
-                            var r = confirm("Deseja deletar o checklist com ID: " + checkListId + "?");
-                            if (r == true) {
-                                // Chamada AJAX para deletar o checklist
-                                fetch(`{{ url('check-list-delete') }}/${checkListId}`, {
-                                        method: 'DELETE',
-                                        headers: {
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                            'Content-Type': 'application/json'
-                                        }
-                                    })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            alert("Checklist deletado com sucesso!");
-                                            // Atualize a página ou remova o item da lista, se necessário
-                                            location.reload(); // Por exemplo, recarregue a página
-                                        } else {
-                                            alert("Erro ao deletar o checklist.");
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Erro:', error);
-                                        alert("Ocorreu um erro ao deletar o checklist.");
-                                    });
-                            }
-                        }
-                    </script>
-
-
+                    <div class="checklist-actions">
+                        <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcan" href="{{ route('check-list-edit', ['check_list' => $check_list_f->id]) }}">
+                            <i class="icofont-ui-edit"></i>
+                        </a>
+                        <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="deleteChecklist({{ $check_list_f->id }})">
+                            <i class="icofont-ui-delete"></i>
+                        </a>
+                    </div>
                 </div>
-                <hr style="margin-top:2px;">
-
+                <hr class="checklist-separator">
                 @endforeach
-                @endif
                 @endif
             </div>
         </div>
+        <style>
+            .checklist-container {
+                padding: 15px;
+            }
+
+            .checklist-item {
+                display: flex;
+                flex-wrap: wrap;
+                /* Allows items to wrap on smaller screens */
+                align-items: center;
+                justify-content: space-between;
+                /* Distributes space between main sections */
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 10px;
+                /* Space between checklist items */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
+
+            .checklist-details {
+                display: flex;
+                flex-wrap: wrap;
+                /* Allow details to wrap if necessary */
+                flex-grow: 1;
+                /* Allows details section to take available space */
+                gap: 15px;
+                /* Space between individual detail items */
+                margin-right: 20px;
+                /* Space before status icon */
+            }
+
+            .detail-item {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 0.95em;
+                min-width: 120px;
+                /* Ensures minimum width for each detail for better alignment */
+            }
+
+            .detail-item h5 {
+                margin-bottom: 2px;
+                font-size: 1em;
+                color: #555;
+            }
+
+            .detail-item.description {
+                flex-basis: 200px;
+                /* Give more space to description */
+                flex-grow: 1;
+                /* Allow it to grow */
+            }
+
+            .detail-item.date-time {
+                flex-basis: 180px;
+                /* Give more space to date/time */
+                flex-grow: 1;
+            }
+
+            .checklist-status {
+                margin-right: 20px;
+                /* Space before action buttons */
+            }
+
+            .status-icon {
+                height: 30px;
+                width: auto;
+            }
+
+            .checklist-actions {
+                display: flex;
+                gap: 8px;
+                /* Space between action buttons */
+            }
+
+            .checklist-separator {
+                border: 0;
+                border-top: 1px solid #eee;
+                margin: 15px 0;
+            }
+
+            /* Basic responsiveness for smaller screens */
+            @media (max-width: 768px) {
+                .checklist-item {
+                    flex-direction: column;
+                    /* Stack items vertically */
+                    align-items: flex-start;
+                    /* Align items to the start when stacked */
+                }
+
+                .checklist-details {
+                    width: 100%;
+                    /* Take full width */
+                    margin-bottom: 15px;
+                    margin-right: 0;
+                }
+
+                .detail-item {
+                    min-width: unset;
+                    /* Remove min-width for better stacking */
+                    width: 100%;
+                    /* Make each detail item take full width */
+                }
+
+                .checklist-status,
+                .checklist-actions {
+                    width: 100%;
+                    display: flex;
+                    /* Keep actions and status in a row */
+                    justify-content: flex-end;
+                    /* Push actions to the right */
+                    margin-top: 10px;
+                    margin-right: 0;
+                }
+            }
+        </style>
+        <!--------------------------------------------------->
+        <!-- Deletar o check-list-->
+        <script>
+            function deleteChecklist(checkListId) {
+                var r = confirm("Deseja deletar o checklist com ID: " + checkListId + "?");
+                if (r == true) {
+                    // Chamada AJAX para deletar o checklist
+                    fetch(`{{ url('check-list-delete') }}/${checkListId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                alert("Checklist deletado com sucesso!");
+                                // Atualize a página ou remova o item da lista, se necessário
+                                location.reload(); // Por exemplo, recarregue a página
+                            } else {
+                                alert("Erro ao deletar o checklist.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert("Ocorreu um erro ao deletar o checklist.");
+                        });
+                }
+            }
+        </script>
+
         <!-- Mensagens de retorno-->
         @if ($errors->any())
         <div class="alert alert-danger">

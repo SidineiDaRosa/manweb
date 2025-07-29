@@ -359,6 +359,7 @@ Route::post('/check-list-save', [CheckListController::class, 'store'])->name('ch
 Route::post('/check-list/gravar', [CheckListController::class, 'store'])->name('check-list-gravar');
 Route::get('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');
 Route::get('/check-list-edit', [CheckListController::class, 'edit'])->name('check-list-edit');
+//Busca  check lists pendentes via jason, pela ToolBar reader
 Route::get('/check-list-pendentes', [CheckListController::class, 'cont']);
 // Rota para atualizar um check-list
 Route::get('/check-list/update', [CheckListController::class, 'update'])->name('check-list-update');

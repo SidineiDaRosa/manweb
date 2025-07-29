@@ -30,16 +30,31 @@ class CheckListController extends Controller
         //-------------------------------------//
         //  Cont check-list group
         //-------------------------------------//
-        $contChListMec = CheckList::where('natureza', 'Mecânico')->where('data_verificacao', '<=', $dataLimite)->count();
-        $contChListElet = CheckList::where('natureza', 'Elétrico')->where('data_verificacao', '<=', $dataLimite)->count();
-        $contChListCiv = CheckList::where('natureza', 'Civíl')->where('data_verificacao', '<=', $dataLimite)->count();
-        $contChListOpe = CheckList::where('natureza', 'Operacional')->where('data_verificacao', '<=', $dataLimite)->count();
+        // ✅ Lista completa para filtrar manualmente
+        $checklists = CheckList::with('equipamento')->get();
+
+        // ✅ Contadores por natureza com base no vencimento real (updated_at + intervalo)
+        $contChListMec = $checklists->filter(function ($c) {
+            return $c->natureza === 'Mecânico' && $this->isChecklistVencido($c);
+        })->count();
+
+        $contChListElet = $checklists->filter(function ($c) {
+            return $c->natureza === 'Elétrico' && $this->isChecklistVencido($c);
+        })->count();
+
+        $contChListCiv = $checklists->filter(function ($c) {
+            return $c->natureza === 'Civíl' && $this->isChecklistVencido($c);
+        })->count();
+
+        $contChListOpe = $checklists->filter(function ($c) {
+            return $c->natureza === 'Operacional' && $this->isChecklistVencido($c);
+        })->count();
         // Notificações de inregularidades encontradas nas checagens
 
+        // ✅ Irregularidades nos últimos 15 dias
         $quinzeDiasAtras = Carbon::now()->subDays(15);
-
         $checkListExcAlerts = CheckListExecutado::where('gravidade', '>=', 2)
-            ->whereNotNull('data_verificacao') // Ensures data_fim is not null, as you had before
+            ->whereNotNull('data_verificacao')
             ->where('data_verificacao', '>=', $quinzeDiasAtras)
             ->get();
 
@@ -81,6 +96,13 @@ class CheckListController extends Controller
             ]);
         }
     }
+    private function isChecklistVencido($check)
+    {
+        if (is_null($check->updated_at)) return true;
+
+        $prazo = $check->updated_at->copy()->addMinutes($check->intervalo ?? 0);
+        return $prazo->lessThanOrEqualTo(now());
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -120,11 +142,10 @@ class CheckListController extends Controller
     {
         $equipamento_id = $request->get('equipamento_id');
         $equipamento = Equipamento::find($equipamento_id);
-        //
-        $dataLimite = Carbon::now()->subDays(13);
 
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
+
         // dd($check_lists_pendentes->all());
         return view(
             'app.check_list.index',
@@ -207,18 +228,23 @@ class CheckListController extends Controller
 
         return response()->json(['message' => 'Checklist não encontrado.'], 404);
     }
+
+
     public function cont()
     {
+        // Executado por um ajax no ToolBar reader para mostrar as notificações
+        $pendentes = CheckList::all()->filter(function ($check) {
+            // Se nunca foi atualizado/verificado
+            if (is_null($check->updated_at)) {
+                return true;
+            }
 
-        // Define a data limite como 4 dias antes da data atual
-        $dataLimite = Carbon::now()->subDays(13);
+            $prazo = $check->updated_at->copy()->addMinutes($check->intervalo ?? 0);
 
-        // Conta os registros onde data_verificacao é anterior ou igual à data limite ou está nulo
-        $pendentes = CheckList::where('data_verificacao', '<=', $dataLimite)
-            ->orWhereNull('data_verificacao')
-            ->count();
+            // Se o prazo já passou, está pendente/atrasado
+            return $prazo->lessThanOrEqualTo(now());
+        });
 
-        // Retorna a contagem como resposta JSON
-        return response()->json(['pendentes' => $pendentes]);
+        return response()->json(['pendentes' => $pendentes->count()]);
     }
 }
