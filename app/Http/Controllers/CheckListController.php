@@ -229,17 +229,20 @@ class CheckListController extends Controller
         return response()->json(['message' => 'Checklist não encontrado.'], 404);
     }
 
-
     public function cont()
     {
         // Executado por um ajax no ToolBar reader para mostrar as notificações
         $pendentes = CheckList::all()->filter(function ($check) {
-            // Se nunca foi atualizado/verificado
-            if (is_null($check->updated_at)) {
+            // Se nunca foi verificado (ambos nulos)
+            if (is_null($check->data_verificacao) || is_null($check->hora_verificacao)) {
                 return true;
             }
 
-            $prazo = $check->updated_at->copy()->addMinutes($check->intervalo ?? 0);
+            // Junta data + hora numa instância Carbon
+            $verificacao = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $check->data_verificacao . ' ' . $check->hora_verificacao);
+
+            // Adiciona o intervalo
+            $prazo = $verificacao->copy()->addMinutes($check->intervalo ?? 0);
 
             // Se o prazo já passou, está pendente/atrasado
             return $prazo->lessThanOrEqualTo(now());
