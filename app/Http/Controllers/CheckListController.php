@@ -30,33 +30,10 @@ class CheckListController extends Controller
         //-------------------------------------//
         //  Cont check-list group
         //-------------------------------------//
-        // ✅ Lista completa para filtrar manualmente
-        $checklists = CheckList::with('equipamento')->get();
-
-        // ✅ Contadores por natureza com base no vencimento real (updated_at + intervalo)
-        $contChListMec = $checklists->filter(function ($c) {
-            return $c->natureza === 'Mecânico' && $this->isChecklistVencido($c);
-        })->count();
-
-        $contChListElet = $checklists->filter(function ($c) {
-            return $c->natureza === 'Elétrico' && $this->isChecklistVencido($c);
-        })->count();
-
-        $contChListCiv = $checklists->filter(function ($c) {
-            return $c->natureza === 'Civíl' && $this->isChecklistVencido($c);
-        })->count();
-
-        $contChListOpe = $checklists->filter(function ($c) {
-            return $c->natureza === 'Operacional' && $this->isChecklistVencido($c);
-        })->count();
-        // Notificações de inregularidades encontradas nas checagens
-
-        // ✅ Irregularidades nos últimos 15 dias
-        $quinzeDiasAtras = Carbon::now()->subDays(15);
-        $checkListExcAlerts = CheckListExecutado::where('gravidade', '>=', 2)
-            ->whereNotNull('data_verificacao')
-            ->where('data_verificacao', '>=', $quinzeDiasAtras)
-            ->get();
+        $contChListMec = CheckList::where('natureza', 'Mecânico')->where('data_verificacao', '<=', $dataLimite)->count();
+        $contChListElet = CheckList::where('natureza', 'Elétrico')->where('data_verificacao', '<=', $dataLimite)->count();
+        $contChListCiv = CheckList::where('natureza', 'Civíl')->where('data_verificacao', '<=', $dataLimite)->count();
+        $contChListOpe = CheckList::where('natureza', 'Operacional')->where('data_verificacao', '<=', $dataLimite)->count();
 
         if ($type >= 1) {
             $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->where('data_verificacao', '<=', $dataLimite)->get();
@@ -91,61 +68,77 @@ class CheckListController extends Controller
                 'contChListMec' =>  $contChListMec,
                 'contChListElet' => $contChListElet,
                 'contChListCiv' => $contChListCiv,
-                'contChListOpe' => $contChListOpe,
-                'checkListExcAlerts' => $checkListExcAlerts
+                'contChListOpe' => $contChListOpe
             ]);
         }
-    }
-    private function isChecklistVencido($check)
-    {
-        if (is_null($check->updated_at)) return true;
-
-        $prazo = $check->updated_at->copy()->addMinutes($check->intervalo ?? 0);
-        return $prazo->lessThanOrEqualTo(now());
     }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
-     */ public function store(Request $request)
+     */
+    public function create()
     {
+        //
+    }
 
-        // Validação dos dados recebidos
-        $validatedData = $request->validate([
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // Validação dos dados do request
+        $request->validate([
             'descricao' => 'required|string|max:255',
-            'equipamento_id' => 'required|integer|exists:equipamentos,id',
-            'intervalo' => 'required|integer|min:1',
-            'natureza' => 'required|string',
+            'equipamento_id' => 'required|integer',
+            'intervalo' => 'required|integer',
+            'natureza' => 'required',
+            //'data_verificacao' => 'required|date',
+            //'hora_verificacao' => 'required|date_format:H:i',
+        ]);
+        $data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString(); // Obtém apenas a data
+        $hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString(); // Obtém apenas a hora
+        // Criação do checklist
+        $checkList = CheckList::create([
+            'descricao' => $request->descricao,
+            'equipamento_id' => $request->equipamento_id,
+            'intervalo' => $request->intervalo,
+            'natureza' => $request->natureza,
+            //'data_verificacao' =>$data_verificacao,
+            //'hora_verificacao' => $hora_verificacao
+
+            // 'data_verificacao' => $request->data_verificacao,
+            //  'hora_verificacao' => $request->hora_verificacao,
         ]);
 
-        // Criação do checklist com os dados validados
-        $checkList = CheckList::create($validatedData);
-
-        // Consulta dos dados para a view
-        $equipamentos = Equipamento::all();
-        $equipamento = Equipamento::with('checkLists')->find($validatedData['equipamento_id']);
-        $check_list = $equipamento?->checkLists ?? collect();
-
+        // Redirecionar ou retornar uma resposta
+        // return redirect()->back()->with('success', 'Checklist criado com sucesso!');
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
         $equipamento = Equipamento::find($request->equipamento_id);
 
-        return view('app.check_list.index', [
-            'equipamentos' => $equipamentos,
-            'equipamento' => $equipamento,
-            'check_list' => $check_list,
-        ]);
+        return view(
+            'app.check_list.index',
+            [
+                'equipamentos' => $equipamentos,
+                'equipamento' => $equipamento,
+                'check_list' => $check_list
+            ]
+        );
     }
-
     public function show(Request $request)
     {
         $equipamento_id = $request->get('equipamento_id');
         $equipamento = Equipamento::find($equipamento_id);
+        //
+        $dataLimite = Carbon::now()->subDays(13);
 
         $equipamentos = Equipamento::all();
         $check_list = CheckList::where('equipamento_id', $request->equipamento_id)->get();
-
         // dd($check_lists_pendentes->all());
         return view(
             'app.check_list.index',
@@ -211,6 +204,8 @@ class CheckListController extends Controller
             ]
         );
     }
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -228,26 +223,18 @@ class CheckListController extends Controller
 
         return response()->json(['message' => 'Checklist não encontrado.'], 404);
     }
-
     public function cont()
     {
-        // Executado por um ajax no ToolBar reader para mostrar as notificações
-        $pendentes = CheckList::all()->filter(function ($check) {
-            // Se nunca foi verificado (ambos nulos)
-            if (is_null($check->data_verificacao) || is_null($check->hora_verificacao)) {
-                return true;
-            }
 
-            // Junta data + hora numa instância Carbon
-            $verificacao = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $check->data_verificacao . ' ' . $check->hora_verificacao);
+        // Define a data limite como 4 dias antes da data atual
+        $dataLimite = Carbon::now()->subDays(13);
 
-            // Adiciona o intervalo
-            $prazo = $verificacao->copy()->addMinutes($check->intervalo ?? 0);
+        // Conta os registros onde data_verificacao é anterior ou igual à data limite ou está nulo
+        $pendentes = CheckList::where('data_verificacao', '<=', $dataLimite)
+            ->orWhereNull('data_verificacao')
+            ->count();
 
-            // Se o prazo já passou, está pendente/atrasado
-            return $prazo->lessThanOrEqualTo(now());
-        });
-
-        return response()->json(['pendentes' => $pendentes->count()]);
+        // Retorna a contagem como resposta JSON
+        return response()->json(['pendentes' => $pendentes]);
     }
 }
