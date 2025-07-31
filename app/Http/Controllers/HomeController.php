@@ -302,7 +302,9 @@ class HomeController extends Controller
             ->get();
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
-        $pedidosCompraAberto = PedidoCompra::where('status', 'aberto')->get();
+        // busca os pedidos de compra abertos exeto
+        $pedidosCompraAberto = PedidoCompra::whereNotIn('status', ['fechado', 'indefinido', 'cancelado'])->get();
+
         $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
         //----------------------------------------------------------
         //Busca status do estoque de produtos

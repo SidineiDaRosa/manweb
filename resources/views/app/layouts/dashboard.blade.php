@@ -386,7 +386,7 @@
                                             {{ $os_hoje->id }}
                                         </a>
                                         <hr style="margin: 2px; color: gray" hidden>
-                                       <div style="border: 1px solid rgba(0, 0, 0, 0.1);border-radius:3px;">
+                                        <div style="border: 1px solid rgba(0, 0, 0, 0.1);border-radius:3px;">
                                             <div style="flex-direction: row;display:flex;"> <span style="font-weight:300;" class="{{ $classeDataInicio }}">
                                                     {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                                 </span>
@@ -906,16 +906,18 @@
                 Novo Pedido de saída
             </button>
             <hr style="margin-bottom:2px;margin-top:2px;">
-            <div class="card text-white mb-3" style="max-width:100%;background-color:rgb(189,236,182);">
+            <div class="card text-white mb-3" style="max-width:100%;background-color:#cbe7d0;">
                 <div class="card-body">
                     <div class="container">
                         <table class="condensed-table" id="tb_pedidos_compra">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Emissão</th>
+                                    <th hidden>Emissão</th>
                                     <th>Previsão</th>
                                     <th>Destino</th>
+                                    <th>Satus</th>
+                                    <th>Atualizado</th>
                                 </tr>
                             </thead>
 
@@ -933,7 +935,7 @@
                                             {{ $pedido_compra->id }}
                                         </a> &nbsp&nbsp <br>
                                     </td>
-                                    <td>
+                                    <td hidden>
                                         {{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/y') }} <br>
                                         {{ \Carbon\Carbon::parse($pedido_compra->hora_emissao)->format('h:i') }}
                                     </td>
@@ -942,12 +944,19 @@
                                         {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('h:i') }}
 
                                     </td>
-                                    <td>{{ $pedido_compra->equipamento->nome }}</td>
+                                    <td >{{ $pedido_compra->equipamento->nome }}</td>
                                     <td hidden>{{ $pedido_compra->descricao}}</td>
+                                    <td style="color: darkgray;">
+
+                                        {{ $pedido_compra->status }}
+
+                                    </td>
+                                    <td style="color: darkgray;">{{ $pedido_compra->updated_at->format('d/m/y H:i') }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
                         {{-----------------------------------------------}}
                         {{--Div script exibe informações sobre o pedido--}}
                         <style>
@@ -1045,11 +1054,12 @@
                 background-color: rgb(248, 248, 255, 0.7);
 
             }
-            td{
+
+            td {
                 font-weight: 300 !important;
                 font-family: Arial, Helvetica, sans-serif;
-                font-size:15px !important;
-                margin:2px;
+                font-size: 15px !important;
+                margin: 2px;
             }
         </style>
         <!-- continer products-->

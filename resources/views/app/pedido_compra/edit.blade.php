@@ -93,6 +93,8 @@
                 <option value="fechado">Fechado</option>
                 <option value="indefinido">Indefinido</option>
                 <option value="cancelado">Cancelado</option>
+                <option value="aceito">Aceito</option>
+                <option value="Em andamento">Em andamento</option>
             </select>
         </div>
     </div>
