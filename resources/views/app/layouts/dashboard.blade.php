@@ -944,12 +944,10 @@
                                         {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('h:i') }}
 
                                     </td>
-                                    <td >{{ $pedido_compra->equipamento->nome }}</td>
+                                    <td>{{ $pedido_compra->equipamento->nome }}</td>
                                     <td hidden>{{ $pedido_compra->descricao}}</td>
                                     <td style="color: darkgray;">
-
-                                        {{ $pedido_compra->status }}
-
+                                        {{ ucfirst(strtolower($pedido_compra->status)) }}
                                     </td>
                                     <td style="color: darkgray;">{{ $pedido_compra->updated_at->format('d/m/y H:i') }}</td>
                                 </tr>
