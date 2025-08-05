@@ -73,12 +73,13 @@
             background-color: rgb(245, 246, 248);
 
         }
-           td{
-                font-weight: 300 !important;
-                font-family: Arial, Helvetica, sans-serif;
-                font-size:15px !important;
-                margin:2px;
-            }
+
+        td {
+            font-weight: 300 !important;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px !important;
+            margin: 2px;
+        }
     </style>
 
     <!-- JavaScript para atualização das contagens -->
@@ -577,12 +578,32 @@
 
                                                     </div>
                                                 </div>
+                                                <br>
+
+
+                                                <button type="button" class="gerarPdfButton btn btn-outline-primary mb-1" title="Imprimir O.S">
+                                                    <i class="icofont-print"></i>
+                                                </button>
+
+                                                <form class="frm-pdf" action="{{ route('gerar.pdf') }}" method="POST" target="_blank">
+                                                    @csrf
+                                                    <input type="hidden" name="ordem_servico_id" value="{{ $os_hoje->id }}">
+                                                </form>
+
                                     </td>
                                 </tr>
                                 @endforeach
 
                             </tbody>
-
+                            <script>
+                                document.querySelectorAll('.gerarPdfButton').forEach(function(button) {
+                                    button.addEventListener('click', function() {
+                                        const form = button.closest('td').querySelector('.frm-pdf');
+                                        const id = form.querySelector('[name="ordem_servico_id"]').value;
+                                        form.submit(); // Descomente para gerar o PDF
+                                    });
+                                });
+                            </script>
                         </table>
                         <!--Troca cor das linha d tabela acima-->
                         <style>
