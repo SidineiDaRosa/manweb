@@ -2,30 +2,25 @@
 
 <body>
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <video autoplay muted loop class="h-100">
-                    <source src="{{ asset('img/apresentacao/fapolpa1.jpeg') }}" type="video/mp4" alt="...">
-                </video>
-            </div>
-            <div class="carousel-item">
-                <video autoplay muted loop class="h-100">
-                    <source src="{{ asset('img/fapolpa1.jpeg') }}" type="video/mp4" alt="...">
-                </video>
-            </div>
-            <div class="carousel-item">
-                <video autoplay muted loop class="h-100">
-                    <source src="{{ asset('img/apresentacao/fapolpa1.jpeg') }}" type="video/mp4" alt="...">
-                </video>
-            </div>
-            <!--Div imagem fosca-->
-            <div id="overlay"></div>
-            <div class="carousel-caption">
-                <h1>ManWEB</h1>
-                Sistema para gestão de manutenção.
-                <input type="button" value="saber mais...">
-            </div>
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{{ asset('img/horizonte_fundo.jpg') }}" class="d-block w-100" alt="...">
         </div>
+        <div class="carousel-item">
+            <img src="{{ asset('img/fapolpa1.jpeg') }}" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ asset('img/slide-home/3.jpg') }}" class="d-block w-100" alt="...">
+        </div>
+
+        <div id="overlay"></div>
+        <div class="carousel-caption">
+            <h1>ManWEB</h1>
+            Sistema para gestão de manutenção.
+            <input type="button" value="saber mais...">
+        </div>
+    </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
