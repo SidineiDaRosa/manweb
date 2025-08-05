@@ -24,8 +24,8 @@
     <div class="dropdown" id="checklist-count" style="margin-top:20px;margin-right:50px">
     </div>
     <div style="width: 100px;margin-left:300px;">
-        <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: black;margin-top:20px;">
-            Check-list <p></p>
+        <a href="" id="checklist-link" class="dropdown" style="color: black;margin-top:20px;">
+            Check-lists <p></p>
             &nbsp <span style="margin-top:35px;" class="badge" id="checklist-badge">0</span>
         </a>
     </div>
@@ -581,7 +581,7 @@
                                                 <br>
 
 
-                                                <button type="button" class="gerarPdfButton btn btn-outline-primary mb-1" title="Imprimir O.S">
+                                                <button type="button" class="gerarPdfButton btn btn-outline-secondary mb-1" title="Imprimir O.S">
                                                     <i class="icofont-print"></i>
                                                 </button>
 
