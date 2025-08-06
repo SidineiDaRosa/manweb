@@ -684,4 +684,46 @@ class OrdemServicoController extends Controller
 
         return view('app.ordem_servico.gantt_os', compact('ordens', 'inicioFiltro', 'fimFiltro'));
     }
+    public function storeFromModal(Request $request)
+    {
+        // Validação simples (você pode ajustar)
+        $request->validate([
+            'data_emissao' => 'required|date',
+            'hora_emissao' => 'required',
+            'data_inicio' => 'required|date',
+            'hora_inicio' => 'required',
+            'data_fim' => 'required|date',
+            'hora_fim' => 'required',
+            'equipamento_id' => 'required|integer',
+            'funcionario_id' => 'required|string',
+            'descricao' => 'required|string',
+            'especialidade_do_servico' => 'required|string',
+            'natureza_do_servico' => 'required|string',
+        ]);
+
+        $ordemServico = OrdemServico::create([
+            'data_emissao' => $request->data_emissao,
+            'hora_emissao' => $request->hora_emissao,
+            'data_inicio' => $request->data_inicio,
+            'hora_inicio' => $request->hora_inicio,
+            'data_fim' => $request->data_fim,
+            'hora_fim' => $request->hora_fim,
+            'equipamento_id' => $request->equipamento_id,
+            'emissor' =>'Marcos',
+            'responsavel' => $request->funcionario_id,
+            'descricao' => $request->descricao,
+            'status_servicos' => $request->status_servicos,
+            'link_foto' => $request->link_foto, // pode ser ajustado para upload real
+            'gravidade' => $request->gravidade,
+            'urgencia' => $request->urgencia,
+            'tendencia' => $request->tendencia,
+            'empresa_id' => $request->empresa_id,
+            'situacao' => $request->situacao,
+            'natureza_do_servico' => $request->natureza_do_servico,
+            'especialidade_do_servico' => $request->especialidade_do_servico,
+            'ss_id' => $request->ss_id
+        ]);
+
+        return response()->json(['success' => true, 'id' => $ordemServico->id]);
+    }
 }

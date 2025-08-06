@@ -422,6 +422,13 @@ Route::post('/groups/{group}/attach-users', [GroupController::class, 'attachUser
 Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
 
+//----------------------------------------------------------//
+//   Dashboard status  os
+//----------------------------------------------------------//
+
+Route::post('/ordem-servico/modal', [OrdemServicoController::class, 'storeFromModal'])->name('ordem_servico.modal');
+
+
 
 
 

@@ -28,7 +28,16 @@
             Check-lists <p></p>
             &nbsp <span style="margin-top:35px;" class="badge" id="checklist-badge">0</span>
         </a>
+
     </div>
+    <div>
+        <!-- Botão que abre a modal -->
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalExemplo" style="height:35px;">
+            Criar O.S
+        </button>
+
+    </div>
+
     <!-- CSS -->
     <style>
         .badge {
@@ -887,5 +896,191 @@
             font-family: Arial, Helvetica, sans-serif;
         }
     </style>
+
+
+
+    <!-- Bootstrap CSS (no <head>) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="modalExemplo" tabindex="-1" aria-labelledby="modalExemploLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- modal-lg para mais espaço -->
+            <div class="modal-content">
+
+                <!-- Cabeçalho -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalExemploLabel">Criar O.S.</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                <!-- Corpo do formulário -->
+                <div class="modal-body">
+
+                    <!-- Data e Hora de Emissão (oculto) -->
+                    <div class="row mb-3" hidden>
+                        <div class="col">
+                            <input type="date" id="data_emissao" name="data_emissao" class="form-control" readonly>
+                        </div>
+                        <div class="col">
+                            <input type="time" id="hora_emissao" name="hora_emissao" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Data e Hora de Início -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="data_inicio" class="form-label">Data de Início</label>
+                            <input type="date" id="data_inicio" name="data_inicio" class="form-control">
+                        </div>
+                        <div class="col">
+                            <label for="hora_inicio" class="form-label">Hora de Início</label>
+                            <input type="time" id="hora_inicio" name="hora_inicio" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- Data e Hora de Fim -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="data_fim" class="form-label">Data de Fim</label>
+                            <input type="date" id="data_fim" name="data_fim" class="form-control">
+                        </div>
+                        <div class="col">
+                            <label for="hora_fim" class="form-label">Hora de Fim</label>
+                            <input type="time" id="hora_fim" name="hora_fim" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- Equipamento -->
+                    <div class="mb-3">
+                        <label for="equipamento_id" class="form-label">Equipamento</label>
+                        <select name="equipamento_id" id="equipamento_id" class="form-select">
+                            <option value="">-- Selecione --</option>
+                            @foreach($equipamentos as $equipamento)
+                            <option value="{{ $equipamento->id }}">{{ $equipamento->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Responsável -->
+                    <div class="mb-3">
+                        <label for="funcionario_id" class="form-label">Responsável</label>
+                        <select name="funcionario_id" id="funcionario_id" class="form-select">
+                            <option value="">-- Selecione --</option>
+                            @foreach($funcionarios as $funcionario)
+                            <option value="{{ $funcionario->primeiro_nome}}">{{ $funcionario->primeiro_nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Descrição -->
+                    <div class="mb-3">
+                        <label for="campoTexto" class="form-label">Descrição</label>
+                        <textarea id="campoTexto" name="descricao" class="form-control" placeholder="Digite aqui..." rows="3"></textarea>
+                    </div>
+
+                    <!-- Especialidade -->
+                    <div class="mb-3">
+                        <label for="especialidade_do_servico" class="form-label">Especialidade do Serviço</label>
+                        <select class="form-select" id="especialidade_do_servico" name="especialidade_do_servico">
+                            <option value="">-- Selecione --</option>
+                            <option value="Mecânico">Mecânico</option>
+                            <option value="Elétrico">Elétrico</option>
+                        </select>
+                    </div>
+
+                    <!-- Natureza -->
+                    <div class="mb-3">
+                        <label for="natureza_do_servico" class="form-label">Natureza do Serviço</label>
+                        <select class="form-select" id="natureza_do_servico" name="natureza_do_servico">
+                            <option value="">-- Selecione --</option>
+                            <option value="Preventiva">Preventiva</option>
+                            <option value="Corretiva">Corretiva</option>
+                            <option value="Preditiva">Preditiva</option>
+                        </select>
+                    </div>
+
+                    <!-- Inputs ocultos -->
+                    <input type="hidden" id="status_servicos" name="status_servicos" value="80">
+                    <input type="hidden" id="link_foto" name="link_foto">
+                    <input type="hidden" id="gravidade" name="gravidade" value="3">
+                    <input type="hidden" id="urgencia" name="urgencia" value="3">
+                    <input type="hidden" id="tendencia" name="tendencia" value="3">
+                    <input type="hidden" id="empresa_id" name="empresa_id" value="2">
+                    <input type="hidden" id="situacao" name="situacao" value="Aberto">
+                    <input type="hidden" id="ss_id" name="ss_id" value="">
+                </div>
+
+                <!-- Rodapé -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="salvar()">Salvar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS (de preferência no final do body) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function salvar() {
+            const valor = document.getElementById('campoTexto').value;
+            alert('Valor digitado: ' + valor);
+
+            // Fechar a modal via JS (opcional)
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalExemplo'));
+            modal.hide();
+        }
+    </script>
+    <script>
+        function salvar() {
+            const formData = new FormData();
+
+            // Campos do formulário
+            formData.append('data_emissao', document.getElementById('data_emissao').value);
+            formData.append('hora_emissao', document.getElementById('hora_emissao').value);
+            formData.append('data_inicio', document.getElementById('data_inicio').value);
+            formData.append('hora_inicio', document.getElementById('hora_inicio').value);
+            formData.append('data_fim', document.getElementById('data_fim').value);
+            formData.append('hora_fim', document.getElementById('hora_fim').value);
+            formData.append('equipamento_id', document.getElementById('equipamento_id').value);
+            formData.append('funcionario_id', document.getElementById('funcionario_id').value);
+            formData.append('descricao', document.getElementById('campoTexto').value);
+            formData.append('especialidade_do_servico', document.getElementById('especialidade_do_servico').value);
+            formData.append('natureza_do_servico', document.getElementById('natureza_do_servico').value);
+
+            // Hidden fields
+            formData.append('status_servicos', document.getElementById('status_servicos').value);
+            formData.append('link_foto', document.getElementById('link_foto').value); // ou use .files[0] se for file
+            formData.append('gravidade', document.getElementById('gravidade').value);
+            formData.append('urgencia', document.getElementById('urgencia').value);
+            formData.append('tendencia', document.getElementById('tendencia').value);
+            formData.append('empresa_id', document.getElementById('empresa_id').value);
+            formData.append('situacao', document.getElementById('situacao').value);
+            formData.append('ss_id', document.getElementById('ss_id').value);
+
+            // Envio AJAX com fetch
+            fetch("{{ route('ordem_servico.modal') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Erro ao salvar O.S.');
+                    return response.json();
+                })
+                .then(data => {
+                    alert("O.S. criada com sucesso!");
+                    location.reload(); // ou feche a modal, etc.
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert("Erro ao criar O.S.");
+                });
+        }
+    </script>
 
 </main>

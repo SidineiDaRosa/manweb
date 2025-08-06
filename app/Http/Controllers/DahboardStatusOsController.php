@@ -32,7 +32,9 @@ class DahboardStatusOsController extends Controller
     {
         date_default_timezone_set('America/Sao_Paulo'); //define a data e hora DE SÃO PAULO
         $empresa = Empresas::all();
-        $equipamento = Equipamento::all();
+
+        $equipamentos = Equipamento::all();
+
         $id = $request->get("id");
         $printerOs = $request->get("printer");
         $tipo_consulta = $request->get("tipo_consulta");
@@ -53,7 +55,7 @@ class DahboardStatusOsController extends Controller
         $dataFim_1 = date("Y-m-d", strtotime("+500 days")); //formato en
         $dataFutura_1_days = date("Y-m-d", strtotime("+1 days")); //formato en
         $dataFutura_5_days = date("Y-m-d", strtotime("+5 days")); //formato en
-        $funcionarios = Funcionario::all();
+
         $situacao = 'aberto';
         //Busca ordens do dia abertas conta
         $ordens_servicos_hoje = OrdemServico::where('situacao', 'aberto')
@@ -322,12 +324,12 @@ class DahboardStatusOsController extends Controller
         $fridayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(4)->format('Y-m-d'));
         $saturdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(5)->format('Y-m-d'));
         $sundayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(6)->format('Y-m-d'));
-
+      
         //---------------------------------------------------//
         //  envia dados para view                           //
         //--------------------------------------------------//
         return view('app.ordem_servico.dashboard_status_os', [
-            'equipamento' => $equipamento,
+            'equipamentos' => $equipamentos,
             'ordens_servicos' => $ordens_servicos,
             'funcionarios' => $funcionarios,
             'empresa' => $empresa,
@@ -434,8 +436,9 @@ class DahboardStatusOsController extends Controller
                 ->where('empresa_id', '<=', 2)
                 ->get();
         }
-        $ordem_servico_gantt=OrdemServico::where('situacao','aberto')->get();
-       // echo ($ordem_servico_gantt);
+        $ordem_servico_gantt = OrdemServico::where('situacao', 'aberto')->get();
+        // echo ($ordem_servico_gantt);
+
         return view('app.ordem_servico.programer_os', [
             'mondayOrders' => $mondayOrders,
             'tuesdayOrders' => $tuesdayOrders,
@@ -445,7 +448,7 @@ class DahboardStatusOsController extends Controller
             'saturdayOrders' => $saturdayOrders,
             'sundayOrders' => $sundayOrders,
             'ordens_servicos_por_semana' => $ordens_servicos_por_semana,
-            'ordem_servico_gantt'=>$ordem_servico_gantt
+            'ordem_servico_gantt' => $ordem_servico_gantt
 
         ]);
     }
