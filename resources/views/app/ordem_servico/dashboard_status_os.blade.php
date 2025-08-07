@@ -1126,7 +1126,7 @@
         function startAutoRefresh() {
             refreshTimeout = setTimeout(() => {
                 location.reload();
-            }, 600000); // 60 segundos
+            }, 20000); // 60 segundos
         }
 
         function stopAutoRefresh() {
