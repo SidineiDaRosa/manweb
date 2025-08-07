@@ -3,7 +3,7 @@
 </html>
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<meta http-equiv="refresh" content="60">
+<!--<meta http-equiv="refresh" content="60">-->
 <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -906,6 +906,44 @@
     <div class="modal fade" id="modalExemplo" tabindex="-1" aria-labelledby="modalExemploLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- modal-lg para mais espaço -->
             <div class="modal-content">
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Campos de data
+                        const inputDataInicio = document.getElementById('data_inicio');
+                        const inputDataFim = document.getElementById('data_fim');
+
+                        // Campos de hora
+                        const inputHoraInicio = document.getElementById('hora_inicio');
+                        const inputHoraFim = document.getElementById('hora_fim');
+
+                        // Data e hora atuais
+                        const agora = new Date();
+
+                        // Formatar data no padrão yyyy-mm-dd
+                        const ano = agora.getFullYear();
+                        const mes = String(agora.getMonth() + 1).padStart(2, '0');
+                        const dia = String(agora.getDate()).padStart(2, '0');
+                        const dataFormatada = `${ano}-${mes}-${dia}`;
+
+                        // hora_inicio = agora - 1 hora
+                        const horaInicioDate = new Date(agora.getTime() - (60 * 60 * 1000));
+                        const horaInicio = String(horaInicioDate.getHours()).padStart(2, '0');
+                        const minutosInicio = String(horaInicioDate.getMinutes()).padStart(2, '0');
+                        const horaFormatadaInicio = `${horaInicio}:${minutosInicio}`;
+
+                        // Formatar hora no padrão hh:mm (sem segundos)
+                        const hora = String(agora.getHours()).padStart(2, '0');
+                        const minutos = String(agora.getMinutes()).padStart(2, '0');
+                        const horaFormatada = `${hora}:${minutos}`;
+
+                        // Aplicar nos campos
+                        inputDataInicio.value = dataFormatada;
+                        inputDataFim.value = dataFormatada;
+
+                        inputHoraInicio.value = horaFormatadaInicio;
+                        inputHoraFim.value = horaFormatada;
+                    });
+                </script>
 
                 <!-- Cabeçalho -->
                 <div class="modal-header">
@@ -930,11 +968,11 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="data_inicio" class="form-label">Data de Início</label>
-                            <input type="date" id="data_inicio" name="data_inicio" class="form-control">
+                            <input type="date" id="data_inicio" name="data_inicio" class="form-control" required>
                         </div>
                         <div class="col">
                             <label for="hora_inicio" class="form-label">Hora de Início</label>
-                            <input type="time" id="hora_inicio" name="hora_inicio" class="form-control">
+                            <input type="time" id="hora_inicio" name="hora_inicio" class="form-control" required>
                         </div>
                     </div>
 
@@ -942,18 +980,18 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="data_fim" class="form-label">Data de Fim</label>
-                            <input type="date" id="data_fim" name="data_fim" class="form-control">
+                            <input type="date" id="data_fim" name="data_fim" class="form-control" required>
                         </div>
                         <div class="col">
                             <label for="hora_fim" class="form-label">Hora de Fim</label>
-                            <input type="time" id="hora_fim" name="hora_fim" class="form-control">
+                            <input type="time" id="hora_fim" name="hora_fim" class="form-control" required>
                         </div>
                     </div>
 
                     <!-- Equipamento -->
                     <div class="mb-3">
                         <label for="equipamento_id" class="form-label">Equipamento</label>
-                        <select name="equipamento_id" id="equipamento_id" class="form-select">
+                        <select name="equipamento_id" id="equipamento_id" class="form-select" required>
                             <option value="">-- Selecione --</option>
                             @foreach($equipamentos as $equipamento)
                             <option value="{{ $equipamento->id }}">{{ $equipamento->nome }}</option>
@@ -964,7 +1002,7 @@
                     <!-- Responsável -->
                     <div class="mb-3">
                         <label for="funcionario_id" class="form-label">Responsável</label>
-                        <select name="funcionario_id" id="funcionario_id" class="form-select">
+                        <select name="funcionario_id" id="funcionario_id" class="form-select" required>
                             <option value="">-- Selecione --</option>
                             @foreach($funcionarios as $funcionario)
                             <option value="{{ $funcionario->primeiro_nome}}">{{ $funcionario->primeiro_nome }}</option>
@@ -975,13 +1013,13 @@
                     <!-- Descrição -->
                     <div class="mb-3">
                         <label for="campoTexto" class="form-label">Descrição</label>
-                        <textarea id="campoTexto" name="descricao" class="form-control" placeholder="Digite aqui..." rows="3"></textarea>
+                        <textarea id="campoTexto" name="descricao" class="form-control" placeholder="Digite aqui..." rows="3" minlength="30" required></textarea>
                     </div>
 
                     <!-- Especialidade -->
                     <div class="mb-3">
                         <label for="especialidade_do_servico" class="form-label">Especialidade do Serviço</label>
-                        <select class="form-select" id="especialidade_do_servico" name="especialidade_do_servico">
+                        <select class="form-select" id="especialidade_do_servico" name="especialidade_do_servico" required>
                             <option value="">-- Selecione --</option>
                             <option value="Mecânico">Mecânico</option>
                             <option value="Elétrico">Elétrico</option>
@@ -991,7 +1029,7 @@
                     <!-- Natureza -->
                     <div class="mb-3">
                         <label for="natureza_do_servico" class="form-label">Natureza do Serviço</label>
-                        <select class="form-select" id="natureza_do_servico" name="natureza_do_servico">
+                        <select class="form-select" id="natureza_do_servico" name="natureza_do_servico" required>
                             <option value="">-- Selecione --</option>
                             <option value="Preventiva">Preventiva</option>
                             <option value="Corretiva">Corretiva</option>
@@ -1081,6 +1119,33 @@
                     alert("Erro ao criar O.S.");
                 });
         }
+    </script>
+    <script>
+        let refreshTimeout;
+
+        function startAutoRefresh() {
+            refreshTimeout = setTimeout(() => {
+                location.reload();
+            }, 600000); // 60 segundos
+        }
+
+        function stopAutoRefresh() {
+            clearTimeout(refreshTimeout);
+        }
+
+        // Supondo que você usa Bootstrap ou uma modal com ID
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modalExemplo');
+
+            // Modal aberta → para o timer
+            modal.addEventListener('show.bs.modal', stopAutoRefresh);
+
+            // Modal fechada → reinicia o timer
+            modal.addEventListener('hidden.bs.modal', startAutoRefresh);
+
+            // Inicia o auto-refresh ao carregar a página
+            startAutoRefresh();
+        });
     </script>
 
 </main>
