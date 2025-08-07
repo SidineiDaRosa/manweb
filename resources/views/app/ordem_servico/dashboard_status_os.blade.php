@@ -1021,8 +1021,8 @@
                         <label for="especialidade_do_servico" class="form-label">Especialidade do Serviço</label>
                         <select class="form-select" id="especialidade_do_servico" name="especialidade_do_servico" required>
                             <option value="">-- Selecione --</option>
-                            <option value="Mecânico">Mecânico</option>
-                            <option value="Elétrico">Elétrico</option>
+                            <option value="Mecanica">Mecânico</option>
+                            <option value="Eletrica">Elétrico</option>
                         </select>
                     </div>
 
