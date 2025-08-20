@@ -20,25 +20,60 @@ class KPIscontroller extends Controller
      */
     public function index()
     {
-        // Calculando a soma das horas de trabalho dos funcionários
+        // Retorna a view com os dados de serviços executados
 
-        $servicos_executados = Servicos_executado::select(
+        return view('app.KPIs.index', []);
+    }
+    public function dashboard(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Lógica para filtrar Servicos_executado
+        $servicos_query = Servicos_executado::select(
             'funcionario_id',
             DB::raw('SUM(TIMESTAMPDIFF(SECOND, CONCAT(data_inicio, " ", hora_inicio), CONCAT(data_fim, " ", hora_fim)))/3600 AS total_horas')
-        )
-            ->where('data_inicio', '>=', Carbon::now()->subDays(90)) // Filtra os serviços dos últimos 30 dias
-            ->groupBy('funcionario_id')
-            ->OrderBy('total_horas','asc')
+        );
+
+        if ($startDate) {
+            $servicos_query->where('data_inicio', '>=', $startDate);
+        }
+        if ($endDate) {
+            $servicos_query->where('data_fim', '<=', $endDate);
+        }
+
+        // Se nenhuma data for fornecida, mantém o filtro padrão
+        if (!$startDate && !$endDate) {
+            $servicos_query->where('data_inicio', '>=', Carbon::now()->subDays(30));
+        }
+
+        $servicos_executados = $servicos_query->groupBy('funcionario_id')
+            ->orderBy('total_horas', 'asc')
             ->get();
-        $ordens_servico = OrdemServico::select(
+
+        // Lógica para filtrar Ordens de Serviço
+        $ordens_query = OrdemServico::select(
             'equipamento_id',
             DB::raw('SUM(TIMESTAMPDIFF(SECOND, CONCAT(data_inicio, " ", hora_inicio), CONCAT(data_fim, " ", hora_fim)))/3600 AS total_horas')
-        )
-            ->where('data_inicio', '>=', Carbon::now()->subDays(90)) // Filtra os serviços dos últimos 90 dias
-            ->groupBy('equipamento_id')
-            ->OrderBy('total_horas','asc')
+        );
+
+        if ($startDate) {
+            $ordens_query->where('data_inicio', '>=', $startDate);
+        }
+        if ($endDate) {
+            $ordens_query->where('data_fim', '<=', $endDate);
+        }
+
+        // Se nenhuma data for fornecida, mantém o filtro padrão
+        if (!$startDate && !$endDate) {
+            $ordens_query->where('data_inicio', '>=', Carbon::now()->subDays(90));
+        }
+
+        $ordens_servico = $ordens_query->groupBy('equipamento_id')
+            ->orderBy('total_horas', 'asc')
             ->get();
-        // Retorna a view com os dados de serviços executados
+
+        // Retorna a view com os dados
         return view('app.KPIs.dashboard', [
             'servicos_executados' => $servicos_executados,
             'ordens_servico' => $ordens_servico

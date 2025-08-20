@@ -103,7 +103,7 @@ Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStat
 
 Route::post('/ordem-servico/atualizar-intervalo', [OrdemServicoController::class, 'update_os_interval'])
     ->name('update.os.interval');
-    //   Abre os  gantt
+//   Abre os  gantt
 Route::get('/filter-os-timeline', [OrdemServicoController::class, 'filter_os_timeline'])->name('filter.os.timeline');
 Route::get('/gantt-timeline', [OrdemServicoController::class, 'gantt_timeline'])->name('gantt.os.timeline');
 
@@ -389,7 +389,8 @@ Route::get('/dashboard-custos', [CustosController::class, 'dashboard'])->name('c
 //----------------------------------------------------------//
 use App\Http\Controllers\KPIsController;
 
-Route::get('/dashboard-kpis', [KPIsController::class, 'index'])->name('kpis.dashboard');
+Route::get('/dashboard', [KPIsController::class, 'dashboard'])->name('kpis.dashboard');
+Route::get('/index-kpis', [KPIsController::class, 'index'])->name('index_kpis');
 //----------------------------------------------------------//
 //   Atualizar orímetro        
 //----------------------------------------------------------//
@@ -416,7 +417,9 @@ use App\Http\Controllers\PostController;
 
 Route::get('/blog/painel', [PostController::class, 'index'])->name('blog.painel');
 Route::post('/messages/painel', [PostController::class, 'store'])->name('messages.store');
+
 use App\Http\Controllers\GroupController;
+
 Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
 Route::post('/groups/{group}/attach-users', [GroupController::class, 'attachUsers'])->name('groups.attachUsers');
 Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
@@ -427,9 +430,3 @@ Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
 //----------------------------------------------------------//
 
 Route::post('/ordem-servico/modal', [OrdemServicoController::class, 'storeFromModal'])->name('ordem_servico.modal');
-
-
-
-
-
-

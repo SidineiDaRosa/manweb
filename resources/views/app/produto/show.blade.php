@@ -3,382 +3,626 @@
 @section('titulo', 'Produtos')
 
 @section('content')
-
 <main class="content">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <div class="card">
-        <div class="card-header-template">
-            <div>Visualização do Produto</div>
-            <div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ml-blue: #3483fa;
+            --ml-green: #00a650;
+            --ml-dark: #333;
+            --ml-gray: #666;
+            --ml-light-gray: #e6e6e6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .container {
+            max-width: 1184px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: var(--ml-blue);
+            text-decoration: none;
+        }
+        
+        /* Product Container */
+        .product-container {
+            display: flex;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* Galeria de Imagens */
+        .product-gallery {
+            width: 50%;
+            padding-right: 20px;
+        }
+        
+        @media (max-width: 968px) {
+            .product-gallery {
+                width: 100%;
+                padding-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .main-image {
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid #e6e6e6;
+            border-radius: 4px;
+            padding: 16px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #e6e6e6;
+            border-radius: 4px;
+            padding: 4px;
+            cursor: pointer;
+        }
+        
+        .thumbnail.active {
+            border: 2px solid var(--ml-blue);
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Informações do Produto */
+        .product-info {
+            width: 50%;
+            padding-left: 20px;
+            border-left: 1px solid #e6e6e6;
+        }
+        
+        @media (max-width: 968px) {
+            .product-info {
+                width: 100%;
+                padding-left: 0;
+                border-left: none;
+            }
+        }
+        
+        .condition {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .product-title {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .specs {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .spec {
+            display: flex;
+        }
+        
+        .spec-title {
+            font-weight: 600;
+            min-width: 180px;
+            color: #666;
+        }
+        
+        .seller-info {
+            padding: 16px;
+            background-color: #fff;
+            border-radius: 6px;
+            border: 1px solid #e6e6e6;
+            margin-bottom: 20px;
+        }
+        
+        .seller-info h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+        
+        /* Botões de navegação */
+        .navigation-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 8px 12px;
+            background-color: white;
+            border: 1px solid var(--ml-light-gray);
+            border-radius: 4px;
+            color: var(--ml-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        
+        .nav-btn:hover {
+            background-color: #f8f8f8;
+        }
+        
+        /* Tabela de estoque */
+        .table-like-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow-x: auto;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        
+        .table-like-header,
+        .table-like-row {
+            display: flex;
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            align-items: center;
+        }
+        
+        .table-like-header {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+        
+        .header-item,
+        .row-item {
+            flex: 1;
+            padding: 0 5px;
+        }
+        
+        /* Zebra stripes */
+        .row-even {
+            background-color: #f9f9f9;
+        }
+        
+        .row-odd {
+            background-color: #fff;
+        }
+        
+        /* Cores de estoque */
+        .bg-red {
+            background-color: rgba(255, 0, 0, 0.3);
+        }
+        
+        .bg-yellow {
+            background-color: rgba(255, 255, 0, 0.3);
+        }
+        
+        .bg-light-yellow {
+            background-color: rgba(255, 255, 150, 0.2);
+        }
+        
+        /* Botões de ação */
+        .actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .actions a {
+            flex: 1;
+            text-align: center;
+            padding: 5px 0;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .table-like-header {
+                display: none;
+            }
+            
+            .table-like-row {
+                flex-direction: column;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                padding: 10px;
+            }
+            
+            .row-item {
+                border-bottom: 1px solid #eee;
+                padding: 5px 0;
+            }
+            
+            .row-item:last-child {
+                border-bottom: none;
+            }
+            
+            .actions {
+                justify-content: flex-start;
+                gap: 10px;
+            }
+        }
+        
+        /* Modal styles */
+        .modal-content {
+            border-radius: 4px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .modal-header {
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #e6e6e6;
+        }
+        
+        .modal-title {
+            font-weight: 500;
+        }
+        
+        .form-control-template {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .btn-primary {
+            background-color: var(--ml-blue);
+            border-color: var(--ml-blue);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2968c8;
+            border-color: #2968c8;
+        }
+        
+        /* Botões específicos do almoxarifado */
+        .btn-almoxarifado {
+            padding: 10px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-almoxarifado:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .btn-almoxarifado.primary {
+            background-color: var(--ml-blue);
+            color: white;
+            border-color: var(--ml-blue);
+        }
+        
+        .btn-almoxarifado.primary:hover {
+            background-color: #2968c8;
+        }
+    </style>
 
-                <a href="{{ route('produto.index') }}" class="btn btn-outline-primary btn-sm">
-                    <span class="material-symbols-outlined">
-                        format_list_bulleted
-                    </span>
-                </a>
-                <a href="{{ route('produto.create') }}" class="btn btn-outline-primary btn-sm">
-                    Novo
-                </a>
-                <a class="btn btn-outline-primary btn-sm" href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
-                    <i class="icofont-ui-edit"></i> Editar </a>
-                <a class="btn btn-outline-dark sm" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> Dashboard
-                </a>
-            </div>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="#">Início</a> > <a href="#">Produtos</a> > <a href="#">{{ $produto->nome }}</a>
         </div>
-        <div class="card-body">
-            <!--  div dos fotos-->
-            <div class="carousel-container">
-                <div class="carousel-images">
-                    <img src="/img/produtos/{{ $produto->image}}" alt="Imagem 1">
-                    <img src="/img/produtos/{{ $produto->image2}}" alt="Imagem 2">
-                    <img src="/img/produtos/{{ $produto->image3}}" alt="Imagem 3">
-                    <!-- Adicione mais imagens conforme necessário -->
+        
+        <!-- Botões de navegação -->
+        <div class="navigation-buttons">
+            <a href="{{ route('produto.index') }}" class="nav-btn">
+                <i class="fas fa-list"></i> Lista de Produtos
+            </a>
+            <a href="{{ route('produto.create') }}" class="nav-btn">
+                <i class="fas fa-plus"></i> Novo Produto
+            </a>
+            <a class="nav-btn" href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a class="nav-btn" href="{{ route('app.home') }}">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+        </div>
+        
+        <div class="product-container">
+            <div class="product-gallery">
+                <div class="main-image">
+                    <img id="mainImage" src="/img/produtos/{{ $produto->image}}" alt="{{ $produto->nome }}">
                 </div>
-                <div class="carousel-preview">
-                    <img src="/img/produtos/{{ $produto->image}}" alt="imagem" class="preview-image">
-                    <img src="/img/produtos/{{ $produto->image2}}" alt="imagem" class="preview-image">
-                    <img src="/img/produtos/{{ $produto->image3}}" alt="imagem" class="preview-image">
-                    <!-- Adicione mais imagens conforme necessário -->
-                </div>
-            </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const carouselImages = document.querySelector('.carousel-images');
-                    const previewImages = document.querySelectorAll('.preview-image');
-
-                    previewImages.forEach((preview, index) => {
-                        preview.addEventListener('click', () => {
-                            carouselImages.style.transform = `translateX(-${index * 100}%)`;
-                        });
-                    });
-                });
-            </script>
-            <style>
-                .carousel-container {
-                    max-width: 370px;
-                    margin: 0 auto;
-                    overflow: hidden;
-                    float: left;
-                    margin-left: 100px;
-                }
-
-                .carousel-images {
-                    display: flex;
-                    transition: transform 0.5s ease;
-                }
-
-                .carousel-images img {
-                    width: 100%;
-                    height: auto;
-                    object-fit: cover;
-                }
-
-                .carousel-preview {
-                    display: flex;
-                    justify-content: center;
-                    margin-top: 10px;
-                }
-
-                .preview-image {
-                    width: 50px;
-                    height: 50px;
-                    object-fit: cover;
-                    margin: 0 5px;
-                    cursor: pointer;
-                }
-
-                .preview-image:hover {
-                    border: 2px solid blue;
-                }
-            </style>
-            <!--  div dos dados do produto-->
-            <style>
-                #dados-tec {
-                    height: 500px;
-                    width: 500px;
-                    float: right;
-
-                    margin-right: 100px;
-                }
-
-                hr {
-                    margin: -2px;
-                    color: dimgray;
-                }
-
-                .box-conteudo {
-                    margin-left: 50px;
-                    justify-content: flex-start;
-                }
-
-                .titulo {
-                    display: flex;
-                    font-size: 15px;
-                    font-family: 'Poppins', sans-serif;
-
-                }
-
-                .conteudo {
-                    display: flex;
-                    font-size: 20px;
-                    font-family: 'Poppins', sans-serif;
-                    color: #007b00;
-                    margin-bottom: 5px;
-                }
-
-                .conteudo-sm {
-                    display: flex;
-                    font-size: 15px;
-                    font-family: 'Poppins', sans-serif;
-                    color: dimgray;
-                    margin-bottom: 5px;
-                    font-weight: 400;
-                }
-            </style>
-            {{--------------------------------------------------------}}
-            {{--Bloco de descrição e dados do produto--}}
-            {{--------------------------------------------------------}}
-            <div id="dados-tec">
-                <div id=idOs class="conteudo" style="color:mediumblue">
-                    ID:&nbsp&nbsp{{ $produto->id }}
-                </div>
-                <div class="titulo">Nome do produto</div>
-                <hr>
-                <div class="conteudo">{{ $produto->nome }}</div>
-                <div class="titulo">Descrição do produto</div>
-                <hr>
-                <div class="conteudo-sm">{{ $produto->descricao }}</div>
-                <div class="titulo">Marca | Fabricante </div>
-                <hr>
-                <div class="conteudo" style="color:mediumblue;">{{ $produto->marca->nome }}&nbsp&nbsp|&nbsp&nbspCod Fab:{{ $produto->cod_fabricante }}</div>
-                <div class="titulo">Quantidade em estoque</div>
-                <hr>
-                <div class="conteudo">{{$estoque_produtos_sum}}&nbsp&nbsp{{$produto->unidade_medida->nome}}</div>
-                <div id=idOs class="conteudo" style="color:mediumblue" hidden>
-                    Valor total:&nbsp&nbspR${{number_format($estoque_produtos_sum_valor, 2, ',', '.')}}
-                </div>
-                <div class="titulo">Categoria</div>
-                <div class="conteudo">{{ $produto->categoria->nome}}</div>
-                <hr>
-                <a href="{{ $produto->link_peca}}" target="blank">Ver no site do fabricante<span class="material-symbols-outlined">
-                        open_in_new
-                    </span></a>
-                <a href="{{route('pedido-saida-lista.index', ['produto_id'=>$produto->id])}}" target="blank">Consultar saídas<span class="material-symbols-outlined">
-                        open_in_new
-                    </span></a>
-                <a href="{{route('entrada-produto.index', ['produto_id'=>$produto->id,'tipofiltro'=>2])}}" target="blank">Consultar Entradas<span class="material-symbols-outlined">
-                        open_in_new
-                    </span></a>
-                <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" class="btn btn-outline-success btn-md">
-                    <i class="icofont-cubes"></i>
-                    </span>
-                    <span class="text">Criar estoque</span>
-                </a>
-
-                <a class="btn btn-bg-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto">
-                    <span class="text">Onde é aplicado este produto</span></a>
-                <a class="btn btn-md-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.edit', ['produto' => $produto->id]) }}"
-                    title="editar dados do produto">
-
-                    <i class="icofont-ui-edit"></i> </a>
-                {{--//-----------------------------------------//--}}
-                {{--// Cria automaticamente um pedido de compra//--}}
-                {{--//-----------------------------------------//--}}
-                <!-- jQuery -->
-
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <!-- Bootstrap JavaScript -->
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-                <!-- Botão para abrir o modal -->
-                <a class="btn btn-bg-template btn-outline-success @can('user') disabled @endcan" data-toggle="modal" data-target="#myModal" title="Onde é aplicado este produto">
-                    <span class="text">Gerar Pedido de Compra</span>
-                </a>
-
-                <!-- O modal Gerar Pedido de Compra-->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="myModalLabel">Gerar Pedido de Compra</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <!-------------------------->
-                            <!--Form  pedido de compra-->
-                            <!-------------------------->
-                            <div class="modal-body">
-                                <!-- Conteúdo do modal aqui -->
-                                Aplicação!
-                                @if(isset($equipamentos) && $equipamentos->isNotEmpty())
-                                <select class="form-control-template" id="patrimonio_id" name="patrimonio_id" require>
-                                    @foreach($equipamentos as $equipamento)
-                                    <option value="{{ $equipamento->id }}">
-                                        {{ $equipamento->nome }} <!-- Supondo que você tenha um campo 'nome' no modelo Equipamento -->
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @else
-                                <p>Não há equipamentos disponíveis.</p>
-                                @endif
-                                ID Produto:<input class="form-control-template" type="number" name="produto_id" id="produto_id" value="{{$produto->id}}" readonly><br>
-                                Nome:<div class="conteudo">{{$produto->nome}}
-                                </div><br>
-                                <hr>
-                                <p></p>
-                                Quantidade:
-                                <input class="form-control-template" type="number" name="quantidade" id="quantidade" value="" placeholder="--digite a quantidade--">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-primary" id="btnSalvar">Salvar Pedido de compra</button>
-                            </div>
-                        </div>
+                <div class="thumbnail-container">
+                    <div class="thumbnail active" onclick="changeImage('/img/produtos/{{ $produto->image}}')">
+                        <img src="/img/produtos/{{ $produto->image}}" alt="Miniatura 1">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('/img/produtos/{{ $produto->image2}}')">
+                        <img src="/img/produtos/{{ $produto->image2}}" alt="Miniatura 2">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('/img/produtos/{{ $produto->image3}}')">
+                        <img src="/img/produtos/{{ $produto->image3}}" alt="Miniatura 3">
                     </div>
                 </div>
-                <script>
-                    $(document).ready(function() {
-                        $('#btnSalvar').click(function() {
-                            var patrimonioId = $('#patrimonio_id').val();
-                            var produtoId = $('#produto_id').val();
-                            var qnt = $('#quantidade').val();
-                            var data = {
-                                patrimonio_id: patrimonioId,
-                                id: produtoId,
-                                quantidade: qnt
-                            };
+            </div>
+            
+            <div class="product-info">
+                <div class="condition">Produto cadastrado | {{ $estoque_produtos_sum }} em estoque</div>
+                <h1 class="product-title">{{ $produto->nome }}</h1>
+                
+                <div class="seller-info">
+                    <h3>Informações do Produto</h3>
+                    <div class="specs">
+                        <div class="spec">
+                            <div class="spec-title">ID:</div>
+                            <div class="spec-value">{{ $produto->id }}</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-title">Marca:</div>
+                            <div class="spec-value">{{ $produto->marca->nome }}</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-title">Cód. Fabricante:</div>
+                            <div class="spec-value">{{ $produto->cod_fabricante }}</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-title">Categoria:</div>
+                            <div class="spec-value">{{ $produto->categoria->nome}}</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-title">Unidade Medida:</div>
+                            <div class="spec-value">{{$produto->unidade_medida->nome}}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botões de ação do almoxarifado -->
+                    <div style="margin-top: 15px;">
+                        <a href="{{ $produto->link_peca}}" target="blank" class="btn-almoxarifado">
+                            <i class="fas fa-external-link-alt"></i> Ver no fabricante
+                        </a>
+                        <a href="{{route('pedido-saida-lista.index', ['produto_id'=>$produto->id])}}" target="blank" class="btn-almoxarifado">
+                            <i class="fas fa-list"></i> Consultar saídas
+                        </a>
+                        <a href="{{route('entrada-produto.index', ['produto_id'=>$produto->id,'tipofiltro'=>2])}}" target="blank" class="btn-almoxarifado">
+                            <i class="fas fa-list"></i> Consultar entradas
+                        </a>
+                        <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" class="btn-almoxarifado primary">
+                            <i class="fas fa-cubes"></i> Criar estoque
+                        </a>
 
-                            $.ajax({
-                                url: '{{ route("pedido-compra-auto-generate") }}',
-                                type: 'POST',
-                                data: JSON.stringify(data),
-                                contentType: 'application/json',
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                success: function(response) {
-                                    console.log('Resposta completa do controlador:', response);
-
-                                    // Fecha a modal primeiro
-
-
-                                    // Mostra o alert após pequeno atraso (300ms)
-                                    setTimeout(function() {
-                                        if (response && response.message) {
-                                            alert('Resposta: ' + response.message);
-                                            //
-                                            $('#myModal').modal('hide');
-                                        } else {
-                                            alert('Resposta do controlador não contém a mensagem esperada.');
-
-                                        }
-
-                                    }, 300);
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Erro ao gerar pedido de compra', error);
-                                    alert('Erro ao gerar pedido de compra, Atualize o formulário: ' + error);
-                                }
-                            });
-                        });
-                    });
-                </script>
-
-                {{--//-----------------Fim------------------------//--}}
-                <p>
-                <div>
-                    <?php
-
-                    $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");
-                    $url = '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                    $urlPaginaAtual = $protocolo . $url
-                    //echo $protocolo.$url;
-                    ?>
-                    <p>
-                        {{-- {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $urlPaginaAtual ) !!}--}}
-                        {{--{!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}--}}
-                        {{-- {!! QrCode::size(100)->backgroundColor(255,255,255)->generate( $produto->id) !!}--}}
+                        <a class="btn-almoxarifado @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto">
+                            <i class="fas fa-wrench"></i> Onde é aplicado
+                        </a>
                         
+                        <!-- Botão para abrir o modal -->
+                        <a class="btn-almoxarifado @can('user') disabled @endcan" data-toggle="modal" data-target="#myModal" title="Gerar Pedido de Compra">
+                            <i class="fas fa-shopping-cart"></i> Gerar Pedido de Compra
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Descrição do produto -->
+                <div class="seller-info">
+                    <h3>Descrição do Produto</h3>
+                    <p>{{ $produto->descricao }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabela de estoque -->
+        <div class="table-like-container">
+            <h2>Estoques Disponíveis</h2>
+            
+            <div class="table-like-header">
+                <div class="header-item" style="flex:0 0 60px;">ID</div>
+                <div class="header-item" style="flex:0 0 60px;">Produto ID</div>
+                <div class="header-item" style="flex:2;">Produto</div>
+                <div class="header-item">Unid. Medida</div>
+                <div class="header-item">Quantidade</div>
+                <div class="header-item">Estoque Mín</div>
+                <div class="header-item">Estoque Máx</div>
+                <div class="header-item">Valor</div>
+                <div class="header-item">Local</div>
+                <div class="header-item">Criticidade</div>
+                <div class="header-item">Empresa</div>
+                <div class="header-item">Operações</div>
+            </div>
 
+            <div class="table-like-body">
+                @foreach ($estoque_produtos as $estoque_produto)
+                <div class="table-like-row {{ $loop->even ? 'row-even' : 'row-odd' }}">
+                    <div class="row-item" style="flex:0 0 60px;">{{ $estoque_produto->id }}</div>
+                    <div class="row-item" style="flex:0 0 60px;">{{ $estoque_produto->produto->id }}</div>
+                    <div class="row-item" style="flex:2;">{{ $estoque_produto->produto->nome }}</div>
+                    <div class="row-item">{{ $estoque_produto->unidade_medida }}</div>
 
-                    <p>
+                    <div class="row-item 
+                     {{ $estoque_produto->quantidade <= 0 ? 'bg-red' : '' }}
+                     {{ $estoque_produto->quantidade == $estoque_produto->estoque_minimo ? 'bg-yellow' : '' }}
+                     {{ $estoque_produto->quantidade < $estoque_produto->estoque_minimo && $estoque_produto->quantidade > 0 ? 'bg-light-yellow' : '' }}">
+                        {{ $estoque_produto->quantidade }}
+                    </div>
+
+                    <div class="row-item">{{ $estoque_produto->estoque_minimo }}</div>
+                    <div class="row-item">{{ $estoque_produto->estoque_maximo }}</div>
+                    <div class="row-item">R$ {{ number_format($estoque_produto->valor, 2, ',', '.') }}</div>
+                    <div class="row-item">{{ $estoque_produto->local }}</div>
+                    <div class="row-item">{{ $estoque_produto->criticidade }}</div>
+                    <div class="row-item">{{ $estoque_produto->empresa->nome_fantasia }}</div>
+
+                    <div class="row-item actions">
+                        <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn btn-bg-template btn-outline-primary @can('user') disabled @endcan">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                        <a class="btn btn-bg-template btn-outline-success @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="Editar dados do estoque">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para Gerar Pedido de Compra -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Gerar Pedido de Compra</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Preencha os dados para gerar um pedido de compra:</p>
+                    
+                    @if(isset($equipamentos) && $equipamentos->isNotEmpty())
+                    <div class="form-group">
+                        <label for="patrimonio_id">Equipamento:</label>
+                        <select class="form-control-template" id="patrimonio_id" name="patrimonio_id" required>
+                            @foreach($equipamentos as $equipamento)
+                            <option value="{{ $equipamento->id }}">
+                                {{ $equipamento->nome }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @else
+                    <p>Não há equipamentos disponíveis.</p>
+                    @endif
+                    
+                    <div class="form-group">
+                        <label for="produto_id">ID Produto:</label>
+                        <input class="form-control-template" type="number" name="produto_id" id="produto_id" value="{{$produto->id}}" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Nome do Produto:</label>
+                        <div class="conteudo">{{$produto->nome}}</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade:</label>
+                        <input class="form-control-template" type="number" name="quantidade" id="quantidade" value="" placeholder="Digite a quantidade" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnSalvar">Salvar Pedido de compra</button>
                 </div>
             </div>
         </div>
     </div>
-    <hr>
 
-    {{--------------------------------------------------------------------------------------------}}
-    {{--Tabela que busca o status do estoque de produtos------------------------------------------}}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col" class="th-title">Id do estoque</th>
-                <th scope="col" class="th-title">Produto id</th>
-                <th scope="col" class="th-title">Produto</th>
-                <th scope="col" class="th-title">Cod. Unid. Medida</th>
-                <th scope="col" class="th-title">Quant. Estoque</th>
-                <th scope="col" class="th-title">Estoque minimo</th>
-                <th scope="col" class="th-title">estoque máximo</th>
-                <th scope="col" class="th-title">Valor</th>
-                <th scope="col" class="th-title">Local do estoque</th>
-                <th scope="col" class="th-title">Criticidade</th>
-                <th scope="col" class="th-title">Empresa</th>
-                <th scope="col" class="th-title">Operações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($estoque_produtos as $estoque_produto)
-            <tr>
-                <th scope="row">{{ $estoque_produto->id }}</td>
-                <td>{{ $estoque_produto->produto->id}}</td>
-                <td>{{ $estoque_produto->produto->nome }}</td>
-                <td>{{ $estoque_produto->unidade_medida}}</td>
-                <td>{{ $estoque_produto->quantidade }}</td>
-                <td>{{ $estoque_produto->estoque_minimo }}</td>
-                <td>{{ $estoque_produto->estoque_maximo}}</td>
-                <td>{{ $estoque_produto->valor }}</td>
-                <td>{{ $estoque_produto->local}}</td>
-                <td>{{ $estoque_produto->criticidade}}</td>
-                <td>{{ $estoque_produto->empresa->nome_fantasia}}</td>
-                <td>
-                    <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn btn-bg-template btn-outline-primary  @can('user') disabled @endcan">
-
-                        <i class="icofont-database-add"></i>
-                        </span>
-                        <span class="text">Inserir estoque</span>
-                    </a>
-                    <a class="btn btn-bg-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="Editar dados do estoque">
-                        <i class="icofont-ui-edit"></i>
-                        <span class="text">Editar</span></a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <style>
-        .bg-warning-light {
-            background-color: #FFFFE0;
-            /* Amarelo claro */
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Função para trocar a imagem principal
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+            
+            // Remove a classe active de todas as miniaturas
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            
+            // Adiciona a classe active à miniatura clicada
+            event.currentTarget.classList.add('active');
         }
+        
+        // Script para o modal de pedido de compra
+        $(document).ready(function() {
+            $('#btnSalvar').click(function() {
+                var patrimonioId = $('#patrimonio_id').val();
+                var produtoId = $('#produto_id').val();
+                var qnt = $('#quantidade').val();
+                var data = {
+                    patrimonio_id: patrimonioId,
+                    id: produtoId,
+                    quantidade: qnt
+                };
 
-        .bg-success {
-            background-color: #28a745;
-            /* Verde */
-        }
+                $.ajax({
+                    url: '{{ route("pedido-compra-auto-generate") }}',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        console.log('Resposta completa do controlador:', response);
 
-        .bg-warning {
-            background-color: #ffc107;
-            /* Amarelo forte */
-        }
-
-        .bg-danger {
-            background-color: #dc3545;
-            /* Vermelho */
-        }
-    </style>
+                        setTimeout(function() {
+                            if (response && response.message) {
+                                alert('Resposta: ' + response.message);
+                                $('#myModal').modal('hide');
+                            } else {
+                                alert('Resposta do controlador não contém a mensagem esperada.');
+                            }
+                        }, 300);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Erro ao gerar pedido de compra', error);
+                        alert('Erro ao gerar pedido de compra, Atualize o formulário: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
 </main>
-
 @endsection
