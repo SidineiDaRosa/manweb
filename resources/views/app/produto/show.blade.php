@@ -361,9 +361,7 @@
     </style>
 
     <div class="container">
-        <div class="breadcrumb">
-            <a href="#">Início</a> > <a href="#">Produtos</a> > <a href="#">{{ $produto->nome }}</a>
-        </div>
+   
         
         <!-- Botões de navegação -->
         <div class="navigation-buttons">
