@@ -25,7 +25,7 @@
         }
         
         .container {
-            max-width: 1184px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 0 16px;
         }
@@ -110,7 +110,7 @@
             object-fit: contain;
         }
         
-        /* Informações do Produto */
+        /* container */
         .product-info {
             width: 50%;
             padding-left: 20px;
@@ -402,7 +402,7 @@
                 <h1 class="product-title">{{ $produto->nome }}</h1>
                 
                 <div class="seller-info">
-                    <h3>Informações do Produto</h3>
+                    <h3>container</h3>
                     <div class="specs">
                         <div class="spec">
                             <div class="spec-title">ID:</div>
