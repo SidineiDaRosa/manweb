@@ -430,3 +430,10 @@ Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
 //----------------------------------------------------------//
 
 Route::post('/ordem-servico/modal', [OrdemServicoController::class, 'storeFromModal'])->name('ordem_servico.modal');
+
+//----------------------------------------------------------//
+//   Artigos  sobre manutenção
+//----------------------------------------------------------//
+use App\Http\Controllers\DocumentoController;
+Route::get('/documentos/manutencao', [DocumentoController::class, 'index'])->name('documentos.manutencao');
+Route::get('/documentos/normas', [DocumentoController::class, 'normas'])->name('documentos.normas');

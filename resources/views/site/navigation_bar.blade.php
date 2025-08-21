@@ -177,13 +177,13 @@
             margin-right: 2px;
         }
     </style>
- 
+
     <nav class="navbar">
         <div class="menu" id="menu">
             <div class="menu-item">
                 <a href="#">Home</a>
-                  
-                   
+
+
             </div>
             <div class="menu-item">
                 <a href="#">Sobre nós</a>
@@ -272,50 +272,63 @@
                     {{--------------fim continer box----------------------------------------}}
                 </div>
             </div>
+            <!---Grupo documentos-->
             <div class="menu-item">
-                <a href="#">Contato</a>
+                <a href="#">Manutenção</a>
                 <div class="dropdown">
-                    {{--------------Início continer box----------------------------------------}}
+                    {{--------------Início container box----------------------------------------}}
                     <div class="container-box">
                         {{--Box 1--}}
                         <div class="item">
                             <div class="box-conteudo">
-                                <div class="titulo">Localização Da Empresa</div>
+                                <div class="titulo">Normas e Regulamentos</div>
                                 <p></p>
-
                                 <div class="conteudo">
-                                    <span class="material-symbols-outlined">
-                                        location_on
-                                    </span>
-                                    localização da Empresa
+                                    <a href="{{route('documentos.normas')}}">NRs</a>
                                 </div>
+                              
                             </div>
                         </div>
+
                         {{--Box 2--}}
                         <div class="item">
                             <div class="box-conteudo">
-                                <div class="titulo">Aqui história da empresa</div>
+                                <div class="titulo">Guias e Procedimentos</div>
                                 <p></p>
                                 <div class="conteudo">
-                                    Aqui história da empresa
+                                    <a href="#">Procedimentos de Manutenção Preventiva</a>
+                                </div>
+                                <div class="conteudo">
+                                    <a href="#">Procedimentos de Manutenção Corretiva</a>
+                                </div>
+                                <div class="conteudo">
+                                  <a href="{{ route('documentos.manutencao') }}">Checklists de Inspeção de Equipamentos</a>
                                 </div>
                             </div>
                         </div>
+
                         {{--Box 3--}}
                         <div class="item">
                             <div class="box-conteudo">
-                                <div class="titulo">Notícias</div>
+                                <div class="titulo">Relatórios e Estudos</div>
                                 <p></p>
-
                                 <div class="conteudo">
-                                    Revistas e lançamentos de produtos
+                                    <a href="#">Relatórios de Manutenção Realizados</a>
+                                </div>
+                                <div class="conteudo">
+                                    <a href="#">Estudos de Confiabilidade de Equipamentos</a>
+                                </div>
+                                <div class="conteudo">
+                                    <a href="#">Artigos sobre Gestão de Ativos</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{--------------fim continer box----------------------------------------}}
+                    {{--------------fim container box----------------------------------------}}
                 </div>
             </div>
+
+        </div>
         </div>
     </nav>
     <script>
