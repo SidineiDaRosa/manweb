@@ -242,20 +242,10 @@ class CheckListController extends Controller
     }
     public function cont()
     {
-        // Envia  para  reader a contagem de pendencias
-        
-        $vencidos = CheckList::all()->filter(function ($checkList) {
-            // Próxima verificação esperada
-            $proxima = Carbon::parse($checkList->updated_at)->addHours($checkList->intervalo);
+        $vencidos = CheckList::whereRaw("DATE_ADD(updated_at, INTERVAL intervalo HOUR) <= NOW()")->get();
 
-            return now()->greaterThanOrEqualTo($proxima);
-        });
-
-        //return response()->json([
         $pendentes = $vencidos->count();
-        $vencidos = $vencidos->values();
-        //  ]);
-        // Retorna a contagem como resposta JSON
+
         return response()->json(['pendentes' => $pendentes]);
     }
 }
