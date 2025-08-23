@@ -148,7 +148,7 @@
                             <i class="bi bi-info-circle-fill" style="color: gray; font-size: 18px;"></i>
                             @endif
                     </div>
-                    <div><strong>Data Fim:</strong> {{ \Carbon\Carbon::parse($alerta->data_fim)->format('d/m/Y H:i') }}</div>
+                    <div><strong>Data Fim:</strong> {{ \Carbon\Carbon::parse($alerta->updated_at)->format('d/m/Y H:i') }}</div>
                     <div><strong>Gerado por:</strong> {{$alerta->funcionario}}</div>
                     <div style="color: darkblue;"><strong>Obs.:</strong> {{ $alerta->observacao }}</div>
                 </div>
