@@ -425,6 +425,9 @@ Route::post('/groups/{group}/attach-users', [GroupController::class, 'attachUser
 Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
 
+Route::get('/messages/fetch/{group}', [PostController::class, 'fetch'])->name('messages.fetch');
+
+
 //----------------------------------------------------------//
 //   Dashboard status  os
 //----------------------------------------------------------//

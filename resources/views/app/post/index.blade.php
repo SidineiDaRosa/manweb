@@ -1,36 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('app.layouts.app')
+@section('content')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-
-</body>
-
-</html>
 <style>
     /* ===== Reset / base ===== */
     * {
         box-sizing: border-box;
     }
 
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f0f2f5;
-        color: #333;
-        max-width: 900px;
-        margin: 30px auto;
-        padding: 0 20px;
-        display: flex;
-        flex-direction: column;
-        min-height: 95vh;
-        font-size: 1rem;
-        /* base */
-    }
 
     /* ===== Títulos ===== */
     h1 {
@@ -242,68 +218,65 @@
     }
 </style>
 
-<body>
-    @if(session('success'))
-    <p class="success" role="alert" aria-live="polite">{{ session('success') }}</p>
-    @endif
 
-    <div class="messages-container" id="messages-container">
-        @foreach ($messages as $msg)
-        @php
-        $isMyMessage = (auth()->check() && auth()->id() == $msg->user_id);
-        @endphp
-        <div class="message {{ $isMyMessage ? 'my-message' : 'other-message' }}">
-            <div class="header">
-                {{ $msg->user ? $msg->user->name : $msg->name }}
-                (<span title="{{ $msg->created_at ? $msg->created_at->format('d/m/Y H:i:s') : 'Sem data' }}">
-                    {{ $msg->created_at ? $msg->created_at->format('d/m/Y H:i') : 'Sem data' }}
-                </span>)
-            </div>
-            <div class="subject"><strong>Assunto:</strong> {{ $msg->subject }}</div>
-            <div class="body">{{ $msg->message }}</div>
+@if(session('success'))
+<p class="success" role="alert" aria-live="polite">{{ session('success') }}</p>
+@endif
+
+<div class="messages-container" id="messages-container">
+    @foreach ($messages as $msg)
+    @php
+    $isMyMessage = (auth()->check() && auth()->id() == $msg->user_id);
+    @endphp
+    <div class="message {{ $isMyMessage ? 'my-message' : 'other-message' }}">
+        <div class="header">
+            {{ $msg->user ? $msg->user->name : $msg->name }}
+            (<span title="{{ $msg->created_at ? $msg->created_at->format('d/m/Y H:i:s') : 'Sem data' }}">
+                {{ $msg->created_at ? $msg->created_at->format('d/m/Y H:i') : 'Sem data' }}
+            </span>)
         </div>
-        @endforeach
+        <div class="subject"><strong>Assunto:</strong> {{ $msg->subject }}</div>
+        <div class="body">{{ $msg->message }}</div>
     </div>
+    @endforeach
+</div>
 
-    <form action="{{ route('messages.store') }}" method="POST" aria-label="Formulário de envio de mensagem">
-        @csrf
-        <textarea name="message" placeholder="Digite sua mensagem..." required>{{ old('message') }}</textarea>
+<form action="{{ route('messages.store') }}" method="POST" aria-label="Formulário de envio de mensagem">
+    @csrf
+    <textarea name="message" placeholder="Digite sua mensagem..." required>{{ old('message') }}</textarea>
 
-        <input type="hidden" name="group_id" value="{{ $group->id ?? old('group_id') }}">
+    <input type="hidden" name="group_id" value="{{ $group->id ?? old('group_id') }}">
 
-        @error('message')
-        <div style="color: red; margin-top: 5px;">{{ $message }}</div>
-        @enderror
-        <button type="submit" aria-label="Enviar mensagem">&#10148;</button>
-    </form>
+    @error('message')
+    <div style="color: red; margin-top: 5px;">{{ $message }}</div>
+    @enderror
+    <button type="submit" aria-label="Enviar mensagem">&#10148;</button>
+</form>
 
 
-    <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
-        <i class="icofont-dashboard"></i> Dashboard
-    </a>
+<a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
+    <i class="icofont-dashboard"></i> Dashboard
+</a>
 
-    <script>
-        // Scroll para o fim da lista de mensagens quando a página carregar
-        document.addEventListener('DOMContentLoaded', function() {
-            const messagesContainer = document.getElementById('messages-container');
-            messagesContainer.scrollTo({
-                top: messagesContainer.scrollHeight,
-                behavior: 'smooth'
-            });
-        });
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
+<script>
+    // Scroll para o fim da lista de mensagens quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
         const messagesContainer = document.getElementById('messages-container');
-
-        // Scroll automático no carregamento
         messagesContainer.scrollTo({
             top: messagesContainer.scrollHeight,
             behavior: 'smooth'
         });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messagesContainer = document.getElementById('messages-container');
+
+        // Vai direto para a última mensagem no carregamento
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
         // Envio do formulário via AJAX
-        document.getElementById('message-form').addEventListener('submit', function (e) {
+        document.getElementById('message-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const message = document.getElementById('message').value;
@@ -311,53 +284,87 @@
             const token = document.querySelector('input[name="_token"]').value;
 
             fetch("{{ route('messages.store') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token,
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: message,
-                    group_id: group_id
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        group_id: group_id
+                    })
                 })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => Promise.reject(err));
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Criar o HTML da nova mensagem e adicionar ao chat
-                const div = document.createElement('div');
-                div.classList.add('message', 'my-message');
-                div.innerHTML = `
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Criar o HTML da nova mensagem e adicionar ao chat
+                    const div = document.createElement('div');
+                    div.classList.add('message', 'my-message');
+                    div.innerHTML = `
                     <div class="header">
                         ${data.user_name} (<span title="${data.timestamp_full}">${data.timestamp}</span>)
                     </div>
                     <div class="subject"><strong>Assunto:</strong> ${data.subject}</div>
                     <div class="body">${data.message}</div>
                 `;
-                messagesContainer.appendChild(div);
+                    messagesContainer.appendChild(div);
 
-                // Scroll automático
-                messagesContainer.scrollTo({
-                    top: messagesContainer.scrollHeight,
-                    behavior: 'smooth'
+                    // Vai direto para a última mensagem
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                    // Limpa o campo
+                    document.getElementById('message').value = '';
+                })
+                .catch(error => {
+                    alert(error?.errors?.message?.[0] ?? 'Erro ao enviar a mensagem');
                 });
-
-                // Limpa o campo
-                document.getElementById('message').value = '';
-            })
-            .catch(error => {
-                alert(error?.errors?.message?.[0] ?? 'Erro ao enviar a mensagem');
-            });
         });
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const messagesContainer = document.getElementById('messages-container');
+    let lastId = {{ $messages->last()->id ?? 0 }}; // último ID carregado
 
+    function fetchNewMessages() {
+        fetch(`{{ route('messages.fetch', $group->id) }}?last_id=${lastId}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.classList.add('message');
+                    if (msg.user_id === {{ auth()->id() ?? 'null' }}) {
+                        div.classList.add('my-message');
+                    } else {
+                        div.classList.add('other-message');
+                    }
 
-</body>
+                    div.innerHTML = `
+                        <div class="header">
+                            ${msg.user_name} (<span title="${msg.timestamp_full}">${msg.timestamp}</span>)
+                        </div>
+                        <div class="subject"><strong>Assunto:</strong> ${msg.subject}</div>
+                        <div class="body">${msg.message}</div>
+                    `;
+                    messagesContainer.appendChild(div);
+                    lastId = msg.id; // atualiza último ID
+                });
 
-</html>
+                // Só rola para o fim se chegaram novas mensagens
+                if (data.length > 0) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+            })
+            .catch(err => console.error('Erro ao buscar novas mensagens:', err));
+    }
+
+    // Atualiza a cada 5 segundos
+    setInterval(fetchNewMessages, 5000);
+});
+</script>

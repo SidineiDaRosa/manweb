@@ -126,4 +126,26 @@ class PostController extends Controller
     {
         //
     }
+    public function fetch(Request $request, $groupId)
+    {
+        $lastId = $request->get('last_id', 0);
+
+        $messages = Message::where('group_id', $groupId)
+            ->where('id', '>', $lastId)
+            ->with('user')
+            ->orderBy('id')
+            ->get();
+
+        return response()->json($messages->map(function ($msg) {
+            return [
+                'id' => $msg->id,
+                'user_id' => $msg->user_id,
+                'user_name' => $msg->user ? $msg->user->name : $msg->name,
+                'timestamp' => $msg->created_at?->format('d/m/Y H:i'),
+                'timestamp_full' => $msg->created_at?->format('d/m/Y H:i:s'),
+                'subject' => $msg->subject,
+                'message' => $msg->message,
+            ];
+        }));
+    }
 }
