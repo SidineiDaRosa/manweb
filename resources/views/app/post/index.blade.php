@@ -328,43 +328,63 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const messagesContainer = document.getElementById('messages-container');
-    let lastId = {{ $messages->last()->id ?? 0 }}; // último ID carregado
+    document.addEventListener('DOMContentLoaded', function() {
+        const messagesContainer = document.getElementById('messages-container');
+        let lastId = {
+            {
+                $messages - > last() - > id ?? 0
+            }
+        }; // último ID carregado
 
-    function fetchNewMessages() {
-        fetch(`{{ route('messages.fetch', $group->id) }}?last_id=${lastId}`)
-            .then(res => res.json())
-            .then(data => {
-                data.forEach(msg => {
-                    const div = document.createElement('div');
-                    div.classList.add('message');
-                    if (msg.user_id === {{ auth()->id() ?? 'null' }}) {
-                        div.classList.add('my-message');
-                    } else {
-                        div.classList.add('other-message');
-                    }
+        function fetchNewMessages() {
+            fetch(`{{ route('messages.fetch', $group->id) }}?last_id=${lastId}`)
+                .then(res => res.json())
+                .then(data => {
+                    data.forEach(msg => {
+                        const div = document.createElement('div');
+                        div.classList.add('message');
+                        if (msg.user_id === {
+                                {
+                                    auth() - > id() ?? 'null'
+                                }
+                            }) {
+                            div.classList.add('my-message');
+                        } else {
+                            div.classList.add('other-message');
+                        }
 
-                    div.innerHTML = `
+                        div.innerHTML = `
                         <div class="header">
                             ${msg.user_name} (<span title="${msg.timestamp_full}">${msg.timestamp}</span>)
                         </div>
                         <div class="subject"><strong>Assunto:</strong> ${msg.subject}</div>
                         <div class="body">${msg.message}</div>
                     `;
-                    messagesContainer.appendChild(div);
-                    lastId = msg.id; // atualiza último ID
-                });
+                        messagesContainer.appendChild(div);
+                        lastId = msg.id; // atualiza último ID
+                    });
 
-                // Só rola para o fim se chegaram novas mensagens
-                if (data.length > 0) {
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                }
-            })
-            .catch(err => console.error('Erro ao buscar novas mensagens:', err));
-    }
+                    // Só rola para o fim se chegaram novas mensagens
+                    if (data.length > 0) {
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }
+                })
+                .catch(err => console.error('Erro ao buscar novas mensagens:', err));
+        }
 
-    // Atualiza a cada 5 segundos
-    setInterval(fetchNewMessages, 5000);
+        // Atualiza a cada 5 segundos
+        setInterval(fetchNewMessages, 5000);
+    });
+</script>
+
+<button id="btnSound">Tocar som</button>
+
+<audio id="notification-sound" src="{{ asset('audios/mixkit-retro-game-notification-212.mp3') }}" preload="auto"></audio>
+
+<script>
+document.getElementById('btnSound').addEventListener('click', () => {
+    const audio = document.getElementById('notification-sound');
+    audio.currentTime = 0; // reinicia caso esteja tocando
+    audio.play().catch(err => console.error("Erro ao tocar som:", err));
 });
 </script>

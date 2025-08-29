@@ -148,4 +148,12 @@ class PostController extends Controller
             ];
         }));
     }
+    public function messages_count_user(Request $request)
+    {
+        $lastId = $request->query('last_id', 0);
+
+        $count = Message::where('id', '>', $lastId)->count();
+
+        return response()->json(['pendentes' => $count]);
+    }
 }

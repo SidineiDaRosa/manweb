@@ -426,6 +426,7 @@ Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.sh
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
 
 Route::get('/messages/fetch/{group}', [PostController::class, 'fetch'])->name('messages.fetch');
+Route::get('/messages-count', [PostController::class, 'messages_count_user'])->name('messages.count');
 
 
 //----------------------------------------------------------//
@@ -438,5 +439,6 @@ Route::post('/ordem-servico/modal', [OrdemServicoController::class, 'storeFromMo
 //   Artigos  sobre manutenção
 //----------------------------------------------------------//
 use App\Http\Controllers\DocumentoController;
+
 Route::get('/documentos/manutencao', [DocumentoController::class, 'index'])->name('documentos.manutencao');
 Route::get('/documentos/normas', [DocumentoController::class, 'normas'])->name('documentos.normas');
