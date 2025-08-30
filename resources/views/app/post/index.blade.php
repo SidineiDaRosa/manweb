@@ -257,28 +257,41 @@
 <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
     <i class="icofont-dashboard"></i> Dashboard
 </a>
-
-<script>
-    // Scroll para o fim da lista de mensagens quando a página carregar
-    document.addEventListener('DOMContentLoaded', function() {
-        const messagesContainer = document.getElementById('messages-container');
-        messagesContainer.scrollTo({
-            top: messagesContainer.scrollHeight,
-            behavior: 'smooth'
-        });
-    });
-</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const messagesContainer = document.getElementById('messages-container');
 
-        // Vai direto para a última mensagem no carregamento
+        const messagesContainer = document.getElementById('messages-container');
+        if (!messagesContainer) return;
+
+        // Scroll inicial
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-        // Envio do formulário via AJAX
-        document.getElementById('message-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Último ID da mensagem existente
+        let lastId = @json($messages -> last() ? $messages -> last() -> id : 0);
 
+        // ID do usuário logado
+        const myId = @json(auth() -> check() ? auth() -> id() : null);
+
+        // Função para criar div da mensagem
+        function createMessageDiv(msg) {
+            const div = document.createElement('div');
+            div.classList.add('message');
+            div.classList.add(msg.user_id === myId ? 'my-message' : 'other-message');
+            div.innerHTML = `
+            <div class="header">
+                ${msg.user_name} (<span title="${msg.timestamp_full}">${msg.timestamp}</span>)
+            </div>
+            <div class="subject"><strong>Assunto:</strong> ${msg.subject}</div>
+            <div class="body">${msg.message}</div>
+        `;
+            return div;
+        }
+
+        // Envio de mensagem
+        const messageForm = document.getElementById('message-form');
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
             const message = document.getElementById('message').value;
             const group_id = document.getElementById('group_id').value;
             const token = document.querySelector('input[name="_token"]').value;
@@ -291,100 +304,81 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        message: message,
-                        group_id: group_id
+                        message,
+                        group_id
                     })
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => Promise.reject(err));
-                    }
-                    return response.json();
-                })
+                .then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
                 .then(data => {
-                    // Criar o HTML da nova mensagem e adicionar ao chat
-                    const div = document.createElement('div');
-                    div.classList.add('message', 'my-message');
-                    div.innerHTML = `
-                    <div class="header">
-                        ${data.user_name} (<span title="${data.timestamp_full}">${data.timestamp}</span>)
-                    </div>
-                    <div class="subject"><strong>Assunto:</strong> ${data.subject}</div>
-                    <div class="body">${data.message}</div>
-                `;
-                    messagesContainer.appendChild(div);
-
-                    // Vai direto para a última mensagem
+                    messagesContainer.appendChild(createMessageDiv(data));
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-                    // Limpa o campo
                     document.getElementById('message').value = '';
+                    lastId = data.id;
                 })
-                .catch(error => {
-                    alert(error?.errors?.message?.[0] ?? 'Erro ao enviar a mensagem');
-                });
+                .catch(err => alert(err?.errors?.message?.[0] ?? 'Erro ao enviar a mensagem'));
         });
+
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const messagesContainer = document.getElementById('messages-container');
-        let lastId = {
-            {
-                $messages - > last() - > id ?? 0
+document.addEventListener('DOMContentLoaded', function() {
+    const messagesContainer = document.getElementById('messages-container');
+    if (!messagesContainer) return;
+
+    // Scroll inicial
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Último ID da mensagem existente
+    let lastId = @json($messages->last() ? $messages->last()->id : 0);
+
+    // ID do usuário logado
+    const myId = @json(auth()->check() ? auth()->id() : null);
+
+    // Função para criar div da mensagem
+    function createMessageDiv(msg) {
+        const div = document.createElement('div');
+        div.classList.add('message');
+        div.classList.add(msg.user_id === myId ? 'my-message' : 'other-message');
+        div.innerHTML = `
+            <div class="header">
+                ${msg.user_name} (<span title="${msg.timestamp_full}">${msg.timestamp}</span>)
+            </div>
+            <div class="subject"><strong>Assunto:</strong> ${msg.subject}</div>
+            <div class="body">${msg.message}</div>
+        `;
+        return div;
+    }
+
+    // Token CSRF
+    const token = document.querySelector('input[name="_token"]').value;
+
+    // Função para buscar novas mensagens
+    function fetchNewMessages() {
+        fetch(`{{ route('messages.fetch', $group->id) }}?last_id=${lastId}`, {
+            headers: {
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json'
             }
-        }; // último ID carregado
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+                data.forEach(msg => {
+                    messagesContainer.appendChild(createMessageDiv(msg));
+                    lastId = msg.id;
+                });
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        })
+        .catch(err => console.error('Erro ao buscar mensagens:', err));
+    }
 
-        function fetchNewMessages() {
-            fetch(`{{ route('messages.fetch', $group->id) }}?last_id=${lastId}`)
-                .then(res => res.json())
-                .then(data => {
-                    data.forEach(msg => {
-                        const div = document.createElement('div');
-                        div.classList.add('message');
-                        if (msg.user_id === {
-                                {
-                                    auth() - > id() ?? 'null'
-                                }
-                            }) {
-                            div.classList.add('my-message');
-                        } else {
-                            div.classList.add('other-message');
-                        }
+    // Busca inicial
+    fetchNewMessages();
 
-                        div.innerHTML = `
-                        <div class="header">
-                            ${msg.user_name} (<span title="${msg.timestamp_full}">${msg.timestamp}</span>)
-                        </div>
-                        <div class="subject"><strong>Assunto:</strong> ${msg.subject}</div>
-                        <div class="body">${msg.message}</div>
-                    `;
-                        messagesContainer.appendChild(div);
-                        lastId = msg.id; // atualiza último ID
-                    });
-
-                    // Só rola para o fim se chegaram novas mensagens
-                    if (data.length > 0) {
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    }
-                })
-                .catch(err => console.error('Erro ao buscar novas mensagens:', err));
-        }
-
-        // Atualiza a cada 5 segundos
-        setInterval(fetchNewMessages, 5000);
-    });
-</script>
-
-<button id="btnSound">Tocar som</button>
-
-<audio id="notification-sound" src="{{ asset('audios/mixkit-retro-game-notification-212.mp3') }}" preload="auto"></audio>
-
-<script>
-document.getElementById('btnSound').addEventListener('click', () => {
-    const audio = document.getElementById('notification-sound');
-    audio.currentTime = 0; // reinicia caso esteja tocando
-    audio.play().catch(err => console.error("Erro ao tocar som:", err));
+    // Atualização a cada 5 segundos
+    setInterval(fetchNewMessages, 5000);
 });
 </script>
+
+

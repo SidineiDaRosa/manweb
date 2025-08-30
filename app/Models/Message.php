@@ -15,6 +15,7 @@ class Message extends Model
         'subject',
         'message',
         'group_id',  // adiciona aqui
+        'read_at'
     ];
 
     // Opcional: relacionamento com o usuário (assumindo que tem model User)

@@ -75,6 +75,7 @@ class PostController extends Controller
             'subject' => 'Nova mensagem',
             'message' => $request->message,
             'group_id' => $request->group_id, // adiciona o group_id aqui
+            'read_at' => 1
         ]);
 
         return redirect()->route('blog.painel', ['group_id' => $request->group_id])
@@ -130,12 +131,21 @@ class PostController extends Controller
     {
         $lastId = $request->get('last_id', 0);
 
-        $messages = Message::where('group_id', $groupId)
-            ->where('id', '>', $lastId)
-            ->with('user')
+
+        // Pega todas as mensagens não lidas deste grupo
+        $userId = auth()->id();
+
+        $messages = Message::where('group_id', $groupId)   // do grupo enviado
+            ->where('read_at', 1)                           // apenas não lidas
+            ->where('user_id', '!=', $userId)              // enviadas por outros usuários
             ->orderBy('id')
             ->get();
 
+        // Atualiza todas de uma vez
+        foreach ($messages as $msg) {
+            $msg->read_at = 2;
+            $msg->save();
+        }
         return response()->json($messages->map(function ($msg) {
             return [
                 'id' => $msg->id,
@@ -147,12 +157,20 @@ class PostController extends Controller
                 'message' => $msg->message,
             ];
         }));
+        //   ao executar este código slavar read_at  como 1  
+
     }
     public function messages_count_user(Request $request)
     {
-        $lastId = $request->query('last_id', 0);
+        // Pega os IDs dos grupos que o usuário logado participa
+        $groupIds = Group::whereHas('users', function ($query) {
+            $query->where('user_id', auth()->id());
+        })->pluck('id');
 
-        $count = Message::where('id', '>', $lastId)->count();
+        // Conta as mensagens não visualizadas (read_at = 1) nesses grupos
+        $count = Message::whereIn('group_id', $groupIds)
+            ->where('read_at', 1)
+            ->count();
 
         return response()->json(['pendentes' => $count]);
     }
