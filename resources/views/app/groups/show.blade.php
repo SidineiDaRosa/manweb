@@ -65,7 +65,7 @@
 
 
 
-    <h2>{{ $group->name }}</h2>
+    {{ $group->name }}
     {{ $group->description }}
 
     @if(session('success'))
