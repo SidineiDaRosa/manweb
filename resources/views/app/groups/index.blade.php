@@ -1,71 +1,70 @@
 @extends('app.layouts.app')
 @section('content')
 
-    <title>Lista de Grupos</title>
-    <style>
-        /* Estilo padrão para desktop */
+<style>
+    /* Estilo padrão para desktop */
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-size: 16px;
+        /* fonte base */
+    }
+
+    h1,
+    h2,
+    h4 {
+        margin: 0.5em 0;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .group {
+        padding: 15px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+
+    .group a {
+        display: inline-block;
+        margin-top: 10px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .group a:hover {
+        text-decoration: underline;
+    }
+
+    /* Responsivo para telas pequenas (celular) */
+    @media (max-width: 900px) {
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-            font-size: 16px;
-            /* fonte base */
-        }
-
-        h1,
-        h2,
-        h4 {
-            margin: 0.5em 0;
-        }
-
-        h1 {
-            text-align: center;
+            font-size: 18px;
+            /* aumenta a fonte no celular para melhor leitura */
+            max-width: 100%;
+            /* largura total */
+            margin: 20px 10px;
+            padding: 0 10px;
         }
 
         .group {
-            padding: 15px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
         }
 
-        .group a {
-            display: inline-block;
-            margin-top: 10px;
-            color: #007bff;
-            text-decoration: none;
+        input[type="text"],
+        button {
+            width: 100% !important;
+            /* faz inputs e botão ocuparem toda a largura disponível */
+            font-size: 1.2rem;
+            padding: 12px;
         }
-
-        .group a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsivo para telas pequenas (celular) */
-        @media (max-width: 900px) {
-            body {
-                font-size: 18px;
-                /* aumenta a fonte no celular para melhor leitura */
-                max-width: 100%;
-                /* largura total */
-                margin: 20px 10px;
-                padding: 0 10px;
-            }
-
-            .group {
-                padding: 10px;
-                margin-bottom: 15px;
-            }
-
-            input[type="text"],
-            button {
-                width: 100% !important;
-                /* faz inputs e botão ocuparem toda a largura disponível */
-                font-size: 1.2rem;
-                padding: 12px;
-            }
-        }
-    </style>
+    }
+</style>
 
 <form action="{{ route('groups.store') }}" method="POST" aria-label="Formulário de criação de grupo" style="margin-bottom: 20px;">
     @csrf
@@ -84,18 +83,17 @@
 @endif
 
 
-    <h4> Grupos</h4>
+<h4> Grupos</h4>
 
-    @foreach($groups as $group)
-    <div class="group">
-        <h2>{{ $group->name }}</h2>
-        <p>{{ $group->description }}</p>
-        <a href="{{ route('groups.show', $group->id) }}">Ver detalhes</a>
-        <hr>
-        <a href="{{ route('blog.painel', ['group_id' => $group->id]) }}">Chat
-            &nbsp; <i class="icofont-wechat"></i>
-        </a>
+@foreach($groups as $group)
+<div class="group">
+    <h2>{{ $group->name }}</h2>
+    <p>{{ $group->description }}</p>
+    <a href="{{ route('groups.show', $group->id) }}">Ver detalhes</a>
+    <hr>
+    <a href="{{ route('blog.painel', ['group_id' => $group->id]) }}">Chat
+        &nbsp; <i class="icofont-wechat"></i>
+    </a>
 
-    </div>
-    @endforeach
-
+</div>
+@endforeach
