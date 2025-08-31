@@ -2,16 +2,7 @@
 @section('content')
 
 <style>
-    /* Estilo padrão para desktop */
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 0 20px;
-        font-size: 16px;
-        /* fonte base */
-    }
-
+   
     h1,
     h2,
     h4 {
