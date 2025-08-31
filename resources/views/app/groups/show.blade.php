@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
+@extends('app.layouts.app')
+@section('content')
+    
     <title>Gerenciar Usuários do Grupo</title>
 
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f6f9;
-            padding: 30px;
-            max-width: 800px;
-            margin: auto;
-        }
+   
 
         h2 {
             font-size: 1.6rem;
@@ -89,9 +81,9 @@
             margin-bottom: 20px;
         }
     </style>
-</head>
 
-<body>
+
+
 
     <h2>{{ $group->name }}</h2>
     <p>{{ $group->description }}</p>
@@ -143,6 +135,5 @@
         </ul>
     </div>
     @endif
-</body>
 
-</html>
+
