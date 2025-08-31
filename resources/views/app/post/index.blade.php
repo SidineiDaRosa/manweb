@@ -217,7 +217,7 @@
         }
     }
 </style>
-
+<main class="content">
 
 @if(session('success'))
 <p class="success" role="alert" aria-live="polite">{{ session('success') }}</p>
@@ -381,4 +381,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-
+<main>
