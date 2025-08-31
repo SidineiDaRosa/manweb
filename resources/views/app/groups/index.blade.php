@@ -1,61 +1,63 @@
 @extends('app.layouts.app')
+@section('titulo', 'index')
+
 @section('content')
+<main class="content">
+    <style>
+        h1,
+        h2,
+        h4 {
+            margin: 0.5em 0;
+        }
 
-<style>
-    h1,
-    h2,
-    h4 {
-        margin: 0.5em 0;
-    }
-
-    h1 {
-        text-align: center;
-    }
-
-    .group {
-        padding: 15px;
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-        border-radius: 8px;
-    }
-
-    .group a {
-        display: inline-block;
-        margin-top: 10px;
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .group a:hover {
-        text-decoration: underline;
-    }
-
-    /* Responsivo para telas pequenas (celular) */
-    @media (max-width: 900px) {
-        body {
-            font-size: 18px;
-            /* aumenta a fonte no celular para melhor leitura */
-            max-width: 100%;
-            /* largura total */
-            margin: 20px 10px;
-            padding: 0 10px;
+        h1 {
+            text-align: center;
         }
 
         .group {
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            border-radius: 8px;
         }
 
-        input[type="text"],
-        button {
-            width: 100% !important;
-            /* faz inputs e botão ocuparem toda a largura disponível */
-            font-size: 1.2rem;
-            padding: 12px;
+        .group a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
         }
-    }
-</style>
-<main class="content">
+
+        .group a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsivo para telas pequenas (celular) */
+        @media (max-width: 900px) {
+            body {
+                font-size: 18px;
+                /* aumenta a fonte no celular para melhor leitura */
+                max-width: 100%;
+                /* largura total */
+                margin: 20px 10px;
+                padding: 0 10px;
+            }
+
+            .group {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            input[type="text"],
+            button {
+                width: 100% !important;
+                /* faz inputs e botão ocuparem toda a largura disponível */
+                font-size: 1.2rem;
+                padding: 12px;
+            }
+        }
+    </style>
+
     <form action="{{ route('groups.store') }}" method="POST" aria-label="Formulário de criação de grupo" style="margin-bottom: 20px;">
         @csrf
         <input type="text" name="name" placeholder="Nome do grupo" required style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc; width: 70%;">
@@ -87,4 +89,5 @@
 
     </div>
     @endforeach
-    <main>
+</main>
+@endsection
