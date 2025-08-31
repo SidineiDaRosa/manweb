@@ -6,17 +6,6 @@
     <style>
    
 
-        h2 {
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: #666;
-        }
 
         .group-user-form {
             background-color: #fff;
