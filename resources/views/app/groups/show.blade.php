@@ -67,7 +67,6 @@
 
     <h2>{{ $group->name }}</h2>
     <p>{{ $group->description }}</p>
-    <hr>
 
     @if(session('success'))
     <div class="success">{{ session('success') }}</div>
