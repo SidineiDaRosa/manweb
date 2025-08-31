@@ -66,7 +66,7 @@
             }
         }
     </style>
-</head>
+
 <form action="{{ route('groups.store') }}" method="POST" aria-label="Formulário de criação de grupo" style="margin-bottom: 20px;">
     @csrf
     <input type="text" name="name" placeholder="Nome do grupo" required style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc; width: 70%;">
@@ -83,7 +83,7 @@
 
 @endif
 
-<body>
+
     <h4> Grupos</h4>
 
     @foreach($groups as $group)
@@ -99,6 +99,3 @@
     </div>
     @endforeach
 
-</body>
-
-</html>
