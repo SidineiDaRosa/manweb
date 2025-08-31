@@ -167,9 +167,11 @@ class PostController extends Controller
             $query->where('user_id', auth()->id());
         })->pluck('id');
 
-        // Conta as mensagens não visualizadas (read_at = 1) nesses grupos
+        // Conta as mensagens não visualizadas (read_at = 1) nos grupos
+        // e que não foram enviadas pelo usuário logado
         $count = Message::whereIn('group_id', $groupIds)
             ->where('read_at', 1)
+            ->where('user_id', '!=', auth()->id()) // Adiciona esta linha
             ->count();
 
         return response()->json(['pendentes' => $count]);
