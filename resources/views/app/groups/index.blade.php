@@ -2,7 +2,6 @@
 @section('content')
 
 <style>
-   
     h1,
     h2,
     h4 {
@@ -57,35 +56,35 @@
     }
 </style>
 <main class="content">
-<form action="{{ route('groups.store') }}" method="POST" aria-label="Formulário de criação de grupo" style="margin-bottom: 20px;">
-    @csrf
-    <input type="text" name="name" placeholder="Nome do grupo" required style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc; width: 70%;">
-    <input type="text" name="description" placeholder="Descrição (opcional)" style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc; width: 70%; margin-top: 10px;">
-    <button type="submit" style="background-color: #007bff; color: white; padding: 10px 15px; border-radius: 5px; border: none; cursor: pointer; margin-top: 10px;">
-        Criar Grupo
-    </button>
-</form>
-@if(isset($group))
-<form action="{{ route('groups.attachUsers', $group->id) }}" method="POST">
-    ...
-</form>
-@else
+    <form action="{{ route('groups.store') }}" method="POST" aria-label="Formulário de criação de grupo" style="margin-bottom: 20px;">
+        @csrf
+        <input type="text" name="name" placeholder="Nome do grupo" required style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc; width: 70%;">
+        <input type="text" name="description" placeholder="Descrição (opcional)" style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc; width: 70%; margin-top: 10px;">
+        <button type="submit" style="background-color: #007bff; color: white; padding: 10px 15px; border-radius: 5px; border: none; cursor: pointer; margin-top: 10px;">
+            Criar Grupo
+        </button>
+    </form>
+    @if(isset($group))
+    <form action="{{ route('groups.attachUsers', $group->id) }}" method="POST">
+        ...
+    </form>
+    @else
 
-@endif
+    @endif
 
 
-<h4> Grupos</h4>
+    <h4> Grupos</h4>
 
-@foreach($groups as $group)
-<div class="group">
-    <h2>{{ $group->name }}</h2>
-    <p>{{ $group->description }}</p>
-    <a href="{{ route('groups.show', $group->id) }}">Ver detalhes</a>
-    <hr>
-    <a href="{{ route('blog.painel', ['group_id' => $group->id]) }}">Chat
-        &nbsp; <i class="icofont-wechat"></i>
-    </a>
+    @foreach($groups as $group)
+    <div class="group">
+        <h2>{{ $group->name }}</h2>
+        <p>{{ $group->description }}</p>
+        <a href="{{ route('groups.show', $group->id) }}">Ver detalhes</a>
+        <hr>
+        <a href="{{ route('blog.painel', ['group_id' => $group->id]) }}">Chat
+            &nbsp; <i class="icofont-wechat"></i>
+        </a>
 
-</div>
-@endforeach
-<main>
+    </div>
+    @endforeach
+    <main>
