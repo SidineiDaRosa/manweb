@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@extends('app.layouts.app')
+@section('content')
 
-<head>
-    <meta charset="UTF-8">
     <title>Lista de Grupos</title>
     <style>
         /* Estilo padrão para desktop */
