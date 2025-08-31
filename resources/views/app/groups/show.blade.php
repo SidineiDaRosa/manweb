@@ -1,8 +1,7 @@
 @extends('app.layouts.app')
 @section('content')
     
-    <title>Gerenciar Usuários do Grupo</title>
-
+    
     <style>
    
         .group-user-form {
