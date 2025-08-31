@@ -5,8 +5,6 @@
 
     <style>
    
-
-
         .group-user-form {
             background-color: #fff;
             padding: 20px;
@@ -15,13 +13,7 @@
             margin-top: 20px;
         }
 
-        .group-user-form label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: block;
-            color: #333;
-        }
-
+ 
         .user-entry {
             display: flex;
             align-items: center;
