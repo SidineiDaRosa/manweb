@@ -1,655 +1,292 @@
 @extends('app.layouts.app')
+@section('titulo', 'Gantt')
 @section('content')
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8" />
+<main class="content">
+  <link rel="stylesheet" href="{{ asset('css/gantt.css') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gantt com intervalo dinâmico e cores cinza</title>
   <svg id="svg-ligacoes" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 5;"></svg>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  </head>
+  <svg id="svg-ligacoes" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 5;"></svg>
 
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #e1e3ea;
-      color: #333;
-    }
-
-    #container {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-      background-color: #e1e3ea;
-    }
-
-    /*  inputs datas*/
-    #intervalo {
-      padding: 10px;
-      background: #e1e3ea;
-      border-bottom: 1px solid #ccc;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      font-size: 14px;
-    }
-
-    #intervalo label {
-      font-weight: bold;
-    }
-
-    /* inputs para selecionar o intervalo*/
-    #intervalo input[type="datetime-local"] {
-      padding: 4px 6px;
-      font-size: 14px;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-    }
-
-    #data-tasks {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-
-    }
-
-    .linha-tarefa-container {
-      display: flex;
-      width: 100%;
-      height: 40px;
-      border-bottom: 1px solid #bbb;
-
-    }
-
-    /* Div que engloba todos os dados das os*/
-    .dados {
-      width: 510px;
-      padding: 8px 10px;
-      background: #868fac;
-      display: flex;
-      align-items: center;
-      border-right: 1px solid #bbb;
-      color: #444;
-    }
-
-    /*  Dados da O.S*/
-    .registro {
-      font-size: 14px;
-    }
-
-    .dados-base {
-      width: 510px;
-      padding: 8px 10px;
-      background: rgb(243, 242, 242), 0.5;
-      display: flex;
-      align-items: center;
-      border-right: 1px solid #bbb;
-      color: #444;
-      flex-shrink: 0;
-    }
-
-    .dados-cabecalho {
-      width: 480px;
-      padding: 8px 10px;
-      background: rgba(240, 241, 245, 0.5);
-      display: flex;
-      align-items: center;
-      border-right: 1px solid #bbb;
-      color: #444;
-      flex-shrink: 0;
-      /* importante para não encolher */
-    }
-
-    /* Div que contem os gráficos de barras */
-    .timeline-container {
-      flex: 1;
-      position: relative;
-      /* <- Habilita a rolagem horizontal */
-      background: #f5f5f5;
-      white-space: nowrap;
-      /* Impede quebra de linha horizontal */
-    }
-
-    /* Datas*/
-    .timeline-years {
-      display: flex;
-      background: #FAFAFA;
-      color: #454d66;
-      font-weight: 400;
-      border: 1px solid rgba(164, 171, 193, .5);
-      height: 25px;
-      line-height: 25px;
-      user-select: none;
-    }
-
-    .year {
-      text-align: center;
-      border-left: 1px solid #a4abc1;
-      flex-shrink: 0;
-      padding: 0 10px;
-      font-size: 12px;
-      font-weight: 300;
-    }
-
-    .year:first-child {
-      border-left: none;
-    }
-
-    .timeline-months {
-      display: flex;
-      background: #FAFAFA;
-      color: #454d66;
-      font-weight: 400;
-      border-bottom: 1px solid #a4abc1;
-      height: 30px;
-      line-height: 30px;
-      user-select: none;
-    }
-
-    .month {
-      text-align: center;
-      background-color: #FAFAFA;
-      border-left: 1px solid #a4abc1;
-      flex-shrink: 0;
-      padding: 0 10px;
-      font-size: 12px;
-    }
-
-    .month:first-child {
-      border-left: none;
-
-    }
-
-    /* =========Dias===========*/
-    .timeline-days {
-      display: flex;
-      background: #FAFAFA;
-      color: #444;
-      font-weight: 300;
-      border-bottom: 1px solid #999;
-      height: 25px;
-      line-height: 25px;
-      user-select: none;
-    }
-
-    .day {
-      background-color: #FAFAFA;
-      text-align: center;
-      border-left: 1px solid #999;
-      flex-shrink: 0;
-      padding: 0 6px;
-      font-size: 12px;
-    }
-
-    .day:first-child {
-      border-left: none;
-    }
-
-    /*==========================*/
-    .timeline-header {
-      display: flex;
-      background: #eaeaea;
-      border-bottom: 1px solid #ccc;
-      z-index: 10;
-      height: 40px;
-    }
-
-    .hora {
-      background-color: #FAFAFA;
-      line-height: 40px;
-      text-align: center;
-      border-left: 1px solid #999;
-      font-size: 14px;
-      user-select: none;
-      color: #555;
-    }
-
-    .hora:first-child {
-      border-left: none;
-    }
-
-    .grid {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      pointer-events: none;
-      display: flex;
-    }
-
-    .grid-line {
-      border-left: 1px dotted #aaa;
-      height: 100%;
-      flex-shrink: 0;
-    }
-
-    .timeline-body {
-      position: relative;
-    }
-
-    .registro-barra {
-      position: absolute;
-      height: 20px;
-      background-color: #6ca06c;
-      border-radius: 4px;
-      top: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .registro-barra:hover {
-      background-color: #4f7a4f;
-    }
-
-    /* Modal styles */
-    #modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999;
-      display: none;
-    }
-
-    #modal-overlay {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-    }
-
-    #modal-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fefefe;
-      padding: 20px;
-      border-radius: 6px;
-      min-width: 320px;
-      color: #000;
-      z-index: 1000;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    }
-
-    #modal-content h2 {
-      margin: 0 0 2px 0;
-      display: inline-block;
-    }
-
-    #btn-fechar {
-      float: right;
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0;
-      color: #888;
-      transition: color 0.3s ease;
-    }
-
-    #btn-fechar:hover {
-      color: #444;
-    }
-
-    #modal-content input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 6px 8px;
-      font-size: 14px;
-      margin-top: 4px;
-      margin-bottom: 1px;
-    }
-
-    #modal-content button {
-      margin-top: 5px;
-      padding: 5px 14px;
-      font-size: 14px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    #btn-salvar {
-      background-color: #4caf50;
-      color: white;
-      margin-right: 10px;
-    }
-
-    #btn-salvar:hover {
-      background-color: #3e8e41;
-    }
-
-    #btn-cancelar {
-      background-color: #ccc;
-      color: #333;
-    }
-
-    #btn-cancelar:hover {
-      background-color: #bbb;
-    }
-
-    #form-editar label {
-      display: block;
-      margin-top: 5px;
-      margin-bottom: 0px;
-      font-weight: 400;
-
-    }
-
-    #form-editar input,
-    #form-editar textarea {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 6px 8px;
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .status-badge {
-      position: absolute;
-      top: 2px;
-      left: 4px;
-      font-size: 11px;
-      font-weight: bold;
-      padding: 1px 5px;
-      border-radius: 4px;
-      color: #fff;
-    }
-  </style>
-</head>
-<svg id="svg-ligacoes" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 5;"></svg>
-
-<body>
-  <div id="container">
-    <div id="intervalo" style="margin-left:480px;">
-      <label for="inicio">Início:</label>
-      <input class="form-control w-25" type="datetime-local" id="inicio" /> <br>
-      <label for="fim">Fim:</label>
-      <input class="form-control w-25" type="datetime-local" id="fim" />
-      <button class="btn btn-primary btn-sm" id="btnAtualizar">Atualizar</button>
-      <button class="btn btn-outline-dark btn-sm"
-        onclick="window.open('{{ route('equipamento.index', ['empresa'=>2]) }}', '_blank')">
-        Ativos->Nova O.S.
-      </button>
-    </div>
-
-    <div id="data-tasks">
-      <div style="display: flex; width: 100%;">
-        <div class="dados-cabecalho">
-          <h5>Dados da O.S.</h5>
-        </div>
-
-        <div class="timeline-container" id="timeline-container">
-          <div class="timeline-years" id="timeline-years"></div>
-          <div class="timeline-months" id="timeline-months"></div>
-          <div class="timeline-days" id="timeline-days"></div>
-          <div class="timeline-header" id="timeline-header"></div>
-        </div>
+  <body>
+    <div id="container">
+      <div id="intervalo" style="margin-left:480px;">
+        <label for="inicio">Início:</label>
+        <input class="form-control w-25" type="datetime-local" id="inicio" /> <br>
+        <label for="fim">Fim:</label>
+        <input class="form-control w-25" type="datetime-local" id="fim" />
+        <button class="btn btn-primary btn-sm" id="btnAtualizar">Atualizar</button>
+        <button class="btn btn-outline-dark btn-sm"
+          onclick="window.open('{{ route('equipamento.index', ['empresa'=>2]) }}', '_blank')">
+          Ativos->Nova O.S.
+        </button>
       </div>
-      <div id="tarefas-container" style="flex: 1; overflow-y: auto;"></div>
-    </div>
-  </div>
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <!-- Modal -->
-  <div id="modal">
-    <div id="modal-overlay"></div>
-    <div id="modal-content">
-      <button id="btn-fechar" aria-label="Fechar modal">×</button>
-      <form id="form-editar">
-        <input class="form-control" id="modal-id" readonly />
-        <label for="modal-responsavel">Responsável:</label>
-        <input class="form-control" type="text" id="modal-responsavel" required readonly />
-        <label for="modal-equipamento">Equipamento:</label>
-        <input class="form-control" type="text" id="modal-equipamento" readonly />
-        <label for="modal-inicio">Início:</label>
-        <input class="form-control" type="datetime-local" id="modal-inicio" required />
-        <label for="modal-fim">Fim:</label>
-        <input class="form-control" type="datetime-local" id="modal-fim" required />
-        <label for="modal-inicio">Status:</label>
-        <div style="display: flex;flex-direction:row;"><input class="form-control" style="width: 60px;" type="number" id="modal-status" required />%
-          &nbsp &nbsp &nbsp
-          <select class="form-control" style="width: 200px;" id="modal-situacao" required>
-            <option value="aberto">Aberto</option>
-            <option value="em andamento">Em andamento</option>
-            <option value="pausado">Pausado</option>
-          </select>
+
+      <div id="data-tasks">
+        <div style="display: flex; width: 100%;">
+          <div class="dados-cabecalho">
+            <h5>Dados da O.S.</h5>
+          </div>
+
+          <div class="timeline-container" id="timeline-container">
+            <div class="timeline-years" id="timeline-years"></div>
+            <div class="timeline-months" id="timeline-months"></div>
+            <div class="timeline-days" id="timeline-days"></div>
+            <div class="timeline-header" id="timeline-header"></div>
+          </div>
         </div>
-
-
-        <label for="modal-descricao">Descrição:</label>
-
-        <textarea class="form-control" style="font-family:Arial, Helvetica, sans-serif;height:auto;" id="modal-descricao" rows="5" required></textarea>
-
-        <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
-          <button type="submit" id="btn-salvar">Salvar</button>
-          <button type="button" id="btn-cancelar">Cancelar</button>
-        </div>
-      </form>
+        <div id="tarefas-container" style="flex: 1; overflow-y: auto;"></div>
+      </div>
     </div>
-  </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Modal -->
+    <div id="modal">
+      <div id="modal-overlay"></div>
+      <div id="modal-content">
+        <button id="btn-fechar" aria-label="Fechar modal">×</button>
+        <form id="form-editar">
+          <input class="form-control" id="modal-id" readonly />
+          <label for="modal-responsavel">Responsável:</label>
+          <input class="form-control" type="text" id="modal-responsavel" required readonly />
+          <label for="modal-equipamento">Equipamento:</label>
+          <input class="form-control" type="text" id="modal-equipamento" readonly />
+          <label for="modal-inicio">Início:</label>
+          <input class="form-control" type="datetime-local" id="modal-inicio" required />
+          <label for="modal-fim">Fim:</label>
+          <input class="form-control" type="datetime-local" id="modal-fim" required />
+          <label for="modal-inicio">Status:</label>
+          <div style="display: flex;flex-direction:row;"><input class="form-control" style="width: 60px;" type="number" id="modal-status" required />%
+            &nbsp &nbsp &nbsp
+            <select class="form-control" style="width: 200px;" id="modal-situacao" required>
+              <option value="aberto">Aberto</option>
+              <option value="em andamento">Em andamento</option>
+              <option value="pausado">Pausado</option>
+            </select>
+          </div>
 
-  <!-- Script que gera o gráfico de gantt -->
-  <script>
-    const tarefas = @json($ordens);
-    const mesesNomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-    const inputInicio = document.getElementById('inicio');
-    const inputFim = document.getElementById('fim');
-    const btnAtualizar = document.getElementById('btnAtualizar');
+          <label for="modal-descricao">Descrição:</label>
 
-    const timelineYears = document.getElementById('timeline-years');
-    const timelineMonths = document.getElementById('timeline-months');
-    const timelineHeader = document.getElementById('timeline-header');
-    const tarefasContainer = document.getElementById('tarefas-container');
+          <textarea class="form-control" style="font-family:Arial, Helvetica, sans-serif;height:auto;" id="modal-descricao" rows="5" required></textarea>
 
-    // Modal elements
-    const modal = document.getElementById('modal');
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalId = document.getElementById('modal-id');
-    const modalResp = document.getElementById('modal-responsavel');
-    const modalInicio = document.getElementById('modal-inicio');
-    const modalFim = document.getElementById('modal-fim');
-    const modalStatus = document.getElementById('modal-status'); //Satus do seviço
-    const modalSituacao = document.getElementById('modal-situacao'); //Satus da os estado
-    const modalDescricao = document.getElementById('modal-descricao');
-    const modalEquipamento = document.getElementById('modal-equipamento');
-    const btnCancelar = document.getElementById('btn-cancelar');
-    const btnFechar = document.getElementById('btn-fechar');
-    const formEditar = document.getElementById('form-editar');
+          <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+            <button type="submit" id="btn-salvar">Salvar</button>
+            <button type="button" id="btn-cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-    function abrirModal(tarefa) {
-      modalId.value = tarefa.id;
-      modalResp.value = tarefa.responsavel;
-      modalInicio.value = tarefa.inicio;
-      modalFim.value = tarefa.fim;
-      modalDescricao.value = tarefa.descricao;
-      modalEquipamento.value = tarefa.equipamento.nome;
-      modalStatus.value = tarefa.status_servicos; //atualiza o valor de statsu na modal.
-      modalSituacao.value = tarefa.situacao; //atualiza o valor de situação na modal.
-      modal.style.display = 'block';
-      modalResp.focus();
-    }
+    <!-- Script que gera o gráfico de gantt -->
+    <script>
+      const tarefas = @json($ordens);
+      const mesesNomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-    function fecharModal() {
-      modal.style.display = 'none';
-    }
+      const inputInicio = document.getElementById('inicio');
+      const inputFim = document.getElementById('fim');
+      const btnAtualizar = document.getElementById('btnAtualizar');
 
-    modalOverlay.addEventListener('click', fecharModal);
-    btnFechar.addEventListener('click', fecharModal);
-    btnCancelar.addEventListener('click', fecharModal);
-    document.addEventListener('keydown', e => {
-      if (e.key === "Escape") {
-        fecharModal();
-      }
-    });
+      const timelineYears = document.getElementById('timeline-years');
+      const timelineMonths = document.getElementById('timeline-months');
+      const timelineHeader = document.getElementById('timeline-header');
+      const tarefasContainer = document.getElementById('tarefas-container');
 
-    formEditar.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const id = modalId.value;
-      const index = tarefas.findIndex(t => t.id === id);
-      if (index !== -1) {
-        tarefas[index].responsavel = modalResp.value;
-        tarefas[index].inicio = modalInicio.value;
-        tarefas[index].fim = modalFim.value;
-        tarefas[index].descricao = modalDescricao.value;
-        atualizarTimeline(inputInicio.value, inputFim.value);
-        fecharModal();
-      }
-    });
+      // Modal elements
+      const modal = document.getElementById('modal');
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalId = document.getElementById('modal-id');
+      const modalResp = document.getElementById('modal-responsavel');
+      const modalInicio = document.getElementById('modal-inicio');
+      const modalFim = document.getElementById('modal-fim');
+      const modalStatus = document.getElementById('modal-status'); //Satus do seviço
+      const modalSituacao = document.getElementById('modal-situacao'); //Satus da os estado
+      const modalDescricao = document.getElementById('modal-descricao');
+      const modalEquipamento = document.getElementById('modal-equipamento');
+      const btnCancelar = document.getElementById('btn-cancelar');
+      const btnFechar = document.getElementById('btn-fechar');
+      const formEditar = document.getElementById('form-editar');
 
-    function atualizarTimeline(inicioStr, fimStr) {
-      if (!inicioStr || !fimStr) return;
-      const inicio = new Date(inicioStr);
-      const fim = new Date(fimStr);
-      if (isNaN(inicio) || isNaN(fim) || fim <= inicio) return;
-
-      const intervaloHoras = (fim - inicio) / (1000 * 60 * 60);
-      const largura = window.innerWidth - 510;
-      const PIXELS_POR_HORA = largura / intervaloHoras;
-
-      timelineYears.innerHTML = '';
-      timelineMonths.innerHTML = '';
-      timelineHeader.innerHTML = '';
-      tarefasContainer.innerHTML = '';
-
-      //=========== Anos  ===============//
-
-      const anoInicio = inicio.getFullYear();
-      const anoFim = fim.getFullYear();
-      for (let ano = anoInicio; ano <= anoFim; ano++) {
-        const divAno = document.createElement('div');
-        divAno.className = 'year';
-        divAno.style.width = `${largura / (anoFim - anoInicio + 1)}px`;
-        divAno.textContent = ano;
-        timelineYears.appendChild(divAno);
+      function abrirModal(tarefa) {
+        modalId.value = tarefa.id;
+        modalResp.value = tarefa.responsavel;
+        modalInicio.value = tarefa.inicio;
+        modalFim.value = tarefa.fim;
+        modalDescricao.value = tarefa.descricao;
+        modalEquipamento.value = tarefa.equipamento.nome;
+        modalStatus.value = tarefa.status_servicos; //atualiza o valor de statsu na modal.
+        modalSituacao.value = tarefa.situacao; //atualiza o valor de situação na modal.
+        modal.style.display = 'block';
+        modalResp.focus();
       }
 
-      //============= Meses==============//
-
-      let mesAtual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
-      const fimMeses = new Date(fim.getFullYear(), fim.getMonth(), 1);
-      const meses = [];
-
-      while (mesAtual <= fimMeses) {
-        const inicioMes = new Date(mesAtual);
-        const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 1);
-
-        const inicioDentro = inicioMes < inicio ? inicio : inicioMes;
-        const fimDentro = fimMes > fim ? fim : fimMes;
-
-        const horas = (fimDentro - inicioDentro) / (1000 * 60 * 60);
-
-        meses.push({
-          nome: mesesNomes[mesAtual.getMonth()],
-          ano: mesAtual.getFullYear(),
-          horas
-        });
-
-        mesAtual.setMonth(mesAtual.getMonth() + 1);
+      function fecharModal() {
+        modal.style.display = 'none';
       }
 
-      meses.forEach(mes => {
-        const divMes = document.createElement('div');
-        divMes.className = 'month';
-        divMes.style.width = `${mes.horas * PIXELS_POR_HORA}px`;
-        divMes.textContent = `${mes.nome} ${mes.ano}`;
-        timelineMonths.appendChild(divMes);
+      modalOverlay.addEventListener('click', fecharModal);
+      btnFechar.addEventListener('click', fecharModal);
+      btnCancelar.addEventListener('click', fecharModal);
+      document.addEventListener('keydown', e => {
+        if (e.key === "Escape") {
+          fecharModal();
+        }
       });
 
-      //======  dias   ====//
-      const timelineDays = document.getElementById('timeline-days');
-      timelineDays.innerHTML = ''; // limpa antes
-
-      let diaAtual = new Date(inicio);
-
-      while (diaAtual <= fim) {
-        const divDia = document.createElement('div');
-        divDia.className = 'day';
-
-        // Formata o dia para aparecer (ex: 01, 02, 15...)
-        const diaNum = diaAtual.getDate().toString().padStart(2, '0');
-        divDia.textContent = diaNum;
-
-        // Calcula o início e fim do dia atual (meia-noite até meia-noite do próximo dia)
-        const inicioDia = new Date(diaAtual);
-        inicioDia.setHours(0, 0, 0, 0);
-
-        const fimDia = new Date(inicioDia);
-        fimDia.setHours(24, 0, 0, 0);
-
-        // Define o intervalo visível para o dia atual dentro do intervalo geral
-        const inicioVisivel = inicioDia < inicio ? inicio : inicioDia;
-        const fimVisivel = fimDia > fim ? fim : fimDia;
-
-        // Calcula quantas horas do dia estão visíveis
-        const horasVisiveis = (fimVisivel - inicioVisivel) / (1000 * 60 * 60);
-
-        // Define a largura proporcional da div do dia
-        divDia.style.width = `${PIXELS_POR_HORA * horasVisiveis}px`;
-
-        timelineDays.appendChild(divDia);
-
-        // Incrementa 1 dia
-        diaAtual.setDate(diaAtual.getDate() + 1);
-      }
-      // Depois desse trecho que cria os dias:
-      while (diaAtual <= fim) {
-        const divDia = document.createElement('div');
-        divDia.className = 'day';
-
-        // ... código para ajustar largura e texto do dia ...
-
-        timelineDays.appendChild(divDia);
-
-        // Adiciona linha vertical tracejada para o dia
-        const linhaDia = document.createElement('div');
-        linhaDia.className = 'grid-line';
-        linhaDia.style.height = '100%'; // cobre toda a altura da barra de dias
-        linhaDia.style.position = 'absolute'; // posicionamento absoluto
-        linhaDia.style.left = divDia.offsetLeft + divDia.offsetWidth + 'px'; // posição após o dia
-        linhaDia.style.top = '0';
-        linhaDia.style.borderLeft = '1px dotted #999';
-
-        timelineDays.appendChild(linhaDia);
-
-        diaAtual.setDate(diaAtual.getDate() + 1);
-      }
-      // ==========Horas (somente se intervalo <= 48 horas)======//
-
-      if (intervaloHoras <= 48) {
-        const horasInteiras = Math.ceil(intervaloHoras);
-        for (let h = 0; h < horasInteiras; h++) {
-          const divHora = document.createElement('div');
-          divHora.className = 'hora';
-          divHora.style.width = `${PIXELS_POR_HORA}px`;
-          const horaReal = new Date(inicio.getTime() + h * 3600000).getHours();
-          divHora.textContent = horaReal + 'h';
-          timelineHeader.appendChild(divHora);
+      formEditar.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = modalId.value;
+        const index = tarefas.findIndex(t => t.id === id);
+        if (index !== -1) {
+          tarefas[index].responsavel = modalResp.value;
+          tarefas[index].inicio = modalInicio.value;
+          tarefas[index].fim = modalFim.value;
+          tarefas[index].descricao = modalDescricao.value;
+          atualizarTimeline(inputInicio.value, inputFim.value);
+          fecharModal();
         }
-      }
+      });
 
-      // dados das Tarefas
-      tarefas.forEach(tarefa => {
-        const linha = document.createElement('div');
-        linha.className = 'linha-tarefa-container';
+      function atualizarTimeline(inicioStr, fimStr) {
+        if (!inicioStr || !fimStr) return;
+        const inicio = new Date(inicioStr);
+        const fim = new Date(fimStr);
+        if (isNaN(inicio) || isNaN(fim) || fim <= inicio) return;
 
-        const dados = document.createElement('div');
-        dados.className = 'dados';
-        dados.innerHTML = `
+        const intervaloHoras = (fim - inicio) / (1000 * 60 * 60);
+        const largura = window.innerWidth - 510;
+        const PIXELS_POR_HORA = largura / intervaloHoras;
+
+        timelineYears.innerHTML = '';
+        timelineMonths.innerHTML = '';
+        timelineHeader.innerHTML = '';
+        tarefasContainer.innerHTML = '';
+
+        //=========== Anos  ===============//
+
+        const anoInicio = inicio.getFullYear();
+        const anoFim = fim.getFullYear();
+        for (let ano = anoInicio; ano <= anoFim; ano++) {
+          const divAno = document.createElement('div');
+          divAno.className = 'year';
+          divAno.style.width = `${largura / (anoFim - anoInicio + 1)}px`;
+          divAno.textContent = ano;
+          timelineYears.appendChild(divAno);
+        }
+
+        //============= Meses==============//
+
+        let mesAtual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
+        const fimMeses = new Date(fim.getFullYear(), fim.getMonth(), 1);
+        const meses = [];
+
+        while (mesAtual <= fimMeses) {
+          const inicioMes = new Date(mesAtual);
+          const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 1);
+
+          const inicioDentro = inicioMes < inicio ? inicio : inicioMes;
+          const fimDentro = fimMes > fim ? fim : fimMes;
+
+          const horas = (fimDentro - inicioDentro) / (1000 * 60 * 60);
+
+          meses.push({
+            nome: mesesNomes[mesAtual.getMonth()],
+            ano: mesAtual.getFullYear(),
+            horas
+          });
+
+          mesAtual.setMonth(mesAtual.getMonth() + 1);
+        }
+
+        meses.forEach(mes => {
+          const divMes = document.createElement('div');
+          divMes.className = 'month';
+          divMes.style.width = `${mes.horas * PIXELS_POR_HORA}px`;
+          divMes.textContent = `${mes.nome} ${mes.ano}`;
+          timelineMonths.appendChild(divMes);
+        });
+
+        //======  dias   ====//
+        const timelineDays = document.getElementById('timeline-days');
+        timelineDays.innerHTML = ''; // limpa antes
+
+        let diaAtual = new Date(inicio);
+
+        while (diaAtual <= fim) {
+          const divDia = document.createElement('div');
+          divDia.className = 'day';
+
+          // Formata o dia para aparecer (ex: 01, 02, 15...)
+          const diaNum = diaAtual.getDate().toString().padStart(2, '0');
+          divDia.textContent = diaNum;
+
+          // Calcula o início e fim do dia atual (meia-noite até meia-noite do próximo dia)
+          const inicioDia = new Date(diaAtual);
+          inicioDia.setHours(0, 0, 0, 0);
+
+          const fimDia = new Date(inicioDia);
+          fimDia.setHours(24, 0, 0, 0);
+
+          // Define o intervalo visível para o dia atual dentro do intervalo geral
+          const inicioVisivel = inicioDia < inicio ? inicio : inicioDia;
+          const fimVisivel = fimDia > fim ? fim : fimDia;
+
+          // Calcula quantas horas do dia estão visíveis
+          const horasVisiveis = (fimVisivel - inicioVisivel) / (1000 * 60 * 60);
+
+          // Define a largura proporcional da div do dia
+          divDia.style.width = `${PIXELS_POR_HORA * horasVisiveis}px`;
+
+          timelineDays.appendChild(divDia);
+
+          // Incrementa 1 dia
+          diaAtual.setDate(diaAtual.getDate() + 1);
+        }
+        // Depois desse trecho que cria os dias:
+        while (diaAtual <= fim) {
+          const divDia = document.createElement('div');
+          divDia.className = 'day';
+
+          // ... código para ajustar largura e texto do dia ...
+
+          timelineDays.appendChild(divDia);
+
+          // Adiciona linha vertical tracejada para o dia
+          const linhaDia = document.createElement('div');
+          linhaDia.className = 'grid-line';
+          linhaDia.style.height = '100%'; // cobre toda a altura da barra de dias
+          linhaDia.style.position = 'absolute'; // posicionamento absoluto
+          linhaDia.style.left = divDia.offsetLeft + divDia.offsetWidth + 'px'; // posição após o dia
+          linhaDia.style.top = '0';
+          linhaDia.style.borderLeft = '1px dotted #999';
+
+          timelineDays.appendChild(linhaDia);
+
+          diaAtual.setDate(diaAtual.getDate() + 1);
+        }
+        // ==========Horas (somente se intervalo <= 48 horas)======//
+
+        if (intervaloHoras <= 48) {
+          const horasInteiras = Math.ceil(intervaloHoras);
+          for (let h = 0; h < horasInteiras; h++) {
+            const divHora = document.createElement('div');
+            divHora.className = 'hora';
+            divHora.style.width = `${PIXELS_POR_HORA}px`;
+            const horaReal = new Date(inicio.getTime() + h * 3600000).getHours();
+            divHora.textContent = horaReal + 'h';
+            timelineHeader.appendChild(divHora);
+          }
+        }
+
+        // dados das Tarefas
+        tarefas.forEach(tarefa => {
+          const linha = document.createElement('div');
+          linha.className = 'linha-tarefa-container';
+
+          const dados = document.createElement('div');
+          dados.className = 'dados';
+          dados.innerHTML = `
   <div styele="margin-top:0px" class="registro-id"><strong>${tarefa.id}</strong></div>
   <div class="registro-responsavel">-<strong style="color:blue;">${tarefa.responsavel}</strong></div>
   <div class="registro-inicio">- ${tarefa.inicio.replace('T', ' ')}</div>
@@ -658,303 +295,356 @@
   <div class="registro-fim">${tarefa.especialidade}</div>
 `;
 
-        const divBotao = document.createElement('div');
-        divBotao.style.marginLeft = 'auto';
-        divBotao.innerHTML = `<a href="/ordem-servico/${tarefa.id}" target="_blank" class="btn btn-sm btn-outline-primary">O.S.</a>`;
+          const divBotao = document.createElement('div');
+          divBotao.style.marginLeft = 'auto';
+          divBotao.innerHTML = `<a href="/ordem-servico/${tarefa.id}" target="_blank" class="btn btn-sm btn-outline-primary">O.S.</a>`;
 
-        dados.appendChild(divBotao);
-        //----------------------------fim de dados----------------//
-        const timeline = document.createElement('div');
-        timeline.className = 'timeline-container';
-        timeline.style.minWidth = `${largura}px`;
-        timeline.style.position = 'relative';
+          dados.appendChild(divBotao);
+          //----------------------------fim de dados----------------//
+          const timeline = document.createElement('div');
+          timeline.className = 'timeline-container';
+          timeline.style.minWidth = `${largura}px`;
+          timeline.style.position = 'relative';
 
-        const grid = document.createElement('div');
-        grid.className = 'grid';
-        grid.style.minWidth = `${largura}px`;
+          const grid = document.createElement('div');
+          grid.className = 'grid';
+          grid.style.minWidth = `${largura}px`;
 
-        // Grid lines (somente se intervalo <= 48 horas)
-        const horasInteirasGrid = Math.ceil(intervaloHoras);
-        for (let i = 0; i < horasInteirasGrid; i++) {
-          const line = document.createElement('div');
-          line.className = 'grid-line';
-          line.style.width = `${PIXELS_POR_HORA}px`;
-          if (intervaloHoras > 48) {
-            line.style.display = 'none';
+          // Grid lines (somente se intervalo <= 48 horas)
+          const horasInteirasGrid = Math.ceil(intervaloHoras);
+          for (let i = 0; i < horasInteirasGrid; i++) {
+            const line = document.createElement('div');
+            line.className = 'grid-line';
+            line.style.width = `${PIXELS_POR_HORA}px`;
+            if (intervaloHoras > 48) {
+              line.style.display = 'none';
+            }
+            grid.appendChild(line);
           }
-          grid.appendChild(line);
-        }
 
-        timeline.appendChild(grid);
-        //--------------------------------//
-        // Gera a barra de tarefas timeline
-        //--------------------------------//
-        const barra = document.createElement('div');
+          timeline.appendChild(grid);
+          //--------------------------------//
+          // Gera a barra de tarefas timeline
+          //--------------------------------//
+          const barra = document.createElement('div');
 
-        barra.className = 'registro-barra';
-        barra.style.position = 'relative'; // importante para posicionar elementos absolutos internamente
+          barra.className = 'registro-barra';
+          barra.style.position = 'relative'; // importante para posicionar elementos absolutos internamente
+          //----------------------------------------//
+          //  Rezizable
+          //---------------------------------------//
+          const leftHandle = document.createElement('div');
+          leftHandle.className = 'resize-handle left';
 
-        // Define a cor com base na especialidade
-        switch ((tarefa.especialidade || '').toLowerCase()) {
-          case 'eletrica':
-            barra.style.backgroundColor = 'rgba(255, 193, 7, 0.3)';
-            break;
-          case 'mecanica':
-            barra.style.backgroundColor = 'rgba(0, 68, 102, 0.3)'; // azul petróleo
-            break;
-          case 'civil':
-            barra.style.backgroundColor = 'rgba(2, 117, 216, 0.3)'; // azul
-            break;
-          case 'sesmet':
-            barra.style.backgroundColor = 'rgba(76, 175, 80, 0.3)'; // verde folha
-            break;
-          default:
-            barra.style.backgroundColor = '#808080'; // cinza médio
-        }
+          const rightHandle = document.createElement('div');
+          rightHandle.className = 'resize-handle right';
 
-        // Barra de progresso
-        const progresso = document.createElement('div');
-        progresso.style.height = '50%';
-        progresso.style.position = 'absolute';
-        progresso.style.top = '25%';
-        progresso.style.width = `${tarefa.status_servicos}%`;
-        progresso.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
-        progresso.style.borderRadius = '4px 0 0 4px';
-        progresso.style.pointerEvents = 'none';
+          barra.appendChild(leftHandle);
+          barra.appendChild(rightHandle);
+          // Código de redimensionamento que te passei
+          let barraAtiva = null;
+          let handleAtivo = null;
+          let posInicial = 0;
+          let larguraInicial = 0;
 
-        // Texto do progresso
-        const textoStatus = document.createElement('span');
-        textoStatus.textContent = `${tarefa.status_servicos}%`;
-        textoStatus.style.fontSize = '12px';
-        textoStatus.style.color = '#000';
-        textoStatus.style.position = 'absolute';
-        textoStatus.style.right = '5px';
-        textoStatus.style.bottom = '4px';
-        textoStatus.style.opacity = '0.8';
+          document.querySelectorAll('.resize-handle').forEach(handle => {
+            handle.addEventListener('mousedown', (e) => {
+              barraAtiva = e.target.parentElement; // a div .registro-barra
+              handleAtivo = e.target.classList.contains('left') ? 'left' : 'right';
+              posInicial = e.clientX;
+              larguraInicial = barraAtiva.offsetWidth;
+              document.body.style.userSelect = 'none'; // evita seleção
+            });
+          });
 
-        // Adiciona progresso e texto
-        barra.appendChild(progresso);
-        barra.appendChild(textoStatus);
+          document.addEventListener('mousemove', (e) => {
+            if (!barraAtiva) return;
+            const dx = e.clientX - posInicial;
+            if (handleAtivo === 'right') {
+              barraAtiva.style.width = `${Math.max(10, larguraInicial + dx)}px`;
+            } else {
+              barraAtiva.style.width = `${Math.max(10, larguraInicial - dx)}px`;
+              barraAtiva.style.left = `${barraAtiva.offsetLeft + dx}px`;
+            }
+          });
 
-        // Status da O.S.
-        const statusBadge = document.createElement('div');
-        statusBadge.style.position = 'absolute';
-        statusBadge.style.top = '0';
-        statusBadge.style.left = '20px'; // deslocado para caber a bolinha
-        statusBadge.style.fontSize = '12px';
-        statusBadge.style.padding = '1px 4px';
-        statusBadge.style.borderRadius = '4px';
-        statusBadge.style.color = '#fff';
+          document.addEventListener('mouseup', () => {
+            if (barraAtiva) {
+              barraAtiva = null;
+              handleAtivo = null;
+              document.body.style.userSelect = 'auto';
+              // aqui você pode chamar AJAX para atualizar as datas
+            }
+          });
+          //=========================================//
+          // Define a cor com base na especialidade
+          switch ((tarefa.especialidade || '').toLowerCase()) {
+            case 'eletrica':
+              barra.style.backgroundColor = 'rgba(255, 193, 7, 0.3)';
+              break;
+            case 'mecanica':
+              barra.style.backgroundColor = 'rgba(0, 68, 102, 0.3)'; // azul petróleo
+              break;
+            case 'civil':
+              barra.style.backgroundColor = 'rgba(2, 117, 216, 0.3)'; // azul
+              break;
+            case 'sesmet':
+              barra.style.backgroundColor = 'rgba(76, 175, 80, 0.3)'; // verde folha
+              break;
+            default:
+              barra.style.backgroundColor = '#808080'; // cinza médio
+          }
 
-        switch ((tarefa.situacao || '').toLowerCase()) {
-          case 'aberto':
-            statusBadge.textContent = 'Aberto';
-            statusBadge.style.backgroundColor = '#d8c071ff';
-            break;
-          case 'em andamento':
-            statusBadge.textContent = 'Executando';
-            statusBadge.style.backgroundColor = '#169b12ff';
-            break;
-          case 'pausado':
-            statusBadge.textContent = 'Pausado';
-            statusBadge.style.backgroundColor = '#dc3545';
-            break;
-          default:
-            statusBadge.textContent = 'Desconhecido';
-            statusBadge.style.backgroundColor = '#6c757d';
-            break;
-        }
+          // Barra de progresso
+          const progresso = document.createElement('div');
+          progresso.style.height = '50%';
+          progresso.style.position = 'absolute';
+          progresso.style.top = '25%';
+          progresso.style.width = `${tarefa.status_servicos}%`;
+          progresso.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+          progresso.style.borderRadius = '4px 0 0 4px';
+          progresso.style.pointerEvents = 'none';
 
-        // Adiciona status
-        barra.appendChild(statusBadge);
+          // Texto do progresso
+          const textoStatus = document.createElement('span');
+          textoStatus.textContent = `${tarefa.status_servicos}%`;
+          textoStatus.style.fontSize = '12px';
+          textoStatus.style.color = '#000';
+          textoStatus.style.position = 'absolute';
+          textoStatus.style.right = '5px';
+          textoStatus.style.bottom = '4px';
+          textoStatus.style.opacity = '0.8';
 
-        // Calcula prioridade pela matriz GUT
-        const gravidade = parseInt(tarefa.gravidade) || 0;
-        const urgencia = parseInt(tarefa.urgencia) || 0;
-        const tendencia = parseInt(tarefa.tendencia) || 0;
-        const prioridade = gravidade * urgencia * tendencia;
+          // Adiciona progresso e texto
+          barra.appendChild(progresso);
+          barra.appendChild(textoStatus);
 
-        // Cria bolinha de prioridade
-        const bolinhaPrioridade = document.createElement('div');
-        bolinhaPrioridade.style.width = '10px';
-        bolinhaPrioridade.style.height = '10px';
-        bolinhaPrioridade.style.borderRadius = '50%';
-        bolinhaPrioridade.style.position = 'absolute';
-        bolinhaPrioridade.style.top = '5px';
-        bolinhaPrioridade.style.left = '5px';
-        bolinhaPrioridade.title = `Prioridade: ${prioridade}`;
-        bolinhaPrioridade.style.boxShadow = '0 0 2px #000'; // efeito visual
+          // Status da O.S.
+          const statusBadge = document.createElement('div');
+          statusBadge.style.position = 'absolute';
+          statusBadge.style.top = '0';
+          statusBadge.style.left = '20px'; // deslocado para caber a bolinha
+          statusBadge.style.fontSize = '12px';
+          statusBadge.style.padding = '1px 4px';
+          statusBadge.style.borderRadius = '4px';
+          statusBadge.style.color = '#fff';
 
-        // Cor conforme prioridade
-        if (prioridade >= 100) {
-          bolinhaPrioridade.style.backgroundColor = 'red';
-        } else if (prioridade >= 50) {
-          bolinhaPrioridade.style.backgroundColor = 'orange';
-        } else {
-          bolinhaPrioridade.style.backgroundColor = 'green';
-        }
+          switch ((tarefa.situacao || '').toLowerCase()) {
+            case 'aberto':
+              statusBadge.textContent = 'Aberto';
+              statusBadge.style.backgroundColor = '#d8c071ff';
+              break;
+            case 'em andamento':
+              statusBadge.textContent = 'Executando';
+              statusBadge.style.backgroundColor = '#169b12ff';
+              break;
+            case 'pausado':
+              statusBadge.textContent = 'Pausado';
+              statusBadge.style.backgroundColor = '#dc3545';
+              break;
+            default:
+              statusBadge.textContent = 'Desconhecido';
+              statusBadge.style.backgroundColor = '#6c757d';
+              break;
+          }
 
-        // Adiciona bolinha à barra
-        barra.appendChild(bolinhaPrioridade);
+          // Adiciona status
+          barra.appendChild(statusBadge);
 
+          // Calcula prioridade pela matriz GUT
+          const gravidade = parseInt(tarefa.gravidade) || 0;
+          const urgencia = parseInt(tarefa.urgencia) || 0;
+          const tendencia = parseInt(tarefa.tendencia) || 0;
+          const prioridade = gravidade * urgencia * tendencia;
 
+          // Cria bolinha de prioridade
+          const bolinhaPrioridade = document.createElement('div');
+          bolinhaPrioridade.style.width = '10px';
+          bolinhaPrioridade.style.height = '10px';
+          bolinhaPrioridade.style.borderRadius = '50%';
+          bolinhaPrioridade.style.position = 'absolute';
+          bolinhaPrioridade.style.top = '5px';
+          bolinhaPrioridade.style.left = '5px';
+          bolinhaPrioridade.title = `Prioridade: ${prioridade}`;
+          bolinhaPrioridade.style.boxShadow = '0 0 2px #000'; // efeito visual
 
-        //--------------------------------------------//
-        const iniT = new Date(tarefa.inicio);
-        const fimT = new Date(tarefa.fim);
+          // Cor conforme prioridade
+          if (prioridade >= 100) {
+            bolinhaPrioridade.style.backgroundColor = 'red';
+          } else if (prioridade >= 50) {
+            bolinhaPrioridade.style.backgroundColor = 'orange';
+          } else {
+            bolinhaPrioridade.style.backgroundColor = 'green';
+          }
 
-        if (fimT > inicio && iniT < fim) {
-          const inicioVisivel = iniT < inicio ? inicio : iniT;
-          const fimVisivel = fimT > fim ? fim : fimT;
+          // Adiciona bolinha à barra
+          barra.appendChild(bolinhaPrioridade);
 
-          const duracao = (fimVisivel - inicioVisivel) / 3600000;
-          const desloc = (inicioVisivel - inicio) / 3600000;
+          //--------------------------------------------//
+          const iniT = new Date(tarefa.inicio);
+          const fimT = new Date(tarefa.fim);
 
-          barra.style.left = `${desloc * PIXELS_POR_HORA}px`;
-          barra.style.width = `${duracao * PIXELS_POR_HORA}px`;
-          //   title
-          barra.title = `Tarefa ${tarefa.id}\nInício: ${tarefa.inicio}\nFim: ${tarefa.fim} \nFim: ${tarefa.equipamento.nome} \nFim: ${tarefa.descricao}`;
+          if (fimT > inicio && iniT < fim) {
+            const inicioVisivel = iniT < inicio ? inicio : iniT;
+            const fimVisivel = fimT > fim ? fim : fimT;
 
-          barra.addEventListener('click', () => abrirModal(tarefa));
+            const duracao = (fimVisivel - inicioVisivel) / 3600000;
+            const desloc = (inicioVisivel - inicio) / 3600000;
 
-          timeline.appendChild(barra);
-        }
+            barra.style.left = `${desloc * PIXELS_POR_HORA}px`;
+            barra.style.width = `${duracao * PIXELS_POR_HORA}px`;
+            //   title
+            barra.title = `Tarefa ${tarefa.id}\nInício: ${tarefa.inicio}\nFim: ${tarefa.fim} \nFim: ${tarefa.equipamento.nome} \nFim: ${tarefa.descricao}`;
 
-        linha.appendChild(dados);
-        linha.appendChild(timeline);
-        tarefasContainer.appendChild(linha);
-      });
-    }
+            barra.addEventListener('click', () => abrirModal(tarefa));
 
-    btnAtualizar.addEventListener('click', () => {
-      atualizarTimeline(inputInicio.value, inputFim.value);
+            timeline.appendChild(barra);
+          }
 
-
-
-
-
-
-
-
-    });
-
-    // Inicializa com valores padrão para teste// Pega as variáveis enviadas pelo controller
-    const inicioServidor = @json($inicioFiltro);
-    const fimServidor = @json($fimFiltro);
-
-    const agora = new Date();
-
-    function formatarParaInputDatetimeLocal(dataStr) {
-      if (!dataStr) return null;
-      // Garante o formato 'YYYY-MM-DDTHH:mm'
-      const dt = new Date(dataStr);
-      if (isNaN(dt)) return null;
-      return dt.toISOString().slice(0, 16);
-    }
-
-    const inicioPadrao = formatarParaInputDatetimeLocal(inicioServidor) ||
-      new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), 6, 0).toISOString().slice(0, 16);
-
-    const fimPadrao = formatarParaInputDatetimeLocal(fimServidor) ||
-      new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 1, 18, 0).toISOString().slice(0, 16);
-
-    inputInicio.value = inicioPadrao;
-    inputFim.value = fimPadrao;
-
-    atualizarTimeline(inputInicio.value, inputFim.value);
-  </script>
-  <!------------------------------------------------->
-  <!-- Script que envia a requisição via jason da modal-->
-  <script>
-    document.getElementById('form-editar').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const id = document.getElementById('modal-id').value;
-
-      const inicioCompleto = document.getElementById('modal-inicio').value;
-      const fimCompleto = document.getElementById('modal-fim').value;
-      const status = document.getElementById('modal-status').value;
-      const situacao = document.getElementById('modal-situacao').value;
-
-      // ✅ Validação com data e hora
-      const dataHoraInicio = new Date(inicioCompleto);
-      const dataHoraFim = new Date(fimCompleto);
-
-      if (dataHoraInicio > dataHoraFim) {
-        alert('Erro: A data/hora de início não pode ser maior que a data/hora de fim.');
-        return; // ❌ interrompe o envio
+          linha.appendChild(dados);
+          linha.appendChild(timeline);
+          tarefasContainer.appendChild(linha);
+        });
       }
 
-      // Separa data e hora (opcional, se você quiser continuar mandando separado)
-      const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
-      const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
+      btnAtualizar.addEventListener('click', () => {
+        atualizarTimeline(inputInicio.value, inputFim.value);
+      });
 
-      const fim = fimCompleto.split('T')[0]; // 'YYYY-MM-DD'
-      const horaFim = fimCompleto.split('T')[1]; // 'HH:MM'
+      // Inicializa com valores padrão para teste// Pega as variáveis enviadas pelo controller
+      const inicioServidor = @json($inicioFiltro);
+      const fimServidor = @json($fimFiltro);
 
-      const dadosParaEnviar = {
-        id: id,
-        inicio: inicio,
-        horaInicio: horaInicio,
-        fim: fim,
-        horaFim: horaFim,
-        status: status,
-        situacao_os: situacao
-      };
+      const agora = new Date();
 
-      fetch('{{ route("update.os.interval") }}', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          },
-          body: JSON.stringify(dadosParaEnviar)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Resposta do servidor:', data.retorno);
+      function formatarParaInputDatetimeLocal(dataStr) {
+        if (!dataStr) return null;
+        // Garante o formato 'YYYY-MM-DDTHH:mm'
+        const dt = new Date(dataStr);
+        if (isNaN(dt)) return null;
+        return dt.toISOString().slice(0, 16);
+      }
 
-          const index = tarefas.findIndex(t => t.id == id);
-          if (index !== -1) {
-            tarefas[index].inicio = inicioCompleto;
-            tarefas[index].fim = fimCompleto;
-            tarefas[index].descricao = document.getElementById('modal-descricao').value;
-            tarefas[index].status_servicos = status;
-            tarefas[index].situacao = situacao;
-          }
+      const inicioPadrao = formatarParaInputDatetimeLocal(inicioServidor) ||
+        new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), 6, 0).toISOString().slice(0, 16);
 
-          atualizarTimeline(inputInicio.value, inputFim.value);
-          document.getElementById('modal').style.display = 'none';
-        })
-        .catch(error => {
-          console.error('Erro ao enviar:', error);
-          alert('Erro ao enviar os dados!');
+      const fimPadrao = formatarParaInputDatetimeLocal(fimServidor) ||
+        new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 1, 18, 0).toISOString().slice(0, 16);
+
+      inputInicio.value = inicioPadrao;
+      inputFim.value = fimPadrao;
+
+      atualizarTimeline(inputInicio.value, inputFim.value);
+    </script>
+    <!------------------------------------------------->
+    <!-- Script que envia a requisição via jason da modal-->
+    <script>
+      document.getElementById('form-editar').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('modal-id').value;
+
+        const inicioCompleto = document.getElementById('modal-inicio').value;
+        const fimCompleto = document.getElementById('modal-fim').value;
+        const status = document.getElementById('modal-status').value;
+        const situacao = document.getElementById('modal-situacao').value;
+
+        // ✅ Validação com data e hora
+        const dataHoraInicio = new Date(inicioCompleto);
+        const dataHoraFim = new Date(fimCompleto);
+
+        if (dataHoraInicio > dataHoraFim) {
+          alert('Erro: A data/hora de início não pode ser maior que a data/hora de fim.');
+          return; // ❌ interrompe o envio
+        }
+
+        // Separa data e hora (opcional, se você quiser continuar mandando separado)
+        const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
+        const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
+
+        const fim = fimCompleto.split('T')[0]; // 'YYYY-MM-DD'
+        const horaFim = fimCompleto.split('T')[1]; // 'HH:MM'
+
+        const dadosParaEnviar = {
+          id: id,
+          inicio: inicio,
+          horaInicio: horaInicio,
+          fim: fim,
+          horaFim: horaFim,
+          status: status,
+          situacao_os: situacao
+        };
+
+        fetch('{{ route("update.os.interval") }}', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(dadosParaEnviar)
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Resposta do servidor:', data.retorno);
+
+            const index = tarefas.findIndex(t => t.id == id);
+            if (index !== -1) {
+              tarefas[index].inicio = inicioCompleto;
+              tarefas[index].fim = fimCompleto;
+              tarefas[index].descricao = document.getElementById('modal-descricao').value;
+              tarefas[index].status_servicos = status;
+              tarefas[index].situacao = situacao;
+            }
+
+            atualizarTimeline(inputInicio.value, inputFim.value);
+            document.getElementById('modal').style.display = 'none';
+          })
+          .catch(error => {
+            console.error('Erro ao enviar:', error);
+            alert('Erro ao enviar os dados!');
+          });
+      });
+    </script>
+
+
+    <script>
+      // let barraAtiva = null;
+      //let handleAtivo = null;
+      let posInicial = 0;
+      let larguraInicial = 0;
+      let leftInicial = 0; // <-- adicionado
+
+      document.querySelectorAll('.resize-handle').forEach(handle => {
+        handle.addEventListener('mousedown', (e) => {
+          barraAtiva = e.target.parentElement;
+          handleAtivo = e.target.classList.contains('left') ? 'left' : 'right';
+          posInicial = e.clientX;
+          larguraInicial = barraAtiva.offsetWidth;
+          leftInicial = barraAtiva.offsetLeft; // <-- armazena a posição inicial
+          document.body.style.userSelect = 'none';
         });
-    });
-  </script>
-  <style>
-    .dados {
-      display: flex;
-      flex-direction: row;
-      /* <-- deixa em linha */
-      flex-wrap: wrap;
-      /* permite quebrar se faltar espaço */
-      gap: 12px;
-      align-items: center;
-      padding: 8px 10px;
-      background: rgb(243, 242, 242);
-      border-right: 1px solid #bbb;
-      width: 510px;
-    }
+      });
 
-    .dados .registro-id,
-    .dados .registro-responsavel,
-    .dados .registro-inicio,
-    .dados .registro-fim {
-      font-size: 14px;
-      color: #444;
-    }
-  </style>
-</body>
+      document.addEventListener('mousemove', (e) => {
+        if (!barraAtiva) return;
+        const dx = e.clientX - posInicial;
+        if (handleAtivo === 'right') {
+          barraAtiva.style.width = `${Math.max(10, larguraInicial + dx)}px`;
+        } else {
+          barraAtiva.style.width = `${Math.max(10, larguraInicial - dx)}px`;
+          barraAtiva.style.left = `${leftInicial + dx}px`; // <-- usa leftInicial em vez de offsetLeft
+        }
+      });
 
-</html>
+      document.addEventListener('mouseup', () => {
+        if (barraAtiva) {
+          barraAtiva = null;
+          handleAtivo = null;
+          document.body.style.userSelect = 'auto';
+          // aqui você pode chamar AJAX para atualizar as datas
+        }
+      });
+    </script>
+</main>
+
+@endsection

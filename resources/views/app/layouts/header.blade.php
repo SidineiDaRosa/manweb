@@ -39,20 +39,20 @@
         <!-- Notificação de Alarmes -->
         <div class="notifications">
             <div id="alarms-count" class="notification">
-                <a href="{{ route('notificacoes.index') }}">Alarmes</a>
+                <a href="{{ route('notificacoes.index') }}" style="color: white;">Alarmes</a>
                 <span class="badge" id="alarms-badge">0</span>
             </div>
             <div id="checklist-count" class="notification">
-                <a href="/check-list-index">Check-list</a>
+                <a href="/check-list-index" style="color: white;">Check-list</a>
                 <span class="badge" id="checklist-badge">0</span>
             </div>
             <div id="solicitacoes-count" class="notification">
-                <a href="/solicitacoes-os">SS pendente</a>
+                <a href="/solicitacoes-os" style="color: white;">SS pendente</a>
                 <span class="badge" id="solicitacoes-badge">0</span>
             </div>
             <div id="messages-count" class="notification">
                 <a href="{{ route('groups.index') }}">
-                    <i class="icofont-ui-messaging icofont-2x"></i>
+                    <i class="icofont-ui-messaging icofont-2x" style="color: white;"></i>
                 </a>
                 <span class="badge" id="messages-badge">0</span>
             </div>
