@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="utf-8">
@@ -34,39 +34,53 @@
                 }
             }
         </style>
+
         <div class="spacer"></div>
         <!-- Notificação de Alarmes -->
-        <div class="dropdown" id="alarms-count" style="margin-top:20px;margin-right:20px;">
-            <a href="{{ route('notificacoes.index') }}" id="alarmes-link" class="dropdown" style="color: white;">
-                Alarmes
-            </a>&nbsp&nbsp&nbsp&nbsp
-            <span style="margin-top:-5px;" class="badge" id="alarms-badge">0</span>
-        </div>
-        <!-- Notificação de Check list -->
-        <div class="dropdown" id="checklist-count" style="margin-top:20px;">
-            <a href="/check-list-index" id="checklist-link" class="dropdown" style="color: white;">
-                Check-list
-            </a>&nbsp&nbsp
-            <span style="margin-top:-5px;" class="badge" id="checklist-badge">0</span>
+        <div class="notifications">
+            <div id="alarms-count" class="notification">
+                <a href="{{ route('notificacoes.index') }}">Alarmes</a>
+                <span class="badge" id="alarms-badge">0</span>
+            </div>
+            <div id="checklist-count" class="notification">
+                <a href="/check-list-index">Check-list</a>
+                <span class="badge" id="checklist-badge">0</span>
+            </div>
+            <div id="solicitacoes-count" class="notification">
+                <a href="/solicitacoes-os">SS pendente</a>
+                <span class="badge" id="solicitacoes-badge">0</span>
+            </div>
+            <div id="messages-count" class="notification">
+                <a href="{{ route('groups.index') }}">
+                    <i class="icofont-ui-messaging icofont-2x"></i>
+                </a>
+                <span class="badge" id="messages-badge">0</span>
+            </div>
         </div>
 
-        <!-- Notificação de SS -->
-        <div class="dropdown" id="solicitacoes-count" style="margin-top:20px;">
-            <a href="/solicitacoes-os" id="solicitacoes-link" class="dropdown" style="color: white;">
-                SS pendente
-            </a>&nbsp&nbsp
-            <span style="margin-top:-5px;" class="badge" id="solicitacoes-badge">0</span>
-        </div>
-        <!-- Notificação de messages-->
-        <div class="dropdown" id="solicitacoes-count" style="margin-top:20px;">
-            <a href="{{ route('groups.index') }}" id="messages-link" class="dropdown" style="color: white;">
-                Mensagens
-            </a>&nbsp&nbsp
-            <span style="margin-top:-5px;" class="badge" id="messages-badge">0</span>
-        </div>
 
         <!-- CSS -->
         <style>
+            /* Container de todas as notificações */
+            .notifications {
+                display: flex;
+                /* organiza os itens em linha */
+                align-items: center;
+                /* alinha verticalmente */
+                gap: 20px;
+                /* espaço entre os itens */
+                flex-wrap: wrap;
+                /* quebra linha em telas pequenas */
+            }
+
+            /* Cada item de notificação individual */
+            .notification {
+                position: relative;
+                /* necessário para badges */
+                cursor: pointer;
+            }
+
+            /* Badge */
             .badge {
                 display: inline-block;
                 width: 30px;
@@ -83,6 +97,7 @@
                 z-index: 1000;
             }
 
+            /* Badges com cores específicas */
             .badge.zero {
                 background-color: green;
             }
@@ -93,26 +108,21 @@
 
             .badge.warning {
                 background-color: orange;
-                /* Nova classe para laranja */
             }
 
             .badge.yellow {
                 background-color: gold;
-                /* Nova classe para amarelo */
             }
 
-            #solicitacoes-count,
-            #checklist-count {
-                position: relative;
-                display: inline-block;
-                margin-right: 100px;
-                cursor: pointer;
-            }
-
-            /*  Estilização de cor de fundos de formulários */
-            .backgrund-primary {
-                background-color: rgb(245, 246, 248);
-
+            /* Ajustes para telas pequenas */
+            @media (max-width: 600px) {
+                .badge {
+                    top: -5px;
+                    right: -5px;
+                    width: 24px;
+                    height: 24px;
+                    font-size: 12px;
+                }
             }
         </style>
         <script>
@@ -237,3 +247,5 @@
 
         </div>
     </header>
+
+</body>
