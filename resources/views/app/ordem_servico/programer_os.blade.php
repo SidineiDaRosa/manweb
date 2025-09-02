@@ -35,19 +35,17 @@
             <input class="form-control w-50" type="datetime-local" id="fim" name="fim" />
 
             <select class="form-control w-50" name="situacao" id="situacao">
+                <option value="padrao">Não finalizada</option>
                 <option value="aberto">Aberto</option>
                 <option value="fechado">Fechado</option>
                 <option value="indefinido">Indefinido</option>
                 <option value="em andamento">Em andamento</option>
                 <option value="pausado">Pausado</option>
-                <option value="padrao">Não fechada</option>
             </select>
 
             &nbsp;
             <button class="btn btn-danger" type="submit">Ver Gráfico de Gantt</button>
         </form>
-
-
     </div>
     <style>
         .container-box {

@@ -665,27 +665,33 @@ class OrdemServicoController extends Controller
             }
         }
 
-        $ordens = $query->get()->map(function ($o) {
-            return [
-                'id' => $o->id,
-                'responsavel' => $o->responsavel,
-                'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
-                'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
-                'descricao' => $o->descricao,
-                'equipamento' => $o->equipamento,
-                'especialidade' => $o->especialidade_do_servico,
-                'status_servicos' => $o->status_servicos,
-                'situacao' => $o->situacao,
-                'gravidade' => $o->gravidade,
-                'urgencia' => $o->urgencia,
-                'tendencia' => $o->tendencia
-            ];
-        });
+        $ordens = $query->orderBy('data_inicio')
+            ->orderBy('hora_inicio')
+            ->get()->map(function ($o) {
+                return [
+                    'id' => $o->id,
+                    'responsavel' => $o->responsavel,
+                    'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
+                    'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
+                    'descricao' => $o->descricao,
+                    'equipamento' => $o->equipamento,
+                    'especialidade' => $o->especialidade_do_servico,
+                    'status_servicos' => $o->status_servicos,
+                    'situacao' => $o->situacao,
+                    'gravidade' => $o->gravidade,
+                    'urgencia' => $o->urgencia,
+                    'tendencia' => $o->tendencia
+                ];
+            });
 
         return view('app.ordem_servico.gantt_os', compact('ordens', 'inicioFiltro', 'fimFiltro'));
     }
+
     public function storeFromModal(Request $request)
-    {
+
+    {  //===========================================//
+        //  Modal Atualiza tarefas apartir do Gannt
+        //===========================================//
         // Validação simples (você pode ajustar)
         $request->validate([
             'data_emissao' => 'required|date',
@@ -709,7 +715,7 @@ class OrdemServicoController extends Controller
             'data_fim' => $request->data_fim,
             'hora_fim' => $request->hora_fim,
             'equipamento_id' => $request->equipamento_id,
-            'emissor' =>'Marcos',
+            'emissor' => 'Marcos',
             'responsavel' => $request->funcionario_id,
             'descricao' => $request->descricao,
             'status_servicos' => $request->status_servicos,
