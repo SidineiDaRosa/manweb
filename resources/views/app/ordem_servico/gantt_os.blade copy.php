@@ -3,6 +3,7 @@
 @section('content')
 <main class="content">
   <link rel="stylesheet" href="{{ asset('css/gantt.css') }}">
+   <script src="{{ asset('js/gantt.js') }}"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gantt com intervalo dinâmico e cores cinza</title>
   <svg id="svg-ligacoes" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 5;"></svg>

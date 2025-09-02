@@ -1,6 +1,4 @@
 
-//  < !--Script que gera o gráfico de gantt-- >
-
 const tarefas = @json($ordens);
 const mesesNomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -261,11 +259,13 @@ function atualizarTimeline(inicioStr, fimStr) {
 
     barra.appendChild(leftHandle);
     barra.appendChild(rightHandle);
-    // Código de redimensionamento que te passei
+
+    // Código de redimensionamento
     let barraAtiva = null;
     let handleAtivo = null;
     let posInicial = 0;
     let larguraInicial = 0;
+    let leftInicial = 0; // <-- adicionado
 
     document.querySelectorAll('.resize-handle').forEach(handle => {
       handle.addEventListener('mousedown', (e) => {
@@ -273,6 +273,7 @@ function atualizarTimeline(inicioStr, fimStr) {
         handleAtivo = e.target.classList.contains('left') ? 'left' : 'right';
         posInicial = e.clientX;
         larguraInicial = barraAtiva.offsetWidth;
+        leftInicial = barraAtiva.offsetLeft; // <-- armazena a posição inicial
         document.body.style.userSelect = 'none'; // evita seleção
       });
     });
@@ -284,7 +285,7 @@ function atualizarTimeline(inicioStr, fimStr) {
         barraAtiva.style.width = `${Math.max(10, larguraInicial + dx)}px`;
       } else {
         barraAtiva.style.width = `${Math.max(10, larguraInicial - dx)}px`;
-        barraAtiva.style.left = `${barraAtiva.offsetLeft + dx}px`;
+        barraAtiva.style.left = `${leftInicial + dx}px`; // <-- corrigido
       }
     });
 
@@ -296,6 +297,8 @@ function atualizarTimeline(inicioStr, fimStr) {
         // aqui você pode chamar AJAX para atualizar as datas
       }
     });
+
+    // Fim do Risize
     //=========================================//
     // Define a cor com base na especialidade
     switch ((tarefa.especialidade || '').toLowerCase()) {
@@ -455,111 +458,73 @@ inputInicio.value = inicioPadrao;
 inputFim.value = fimPadrao;
 
 atualizarTimeline(inputInicio.value, inputFim.value);
+    </script >
+    < !------------------------------------------------->
+    < !--Script que envia a requisição via jason da modal-- >
+  <script>
+    document.getElementById('form-editar').addEventListener('submit', function(event) {
+      event.preventDefault();
 
-// <!------------------------------------------------->
-// <!-- Script que envia a requisição via jason da modal-->
-//
-document.getElementById('form-editar').addEventListener('submit', function (event) {
-  event.preventDefault();
+    const id = document.getElementById('modal-id').value;
 
-  const id = document.getElementById('modal-id').value;
+    const inicioCompleto = document.getElementById('modal-inicio').value;
+    const fimCompleto = document.getElementById('modal-fim').value;
+    const status = document.getElementById('modal-status').value;
+    const situacao = document.getElementById('modal-situacao').value;
 
-  const inicioCompleto = document.getElementById('modal-inicio').value;
-  const fimCompleto = document.getElementById('modal-fim').value;
-  const status = document.getElementById('modal-status').value;
-  const situacao = document.getElementById('modal-situacao').value;
+    // ✅ Validação com data e hora
+    const dataHoraInicio = new Date(inicioCompleto);
+    const dataHoraFim = new Date(fimCompleto);
 
-  // ✅ Validação com data e hora
-  const dataHoraInicio = new Date(inicioCompleto);
-  const dataHoraFim = new Date(fimCompleto);
-
-  if (dataHoraInicio > dataHoraFim) {
-    alert('Erro: A data/hora de início não pode ser maior que a data/hora de fim.');
+        if (dataHoraInicio > dataHoraFim) {
+      alert('Erro: A data/hora de início não pode ser maior que a data/hora de fim.');
     return; // ❌ interrompe o envio
-  }
+        }
 
-  // Separa data e hora (opcional, se você quiser continuar mandando separado)
-  const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
-  const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
+    // Separa data e hora (opcional, se você quiser continuar mandando separado)
+    const inicio = inicioCompleto.split('T')[0]; // 'YYYY-MM-DD'
+    const horaInicio = inicioCompleto.split('T')[1]; // 'HH:MM'
 
-  const fim = fimCompleto.split('T')[0]; // 'YYYY-MM-DD'
-  const horaFim = fimCompleto.split('T')[1]; // 'HH:MM'
+    const fim = fimCompleto.split('T')[0]; // 'YYYY-MM-DD'
+    const horaFim = fimCompleto.split('T')[1]; // 'HH:MM'
 
-  const dadosParaEnviar = {
-    id: id,
+    const dadosParaEnviar = {
+      id: id,
     inicio: inicio,
     horaInicio: horaInicio,
     fim: fim,
     horaFim: horaFim,
     status: status,
     situacao_os: situacao
-  };
+        };
 
-  fetch('{{ route("update.os.interval") }}', {
-    method: 'POST',
+    fetch('{{ route("update.os.interval") }}', {
+      method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    },
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
     body: JSON.stringify(dadosParaEnviar)
-  })
-    .then(response => response.json())
-    .then(data => {
+          })
+          .then(response => response.json())
+          .then(data => {
       console.log('Resposta do servidor:', data.retorno);
 
-      const index = tarefas.findIndex(t => t.id == id);
-      if (index !== -1) {
-        tarefas[index].inicio = inicioCompleto;
-        tarefas[index].fim = fimCompleto;
-        tarefas[index].descricao = document.getElementById('modal-descricao').value;
-        tarefas[index].status_servicos = status;
-        tarefas[index].situacao = situacao;
-      }
+            const index = tarefas.findIndex(t => t.id == id);
+    if (index !== -1) {
+      tarefas[index].inicio = inicioCompleto;
+    tarefas[index].fim = fimCompleto;
+    tarefas[index].descricao = document.getElementById('modal-descricao').value;
+    tarefas[index].status_servicos = status;
+    tarefas[index].situacao = situacao;
+            }
 
-      atualizarTimeline(inputInicio.value, inputFim.value);
-      document.getElementById('modal').style.display = 'none';
-    })
-    .catch(error => {
+    atualizarTimeline(inputInicio.value, inputFim.value);
+    document.getElementById('modal').style.display = 'none';
+          })
+          .catch(error => {
       console.error('Erro ao enviar:', error);
-      alert('Erro ao enviar os dados!');
-    });
-});
+    alert('Erro ao enviar os dados!');
+          });
+      });
 
-
-//====================================//
-// let barraAtiva = null;
-//let handleAtivo = null;
-let posInicial = 0;
-let larguraInicial = 0;
-let leftInicial = 0; // <-- adicionado
-
-document.querySelectorAll('.resize-handle').forEach(handle => {
-  handle.addEventListener('mousedown', (e) => {
-    barraAtiva = e.target.parentElement;
-    handleAtivo = e.target.classList.contains('left') ? 'left' : 'right';
-    posInicial = e.clientX;
-    larguraInicial = barraAtiva.offsetWidth;
-    leftInicial = barraAtiva.offsetLeft; // <-- armazena a posição inicial
-    document.body.style.userSelect = 'none';
-  });
-});
-
-document.addEventListener('mousemove', (e) => {
-  if (!barraAtiva) return;
-  const dx = e.clientX - posInicial;
-  if (handleAtivo === 'right') {
-    barraAtiva.style.width = `${Math.max(10, larguraInicial + dx)}px`;
-  } else {
-    barraAtiva.style.width = `${Math.max(10, larguraInicial - dx)}px`;
-    barraAtiva.style.left = `${leftInicial + dx}px`; // <-- usa leftInicial em vez de offsetLeft
-  }
-});
-
-document.addEventListener('mouseup', () => {
-  if (barraAtiva) {
-    barraAtiva = null;
-    handleAtivo = null;
-    document.body.style.userSelect = 'auto';
-    // aqui você pode chamar AJAX para atualizar as datas
-  }
-});

@@ -29,6 +29,9 @@
           <div class="dados-cabecalho">
             <h5>Dados da O.S.</h5>
           </div>
+          <div id="teste-datas" style="position:fixed; bottom:10px; right:10px; background:#fff; padding:5px; border:1px solid #000; z-index:1000;">
+            Datas atualizadas aparecerão aqui
+          </div>
 
           <div class="timeline-container" id="timeline-container">
             <div class="timeline-years" id="timeline-years"></div>
@@ -330,6 +333,7 @@
 
           barra.className = 'registro-barra';
           barra.style.position = 'relative'; // importante para posicionar elementos absolutos internamente
+          //barra.tarefa = tarefa; // tarefa sendo o objeto da sua tarefa atual
           //----------------------------------------//
           //  Rezizable
           //---------------------------------------//
@@ -370,13 +374,47 @@
               barraAtiva.style.left = `${leftInicial + dx}px`; // <-- corrigido
             }
           });
-
           document.addEventListener('mouseup', () => {
             if (barraAtiva) {
+              const tarefa = barraAtiva.tarefa; // pega a tarefa vinculada à barra
+
+              // recupera PIXELS_POR_HORA da timeline atual
+              const inicioTimeline = new Date(inputInicio.value);
+              const fimTimeline = new Date(inputFim.value);
+              const intervaloHoras = (fimTimeline - inicioTimeline) / 3600000; // total horas
+              const larguraTimeline = timeline.offsetWidth; // largura visível
+              const PIXELS_POR_HORA = larguraTimeline / intervaloHoras;
+
+              // calcula deslocamento e duração em horas
+              const deslocHoras = barraAtiva.offsetLeft / PIXELS_POR_HORA;
+              const duracaoHoras = barraAtiva.offsetWidth / PIXELS_POR_HORA;
+
+              // nova data de início/fim
+              const novaDataInicio = new Date(inicioTimeline.getTime() + deslocHoras * 3600000);
+              const novaDataFim = new Date(novaDataInicio.getTime() + duracaoHoras * 3600000);
+
+              // função para formatar sem alterar fuso horário
+              function formatParaInputLocal(date) {
+                const pad = n => n.toString().padStart(2, '0');
+                const ano = date.getFullYear();
+                const mes = pad(date.getMonth() + 1);
+                const dia = pad(date.getDate());
+                const hora = pad(date.getHours());
+                const min = pad(date.getMinutes());
+                return `${ano}-${mes}-${dia}T${hora}:${min}`;
+              }
+
+              // atualiza tarefa com fuso local
+              tarefa.inicio = formatParaInputLocal(novaDataInicio);
+              tarefa.fim = formatParaInputLocal(novaDataFim);
+
+              // mostra na div teste (opcional)
+              const divTeste = document.getElementById('teste-datas');
+              divTeste.textContent = `Início: ${tarefa.inicio}, Fim: ${tarefa.fim}`;
+
               barraAtiva = null;
               handleAtivo = null;
               document.body.style.userSelect = 'auto';
-              // aqui você pode chamar AJAX para atualizar as datas
             }
           });
 
@@ -500,7 +538,7 @@
             barra.style.width = `${duracao * PIXELS_POR_HORA}px`;
             //   title
             barra.title = `Tarefa ${tarefa.id}\nInício: ${tarefa.inicio}\nFim: ${tarefa.fim} \nFim: ${tarefa.equipamento.nome} \nFim: ${tarefa.descricao}`;
-
+            barra.tarefa = tarefa; // associa a tarefa à barra
             barra.addEventListener('click', () => abrirModal(tarefa));
 
             timeline.appendChild(barra);
