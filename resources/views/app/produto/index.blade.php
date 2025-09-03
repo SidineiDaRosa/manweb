@@ -4,18 +4,15 @@
 @section('content')
 
 <main class="content">
+    <!-- CABEÇALHO (MANTIDO ORIGINAL) -->
     <div class="card">
         <div class="card-header-template">
             <div>LISTAGEM DE PRODUTOS</div>
-            {{---------------------------------------------------------------}}
-
-            {{---------------------------fim----------------------------------}}
             {{$num_pedido}}
             <form id="formSearchingProducts" action="{{'Produtos-filtro'}}" method="POST">
                 @csrf
-
                 <input type="number" name="num_pedido" value="{{$num_pedido}}" hidden>
-                <div class="col-md-4 mb-0">
+                <div class="col-md-12 mb-0">
                     <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
                         <option value="2">Busca Pelas inicias</option>
                         <option value="1">Busca pelo ID</option>
@@ -24,7 +21,7 @@
                         <option value="5">Busca Pelo estoque minimo</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <select name="categoria_id" id="" class="form-control-template">
                         <option value=""> --Selecione a Categoria--</option>
                         @foreach ($categorias as $categoria)
@@ -35,8 +32,6 @@
                     </select>
                     {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
                 </div>
-                <!--input box filtro buscar produto--------->
-
                 <input type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
                 <button type="submit">
                     <i class="icofont-search"></i>
@@ -44,10 +39,7 @@
             </form>
             <div>
                 <a href="{{ route('produto.create') }}" class="btn btn-outline-primary btn-sm">
-                    <img src="" alt="">
-                    <span class="material-symbols-outlined">
-                        forms_add_on
-                    </span>
+                    <span class="material-symbols-outlined">forms_add_on</span>
                     Novo Produto
                 </a>
                 <a href="{{route('pedido-compra.index')}}" class="btn btn-outline-primary btn-sm">
@@ -59,102 +51,200 @@
             </div>
         </div>
     </div>
-    <!---estilização do input box buscar produtos---->
+
+    <!-- ESTILOS PARA OS CARDS (NOVA PARTE) -->
     <style>
-        #formSearchingProducts {
-            background-color: white;
-            width: 900px;
-            height: 44px;
-            border-radius: 5px;
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .produto-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .produto-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .produto-header {
             display: flex;
-            flex-direction: row;
+            justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
-        input {
-            all: unset;
-            font: 16px system-ui;
-            color: blue;
-            height: 100%;
-            width: 100%;
-            padding: 6px 10px;
+        .produto-id {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 14px;
         }
 
-        ::placeholder {
-            color: blueviolet;
-            opacity: 0.9;
+        .produto-codigo {
+            background: #e3f2fd;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #1976d2;
+            font-weight: 500;
         }
 
-
-        button {
-            all: unset;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
+        .produto-body {
+            margin-bottom: 20px;
         }
 
-        #tblProdutos {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-            background-color: rgb(211, 211, 211);
+        .produto-nome {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
 
-        thead {
-            background-color: rgb(169, 169, 169);
-            font-family: 'Poppins', sans-serif;
+        .produto-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
         }
 
-        td,
-        th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 3px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 300;
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 12px;
+            margin-bottom: 3px;
+            display: block;
         }
 
-        tr:nth-child(even) {
-            background-color: #dddddd;
+        .produto-imagem {
+            text-align: center;
+            margin: 15px 0;
         }
 
-        tr:hover {
-            background-color: rgb(169, 169, 169);
+        .produto-imagem img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #f0f0f0;
+        }
+
+        .produto-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm-template {
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+            border: 1px solid;
+        }
+
+        .btn-outline-primary { border-color: #007bff; color: #007bff; }
+        .btn-outline-success { border-color: #28a745; color: #28a745; }
+        .btn-outline-danger { border-color: #dc3545; color: #dc3545; }
+        
+        .btn-outline-primary:hover { background: #007bff; color: white; }
+        .btn-outline-success:hover { background: #28a745; color: white; }
+        .btn-outline-danger:hover { background: #dc3545; color: white; }
+
+        .pedido-badge {
+            background: linear-gradient(45deg, #ff6b35, #ff8c42);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .pedido-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 8px rgba(255, 107, 53, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .produtos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .produto-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .produto-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .btn-group {
+                justify-content: center;
+                width: 100%;
+            }
         }
     </style>
-    {{--=============================================--}}
-    {{--inicio Tabela de produtos--}}
+
+    <!-- LISTAGEM DE PRODUTOS EM CARDS (SUBSTITUI A TABELA) -->
     <div class="card-body">
         <div class="produtos-grid">
             @foreach ($produtos as $produto)
             <div class="produto-card">
-                <!-- Cabeçalho -->
+                <!-- Cabeçalho do Card -->
                 <div class="produto-header">
                     <span class="produto-id">ID: {{ $produto->id }}</span>
                     <span class="produto-codigo">{{ $produto->cod_fabricante }}</span>
                 </div>
 
-                <!-- Corpo -->
+                <!-- Corpo do Card -->
                 <div class="produto-body">
                     <div class="produto-nome">{{ $produto->nome }}</div>
-
+                    
                     <div class="produto-info">
-                        <span>
+                        <div>
                             <span class="info-label">Unidade:</span>
                             {{ $produto->unidade_medida->nome }}
-                        </span>
-                        <span>
+                        </div>
+                        <div>
                             <span class="info-label">Categoria:</span>
                             {{ $produto->categoria->nome }}
-                        </span>
-                        <span>
+                        </div>
+                        <div>
                             <span class="info-label">Fabricante:</span>
                             {{ $produto->marca->nome }}
-                        </span>
-                        <span>
+                        </div>
+                        <div>
                             <span class="info-label">Descrição:</span>
-                            {{ Str::limit($produto->descricao, 50) }}
-                        </span>
+                            {{ Str::limit($produto->descricao, 60) }}
+                        </div>
                     </div>
 
                     <!-- Imagem -->
@@ -163,53 +253,53 @@
                     </div>
 
                     <!-- Link para peça -->
-                    <div style="text-align: center; margin: 8px 0;">
-                        <a href="{{ $produto->link_peca }}" target="_blank" style="font-size: 13px;">
-                            Ver no site do fabricante <i class="icofont-arrow-right"></i>
+                    <div style="text-align: center; margin: 12px 0;">
+                        <a href="{{ $produto->link_peca }}" target="_blank" 
+                           style="color: #1976d2; text-decoration: none; font-size: 13px;">
+                            <i class="icofont-external-link"></i> Ver no site do fabricante
                         </a>
                     </div>
                 </div>
 
-                <!-- Rodapé com ações -->
+                <!-- Rodapé com Ações -->
                 <div class="produto-actions">
-                    <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}"
-                        class="btn-sm-template btn-outline-success">
+                    <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" 
+                       class="btn-sm-template btn-outline-success">
                         <i class="icofont-database-add"></i>
-                        Criar estoque
+                        Estoque
                     </a>
 
                     <div class="btn-group">
-                        <a class="btn-sm-template btn-outline-primary"
-                            href="{{ route('produto.show', ['produto' => $produto->id]) }}">
+                        <a class="btn-sm-template btn-outline-primary" 
+                           href="{{ route('produto.show', ['produto' => $produto->id]) }}">
                             <i class="icofont-eye-alt"></i>
                         </a>
 
-                        <a class="btn-sm-template btn-outline-success @can('user') disabled @endcan"
-                            href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
+                        <a class="btn-sm-template btn-outline-success @can('user') disabled @endcan" 
+                           href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
                             <i class="icofont-ui-edit"></i>
                         </a>
 
-                        <a class="btn-sm-template btn-outline-danger @can('user') disabled @endcan"
-                            href="#" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                            onclick="DeletarProduto()">
+                        <a class="btn-sm-template btn-outline-danger @can('user') disabled @endcan" 
+                           href="#" onclick="deletarProduto({{ $produto->id }})">
                             <i class="icofont-ui-delete"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- Pedido especial -->
+                <!-- Pedido Especial -->
                 @if(isset($num_pedido) && $num_pedido >= 1)
-                <div style="margin-top: 10px; text-align: center;">
-                    <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}"
-                        class="pedido-badge">
-                        Adicionar ao pedido: {{ $num_pedido }}
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}" 
+                       class="pedido-badge">
+                        <i class="icofont-cart"></i> Adicionar ao Pedido {{ $num_pedido }}
                     </a>
                 </div>
                 @endif
 
-                <!-- Form para deletar (hidden) -->
-                <form id="form_{{ $produto->id }}" method="post"
-                    action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
+                <!-- Form para deletar -->
+                <form id="form_{{ $produto->id }}" method="post" 
+                      action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
                     @method('DELETE')
                     @csrf
                 </form>
@@ -217,199 +307,14 @@
             @endforeach
         </div>
     </div>
-    <style>
-        /* ESTILO GERAL DA LISTAGEM */
-        .produtos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .produto-card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .produto-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }
-
-        /* CABEÇALHO DO CARD */
-        .produto-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .produto-id {
-            font-weight: bold;
-            color: #333;
-            font-size: 14px;
-        }
-
-        .produto-codigo {
-            background: #f0f0f0;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* CORPO DO CARD */
-        .produto-body {
-            margin-bottom: 15px;
-        }
-
-        .produto-nome {
-            font-weight: bold;
-            font-size: 16px;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            word-break: break-word;
-        }
-
-        .produto-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .produto-info span {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-label {
-            font-weight: bold;
-            color: #555;
-            font-size: 12px;
-            margin-bottom: 2px;
-        }
-
-        /* IMAGEM DO PRODUTO */
-        .produto-imagem {
-            text-align: center;
-            margin: 10px 0;
-        }
-
-        .produto-imagem img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        /* RODAPÉ DO CARD - AÇÕES */
-        .produto-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 5px;
-        }
-
-        .btn-sm-template {
-            padding: 6px 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-outline-primary {
-            border: 1px solid #007bff;
-            color: #007bff;
-        }
-
-        .btn-outline-success {
-            border: 1px solid #28a745;
-            color: #28a745;
-        }
-
-        .btn-outline-danger {
-            border: 1px solid #dc3545;
-            color: #dc3545;
-        }
-
-        .btn-outline-primary:hover {
-            background: #007bff;
-            color: white;
-        }
-
-        .btn-outline-success:hover {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-outline-danger:hover {
-            background: #dc3545;
-            color: white;
-        }
-
-        /* BADGE PARA PEDIDOS */
-        .pedido-badge {
-            background: #ff6b35;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        /* RESPONSIVIDADE */
-        @media (max-width: 768px) {
-            .produtos-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .produto-info {
-                grid-template-columns: 1fr;
-            }
-
-            .produto-actions {
-                flex-direction: column;
-                gap: 10px;
-                align-items: stretch;
-            }
-
-            .btn-group {
-                justify-content: center;
-            }
-        }
-
-        /* ESTILOS PARA STATUS/ESTADO */
-        .estoque-minimo {
-            background: rgba(255, 193, 7, 0.2);
-            border-left: 4px solid #ffc107;
-        }
-
-        .estoque-critico {
-            background: rgba(220, 53, 69, 0.1);
-            border-left: 4px solid #dc3545;
-        }
-    </style>
-    <script>
-
-    </script>
 </main>
+
+<script>
+function deletarProduto(produtoId) {
+    if (confirm('Deseja deletar este produto?')) {
+        document.getElementById('form_' + produtoId).submit();
+    }
+}
+</script>
+
 @endsection
