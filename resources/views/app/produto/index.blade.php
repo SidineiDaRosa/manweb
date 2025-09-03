@@ -102,7 +102,7 @@
 
         thead {
             background-color: rgb(169, 169, 169);
-            font-family:'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         td,
@@ -110,7 +110,7 @@
             border: 1px solid #dddddd;
             text-align: left;
             padding: 3px;
-            font-family:'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif;
             font-weight: 300;
         }
 
@@ -124,106 +124,292 @@
     </style>
     {{--=============================================--}}
     {{--inicio Tabela de produtos--}}
-
     <div class="card-body">
-        <table class="" id="tblProdutos">
-            <thead >
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col" hidden>Qrcode</th>
-                    <th scope="col">cod_fabricante</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">un medida</th>
-                    <th scope="col">Dados técnicos</th>
-                    <th scope="col">Categoria</th>
-                    <th scope="col">Fabricante</th>
-                    <th scope="col">Ver peça</th>
-                    <th scope="col">Imagem</th>
-                    <th scope="col">Cad. Estoque</th>
-                    <th scope="col">Operações</th>
+        <div class="produtos-grid">
+            @foreach ($produtos as $produto)
+            <div class="produto-card">
+                <!-- Cabeçalho -->
+                <div class="produto-header">
+                    <span class="produto-id">ID: {{ $produto->id }}</span>
+                    <span class="produto-codigo">{{ $produto->cod_fabricante }}</span>
+                </div>
 
-                </tr>
-            </thead>
+                <!-- Corpo -->
+                <div class="produto-body">
+                    <div class="produto-nome">{{ $produto->nome }}</div>
 
-            <tbody>
-                @foreach ($produtos as $produto)
-                <tr>
-                    <th scope="row">{{ $produto->id }}</td>
-                   {{-- {!! QrCode::size(50)->backgroundColor(255,255,255)->generate( $produto->id.'--'.$produto->nome) !!}</td>--}}
-                    <td>{{ $produto->cod_fabricante }}</td>
-                    <td>{{ $produto->nome }}</td>
-                    <td>{{ $produto->unidade_medida->nome}}</td>
-                    <td>{{ $produto->descricao }}</td>
-                    <td>{{ $produto->categoria->nome}}</td>
-                    <td>{{ $produto->marca->nome}}</td>
-                    <td><a href="{{ $produto->link_peca}}" target="blank">Ver no site do fabricante
-                            <i class="icofont-arrow-right"></i>
-                        </a></td>
-                    <td>
-                        <img src="/img/produtos/{{ $produto->image}}" alt="imagem" class="preview-image">
-                    </td>
-                    <style>
-                        .preview-image {
-                            width: 100px;
-                            height: 100px;
-                            object-fit: cover;
-                            margin: 0 5px;
-                            cursor: pointer;
-                        }
-                    </style>
+                    <div class="produto-info">
+                        <span>
+                            <span class="info-label">Unidade:</span>
+                            {{ $produto->unidade_medida->nome }}
+                        </span>
+                        <span>
+                            <span class="info-label">Categoria:</span>
+                            {{ $produto->categoria->nome }}
+                        </span>
+                        <span>
+                            <span class="info-label">Fabricante:</span>
+                            {{ $produto->marca->nome }}
+                        </span>
+                        <span>
+                            <span class="info-label">Descrição:</span>
+                            {{ Str::limit($produto->descricao, 50) }}
+                        </span>
+                    </div>
 
-                    <td>
-                        <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" class="btn-sm btn-success">
-                            <i class="icofont-database-add"></i>
-                            </span>
-                            <span class="text">Criar estoque</span>
+                    <!-- Imagem -->
+                    <div class="produto-imagem">
+                        <img src="/img/produtos/{{ $produto->image }}" alt="{{ $produto->nome }}">
+                    </div>
+
+                    <!-- Link para peça -->
+                    <div style="text-align: center; margin: 8px 0;">
+                        <a href="{{ $produto->link_peca }}" target="_blank" style="font-size: 13px;">
+                            Ver no site do fabricante <i class="icofont-arrow-right"></i>
                         </a>
-                    </td>
-                    <td>
-                        <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                            <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $produto->id]) }}">
-                                <i class="icofont-eye-alt"></i>
-                            </a>
+                    </div>
+                </div>
 
-                            <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
+                <!-- Rodapé com ações -->
+                <div class="produto-actions">
+                    <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}"
+                        class="btn-sm-template btn-outline-success">
+                        <i class="icofont-database-add"></i>
+                        Criar estoque
+                    </a>
 
-                                <i class="icofont-ui-edit"></i> </a>
+                    <div class="btn-group">
+                        <a class="btn-sm-template btn-outline-primary"
+                            href="{{ route('produto.show', ['produto' => $produto->id]) }}">
+                            <i class="icofont-eye-alt"></i>
+                        </a>
 
+                        <a class="btn-sm-template btn-outline-success @can('user') disabled @endcan"
+                            href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
+                            <i class="icofont-ui-edit"></i>
+                        </a>
 
-                            <form id="form_{{ $produto->id }}" method="post" action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
-                                @method('DELETE')
-                                @csrf
+                        <a class="btn-sm-template btn-outline-danger @can('user') disabled @endcan"
+                            href="#" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            onclick="DeletarProduto()">
+                            <i class="icofont-ui-delete"></i>
+                        </a>
+                    </div>
+                </div>
 
-                            </form>
-                            <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarProduto()">
-                                <i class="icofont-ui-delete"></i>
-                                <script>
-                                    function DeletarProduto() {
-                                        var x;
-                                        var r = confirm("Deseja deletar o produto?");
-                                        if (r == true) {
+                <!-- Pedido especial -->
+                @if(isset($num_pedido) && $num_pedido >= 1)
+                <div style="margin-top: 10px; text-align: center;">
+                    <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}"
+                        class="pedido-badge">
+                        Adicionar ao pedido: {{ $num_pedido }}
+                    </a>
+                </div>
+                @endif
 
-                                            document.getElementById('form_{{ $produto->id }}').submit()
-                                        } else {
-                                            x = "Você pressionou Cancelar!";
-                                        }
-                                        document.getElementById("demo").innerHTML = x;
-                                    }
-                                </script>
-                            </a>
-                        </div>
-                    </td>
-                    <td>
-                        @if(isset($num_pedido) && $num_pedido >= 1)
-                        <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}">Adicionar ao pedido:{{ $num_pedido }}</a>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
+                <!-- Form para deletar (hidden) -->
+                <form id="form_{{ $produto->id }}" method="post"
+                    action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
+                    @method('DELETE')
+                    @csrf
+                </form>
+            </div>
+            @endforeach
+        </div>
     </div>
-    </div>
+    <style>
+        /* ESTILO GERAL DA LISTAGEM */
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .produto-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .produto-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* CABEÇALHO DO CARD */
+        .produto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .produto-id {
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .produto-codigo {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* CORPO DO CARD */
+        .produto-body {
+            margin-bottom: 15px;
+        }
+
+        .produto-nome {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .produto-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .produto-info span {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        /* IMAGEM DO PRODUTO */
+        .produto-imagem {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .produto-imagem img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        /* RODAPÉ DO CARD - AÇÕES */
+        .produto-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-sm-template {
+            padding: 6px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-primary {
+            border: 1px solid #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-success {
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+
+        .btn-outline-danger {
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+
+        .btn-outline-primary:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-outline-success:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-outline-danger:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* BADGE PARA PEDIDOS */
+        .pedido-badge {
+            background: #ff6b35;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .produtos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .produto-info {
+                grid-template-columns: 1fr;
+            }
+
+            .produto-actions {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .btn-group {
+                justify-content: center;
+            }
+        }
+
+        /* ESTILOS PARA STATUS/ESTADO */
+        .estoque-minimo {
+            background: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #ffc107;
+        }
+
+        .estoque-critico {
+            background: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+        }
+    </style>
+    <script>
+
+    </script>
 </main>
 @endsection
