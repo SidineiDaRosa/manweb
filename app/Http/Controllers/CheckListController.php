@@ -259,10 +259,10 @@ class CheckListController extends Controller
 
     public function cont()
     {
-        $pendentes = CheckList::all()->filter(function ($check) {
-            $vencimento = Carbon::parse($check->updated_at)->addHours($check->intervalo * 0.9);
-            return $vencimento <= Carbon::now();
-        })->count();
+        // Conta todos os checklists pendentes aplicando fator 0.9
+        $pendentes = CheckList::whereRaw(
+            "DATE_ADD(updated_at, INTERVAL FLOOR(intervalo * 0.9) HOUR) <= NOW()"
+        )->count();
 
         return response()->json(['pendentes' => $pendentes]);
     }
