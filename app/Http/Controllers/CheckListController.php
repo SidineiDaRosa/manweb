@@ -261,7 +261,7 @@ class CheckListController extends Controller
     {
         // Conta todos os checklists pendentes aplicando fator 0.9
         $pendentes = CheckList::whereRaw(
-            "DATE_ADD(updated_at, INTERVAL FLOOR(intervalo * 0.9) HOUR) <= NOW()"
+            "DATE_ADD(updated_at, INTERVAL FLOOR(intervalo * 0.71) HOUR) <= NOW()"
         )->count();
 
         return response()->json(['pendentes' => $pendentes]);
