@@ -257,9 +257,8 @@ class CheckListController extends Controller
     }
     public function cont()
     {
-        $vencidos = CheckList::whereRaw("DATE_ADD(updated_at, INTERVAL intervalo HOUR) <= NOW()")->get();
-
-        $pendentes = $vencidos->count();
+        // Conta os checklists cujo prazo já passou
+        $pendentes = CheckList::whereRaw("DATE_ADD(updated_at, INTERVAL intervalo HOUR) <= NOW()")->count();
 
         return response()->json(['pendentes' => $pendentes]);
     }
