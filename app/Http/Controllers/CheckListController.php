@@ -270,7 +270,7 @@ class CheckListController extends Controller
             }
 
             // Aplica o fator 0.9 sobre o intervalo
-            $vencimento = $ultimo_check->addHours($check->intervalo * 0.8);
+            $vencimento = $ultimo_check->addHours($check->intervalo * 0.99);
 
             // Se a data de vencimento já passou, é pendente
             return $vencimento <= Carbon::now();
