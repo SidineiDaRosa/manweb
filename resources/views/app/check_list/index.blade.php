@@ -155,10 +155,6 @@
                 @endforeach
             </div>
             @endif
-
-
-
-
         </div>
         @endforeach
         @endif
@@ -223,28 +219,54 @@
                             @endif
                         </span>
                     </div>
-
                     @php
-                    $dataVerificacao = !empty($check_list_f->data_verificacao) ? new DateTime($check_list_f->data_verificacao) : null;
+                    $dataVerificacao = !empty($check_list_f->data_verificacao)
+                    ? new DateTime($check_list_f->data_verificacao)
+                    : null;
+
                     $dataAtual = new DateTime();
                     $horasDiferenca = 0;
 
                     if ($dataVerificacao) {
                     $diferenca = $dataAtual->diff($dataVerificacao);
-                    $horasDiferenca = ($diferenca->days * 24);
+                    // diferença total em horas
+                    $horasDiferenca = ($diferenca->days * 24) + $diferenca->h;
                     }
 
-                    $intervaloVerificacao = 330;
+                    // intervalo específico do checklist
+                    $intervaloVerificacao = $check_list_f->intervalo;
                     @endphp
 
                     <div class="checklist-status">
-                        @if (empty($check_list_f->data_verificacao) || $horasDiferenca >= $intervaloVerificacao)
-                        <img class="status-icon" src="{{ asset('img/warning.png') }}" alt="Aviso">
+                        @if (empty($check_list_f->data_verificacao))
+                        <i class="bi bi-question-circle-fill text-secondary icon-md" title="Sem data"></i>
+                        @elseif ($horasDiferenca >= $intervaloVerificacao)
+                        <i class="bi bi-x-circle-fill text-danger icon-xl" title="Vencido"></i>
+                        @elseif ($horasDiferenca >= ($intervaloVerificacao * 0.8))
+                        <i class="bi bi-exclamation-triangle-fill text-warning icon-lg" title="Próximo de vencer"></i>
                         @else
-                        <img class="status-icon" src="{{ asset('img/check-mark.png') }}" alt="Checado">
+                        <i class="bi bi-check-circle-fill text-success icon-md" title="Dentro do prazo"></i>
                         @endif
                     </div>
+                    <style>
+                        /* tamanhos personalizados para os ícones */
+                        .icon-xl {
+                            font-size: 30px !important;
+                            /* bem grande */
+                        }
 
+                        .icon-lg {
+                            font-size: 30px !important;
+                        }
+
+                        .icon-md {
+                            font-size: 30px !important;
+                        }
+
+                        .icon-sm {
+                            font-size: 30px !important;
+                        }
+                    </style>
                     <div class="checklist-actions">
                         <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcan" href="{{ route('check-list-edit', ['check_list' => $check_list_f->id]) }}">
                             <i class="icofont-ui-edit"></i>
@@ -258,102 +280,123 @@
                 @endforeach
                 @endif
             </div>
+            <!--  fim lista de checklist-->
         </div>
         <style>
             .checklist-container {
-    padding: 15px;
-}
+                padding: 15px;
+            }
 
-.checklist-item {
-    display: flex;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-    align-items: center;
-    justify-content: space-between; /* Distributes space between main sections */
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px; /* Space between checklist items */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+            .checklist-item {
+                display: flex;
+                flex-wrap: wrap;
+                /* Allows items to wrap on smaller screens */
+                align-items: center;
+                justify-content: space-between;
+                /* Distributes space between main sections */
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 10px;
+                /* Space between checklist items */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
 
-.checklist-details {
-    display: flex;
-    flex-wrap: wrap; /* Allow details to wrap if necessary */
-    flex-grow: 1; /* Allows details section to take available space */
-    gap: 15px; /* Space between individual detail items */
-    margin-right: 20px; /* Space before status icon */
-}
+            .checklist-details {
+                display: flex;
+                flex-wrap: wrap;
+                /* Allow details to wrap if necessary */
+                flex-grow: 1;
+                /* Allows details section to take available space */
+                gap: 15px;
+                /* Space between individual detail items */
+                margin-right: 20px;
+                /* Space before status icon */
+            }
 
-.detail-item {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 0.95em;
-    min-width: 120px; /* Ensures minimum width for each detail for better alignment */
-}
+            .detail-item {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 0.95em;
+                min-width: 120px;
+                /* Ensures minimum width for each detail for better alignment */
+            }
 
-.detail-item h5 {
-    margin-bottom: 2px;
-    font-size: 1em;
-    color: #555;
-}
+            .detail-item h5 {
+                margin-bottom: 2px;
+                font-size: 1em;
+                color: #555;
+            }
 
-.detail-item.description {
-    flex-basis: 200px; /* Give more space to description */
-    flex-grow: 1; /* Allow it to grow */
-}
+            .detail-item.description {
+                flex-basis: 200px;
+                /* Give more space to description */
+                flex-grow: 1;
+                /* Allow it to grow */
+            }
 
-.detail-item.date-time {
-    flex-basis: 180px; /* Give more space to date/time */
-    flex-grow: 1;
-}
+            .detail-item.date-time {
+                flex-basis: 180px;
+                /* Give more space to date/time */
+                flex-grow: 1;
+            }
 
-.checklist-status {
-    margin-right: 20px; /* Space before action buttons */
-}
+            .checklist-status {
+                margin-right: 20px;
+                /* Space before action buttons */
+            }
 
-.status-icon {
-    height: 30px;
-    width: auto;
-}
+            .status-icon {
+                height: 30px;
+                width: auto;
+            }
 
-.checklist-actions {
-    display: flex;
-    gap: 8px; /* Space between action buttons */
-}
+            .checklist-actions {
+                display: flex;
+                gap: 8px;
+                /* Space between action buttons */
+            }
 
-.checklist-separator {
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 15px 0;
-}
+            .checklist-separator {
+                border: 0;
+                border-top: 1px solid #eee;
+                margin: 15px 0;
+            }
 
-/* Basic responsiveness for smaller screens */
-@media (max-width: 768px) {
-    .checklist-item {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align items to the start when stacked */
-    }
+            /* Basic responsiveness for smaller screens */
+            @media (max-width: 768px) {
+                .checklist-item {
+                    flex-direction: column;
+                    /* Stack items vertically */
+                    align-items: flex-start;
+                    /* Align items to the start when stacked */
+                }
 
-    .checklist-details {
-        width: 100%; /* Take full width */
-        margin-bottom: 15px;
-        margin-right: 0;
-    }
+                .checklist-details {
+                    width: 100%;
+                    /* Take full width */
+                    margin-bottom: 15px;
+                    margin-right: 0;
+                }
 
-    .detail-item {
-        min-width: unset; /* Remove min-width for better stacking */
-        width: 100%; /* Make each detail item take full width */
-    }
+                .detail-item {
+                    min-width: unset;
+                    /* Remove min-width for better stacking */
+                    width: 100%;
+                    /* Make each detail item take full width */
+                }
 
-    .checklist-status,
-    .checklist-actions {
-        width: 100%;
-        display: flex; /* Keep actions and status in a row */
-        justify-content: flex-end; /* Push actions to the right */
-        margin-top: 10px;
-        margin-right: 0;
-    }
-}
+                .checklist-status,
+                .checklist-actions {
+                    width: 100%;
+                    display: flex;
+                    /* Keep actions and status in a row */
+                    justify-content: flex-end;
+                    /* Push actions to the right */
+                    margin-top: 10px;
+                    margin-right: 0;
+                }
+            }
         </style>
         <!--------------------------------------------------->
         <!-- Deletar o check-list-->

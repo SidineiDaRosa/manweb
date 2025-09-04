@@ -29,14 +29,29 @@ class CheckListController extends Controller
         $equipamento = Equipamento::find(0);
         //-------------------------------------//
         //  Cont check-list group
-        //-------------------------------------//
-        $contChListMec = CheckList::where('natureza', 'Mecânico')->where('data_verificacao', '<=', $dataLimite)->count();
-        $contChListElet = CheckList::where('natureza', 'Elétrico')->where('data_verificacao', '<=', $dataLimite)->count();
-        $contChListCiv = CheckList::where('natureza', 'Civíl')->where('data_verificacao', '<=', $dataLimite)->count();
-        $contChListOpe = CheckList::where('natureza', 'Operacional')->where('data_verificacao', '<=', $dataLimite)->count();
+        // Função para contar checklists atrasados por especialidade
+        function contarAtrasadosPorEspecilidade($especialidade)
+        {
+            return CheckList::where('natureza', $especialidade)
+                ->get()
+                ->filter(function ($item) {
+                    $ultimaVerificacao = Carbon::parse($item->data_verificacao . ' ' . $item->hora_verificacao);
+                    $proxVerificacao = $ultimaVerificacao->addHours($item->intervalo);
+                    return $proxVerificacao <= now();
+                })
+                ->count();
+        }
+
+        // Contagem por grupo
+        $contChListMec = contarAtrasadosPorEspecilidade('Mecânico');
+        $contChListElet = contarAtrasadosPorEspecilidade('Elétrico');
+        $contChListCiv  = contarAtrasadosPorEspecilidade('Civíl');
+        $contChListOpe  = contarAtrasadosPorEspecilidade('Operacional');
+        $contChListSesmt = contarAtrasadosPorEspecilidade('SESMT');
 
 
-
+        //Fim Contagem por grupo
+        //---------------------------
         $checkLists = CheckList::all();
         $checkListExcAlerts = collect(); // Coleção vazia para armazenar os alertas
 
