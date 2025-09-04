@@ -258,7 +258,7 @@ class CheckListController extends Controller
     public function cont()
     {
         // Aplica fator 0.9 ao intervalo para antecipar a contagem
-        $pendentes = CheckList::whereRaw("DATE_ADD(updated_at, INTERVAL (intervalo * 0.9) HOUR) <= NOW()")->count();
+        $pendentes = CheckList::whereRaw("DATE_ADD(updated_at, INTERVAL (intervalo * 0.80) HOUR) <= NOW()")->count();
 
         return response()->json(['pendentes' => $pendentes]);
     }
