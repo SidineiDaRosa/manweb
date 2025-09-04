@@ -256,13 +256,11 @@ class CheckListController extends Controller
         return response()->json(['message' => 'Checklist não encontrado.'], 404);
     }
  
-    public function cont()
-    {
-        $pendentes = CheckList::all()->filter(function ($check) {
-            $vencimento = Carbon::parse($check->updated_at)->addHours($check->intervalo * 0.9);
-            return $vencimento <= Carbon::now();
-        })->count();
+   public function cont()
+{
+    // Conta todos os checklists da tabela
+    $pendentes = CheckList::count();
 
-        return response()->json(['pendentes' => $pendentes]);
-    }
+    return response()->json(['pendentes' => $pendentes]);
+}
 }
