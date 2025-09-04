@@ -257,12 +257,24 @@ class CheckListController extends Controller
     }
 
 
+
     public function cont()
     {
-        // Conta todos os checklists pendentes aplicando fator 0.9
-        $pendentes = CheckList::whereRaw(
-            "DATE_ADD(updated_at, INTERVAL FLOOR(intervalo * 0.71) HOUR) <= NOW()"
-        )->count();
+        $pendentes = CheckList::all()->filter(function ($check) {
+            // Verifica se existe data e hora de verificação
+            if ($check->data_verificacao && $check->hora_verificacao) {
+                $ultimo_check = Carbon::parse($check->data_verificacao . ' ' . $check->hora_verificacao);
+            } else {
+                // fallback para updated_at se data/hora estiverem nulos
+                $ultimo_check = Carbon::parse($check->updated_at);
+            }
+
+            // Aplica o fator 0.9 sobre o intervalo
+            $vencimento = $ultimo_check->addHours($check->intervalo * 0.8);
+
+            // Se a data de vencimento já passou, é pendente
+            return $vencimento <= Carbon::now();
+        })->count();
 
         return response()->json(['pendentes' => $pendentes]);
     }
