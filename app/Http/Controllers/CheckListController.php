@@ -255,10 +255,13 @@ class CheckListController extends Controller
 
         return response()->json(['message' => 'Checklist não encontrado.'], 404);
     }
+ 
     public function cont()
     {
-        // Aplica fator 0.9 ao intervalo para antecipar a contagem
-        $pendentes = CheckList::whereRaw("DATE_ADD(updated_at, INTERVAL (intervalo * 0.80) HOUR) <= NOW()")->count();
+        $pendentes = CheckList::all()->filter(function ($check) {
+            $vencimento = Carbon::parse($check->updated_at)->addHours($check->intervalo * 0.9);
+            return $vencimento <= Carbon::now();
+        })->count();
 
         return response()->json(['pendentes' => $pendentes]);
     }
