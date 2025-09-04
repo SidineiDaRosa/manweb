@@ -246,13 +246,13 @@
                         <i class="bi bi-question-circle-fill text-secondary icon-md" title="Sem data"></i>
                         @elseif ($horasDiferenca >= $intervaloVerificacao)
                         <i class="bi bi-x-circle-fill text-danger icon-xl" title="Vencido"></i>
-                        @elseif ($horasDiferenca >= ($intervaloVerificacao * 0.99))
+                        @elseif ($horasDiferenca >= ($intervaloVerificacao * 0.90))
                         <i class="bi bi-exclamation-triangle-fill text-warning icon-lg" title="Próximo de vencer"></i>
                         @else
                         <i class="bi bi-check-circle-fill text-success icon-md" title="Dentro do prazo"></i>
                         @endif
                     </div>
-                    <style>
+                    <style> 
                         /* tamanhos personalizados para os ícones */
                         .icon-xl {
                             font-size: 30px !important;
