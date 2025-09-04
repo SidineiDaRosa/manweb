@@ -246,7 +246,7 @@
                         <i class="bi bi-question-circle-fill text-secondary icon-md" title="Sem data"></i>
                         @elseif ($horasDiferenca >= $intervaloVerificacao)
                         <i class="bi bi-x-circle-fill text-danger icon-xl" title="Vencido"></i>
-                        @elseif ($horasDiferenca >= ($intervaloVerificacao * 0.8))
+                        @elseif ($horasDiferenca >= ($intervaloVerificacao * 0.99))
                         <i class="bi bi-exclamation-triangle-fill text-warning icon-lg" title="Próximo de vencer"></i>
                         @else
                         <i class="bi bi-check-circle-fill text-success icon-md" title="Dentro do prazo"></i>
