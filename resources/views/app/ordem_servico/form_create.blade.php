@@ -159,7 +159,7 @@
                     <script>
                         document.getElementById('horaPrevista').style.background = "rgb(150, 255, 150)"
                     </script>
-                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="" >
+                    <input class="input-text" type="time" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" required value="">
 
                     <script>
                         function ValidateDatePrevista() {
@@ -228,9 +228,9 @@
                 let dataPrevista = document.getElementById('dataPrevista').value;
                 let dataFim = document.getElementById('dataFim').value;
                 if (dataFim < dataPrevista) {
-                   // alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
-                   // document.getElementById('dataFim').value = 'null';
-                   // document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
+                    // alert('Atenção! A data prevista deve ser maior que a data prevista para término.');
+                    // document.getElementById('dataFim').value = 'null';
+                    // document.getElementById('dataFim').style.background = "rgb(255, 150, 150)";
 
                 } else {
                     document.getElementById('dataFim').style.background = "rgb(150, 255, 150)";
@@ -334,6 +334,7 @@
                         }
                     }
                 </script>
+                <div class="titulo">Anexo</div>
             </div>
         </div>
         {{--Box 3--}}

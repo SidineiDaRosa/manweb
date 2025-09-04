@@ -249,7 +249,7 @@ class OrdemServicoController extends Controller
     public function store(Request $request)
     { // Validação dos campos
         $request->validate([
-            'imagem' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validação da imagem
+            'imagem' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5120', // Validação da imagem
             // outros campos de validação, se necessário
         ]);
         // Verificar duplicidade
@@ -292,7 +292,8 @@ class OrdemServicoController extends Controller
             'situacao' => $request->situacao,
             'natureza_do_servico' => $request->natureza_do_servico,
             'especialidade_do_servico' => $request->especialidade_do_servico,
-            'ss_id' => $request->ss_id
+            'ss_id' => $request->ss_id,
+            'anexo'=>$request->anexo//Link anexado com algum documento
 
 
         ]);
@@ -397,6 +398,7 @@ class OrdemServicoController extends Controller
      */
     public function update(Request $request, OrdemServico $ordem_servico)
     {
+       
         // Verificar se a ordem de serviço já foi assinada
         if (!is_null($ordem_servico->signature_receptor)) {
             return redirect()->back()->withErrors('Não é possível alterar uma ordem de serviço que já foi assinada.');
@@ -460,7 +462,8 @@ class OrdemServicoController extends Controller
             'tendencia' => $request->tendencia,
             'situacao' => $request->situacao,
             'link_foto' => $ordem_servico->link_foto, // Caminho da imagem
-            'signature_receptor' => $ordem_servico->signature_receptor // Caminho da assinatura manual
+            'signature_receptor' => $ordem_servico->signature_receptor, // Caminho da assinatura manual
+            'anexo' => $request->anexo // Caminho da assinatura manual
         ]);
 
         // Recuperar dados atualizados para a view

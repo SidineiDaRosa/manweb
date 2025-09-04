@@ -7,53 +7,61 @@
     <!-- CABEÇALHO (MANTIDO ORIGINAL) -->
     <div class="card">
         <div class="card-header-template">
-            <div>LISTAGEM DE PRODUTOS</div>
-            {{$num_pedido}}
-            <form id="formSearchingProducts" action="{{'Produtos-filtro'}}" method="POST">
-                @csrf
-                <input type="number" name="num_pedido" value="{{$num_pedido}}" hidden>
-                <div class="col-md-12 mb-0">
-                    <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
-                        <option value="2">Busca Pelas inicias</option>
-                        <option value="1">Busca pelo ID</option>
-                        <option value="3">Busca pelo Código do Fabricante</option>
-                        <option value="4">Busca por categoria</option>
-                        <option value="5">Busca Pelo estoque minimo</option>
-                    </select>
+            <div class="top">
+                {{$num_pedido}}
+                <form id="formSearchingProducts" action="{{'Produtos-filtro'}}" method="POST">
+                    @csrf
+                    <input type="number" name="num_pedido" value="{{$num_pedido}}" hidden>
+                    <div class="col-md-12">
+                        <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
+                            <option value="2">Busca Pelas inicias</option>
+                            <option value="1">Busca pelo ID</option>
+                            <option value="3">Busca pelo Código do Fabricante</option>
+                            <option value="4">Busca por categoria</option>
+                            <option value="5">Busca Pelo estoque minimo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <select name="categoria_id" id="" class="form-control">
+                            <option value=""> --Selecione a Categoria--</option>
+                            @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
+                                {{ $categoria->nome }}
+                            </option>
+                            @endforeach
+                        </select>
+                        {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
+                    </div>
+                    <div>
+                        <input class="form-control" type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
+                        <button type="submit">
+                            <i class="icofont-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <div>
+                    <a href="{{ route('produto.create') }}" class="btn btn-outline-primary btn-sm">
+                        <span class="material-symbols-outlined">forms_add_on</span>
+                        Novo Produto
+                    </a>
+                    <a href="{{route('pedido-compra.index')}}" class="btn btn-outline-primary btn-sm">
+                        Pedidos de compra
+                    </a>
+                    <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
+                        <i class="icofont-dashboard"></i> dashboard
+                    </a>
                 </div>
-                <div class="col-md-12">
-                    <select name="categoria_id" id="" class="form-control-template">
-                        <option value=""> --Selecione a Categoria--</option>
-                        @foreach ($categorias as $categoria)
-                        <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
-                            {{ $categoria->nome }}
-                        </option>
-                        @endforeach
-                    </select>
-                    {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
-                </div>
-                <input type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
-                <button type="submit">
-                    <i class="icofont-search"></i>
-                </button>
-            </form>
-            <div>
-                <a href="{{ route('produto.create') }}" class="btn btn-outline-primary btn-sm">
-                    <span class="material-symbols-outlined">forms_add_on</span>
-                    Novo Produto
-                </a>
-                <a href="{{route('pedido-compra.index')}}" class="btn btn-outline-primary btn-sm">
-                    Pedidos de compra
-                </a>
-                <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
-                </a>
             </div>
         </div>
     </div>
 
     <!-- ESTILOS PARA OS CARDS (NOVA PARTE) -->
     <style>
+        .top {
+            display: flex;
+            flex-direction: row;
+        }
+
         .produtos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -166,13 +174,35 @@
             border: 1px solid;
         }
 
-        .btn-outline-primary { border-color: #007bff; color: #007bff; }
-        .btn-outline-success { border-color: #28a745; color: #28a745; }
-        .btn-outline-danger { border-color: #dc3545; color: #dc3545; }
-        
-        .btn-outline-primary:hover { background: #007bff; color: white; }
-        .btn-outline-success:hover { background: #28a745; color: white; }
-        .btn-outline-danger:hover { background: #dc3545; color: white; }
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-success {
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        .btn-outline-danger {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .btn-outline-primary:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-outline-success:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-outline-danger:hover {
+            background: #dc3545;
+            color: white;
+        }
 
         .pedido-badge {
             background: linear-gradient(45deg, #ff6b35, #ff8c42);
@@ -193,19 +223,24 @@
         }
 
         @media (max-width: 768px) {
+            .top {
+                display: flex;
+                flex-direction: column;
+            }
+
             .produtos-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .produto-info {
                 grid-template-columns: 1fr;
             }
-            
+
             .produto-actions {
                 flex-direction: column;
                 gap: 12px;
             }
-            
+
             .btn-group {
                 justify-content: center;
                 width: 100%;
@@ -227,7 +262,7 @@
                 <!-- Corpo do Card -->
                 <div class="produto-body">
                     <div class="produto-nome">{{ $produto->nome }}</div>
-                    
+
                     <div class="produto-info">
                         <div>
                             <span class="info-label">Unidade:</span>
@@ -254,8 +289,8 @@
 
                     <!-- Link para peça -->
                     <div style="text-align: center; margin: 12px 0;">
-                        <a href="{{ $produto->link_peca }}" target="_blank" 
-                           style="color: #1976d2; text-decoration: none; font-size: 13px;">
+                        <a href="{{ $produto->link_peca }}" target="_blank"
+                            style="color: #1976d2; text-decoration: none; font-size: 13px;">
                             <i class="icofont-external-link"></i> Ver no site do fabricante
                         </a>
                     </div>
@@ -263,25 +298,25 @@
 
                 <!-- Rodapé com Ações -->
                 <div class="produto-actions">
-                    <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}" 
-                       class="btn-sm-template btn-outline-success">
+                    <a href="{{ route('Estoque-produto.create',['produto' => $produto->id]) }}"
+                        class="btn-sm-template btn-outline-success">
                         <i class="icofont-database-add"></i>
                         Estoque
                     </a>
 
                     <div class="btn-group">
-                        <a class="btn-sm-template btn-outline-primary" 
-                           href="{{ route('produto.show', ['produto' => $produto->id]) }}">
+                        <a class="btn-sm-template btn-outline-primary"
+                            href="{{ route('produto.show', ['produto' => $produto->id]) }}">
                             <i class="icofont-eye-alt"></i>
                         </a>
 
-                        <a class="btn-sm-template btn-outline-success @can('user') disabled @endcan" 
-                           href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
+                        <a class="btn-sm-template btn-outline-success @can('user') disabled @endcan"
+                            href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
                             <i class="icofont-ui-edit"></i>
                         </a>
 
-                        <a class="btn-sm-template btn-outline-danger @can('user') disabled @endcan" 
-                           href="#" onclick="deletarProduto({{ $produto->id }})">
+                        <a class="btn-sm-template btn-outline-danger @can('user') disabled @endcan"
+                            href="#" onclick="deletarProduto({{ $produto->id }})">
                             <i class="icofont-ui-delete"></i>
                         </a>
                     </div>
@@ -290,16 +325,16 @@
                 <!-- Pedido Especial -->
                 @if(isset($num_pedido) && $num_pedido >= 1)
                 <div style="text-align: center; margin-top: 15px;">
-                    <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}" 
-                       class="pedido-badge">
+                    <a href="{{ route('pedido-compra-lista.index', ['produto_id' => $produto->id,'numpedidocompra'=>$num_pedido]) }}"
+                        class="pedido-badge">
                         <i class="icofont-cart"></i> Adicionar ao Pedido {{ $num_pedido }}
                     </a>
                 </div>
                 @endif
 
                 <!-- Form para deletar -->
-                <form id="form_{{ $produto->id }}" method="post" 
-                      action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
+                <form id="form_{{ $produto->id }}" method="post"
+                    action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
                     @method('DELETE')
                     @csrf
                 </form>
@@ -310,11 +345,11 @@
 </main>
 
 <script>
-function deletarProduto(produtoId) {
-    if (confirm('Deseja deletar este produto?')) {
-        document.getElementById('form_' + produtoId).submit();
+    function deletarProduto(produtoId) {
+        if (confirm('Deseja deletar este produto?')) {
+            document.getElementById('form_' + produtoId).submit();
+        }
     }
-}
 </script>
 
 @endsection

@@ -30,7 +30,8 @@ class OrdemServico extends Model
         'situacao',
         'natureza_do_servico',
         'especialidade_do_servico',
-        'ss_id'
+        'ss_id',
+        'anexo'
     ];
     public function equipamento()
     {

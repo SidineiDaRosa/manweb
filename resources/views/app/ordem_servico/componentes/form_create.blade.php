@@ -356,6 +356,15 @@
                             }
                         }
                     </script>
+                    <!---------->
+                    <!--Anexo-->
+                    <div class="titulo">Anexo:</div>
+                    <hr>
+                    <div class="conteudo">
+                     <input class="input-text" id="anexo" type="text" name="anexo" value="" style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:90%;background-color:rgba(236, 186, 129, 0.5)">
+
+                       
+                    </div>
             </div>
         </div>
         {{--Box 3--}}

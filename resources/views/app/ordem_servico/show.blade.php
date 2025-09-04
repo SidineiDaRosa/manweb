@@ -235,6 +235,15 @@
                                 /* Remove the default outline */
                             }
                         </style>
+                        <!---------->
+                        <!--Anexo-->
+
+                        <div class="conteudo">
+                            <a class="txt-link" id="anexo" target="_blank" href="{{$ordem_servico->anexo}}">
+                                Anexo: {{$ordem_servico->anexo}}
+                            </a>
+                        </div>
+
                     </div>
                 </div>
                 {{--Box 3--}}
@@ -257,7 +266,7 @@
                         @else
                         <p>Assinatura não disponível</p>
                         @endif
-                    
+
                         <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
                             <input type="text" value="{{$ordem_servico->ss_id}}" name="id" hidden>
                             <button type="submit" class="btn btn-outline-primary mb-1">

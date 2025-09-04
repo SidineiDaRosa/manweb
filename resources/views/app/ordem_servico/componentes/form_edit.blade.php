@@ -368,6 +368,7 @@
                             //document.getElementById('hora_Fim').style.background = ''
                         }
                     </script>
+
                 </div>
             </div>
         </div>
@@ -457,6 +458,13 @@
                 <hr style="margin-bottom:3px;">
                 <div class="conteudo">
                     <input class="btn btn-outline-dark btn-sm" type="file" id="imagem" name="imagem" style="font-family:'Poppins', sans-serif; font-weight:300; background-color:green; width:100%">
+                </div>
+                <!---------->
+                <!--Anexo-->
+                <div class="titulo">Anexo:</div>
+                <hr>
+                <div class="conteudo">
+                    <input class="input-text" id="anexo" type="text" name="anexo" value="{{$ordem_servico->anexo}}"  style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:98%;background-color:rgba(236, 186, 129, 0.5)">
                 </div>
             </div>
         </div>
