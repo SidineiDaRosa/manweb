@@ -29,7 +29,7 @@
         @if(isset($contChListMec))
         <span style="font-family: Arial, Helvetica, sans-serif;height:40px;font-weight:bold;">Check-Lists pendentes</span>
         <div style="display:flex;flex-direction:row;">
-            <div class="btn btn-success mb-1" style="width:200px;margin:5px;">
+            <div class="btn btn-dark mb-1" style="width:200px;margin:5px;">
                 <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Mecanico'])}}" style="color: white; text-decoration: none;">Mecânico: {{$contChListMec}}</a>
             </div>
             <div class="btn btn-warning mb-1" style="width:200px;margin:5px;">
@@ -38,9 +38,12 @@
             <div class="btn btn-primary mb-1" style="width:200px;margin:5px;">
                 <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Civil'])}}" style="color: white; text-decoration: none;">Civíl: {{$contChListCiv}}</a>
             </div>
-            <div class="btn btn-dark mb-1" style="width:200px;margin:5px;">
+            <div class="btn btn-primary mb-1" style="width:200px;margin:5px;">
                 <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Operacional'])}}" style="color: white; text-decoration: none;">Operacional: {{$contChListOpe}}</a>
             </div>
+            <!-- <div class="btn btn-success mb-1" style="width:200px;margin:5px;">
+              <a href="{{route('check-list-nat',['type'=>1,'nat'=>'SESMT'])}}" style="color: white; text-decoration: none;">SESMT: {{$contChListOpe}}</a>
+            </div>-->
         </div>
         @endif
         @isset($check_lists_open)
@@ -158,8 +161,7 @@
         </div>
         @endforeach
         @endif
-
-        <hr>
+         <h6>Checklists por equipamento</h6>
         <div class="card-header justify-content-left pt-1">
             <!-- Gravar um novo check list para o equipamento -->
             <form id="form_store" action="{{ route('check-list-gravar') }}" method="POST">
@@ -177,11 +179,13 @@
                         <option value="360" selected>Quinzenal</option> <!-- Define "360" como selecionado -->
                         <option value="720">Mensal</option>
                     </select>
-                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;"> Tipo:</span>
+                    <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;">Especialidade Técnica:</span>
                     <select class="form-control" name="natureza" id="Natureza" style="width: 300px;">
                         <option value="Elétrico">Elétrico</option>
                         <option value="Mecânico">Mecânico</option>
                         <option value="Civíl">Civíl</option>
+                        <option value="Operacional">Operacional</option>
+                        <!--<option value="SESMT">SESMT</option>-->
                     </select>
                 </div>
                 <hr>
@@ -190,7 +194,7 @@
                 <a href="{{ route('check-list-finalizado',['equipamento_id'=>$equipamento->id]) }}" class="btn btn-dark">Check-List Executado</a>
                 @endif
             </form>
-            <hr>
+           
             <div class="checklist-container">
 
                 @if(isset($equipamento) && isset($check_list))
@@ -204,13 +208,13 @@
                             <h5>Descrição:</h5> {{ $check_list_f->descricao }}
                         </span>
                         <span class="detail-item">
-                            <h5>Natureza:</h5> {{ $check_list_f->natureza }}
+                            <h5>Especialidade técnica:</h5> {{ $check_list_f->natureza }}
                         </span>
                         <span class="detail-item">
-                            <h5>Intervalo:</h5> {{ $check_list_f->intervalo }}hs
+                            <h5>Intervalo entre checagem:</h5> {{ $check_list_f->intervalo }}hs
                         </span>
                         <span class="detail-item date-time">
-                            <h5>Data/Hora:</h5>
+                            <h5>Data/Hora última chacagem:</h5>
                             @if(!empty($check_list_f->data_verificacao))
                             {{ \Carbon\Carbon::parse($check_list_f->data_verificacao)->format('d/m/Y') }} às
                             {{ $check_list_f->hora_verificacao }}

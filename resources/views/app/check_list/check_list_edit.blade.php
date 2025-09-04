@@ -15,7 +15,7 @@
         <!-- Gravar um novo check list para o equipamento -->
         <form id="form_store" action="{{ route('check-list-update') }}" method="GET">
             @csrf
-            <div style="display: flex; flex-direction: row;">
+            <div style="display: flex; flex-direction: row; padding:4px;">
                 <input type="text" class="form-control" name="id" id="id" style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;width:200px;"
                     value="{{$check_list->id}}" readonly>
                 <input type="text" class="form-control" name="equipamento_id" id="equipamento_id" style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;width:200px;"
@@ -29,11 +29,13 @@
                     <option value="360" selected>Quinzenal</option> <!-- Define "360" como selecionado -->
                     <option value="720">Mensal</option>
                 </select>
-                <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;"> Tipo:</span>
+                <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px;">Especialidade Técnica:</span>
                 <select class="form-control" name="natureza" id="Natureza" style="width: 300px;">
                     <option value="Elétrico">Elétrico</option>
                     <option value="Mecânico">Mecânico</option>
                     <option value="Civíl">Civíl</option>
+                    <option value="Operacional">Operacional</option>
+                   <!-- <option value="SESMT">SESMT</option>-->
                 </select>
             </div>
             <hr>
