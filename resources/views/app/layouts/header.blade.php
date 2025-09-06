@@ -19,10 +19,14 @@
 </head>
 
 <body>
+    @include('app.layouts.left')
     <header class="header">
+
         <div class="menu-toggle mx-3">
             <i class="icofont-navigation-menu"></i>
+            
         </div>
+       
         <div class="logo" id="logo">
             <i class="icofont-architecture-alt icofont-1x " style="color:lightgrey;"></i>
             <span style="font-family: Arial, Helvetica, sans-serif;color:lightgrey;font-size:20px;font-stretch:condensed;">Manutenção Fapolpa</span>
@@ -246,6 +250,7 @@
 
 
         </div>
+       
     </header>
-
+   
 </body>

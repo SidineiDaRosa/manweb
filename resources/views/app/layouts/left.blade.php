@@ -1,174 +1,215 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="{{ asset('js/left.js') }}" defer></script>
-    <title>Left</title>
-</head>
-
-</html>
-<!--Classe principal do menu left
-<header class="header" style="color:#454d66;">   important-->
-
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>Sidebar Laravel</title>
 <style>
-    .sidebar-submenu-expanded-a-1 {
+body {
+    font-family: 'Roboto', sans-serif;
+    margin:0;
+}
+.sidebar {
+    width: 250px;
+    background-color: #f5f5f5;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+ 
+}
+.nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.nav-list li {
+    margin-bottom: 5px;
+}
+.nav-list a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #b1b7caff;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.nav-list a:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+.nav-list i {
+    margin-right: 8px;
+}
+.submenu {
+    display: none;
+    padding-left: 20px;
+    flex-direction: column;
+}
+.submenu a {
+    font-size: 14px;
+    padding: 6px 8px;
+}
+.submenu.show {
+    display: flex;
+}
+.divider {
+    border-bottom: 1px solid #ccc;
+    margin: 5px 0;
+}
+.spn-txt-menu {
+    font-size: 16px;
+}
+.arrow {
+    margin-left:auto;
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 16px;
+}
+.arrow.down {
+    transform: rotate(90deg); /* seta “>” vira “v” */
+}
 
-        opacity: 0.9;
-        font-size: 40px;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+/* Responsivo simples */
+@media(max-width: 768px){
+    .sidebar {
+        width: 100%;
+        height: auto;
     }
-
-    .spn-txt-menu {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-    }
+}
 </style>
-
+</head>
+<body>
 <aside class="sidebar" id="sidebarleft">
-    <nav class="menu mt-3" id="">
-        <!--Classe inicio das listas de menu-->
+<ul class="nav-list">
 
-        <ul class="nav-list">
-            <a class="sidebar-submenu-expanded-a" href="{{ route('app.home') }}">
-                <i class="icofont-dashboard icofont-1x">&nbsp&nbsp&nbsp
-                    <span class="spn-txt-menu">DASHBOARD</span>
-                </i>
-            </a><br>
-            <hr>
-            <li class="nav-item">
-                <a onclick="FunExpandMenuDashboard();">
-                    &nbsp&nbsp&nbsp
-                    <span class="spn-txt-menu">Outros</span>
-                    </i>
-                    <i class="icofont-caret-down icofont-2x"></i>
-                </a>
-                <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-dashboard">
-                    <a href="{{ route('dashboard-status-os') }}" class="title-menu">Painel de Visualização O.S.</a>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{ route('control-panel.index') }}">Painel de controle</a><br>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{ route('site.configuracoes') }}" hidden>Configurações</a>
-                </div>
-            </li>
-            <hr>
-            <!--Menu home page-->
-            <li class="nav-item">
-                <a onclick="FunExpandMenuHome();">
+    <!-- Dashboard -->
+    <li>
+        <a href="{{ route('app.home') }}">
+            <i class="icofont-dashboard icofont-1x"></i>
+            <span class="spn-txt-menu">DASHBOARD</span>
+        </a>
+    </li>
 
-                    <i class="icofont-company icofont-2x"></i></i>&nbsp&nbsp&nbspUnidades Cia
-                    <i class="icofont-caret-down icofont-2x"></i>
+    <div class="divider"></div>
 
+    <!-- Outros -->
+    <li>
+        <a href="javascript:void(0);" onclick="toggleSubmenu('dashboard-submenu')">
+            <i class="icofont-settings icofont-1x"></i>
+            <span class="spn-txt-menu">Outros</span>
+            <span class="arrow">&gt;</span>
+        </a>
+        <div class="submenu" id="dashboard-submenu">
+            <a href="{{ route('dashboard-status-os') }}">Painel de Visualização O.S.</a>
+            <a href="{{ route('control-panel.index') }}">Painel de controle</a>
+            <a href="{{ route('site.configuracoes') }}" hidden>Configurações</a>
+        </div>
+    </li>
 
-                </a>
-                <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-home">
-                    <a class="sidebar-submenu-expanded-a" href="{{route('empresas.index')}}">Busca unidade empresarial</a><br>
+    <div class="divider"></div>
 
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="#"></a>
-                </div>
-            </li>
-            <!--Menu marcas-->
-            <li class="nav-item">
-                <a onclick="FunExpandMenuMarcas();">
-                    <i class="icofont-cc icofont-2x"></i>
-                    &nbsp&nbspMarcas
-                    <i class="icofont-caret-down icofont-2x"></i>
-                </a>
-                <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-marcas">
-                    <a class="sidebar-submenu-expanded-a" href="{{route('marca.index')}}">Cadastro de marcas</a><br>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="#">Cadastro de Segmentos</a>
-                </div>
-            </li>
+    <!-- Unidades Cia -->
+    <li>
+        <a href="javascript:void(0);" onclick="toggleSubmenu('home-submenu')">
+            <i class="icofont-company icofont-2x"></i>
+            <span class="spn-txt-menu">&nbsp;Unidades Cia</span>
+            <span class="arrow">&gt;</span>
+        </a>
+        <div class="submenu" id="home-submenu">
+            <a href="{{ route('empresas.index') }}">Busca unidade empresarial</a>
+        </div>
+    </li>
 
-            <!--Menu recursos-->
-            <li class="nav-item">
-                <a onclick="FunExpandMenuRecursos();">
-                    <i class="icofont-cubes icofont-2x"></i>
-                    &nbsp&nbspGestão de Suprimentos
-                    <i class="icofont-caret-down icofont-2x"></i>
-                </a>
-                <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-recursos">
-                    <a class="sidebar-submenu-expanded-a" href="{{route('custos.dashboard')}}">Custos</a><br><!--chama pela segunda opção Name  da rota-->
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('produto.index')}}">Produtos</a><br>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('Estoque-produto.index')}}">Estoque de produtos</a><br>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('pedido-compra.index')}}">Pedidos de compra</a>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('entrada-produto.index')}}">Entrada de
-                        produtos</a>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('pedido-saida.index')}}">Pedidos de saída</a>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('fornecedor.index')}}">Fornecedores</a>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('produto-fornecedor.create')}}">Por
-                        fornecedor</a><br>
-                    <hr>
-                    <a class="sidebar-submenu-expanded-a" href="{{route('categoria.index')}}">Categoria</a><br>
+    <!-- Marcas -->
+    <li>
+        <a href="javascript:void(0);" onclick="toggleSubmenu('marcas-submenu')">
+            <i class="icofont-cc icofont-2x"></i>
+            <span class="spn-txt-menu">&nbsp;Marcas</span>
+            <span class="arrow">&gt;</span>
+        </a>
+        <div class="submenu" id="marcas-submenu">
+            <a href="{{ route('marca.index') }}">Cadastro de marcas</a>
+            <a href="#">Cadastro de Segmentos</a>
+        </div>
+    </li>
 
-                </div>
-            </li>
-            <!--Menu Máquinas e equipamentos-->
-            <li class="nav-item">
-                <a href="#">
-                    <a onclick="FunExpandMenuPeatrimonio();">
-                        <i class="icofont-vehicle-trucktor icofont-2x"></i>
-                        &nbsp&nbspAtivos
-                        <i class="icofont-caret-down icofont-2x"></i>
-                    </a>
-                    <div class="sidebar-submenu-expanded" id="sidebar-submenu-expanded-patrimonio">
-                        <a class="sidebar-submenu-expanded-a" href="#">&nbsp&nbspAtivos</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="{{ route('Peca-equipamento.index') }}">&nbsp&nbspFiltros de Chek-List Lubrificação</a><br>
-                        <hr>
-                        <a class="sidebar-submenu-expanded-a" href="">Manutenção</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="{{route('ordem-servico.index')}}">
-                            <i class="icofont-repair"></i>
-                            &nbsp&nbspOrdem de Serviço</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="{{route('index_kpis')}}">
-                            <i class="icofont-dashboard-web"></i>
-                            &nbsp&nbspKPIs</a><br>
-                        <a class="sidebar-submenu-expanded-a" href="#">
-                            <i class="icofont-bars"></i>
-                            &nbsp&nbspGráficos</a>
-                    </div>
-            </li>
-            <li class="nav-item">
-                <a href="#">
-                    <a href="{{route('ordem-producao.index')}}">
-                        <i class="icofont-industries-4 icofont-2x"></i>
-                        &nbsp&nbspProdução
-                        <i class="icofont-caret-down icofont-2x"></i>
+    <!-- Gestão de Suprimentos -->
+    <li>
+        <a href="javascript:void(0);" onclick="toggleSubmenu('recursos-submenu')">
+            <i class="icofont-cubes icofont-2x"></i>
+            <span class="spn-txt-menu">&nbsp;Gestão de Suprimentos</span>
+            <span class="arrow">&gt;</span>
+        </a>
+        <div class="submenu" id="recursos-submenu">
+            <a href="{{ route('custos.dashboard') }}">Custos</a>
+            <a href="{{ route('produto.index') }}">Produtos</a>
+            <a href="{{ route('Estoque-produto.index') }}">Estoque de produtos</a>
+            <a href="{{ route('pedido-compra.index') }}">Pedidos de compra</a>
+            <a href="{{ route('entrada-produto.index') }}">Entrada de produtos</a>
+            <a href="{{ route('pedido-saida.index') }}">Pedidos de saída</a>
+            <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
+            <a href="{{ route('produto-fornecedor.create') }}">Por fornecedor</a>
+            <a href="{{ route('categoria.index') }}">Categoria</a>
+        </div>
+    </li>
 
-                    </a>
-            </li>
-            @auth
-            @if(Auth::user()->level === 0)
-            <li class="nav-item">
+    <!-- Ativos -->
+    <li>
+        <a href="javascript:void(0);" onclick="toggleSubmenu('patrimonio-submenu')">
+            <i class="icofont-vehicle-trucktor icofont-2x"></i>
+            <span class="spn-txt-menu">&nbsp;Ativos</span>
+            <span class="arrow">&gt;</span>
+        </a>
+        <div class="submenu" id="patrimonio-submenu">
+            <a href="#">Ativos</a>
+            <a href="{{ route('Peca-equipamento.index') }}">Filtros de Check-List Lubrificação</a>
+            <a href="#">Manutenção</a>
+            <a href="{{ route('ordem-servico.index') }}">Ordem de Serviço</a>
+            <a href="{{ route('index_kpis') }}">KPIs</a>
+            <a href="#">Gráficos</a>
+        </div>
+    </li>
+
+    <!-- Produção -->
+    <li>
+        <a href="{{ route('ordem-producao.index') }}">
+            <i class="icofont-industries-4 icofont-2x"></i>
+            <span class="spn-txt-menu">&nbsp;Produção</span>
+        </a>
+    </li>
+
+    <!-- Usuários admin -->
+    @auth
+        @if(Auth::user()->level === 0)
+            <li>
                 <a href="{{ route('register') }}">
                     <i class="icofont-users mr-2 icofont-2x"></i>
-                    &nbsp Criar Usuários
-                    <i class="icofont-caret-down icofont-2x"></i>
+                    <span class="spn-txt-menu">&nbsp;Criar Usuários</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('register') }}">
                     <i class="icofont-users mr-2 icofont-2x"></i>
-                    &nbspEditar Usuário
-                    <i class="icofont-caret-down icofont-2x"></i>
+                    <span class="spn-txt-menu">&nbsp;Editar Usuário</span>
                 </a>
             </li>
-
-            @endif
-            @endauth
-
-    </nav>
-
+        @endif
+    @endauth
+</ul>
 </aside>
+
+<script>
+function toggleSubmenu(id){
+    const submenu = document.getElementById(id);
+    submenu.classList.toggle('show');
+
+    // Alterna seta > para v
+    const arrow = submenu.previousElementSibling.querySelector('.arrow');
+    if(arrow) arrow.classList.toggle('down');
+}
+</script>
+</body>
+</html>
