@@ -119,7 +119,7 @@ aside.sidebar {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(70, 130, 180);
+    background-color: rgb(43, 48, 51);
 }
 
 aside.sidebar .menu {
