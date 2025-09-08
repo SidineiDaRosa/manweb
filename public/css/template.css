@@ -1,30 +1,6 @@
 /* === Configurações Globais === */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 300;
-    color: #2a2735;
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: 50px 1fr 40px;
-    grid-template-areas:
-        "header header"
-        "sidebar content"
-        "footer footer";
-    height: 100vh;
-    margin: 0;
-    background-color: #ddd;
-}
-
-body.hide-sidebar {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-        "header"
-        "content"
-        "footer";
-}
-
-body.hide-sidebar aside.sidebar {
-    display: none;
+    display: flex;
 }
 
 /* === Ícones e Interações === */
@@ -113,88 +89,12 @@ header.header .avatar {
     margin-left: 10px;
 }
 
-/* === Sidebar === */
-aside.sidebar {
-    grid-area: sidebar;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgb(43, 48, 51);
-}
-
-aside.sidebar .menu {
-    width: 100%;
-    flex-grow: 1;
-}
-
-aside.sidebar .menu ul.nav-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-aside.sidebar .menu li.nav-item {
-    padding: 8px 0 8px 20px;
-}
-
-aside.sidebar .menu li.nav-item a {
-    font-size: 15px;
-    text-decoration: none;
-    color: #faf9fc;
-}
-
-aside.sidebar .menu li.nav-item:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.sidebar-submenu-expanded {
-    height: auto;
-    width: 98%;
-    background-color: rgb(123, 36, 180);
-    font-size: medium;
-    border-radius: 5px;
-    padding: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.sidebar-submenu-expanded:hover {
-    background-color: #3c2074;
-}
-
-.sidebar-submenu-expanded-a {
-    opacity: 0.9;
-    font-size: 30px;
-    color: black;
-}
-
-.sidebar-submenu-expanded-a:hover {
-    opacity: 1;
-}
-
-aside.sidebar .icon {
-    color: #1976d2;
-    font-size: 3.2rem;
-    margin: 2px 10px 2px 0;
-}
-
-aside.sidebar .sidebar-widget .info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-}
-
-aside.sidebar .info .main {
-    font-size: 2rem;
-}
-
-.division {
-    width: 80%;
-    border: solid 1px #eee;
-}
-
 /* === Conteúdo Principal === */
 main.content {
+    display: flex;
+    margin-top: 58px;
+    margin-left:10px;
+
     grid-area: content;
     background-color: #fff;
     padding: 10px;
@@ -292,7 +192,8 @@ footer.footer {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-input, select {
+input,
+select {
     font-size: medium;
     font-family: inherit;
 }
@@ -303,23 +204,4 @@ input, select {
     font-weight: 400;
     line-height: 1.5;
     border-radius: 0.2rem;
-}
-
-/* === Responsividade === */
-@media screen and (max-width: 680px) {
-    body {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "header"
-            "content"
-            "footer";
-    }
-
-    aside.sidebar {
-        display: none;
-    }
-
-    body:not(.hide-sidebar) aside.sidebar {
-        display: flex;
-    }
 }
