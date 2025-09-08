@@ -6,7 +6,7 @@
     left: 0;
     width: 60px;           /* sidebar recolhida */
     height: calc(100vh - 60px);
-    background-color: #5e5b5bff;
+    background-color: rgba(94, 91, 91, 0.99);
     overflow-x: hidden;
     overflow-y: auto;
     transition: width 0.5s ease;
