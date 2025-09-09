@@ -1,4 +1,10 @@
 .content{
     margin-left: 58px;
     margin-top:70px;
+    height:100%;
+}
+.form-control{
+    margin: 1px solid rgb(137, 170, 214)
+    ;
+
 }
