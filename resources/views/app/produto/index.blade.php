@@ -4,7 +4,7 @@
 @section('content')
 
 <main class="content">
-    <!-- CABEÇALHO (MANTIDO ORIGINAL) -->
+    <!-- CABEÇALHO-->
     <div class="card">
         <div class="card-header-template">
             <div class="top">

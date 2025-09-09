@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<html>
 
 <head>
     <meta charset="UTF-8">
@@ -12,232 +11,231 @@
     <link rel="stylesheet" href="{{ asset('css/template.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <main class="content">
-        <style>
-            /* Sidebar */
-            .sidebar {
-                width: 250px;
-                min-height: 100vh;
-                background-color: #6e6b6bff;
-                padding: 10px;
-                box-sizing: border-box;
-                overflow-y: auto;
-                transition: transform 0.3s ease;
-                position: fixed;
-                left: 0;
-                top: 0;
-                z-index: 999;
-            }
+    <style>
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background-color: #6e6b6bff;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 999;
+        }
 
-            .sidebar.active {
+        .sidebar.active {
+            transform: translateX(-260px);
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-list li {
+            margin-bottom: 5px;
+        }
+
+        .nav-list a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #b1b7caff;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .nav-list a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-list i {
+            margin-right: 8px;
+        }
+
+        .submenu {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .submenu a {
+            font-size: 14px;
+            padding: 6px 8px;
+            display: block;
+        }
+
+        .submenu.show {
+            display: block;
+        }
+
+        .divider {
+            border-bottom: 1px solid #ccc;
+            margin: 5px 0;
+        }
+
+        .arrow {
+            margin-left: auto;
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 16px;
+        }
+
+        .arrow.down {
+            transform: rotate(90deg);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            background-color: #343a40;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 998;
+            height: 60px;
+        }
+
+        .menu-toggle {
+            cursor: pointer;
+        }
+
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        /* Notifications */
+        .notifications {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .badge {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            z-index: 1000;
+        }
+
+        .badge.zero {
+            background-color: green;
+        }
+
+        .badge.non-zero {
+            background-color: red;
+        }
+
+        .badge.warning {
+            background-color: orange;
+        }
+
+        .badge.yellow {
+            background-color: gold;
+        }
+
+        /* Dropdown do usuário */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-button {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: #f5f5f5;
+            min-width: 160px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            z-index: 100;
+        }
+
+        .dropdown-content ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dropdown-content ul li {
+            padding: 10px;
+        }
+
+        .dropdown-content ul li a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Conteúdo principal */
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 20px 20px 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.sidebar-collapsed {
+            margin-left: 0;
+        }
+
+        @media(max-width: 768px) {
+            .sidebar {
                 transform: translateX(-260px);
             }
 
-            .nav-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
+            .sidebar.active {
+                transform: translateX(0);
             }
 
-            .nav-list li {
-                margin-bottom: 5px;
-            }
-
-            .nav-list a {
-                display: flex;
-                align-items: center;
-                text-decoration: none;
-                color: #b1b7caff;
-                padding: 8px;
-                border-radius: 4px;
-                transition: background 0.2s;
-            }
-
-            .nav-list a:hover {
-                background-color: rgba(0, 0, 0, 0.05);
-            }
-
-            .nav-list i {
-                margin-right: 8px;
-            }
-
-            .submenu {
-                display: none;
-                padding-left: 20px;
-            }
-
-            .submenu a {
-                font-size: 14px;
-                padding: 6px 8px;
-                display: block;
-            }
-
-            .submenu.show {
-                display: block;
-            }
-
-            .divider {
-                border-bottom: 1px solid #ccc;
-                margin: 5px 0;
-            }
-
-            .arrow {
-                margin-left: auto;
-                display: inline-block;
-                transition: transform 0.3s ease;
-                font-size: 16px;
-            }
-
-            .arrow.down {
-                transform: rotate(90deg);
-            }
-
-            /* Header */
-            .header {
-                display: flex;
-                align-items: center;
-                background-color: #343a40;
-                color: white;
-                padding: 10px 20px;
-                position: fixed;
-                width: 100%;
-                top: 0;
-                left: 0;
-                z-index: 998;
-                height: 60px;
-            }
-
-            .menu-toggle {
-                cursor: pointer;
-            }
-
-            .logo {
-                margin-left: 20px;
-                display: flex;
-                align-items: center;
-                font-size: 18px;
-            }
-
-            .spacer {
-                flex: 1;
-            }
-
-            /* Notifications */
-            .notifications {
-                display: flex;
-                gap: 15px;
-                align-items: center;
-            }
-
-            .notification {
-                position: relative;
-                cursor: pointer;
-            }
-
-            .badge {
-                display: inline-block;
-                width: 25px;
-                height: 25px;
-                border-radius: 50%;
-                color: white;
-                text-align: center;
-                line-height: 25px;
-                font-size: 14px;
-                font-weight: bold;
-                position: absolute;
-                top: -5px;
-                right: -10px;
-                z-index: 1000;
-            }
-
-            .badge.zero {
-                background-color: green;
-            }
-
-            .badge.non-zero {
-                background-color: red;
-            }
-
-            .badge.warning {
-                background-color: orange;
-            }
-
-            .badge.yellow {
-                background-color: gold;
-            }
-
-            /* Dropdown do usuário */
-            .dropdown {
-                position: relative;
-            }
-
-            .dropdown-button {
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-            }
-
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                right: 0;
-                top: 40px;
-                background-color: #f5f5f5;
-                min-width: 160px;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-                border-radius: 4px;
-                z-index: 100;
-            }
-
-            .dropdown-content ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-            }
-
-            .dropdown-content ul li {
-                padding: 10px;
-            }
-
-            .dropdown-content ul li a {
-                text-decoration: none;
-                color: #333;
-                display: block;
-            }
-
-            .dropdown:hover .dropdown-content {
-                display: block;
-            }
-
-            /* Conteúdo principal */
             .main-content {
-                margin-left: 250px;
-                padding: 80px 20px 20px 20px;
-                transition: margin-left 0.3s ease;
+                margin-left: 0;
             }
 
             .main-content.sidebar-collapsed {
                 margin-left: 0;
             }
-
-            @media(max-width: 768px) {
-                .sidebar {
-                    transform: translateX(-260px);
-                }
-
-                .sidebar.active {
-                    transform: translateX(0);
-                }
-
-                .main-content {
-                    margin-left: 0;
-                }
-
-                .main-content.sidebar-collapsed {
-                    margin-left: 0;
-                }
-            }
-        </style>
+        }
+    </style>
 </head>
 
 <!-- Header -->
@@ -341,4 +339,3 @@
 </script>
 
 </html>
-</main>
