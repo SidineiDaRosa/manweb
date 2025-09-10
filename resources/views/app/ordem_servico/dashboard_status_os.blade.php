@@ -18,24 +18,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<div style="display: flex; justify-content: center; text-align: center;">
-    <h4>Painel de Visualização de O.S.</h4>
-    <!-- Notificação de Check list -->
-    <div class="dropdown" id="checklist-count" style="margin-top:20px;margin-right:50px">
-    </div>
-    <div style="width: 100px;margin-left:300px;">
-        <a href="" id="checklist-link" class="dropdown" style="color: black;margin-top:20px;">
-            Check-lists <p></p>
-            &nbsp <span style="margin-top:35px;" class="badge" id="checklist-badge">0</span>
-        </a>
+<header style="display: flex; justify-content: center; text-align: center;">
+    <div style="display: flex;flex-direction:row;">
+        <h3>Visualização de O.S.</h3>
+        <!-- Notificação de Check list -->
+        <div class="dropdown" id="checklist-count" style="margin-top:15px;margin-right:50px">
+        </div>
+        <div id="checklist-count" class="notification" style="margin-top:20px;">
+           <div style="margin-right:25px;">Checklists pendentes</div>
+            <a href="/check-list-index" style="color:white;"></a>
+            <span class="badge" id="checklist-badge">0</span>
+        </div>
+        <div>
+            <!-- Botão que abre a modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalExemplo" style="height:35px;margin-top:5px;">
+                Criar O.S
+            </button>
 
-    </div>
-    <div>
-        <!-- Botão que abre a modal -->
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalExemplo" style="height:35px;">
-            Criar O.S
-        </button>
-
+        </div>
     </div>
 
     <!-- CSS -->
@@ -94,24 +94,6 @@
     <!-- JavaScript para atualização das contagens -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Função para atualizar a contagem de solicitações pendentes
-            function atualizarContagemSolicitacoes() {
-                fetch('/solicitacoes-pendentes')
-                    .then(response => response.json())
-                    .then(data => {
-                        const badge = document.getElementById('solicitacoes-badge');
-                        badge.innerText = data.pendentes;
-
-                        if (data.pendentes > 0) {
-                            badge.classList.remove('zero');
-                            badge.classList.add('non-zero');
-                        } else {
-                            badge.classList.remove('non-zero');
-                            badge.classList.add('zero');
-                        }
-                    })
-                    .catch(error => console.error('Erro:', error));
-            }
 
             // Função para atualizar a contagem de checklists pendentes
             function atualizarContagemChecklists() {
@@ -134,17 +116,14 @@
                     .catch(error => console.error('Erro:', error));
             }
 
-            // Atualiza as contagens a cada 30 segundos
-            setInterval(atualizarContagemSolicitacoes, 30000);
             setInterval(atualizarContagemChecklists, 30000);
 
-            // Atualiza as contagens imediatamente quando a página é carregada
-            atualizarContagemSolicitacoes();
+            // Atualiza as contagens imediatamente quando a página é carregad
             atualizarContagemChecklists();
         });
     </script>
-</div>
-<main class="content">
+</header>
+<main>
 
     {{--sinalizador pulsante verde--}}
     <style>
