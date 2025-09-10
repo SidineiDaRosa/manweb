@@ -52,7 +52,7 @@
                 </div>
                 <div class="col-md-6 mb-0">
                     <label for="responsavel" class="">Responsável:</label>
-                    <select name="responsavel" id="responsavel" class="form-control-template">
+                    <select name="responsavel" id="responsavel" class="form-control">
                         <option value="todos">todos</option>
                         @foreach ($funcionarios as $funcionario_find)
                         <option value="{{ $funcionario_find->primeiro_nome }}" {{ ($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
@@ -93,7 +93,7 @@
                 <!--------------------------------------------------------------------------------------->
                 <div class="col-md-5 mb-0">
                     <label for="empresas" class="">Empresa:</label>
-                    <select name="empresa_id" id="empresa_id" class="form-control-template">
+                    <select name="empresa_id" id="empresa_id" class="form-control">
                         <option value=""> --Selecione a empresa--</option>
                         @foreach ($empresa as $empresas_find)
                         <option value="{{ $empresas_find->id }}"
