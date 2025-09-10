@@ -1,5 +1,6 @@
 
     window.onload = function() {
+
         let data_atual = new Date();
         var dia = String(data_atual.getDate()).padStart(2, '0');
         var mes = String(data_atual.getMonth() + 1).padStart(2, '0');

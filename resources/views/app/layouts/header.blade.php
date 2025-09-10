@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/template.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <script src="{{asset('js/date_time.js')}}"></script><!--Update data time-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* Sidebar */
