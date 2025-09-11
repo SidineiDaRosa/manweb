@@ -25,7 +25,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
             padding-top: 10px;
-       
+
         }
 
         .page-header {
@@ -108,7 +108,7 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .div-table-header {
             display: flex;
             background-color: #f8f9fa;
@@ -117,30 +117,47 @@
             padding: 15px;
             border-bottom: 2px solid #e9ecef;
         }
-        
+
         .div-table-row {
             display: flex;
             padding: 15px;
             border-top: 1px solid #f1f1f1;
             align-items: center;
         }
-        
+
         .div-table-row:hover {
             background-color: rgba(52, 152, 219, 0.05);
         }
-        
+
         .div-table-col {
             flex: 1;
             padding: 0 10px;
         }
-        
+
         /* Ajustes específicos para as colunas */
-        .col-id { flex: 0.5; }
-        .col-data { flex: 1.2; }
-        .col-equipamento { flex: 1.5; }
-        .col-emissor { flex: 1.2; }
-        .col-status { flex: 1; }
-        .col-operacoes { flex: 0.8; }
+        .col-id {
+            flex: 0.5;
+        }
+
+        .col-data {
+            flex: 1.2;
+        }
+
+        .col-equipamento {
+            flex: 1.5;
+        }
+
+        .col-emissor {
+            flex: 1.2;
+        }
+
+        .col-status {
+            flex: 1;
+        }
+
+        .col-operacoes {
+            flex: 0.8;
+        }
 
         .status-badge {
             padding: 6px 12px;
@@ -248,12 +265,12 @@
             .btn-group-actions {
                 flex-direction: column;
             }
-            
+
             /* Responsividade para a estrutura de divs */
             .div-table-header {
                 display: none;
             }
-            
+
             .div-table-row {
                 flex-direction: column;
                 align-items: flex-start;
@@ -261,9 +278,9 @@
                 margin-bottom: 15px;
                 border: 1px solid #e9ecef;
                 border-radius: 8px;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             }
-            
+
             .div-table-col {
                 width: 100%;
                 padding: 8px 0;
@@ -271,11 +288,11 @@
                 justify-content: space-between;
                 border-bottom: 1px solid #f5f5f5;
             }
-            
+
             .div-table-col:last-child {
                 border-bottom: none;
             }
-            
+
             .div-table-col::before {
                 content: attr(data-label);
                 font-weight: 600;
@@ -283,19 +300,19 @@
                 margin-right: 10px;
                 flex: 1;
             }
-            
-            .div-table-col > div {
+
+            .div-table-col>div {
                 flex: 2;
                 text-align: right;
             }
-            
+
             .col-operacoes {
                 justify-content: center !important;
                 padding-top: 15px;
                 border-top: 1px dashed #e0e0e0;
                 margin-top: 10px;
             }
-            
+
             .col-operacoes::before {
                 display: none;
             }
@@ -318,12 +335,12 @@
                     <div class="form-group">
                         <label for="situacao">Situação</label>
                         <select class="form-control" name="situacao" id="situacao">
-                            <option value="">Todas as situações</option>
+                            <option value="all">Todas as situações</option>
                             <option value="aberto" {{ request('situacao') == 'aberto' ? 'selected' : '' }}>Aberto</option>
                             <option value="fechado" {{ request('situacao') == 'fechado' ? 'selected' : '' }}>Fechado</option>
-                            <option value="andamento" {{ request('situacao') == 'andamento' ? 'selected' : '' }}>Em andamento</option>
                             <option value="cancelado" {{ request('situacao') == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
                             <option value="indefinido" {{ request('situacao') == 'indefinido' ? 'selected' : '' }}>Indefinido</option>
+                            <option value="aceito" {{ request('situacao') == 'indefinido' ? 'selected' : '' }}>Aceito</option>
                         </select>
                     </div>
 
@@ -370,46 +387,50 @@
 
                     <!-- Corpo -->
                     @if($pedidos_compra->count() > 0)
-                        @foreach ($pedidos_compra as $pedido_compra)
-                        <div class="div-table-row">
-                            <div class="div-table-col col-id" data-label="ID">{{ $pedido_compra->id }}</div>
-                            <div class="div-table-col col-data" data-label="Data Emissão">{{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y') }} {{ $pedido_compra->hora_emissao }}</div>
-                            <div class="div-table-col col-data" data-label="Data Prevista">{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</div>
-                            <div class="div-table-col col-data" data-label="Data Fechamento">{{ $pedido_compra->data_fechamento ? \Carbon\Carbon::parse($pedido_compra->data_fechamento)->format('d/m/Y') : '-' }}</div>
-                            <div class="div-table-col col-equipamento" data-label="Equipamento">{{ $pedido_compra->equipamento->nome}}</div>
-                            <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->funcionarios->nome ?? $pedido_compra->funcionarios->id}}</div>
-                            <div class="div-table-col col-status" data-label="Status">
-                                @php
-                                $statusClass = 'status-indefinido';
-                                if ($pedido_compra->status == 'aberto') $statusClass = 'status-aberto';
-                                elseif ($pedido_compra->status == 'fechado') $statusClass = 'status-fechado';
-                                elseif ($pedido_compra->status == 'cancelado') $statusClass = 'status-cancelado';
-                                elseif ($pedido_compra->status == 'aceito' || $pedido_compra->status == 'em andamento') $statusClass = 'status-andamento';
-                                @endphp
-                                <span class="status-badge {{ $statusClass }}">{{ ucfirst($pedido_compra->status) }}</span>
-                            </div>
-                            <div class="div-table-col col-operacoes" data-label="Operações">
-                                <div class="btn-group-actions">
-                                    <a class="btn-sm-template btn-outline-primary" href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $pedido_compra->id]) }}" title="Visualizar">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a class="btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}" title="Editar">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                </div>
+                    @foreach ($pedidos_compra as $pedido_compra)
+                    <div class="div-table-row">
+                        <div class="div-table-col col-id" data-label="ID">{{ $pedido_compra->id }}</div>
+                        <div class="div-table-col col-data" data-label="Data Emissão">{{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y') }} {{ $pedido_compra->hora_emissao }}</div>
+                        <div class="div-table-col col-data" data-label="Data Prevista">{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</div>
+                        <div class="div-table-col col-data" data-label="Data Fechamento">{{ $pedido_compra->data_fechamento ? \Carbon\Carbon::parse($pedido_compra->data_fechamento)->format('d/m/Y') : '-' }}</div>
+                        <div class="div-table-col col-equipamento" data-label="Equipamento">{{ $pedido_compra->equipamento->nome}}</div>
+                        <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->funcionarios->nome ?? $pedido_compra->funcionarios->id}}</div>
+                        <div class="div-table-col col-status" data-label="Status">
+                            @php
+                            $statusClass = 'status-indefinido';
+                            if ($pedido_compra->status == 'aberto') $statusClass = 'status-aberto';
+                            elseif ($pedido_compra->status == 'fechado') $statusClass = 'status-fechado';
+                            elseif ($pedido_compra->status == 'cancelado') $statusClass = 'status-cancelado';
+                            elseif ($pedido_compra->status == 'aceito' || $pedido_compra->status == 'em andamento') $statusClass = 'status-andamento';
+                            @endphp
+                            <span class="status-badge {{ $statusClass }}">{{ ucfirst($pedido_compra->status) }}</span>
+                        </div>
+                        <div class="div-table-col col-operacoes" data-label="Operações">
+                            <div class="btn-group-actions">
+                                <a class="btn-sm-template btn-outline-primary" href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $pedido_compra->id]) }}" title="Visualizar">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a class="btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
                             </div>
                         </div>
-                        @endforeach
+                    </div>
+                    <div>
+                        <h4>Eventos</h4>
+                    </div>
+                    @endforeach
                     @else
-                        <div class="empty-state">
-                            <i class="bi bi-inbox"></i>
-                            <h4>Nenhum pedido encontrado</h4>
-                            <p>Não foram encontrados pedidos de compra com os filtros selecionados.</p>
-                            <a href="{{ route('pedido-compra.index') }}" class="btn btn-primary mt-3">
-                                <i class="bi bi-arrow-clockwise"></i> Limpar Filtros
-                            </a>
-                        </div>
+                    <div class="empty-state">
+                        <i class="bi bi-inbox"></i>
+                        <h4>Nenhum pedido encontrado</h4>
+                        <p>Não foram encontrados pedidos de compra com os filtros selecionados.</p>
+                        <a href="{{ route('pedido-compra.index') }}" class="btn btn-primary mt-3">
+                            <i class="bi bi-arrow-clockwise"></i> Limpar Filtros
+                        </a>
+                    </div>
                     @endif
+
                 </div>
             </div>
         </div>

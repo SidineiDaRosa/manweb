@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <main class="content">
     <div class="titulo-main">
-        Pedido de compra teste
+        Pedido de compra
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

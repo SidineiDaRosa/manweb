@@ -442,3 +442,10 @@ use App\Http\Controllers\DocumentoController;
 
 Route::get('/documentos/manutencao', [DocumentoController::class, 'index'])->name('documentos.manutencao');
 Route::get('/documentos/normas', [DocumentoController::class, 'normas'])->name('documentos.normas');
+//============================================================//
+// HELP
+//-------------------------------------------------------------//
+
+Route::get('/site_help', function () {
+    return view('site.help');
+})->name('site.help');

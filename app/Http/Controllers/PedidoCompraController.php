@@ -11,6 +11,7 @@ use App\Models\UnidadeMedida;
 use App\Models\PedidoCompraLista;
 use App\Models\Produto;
 use App\Models\User;
+use App\Models\PedidoCompraEvento;
 
 class PedidoCompraController extends Controller
 {
@@ -50,17 +51,30 @@ class PedidoCompraController extends Controller
             $emissores = User::all();
             if (isset($situacao)) {
                 // A variável $situacao está declarada
-                $equipamentos = Equipamento::all();
-                $funcionarios = Funcionario::all();
-                $pedidos_compra = PedidoCompra::where('status', $situacao)
-                    ->whereBetween('data_emissao', [$data_inicio, $data_fim])
-                    ->get();
-                return view('app.pedido_compra.index', [
-                    'equipamentos' => $equipamentos,
-                    'funcionarios' => $funcionarios,
-                    'pedidos_compra' => $pedidos_compra,
-                    'emissores' => $emissores
-                ]);
+                if ($situacao != 'all') {
+                    $equipamentos = Equipamento::all();
+                    $funcionarios = Funcionario::all();
+                    $pedidos_compra = PedidoCompra::where('status', $situacao)
+                        ->whereBetween('data_emissao', [$data_inicio, $data_fim])
+                        ->get();
+                    return view('app.pedido_compra.index', [
+                        'equipamentos' => $equipamentos,
+                        'funcionarios' => $funcionarios,
+                        'pedidos_compra' => $pedidos_compra,
+                        'emissores' => $emissores
+                    ]);
+                } else {
+                    $equipamentos = Equipamento::all();
+                    $funcionarios = Funcionario::all();
+                    $pedidos_compra = PedidoCompra::whereBetween('data_emissao', [$data_inicio, $data_fim])
+                        ->get();
+                    return view('app.pedido_compra.index', [
+                        'equipamentos' => $equipamentos,
+                        'funcionarios' => $funcionarios,
+                        'pedidos_compra' => $pedidos_compra,
+                        'emissores' => $emissores
+                    ]);
+                }
             } else {
                 // A variável $situacao não está declarada
                 // Faça alguma outra coisa aqui
@@ -189,15 +203,36 @@ class PedidoCompraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Recupere o pedido de compra pelo ID
+        // 1. Recupera o pedido de compra
         $pedido_compra = PedidoCompra::findOrFail($id);
 
-        // Salve os campos da requisição diretamente no modelo
-        $pedido_compra->update($request->all());
+        // 2. Pega o status antigo antes de atualizar
+        $status_antigo = $pedido_compra->status;
+        $status_novo   = $request->status;
 
-        // Redirecione de volta para a lista de pedidos de compra com uma mensagem de sucesso
-        return redirect()->route('pedido-compra.index')->with('success', 'Pedido de Compra atualizado com sucesso!');
+        // 3. Cria o evento primeiro, com status antigo e novo
+        PedidoCompraEvento::create([
+            'pedido_compra_id' => $pedido_compra->id,
+            'status_anterior'  => $status_antigo,
+            'status_novo'      => $status_novo,
+            'usuario_id'       => auth()->id() ?? 1,
+            'justificativa'    => $request->justificativa,
+            'anexo'            => 'uploads/teste.pdf', // depois podemos salvar o arquivo real
+        ]);
+
+        // 4. Atualiza o pedido de compra
+        $pedido_compra->update([
+            'status'        => $status_novo,
+            'descricao'     => $request->descricao,
+            'data_prevista' => $request->data_prevista,
+            'hora_prevista' => $request->hora_prevista,
+        ]);
+
+        // 5. Redireciona
+        return redirect()->route('pedido-compra.index')
+            ->with('success', 'Evento registrado e pedido de compra atualizado com sucesso!');
     }
+
 
     /**
      * Remove the specified resource from storage.
