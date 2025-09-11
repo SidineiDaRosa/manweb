@@ -1,3 +1,6 @@
+@extends('app.layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -21,7 +24,8 @@
             background-color: #f5f6f8;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
-            padding-top: 20px;
+            padding-top: 10px;
+       
         }
 
         .page-header {
@@ -299,8 +303,8 @@
     </style>
 </head>
 
-<body>
-    <div class="container-fluid">
+<body style="margin-left: 50px;">
+    <div class="container-fluid" style="margin-top:58px;">
         <div class="page-header">
             <h6 class="page-title">Pedidos de Compra</h6>
             <a href="{{ route('pedido-compra.create') }}" class="btn btn-new">
