@@ -12,7 +12,7 @@ use App\Models\PedidoCompraLista;
 use App\Models\Produto;
 use App\Models\User;
 use App\Models\PedidoCompraEvento;
-
+use Carbon\Carbon;
 class PedidoCompraController extends Controller
 {
     /**
@@ -57,22 +57,30 @@ class PedidoCompraController extends Controller
                     $pedidos_compra = PedidoCompra::where('status', $situacao)
                         ->whereBetween('data_emissao', [$data_inicio, $data_fim])
                         ->get();
+                    // eventos
+                    $eventos = PedidoCompraEvento::where('created_at', '>=', $data_inicio)->where('created_at', '<=', $data_fim)->get();
+
+                    echo ($eventos);
                     return view('app.pedido_compra.index', [
                         'equipamentos' => $equipamentos,
                         'funcionarios' => $funcionarios,
                         'pedidos_compra' => $pedidos_compra,
-                        'emissores' => $emissores
+                        'emissores' => $emissores,
+                        'eventos' => $eventos
                     ]);
                 } else {
                     $equipamentos = Equipamento::all();
                     $funcionarios = Funcionario::all();
                     $pedidos_compra = PedidoCompra::whereBetween('data_emissao', [$data_inicio, $data_fim])
                         ->get();
+                    // eventos
+                    $eventos = PedidoCompraEvento::where('created_at', '>=', $data_inicio)->where('created_at', '<=', $data_fim)->get();
                     return view('app.pedido_compra.index', [
                         'equipamentos' => $equipamentos,
                         'funcionarios' => $funcionarios,
                         'pedidos_compra' => $pedidos_compra,
-                        'emissores' => $emissores
+                        'emissores' => $emissores,
+                        'eventos' => $eventos
                     ]);
                 }
             } else {
@@ -211,15 +219,18 @@ class PedidoCompraController extends Controller
         $status_novo   = $request->status;
 
         // 3. Cria o evento primeiro, com status antigo e novo
+
+
         PedidoCompraEvento::create([
             'pedido_compra_id' => $pedido_compra->id,
             'status_anterior'  => $status_antigo,
             'status_novo'      => $status_novo,
             'usuario_id'       => auth()->id() ?? 1,
             'justificativa'    => $request->justificativa,
-            'anexo'            => 'uploads/teste.pdf', // depois podemos salvar o arquivo real
+            'anexo'            => 'uploads/teste.pdf',
+            'created_at'       => Carbon::now('America/Sao_Paulo'),
+            'updated_at'       => Carbon::now('America/Sao_Paulo'),
         ]);
-
         // 4. Atualiza o pedido de compra
         $pedido_compra->update([
             'status'        => $status_novo,

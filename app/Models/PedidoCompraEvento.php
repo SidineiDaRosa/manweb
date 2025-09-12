@@ -20,9 +20,6 @@ class PedidoCompraEvento extends Model
         'anexo'
     ];
 
-    // Timestamps (created_at e updated_at) já habilitados
-    public $timestamps = true;
-
     /**
      * Relacionamento com PedidoCompra
      */

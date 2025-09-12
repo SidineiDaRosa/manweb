@@ -1,6 +1,3 @@
-@extends('app.layouts.app')
-
-@section('content')
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -11,6 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -242,6 +240,160 @@
             color: #6c757d;
         }
 
+        /* NOVOS ESTILOS PARA HISTÓRICO DE EVENTOS */
+        .event-history {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-top: 10px;
+            border: 1px solid rgba(135, 140, 145, 0.3);
+        }
+        
+        .event-header {
+            padding: 12px 16px;
+            background: #f8f9fa;
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .event-header:hover {
+            background: #e9ecef;
+        }
+        
+        .event-header h3 {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .event-header i {
+            transition: transform 0.4s ease;
+            font-size: 1.2rem;
+        }
+        
+        .event-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .event-list {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .event-item {
+            padding: 16px;
+            border-bottom: 1px solid #f1f1f1;
+            position: relative;
+            padding-left: 70px;
+        }
+        
+        .event-item:last-child {
+            border-bottom: none;
+        }
+        
+        .event-date {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            background: #f0f5ff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #4a6491;
+            min-width: 110px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        
+        .event-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .status-change {
+            background: #e8f5e9;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #2e7d32;
+            font-size: 0.9rem;
+        }
+        
+        .status-arrow {
+            color: #78909c;
+        }
+        
+        .event-justification {
+            margin: 8px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 3px solid #4a6491;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.95rem;
+        }
+        
+        .event-anexo {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #4a6491;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-top: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .event-anexo:hover {
+            background: #3a547e;
+            color: white;
+        }
+        
+        .no-events {
+            padding: 20px;
+            text-align: center;
+            color: #78909c;
+            font-style: italic;
+        }
+        
+        .expanded .event-content {
+            max-height: 2000px;
+        }
+        
+        .expanded .event-header i {
+            transform: rotate(180deg);
+        }
+        
+        .event-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #4a6491;
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 768px) {
             .filter-form {
                 flex-direction: column;
@@ -315,6 +467,19 @@
 
             .col-operacoes::before {
                 display: none;
+            }
+            
+            /* Responsividade para eventos */
+            .event-item {
+                padding-left: 16px;
+                padding-top: 60px;
+            }
+            
+            .event-date {
+                top: 12px;
+                left: 16px;
+                right: 16px;
+                min-width: auto;
             }
         }
     </style>
@@ -412,13 +577,57 @@
                                 </a>
                                 <a class="btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}" title="Editar">
                                     <i class="bi bi-pencil"></i>
+
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <h4>Eventos</h4>
+
+                    <!---------------------------------------------------->
+                    <!--  Nova Div Eventos Estilizada -------------------->
+                    <div class="event-history">
+                        <div class="event-header" onclick="toggleEventHistory(this)">
+                            <h3><div class="event-icon"><i class="fas fa-history"></i></div> Histórico de Eventos</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        
+                        <div class="event-content">
+                            @php
+                            // Filtra apenas os eventos deste pedido
+                            $eventosPedido = $eventos->where('pedido_compra_id', $pedido_compra->id);
+                            @endphp
+
+                            @if($eventosPedido->count() > 0)
+                            <ul class="event-list">
+                                @foreach($eventosPedido as $evento)
+                                <li class="event-item">
+                                    <div class="event-date">{{ \Carbon\Carbon::parse($evento->created_at)->format('d/m/Y H:i') }}</div>
+                                    <div class="event-status">
+                                        <span class="status-change">{{ $evento->status_anterior ?? 'Nenhum' }}</span>
+                                        <span class="status-arrow"><i class="fas fa-arrow-right"></i></span>
+                                        <span class="status-change">{{ $evento->status_novo ?? 'Nenhum' }}</span>
+                                        <span class="status-change">{{ $evento->usuario->name ?? 'Nenhum' }}</span>
+                                    </div>
+                                    <div class="event-justification">
+                                        {{ $evento->justificativa }}
+                                    </div>
+                                    @if($evento->anexo)
+                                    <a href="{{ asset($evento->anexo) }}" target="_blank" class="event-anexo">
+                                        <i class="fas fa-paperclip"></i> Ver Anexo
+                                    </a>
+                                    @endif
+                                </li>
+                                @endforeach
+                            </ul>
+                            @else
+                            <div class="no-events">
+                                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                                <p>Nenhum evento registrado.</p>
+                            </div>
+                            @endif
+                        </div>
                     </div>
+                    <!-- Fim da Nova Div Eventos Estilizada -------------->
                     @endforeach
                     @else
                     <div class="empty-state">
@@ -474,7 +683,18 @@
                     }
                 });
             });
+            
+            // Expandir o primeiro evento por padrão
+            document.querySelectorAll('.event-history').forEach(history => {
+                history.classList.add('expanded');
+            });
         });
+        
+        // Função para alternar a visibilidade do histórico de eventos
+        function toggleEventHistory(element) {
+            const container = element.parentElement;
+            container.classList.toggle('expanded');
+        }
     </script>
 </body>
 
