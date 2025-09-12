@@ -420,7 +420,12 @@
         <input type="number" class="form-control" id="ordem_servico_id" name="ordem_servico_id" required value="{{$ordem_servico->id}}" hidden>
     </form>
     <h6>Produtos usados</h6>
-
+    <div>
+        @foreach($produtos as $produto)
+        ID: {{$produto->id}}  Descrição:{{$produto->produto->nome}} Un. Medida:{{$produto->produto->unidade_medida_id}}   Quant.:{{$produto->quantidade}} <br>
+        @endforeach
+    </div>
+     <hr>
     <div id="mensagem"></div>
     <script>
         function StartOs() {
@@ -491,66 +496,67 @@
     @else
     <p>Imagem não disponível</p>
     @endif
+
+    @endsection
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{--====================================================================--}}
+    {{--Função que fecha a ordem de serviço--}}
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JavaScript (bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Deseja realmente fechar a Ordem de serviço?
+                    <div style="font-size:15px;color:black;">Se clicar em confirmar, todos os pedidos de saída ligados a esta O.S., tmabém serão fechados!</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmarEnvio" data-bs-dismiss="modal">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Sucesso -->
+    <div class="modal fade" id="sucessoModal" tabindex="-1" aria-labelledby="sucessoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sucessoModalLabel">Sucesso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Ordem de serviço fechado com sucesso!
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Erro -->
+    <div class="modal fade" id="erroModal" tabindex="-1" aria-labelledby="sucessoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sucessoModalLabel"><i class="icofont-warning"></i>Alerta!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Ordem de serviço erro ao fechar!
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="text" id="valor" placeholder="Digite um valor" value="{{$ordem_servico->id}}" hidden readonly>
 </main>
-@endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{{--====================================================================--}}
-{{--Função que fecha a ordem de serviço--}}
-
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap JavaScript (bundle includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Modal de Confirmação -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Deseja realmente fechar a Ordem de serviço?
-                <div style="font-size:15px;color:black;">Se clicar em confirmar, todos os pedidos de saída ligados a esta O.S., tmabém serão fechados!</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="confirmarEnvio" data-bs-dismiss="modal">Confirmar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal de Sucesso -->
-<div class="modal fade" id="sucessoModal" tabindex="-1" aria-labelledby="sucessoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="sucessoModalLabel">Sucesso</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Ordem de serviço fechado com sucesso!
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal de Erro -->
-<div class="modal fade" id="erroModal" tabindex="-1" aria-labelledby="sucessoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="sucessoModalLabel"><i class="icofont-warning"></i>Alerta!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Ordem de serviço erro ao fechar!
-            </div>
-        </div>
-    </div>
-</div>
-<input type="text" id="valor" placeholder="Digite um valor" value="{{$ordem_servico->id}}" hidden readonly>
 <script>
     $(document).ready(function() {
         $('#confirmarEnvio').click(function() {

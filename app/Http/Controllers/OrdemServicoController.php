@@ -339,17 +339,6 @@ class OrdemServicoController extends Controller
         foreach ($pedidos_saida as $pedido) {
             // Supondo que a tabela SaidaProduto tem uma coluna 'pedido_saida_id' que referencia 'id' de PedidoSaida
             $produtos = SaidaProduto::where('pedidos_saida_id', $pedido->id)->get();
-
-            // Exibir ou processar cada produto associado ao pedido
-            foreach ($produtos as $produto) {
-                // Aqui você pode processar ou exibir os dados do produto
-                echo "Pedido ID: " . $pedido->id . "<br>";
-                echo "Produto ID: " . $produto->produto->id . "<br>";
-                echo "Nome do Produto: " . $produto->produto->nome . "<br>";
-                echo "Quantidade: " . $produto->quantidade . "<br>";
-                echo "Unidade de Medida: " . $produto->unidade_medida . "<br>";
-                echo "<br>"; // Adicionar um espaço entre os produtos
-            }
         }
         //$saidas_produto=SaidaProduto::where('')
         //$total_hs_os=23;
@@ -360,7 +349,7 @@ class OrdemServicoController extends Controller
             'funcionarios' => $funcionarios,
             'total_hs_os' => $total_hs_os,
             'equipamentos' => $equipamentos,
-            //'produtos'=>$produtos
+            'produtos'=>$produtos
         ]);
     }
     /**

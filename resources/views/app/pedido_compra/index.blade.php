@@ -1,3 +1,6 @@
+@extends('app.layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -249,7 +252,7 @@
             margin-top: 10px;
             border: 1px solid rgba(135, 140, 145, 0.3);
         }
-        
+
         .event-header {
             padding: 12px 16px;
             background: #f8f9fa;
@@ -261,11 +264,11 @@
             transition: background 0.3s;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
-        
+
         .event-header:hover {
             background: #e9ecef;
         }
-        
+
         .event-header h3 {
             font-size: 1rem;
             display: flex;
@@ -274,34 +277,34 @@
             margin: 0;
             font-weight: 600;
         }
-        
+
         .event-header i {
             transition: transform 0.4s ease;
             font-size: 1.2rem;
         }
-        
+
         .event-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s ease;
         }
-        
+
         .event-list {
             padding: 0;
             margin: 0;
         }
-        
+
         .event-item {
             padding: 16px;
             border-bottom: 1px solid #f1f1f1;
             position: relative;
             padding-left: 70px;
         }
-        
+
         .event-item:last-child {
             border-bottom: none;
         }
-        
+
         .event-date {
             position: absolute;
             left: 16px;
@@ -315,7 +318,7 @@
             text-align: center;
             font-size: 0.85rem;
         }
-        
+
         .event-status {
             display: flex;
             align-items: center;
@@ -323,7 +326,7 @@
             margin-bottom: 8px;
             flex-wrap: wrap;
         }
-        
+
         .status-change {
             background: #e8f5e9;
             padding: 4px 8px;
@@ -332,11 +335,11 @@
             color: #2e7d32;
             font-size: 0.9rem;
         }
-        
+
         .status-arrow {
             color: #78909c;
         }
-        
+
         .event-justification {
             margin: 8px 0;
             padding: 10px;
@@ -345,7 +348,7 @@
             border-radius: 0 4px 4px 0;
             font-size: 0.95rem;
         }
-        
+
         .event-anexo {
             display: inline-flex;
             align-items: center;
@@ -360,27 +363,27 @@
             margin-top: 6px;
             font-size: 0.9rem;
         }
-        
+
         .event-anexo:hover {
             background: #3a547e;
             color: white;
         }
-        
+
         .no-events {
             padding: 20px;
             text-align: center;
             color: #78909c;
             font-style: italic;
         }
-        
+
         .expanded .event-content {
             max-height: 2000px;
         }
-        
+
         .expanded .event-header i {
             transform: rotate(180deg);
         }
-        
+
         .event-icon {
             width: 30px;
             height: 30px;
@@ -468,13 +471,13 @@
             .col-operacoes::before {
                 display: none;
             }
-            
+
             /* Responsividade para eventos */
             .event-item {
                 padding-left: 16px;
                 padding-top: 60px;
             }
-            
+
             .event-date {
                 top: 12px;
                 left: 16px;
@@ -492,6 +495,9 @@
             <a href="{{ route('pedido-compra.create') }}" class="btn btn-new">
                 <i class="bi bi-plus-circle"></i> Novo Pedido
             </a>
+          <a class="nav-btn" href="{{ route('app.home') }}">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
         </div>
 
         <div class="card">
@@ -587,10 +593,12 @@
                     <!--  Nova Div Eventos Estilizada -------------------->
                     <div class="event-history">
                         <div class="event-header" onclick="toggleEventHistory(this)">
-                            <h3><div class="event-icon"><i class="fas fa-history"></i></div> Histórico de Eventos</h3>
+                            <h3>
+                                <div class="event-icon"><i class="fas fa-history"></i></div> Histórico de Eventos
+                            </h3>
                             <i class="fas fa-chevron-down"></i>
                         </div>
-                        
+
                         <div class="event-content">
                             @php
                             // Filtra apenas os eventos deste pedido
@@ -683,13 +691,13 @@
                     }
                 });
             });
-            
+
             // Expandir o primeiro evento por padrão
             document.querySelectorAll('.event-history').forEach(history => {
                 history.classList.add('expanded');
             });
         });
-        
+
         // Função para alternar a visibilidade do histórico de eventos
         function toggleEventHistory(element) {
             const container = element.parentElement;

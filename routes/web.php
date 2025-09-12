@@ -233,6 +233,9 @@ Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaE
 //  Pedidos de compra                       //
 //------------------------------------------//
 Route::middleware('auth')->resource('/pedido-compra', 'App\Http\Controllers\PedidoCompraController');
+Route::middleware('auth')->get('/pedido/{id}', [App\Http\Controllers\PedidoCompraController::class, 'open_po_id'])
+    ->name('pedido.open');
+
 //------------------------------------------//
 // Filtro pedido de entrada
 //------------------------------------------//

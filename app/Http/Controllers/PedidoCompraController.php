@@ -13,6 +13,7 @@ use App\Models\Produto;
 use App\Models\User;
 use App\Models\PedidoCompraEvento;
 use Carbon\Carbon;
+
 class PedidoCompraController extends Controller
 {
     /**
@@ -254,5 +255,25 @@ class PedidoCompraController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function open_po_id($id)
+    {
+        $emissores    = User::all();
+        $equipamentos = Equipamento::all();
+        $funcionarios = Funcionario::all();
+
+        // se quiser só um: findOrFail($id)
+        // se quiser lista (coleção): get()
+        $pedidos_compra = PedidoCompra::where('id', $id)->get();
+
+        $eventos = PedidoCompraEvento::where('pedido_compra_id', $id)->get();
+
+        return view('app.pedido_compra.index', [
+            'equipamentos'   => $equipamentos,
+            'funcionarios'   => $funcionarios,
+            'pedidos_compra' => $pedidos_compra, // agora é Collection
+            'emissores'      => $emissores,
+            'eventos'        => $eventos
+        ]);
     }
 }

@@ -43,9 +43,16 @@
                 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}" title="Editar Pedido de compra">
                     <i class="icofont-ui-edit"></i>
                 </a>
-                <a class="btn btn-sm-template btn-outline-dark" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> dashboard
+                <a class="nav-btn" href="{{ route('app.home') }}">
+                    <i class="fas fa-chart-line"></i> Dashboard
                 </a>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+                <a href="{{ route('pedido.open', $pedido_compra->id) }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-arrow-repeat"></i> Atualizações
+                </a>
+
+
             </div>
         </div>
         <style>
@@ -395,7 +402,7 @@
                         <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" onclick="confirmDelete({{ $pedido_compra_ls->id }})">
                             <i class="icofont-ui-delete"></i>
                         </a>
-    
+
                         <script>
                             function confirmDelete(itemId) {
                                 if (confirm('Você tem certeza que deseja deletar este item?')) {
