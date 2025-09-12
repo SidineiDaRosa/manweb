@@ -51,39 +51,49 @@ class PedidoCompraController extends Controller
         } else {
             $emissores = User::all();
             if (isset($situacao)) {
-                // A variável $situacao está declarada
-                if ($situacao != 'all') {
-                    $equipamentos = Equipamento::all();
-                    $funcionarios = Funcionario::all();
-                    $pedidos_compra = PedidoCompra::where('status', $situacao)
-                        ->whereBetween('data_emissao', [$data_inicio, $data_fim])
-                        ->get();
-                    // eventos
-                    $eventos = PedidoCompraEvento::where('created_at', '>=', $data_inicio)->where('created_at', '<=', $data_fim)->get();
+                $emissores = User::all();
+                $equipamentos = Equipamento::all();
+                $funcionarios = Funcionario::all();
 
-                    echo ($eventos);
-                    return view('app.pedido_compra.index', [
-                        'equipamentos' => $equipamentos,
-                        'funcionarios' => $funcionarios,
-                        'pedidos_compra' => $pedidos_compra,
-                        'emissores' => $emissores,
-                        'eventos' => $eventos
-                    ]);
-                } else {
-                    $equipamentos = Equipamento::all();
-                    $funcionarios = Funcionario::all();
-                    $pedidos_compra = PedidoCompra::whereBetween('data_emissao', [$data_inicio, $data_fim])
-                        ->get();
-                    // eventos
-                    $eventos = PedidoCompraEvento::where('created_at', '>=', $data_inicio)->where('created_at', '<=', $data_fim)->get();
-                    return view('app.pedido_compra.index', [
-                        'equipamentos' => $equipamentos,
-                        'funcionarios' => $funcionarios,
-                        'pedidos_compra' => $pedidos_compra,
-                        'emissores' => $emissores,
-                        'eventos' => $eventos
-                    ]);
+                $query = PedidoCompra::query(); // inicializa a query
+                $query->whereBetween('data_emissao', [$data_inicio, $data_fim]); // filtra período
+
+                if (isset($situacao)) {
+                    $termo = request('descricao'); // ou outro input text na view
+                    switch ($situacao) {
+                        case 'aberto':
+                        case 'fechado':
+                        case 'cancelado':
+                        case 'indefinido':
+                        case 'aceito':
+                            $query->where('status', $situacao);
+                            break;
+                        case 'descricao':
+                            if ($termo) {
+                                $query->where('descricao', 'like', "%{$termo}%");
+                            }
+                            $query->orderBy('descricao', 'asc'); // opcional: ordenar por descrição
+                            break;
+                        case 'all':
+                        default:
+                            // sem filtro adicional
+                            break;
+                    }
                 }
+
+                $pedidos_compra = $query->get();
+
+
+                // Eventos no período
+                $eventos = PedidoCompraEvento::whereBetween('created_at', [$data_inicio, $data_fim])->get();
+
+                return view('app.pedido_compra.index', [
+                    'equipamentos'   => $equipamentos,
+                    'funcionarios'   => $funcionarios,
+                    'pedidos_compra' => $pedidos_compra,
+                    'emissores'      => $emissores,
+                    'eventos'        => $eventos
+                ]);
             } else {
                 // A variável $situacao não está declarada
                 // Faça alguma outra coisa aqui
@@ -264,16 +274,20 @@ class PedidoCompraController extends Controller
 
         // se quiser só um: findOrFail($id)
         // se quiser lista (coleção): get()
-        $pedidos_compra = PedidoCompra::where('id', $id)->get();
+        if ($id >= 1) {
 
-        $eventos = PedidoCompraEvento::where('pedido_compra_id', $id)->get();
 
-        return view('app.pedido_compra.index', [
-            'equipamentos'   => $equipamentos,
-            'funcionarios'   => $funcionarios,
-            'pedidos_compra' => $pedidos_compra, // agora é Collection
-            'emissores'      => $emissores,
-            'eventos'        => $eventos
-        ]);
+            $pedidos_compra = PedidoCompra::where('id', $id)->get();
+
+            $eventos = PedidoCompraEvento::where('pedido_compra_id', $id)->get();
+
+            return view('app.pedido_compra.index', [
+                'equipamentos'   => $equipamentos,
+                'funcionarios'   => $funcionarios,
+                'pedidos_compra' => $pedidos_compra, // agora é Collection
+                'emissores'      => $emissores,
+                'eventos'        => $eventos
+            ]);
+        }
     }
 }

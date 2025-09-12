@@ -511,7 +511,8 @@
                             <option value="fechado" {{ request('situacao') == 'fechado' ? 'selected' : '' }}>Fechado</option>
                             <option value="cancelado" {{ request('situacao') == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
                             <option value="indefinido" {{ request('situacao') == 'indefinido' ? 'selected' : '' }}>Indefinido</option>
-                            <option value="aceito" {{ request('situacao') == 'indefinido' ? 'selected' : '' }}>Aceito</option>
+                            <option value="aceito" {{ request('aceito') == 'indefinido' ? 'selected' : '' }}>Aceito</option>
+                            <option value="descricao" {{ request('descricao') == 'indefinido' ? 'selected' : '' }}>Pela Descrição</option>
                         </select>
                     </div>
 
@@ -523,6 +524,10 @@
                     <div class="form-group">
                         <label for="data_fim">Data final</label>
                         <input type="date" class="form-control" name="data_fim" id="data_fim" value="{{ request('data_fim') }}">
+                    </div>
+                      <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <input type="text" class="form-control" name="descricao" id="descricao" >
                     </div>
 
                     <div class="form-group">
