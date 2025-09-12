@@ -79,18 +79,32 @@ class CheckListController extends Controller
                 'checkListExcAlerts' => $checkListExcAlerts
             ]);
         } else {
-            $checkListsStatus = CheckList::selectRaw("
-            equipamento_id,
-            SUM(CASE WHEN data_verificacao <= ? OR data_verificacao IS NULL THEN 1 ELSE 0 END) AS pendentes,
-            SUM(CASE WHEN data_verificacao > ? THEN 1 ELSE 0 END) AS executados
-        ", [$dataLimite, $dataLimite])
-                ->with('equipamento') // Carregar equipamento
+            $checkListsStatus = CheckList::select('equipamento_id')
+                ->selectRaw("
+        SUM(
+            CASE 
+                WHEN TIMESTAMP(
+                    COALESCE(data_verificacao, updated_at),
+                    COALESCE(hora_verificacao, '00:00:00')
+                ) + INTERVAL (intervalo * 0.99) HOUR <= NOW()
+                THEN 1 ELSE 0
+            END
+        ) AS pendentes,
+        SUM(
+            CASE 
+                WHEN TIMESTAMP(
+                    COALESCE(data_verificacao, updated_at),
+                    COALESCE(hora_verificacao, '00:00:00')
+                ) + INTERVAL (intervalo * 0.99) HOUR > NOW()
+                THEN 1 ELSE 0
+            END
+        ) AS executados
+    ")
+                ->with('equipamento')
                 ->groupBy('equipamento_id')
-                ->get();
-            // Ordena os checkListsStatus pelo nome do equipamento
-            $checkListsStatus = $checkListsStatus->sortBy(function ($checkList) {
-                return $checkList->equipamento->nome; // Acessa o nome do equipamento relacionado
-            });
+                ->get()
+                ->sortBy(fn($checkList) => $checkList->equipamento->nome);
+
             return view('app.check_list.index', [
                 'equipamentos' => $equipamentos,
                 'check_list' => $check_list,
@@ -260,6 +274,7 @@ class CheckListController extends Controller
 
     public function cont()
     {
+        //  Conta check list pendente e envia pra ToolBar
         $pendentes = CheckList::all()->filter(function ($check) {
             // Verifica se existe data e hora de verificação
             if ($check->data_verificacao && $check->hora_verificacao) {

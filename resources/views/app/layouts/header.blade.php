@@ -257,8 +257,8 @@
             <a href="/check-list-index" style="color:white;">Check-list</a>
             <span class="badge" id="checklist-badge">0</span>
         </div>
-        <div id="solicitacoes-count" class="notification">
-            <a href="/solicitacoes-os" style="color:white;">SS pendente</a>
+        <div id="solicitacoes-count" class="notification" >
+            <a href="/solicitacoes-os" style="color:white;margin-left:10px;">SS pendente</a>
             <span class="badge" id="solicitacoes-badge">0</span>
         </div>
         <div id="messages-count" class="notification">

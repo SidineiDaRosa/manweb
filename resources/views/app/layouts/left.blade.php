@@ -231,14 +231,7 @@
                 <span class="spn-txt-menu">Criar Usuários</span>
             </a>
         </li>
-        <li>
-            <a href="{{ route('register') }}">
-                <div class="icon-wrapper">
-                    <i class="icofont-users icofont-2x"></i>
-                </div>
-                <span class="spn-txt-menu">Editar Usuário</span>
-            </a>
-        </li>
+  
         @endif
         @endauth
     </ul>
