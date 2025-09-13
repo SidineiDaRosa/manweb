@@ -421,11 +421,19 @@
     </form>
     <h6>Produtos usados</h6>
     <div>
+        @if($produtos->isNotEmpty())
         @foreach($produtos as $produto)
-        ID: {{$produto->id}}  Descrição:{{$produto->produto->nome}} Un. Medida:{{$produto->produto->unidade_medida_id}}   Quant.:{{$produto->quantidade}} <br>
+        ID: {{ $produto->id }}
+        Descrição: {{ $produto->produto->nome }}
+        Un. Medida: {{ $produto->produto->unidade_medida_id }}
+        Quant.: {{ $produto->quantidade }}
+        <br>
         @endforeach
+        @else
+        <p>Nenhum produto usado.</p>
+        @endif
     </div>
-     <hr>
+    <hr>
     <div id="mensagem"></div>
     <script>
         function StartOs() {
