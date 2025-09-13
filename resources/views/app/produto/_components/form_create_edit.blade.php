@@ -85,4 +85,31 @@
 </div>
 
 <div class="row mb-1">
-    <label for="image" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem 1</label
+    <label for="image" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem 1</label>
+    <div class="col-md-6">
+        <input type="file" id="image" name="image">
+    </div>
+</div>
+
+<div class="row mb-1">
+    <label for="image2" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem 2</label>
+    <div class="col-md-6">
+        <input type="file" id="image2" name="image2">
+    </div>
+</div>
+
+<div class="row mb-1">
+    <label for="image3" class="col-md-4 col-form-label text-md-end text-right">Carregar uma imagem 3</label>
+    <div class="col-md-6">
+        <input type="file" id="image3" name="image3">
+    </div>
+</div>
+
+<div class="row mb-1">
+    <div class="col-md-6 offset-md-4">
+        <button type="submit" class="btn btn-primary">
+            {{ isset($produto) ? 'Atualizar' : 'Cadastrar' }}
+        </button>
+    </div>
+</div>
+</form>
