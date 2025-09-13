@@ -420,19 +420,22 @@
         <input type="number" class="form-control" id="ordem_servico_id" name="ordem_servico_id" required value="{{$ordem_servico->id}}" hidden>
     </form>
     <h6>Produtos usados</h6>
-    <div>
+   <div>
+    @isset($produtos)
         @if($produtos->isNotEmpty())
-        @foreach($produtos as $produto)
-        ID: {{ $produto->id }}
-        Descrição: {{ $produto->produto->nome }}
-        Un. Medida: {{ $produto->produto->unidade_medida_id }}
-        Quant.: {{ $produto->quantidade }}
-        <br>
-        @endforeach
+            @foreach($produtos as $produto)
+                ID: {{ $produto->id }}
+                Descrição: {{ $produto->produto->nome }}
+                Un. Medida: {{ $produto->produto->unidade_medida_id }}
+                Quant.: {{ $produto->quantidade }}
+                <br>
+            @endforeach
         @else
-        <p>Nenhum produto usado.</p>
+            <p>Nenhum produto usado.</p>
         @endif
-    </div>
+    @endisset
+</div>
+
     <hr>
     <div id="mensagem"></div>
     <script>
