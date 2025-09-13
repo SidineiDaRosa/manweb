@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PedidoCompra extends Model
 {
     use HasFactory;
-    protected $table='pedidos_compra';
-    protected $fillable=[
+    protected $table = 'pedidos_compra';
+    protected $fillable = [
         'data_emissao',
         'hora_emissao',
         'data_prevista',
@@ -26,5 +26,9 @@ class PedidoCompra extends Model
     public function funcionarios()
     {
         return $this->belongsTo('App\Models\Funcionario');
+    }
+    public function produto()
+    {
+        return $this->belongsTo(Produto::class, 'produto_id');
     }
 }

@@ -495,9 +495,9 @@
             <a href="{{ route('pedido-compra.create') }}" class="btn btn-new">
                 <i class="bi bi-plus-circle"></i> Novo Pedido
             </a>
-          <a class="nav-btn" href="{{ route('app.home') }}">
-                    <i class="fas fa-chart-line"></i> Dashboard
-                </a>
+            <a class="nav-btn" href="{{ route('app.home') }}">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
         </div>
 
         <div class="card">
@@ -525,9 +525,9 @@
                         <label for="data_fim">Data final</label>
                         <input type="date" class="form-control" name="data_fim" id="data_fim" value="{{ request('data_fim') }}">
                     </div>
-                      <div class="form-group">
+                    <div class="form-group">
                         <label for="descricao">Descrição</label>
-                        <input type="text" class="form-control" name="descricao" id="descricao" >
+                        <input type="text" class="form-control" name="descricao" id="descricao">
                     </div>
 
                     <div class="form-group">
@@ -618,17 +618,19 @@
                                     <div class="event-status">
                                         <span class="status-change">{{ $evento->status_anterior ?? 'Nenhum' }}</span>
                                         <span class="status-arrow"><i class="fas fa-arrow-right"></i></span>
+                                        Evento atualizado por:<span class="status-change">{{ $evento->usuario->name ?? 'Nenhum' }}</span>
                                         <span class="status-change">{{ $evento->status_novo ?? 'Nenhum' }}</span>
-                                        <span class="status-change">{{ $evento->usuario->name ?? 'Nenhum' }}</span>
+                                    
                                     </div>
                                     <div class="event-justification">
                                         {{ $evento->justificativa }}
+
+                                        @if($evento->anexo)
+                                        <a href="{{ asset($evento->anexo) }}" target="_blank" class="event-anexo" style="float: right;">
+                                            <i class="fas fa-paperclip"></i> Ver Anexo
+                                        </a>
+                                        @endif
                                     </div>
-                                    @if($evento->anexo)
-                                    <a href="{{ asset($evento->anexo) }}" target="_blank" class="event-anexo">
-                                        <i class="fas fa-paperclip"></i> Ver Anexo
-                                    </a>
-                                    @endif
                                 </li>
                                 @endforeach
                             </ul>
@@ -640,7 +642,7 @@
                             @endif
                         </div>
                     </div>
-                    <!-- Fim da Nova Div Eventos Estilizada -------------->
+                    <!-- Fim da Div Eventos Estilizada -------------->
                     @endforeach
                     @else
                     <div class="empty-state">

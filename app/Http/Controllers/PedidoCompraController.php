@@ -70,9 +70,14 @@ class PedidoCompraController extends Controller
                             break;
                         case 'descricao':
                             if ($termo) {
-                                $query->where('descricao', 'like', "%{$termo}%");
+                                $query->where(function ($q) use ($termo) {
+                                    $q->where('descricao', 'like', "%{$termo}%")
+                                        ->orWhereHas('equipamento', function ($sub) use ($termo) {
+                                            $sub->where('nome', 'like', "%{$termo}%");
+                                        });
+                                });
                             }
-                            $query->orderBy('descricao', 'asc'); // opcional: ordenar por descrição
+                            $query->orderBy('descricao', 'asc');
                             break;
                         case 'all':
                         default:

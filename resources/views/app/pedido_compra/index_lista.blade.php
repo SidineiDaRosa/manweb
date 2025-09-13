@@ -270,7 +270,7 @@
                     <div class="titulo">ID Produto</div>
                     <hr style="margin:-1px;color:#ccc;">
                     <div class="conteudo">
-                        {{ $produto_id }}
+                        {{ $produto_id}}
                         <input name="produto_id" id="produto_id" type="text" class="form-control" value="{{ $produto_id }}" readonly hidden>
                     </div>
                 </div>

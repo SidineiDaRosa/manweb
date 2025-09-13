@@ -129,7 +129,6 @@ class PedidoCompraListaController extends Controller
 
         // Cria o novo registro
         PedidoCompraLista::create($request->all());
-
         // Resto do seu código para retornar a view com os dados atualizados
         $pedidoCompraId = $request->get('pedidos_compra_id');
         $produto_id = 0;
