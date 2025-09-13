@@ -293,7 +293,7 @@ class OrdemServicoController extends Controller
             'natureza_do_servico' => $request->natureza_do_servico,
             'especialidade_do_servico' => $request->especialidade_do_servico,
             'ss_id' => $request->ss_id,
-            'anexo'=>$request->anexo//Link anexado com algum documento
+            'anexo' => $request->anexo //Link anexado com algum documento
 
 
         ]);
@@ -329,29 +329,36 @@ class OrdemServicoController extends Controller
     {
         $funcionarios = Funcionario::all();
         $id = $ordem_servico->id;
+
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
         $total_hs_os = Servicos_executado::where('ordem_servico_id', $id)->sum('subtotal');
+
         $equipamentos = Equipamento::all();
+
         // 1. Obter os pedidos com base na 'ordem_servico_id'
         $pedidos_saida = PedidoSaida::where('ordem_servico_id', $id)->get();
 
-        // 2. Para cada pedido, buscar os produtos de saída correspondentes
+        // 2. Criar coleção vazia para acumular produtos
+        $produtos = collect();
+
+        // 3. Para cada pedido, buscar os produtos de saída correspondentes
         foreach ($pedidos_saida as $pedido) {
-            // Supondo que a tabela SaidaProduto tem uma coluna 'pedido_saida_id' que referencia 'id' de PedidoSaida
-            $produtos = SaidaProduto::where('pedidos_saida_id', $pedido->id)->get();
+            $produtosPedido = SaidaProduto::where('pedidos_saida_id', $pedido->id)->get();
+
+            // acumula na coleção principal
+            $produtos = $produtos->merge($produtosPedido);
         }
-        //$saidas_produto=SaidaProduto::where('')
-        //$total_hs_os=23;
 
         return view('app.ordem_servico.show', [
-            'ordem_servico' => $ordem_servico,
-            'servicos_executado' => $servicos_executado,
-            'funcionarios' => $funcionarios,
-            'total_hs_os' => $total_hs_os,
-            'equipamentos' => $equipamentos,
-            'produtos'=>$produtos
+            'ordem_servico'       => $ordem_servico,
+            'servicos_executado'  => $servicos_executado,
+            'funcionarios'        => $funcionarios,
+            'total_hs_os'         => $total_hs_os,
+            'equipamentos'        => $equipamentos,
+            'produtos'            => $produtos
         ]);
     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -387,7 +394,7 @@ class OrdemServicoController extends Controller
      */
     public function update(Request $request, OrdemServico $ordem_servico)
     {
-       
+
         // Verificar se a ordem de serviço já foi assinada
         if (!is_null($ordem_servico->signature_receptor)) {
             return redirect()->back()->withErrors('Não é possível alterar uma ordem de serviço que já foi assinada.');
