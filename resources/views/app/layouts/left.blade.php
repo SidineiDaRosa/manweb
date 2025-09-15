@@ -114,7 +114,7 @@
         <li>
             <a href="{{ route('app.home') }}">
                 <div class="icon-wrapper">
-                    <i class="icofont-dashboard icofont-2x"></i>
+                   <i class="icofont-dashboard-web icofont-2x"></i>
                 </div>
                 <span class="spn-txt-menu">DASHBOARD</span>
             </a>
@@ -129,7 +129,7 @@
                     <i class="icofont-settings icofont-2x"></i>
                 </div>
                 <span class="spn-txt-menu">Outros</span>
-                <span class="arrow">&gt;</span>
+                <span class="arrow"><i class="icofont-rounded-right"></i></i></span>
             </a>
             <div class="submenu" id="dashboard-submenu">
                 <a href="{{ route('dashboard-status-os') }}">Painel de Visualização O.S.</a>
@@ -147,7 +147,7 @@
                     <i class="icofont-company icofont-2x"></i>
                 </div>
                 <span class="spn-txt-menu">Unidades Cia</span>
-                <span class="arrow">&gt;</span>
+                <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="home-submenu">
                 <a href="{{ route('empresas.index') }}">Busca unidade empresarial</a>
@@ -161,7 +161,7 @@
                     <i class="icofont-cc icofont-2x"></i>
                 </div>
                 <span class="spn-txt-menu">Marcas</span>
-                <span class="arrow">&gt;</span>
+                <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="marcas-submenu">
                 <a href="{{ route('marca.index') }}">Cadastro de marcas</a>
@@ -176,7 +176,7 @@
                     <i class="icofont-cubes icofont-2x"></i>
                 </div>
                 <span class="spn-txt-menu">Gestão de Suprimentos</span>
-                <span class="arrow">&gt;</span>
+                <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="recursos-submenu">
                 <a href="{{ route('custos.dashboard') }}">Custos</a>
@@ -198,7 +198,7 @@
                     <i class="icofont-vehicle-trucktor icofont-2x"></i>
                 </div>
                 <span class="spn-txt-menu">Ativos</span>
-                <span class="arrow">&gt;</span>
+                <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="patrimonio-submenu">
                 <a href="#">Ativos</a>
