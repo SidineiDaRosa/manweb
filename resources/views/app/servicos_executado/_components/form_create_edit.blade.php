@@ -69,7 +69,7 @@
 
     <div class="div-description">
         <div id="div-executante">
-            <select name="funcionario_id" id="funcionario_id" class="form-control-template" required style="font-family: Arial, Helvetica, sans-serif;">
+            <select name="funcionario_id" id="funcionario_id" class="form-control" required style="font-family: Arial, Helvetica, sans-serif;">
                 <option value="" style="font-family: Arial, Helvetica, sans-serif;"> --Selecione o Responsável--</option>
                 @foreach ($funcionarios as $funcionario_find)
                 <option value="{{$funcionario_find->id}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}
@@ -128,13 +128,10 @@
         <textarea class="form-control-txt" id="descricao" name="descricao" rows="5" cols="50" required placeholder="--descreva os serviços executados--"></textarea>
     </div>
     <script>
-        //-----------------------------------------------------------//
-
+        //----------------------------------------------------------//
         //   Desabilita o texto descrição 
-        //----------------------------------------------------------//]
-
+        //----------------------------------------------------------//
         document.addEventListener('DOMContentLoaded', function() {
-
             function disableDesc() {
                 const descriptionElement = document.getElementById('descricao');
                 const divDescriptionElement = document.getElementById('div-description');
@@ -145,7 +142,6 @@
                 descriptionElement.style.display = 'none'; // Oculta a descrição ao iniciar  
                 divExecutanteElement.style.display = 'none'; // Oculta a descrição ao iniciar  
             }
-
             // Chama a função disableDesc ao carregar a página
             disableDesc();
         });
@@ -169,7 +165,6 @@
         }
     </style>
     </div>
-
     <script>
         function ValidateDatePrevista() {
             let dataPrevista = document.getElementById('dataPrevista').value;

@@ -1036,14 +1036,14 @@
                 font-size: 15px;
                 color: black;
                 font-stretch: condensed;
-                font-weight: 300;
+                font-weight:400;
 
             }
 
             .div-os-sm {
                 font-size: 12px;
-                font-weight: 300 !important;
-                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-weight:600!important;
+                font-family:Arial, Helvetica, sans-serif;
                 font-stretch: ultra-condensed;
                 color: black;
                 border-radius: 5px;
@@ -1054,9 +1054,9 @@
             }
 
             td {
-                font-weight: 300 !important;
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 15px !important;
+                font-weight:400!important;
+                font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-size: 14px !important;
                 margin: 2px;
             }
         </style>
