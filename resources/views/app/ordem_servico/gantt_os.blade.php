@@ -26,7 +26,7 @@
 
       <div id="data-tasks">
         <div style="display: flex; width: 100%;">
-          <div class="dados-cabecalho">
+          <div class="dados-cabecalho" style="width:420px;">
             <h5>Dados da O.S.</h5>
           </div>
           <div id="teste-datas" style="position:fixed; bottom:10px; right:10px; background:#fff; padding:5px; border:1px solid #000; z-index:1000;">
@@ -36,7 +36,7 @@
           <div class="timeline-container" id="timeline-container">
             <div class="timeline-years" id="timeline-years"></div>
             <div class="timeline-months" id="timeline-months"></div>
-            <div class="timeline-days" id="timeline-days"></div>
+            <div class="timeline-days" id="timeline-days" style="font-size:5px;"></div>
             <div class="timeline-header" id="timeline-header"></div>
           </div>
         </div>
@@ -81,7 +81,12 @@
         </form>
       </div>
     </div>
-
+    <style>
+      .dados {
+        background-color: rgba(red, green, blue, 0.5);
+        color: #5c5959ff;
+      }
+    </style>
     <!-- Script que gera o gráfico de gantt -->
     <script>
       const tarefas = @json($ordens);
@@ -286,23 +291,20 @@
         tarefas.forEach(tarefa => {
           const linha = document.createElement('div');
           linha.className = 'linha-tarefa-container';
-
+          linha.style.minHeight = '70px'; // altura mínima
           const dados = document.createElement('div');
           dados.className = 'dados';
           dados.innerHTML = `
-  <div styele="margin-top:0px" class="registro-id"><strong>${tarefa.id}</strong></div>
-  <div class="registro-responsavel">-<strong style="color:blue;">${tarefa.responsavel}</strong></div>
-  <div class="registro-inicio">- ${tarefa.inicio.replace('T', ' ')}</div>
-  <div class="registro-fim">- ${tarefa.fim.replace('T', ' ')}</div>
-  <hr style="margin=opx;">
-  <div class="registro-fim">${tarefa.especialidade}</div>
-`;
+  <div id="div-data-os" style="width:399px;display:flex;flex-direction:row;">
+  <a href="/ordem-servico/${tarefa.id}" target="_blank" style="font-weight:700">${tarefa.id}</a>
+  <div style="font-weight:600;margin-left:10px;">${tarefa.responsavel}</div>
+  <div style="margin-left:10px;background-color:rgba(173, 255, 47, 0.4);border-radius:10px;padding:5px;">${tarefa.inicio.replace('T', ' ')}</div>
+   <div style="margin-left:10px;">${tarefa.fim.replace('T', ' ')}</div>
 
-          const divBotao = document.createElement('div');
-          divBotao.style.marginLeft = 'auto';
-          divBotao.innerHTML = `<a href="/ordem-servico/${tarefa.id}" target="_blank" class="btn btn-sm btn-outline-primary">O.S.</a>`;
+</div>
+  `;
 
-          dados.appendChild(divBotao);
+
           //----------------------------fim de dados----------------//
           const timeline = document.createElement('div');
           timeline.className = 'timeline-container';
