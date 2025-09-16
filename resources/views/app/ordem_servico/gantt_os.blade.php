@@ -246,6 +246,13 @@
           // Define a largura proporcional da div do dia
           divDia.style.width = `${PIXELS_POR_HORA * horasVisiveis}px`;
 
+          // 🔹 Estilos compactos
+          divDia.style.fontSize = '10px';
+          divDia.style.padding = '1px 2px';
+          divDia.style.lineHeight = '1.2';
+          divDia.style.textAlign = 'center';
+          divDia.style.borderRight = '1px dotted #999';
+
           timelineDays.appendChild(divDia);
 
           // Incrementa 1 dia
