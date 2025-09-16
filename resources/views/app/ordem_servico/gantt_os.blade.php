@@ -36,6 +36,7 @@
           <div class="timeline-container" id="timeline-container">
             <div class="timeline-years" id="timeline-years"></div>
             <div class="timeline-months" id="timeline-months"></div>
+     
             <div class="timeline-days" id="timeline-days" style="font-size:5px;"></div>
             <div class="timeline-header" id="timeline-header"></div>
           </div>
@@ -85,6 +86,40 @@
       .dados {
         background-color: rgba(red, green, blue, 0.5);
         color: #5c5959ff;
+      }
+
+      .grid-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        border-left: 1px dotted #999;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      /* linhas específicas para meses */
+      .month-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        /* cobre toda a altura da timeline */
+        width: 1px;
+        border-left: 1px dashed #666;
+        z-index: 9999;
+        /* por cima de tudo */
+        pointer-events: none;
+        /* não interfere em cliques */
+      }
+
+      /* linhas específicas para horas */
+      .hour-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        border-left: 1px dotted #ccc;
+        z-index: 1;
       }
     </style>
     <!-- Script que gera o gráfico de gantt -->
@@ -213,6 +248,13 @@
           divMes.style.width = `${mes.horas * PIXELS_POR_HORA}px`;
           divMes.textContent = `${mes.nome} ${mes.ano}`;
           timelineMonths.appendChild(divMes);
+          //---------------------------
+
+          // Adiciona linha vertical no final do mês
+          const linhaMes = document.createElement('div');
+          linhaMes.className = 'month-line';
+          linhaMes.style.left = divMes.offsetLeft + divMes.offsetWidth + 'px';
+          timelineMonths.appendChild(linhaMes);
         });
 
         //======  dias   ====//
@@ -307,9 +349,9 @@
   <div id="div-data-os" style="width:399px;display:flex;flex-direction:row;">
   <a href="/ordem-servico/${tarefa.id}" target="_blank" style="font-weight:700">${tarefa.id}</a>
   <div style="font-weight:600;margin-left:10px;">${tarefa.responsavel}</div>
-  <div style="margin-left:10px;background-color:rgba(173, 255, 47, 0.4);border-radius:10px;padding:5px;">${tarefa.inicio.replace('T', ' ')}
+  <div style="margin-left:10px;background-color:rgba(173, 255, 47, 0.4);border-radius:10px;padding:5px;font-size:12px;">${tarefa.inicio.replace('T', ' ')}
   </div>
-   <div style="margin-left:10px;background-color:rgba(47, 255, 175, 0.4);border-radius:10px;padding:5px;">${tarefa.fim.replace('T', ' ')}</div>
+   <div style="margin-left:10px;background-color:rgba(47, 255, 175, 0.4);border-radius:10px;padding:5px; font-size:12px;">${tarefa.fim.replace('T', ' ')}</div>
 
 </div>
   `;
