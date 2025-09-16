@@ -50,9 +50,8 @@
     {{-------------------------------------------------------------------------}}
     {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
     <style>
-        /* estilizção do conteudo a pagina cabeçalho*/
         hr {
-            margin: -5px;
+            margin: -5px !important;
             color: #ccc;
         }
 
@@ -70,15 +69,15 @@
 
         .conteudo {
             display: flex;
-            font-size: 20px;
+            font-size: 18px;
             font-family: 'Poppins', sans-serif;
-            color: #007b00;
+            color: #325f83ff;
             margin-bottom: 5px;
             width: 300px;
         }
     </style>
     <link rel="stylesheet" href="myProjects/webProject/icofont/css/icofont.min.css">
-    <hr style="margin-top:1px;">
+    <hr style="margin-top:5px;">
     <div class="container-box" style="background-color: rgb(245, 246, 248);">
         {{--Box 1--}}
         <div class="item">
@@ -244,5 +243,5 @@
         {{--fim card--}}
         @include('app.equipamento.os_open')
     </div>
-    
+
 </main>
