@@ -288,6 +288,8 @@
         }
 
         // dados das Tarefas
+        //new Date(tarefa.inicio).toLocaleDateString('pt-BR')
+        //new Date(tarefa.fim).toLocaleDateString('pt-BR')
         tarefas.forEach(tarefa => {
           const linha = document.createElement('div');
           linha.className = 'linha-tarefa-container';
@@ -298,13 +300,12 @@
   <div id="div-data-os" style="width:399px;display:flex;flex-direction:row;">
   <a href="/ordem-servico/${tarefa.id}" target="_blank" style="font-weight:700">${tarefa.id}</a>
   <div style="font-weight:600;margin-left:10px;">${tarefa.responsavel}</div>
-  <div style="margin-left:10px;background-color:rgba(173, 255, 47, 0.4);border-radius:10px;padding:5px;">${tarefa.inicio.replace('T', ' ')}</div>
-   <div style="margin-left:10px;">${tarefa.fim.replace('T', ' ')}</div>
+  <div style="margin-left:10px;background-color:rgba(173, 255, 47, 0.4);border-radius:10px;padding:5px;">${tarefa.inicio.replace('T', ' ')}
+  </div>
+   <div style="margin-left:10px;background-color:rgba(47, 255, 175, 0.4);border-radius:10px;padding:5px;">${tarefa.fim.replace('T', ' ')}</div>
 
 </div>
   `;
-
-
           //----------------------------fim de dados----------------//
           const timeline = document.createElement('div');
           timeline.className = 'timeline-container';
@@ -336,6 +337,39 @@
           barra.className = 'registro-barra';
           barra.style.position = 'relative'; // importante para posicionar elementos absolutos internamente
           //barra.tarefa = tarefa; // tarefa sendo o objeto da sua tarefa atual
+
+          // ---------- Adiciona a descrição da tarefa ----------
+          // Span da descrição
+          const descricaoSpan = document.createElement('span');
+          descricaoSpan.textContent = tarefa.descricao;
+          descricaoSpan.style.position = 'absolute';
+          descricaoSpan.style.left = '5px';
+          descricaoSpan.style.top = '100%';
+          descricaoSpan.style.marginTop = '10px';
+          descricaoSpan.style.fontSize = '12px';
+          descricaoSpan.style.color = '#000';
+          descricaoSpan.style.whiteSpace = 'nowrap';
+          descricaoSpan.style.overflow = 'hidden';
+          descricaoSpan.style.textOverflow = 'ellipsis';
+          descricaoSpan.style.pointerEvents = 'none';
+          barra.appendChild(descricaoSpan);
+
+          // Span do equipamento
+          const equipamentoSpan = document.createElement('span');
+          equipamentoSpan.textContent = tarefa.equipamento.nome;
+          equipamentoSpan.style.position = 'absolute';
+          equipamentoSpan.style.left = '5px';
+          equipamentoSpan.style.top = '100%';
+          equipamentoSpan.style.marginTop = '25px'; // mais abaixo da descrição
+          equipamentoSpan.style.fontSize = '12px';
+          equipamentoSpan.style.fontWeight = 'bold'; // deixa em negrito
+          equipamentoSpan.style.color = '#4471ebff';
+          equipamentoSpan.style.whiteSpace = 'nowrap';
+          equipamentoSpan.style.overflow = 'hidden';
+          equipamentoSpan.style.textOverflow = 'ellipsis';
+          equipamentoSpan.style.pointerEvents = 'none';
+          barra.appendChild(equipamentoSpan);
+
           //----------------------------------------//
           //  Rezizable
           //---------------------------------------//
