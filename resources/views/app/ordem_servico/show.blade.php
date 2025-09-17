@@ -212,7 +212,14 @@
                         <p>
                         <div class="titulo">Descrição dos serviços a serem executados</div>
                         <div class="titulo">
-                            <textarea name="" id="txt-area" class="form-control" rows="6" readonly style="color:#333333;font-weight:500;font-family:Arial, Helvetica, sans-serif">{{$ordem_servico->descricao}}</textarea>
+                            <textarea id="txt-area"
+                                class="form-control"
+                                rows="6"
+                                readonly
+                                style="color:#333333; font-weight:500; font-family:Arial, Helvetica, sans-serif; border:1px dashed #333;">
+                            {{$ordem_servico->descricao}}
+                            </textarea>
+
                         </div>
                         <style>
                             #txt-area {
@@ -274,6 +281,46 @@
                             </button>
 
                         </form>
+                        <style>
+                            #prioridade {
+                                width: 150px;
+                                height: 30px;
+                                text-align: center;
+                                border-radius: 10px;
+                                font-size: 15px;
+                                color: #656769ff;
+                            }
+                        </style>
+
+                        @php
+                        $gravidade = $ordem_servico->gravidade ?? 0;
+                        $urgencia = $ordem_servico->urgencia ?? 0;
+                        $tendencia = $ordem_servico->tendencia ?? 0;
+
+                        $prioridade = 'nenhuma';
+                        $classe = '';
+                        $texto = 'Selecione a prioridade';
+
+                        if ($gravidade >= 5 && $urgencia >= 5 && $tendencia >= 5) {
+                        $prioridade = 'alta';
+                        $classe = 'background-color: orange;';
+                        $texto = 'Prioridade Alta';
+                        } elseif ($gravidade >= 4 && $urgencia >= 4 && $tendencia >= 4) {
+                        $prioridade = 'media';
+                        $classe = 'background-color: gold';
+                        $texto = 'Prioridade Média';
+                        } elseif ($gravidade >= 3 && $urgencia >= 3 && $tendencia >= 3) {
+                        $prioridade = 'baixa';
+                        $classe = 'background-color: deepskyblue;';
+                        $texto = 'Prioridade Baixa';
+                        }
+                        @endphp
+
+                        <div id="prioridade"
+                            style="{{ $classe }}">
+                            {{ $texto }}
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -420,21 +467,21 @@
         <input type="number" class="form-control" id="ordem_servico_id" name="ordem_servico_id" required value="{{$ordem_servico->id}}" hidden>
     </form>
     <h6>Produtos usados</h6>
-   <div>
-    @isset($produtos)
+    <div>
+        @isset($produtos)
         @if($produtos->isNotEmpty())
-            @foreach($produtos as $produto)
-                ID: {{ $produto->id }}
-                Descrição: {{ $produto->produto->nome }}
-                Un. Medida: {{ $produto->produto->unidade_medida_id }}
-                Quant.: {{ $produto->quantidade }}
-                <br>
-            @endforeach
+        @foreach($produtos as $produto)
+        ID: {{ $produto->id }}
+        Descrição: {{ $produto->produto->nome }}
+        Un. Medida: {{ $produto->produto->unidade_medida_id }}
+        Quant.: {{ $produto->quantidade }}
+        <br>
+        @endforeach
         @else
-            <p>Nenhum produto usado.</p>
+        <p>Nenhum produto usado.</p>
         @endif
-    @endisset
-</div>
+        @endisset
+    </div>
 
     <hr>
     <div id="mensagem"></div>

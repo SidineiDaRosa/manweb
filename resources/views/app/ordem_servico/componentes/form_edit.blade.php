@@ -577,6 +577,22 @@
                         document.getElementById('tendencia').value = 3;
                     }
                 }
+
+                // Quando a página carregar
+                window.addEventListener("DOMContentLoaded", function() {
+                    let gravidade = parseInt(document.getElementById('gravidade').value) || 0;
+                    let urgencia = parseInt(document.getElementById('urgencia').value) || 0;
+                    let tendencia = parseInt(document.getElementById('tendencia').value) || 0;
+
+                    // você pode definir a lógica aqui para escolher a prioridade
+                    if (gravidade >= 5 && urgencia >= 5 && tendencia >= 5) {
+                        setPrioridade("alta");
+                    } else if (gravidade >= 4 && urgencia >= 4 && tendencia >= 4) {
+                        setPrioridade("media");
+                    } else if (gravidade >= 3 && urgencia >= 3 && tendencia >= 3) {
+                        setPrioridade("baixa");
+                    }
+                });
             </script>
             <div id="div-gut" hidden>
                 <div class="titulo">Gravidade</div>
