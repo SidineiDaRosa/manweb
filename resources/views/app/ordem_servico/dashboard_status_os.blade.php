@@ -498,7 +498,7 @@
                                     <th>Dados</th>
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
-                                    <th>GUT</th>
+                                    <th>Pri.</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -289,7 +289,7 @@
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
                                     <th>Tipo</th>
-                                    <th>GUT</th>
+                                    <th>Pri.</th>
                                 </tr>
                             </thead>
                             <tbody>
