@@ -36,7 +36,7 @@
           <div class="timeline-container" id="timeline-container">
             <div class="timeline-years" id="timeline-years"></div>
             <div class="timeline-months" id="timeline-months"></div>
-     
+
             <div class="timeline-days" id="timeline-days" style="font-size:5px;"></div>
             <div class="timeline-header" id="timeline-header"></div>
           </div>
@@ -83,6 +83,12 @@
       </div>
     </div>
     <style>
+      #timeline-container {
+        position: relative;
+        /* referência para as linhas absolutas */
+        width: 100%;
+      }
+
       .dados {
         background-color: rgba(red, green, blue, 0.5);
         color: #5c5959ff;
@@ -102,15 +108,15 @@
       .month-line {
         position: absolute;
         top: 0;
-        bottom: 0;
-        /* cobre toda a altura da timeline */
-        width: 1px;
-        border-left: 1px dashed #666;
-        z-index: 9999;
-        /* por cima de tudo */
+        height: 100%;
+        /* cobre toda a altura do container */
+        border-left: 1px dashed #000;
+        z-index: 999;
+        /* maior que os dados */
         pointer-events: none;
-        /* não interfere em cliques */
+        /* não atrapalha cliques */
       }
+
 
       /* linhas específicas para horas */
       .hour-line {
@@ -242,21 +248,23 @@
           mesAtual.setMonth(mesAtual.getMonth() + 1);
         }
 
+        let larguraAcumulada = 0;
+
         meses.forEach(mes => {
           const divMes = document.createElement('div');
           divMes.className = 'month';
           divMes.style.width = `${mes.horas * PIXELS_POR_HORA}px`;
           divMes.textContent = `${mes.nome} ${mes.ano}`;
           timelineMonths.appendChild(divMes);
-          //---------------------------
 
-          // Adiciona linha vertical no final do mês
+          // 🔹 Cria a linha no final do mês
+          larguraAcumulada += mes.horas * PIXELS_POR_HORA;
           const linhaMes = document.createElement('div');
           linhaMes.className = 'month-line';
-          linhaMes.style.left = divMes.offsetLeft + divMes.offsetWidth + 'px';
-          timelineMonths.appendChild(linhaMes);
+          linhaMes.style.left = larguraAcumulada + 'px'; // usa largura acumulada
+          linhaMes.style.height = '100%';
+          timelineHeader.appendChild(linhaMes);
         });
-
         //======  dias   ====//
         const timelineDays = document.getElementById('timeline-days');
         timelineDays.innerHTML = ''; // limpa antes

@@ -182,10 +182,10 @@
 
         .conteudo {
             display: flex;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 400;
             font-family: 'Poppins', sans-serif;
-            color: #007b00;
+            color: #373f37ff;
             margin-bottom: -1px;
             align-items: flex-end;
         }
@@ -397,7 +397,6 @@
                         /* Add a shadow to match Bootstrap */
                         outline: none;
                         /* Remove the default outline */
-
                     }
                 </style>
                 <div class="titulo">Situação:</div>
@@ -464,7 +463,7 @@
                 <div class="titulo">Anexo:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" id="anexo" type="text" name="anexo" value="{{$ordem_servico->anexo}}"  style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:98%;background-color:rgba(236, 186, 129, 0.5)">
+                    <input class="input-text" id="anexo" type="text" name="anexo" value="{{$ordem_servico->anexo}}" style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:98%;background-color:rgba(236, 186, 129, 0.5)">
                 </div>
             </div>
         </div>
@@ -504,51 +503,129 @@
                     Por favor, informe a tarefa.
                 </div>
             </div>
-            <div class="titulo">Gravidade</div>
-            <hr>
-            <div class="conteudo">
-                <select class="input-text" name="gravidade" id="gravidade" value="">
-                    <option value="{{$ordem_servico->gravidade}}">{{$ordem_servico->gravidade}}</option>
-                    <option value="5">Extremamante grave 5</option>
-                    <option value="4">Muito grave 4</option>
-                    <option value="3">Grave 3</option>
-                    <option value="2">Pouco grave 3</option>
-                    <option value="1">Nada grave 1</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a gravidade.
+            <style>
+                #prioridade {
+                    width: 250px;
+                    height: 60px;
+                    line-height: 60px;
+                    text-align: center;
+                    border-radius: 8px;
+                    margin-bottom: 20px;
+                    font-weight: bold;
+                    font-size: 18px;
+                }
+
+                /* Botões */
+                .btn-prioridade {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                    margin: 5px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    font-size: 16px;
+                    color: white;
+                }
+
+                .btn-alta {
+                    background-color: orange;
+                }
+
+                .btn-media {
+                    background-color: gold;
+                    color: black;
+                }
+
+                .btn-baixa {
+                    background-color: deepskyblue;
+                }
+            </style>
+
+            <div id="prioridade">Selecione a prioridade</div>
+
+            <!-- Botões -->
+            <div style="margin-top:10px;">
+                <button type="button" class="btn-prioridade btn-alta" onclick="setPrioridade('alta')">Alta</button>
+                <button type="button" class="btn-prioridade btn-media" onclick="setPrioridade('media')">Média</button>
+                <button type="button" class="btn-prioridade btn-baixa" onclick="setPrioridade('baixa')">Baixa</button>
+            </div>
+
+            <script>
+                function setPrioridade(nivel) {
+                    let div = document.getElementById("prioridade");
+
+                    if (nivel === "alta") {
+                        div.style.backgroundColor = "orange";
+                        div.style.color = "white";
+                        div.innerText = "Prioridade Alta";
+                        document.getElementById('gravidade').value = 5;
+                        document.getElementById('urgencia').value = 5;
+                        document.getElementById('tendencia').value = 5;
+                    } else if (nivel === "media") {
+                        div.style.backgroundColor = "gold";
+                        div.style.color = "black";
+                        div.innerText = "Prioridade Média";
+                        document.getElementById('gravidade').value = 4;
+                        document.getElementById('urgencia').value = 4;
+                        document.getElementById('tendencia').value = 4;
+                    } else if (nivel === "baixa") {
+                        div.style.backgroundColor = "deepskyblue";
+                        div.style.color = "white";
+                        div.innerText = "Prioridade Baixa";
+                        document.getElementById('gravidade').value = 3;
+                        document.getElementById('urgencia').value = 3;
+                        document.getElementById('tendencia').value = 3;
+                    }
+                }
+            </script>
+            <div id="div-gut" hidden>
+                <div class="titulo">Gravidade</div>
+                <hr>
+                <div class="conteudo">
+                    <select class="input-text" name="gravidade" id="gravidade" value="">
+                        <option value="{{$ordem_servico->gravidade}}">{{$ordem_servico->gravidade}}</option>
+                        <option value="5">Extremamante grave 5</option>
+                        <option value="4">Muito grave 4</option>
+                        <option value="3">Grave 3</option>
+                        <option value="2">Pouco grave 3</option>
+                        <option value="1">Nada grave 1</option>
+                    </select>
+                    <div class="invalid-tooltip">
+                        Por favor, informe a gravidade.
+                    </div>
+                </div>
+                <div class="titulo">Urgência</div>
+                <hr>
+                <div class="conteudo">
+                    <select class="input-text" name="urgencia" id="urgencia" value="">
+                        <option value="{{$ordem_servico->urgencia}}">{{$ordem_servico->urgencia}}</option>
+                        <option value="5">Extremamante urgente 5</option>
+                        <option value="4">Urgente 4</option>
+                        <option value="3">Urgente se possível 3</option>
+                        <option value="2">Pouco urgente 2</option>
+                        <option value="1">Não urgente 1</option>
+                    </select>
+                    <div class="invalid-tooltip">
+                        Por favor, informe a Urgência.
+                    </div>
+                </div>
+                <div class="titulo">Tendência</div>
+                <hr>
+                <div class="conteudo">
+                    <select class="input-text" name="tendencia" id="tendencia" value="">
+                        <option value="{{$ordem_servico->tendencia}}">{{$ordem_servico->tendencia}}</option>
+                        <option value="5">Piorar rápidamante 5</option>
+                        <option value="4">Piorar em curto prazo 4</option>
+                        <option value="3">Piorar 3</option>
+                        <option value="2">Piorar logo prazo 2</option>
+                        <option value="1">Não irá piorar 1</option>
+                    </select>
+                    <div class="invalid-tooltip">
+                        Por favor, informe a tendência.
+                    </div>
                 </div>
             </div>
-            <div class="titulo">Urgência</div>
-            <hr>
-            <div class="conteudo">
-                <select class="input-text" name="urgencia" id="urgencia" value="">
-                    <option value="{{$ordem_servico->urgencia}}">{{$ordem_servico->urgencia}}</option>
-                    <option value="5">Extremamante urgente 5</option>
-                    <option value="4">Urgente 4</option>
-                    <option value="3">Urgente se possível 3</option>
-                    <option value="2">Pouco urgente 2</option>
-                    <option value="1">Não urgente 1</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a Urgência.
-                </div>
-            </div>
-            <div class="titulo">Tendência</div>
-            <hr>
-            <div class="conteudo">
-                <select class="input-text" name="tendencia" id="tendencia" value="">
-                    <option value="{{$ordem_servico->tendencia}}">{{$ordem_servico->tendencia}}</option>
-                    <option value="5">Piorar rápidamante 5</option>
-                    <option value="4">Piorar em curto prazo 4</option>
-                    <option value="3">Piorar 3</option>
-                    <option value="2">Piorar logo prazo 2</option>
-                    <option value="1">Não irá piorar 1</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a tendência.
-                </div>
-            </div>
+
 
             <div class="titulo">Causa</div>
             <hr>
