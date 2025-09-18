@@ -235,7 +235,9 @@ Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaE
 Route::middleware('auth')->resource('/pedido-compra', 'App\Http\Controllers\PedidoCompraController');
 Route::middleware('auth')->get('/pedido/{id}', [App\Http\Controllers\PedidoCompraController::class, 'open_po_id'])
     ->name('pedido.open');
-
+    //  insere o produto  no estoque
+Route::middleware('auth')->post('/insert_item', [App\Http\Controllers\PedidoCompraController::class, 'storeItem'])
+    ->name('pedido.store.ajax');
 //------------------------------------------//
 // Filtro pedido de entrada
 //------------------------------------------//

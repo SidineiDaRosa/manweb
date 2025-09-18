@@ -12,6 +12,8 @@ use App\Models\PedidoCompraLista;
 use App\Models\Produto;
 use App\Models\User;
 use App\Models\PedidoCompraEvento;
+use App\Models\EstoqueProdutos;
+use App\Models\EntradaProduto;
 use Carbon\Carbon;
 
 class PedidoCompraController extends Controller
@@ -294,5 +296,42 @@ class PedidoCompraController extends Controller
                 'eventos'        => $eventos
             ]);
         }
+    }
+    public function storeItem(Request $request)
+    {
+
+
+        // 1️⃣ Registrar a entrada no histórico
+        EntradaProduto::create([
+            'produto_id'    => $request->produto_id,
+            'quantidade'    => $request->quantidade,
+            'fornecedor_id' => 8,
+            'empresa_id'    => 2,
+            'valor'         => $request->valor ?? 0,
+            'data'          => Carbon::now('America/Sao_Paulo')->format('Y-m-d'),
+            'nota_fiscal'   => $request->nota_fiscal ?? null,
+        ]);
+
+        // 2️⃣ Atualizar ou criar o estoque existente
+        $estoque = EstoqueProdutos::firstOrCreate(
+            [
+                'produto_id' => $request->produto_id,
+                'empresa_id' => 2
+            ],
+            [
+                'quantidade' => 0 // se não existir, inicia com 0
+            ]
+        );
+
+        // Adicionar a quantidade da entrada
+        $estoque->quantidade += $request->quantidade;
+        $estoque->save();
+
+        // 3️⃣ Retornar JSON com nova quantidade
+        return response()->json([
+            'success' => true,
+            'mensagem' => 'Entrada registrada com sucesso!',
+            'novo_estoque' => $estoque->quantidade,
+        ]);
     }
 }

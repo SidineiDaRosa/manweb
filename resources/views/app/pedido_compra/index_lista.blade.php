@@ -349,74 +349,203 @@
                 });
             });
         </script>
-        <table class="table-striped table-hover table-bordered" id="table_lista_compra">
-            <thead>
-                <tr>
-                    <th hidden>Id</th>
-                    <th>Produto ID</th>
-                    <th>Código Fab</th>
-                    <th>nome</th>
-                    <th>Und</th>
-                    <th>Quantidade</th>
-                    <th>Imagem</th>
-                    <th>operaçoes</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($pedido_compra_lista as $pedido_compra_ls)
-                @php
-                $produto = $produtos->firstWhere('id', $pedido_compra_ls->produto_id);
-                $unidade_medida = $unidades_de_medida->firstWhere('id', $produto->unidade_medida_id);
-                @endphp
-                <tr>
-                    <td hidden>{{ $pedido_compra_ls->id }}</td>
-                    <td>{{ $pedido_compra_ls->produto_id }}</td>
-                    <td>{{ $produto->cod_fabricante}}</td>
-                    <td>{{ $produto->nome ?? 'Produto não encontrado' }}</td>
-                    <td> {{$unidade_medida->nome}}</td>
-                    <td>{{ $pedido_compra_ls->quantidade}}</td>
-                    <td>
-                        @if ($produto)
-                        <img src="/img/produtos/{{ $produto->image }}" alt="Imagem do Produto" class="preview-image">
-                        @endif
-                        <style>
-                            .preview-image {
-                                width: 100px;
-                                height: 100px;
-                                object-fit: cover;
-                                margin: 0 5px;
-                                cursor: pointer;
-                            }
-                        </style>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' =>$pedido_compra_ls->produto_id]) }}">
-                            <i class="icofont-eye-alt"></i>
-                        </a>
-                        <form id="delete-item-form-{{ $pedido_compra_ls->id }}" action="{{ route('pedido-compra-lista.destroy', $pedido_compra_ls->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <!-- O botão não é mais necessário aqui -->
-                        </form>
+        <!---------------------------------------------------------->
+        <!--   Itens do pedido-------------------------------------->
+        <!-- Itens do Pedido de Compra -->
+        <style>
+            .item-top {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                padding: 15px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                align-items: flex-start;
+                background-color: #f9f9f9;
+            }
 
-                        <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" onclick="confirmDelete({{ $pedido_compra_ls->id }})">
-                            <i class="icofont-ui-delete"></i>
-                        </a>
+            .item-box {
+                display: flex;
+                flex-direction: column;
+                min-width: 120px;
+                max-width: 200px;
+                word-wrap: break-word;
+            }
 
-                        <script>
-                            function confirmDelete(itemId) {
-                                if (confirm('Você tem certeza que deseja deletar este item?')) {
-                                    document.getElementById('delete-item-form-' + itemId).submit();
-                                }
-                            }
-                        </script>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+            .item-title {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #333;
+                font-size: 0.9rem;
+            }
 
+            .item-text {
+                font-size: 0.9rem;
+                color: #555;
+            }
+
+            .preview-image {
+                max-width: 100px;
+                max-height: 100px;
+                object-fit: contain;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                margin-top: 5px;
+            }
+
+            .item-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+        </style>
+
+        <div class="container">
+            @foreach ($pedido_compra_lista as $pedido_compra_ls)
+            @php
+            $produto = $produtos->firstWhere('id', $pedido_compra_ls->produto_id);
+            $unidade_medida = $unidades_de_medida->firstWhere('id', $produto->unidade_medida_id ?? 0);
+            @endphp
+
+            <div class="item-top">
+                <div class="item-box">
+                    <div class="item-title">Produto ID:</div>
+                    <div class="item-text">{{ $pedido_compra_ls->produto_id }}</div>
+                </div>
+
+                <div class="item-box">
+                    <div class="item-title">Código Fab:</div>
+                    <div class="item-text">{{ $produto->cod_fabricante ?? '-' }}</div>
+                </div>
+
+                <div class="item-box">
+                    <div class="item-title">Descrição do produto:</div>
+                    <div class="item-text">{{ $produto->nome ?? 'Produto não encontrado' }}</div>
+                </div>
+
+                <div class="item-box">
+                    <div class="item-title">Unidade:</div>
+                    <div class="item-text">{{ $unidade_medida->nome ?? '-' }}</div>
+                </div>
+
+                <div class="item-box">
+                    <div class="item-title">Quantidade:</div>
+                    <div class="item-text">{{ $pedido_compra_ls->quantidade }}</div>
+                </div>
+
+                <div class="item-box">
+                    <div class="item-title">Imagem:</div>
+                    @if ($produto && $produto->image)
+                    <img src="/img/produtos/{{ $produto->image }}" alt="Imagem do Produto" class="preview-image">
+                    @else
+                    <div class="text-muted">Sem imagem</div>
+                    @endif
+                </div>
+
+                <div class="item-box item-actions">
+                    <a class="btn btn-sm btn-outline-primary" href="{{ route('produto.show', ['produto' => $pedido_compra_ls->produto_id]) }}">
+                        <i class="icofont-eye-alt"></i> Ver
+                    </a>
+
+                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#entradaModal-{{ $produto->id }}">
+                        <i class="icofont-check-circled"></i> Dar Entrada
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="entradaModal-{{ $produto->id }}" tabindex="-1" aria-labelledby="entradaModalLabel-{{ $produto->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form class="entradaForm">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="entradaModalLabel-{{ $produto->id }}">Entrada de Produto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <input type="hidden" name="produto_id" value="{{ $produto->id }}">
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Produto</label>
+                                            <input type="text" class="form-control" value="{{ $produto->nome }}" readonly>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Quantidade Recebida</label>
+                                            <input type="number" name="quantidade" class="form-control" min="1" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Observação</label>
+                                            <textarea name="observacao" class="form-control" rows="2" placeholder="Opcional"></textarea>
+                                        </div>
+
+                                        <div class="alert alert-success d-none msg-sucesso"></div>
+                                        <div class="alert alert-danger d-none msg-erro"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-success">Registrar Entrada</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+
+
+        <script>
+            function confirmDelete(itemId) {
+                if (confirm('Você tem certeza que deseja deletar este item?')) {
+                    document.getElementById('delete-item-form-' + itemId).submit();
+                }
+            }
+        </script>
     </div>
+    <div class="alert alert-success d-none" id="msg-sucesso"></div>
+    <div class="alert alert-danger d-none" id="msg-erro"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.entradaForm').submit(function(e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let url = "{{ route('pedido.store.ajax') }}";
+
+                // ALERTA DE TESTE
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        alert(response.mensagem); // teste
+                        form.find('.msg-sucesso').text(response.mensagem).removeClass('d-none');
+                        form.find('.msg-erro').addClass('d-none');
+
+                        // Fecha a modal correta
+                        form.closest('.modal').modal('hide');
+                        form[0].reset();
+                    },
+                    error: function(xhr) {
+                        form.find('.msg-erro').text('Erro ao enviar').removeClass('d-none');
+                        form.find('.msg-sucesso').addClass('d-none');
+                    }
+                });
+            });
+        });
+    </script>
+
     {{--====================================================================--}}
     {{--Função que fecha o pedido de compra-----------------------------------}}
     <!-- Bootstrap CSS -->

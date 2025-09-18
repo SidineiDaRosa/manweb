@@ -449,12 +449,17 @@
                 Fechar Ordem de serviço
             </button>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+            <!-- Bootstrap Icons -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
             <button id="bt_iniciar_os" class="btn btn-outline-success mb-1" onclick="StartOs()" style="width:300px;">
-                <img src="{{ asset('img/icon/rotate.png') }}" alt="" style="height:25px; width:25px;">
+                <i class="bi bi-caret-right-fill"></i>
                 Iniciar OS
             </button>
             @endif
-            <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1">Gerar PDF</button>
+            <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1"  style="width:300px;">Gerar PDF
+                <i class="bi bi-filetype-pdf"></i>
+            </button>
             <script>
                 document.getElementById('gerarPdfButton').addEventListener('click', function() {
                     document.getElementById('frm-pdf').submit();
