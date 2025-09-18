@@ -361,9 +361,9 @@
                     <div class="titulo">Anexo:</div>
                     <hr>
                     <div class="conteudo">
-                     <input class="input-text" id="anexo" type="text" name="anexo" value="" style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:90%;background-color:rgba(236, 186, 129, 0.5)">
+                        <input class="input-text" id="anexo" type="text" name="anexo" value="" style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:90%;background-color:rgba(236, 186, 129, 0.5)">
 
-                       
+
                     </div>
             </div>
         </div>
@@ -417,38 +417,132 @@
             <div class="conteudo" hidden>
                 <input class="input-text" id="link_foto" type="text" class="form-control" name="link_foto" value="" readonly>
             </div>
-            <div class="titulo">GUT</div>
             <hr>
-            <div class="conteudo">
-                <select class="input-text" name="gravidade" id="gravidade" value="">
-                    <option value="5">Extremamante grave</option>
-                    <option value="4">Muito grave</option>
-                    <option value="3">Grave</option>
-                    <option value="2">Pouco grave</option>
-                    <option value="1">Nada grave</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a urgencia.
-                </div>
-                <select class="input-text" name="urgencia" id="urgencia" value="">
-                    <option value="5">Extremamante urgente</option>
-                    <option value="4">Urgente</option>
-                    <option value="3">Urgente se possível</option>
-                    <option value="2">Pouco urgente</option>
-                    <option value="1">Não urgente</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a urgencia.
-                </div>
-                <select class="input-text" name="tendencia" id="tendencia" value="">
-                    <option value="5">Piorar rápidamante 5</option>
-                    <option value="4">Piorar em curto prazo 4</option>
-                    <option value="3">Piorar 3</option>
-                    <option value="2">Piorar logo prazo 2</option>
-                    <option value="1">Não irá piorar 1</option>
-                </select>
-                <div class="invalid-tooltip">
-                    Por favor, informe a urgencia.
+
+            <!-------------->
+            <!--Prioridade-->
+            <style>
+                #prioridade {
+                    width: 250px;
+                    height: 30px;
+                    text-align: center;
+                    border-radius: 8px;
+                    font-weight: bold;
+                    font-size: 18px;
+                    margin-top:10px;
+                }
+
+                /* Botões */
+                .btn-prioridade {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                    margin: 5px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    font-size: 16px;
+                    color: white;
+                }
+
+                .btn-alta {
+                    background-color: orange;
+                }
+
+                .btn-media {
+                    background-color: gold;
+                    color: black;
+                }
+
+                .btn-baixa {
+                    background-color: deepskyblue;
+                }
+            </style>
+
+            <div id="prioridade">Selecione a prioridade</div>
+
+            <!-- Botões -->
+            <div style="margin-top:10px;">
+                <button type="button" class="btn-prioridade btn-alta" onclick="setPrioridade('alta')">Alta</button>
+                <button type="button" class="btn-prioridade btn-media" onclick="setPrioridade('media')">Média</button>
+                <button type="button" class="btn-prioridade btn-baixa" onclick="setPrioridade('baixa')">Baixa</button>
+            </div>
+
+            <script>
+                function setPrioridade(nivel) {
+                    let div = document.getElementById("prioridade");
+
+                    if (nivel === "alta") {
+                        div.style.backgroundColor = "orange";
+                        div.style.color = "white";
+                        div.innerText = "Prioridade Alta";
+                        document.getElementById('gravidade').value = 5;
+                        document.getElementById('urgencia').value = 5;
+                        document.getElementById('tendencia').value = 5;
+                    } else if (nivel === "media") {
+                        div.style.backgroundColor = "gold";
+                        div.style.color = "black";
+                        div.innerText = "Prioridade Média";
+                        document.getElementById('gravidade').value = 4;
+                        document.getElementById('urgencia').value = 4;
+                        document.getElementById('tendencia').value = 4;
+                    } else if (nivel === "baixa") {
+                        div.style.backgroundColor = "deepskyblue";
+                        div.style.color = "white";
+                        div.innerText = "Prioridade Baixa";
+                        document.getElementById('gravidade').value = 3;
+                        document.getElementById('urgencia').value = 3;
+                        document.getElementById('tendencia').value = 3;
+                    }
+                }
+
+                // Quando a página carregar
+                window.addEventListener("DOMContentLoaded", function() {
+                    let gravidade = parseInt(document.getElementById('gravidade').value) || 0;
+                    let urgencia = parseInt(document.getElementById('urgencia').value) || 0;
+                    let tendencia = parseInt(document.getElementById('tendencia').value) || 0;
+
+                    // você pode definir a lógica aqui para escolher a prioridade
+                    if (gravidade >= 5 && urgencia >= 5 && tendencia >= 5) {
+                        setPrioridade("alta");
+                    } else if (gravidade >= 4 && urgencia >= 4 && tendencia >= 4) {
+                        setPrioridade("media");
+                    } else if (gravidade >= 3 && urgencia >= 3 && tendencia >= 3) {
+                        setPrioridade("baixa");
+                    }
+                });
+            </script>
+            <div hidden>
+                <div class="conteudo">
+                    <select class="input-text" name="gravidade" id="gravidade" value="">
+                        <option value="5">Extremamante grave</option>
+                        <option value="4">Muito grave</option>
+                        <option value="3">Grave</option>
+                        <option value="2">Pouco grave</option>
+                        <option value="1">Nada grave</option>
+                    </select>
+                    <div class="invalid-tooltip">
+                        Por favor, informe a urgencia.
+                    </div>
+                    <select class="input-text" name="urgencia" id="urgencia" value="">
+                        <option value="5">Extremamante urgente</option>
+                        <option value="4">Urgente</option>
+                        <option value="3">Urgente se possível</option>
+                        <option value="2">Pouco urgente</option>
+                        <option value="1">Não urgente</option>
+                    </select>
+                    <div class="invalid-tooltip">
+                        Por favor, informe a urgencia.
+                    </div>
+                    <select class="input-text" name="tendencia" id="tendencia" value="">
+                        <option value="5">Piorar rápidamante 5</option>
+                        <option value="4">Piorar em curto prazo 4</option>
+                        <option value="3">Piorar 3</option>
+                        <option value="2">Piorar logo prazo 2</option>
+                        <option value="1">Não irá piorar 1</option>
+                    </select>
+                    <div class="invalid-tooltip">
+                        Por favor, informe a urgencia.
+                    </div>
                 </div>
             </div>
             <div class="titulo">Causa</div>
@@ -659,5 +753,5 @@
     }
 </style>
 <script>
-    
+
 </script>

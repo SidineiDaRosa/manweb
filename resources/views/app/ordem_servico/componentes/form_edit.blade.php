@@ -503,6 +503,8 @@
                     Por favor, informe a tarefa.
                 </div>
             </div>
+            <!-------------->
+            <!--Prioridade-->
             <style>
                 #prioridade {
                     width: 250px;
