@@ -410,6 +410,7 @@
             @endphp
 
             <div class="item-top">
+
                 <div class="item-box">
                     <div class="item-title">Produto ID:</div>
                     <div class="item-text">{{ $pedido_compra_ls->produto_id }}</div>
@@ -434,7 +435,10 @@
                     <div class="item-title">Quantidade:</div>
                     <div class="item-text">{{ $pedido_compra_ls->quantidade }}</div>
                 </div>
-
+                <div class="item-box">
+                    <div class="item-title">Status:</div>
+                    <div class="item-text">{{ $pedido_compra_ls->status }}</div>
+                </div>
                 <div class="item-box">
                     <div class="item-title">Imagem:</div>
                     @if ($produto && $produto->image)
@@ -458,13 +462,20 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <form class="entradaForm">
-                                    @csrf
+                                    @csrf 
+                                  
+
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="entradaModalLabel-{{ $produto->id }}">Entrada de Produto</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
                                     <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">ID item</label>
+                                            <input class="form-control" type="number" name="item_id" value="{{ $pedido_compra_ls->produto_id }}" readonly>
+                                        </div>
+                                         
                                         <input type="hidden" name="produto_id" value="{{ $produto->id }}">
 
                                         <div class="mb-3">
@@ -476,6 +487,7 @@
                                             <label class="form-label">Quantidade Recebida</label>
                                             <input type="number" name="quantidade" class="form-control" min="1" required>
                                         </div>
+
 
                                         <div class="mb-3">
                                             <label class="form-label">Observação</label>

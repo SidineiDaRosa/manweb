@@ -322,7 +322,8 @@ class PedidoCompraController extends Controller
                 'quantidade' => 0 // se não existir, inicia com 0
             ]
         );
-
+        PedidoCompraLista::where('id', $request->item_id)
+            ->update(['status' => 'concluido']);
         // Adicionar a quantidade da entrada
         $estoque->quantidade += $request->quantidade;
         $estoque->save();
