@@ -297,6 +297,13 @@
                     </div>
                 </div>
                 <div class="div-column">
+                    <div class="titulo">Status</div>
+                    <hr style="margin:-0px;color:#ccc;">
+                    <div class="conteudo">
+                        <input name="status" id="status" type="text" class="form-control" value="Pendente" readonly>
+                    </div>
+                </div>
+                <div class="div-column">
                     <div class="titulo">Inserir</div>
                     <hr style="margin:-1px;color:#ccc;">
                     <div class="conteudo">
@@ -443,8 +450,11 @@
                 </div>
                 <div class="item-box">
                     <div class="item-title">Status:</div>
-                    <div class="item-text">{{ $pedido_compra_ls->status }}</div>
+                    <div class="item-text"> {{($pedido_compra_ls->status) }}</div>
+
+                    </span>
                 </div>
+
                 <div class="item-box">
                     <div class="item-title">Imagem:</div>
                     @if ($produto && $produto->image)
@@ -516,16 +526,14 @@
 
                                         <div class="item-box">
                                             <div class="item-title">Status:</div>
-                                            <span class="badge 
-        @if($pedido_compra_ls->status === 'concluido') bg-success
-        @elseif($pedido_compra_ls->status === 'pendente') bg-warning text-dark
-        @elseif($pedido_compra_ls->status === 'em_andamento') bg-info
-        @elseif($pedido_compra_ls->status === 'cancelado') bg-danger
-        @elseif($pedido_compra_ls->status === 'parcial') bg-secondary
-        @endif
-    ">
-                                                {{ ucfirst($pedido_compra_ls->status) }}
-                                            </span>
+                                            <select name="status" class="form-select">
+                                                <option value="pendente">Pendente</option>
+                                                <option value="concluido">Concluído</option>
+                                                <option value="em_andamento">Em andamento</option>
+                                                <option value="cancelado">Cancelado</option>
+                                                <option value="parcial">Parcial</option>
+                                            </select>
+
                                         </div>
 
 
