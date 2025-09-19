@@ -9,11 +9,12 @@ class PedidoCompraLista extends Model
 {
     use HasFactory;
     use HasFactory;
-    protected $table='pedido_compra_lista';
-    protected $fillable=[
+    protected $table = 'pedido_compra_lista';
+    protected $fillable = [
         'pedidos_compra_id',
         'produto_id',
-        'quantidade', 
+        'quantidade',
+        'status'
 
     ];
     public function pedidoCompra()

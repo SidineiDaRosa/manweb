@@ -17,7 +17,8 @@ class PedidoCompra extends Model
         'equipamento_id',
         'funcionarios_id',
         'status',
-        'descricao'
+        'descricao',
+        'fornecedor'
     ];
     public function Equipamento()
     {
@@ -30,5 +31,9 @@ class PedidoCompra extends Model
     public function produto()
     {
         return $this->belongsTo(Produto::class, 'produto_id');
+    }
+    public function fornecedor()
+    {
+        return $this->belongsTo(Fornecedor::class, 'fornecedor_id');
     }
 }

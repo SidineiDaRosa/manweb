@@ -305,7 +305,7 @@ class PedidoCompraController extends Controller
         EntradaProduto::create([
             'produto_id'    => $request->produto_id,
             'quantidade'    => $request->quantidade,
-            'fornecedor_id' => 8,
+            'fornecedor_id' => $request->fornecedor_id,
             'empresa_id'    => 2,
             'valor'         => $request->valor ?? 0,
             'data'          => Carbon::now('America/Sao_Paulo')->format('Y-m-d'),
@@ -322,6 +322,7 @@ class PedidoCompraController extends Controller
                 'quantidade' => 0 // se não existir, inicia com 0
             ]
         );
+
         PedidoCompraLista::where('id', $request->item_id)
             ->update(['status' => 'concluido']);
         // Adicionar a quantidade da entrada

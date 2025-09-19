@@ -197,6 +197,9 @@
                 <div class="titulo">Descrição</div>
                 <hr style="margin:-5px;color:#ccc;">
                 <div class="conteudo">{{ $pedido_compra->descricao}}</div>
+                <div class="titulo">Fornecedor do pedido</div>
+                <hr style="margin:-5px;color:#ccc;">
+                <div class="conteudo">{{ $pedido_compra->fornecedor->razao_social ?? 'Não informado' }}</div>
 
             </div>
         </div>
@@ -410,7 +413,10 @@
             @endphp
 
             <div class="item-top">
-
+                <div class="item-box" hidden>
+                    <div class="item-title">item ID:</div>
+                    <div class="item-text">{{ $pedido_compra_ls->id }}</div>
+                </div>
                 <div class="item-box">
                     <div class="item-title">Produto ID:</div>
                     <div class="item-text">{{ $pedido_compra_ls->produto_id }}</div>
@@ -457,13 +463,12 @@
                         <i class="icofont-check-circled"></i> Dar Entrada
                     </button>
 
-                    <!-- Modal -->
+                    <!-- Modal Atulizar item -->
                     <div class="modal fade" id="entradaModal-{{ $produto->id }}" tabindex="-1" aria-labelledby="entradaModalLabel-{{ $produto->id }}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <form class="entradaForm">
-                                    @csrf 
-                                  
+                                    @csrf
 
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="entradaModalLabel-{{ $produto->id }}">Entrada de Produto</h5>
@@ -473,9 +478,14 @@
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label class="form-label">ID item</label>
-                                            <input class="form-control" type="number" name="item_id" value="{{ $pedido_compra_ls->produto_id }}" readonly>
+                                            <input class="form-control" type="number" name="item_id" value="{{ $pedido_compra_ls->id }}" readonly>
                                         </div>
-                                         
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Fornecedor</label>
+                                            <input class="form-control" type="number" name="fornecedor_id" value="{{$pedido_compra->fornecedor->id}}" hidden>
+                                            <input class="form-control" type="text" name="fonrcedor_razao_social" value="{{ $pedido_compra->fornecedor->razao_social}}" readonly>
+                                        </div>
                                         <input type="hidden" name="produto_id" value="{{ $produto->id }}">
 
                                         <div class="mb-3">
@@ -487,12 +497,27 @@
                                             <label class="form-label">Quantidade Recebida</label>
                                             <input type="number" name="quantidade" class="form-control" min="1" required>
                                         </div>
-
-
                                         <div class="mb-3">
-                                            <label class="form-label">Observação</label>
-                                            <textarea name="observacao" class="form-control" rows="2" placeholder="Opcional"></textarea>
+                                            <label class="form-label">Valor</label>
+                                            <input type="number" name="valor" id="valor" class="form-control" placeholder="R$ 0,00">
                                         </div>
+
+                                        <div class="item-box">
+                                            <div class="item-title">Status:</div>
+                                            <span class="badge 
+        @if($pedido_compra_ls->status === 'concluido') bg-success
+        @elseif($pedido_compra_ls->status === 'pendente') bg-warning text-dark
+        @elseif($pedido_compra_ls->status === 'em_andamento') bg-info
+        @elseif($pedido_compra_ls->status === 'cancelado') bg-danger
+        @elseif($pedido_compra_ls->status === 'parcial') bg-secondary
+        @endif
+    ">
+                                                {{ ucfirst($pedido_compra_ls->status) }}
+                                            </span>
+                                        </div>
+
+
+
 
                                         <div class="alert alert-success d-none msg-sucesso"></div>
                                         <div class="alert alert-danger d-none msg-erro"></div>
@@ -506,6 +531,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Modal atulizar item fim -->
                 </div>
             </div>
             @endforeach

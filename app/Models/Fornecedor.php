@@ -20,6 +20,7 @@ class Fornecedor extends Model
        'telefone',
        'contato',
        'email',
-       'site'
+       'site',
+      
     ];
 }
