@@ -491,11 +491,13 @@
                                             <input class="form-control" type="number" name="item_id" value="{{ $pedido_compra_ls->id }}" readonly>
                                         </div>
 
+                                        @if($pedido_compra->fornecedor)
                                         <div class="mb-3">
                                             <label class="form-label">Fornecedor</label>
-                                            <input class="form-control" type="number" name="fornecedor_id" value="{{$pedido_compra->fornecedor->id}}" hidden>
-                                            <input class="form-control" type="text" name="fonrcedor_razao_social" value="{{ $pedido_compra->fornecedor->razao_social}}" readonly>
+                                            <input class="form-control" type="number" name="fornecedor_id" value="{{ $pedido_compra->fornecedor->id }}" hidden>
+                                            <input class="form-control" type="text" name="fornecedor_razao_social" value="{{ $pedido_compra->fornecedor->razao_social }}" readonly>
                                         </div>
+                                        @endif
                                         <input type="hidden" name="produto_id" value="{{ $produto->id }}">
 
                                         <div class="mb-3">
