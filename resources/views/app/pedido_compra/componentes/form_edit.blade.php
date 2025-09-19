@@ -80,6 +80,8 @@
             <input id="hora_prevista" name="funcionarios_id" type="text" class="form-control" value="1" readonly>
         </div>
     </div>
+ 
+
     <div class="row mb-1">
         <label for="cnpj" class="col-md-4 col-form-label text-md-end text-right">Situação</label>
         <div class="col-sm-2">

@@ -18,7 +18,7 @@ class PedidoCompra extends Model
         'funcionarios_id',
         'status',
         'descricao',
-        'fornecedor'
+        'fornecedor_id'
     ];
     public function Equipamento()
     {

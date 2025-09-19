@@ -72,7 +72,7 @@
     </div>
     <div class="row mb-1">
         <label for="cnpj" class="col-md-4 col-form-label text-md-end text-right">Data prevista para uso</label>
-        <div class="col-sm-2" >
+        <div class="col-sm-2">
             <input id="data_prevista" name="data_prevista" type="date" class="form-control" value="{{$pedido_compra->data_prevista}}" readonly>
             <input id="hora_prevista" name="hora_prevista" type="time" class="form-control" value="{{$pedido_compra->hora_prevista}}" readonly>
         </div>
@@ -85,9 +85,15 @@
         </div>
     </div>
     <div class="row mb-1">
+        <label for="fornecedor" class="col-md-4 col-form-label text-md-end text-right">Fornecedor</label>
+        <div class="col-sm-4">
+            <input id="fornecedor_id" name="fornecedor" class="form-control" value="{{ $pedido_compra->fornecedor->razao_social ?? '' }}" readonly>
+        </div>
+    </div>
+    <div class="row mb-1">
         <label for="cnpj" class="col-md-4 col-form-label text-md-end text-right">Situação</label>
         <div class="col-sm-2">
-             <input id="status" name="status" type="text" class="form-control" value="{{$pedido_compra->status}}" readonly>
+            <input id="status" name="status" type="text" class="form-control" value="{{$pedido_compra->status}}" readonly>
         </div>
     </div>
     <div class="row mb-1">
@@ -95,7 +101,7 @@
         <div class="col-sm-4">
             <input id="descricao" name="descricao" type="text" class="form-control" value="{{$pedido_compra->descricao}}" readonly>
         </div>
-        </div>
+    </div>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     @if (session('error'))
     <div class="alert alert-warning">
@@ -162,7 +168,17 @@
                             <option value="Em andamento">Em andamento</option>
                         </select>
                     </div>
-
+                    <div class="mb-3">
+                        <label for="fornecedor_id" class="form-label">Fornecedor</label>
+                        <select id="fornecedor_id" name="fornecedor_id" class="form-control" required>
+                            <option value="">Selecione um fornecedor</option>
+                            @foreach($fornecedores as $fornecedor)
+                            <option value="{{ $fornecedor->id }}" @if($pedido_compra->fornecedor_id == $fornecedor->id) selected @endif>
+                                {{ $fornecedor->razao_social }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <!-- Descrição -->
                     <div class="mb-3">
                         <label for="descricao" class="form-label">Descrição</label>

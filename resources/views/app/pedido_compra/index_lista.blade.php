@@ -143,9 +143,9 @@
 
             .conteudo {
                 display: flex;
-                font-size: 20px;
+                font-size: 17px;
                 font-family: 'Poppins', sans-serif;
-                color: #007b00;
+                color: #7b817bff;
                 margin-bottom: 5px;
             }
 
@@ -458,7 +458,17 @@
                     <a class="btn btn-sm btn-outline-primary" href="{{ route('produto.show', ['produto' => $pedido_compra_ls->produto_id]) }}">
                         <i class="icofont-eye-alt"></i> Ver
                     </a>
-
+                    <a href="javascript:void(0);"
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="confirmDelete({{ $pedido_compra_ls->id }})">
+                        <i class="icofont-delete"></i> Excluir
+                    </a>
+                    <form id="delete-item-form-{{ $pedido_compra_ls->id }}"
+                        action="{{ route('pedido-compra-lista.destroy', $pedido_compra_ls->id) }}"
+                        method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                     <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#entradaModal-{{ $produto->id }}">
                         <i class="icofont-check-circled"></i> Dar Entrada
                     </button>
@@ -546,6 +556,7 @@
                 }
             }
         </script>
+
     </div>
     <div class="alert alert-success d-none" id="msg-sucesso"></div>
     <div class="alert alert-danger d-none" id="msg-erro"></div>

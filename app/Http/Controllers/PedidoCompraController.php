@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\PedidoCompraEvento;
 use App\Models\EstoqueProdutos;
 use App\Models\EntradaProduto;
+use App\Models\Fornecedor;
 use Carbon\Carbon;
 
 class PedidoCompraController extends Controller
@@ -132,11 +133,13 @@ class PedidoCompraController extends Controller
         $patrimonio_id = $patrimonio->id;
         $empresa_id = $patrimonio->empresa_id; // Acesse diretamente o atributo empresa_id do equipamento encontrado
         $empresa = Empresas::where('id', $empresa_id)->get();
+        $fornecedores = Fornecedor::all();
         return view('app.pedido_compra.create', [
             'funcionarios' => $funcionarios,
             'patrimonio_id' => $patrimonio_id,
             'empresa' => $empresa,
-            'patrimonio_f' => $patrimonio_f
+            'patrimonio_f' => $patrimonio_f,
+            'fornecedores' => $fornecedores
         ]);
     }
     /**
@@ -212,12 +215,14 @@ class PedidoCompraController extends Controller
         $patrimonio_f = Equipamento::where('id', $patrimonio_id)->get();
         $funcionarios = Funcionario::all();
         $empresa = Empresas::where('id', $patrimonio->empresa_id)->get();
+        $fornecedores = Fornecedor::all();
         return view('app.pedido_compra.edit', [
             'pedido_compra' => $pedido_compra,
             'funcionarios' => $funcionarios,
             'patrimonio_id' => $patrimonio_id,
             'empresa' => $empresa,
-            'patrimonio_f' => $patrimonio_f
+            'patrimonio_f' => $patrimonio_f,
+            'fornecedores' => $fornecedores
         ]);
     }
     /**
@@ -255,11 +260,12 @@ class PedidoCompraController extends Controller
             'descricao'     => $request->descricao,
             'data_prevista' => $request->data_prevista,
             'hora_prevista' => $request->hora_prevista,
+            'fornecedor_id' => $request->fornecedor_id
         ]);
 
-        // 5. Redireciona
+       // // 5. Redireciona
         return redirect()->route('pedido-compra.index')
-            ->with('success', 'Evento registrado e pedido de compra atualizado com sucesso!');
+           ->with('success', 'Evento registrado e pedido de compra atualizado com sucesso!');
     }
 
 
