@@ -29,7 +29,7 @@
 
     </div>
     <div class="row mb-1">
-        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Rasão sicial da empresa/unidade</label>
+        <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Razão sicial da empresa/unidade</label>
         <div class="col-md-6">
             <input id="nome_fantasia" name="nome_fantasia" type="text" class="form-control" nome_fantasia="nome_fantasia" value="{{$empresa_f->razao_social}}" readonly>
             {{ $errors->has('nome_fantasia') ? $errors->first('nome_fantasia') : '' }}

@@ -231,8 +231,7 @@ class PedidoCompraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+     */ public function update(Request $request, $id)
     {
         // 1. Recupera o pedido de compra
         $pedido_compra = PedidoCompra::findOrFail($id);
@@ -241,20 +240,26 @@ class PedidoCompraController extends Controller
         $status_antigo = $pedido_compra->status;
         $status_novo   = $request->status;
 
-        // 3. Cria o evento primeiro, com status antigo e novo
+        // 3. Salva o anexo (se existir)
+        $anexoPath = null;
+        if ($request->hasFile('anexo')) {
+            // salva dentro de storage/app/public/uploads/anexos
+            $anexoPath = $request->file('anexo')->store('uploads/anexos', 'public');
+        }
 
-
+        // 4. Cria o evento com status antigo e novo
         PedidoCompraEvento::create([
             'pedido_compra_id' => $pedido_compra->id,
             'status_anterior'  => $status_antigo,
             'status_novo'      => $status_novo,
             'usuario_id'       => auth()->id() ?? 1,
             'justificativa'    => $request->justificativa,
-            'anexo'            => 'uploads/teste.pdf',
+            'anexo'            => $anexoPath, // grava o caminho real
             'created_at'       => Carbon::now('America/Sao_Paulo'),
             'updated_at'       => Carbon::now('America/Sao_Paulo'),
         ]);
-        // 4. Atualiza o pedido de compra
+
+        // 5. Atualiza o pedido de compra
         $pedido_compra->update([
             'status'        => $status_novo,
             'descricao'     => $request->descricao,
@@ -263,10 +268,23 @@ class PedidoCompraController extends Controller
             'fornecedor_id' => $request->fornecedor_id
         ]);
 
-       // // 5. Redireciona
-        return redirect()->route('pedido-compra.index')
-           ->with('success', 'Evento registrado e pedido de compra atualizado com sucesso!');
+        // 6. Recarrega dados para a view
+        $emissores    = User::all();
+        $equipamentos = Equipamento::all();
+        $funcionarios = Funcionario::all();
+
+        $pedidos_compra = PedidoCompra::where('id', $id)->get();
+        $eventos = PedidoCompraEvento::where('pedido_compra_id', $id)->get();
+
+        return view('app.pedido_compra.index', [
+            'equipamentos'   => $equipamentos,
+            'funcionarios'   => $funcionarios,
+            'pedidos_compra' => $pedidos_compra,
+            'emissores'      => $emissores,
+            'eventos'        => $eventos
+        ]);
     }
+
 
 
     /**

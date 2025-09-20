@@ -620,17 +620,21 @@
                                         <span class="status-arrow"><i class="fas fa-arrow-right"></i></span>
                                         Evento atualizado por:<span class="status-change">{{ $evento->usuario->name ?? 'Nenhum' }}</span>
                                         <span class="status-change">{{ $evento->status_novo ?? 'Nenhum' }}</span>
-                                    
+
                                     </div>
                                     <div class="event-justification">
+                                        {{-- Justificativa do evento --}}
                                         {{ $evento->justificativa }}
 
+                                        {{-- Link para o anexo, se existir --}}
                                         @if($evento->anexo)
-                                        <a href="{{ asset($evento->anexo) }}" target="_blank" class="event-anexo" style="float: right;">
+                                        <a href="{{ asset('storage/' . $evento->anexo) }}" target="_blank" class="event-anexo" style="float: right;">
                                             <i class="fas fa-paperclip"></i> Ver Anexo
                                         </a>
                                         @endif
                                     </div>
+
+
                                 </li>
                                 @endforeach
                             </ul>
