@@ -557,6 +557,7 @@
                         <div class="div-table-col col-data">Data Fechamento</div>
                         <div class="div-table-col col-equipamento">Equipamento</div>
                         <div class="div-table-col col-emissor">Emissor</div>
+                        <div class="div-table-col col-emissor">Descrição</div>
                         <div class="div-table-col col-status">Status</div>
                         <div class="div-table-col col-operacoes">Operações</div>
                     </div>
@@ -570,7 +571,8 @@
                         <div class="div-table-col col-data" data-label="Data Prevista">{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</div>
                         <div class="div-table-col col-data" data-label="Data Fechamento">{{ $pedido_compra->data_fechamento ? \Carbon\Carbon::parse($pedido_compra->data_fechamento)->format('d/m/Y') : '-' }}</div>
                         <div class="div-table-col col-equipamento" data-label="Equipamento">{{ $pedido_compra->equipamento->nome}}</div>
-                        <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->funcionarios->nome ?? $pedido_compra->funcionarios->id}}</div>
+                        <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->funcionarios->primeiro_nome ?? $pedido_compra->funcionarios->primeiro_nome}}</div>
+                         <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->descricao}}</div>
                         <div class="div-table-col col-status" data-label="Status">
                             @php
                             $statusClass = 'status-indefinido';

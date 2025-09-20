@@ -12,7 +12,10 @@ use App\Models\Empresas;
 use App\Models\PedidoSaida;
 use App\Models\UnidadeMedida;
 use App\Models\Categoria;
+use App\Models\EntradaProduto;
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class EstoqueProdutoController extends Controller
 {
@@ -71,7 +74,6 @@ class EstoqueProdutoController extends Controller
                     'categorias' => $categorias
                 ]);
             }
-
         } else {
             $estoque_produtos = EstoqueProdutos::where('empresa_id', 0)->get();
             return view('app.estoque_produto.index', [
@@ -244,5 +246,28 @@ class EstoqueProdutoController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function storeProductInventory()
+    {
+
+        // Exemplo de dados do estoque que podem ser usados na view
+        $totalItems = EstoqueProdutos::count();
+        $totalValue = EstoqueProdutos::sum(DB::raw('quantidade * valor'));
+        $criticalItems = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
+            ->where('criticidade', '>', 0)
+            ->count();
+        $movementsThisMonth = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(30))
+            ->count();
+        // $lowStockItems = Product::with('category')
+        // ->whereColumn('quantity', '<=', 'min_quantity')
+        //  ->get();
+
+        // Retorna a view do dashboard com os dados
+        return view('app.estoque_produto.dashboard', [
+            'totalItems' => $totalItems,
+            'totalValue' => $totalValue,
+            'criticalItems' => $criticalItems,
+            'movementsThisMonth'=>$movementsThisMonth 
+        ]);
     }
 }

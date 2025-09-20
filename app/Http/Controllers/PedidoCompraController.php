@@ -275,7 +275,6 @@ class PedidoCompraController extends Controller
 
         $pedidos_compra = PedidoCompra::where('id', $id)->get();
         $eventos = PedidoCompraEvento::where('pedido_compra_id', $id)->get();
-
         return view('app.pedido_compra.index', [
             'equipamentos'   => $equipamentos,
             'funcionarios'   => $funcionarios,

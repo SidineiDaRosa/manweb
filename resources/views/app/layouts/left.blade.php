@@ -183,11 +183,16 @@
                 <a href="{{ route('produto.index') }}">Produtos</a>
                 <a href="{{ route('Estoque-produto.index') }}">Estoque de produtos</a>
                 <a href="{{ route('pedido-compra.index') }}">Pedidos de compra</a>
-                <a href="{{ route('entrada-produto.index') }}">Entrada de produtos</a>
+                <a class="nav-link" href="{{ route('entrada-produto.index') }}">
+                            <i class="bi bi-arrow-down-circle me-2"></i>
+                           Entrada de produtos
+                        </a>
                 <a href="{{ route('pedido-saida.index') }}">Pedidos de saída</a>
                 <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
                 <a href="{{ route('produto-fornecedor.create') }}">Por fornecedor</a>
                 <a href="{{ route('categoria.index') }}">Categoria</a>
+                <a href="{{ route('dashboard.estoque') }}" class="nav-link">Dashboard</a>
+
             </div>
         </li>
 

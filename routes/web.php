@@ -224,6 +224,7 @@ Route::middleware('auth')->resource('/Peca-equipamento', 'App\Http\Controllers\P
 Route::middleware('auth')->post('/peca-equpamento-filtro', [App\Http\Controllers\PecaEquipamentoController::class, 'index']);
 
 use App\Http\Controllers\PecaEquipamentoController;
+use App\Models\EstoqueProdutos;
 use App\Models\PedidoCompraLista;
 
 Route::middleware(['auth'])->get('/peca-equipamento-editar/{peca_equipamento_id}', [PecaEquipamentoController::class, 'edit'])->name('Peca-equipamento-editar.edit');
@@ -235,9 +236,10 @@ Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaE
 Route::middleware('auth')->resource('/pedido-compra', 'App\Http\Controllers\PedidoCompraController');
 Route::middleware('auth')->get('/pedido/{id}', [App\Http\Controllers\PedidoCompraController::class, 'open_po_id'])
     ->name('pedido.open');
-    //  insere o produto  no estoque
+//  insere o produto  no estoque
 Route::middleware('auth')->post('/insert_item', [App\Http\Controllers\PedidoCompraController::class, 'storeItem'])
     ->name('pedido.store.ajax');
+Route::middleware('auth')->get('/dashboard-estoque', [EstoqueProdutoController::class, 'storeProductInventory'])->name('dashboard.estoque');
 //------------------------------------------//
 // Filtro pedido de entrada
 //------------------------------------------//
