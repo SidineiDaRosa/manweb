@@ -110,7 +110,29 @@ Route::get('/gantt-timeline', [OrdemServicoController::class, 'gantt_timeline'])
 //--------------------------------------------------------//
 //                  Ordem de produção
 //--------------------------------------------------------//
-Route::middleware('auth')->resource('/ordem-producao', 'App\Http\Controllers\OrdemProducaoController');
+use App\Http\Controllers\OrdemProducaoController;
+
+// Listar todas as ordens
+Route::get('/ordens-producao', [OrdemProducaoController::class, 'index'])->name('ordens-producao.index');
+
+// Mostrar formulário de criação
+Route::get('/ordens-producao/create', [OrdemProducaoController::class, 'create'])->name('ordens-producao.create');
+
+// Salvar nova ordem
+Route::post('/ordens-producao', [OrdemProducaoController::class, 'store'])->name('ordens-producao.store');
+
+// Mostrar ordem específica
+Route::get('/ordens-producao/{ordem_producao}', [OrdemProducaoController::class, 'show'])->name('ordens-producao.show');
+
+// Mostrar formulário de edição
+Route::get('/ordens-producao/{ordem_producao}/edit', [OrdemProducaoController::class, 'edit'])->name('ordens-producao.edit');
+
+// Atualizar ordem existente
+Route::put('/ordens-producao/{ordem_producao}', [OrdemProducaoController::class, 'update'])->name('ordens-producao.update');
+Route::patch('/ordens-producao/{ordem_producao}', [OrdemProducaoController::class, 'update']); // alternativa PATCH
+
+// Deletar ordem
+Route::delete('/ordens-producao/{ordem_producao}', [OrdemProducaoController::class, 'destroy'])->name('ordens-producao.destroy');
 //--------------------------------------------------------//
 //                 Entrada de produtos
 //--------------------------------------------------------//

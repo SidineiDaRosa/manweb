@@ -236,11 +236,12 @@
 
         <!-- Produção -->
         <li>
-            <a href="{{ route('ordem-producao.index') }}">
+            <a href="{{ route('ordens-producao.index') }}">
                 <div class="icon-wrapper">
                     <i class="icofont-industries-4 icofont-2x"></i>
                 </div>
-                <span class="spn-txt-menu">Produção</span>
+                <span class="spn-txt-menu">Dashboard</span>
+
             </a>
         </li>
 

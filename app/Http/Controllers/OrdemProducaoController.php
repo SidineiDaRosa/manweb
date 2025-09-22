@@ -23,7 +23,7 @@ class OrdemProducaoController extends Controller
         $produtos = Produto::all();
         $ordens_producoes = OrdemProducao::all();
 
-        return view('app.ordem_producao.index', ['produtos' => $produtos, 'ordens_producoes' => $ordens_producoes]);
+        return view('app.ordem_producao.dashboard');
     }
 
     /**
