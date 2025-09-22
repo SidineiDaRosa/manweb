@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/template.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="{{asset('js/date_time.js')}}"></script><!--Update data time-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -257,7 +258,7 @@
             <a href="/check-list-index" style="color:white;">Check-list</a>
             <span class="badge" id="checklist-badge">0</span>
         </div>
-        <div id="solicitacoes-count" class="notification" >
+        <div id="solicitacoes-count" class="notification">
             <a href="/solicitacoes-os" style="color:white;margin-left:10px;">SS pendente</a>
             <span class="badge" id="solicitacoes-badge">0</span>
         </div>

@@ -3,6 +3,7 @@
 @section('titulo', 'Produtos')
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +21,12 @@
             --success: #2ecc71;
             --warning: #f39c12;
         }
-        
+
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         .sidebar {
             background-color: var(--primary);
             color: white;
@@ -33,94 +34,95 @@
             position: fixed;
             padding-top: 20px;
         }
-        
+
         .sidebar .nav-link {
             color: rgba(255, 255, 255, 0.8);
             padding: 15px 20px;
             margin: 5px 0;
             border-radius: 5px;
         }
-        
+
         .sidebar .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
         }
-        
+
         .sidebar .nav-link.active {
             background-color: var(--secondary);
             color: white;
         }
-        
+
         .main-content {
             margin-left: 150px;
             padding: 20px;
         }
-        
+
         .card-dashboard {
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
-        
+
         .card-dashboard:hover {
             transform: translateY(-5px);
         }
-        
+
         .metric-value {
             font-size: 2rem;
             font-weight: bold;
         }
-        
+
         .metric-icon {
             font-size: 2.5rem;
             color: var(--secondary);
         }
-        
+
         .table-responsive {
             max-height: 400px;
             overflow-y: auto;
         }
-        
+
         .low-stock {
             background-color: rgba(231, 76, 60, 0.1) !important;
         }
-        
+
         .medium-stock {
             background-color: rgba(243, 156, 18, 0.1) !important;
         }
-        
+
         .high-stock {
             background-color: rgba(46, 204, 113, 0.1) !important;
         }
-        
+
         .search-container {
             position: relative;
         }
-        
+
         .search-container .form-control {
             padding-right: 40px;
         }
-        
+
         .search-container .bi-search {
             position: absolute;
             right: 15px;
             top: 12px;
             color: #6c757d;
         }
-        
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
             }
-            
+
             .main-content {
                 margin-left: 0;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -130,7 +132,7 @@
                     <h4>Almoxarifado</h4>
                     <p class="text-muted">Dashboard de Gestão</p>
                 </div>
-                
+
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="#">
@@ -175,7 +177,7 @@
                         </a>
                     </li>
                 </ul>
-                
+
                 <div class="mt-5 px-3">
                     <div class="card bg-dark text-white">
                         <div class="card-body text-center py-3">
@@ -185,7 +187,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -200,15 +202,16 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Alertas -->
                 <div class="alert alert-warning d-flex align-items-center" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <div>
-                        5 itens com estoque crítico. <a href="#" class="alert-link">Verificar agora</a>
+
+                        {{$criticalItemsFault}} itens com estoque crítico. <a href="#" class="alert-link">Verificar agora</a>
                     </div>
                 </div>
-                
+
                 <!-- Métricas -->
                 <div class="row mb-4">
                     <div class="col-md-3 mb-3">
@@ -276,7 +279,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Gráficos -->
                 <div class="row mb-4">
                     <div class="col-md-8 mb-3">
@@ -300,7 +303,8 @@
                         </div>
                     </div>
                 </div>
-                
+
+
                 <!-- Tabela de Itens com Estoque Baixo -->
                 <div class="row">
                     <div class="col-12">
@@ -334,66 +338,32 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="low-stock">
-                                                <td>MAT-0258</td>
-                                                <td>Parafuso sextavado 10mm</td>
-                                                <td>Fixadores</td>
-                                                <td>15</td>
-                                                <td>50</td>
-                                                <td><span class="badge bg-danger">Crítico</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
-                                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr class="low-stock">
-                                                <td>MAT-1367</td>
-                                                <td>Chave de fenda Phillips</td>
-                                                <td>Ferramentas</td>
-                                                <td>8</td>
-                                                <td>20</td>
-                                                <td><span class="badge bg-danger">Crítico</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
-                                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr class="medium-stock">
-                                                <td>MAT-4892</td>
-                                                <td>Fita isolante</td>
-                                                <td>Elétrica</td>
-                                                <td>25</td>
-                                                <td>30</td>
-                                                <td><span class="badge bg-warning">Atenção</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
-                                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr class="high-stock">
-                                                <td>MAT-5721</td>
-                                                <td>Luvas de proteção</td>
-                                                <td>EPI</td>
-                                                <td>120</td>
-                                                <td>40</td>
-                                                <td><span class="badge bg-success">Adequado</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
-                                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr class="high-stock">
-                                                <td>MAT-6348</td>
-                                                <td>Óculos de proteção</td>
-                                                <td>EPI</td>
-                                                <td>85</td>
-                                                <td>30</td>
-                                                <td><span class="badge bg-success">Adequado</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
-                                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
-                                                </td>
-                                            </tr>
+                                            @foreach($stok_level as $produto)
+                                            @php
+                                            if ($produto->quantidade <= 0 || $produto->quantidade < $produto->estoque_minimo) {
+                                                    $status = 'Crítico';
+                                                    $badge = 'bg-danger';
+                                                    } elseif ($produto->quantidade < $produto->estoque_minimo * 1.5) {
+                                                        $status = 'Atenção';
+                                                        $badge = 'bg-warning';
+                                                        } else {
+                                                        $status = 'Adequado';
+                                                        $badge = 'bg-success';
+                                                        }
+                                                        @endphp
+                                                        <tr>
+                                                            <td>MAT-{{ str_pad($produto->id, 4, '0', STR_PAD_LEFT) }}</td>
+                                                            <td>{{ $produto->produto->nome ?? '---' }}</td>
+                                                            <td>{{ $produto->produto->categoria->nome ?? '---' }}</td>
+                                                            <td>{{ $produto->quantidade }}</td>
+                                                            <td>{{ $produto->estoque_minimo }}</td>
+                                                            <td><span class="badge {{ $badge }}">{{ $status }}</span></td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
+                                                                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -401,6 +371,7 @@
                         </div>
                     </div>
                 </div>
+                //
             </div>
         </div>
     </div>
@@ -410,26 +381,25 @@
         // Atualizar data e hora da última atualização
         function updateLastUpdate() {
             const now = new Date();
-            const options = { 
-                day: '2-digit', 
-                month: '2-digit', 
+            const options = {
+                day: '2-digit',
+                month: '2-digit',
                 year: 'numeric',
-                hour: '2-digit', 
+                hour: '2-digit',
                 minute: '2-digit'
             };
             document.getElementById('last-update').textContent = now.toLocaleDateString('pt-BR', options);
         }
-        
+
         updateLastUpdate();
-        
+
         // Gráfico de Movimentação
         const movementCtx = document.getElementById('movementChart').getContext('2d');
         const movementChart = new Chart(movementCtx, {
             type: 'line',
             data: {
                 labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                datasets: [
-                    {
+                datasets: [{
                         label: 'Entradas',
                         data: [120, 150, 180, 90, 130, 160],
                         borderColor: '#2ecc71',
@@ -456,7 +426,7 @@
                 }
             }
         });
-        
+
         // Gráfico de Categorias
         const categoryCtx = document.getElementById('categoryChart').getContext('2d');
         const categoryChart = new Chart(categoryCtx, {
@@ -486,4 +456,5 @@
         });
     </script>
 </body>
+
 </html>

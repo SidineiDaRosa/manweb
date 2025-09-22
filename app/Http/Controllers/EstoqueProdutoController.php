@@ -256,8 +256,12 @@ class EstoqueProdutoController extends Controller
         $criticalItems = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
             ->where('criticidade', '>', 0)
             ->count();
+        $criticalItemsFault = EstoqueProdutos::whereColumn('quantidade', '<', 'estoque_minimo')
+            ->where('criticidade', '>', 0)
+            ->count();
         $movementsThisMonth = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(30))
             ->count();
+        $stok_level = EstoqueProdutos::where('quantidade', '<=', 'estoque_mnimo')->get();
         // $lowStockItems = Product::with('category')
         // ->whereColumn('quantity', '<=', 'min_quantity')
         //  ->get();
@@ -267,7 +271,9 @@ class EstoqueProdutoController extends Controller
             'totalItems' => $totalItems,
             'totalValue' => $totalValue,
             'criticalItems' => $criticalItems,
-            'movementsThisMonth'=>$movementsThisMonth 
+            'movementsThisMonth' => $movementsThisMonth,
+            'criticalItemsFault' => $criticalItemsFault,
+            'stok_level' => $stok_level
         ]);
     }
 }

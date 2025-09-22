@@ -10,8 +10,8 @@
     </div>
     <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
         Entre:
-        <input type="datetime-local" class="form-control-template" name="datetime" id="datetime" style="width:250px;height:30px;font-size:20px;"> <br>
-        <input type="datetime-local" class="form-control-template" name="datetime_fim" id="datetime_fim" style="width:250px;height:30px;font-size:20px;"> <br>
+        <input type="datetime-local" class="form-control" name="datetime" id="datetime" style="width:250px;"> <br>
+        <input type="datetime-local" class="form-control" name="datetime_fim" id="datetime_fim" style="width:250px;"> <br>
         <label for="option-all">Todas</label>
         <input type="radio" id="option-all" name="options" value="Todas" checked>
 
