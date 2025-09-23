@@ -634,7 +634,7 @@
                                             target="_blank"
                                             class="event-anexo"
                                             style="float: right;">
-                                            <i class="fas fa-paperclip"></i> Ver Anexo
+                                            <i class="fas fa-paperclip"></i> Ver Anexo-{{ request()->getSchemeAndHttpHost() . '/storage/' . $evento->anexo }}"
                                         </a>
                                         @endif
                                     </div>
