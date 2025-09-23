@@ -228,8 +228,6 @@
                                 <th>Descrição</th>
                                 <th>Patrimônio</th>
                                 <th>Executante</th>
-                                <th></th>
-
                             </tr>
                         </thead>
 
@@ -253,9 +251,23 @@
                                 </td>
                                 <td>{{$os_emandamento->descricao}}</td>
                                 <td>{{$os_emandamento->equipamento->nome}}</td>
-                                <td>{{$os_emandamento->responsavel}}</td>
-                                <td>
-                                    <div class="circle"></div>
+                                <td>{{$os_emandamento->responsavel}}
+                                    <div style="display: flex;flex-direction:row;text-align: center; justify-content: center;">
+                                        <div class="circle"></div>
+                                        <div class="bnt-sm-orange">{{$os_emandamento->status_servicos}}%</div>
+                                        <style>
+                                            .bnt-sm-orange {
+                                                padding: 2px;
+                                                margin-left: 5px;
+                                                background-color: rgba(231, 180, 122, 0.5);
+                                                width: 50px;
+                                                color: rgba(192, 108, 11, 0.99);
+                                                border-radius:10px;
+                                               text-align: center;
+                                               justify-content: center;
+                                            }
+                                        </style>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
@@ -1036,14 +1048,14 @@
                 font-size: 15px;
                 color: black;
                 font-stretch: condensed;
-                font-weight:400;
+                font-weight: 400;
 
             }
 
             .div-os-sm {
                 font-size: 12px;
-                font-weight:600!important;
-                font-family:Arial, Helvetica, sans-serif;
+                font-weight: 600 !important;
+                font-family: Arial, Helvetica, sans-serif;
                 font-stretch: ultra-condensed;
                 color: black;
                 border-radius: 5px;
@@ -1054,8 +1066,8 @@
             }
 
             td {
-                font-weight:400!important;
-                font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-weight: 400 !important;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
                 font-size: 14px !important;
                 margin: 2px;
             }
