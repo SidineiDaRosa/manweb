@@ -572,7 +572,7 @@
                         <div class="div-table-col col-data" data-label="Data Fechamento">{{ $pedido_compra->data_fechamento ? \Carbon\Carbon::parse($pedido_compra->data_fechamento)->format('d/m/Y') : '-' }}</div>
                         <div class="div-table-col col-equipamento" data-label="Equipamento">{{ $pedido_compra->equipamento->nome}}</div>
                         <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->funcionarios->primeiro_nome ?? $pedido_compra->funcionarios->primeiro_nome}}</div>
-                         <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->descricao}}</div>
+                        <div class="div-table-col col-emissor" data-label="Emissor">{{ $pedido_compra->descricao}}</div>
                         <div class="div-table-col col-status" data-label="Status">
                             @php
                             $statusClass = 'status-indefinido';
@@ -630,7 +630,10 @@
 
                                         {{-- Link para o anexo, se existir --}}
                                         @if($evento->anexo)
-                                        <a href="{{ asset('storage/' . $evento->anexo) }}" target="_blank" class="event-anexo" style="float: right;">
+                                        <a href="{{ request()->getSchemeAndHttpHost() . '/storage/' . $evento->anexo }}"
+                                            target="_blank"
+                                            class="event-anexo"
+                                            style="float: right;">
                                             <i class="fas fa-paperclip"></i> Ver Anexo
                                         </a>
                                         @endif
