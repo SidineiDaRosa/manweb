@@ -210,10 +210,15 @@
                         @endforeach
                         <td>{{ $peca_equipamento->descricao}}</td>
                         <td>
-                            <a class="txt-link" href="{{ route('produto.show', ['produto' =>$peca_equipamento->produto->id]) }}">
-                                {{ $peca_equipamento->produto->nome}}
+                            @if($peca_equipamento->produto)
+                            <a class="txt-link" href="{{ route('produto.show', ['produto' => $peca_equipamento->produto->id]) }}">
+                                {{ $peca_equipamento->produto->nome }}
                             </a>
+                            @else
+                            -
+                            @endif
                         </td>
+
                         <td>{{ $peca_equipamento->quantidade}}</td>
                         <td>{{ $peca_equipamento->intervalo_manutencao}}hs</td>
                         <td>{{ date( 'd/m/Y' , strtotime($peca_equipamento['data_substituicao']))}}-{{ $peca_equipamento->hora_substituicao}}</td>
