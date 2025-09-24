@@ -155,134 +155,133 @@
 <h6>Ordens em aberto</h6>
 
 
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Data de Início</th>
-                <th>Hora de Início</th>
-                <th>Data de Fim</th>
-                <th>Hora de Fim</th>
-                <th>Empresa</th>
-                <th>Patrimônio</th>
-                <th>Emissor</th>
-                <th>Responsável</th>
-                <th>Descrição</th>
-                <th>Status</th>
-                <th>Operações</th>
-                <th>check</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($ordens_servicos as $ordem_servico)
-            @php
-            // Definir o fuso horário para America/Sao_Paulo
-            date_default_timezone_set('America/Sao_Paulo');
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Data de Início</th>
+            <th>Hora de Início</th>
+            <th>Data de Fim</th>
+            <th>Hora de Fim</th>
+            <th>Empresa</th>
+            <th>Patrimônio</th>
+            <th>Emissor</th>
+            <th>Responsável</th>
+            <th>Descrição</th>
+            <th>Status</th>
+            <th>Operações</th>
+            <th>check</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($ordens_servicos as $ordem_servico)
+        @php
+        // Definir o fuso horário para America/Sao_Paulo
+        date_default_timezone_set('America/Sao_Paulo');
 
-            // Obter o horário atual de Brasília
-            $dataAtual = \Illuminate\Support\Carbon::now();
-            //-------------------------------------------------//
-            $dataFim = \Carbon\Carbon::parse($ordem_servico->data_fim);
-            $horaFim = \Carbon\Carbon::parse($ordem_servico->hora_fim);
-            $dataAtual = \Carbon\Carbon::now();
-            $classData = '';
-            $classHora = '';
-            // Regras para data de fim verde//
-            if ($dataFim->greaterThan($dataAtual)) {
-            $classData = 'bg-green';
-            $classHora = 'bg-green';//seta para verde
-            }
-            // Regras para data de fim amarelo
-            if ($dataFim->isSameDay($dataAtual)) {
-            $classData = 'bg-yellow';
-            // -----------Regras para hora de fim
-            $horaFimSemSegundos = $horaFim->copy()->second(0); // Define os segundos como 0
-            $horaAtualSemSegundos = $dataAtual->copy()->second(0); // Define os segundos como 0
-            if ($horaFimSemSegundos->greaterThan($horaAtualSemSegundos)) {
-            $classHora = 'bg-green'; // seta para verde
-            } elseif ($horaFimSemSegundos->equalTo($horaAtualSemSegundos)) {
-            $classHora = 'bg-yellow'; // seta para amarelo
-            } elseif ($horaFimSemSegundos->lessThan($horaAtualSemSegundos)) {
-            $classHora = 'bg-red'; // seta para vermelho
-            }
-            // Regras para data de fim vermelho//
-            } elseif ($dataFim->lessThan($dataAtual)) {
-            $classData = 'bg-red';
-            // -----------Regras para hora de fim
-            $classHora = 'bg-red';//seta para vermelho
-            }
-            @endphp
-            <tr>
-                <td>{{ $ordem_servico->id }}</td>
-                <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}}</td>
-                <td>{{ $ordem_servico->hora_inicio }}</td>
-                <td class="{{ $classData }}">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}</td>
-                <td class="{{ $classHora }}">{{ $ordem_servico->hora_fim }}</td>
-                <td>
-                    {{ $ordem_servico->Empresa->razao_social}}
-                </td>
-                <td>{{ $ordem_servico->equipamento->nome}}</td>
-                <td>{{ $ordem_servico->emissor}}</td>
-                <td>{{ $ordem_servico->responsavel}}</td>
-                <td id="descricao">
+        // Obter o horário atual de Brasília
+        $dataAtual = \Illuminate\Support\Carbon::now();
+        //-------------------------------------------------//
+        $dataFim = \Carbon\Carbon::parse($ordem_servico->data_fim);
+        $horaFim = \Carbon\Carbon::parse($ordem_servico->hora_fim);
+        $dataAtual = \Carbon\Carbon::now();
+        $classData = '';
+        $classHora = '';
+        // Regras para data de fim verde//
+        if ($dataFim->greaterThan($dataAtual)) {
+        $classData = 'bg-green';
+        $classHora = 'bg-green';//seta para verde
+        }
+        // Regras para data de fim amarelo
+        if ($dataFim->isSameDay($dataAtual)) {
+        $classData = 'bg-yellow';
+        // -----------Regras para hora de fim
+        $horaFimSemSegundos = $horaFim->copy()->second(0); // Define os segundos como 0
+        $horaAtualSemSegundos = $dataAtual->copy()->second(0); // Define os segundos como 0
+        if ($horaFimSemSegundos->greaterThan($horaAtualSemSegundos)) {
+        $classHora = 'bg-green'; // seta para verde
+        } elseif ($horaFimSemSegundos->equalTo($horaAtualSemSegundos)) {
+        $classHora = 'bg-yellow'; // seta para amarelo
+        } elseif ($horaFimSemSegundos->lessThan($horaAtualSemSegundos)) {
+        $classHora = 'bg-red'; // seta para vermelho
+        }
+        // Regras para data de fim vermelho//
+        } elseif ($dataFim->lessThan($dataAtual)) {
+        $classData = 'bg-red';
+        // -----------Regras para hora de fim
+        $classHora = 'bg-red';//seta para vermelho
+        }
+        @endphp
+        <tr>
+            <td>{{ $ordem_servico->id }}</td>
+            <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}}</td>
+            <td>{{ $ordem_servico->hora_inicio }}</td>
+            <td class="{{ $classData }}">{{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}</td>
+            <td class="{{ $classHora }}">{{ $ordem_servico->hora_fim }}</td>
+            <td>
+                {{ $ordem_servico->Empresa->razao_social}}
+            </td>
+            <td>{{ $ordem_servico->equipamento->nome}}</td>
+            <td>{{ $ordem_servico->emissor}}</td>
+            <td>{{ $ordem_servico->responsavel}}</td>
+            <td id="descricao">
 
-                    {{ $ordem_servico->descricao}}
+                {{ $ordem_servico->descricao}}
 
-                </td>
-                <td>{{ $ordem_servico->situacao}}
-                    <div class="progress mb-3" role="progressbar" aria-label="Success example with label" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar text-bg-warning">{{ $ordem_servico->status_servicos}}%</div>
-                    </div>
-                </td>
-                <!--Div operaçoes do registro da ordem des serviço-->
-                <td>
-                    <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                        <a class="btn btn-sm-template btn-outline-primary" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}">
-                            <i class="icofont-eye-alt"></i>
-                        </a>
+            </td>
+            <td>{{ $ordem_servico->situacao}}
+                <div class="progress mb-3" role="progressbar" aria-label="Success example with label" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar text-bg-warning">{{ $ordem_servico->status_servicos}}%</div>
+                </div>
+            </td>
+            <!--Div operaçoes do registro da ordem des serviço-->
+            <td>
+                <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
+                    <a class="btn btn-sm-template btn-outline-primary" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}">
+                        <i class="icofont-eye-alt"></i>
+                    </a>
 
-                        <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
+                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
 
-                            <i class="icofont-ui-edit"></i> </a>
+                        <i class="icofont-ui-edit"></i> </a>
 
-                        <!--Condoçes para deletar a os-->
-                        <form id="form_{{ $ordem_servico->id }}" method="post" action="{{route('ordem-servico.destroy', ['ordem_servico'=>$ordem_servico->id])}}">
-                            @method('DELETE')
-                            @csrf
+                    <!--Condoçes para deletar a os-->
+                    <form id="form_{{ $ordem_servico->id }}" method="post" action="{{route('ordem-servico.destroy', ['ordem_servico'=>$ordem_servico->id])}}">
+                        @method('DELETE')
+                        @csrf
 
-                        </form>
-                        <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
-                            <i class="icofont-ui-delete"></i>
-                            <script>
-                                function DeletarOs() {
-                                    var x;
-                                    var r = confirm("Deseja deletar a ordem de serviço?");
-                                    if (r == true) {
+                    </form>
+                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
+                        <i class="icofont-ui-delete"></i>
+                        <script>
+                            function DeletarOs() {
+                                var x;
+                                var r = confirm("Deseja deletar a ordem de serviço?");
+                                if (r == true) {
 
-                                        document.getElementById('form_{{$ordem_servico->id }}').submit()
-                                    } else {
-                                        x = "Você pressionou Cancelar!";
-                                    }
-                                    document.getElementById("demo").innerHTML = x;
+                                    document.getElementById('form_{{$ordem_servico->id }}').submit()
+                                } else {
+                                    x = "Você pressionou Cancelar!";
                                 }
-                            </script>
-                        </a>
-                        <!------------------------------>
+                                document.getElementById("demo").innerHTML = x;
+                            }
+                        </script>
+                    </a>
+                    <!------------------------------>
 
-                    </div>
-                <td>
-                    <div class="col-md-2 mb-0">
-                        <input type="checkbox" name="" id="">
-                    </div>
-                </td>
+                </div>
+            <td>
+                <div class="col-md-2 mb-0">
+                    <input type="checkbox" name="" id="">
+                </div>
+            </td>
 
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
 <style>
-
     .container-box {
         display: flex;
         flex-wrap: wrap;
@@ -506,80 +505,12 @@
         <hr style="margin-top:10px;">
         @endforeach
     </div>
-    {{--Box 3--}}
-    <div class="item-25">
-        <h4>Check-list</h4>
-        @foreach ($chek_list as $chek_list_f)
-        {{ $chek_list_f->id }} <br>
-        <h6>{{ $chek_list_f->descricao}} </h6>
-        Intervalo entre a inspeção é de: {{ $chek_list_f->intervalo_manutencao}}hs <br>
-        A última verificação foi em: {{ date( 'd/m/Y' , strtotime($chek_list_f['data_substituicao']))}} às {{ $chek_list_f->hora_substituicao}} <br>
-        A próxima será em: {{ date( 'd/m/Y' , strtotime($chek_list_f['data_proxima_manutencao']))}} <br>
-        Horas restante: <div class="
-    @if($chek_list_f->horas_proxima_manutencao >= 48)
-        bg-success
-    @elseif($chek_list_f->horas_proxima_manutencao < 48 && $chek_list_f->horas_proxima_manutencao > 0)
-        bg-warning
-    @else
-        bg-danger
-    @endif
-" style="margin-bottom:5px;">{{$chek_list_f->horas_proxima_manutencao}} hs</div>
-        <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$chek_list_f->id ,'chek_list'=>1])}}">
-            <i class="icofont-eye-alt"></i>
-        </a>
-        {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
-        <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $chek_list_f->id,'tipofiltro'=>1,'produto'=>0]) }}">
-            <i class="icofont-ui-edit"></i>
-        </a>
 
-        <!--Condoçes para deletar a os-->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $chek_list_f->id }})">
-            <i class="icofont-ui-delete"></i>
-        </a>
-        <hr style="margin-top:5px;">
-        @endforeach
-    </div>
-    {{--Box 4--}}
-    <div class="item-25">
-        <h4>Lubrificação</h4>
-
-        @foreach ($lubrificacao as $lubrificacao_f)
-        {{$lubrificacao_f->id}} <br>
-        <h6>{{$lubrificacao_f->descricao}}</h6>
-        O intervalo entre a lubrificação é de: {{ $lubrificacao_f->intervalo_manutencao}}hs <br>
-        A última lubrificação foi em: {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_substituicao']))}} às {{ $lubrificacao_f->hora_substituicao}} <br>
-        A próxima está programada para: {{ date( 'd/m/Y' , strtotime($lubrificacao_f['data_proxima_manutencao']))}} <br>
-        Horas restante: <div class="
-    @if($lubrificacao_f->horas_proxima_manutencao >= 48)
-        bg-success
-    @elseif($lubrificacao_f->horas_proxima_manutencao < 48 && $lubrificacao_f->horas_proxima_manutencao > 0)
-        bg-warning
-    @else
-        bg-danger
-    @endif
-" style="margin-bottom:5px;">{{$lubrificacao_f->horas_proxima_manutencao}} hs</div>
-        <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$lubrificacao_f->id ,'chek_list'=>1])}}">
-            <i class="icofont-eye-alt"></i>
-        </a>
-        {{--roquei @can por @cannot porque você deseja desativar o botão se o usuário não tiver a permissão 'user'.--}}
-        <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcannot" href="{{ route('Peca-equipamento-editar.edit', ['peca_equipamento_id' => $lubrificacao_f->id,'tipofiltro'=>1,'produto'=>0]) }}">
-            <i class="icofont-ui-edit"></i>
-        </a>
-
-        <!--Condoçes para deletar a os-->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <a class="btn btn-sm-template btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPecaEquip({{ $lubrificacao_f->id }})">
-            <i class="icofont-ui-delete"></i>
-        </a>
-        <hr style="margin-top:10px;">
-        @endforeach
-    </div>
     {{--fim card--}}
 </div>
 <style>
     .container-box {
-        width:100%;
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
@@ -588,7 +519,7 @@
     }
 
     .item-25 {
-        width: calc(25% - 20px);
+        width: calc(50% - 20px);
         height: auto;
         margin: 10px;
         padding: 15px;

@@ -233,9 +233,9 @@
                 <hr>
                 <div class="conteudo">
                     <select class="input-text" name="tipo_componente" id="tipo_componente">
-                        <option value="manutencao">Manutenção</option>
                         <option value="Componente">Componente</option>
-                        <option value="lubrificação">Lubrificação</option>
+                        <option value="manutencao">Manutenção</option>
+
                     </select>
                 </div>
                 <div class="titulo">Grau de criticidade</div>
@@ -344,7 +344,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <select name="categoria_id" id="" class="form-control-template">
+                <select name="categoria_id" id="" class="form-control">
                     <option value=""> --Selecione a Categoria--</option>
                     @foreach ($categorias as $categoria)
                     <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
@@ -355,7 +355,7 @@
                 {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
             </div>
             <!--input box filtro buscar produto--------->
-            <input type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
+            <input class="form-control" type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
             <button type="submit">
                 <i class="icofont-search icofont-2x"></i>
             </button>
@@ -385,8 +385,9 @@
             <tr>
                 <th>{{ $produto->id }}
                     <!-- Passando o ID do produto via data-id no botão -->
-                    <button class="btn btn-sm-template btn-outline-primary" onclick="AddProduct({{ $produto->id }});">Adicionar</button>
-                </th>
+                    <button class="btn btn-success w-75" onclick="AddProduct({{ $produto->id }});">
+                        Adicionar produto
+                    </button>
                 <td>{{ $produto->cod_fabricante }}</td>
                 <td>{{ $produto->nome }}</td>
                 <td>{{ $produto->unidade_medida->nome }}</td>
@@ -434,15 +435,15 @@
                     }
                 }
             </script>
-             <style>
-                    .preview-image {
-                        width: 100px;
-                        height: 100px;
-                        object-fit: cover;
-                        margin: 0 5px;
-                        cursor: pointer;
-                    }
-                </style>
+            <style>
+                .preview-image {
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
+                    margin: 0 5px;
+                    cursor: pointer;
+                }
+            </style>
         </tbody>
     </table>
 </div>

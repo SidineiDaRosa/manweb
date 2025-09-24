@@ -4,49 +4,50 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <main class="content">
-    <style>
-        .container-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: flex-start;
-        }
-    </style>
+    <div class="container-toolbar">
+        <style>
+            .container-toolbar {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 10px;
+                gap: 5px;
+                /* Espaço entre os itens */
+            }
+        </style>
 
-    <a class="btn btn-outline-primary btn-bg" href="{{ route('equipamento.index', ['empresa'=>2]) }}">
-        <span class="material-symbols-outlined">
-            format_list_bulleted
-        </span>
-    </a>
+        <a class="btn btn-outline-primary btn-bg" href="{{ route('equipamento.index', ['empresa'=>2]) }}">
+            <span class="material-symbols-outlined">
+                format_list_bulleted
+            </span>
+        </a>
 
-    <a class="btn btn-outline-primary btn-bg" href="{{route('equipamento.create')}}">
-        Novo Ativo/Equipamento
-    </a>
-    <a class="btn btn-outline-primary btn-bg" href="{{ route('Peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
-        Novo Componente<span class="material-symbols-outlined">
-            create_new_folder
-        </span>
-    </a>
-    <a class="btn btn-outline-primary btn-bg" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}">
-        <span class="icon text-white-50">
-        </span>
-        <span class="text">Nova O.S</span>
-        <span class="material-symbols-outlined">
-            assignment_add
-        </span>
-    </a>
-    <a class="btn btn-outline-success btn-bg" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}">
-        Pedido Compra <span class="material-symbols-outlined">
-            list_alt_add
-        </span>
-    </a>
-    <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
-        <i class="icofont-dashboard"></i> Dashboard
-    </a>
-    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
-        <i class="icofont-ui-edit"></i> </a>
-    <span style="font-family: Arial, Helvetica, sans-serif;">Visualização do Ativo | Patrimônio</span>
-
+        <a class="btn btn-outline-primary btn-bg" href="{{route('equipamento.create')}}">
+            <i class="bi bi-house-gear-fill"></i>
+            Novo Ativo/Equipamento
+        </a>
+        <a class="btn btn-outline-primary btn-bg" href="{{ route('Peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
+            <i class="bi bi-gear"></i>
+            Novo Componente
+        </a>
+        <a class="btn btn-outline-primary btn-bg" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}">
+            <span class="material-symbols-outlined">
+                assignment_add
+            </span>
+            <span class="text">Nova O.S</span>
+        </a>
+        <a class="btn btn-outline-success btn-bg" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}">
+            <span class="material-symbols-outlined">
+                list_alt_add
+            </span>
+            Pedido Compra
+        </a>
+        <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
+            <i class="icofont-dashboard"></i> Dashboard
+        </a>
+        <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
+            <i class="icofont-ui-edit"></i> </a>
+        <span style="font-family: Arial, Helvetica, sans-serif;">Visualização do Ativo | Patrimônio</span>
+    </div>
     {{-------------------------------------------------------------------------}}
     {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
     <style>

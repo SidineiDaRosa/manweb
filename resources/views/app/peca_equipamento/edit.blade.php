@@ -250,7 +250,6 @@
                         <option value="{{$pecas_equipamentos_for->tipo_componente}}">{{$pecas_equipamentos_for->tipo_componente}}</option>
                         <option value="manutencao">Manutenção</option>
                         <option value="Componente">Componente</option>
-                        <option value="lubrificação">lubrificação</option>
                     </select>
                 </div>
                 <div class="titulo">Grau de criticidade</div>
@@ -359,7 +358,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <select name="categoria_id" id="" class="form-control-template">
+                <select  class="form-control"  name="categoria_id" id="" class="form-control-template">
                     <option value=""> --Selecione a Categoria--</option>
                     @foreach ($categorias as $categoria)
                     <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
@@ -370,7 +369,7 @@
                 {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
             </div>
             <!--input box filtro buscar produto--------->
-            <input type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
+            <input class="form-control" type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
             <button type="submit">
                 <i class="icofont-search icofont-2x"></i>
             </button>
