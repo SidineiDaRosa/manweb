@@ -11,9 +11,7 @@
 
         <diV>
             <a class="btn btn-outline-primary" href="{{ route('Peca-equipamento.index') }}">
-                <span class="material-symbols-outlined">
-                    format_list_bulleted
-                </span>
+              
             </a>
 
             <a class="btn btn-outline-success" href="{{route('equipamento.index', ['empresa'=>2])}}">

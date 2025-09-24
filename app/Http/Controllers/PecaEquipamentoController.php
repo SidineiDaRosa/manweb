@@ -37,19 +37,8 @@ class PecaEquipamentoController extends Controller
             return view('app.peca_equipamento.chek_list', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
         }
         if (!isset($categoria)) {
-            $pecasEquip = PecasEquipamentos::where('tipo_componente', 'Chek-List')->where('horas_proxima_manutencao', '<=', 48)->orderby('horas_proxima_manutencao')->get();
+            $pecasEquip = PecasEquipamentos::all();
             return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
-        } else {
-            switch ($opcao) {
-                case 1:
-                    $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('data_proxima_manutencao', '<=', $data_proxima)->orderby('horas_proxima_manutencao')->get();
-                    return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
-                    break;
-                case 2:
-                    $pecasEquip = PecasEquipamentos::where('tipo_componente', $categoria)->where('horas_proxima_manutencao', '<=', $horas_proxima)->orderby('horas_proxima_manutencao')->get();
-                    return view('app.peca_equipamento.index', ['pecas_equipamento' => $pecasEquip, 'equipamentos' => $equipamentos, 'categorias' => $categorias]);
-                    break;
-            }
         }
     }
     /**
@@ -347,23 +336,25 @@ class PecaEquipamentoController extends Controller
      */
     public function destroy($id)
     {
-        // Encontre a peça de equipamento pelo ID
         $pecaEquipamento = PecasEquipamentos::find($id);
 
-        // Verifique se a peça de equipamento foi encontrada
         if (!$pecaEquipamento) {
-            return response()->json(['success' => false, 'message' => 'Peça não encontrada.']);
+            session()->flash('error', 'Peça não encontrada.');
+            return back();
         }
 
-        // Verifique se o usuário tem permissão para deletar a peça de equipamento
         if (auth()->user()->level === 0) {
-            // Deleta a peça de equipamento
             $pecaEquipamento->delete();
-            return response()->json(['success' => true]);
+            session()->flash('success', 'Peça deletada com sucesso!');
+            return back();
         } else {
-            return response()->json(['success' => false, 'message' => 'Você não tem permissão para deletar esta peça.']);
+            session()->flash('error', 'Você não tem permissão para deletar esta peça.');
+            return back();
         }
     }
+
+
+
     public function searching_products(Request $request)
     {
         $peca_equip_id = $request->get('peca_equipamento_id'); //Pega o id do registro componente

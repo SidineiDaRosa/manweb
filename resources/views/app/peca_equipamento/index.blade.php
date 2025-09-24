@@ -19,22 +19,34 @@
     });
 </script>
 <main class="content">
+
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+    @endif
+
+
     <div class="card-header-template">
 
         <diV>
-            <a class="btn btn-outline-primary" href="{{ route('Peca-equipamento.index') }}">
-                <span class="material-symbols-outlined">
-                    format_list_bulleted
-                </span>
-            </a>
+
             <a class="btn btn-outline-dark" href="{{ route('app.home') }}">
-                <i class="icofont-dashboard"></i> dashboard
+                <i class="bi bi-speedometer2 me-2"></i> Dashboard
             </a>
         </div>
     </div>
     </div>
     <div class="titulo-main">
-        Chek-List lista
+        Componentes de equipamentos
     </div>
     <style>
         .titulo-main {
@@ -63,10 +75,9 @@
                     <div class="col-md-2">
                         <label for="opcoes">Categoria:</label>
                         <select class="form-control" id="opcoes" name="categoria">
-                            <option value="Chek-list">Chek-list</option>
-                            <option value="Lubrificação">Lubrificação</option>
-                            <option value="Mensalidade">Mensalidade</option>
+                            <option value="all">Todas</option>
                             <option value="Componente">Componente</option>
+                            <option value="Manutenção">Manutenção</option>
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -193,7 +204,7 @@
                             <a class="txt-link" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}">{{ $equipamento['nome'] }}</a>
                         </td> <!-- Exibindo o nome do equipamento -->
                         <style>
-                           
+
                         </style>
                         @endif
                         @endforeach
@@ -231,9 +242,30 @@
                 <a class="btn btn-sm-template btn-outline-primary" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
                     <i class="icofont-eye-alt"></i>
                 </a>
+                <a class="btn btn-sm-template btn-outline-success" href="{{route('Peca-equipamento.index',['peca_equip_id'=>$peca_equipamento->id ,'chek_list'=>1])}}">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <form action="{{ route('peca_equipamento.destroy', $peca_equipamento->id) }}"
+                    method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Tem certeza que deseja excluir esta peça?')">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </form>
+
+
             </div>
             @endforeach
-            </tbody>
-            </table>
+            <!-- Bootstrap CSS no <head> -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+            <!-- ...seu conteúdo... -->
+
+            <!-- Bootstrap JS no final do body -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </main>
 @endsection

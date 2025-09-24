@@ -240,17 +240,21 @@ Route::middleware('auth')->resource('Estoque-produto', EstoqueProdutoController:
 //-------------------------------------------------------------//
 //          Peças equipamentos
 //-------------------------------------------------------------//
+use App\Http\Controllers\PecaEquipamentoController;
 
 Route::middleware('auth')->resource('/Peca-equipamento', 'App\Http\Controllers\PecaEquipamentoController');
 //--
 Route::middleware('auth')->post('/peca-equpamento-filtro', [App\Http\Controllers\PecaEquipamentoController::class, 'index']);
 
-use App\Http\Controllers\PecaEquipamentoController;
+
 use App\Models\EstoqueProdutos;
 use App\Models\PedidoCompraLista;
 
 Route::middleware(['auth'])->get('/peca-equipamento-editar/{peca_equipamento_id}', [PecaEquipamentoController::class, 'edit'])->name('Peca-equipamento-editar.edit');
 Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaEquipamentoController::class, 'update'])->name('Peca-equipamento.update');
+Route::delete('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'destroy'])
+    ->name('peca-equipamento.destroy')
+    ->middleware('auth');
 
 //------------------------------------------//
 //  Pedidos de compra                       //

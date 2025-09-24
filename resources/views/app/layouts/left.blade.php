@@ -226,9 +226,15 @@
             </a>
             <div class="submenu" id="patrimonio-submenu">
                 <a href="#">Ativos</a>
-                <a href="{{ route('Peca-equipamento.index') }}">Filtros de Check-List Lubrificação</a>
-                <a href="#">Manutenção</a>
-                <a href="{{ route('ordem-servico.index') }}">Ordem de Serviço</a>
+                <a href="{{ route('Peca-equipamento.index') }}">
+                    <i class="bi bi-gear"></i>
+                    Peças de equipamentos</a>
+                <a href="#">
+                    <i class="bi bi-tools"></i>
+                    Manutenção</a>
+                <a href="{{ route('ordem-servico.index') }}">
+                    <i class="bi bi-file-text"></i>
+                    Ordem de Serviço</a>
                 <a href="{{ route('index_kpis') }}">KPIs</a>
                 <a href="#">Gráficos</a>
             </div>
