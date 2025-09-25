@@ -8,27 +8,35 @@
             <i class="icofont-dashboard"></i> dashboard
         </a>
     </div>
-    <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
-        Entre:
-        <input type="datetime-local" class="form-control" name="datetime" id="datetime" style="width:250px;"> <br>
-        <input type="datetime-local" class="form-control" name="datetime_fim" id="datetime_fim" style="width:250px;"> <br>
-        <label for="option-all">Todas</label>
-        <input type="radio" id="option-all" name="options" value="Todas" checked>
+    <div class="div-datas">
+           Selecione o periodo
+        <style>
+            .div-datas {
+                margin-left: 20px;
+            }
+        </style>
+        <form action="{{ route('solicitacoes-os') }}" method="get" style="font-family: Arial,sans-serif;">
+            <input type="datetime-local" class="form-control" name="datetime" id="datetime" style="width:250px;"> <br>
+            <input type="datetime-local" class="form-control" name="datetime_fim" id="datetime_fim" style="width:250px;"> <br>
+            <label for="option-all">Todas</label>
+            <input type="radio" id="option-all" name="options" value="Todas" checked>
 
-        <label for="option-accepted">Aceitas</label>
-        <input type="radio" id="option-accepted" name="options" value="Aceita">
+            <label for="option-accepted">Aceitas</label>
+            <input type="radio" id="option-accepted" name="options" value="Aceita">
 
-        <label for="option-pending">Em espera</label>
-        <input type="radio" id="option-pending" name="options" value="Em Espera">
+            <label for="option-pending">Em espera</label>
+            <input type="radio" id="option-pending" name="options" value="Em Espera">
 
-        <label for="option-rejected">Recusada</label>
-        <input type="radio" id="option-rejected" name="options" value="Recusada">
-        <input type="hidden" name="receptor" value="{{ auth()->user()->nome }}">
-        <button type="submit" class="btn btn-outline-primary mb-1">
-            Buscar
-        </button>
+            <label for="option-rejected">Recusada</label>
+            <input type="radio" id="option-rejected" name="options" value="Recusada">
+            <input type="hidden" name="receptor" value="{{ auth()->user()->nome }}">
+            <button type="submit" class="btn btn-outline-primary mb-1">
+                Buscar
+            </button>
 
-    </form>
+        </form>
+    </div>
+
     <style>
         .titulo-main {
             font-size: 20px;
