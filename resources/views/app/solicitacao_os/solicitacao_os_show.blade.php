@@ -43,6 +43,7 @@
             color: gray;
             text-align: center;
             margin-top: -2;
+            
         }
     </style>
     @foreach($solicitacoes as $solicitacao)
@@ -62,6 +63,7 @@
         </div><br>
 
         <div style="
+padding:5px;width:200px;
     @if($solicitacao->status == 'Aberta') 
         background-color: red; 
     @elseif($solicitacao->status == 'Em Espera') 
@@ -72,6 +74,7 @@
         background-color: lightgrey; 
     @endif
     width: 50%;border-radius:5px;
+   
 ">
             Status: {{$solicitacao->status}} <br>
         </div> <br>
