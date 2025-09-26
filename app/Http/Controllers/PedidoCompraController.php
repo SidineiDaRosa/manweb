@@ -322,8 +322,6 @@ class PedidoCompraController extends Controller
     }
     public function storeItem(Request $request)
     {
-
-
         // 1️⃣ Registrar a entrada no histórico
         EntradaProduto::create([
             'produto_id'    => $request->produto_id,
@@ -333,6 +331,7 @@ class PedidoCompraController extends Controller
             'valor'         => $request->valor ?? 0,
             'data'          => Carbon::now('America/Sao_Paulo')->format('Y-m-d'),
             'nota_fiscal'   => $request->nota_fiscal ?? null,
+            'pedido_compra_id' => $request->pedido_compra_id
         ]);
 
         // 2️⃣ Atualizar ou criar o estoque existente
@@ -357,6 +356,7 @@ class PedidoCompraController extends Controller
             'success' => true,
             'mensagem' => 'Entrada registrada com sucesso!',
             'novo_estoque' => $estoque->quantidade,
+            'request->status' => $request->status
         ]);
     }
 }

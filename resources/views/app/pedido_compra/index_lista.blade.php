@@ -450,9 +450,9 @@
                 </div>
                 <div class="item-box">
                     <div class="item-title">Status:</div>
-                    <div class="item-text"> {{($pedido_compra_ls->status) }}</div>
-
-                    </span>
+                    <div class="item-text" id="status-item-{{ $pedido_compra_ls->id }}">
+                        {{ $pedido_compra_ls->status }}
+                    </div>
                 </div>
 
                 <div class="item-box">
@@ -489,56 +489,41 @@
                             <div class="modal-content">
                                 <form class="entradaForm">
                                     @csrf
+                                    <input type="hidden" name="pedido_compra_id" value="{{ $pedido_compra->id }}">
+                                    <input type="hidden" name="item_id" value="{{ $pedido_compra_ls->id }}">
+                                    <input type="hidden" name="produto_id" value="{{ $produto->id }}">
+                                    @if($pedido_compra->fornecedor)
+                                    <input type="hidden" name="fornecedor_id" value="{{ $pedido_compra->fornecedor->id }}">
+                                    @endif
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="entradaModalLabel-{{ $produto->id }}">Entrada de Produto</h5>
+                                        <h5 class="modal-title">Entrada de Produto</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label class="form-label">ID item</label>
-                                            <input class="form-control" type="number" name="item_id" value="{{ $pedido_compra_ls->id }}" readonly>
-                                        </div>
-
-                                        @if($pedido_compra->fornecedor)
-                                        <div class="mb-3">
-                                            <label class="form-label">Fornecedor</label>
-                                            <input class="form-control" type="number" name="fornecedor_id" value="{{ $pedido_compra->fornecedor->id }}" hidden>
-                                            <input class="form-control" type="text" name="fornecedor_razao_social" value="{{ $pedido_compra->fornecedor->razao_social }}" readonly>
-                                        </div>
-                                        @endif
-                                        <input type="hidden" name="produto_id" value="{{ $produto->id }}">
-
-                                        <div class="mb-3">
                                             <label class="form-label">Produto</label>
                                             <input type="text" class="form-control" value="{{ $produto->nome }}" readonly>
                                         </div>
-
                                         <div class="mb-3">
                                             <label class="form-label">Quantidade Recebida</label>
                                             <input type="number" name="quantidade" class="form-control" min="1" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Valor</label>
-                                            <input type="number" name="valor" id="valor" class="form-control" placeholder="R$ 0,00">
+                                            <input type="number" name="valor" class="form-control" placeholder="R$ 0,00" step="0.01" required>
                                         </div>
-
-                                        <div class="item-box">
-                                            <div class="item-title">Status:</div>
-                                            <select name="status" class="form-select">
+                                        <div class="mb-3">
+                                            <label class="form-label">Status</label>
+                                            <select name="status" class="form-select" required>
                                                 <option value="pendente">Pendente</option>
                                                 <option value="concluido">Concluído</option>
                                                 <option value="em_andamento">Em andamento</option>
                                                 <option value="cancelado">Cancelado</option>
                                                 <option value="parcial">Parcial</option>
                                             </select>
-
                                         </div>
-
-
-
-
                                         <div class="alert alert-success d-none msg-sucesso"></div>
                                         <div class="alert alert-danger d-none msg-erro"></div>
                                     </div>
@@ -548,6 +533,7 @@
                                         <button type="submit" class="btn btn-success">Registrar Entrada</button>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -574,36 +560,53 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Adiciona CSRF no header
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             $('.entradaForm').submit(function(e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let url = "{{ route('pedido.store.ajax') }}";
-
-                // ALERTA DE TESTE
 
                 $.ajax({
                     type: 'POST',
-                    url: url,
+                    url: "{{ route('pedido.store.ajax') }}",
                     data: form.serialize(),
                     dataType: 'json',
                     success: function(response) {
-                        alert(response.mensagem); // teste
+                         
                         form.find('.msg-sucesso').text(response.mensagem).removeClass('d-none');
                         form.find('.msg-erro').addClass('d-none');
 
-                        // Fecha a modal correta
                         form.closest('.modal').modal('hide');
                         form[0].reset();
+                       
+                        // Atualiza o status do item na tela
+                        let itemId = form.find('input[name="item_id"]').val();
+                        $('#status-item-' + itemId).text(response.status);
+
+                        // Opcional: atualizar quantidade na tela
+                        console.log("Novo estoque:", response.novo_estoque);
+
                     },
                     error: function(xhr) {
-                        form.find('.msg-erro').text('Erro ao enviar').removeClass('d-none');
+                        console.log(xhr.responseJSON); // Mostra erro real do Laravel no console
+                        let msg = 'Erro ao enviar dados do item';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        form.find('.msg-erro').text(msg).removeClass('d-none');
                         form.find('.msg-sucesso').addClass('d-none');
                     }
                 });
             });
         });
     </script>
+
 
     {{--====================================================================--}}
     {{--Função que fecha o pedido de compra-----------------------------------}}
@@ -669,25 +672,28 @@
         </div>
     </div>
 
-    <input type="text" id="valor" placeholder="Digite um valor" value="{{$pedido_compra->id}}" hidden readonly>
+    <input type="text" id="pedido_compra_id" placeholder="Digite um valor" value="{{$pedido_compra->id}}" hidden readonly>
+
     <script>
         $(document).ready(function() {
             $('#confirmarEnvio').click(function() {
-                var valor = $('#valor').val(); // Obtém o valor do input
+                var valor = $('#valor').val();
 
                 $.ajax({
-                    type: 'GET', // Método HTTP da requisição
-                    url: '{{ route("updatepedidocompra") }}', // URL para onde a requisição será enviada
+                    type: 'POST', // POST e não GET
+                    url: '{{ route("updatepedidocompra") }}',
                     data: {
-                        valor: valor
-                    }, // Dados a serem enviados (no formato chave: valor)
+                        valor: valor,
+                        _token: $('meta[name="csrf-token"]').attr('content') // CSRF
+                    },
                     success: function(response) {
-                        $('#mensagem').text('Resposta do servidor: ' + response); // Exibe a resposta do servidor
-                        $('#sucessoModal').modal('show'); // Exibe a modal de sucesso
+                        $('#mensagem').text(response.mensagem);
+                        $('#sucessoModal').modal('show');
                     },
                     error: function(xhr, status, error) {
-                        $('#mensagem').text('Erro ao enviar valor: ' + error); // Exibe mensagem de erro, se houver
-                        $('#erroModal').modal('show'); // Exibe a modal de sucesso
+                        console.error(xhr.responseText);
+                        $('#mensagem').text('Erro ao enviar os dados: ' + error);
+                        $('#erroModal').modal('show');
                     }
                 });
             });

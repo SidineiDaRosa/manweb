@@ -8,24 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class EntradaProduto extends Model
 {
     use HasFactory;
-    protected $table='entradas_produtos';
-    protected $fillable=[
+    protected $table = 'entradas_produtos';
+    protected $fillable = [
         'produto_id',
-        'fornecedor_id',
         'quantidade',
+        'fornecedor_id',
+        'empresa_id',
         'valor',
-        'nota_fiscal',
         'data',
-        'empresa_id'
+        'nota_fiscal',
+        'pedido_compra_id',
     ];
-
-    public function produto(){
+    public function produto()
+    {
         return $this->belongsTo('App\Models\Produto');
     }
-    public function Fornecedor(){
+    public function Fornecedor()
+    {
         return $this->belongsTo('App\Models\Fornecedor');
     }
-    public function Empresa(){
+    public function Empresa()
+    {
         return $this->belongsTo('App\Models\Empresas');
     }
 }

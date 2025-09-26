@@ -4,7 +4,7 @@
 <main class="content">
     <div class="card" style="background-color: rgb(245, 246, 248)">
         <div class="card-header-template">
-           <span style="font-family: Arial, Helvetica, sans-serif;">Entradas de produtos</span> 
+            <span style="font-family: Arial, Helvetica, sans-serif;">Entradas de produtos</span>
             <form id="formSearchingProducts" action="{{'Ent-Produtos-filtro'}}" method="POST" style="width: 75%;">
                 @csrf
                 <!--------------------------------------------------------------------------------------->
@@ -103,7 +103,7 @@
                         <th>Valor</th>
                         <th>Lançamento</th>
                         <th>Fornecedor</th>
-                        <th>Empresa</th>
+                        <th>Pedido de Compra</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,7 +122,12 @@
                         @foreach ($empresa as $empresas_find)
 
                         @endforeach
-                        <td>{{$entrada_produto->empresa->razao_social}}</td>
+                        <td>
+                            <a class="txt-link" href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $entrada_produto->pedido_compra_id]) }}" title="Visualizar">
+                                {{ $entrada_produto->pedido_compra_id}}
+                            </a>
+
+                        </td>
                         <td hidden>
                             <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
                                 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('entrada-produto.show', ['entrada_produto' => $entrada_produto->id]) }}">
