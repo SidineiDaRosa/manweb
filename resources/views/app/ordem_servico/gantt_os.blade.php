@@ -29,21 +29,27 @@
           <div class="dados-cabecalho" style="width:420px;">
             <h5>Dados da O.S.</h5>
           </div>
-          <div id="teste-datas" style="position:fixed; bottom:10px; right:10px; background:#fff; padding:5px; border:1px solid #000; z-index:1000;">
+          <div id="teste-datas" style="position:fixed; bottom:10px; right:10px; background:#fff; padding:5px; border:1px solid #000; z-index:1000;" hidden>
             Datas atualizadas aparecerão aqui
           </div>
-
+          <!-------------------------------------------------------------->
+          <!--  Container  das datas                                    -->
+          <!-------------------------------------------------------------->
           <div class="timeline-container" id="timeline-container">
             <div class="timeline-years" id="timeline-years"></div>
             <div class="timeline-months" id="timeline-months"></div>
-
-            <div class="timeline-days" id="timeline-days" style="font-size:5px;"></div>
+            <div class="timeline-days" id="timeline-days"></div>
             <div class="timeline-header" id="timeline-header"></div>
+
+            <!-- Container de linhas flutuantes -->
+            <div id="linhas-verticais-container"></div>
           </div>
         </div>
         <div id="tarefas-container" style="flex: 1; overflow-y: auto;"></div>
+
       </div>
     </div>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Modal -->
     <div id="modal">
@@ -264,8 +270,11 @@
           linhaMes.style.left = larguraAcumulada + 'px'; // usa largura acumulada
           linhaMes.style.height = '100%';
           timelineHeader.appendChild(linhaMes);
+
         });
-        //======  dias   ====//
+        //=======================================================//
+        // Gera os dias do mês
+        //=======================================================//
         const timelineDays = document.getElementById('timeline-days');
         timelineDays.innerHTML = ''; // limpa antes
 
@@ -275,25 +284,21 @@
           const divDia = document.createElement('div');
           divDia.className = 'day';
 
-          // Formata o dia para aparecer (ex: 01, 02, 15...)
+          // Formata o dia (01, 02, 15...)
           const diaNum = diaAtual.getDate().toString().padStart(2, '0');
           divDia.textContent = diaNum;
 
-          // Calcula o início e fim do dia atual (meia-noite até meia-noite do próximo dia)
+          // Calcula início e fim do dia atual
           const inicioDia = new Date(diaAtual);
           inicioDia.setHours(0, 0, 0, 0);
 
           const fimDia = new Date(inicioDia);
           fimDia.setHours(24, 0, 0, 0);
 
-          // Define o intervalo visível para o dia atual dentro do intervalo geral
           const inicioVisivel = inicioDia < inicio ? inicio : inicioDia;
           const fimVisivel = fimDia > fim ? fim : fimDia;
 
-          // Calcula quantas horas do dia estão visíveis
           const horasVisiveis = (fimVisivel - inicioVisivel) / (1000 * 60 * 60);
-
-          // Define a largura proporcional da div do dia
           divDia.style.width = `${PIXELS_POR_HORA * horasVisiveis}px`;
 
           // 🔹 Estilos compactos
@@ -303,33 +308,29 @@
           divDia.style.textAlign = 'center';
           divDia.style.borderRight = '1px dotted #999';
 
-          timelineDays.appendChild(divDia);
-
-          // Incrementa 1 dia
-          diaAtual.setDate(diaAtual.getDate() + 1);
-        }
-        // Depois desse trecho que cria os dias:
-        while (diaAtual <= fim) {
-          const divDia = document.createElement('div');
-          divDia.className = 'day';
-
-          // ... código para ajustar largura e texto do dia ...
+          // 👉 Marca sábado/domingo
+          if (diaAtual.getDay() === 0) { // Domingo
+            divDia.classList.add('sunday');
+          } else if (diaAtual.getDay() === 6) { // Sábado
+            divDia.classList.add('saturday');
+          }
 
           timelineDays.appendChild(divDia);
 
-          // Adiciona linha vertical tracejada para o dia
+          // 👉 Linha vertical após cada dia
           const linhaDia = document.createElement('div');
           linhaDia.className = 'grid-line';
-          linhaDia.style.height = '100%'; // cobre toda a altura da barra de dias
-          linhaDia.style.position = 'absolute'; // posicionamento absoluto
-          linhaDia.style.left = divDia.offsetLeft + divDia.offsetWidth + 'px'; // posição após o dia
+          linhaDia.style.height = '100%';
+          linhaDia.style.position = 'absolute';
+          linhaDia.style.left = divDia.offsetLeft + divDia.offsetWidth + 'px';
           linhaDia.style.top = '0';
           linhaDia.style.borderLeft = '1px dotted #999';
-
           timelineDays.appendChild(linhaDia);
 
+          // Próximo dia
           diaAtual.setDate(diaAtual.getDate() + 1);
         }
+
         // ==========Horas (somente se intervalo <= 48 horas)======//
 
         if (intervaloHoras <= 48) {
@@ -741,7 +742,21 @@
           });
       });
     </script>
+    <style>
+      .day.saturday {
+        background-color: rgba(255, 165, 0, 0.2);
+        /* laranja clarinho */
+        color: #ff8c00;
+        font-weight: bold;
+      }
 
+      .day.sunday {
+        background-color: rgba(255, 0, 0, 0.2);
+        /* vermelho clarinho */
+        color: #b22222;
+        font-weight: bold;
+      }
+    </style>
 </main>
 
 @endsection
