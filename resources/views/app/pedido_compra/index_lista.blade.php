@@ -6,6 +6,12 @@
     <div class="titulo-main">
         Pedido de compra
     </div>
+    <div id="alerta-topo" class="alert d-none alert-dismissible fade show text-center" role="alert"
+        style="position:fixed; top:10px; left:50%; transform:translateX(-50%);
+            z-index:9999; width:50%; font-weight:600;">
+        <span id="alerta-msg"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Executar após o carregamento do DOM
@@ -300,7 +306,16 @@
                     <div class="titulo">Status</div>
                     <hr style="margin:-0px;color:#ccc;">
                     <div class="conteudo">
-                        <input name="status" id="status" type="text" class="form-control" value="Pendente" readonly>
+                        <input
+                            name="status"
+                            id="status"
+                            type="text"
+                            class="form-control"
+                            value="Pendente"
+                            readonly
+                            onmousedown="return false"
+                            onselectstart="return false"
+                            tabindex="-1">
                     </div>
                 </div>
                 <div class="div-column">
@@ -309,7 +324,7 @@
                     <div class="conteudo">
                         <div class="col-md-0 offset-md-0">
                             <button type="submit" id="submitForm" class="btn btn-outline-primary sm" value="">
-                                Incluír no pedido
+                                Incluír no Pedido
                             </button>
                         </div>
                     </div>
@@ -449,11 +464,48 @@
                     <div class="item-text">{{ $pedido_compra_ls->quantidade }}</div>
                 </div>
                 <div class="item-box">
-                    <div class="item-title">Status:</div>
-                    <div class="item-text" id="status-item-{{ $pedido_compra_ls->id }}">
+                    <div class="item-title">Status Item:</div>
+                    <div class="item-text
+        @if($pedido_compra_ls->status == 'Pendente') status-pendente
+        @elseif($pedido_compra_ls->status == 'Concluido') status-concluido
+        @elseif($pedido_compra_ls->status == 'Cancelado') status-cancelado
+        @elseif($pedido_compra_ls->status == 'Parcial') status-parcial
+        @endif
+        p-2 rounded text-center"
+                        id="status-item-{{ $pedido_compra_ls->id }}">
                         {{ $pedido_compra_ls->status }}
                     </div>
                 </div>
+
+                <style>
+                    .status-pendente {
+                        background-color: #fff3cd;
+                        /* fundo amarelo claro */
+                        color: #856404;
+                        /* texto laranja escuro */
+                    }
+
+                    .status-concluido {
+                        background-color: #d4edda;
+                        /* fundo verde claro */
+                        color: #155724;
+                        /* texto verde escuro */
+                    }
+
+                    .status-cancelado {
+                        background-color: #f8d7da;
+                        /* fundo vermelho claro */
+                        color: #721c24;
+                        /* texto vermelho escuro */
+                    }
+
+                    .status-parcial {
+                        background-color: #cce5ff;
+                        /* fundo azul claro */
+                        color: #004085;
+                        /* texto azul escuro */
+                    }
+                </style>
 
                 <div class="item-box">
                     <div class="item-title">Imagem:</div>
@@ -465,7 +517,7 @@
                 </div>
 
                 <div class="item-box item-actions">
-                    <a class="btn btn-sm btn-outline-primary" href="{{ route('produto.show', ['produto' => $pedido_compra_ls->produto_id]) }}">
+                    <a class="btn btn-sm btn-outline-primary" href="{{ route('produto.show', ['produto' => $pedido_compra_ls->produto_id]) }}" target="blank">
                         <i class="icofont-eye-alt"></i> Ver
                     </a>
                     <a href="javascript:void(0);"
@@ -517,16 +569,16 @@
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
                                             <select name="status" class="form-select" required>
-                                                <option value="pendente">Pendente</option>
-                                                <option value="concluido">Concluído</option>
-                                                <option value="em_andamento">Em andamento</option>
-                                                <option value="cancelado">Cancelado</option>
-                                                <option value="parcial">Parcial</option>
+                                                <option value="Pendente">Pendente</option>
+                                                <option value="Concluido">Concluído</option>
+                                                <option value="Cancelado">Cancelado</option>
+                                                <option value="Parcial">Parcial</option>
                                             </select>
                                         </div>
                                         <div class="alert alert-success d-none msg-sucesso"></div>
                                         <div class="alert alert-danger d-none msg-erro"></div>
                                     </div>
+
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -578,21 +630,46 @@
                     data: form.serialize(),
                     dataType: 'json',
                     success: function(response) {
-                         
+                        // Mensagem dentro do modal (opcional)
                         form.find('.msg-sucesso').text(response.mensagem).removeClass('d-none');
                         form.find('.msg-erro').addClass('d-none');
 
+                        // Fecha modal e reseta form
                         form.closest('.modal').modal('hide');
                         form[0].reset();
-                       
-                        // Atualiza o status do item na tela
+
+                        // Pega o ID do item
                         let itemId = form.find('input[name="item_id"]').val();
-                        $('#status-item-' + itemId).text(response.status);
+                        // Seleciona a div do status correta
+                        let statusDiv = $('#status-item-' + itemId);
 
-                        // Opcional: atualizar quantidade na tela
+                        // Atualiza o texto do status
+                        statusDiv.text(response.status);
+
+                        // Remove todas as classes de status anteriores
+                        statusDiv.removeClass('status-pendente status-concluido status-cancelado status-parcial');
+
+                        // Adiciona a classe correspondente ao novo status
+                        if (response.status === 'Pendente') {
+                            statusDiv.addClass('status-pendente');
+                        } else if (response.status === 'Concluido') {
+                            statusDiv.addClass('status-concluido');
+                        } else if (response.status === 'Cancelado') {
+                            statusDiv.addClass('status-cancelado');
+                        } else if (response.status === 'Parcial') {
+                            statusDiv.addClass('status-parcial');
+                        }
+
+                        // ✅ Mostra mensagem fixa no topo
+                        let alerta = document.getElementById('alerta-topo');
+                        alerta.classList.remove('d-none'); // remove classe que esconde
+                        alerta.classList.add('alert-success'); // define tipo de alerta
+                        document.getElementById('alerta-msg').innerText = response.mensagem;
+
+                        // Atualiza quantidade na tela (opcional)
                         console.log("Novo estoque:", response.novo_estoque);
-
                     },
+
                     error: function(xhr) {
                         console.log(xhr.responseJSON); // Mostra erro real do Laravel no console
                         let msg = 'Erro ao enviar dados do item';

@@ -356,7 +356,7 @@ class PedidoCompraController extends Controller
             'success' => true,
             'mensagem' => 'Entrada registrada com sucesso!',
             'novo_estoque' => $estoque->quantidade,
-            'request->status' => $request->status
+            'status' =>$request->status
         ]);
     }
 }
