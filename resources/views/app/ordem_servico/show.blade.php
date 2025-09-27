@@ -216,10 +216,13 @@
                                 class="form-control"
                                 rows="6"
                                 readonly
-                                style="color:#333333; font-weight:500; font-family:Arial, Helvetica, sans-serif; border:1px dashed #333;">
-                            {{$ordem_servico->descricao}}
-                            </textarea>
-
+                                style="color:#333333; 
+               font-weight:500; 
+               font-family:Arial, Helvetica, sans-serif; 
+               border:1px dashed #333;
+               text-align:left;    /* força alinhamento à esquerda */
+               padding:5px;        /* padding padrão */
+               margin:0;">{{ trim($ordem_servico->descricao) }}</textarea>
                         </div>
                         <style>
                             #txt-area {
@@ -457,7 +460,7 @@
                 Iniciar OS
             </button>
             @endif
-            <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1"  style="width:300px;">Gerar PDF
+            <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1" style="width:300px;">Gerar PDF
                 <i class="bi bi-filetype-pdf"></i>
             </button>
             <script>
