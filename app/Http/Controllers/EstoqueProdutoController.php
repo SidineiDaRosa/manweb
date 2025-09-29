@@ -13,6 +13,7 @@ use App\Models\PedidoSaida;
 use App\Models\UnidadeMedida;
 use App\Models\Categoria;
 use App\Models\EntradaProduto;
+use App\Models\SaidaProduto;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
@@ -259,13 +260,32 @@ class EstoqueProdutoController extends Controller
         $criticalItemsFault = EstoqueProdutos::whereColumn('quantidade', '<', 'estoque_minimo')
             ->where('criticidade', '>', 0)
             ->count();
-        $movementsThisMonth = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(30))
+        $movementsThisMonth = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
             ->count();
         $stok_level = EstoqueProdutos::where('quantidade', '<=', 'estoque_mnimo')->get();
         // $lowStockItems = Product::with('category')
         // ->whereColumn('quantity', '<=', 'min_quantity')
         //  ->get();
+        // Contagem por criticidade (1 a 9)
 
+        // Inicializa um array 0..9 com zeros
+        $criticidadeCounts = array_fill(0, 10, 0); // índices 0 a 9
+
+        $rawSums = DB::table('estoque_produtos')
+            ->select('criticidade', DB::raw('SUM(quantidade) as total'))
+            ->groupBy('criticidade')
+            ->pluck('total', 'criticidade'); // [criticidade => soma]
+
+        foreach ($rawSums as $crit => $total) {
+            $idx = (int) $crit;
+            if ($idx >= 0 && $idx <= 9) {
+                $criticidadeCounts[$idx] = (int) $total; // <- preenche o array certo
+            }
+        }
+        $movementsInputProcucts = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(360))
+            ->count();
+        $movementsouputProcucts = SaidaProduto::where('created_at', '>=', Carbon::now()->subDays(360))
+            ->count();
         // Retorna a view do dashboard com os dados
         return view('app.estoque_produto.dashboard', [
             'totalItems' => $totalItems,
@@ -273,7 +293,8 @@ class EstoqueProdutoController extends Controller
             'criticalItems' => $criticalItems,
             'movementsThisMonth' => $movementsThisMonth,
             'criticalItemsFault' => $criticalItemsFault,
-            'stok_level' => $stok_level
+            'stok_level' => $stok_level,
+            'criticidadeCounts' => $criticidadeCounts
         ]);
     }
 }

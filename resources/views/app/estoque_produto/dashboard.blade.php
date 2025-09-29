@@ -124,6 +124,7 @@
 </head>
 
 <body>
+
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -292,13 +293,18 @@
                             </div>
                         </div>
                     </div>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <div class="col-md-4 mb-3">
                         <div class="card card-dashboard">
                             <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Categorias de Itens</h5>
+                                <h5 class="card-title mb-0">Criticidade de Itens
+
+                                </h5>
                             </div>
                             <div class="card-body">
+                                <!-- Gráfico de Criticidade -->
                                 <canvas id="categoryChart" height="250"></canvas>
+
                             </div>
                         </div>
                     </div>
@@ -427,21 +433,21 @@
             }
         });
 
-        // Gráfico de Categorias
-        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-        const categoryChart = new Chart(categoryCtx, {
-            type: 'doughnut',
+        // Gráfico de Criticidade
+        // Pega os dados do controller
+        const criticidadeCounts = @json($criticidadeCounts);
+
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const criticidadeChart = new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels: ['Ferramentas', 'Fixadores', 'Elétrica', 'EPI', 'Hidráulica', 'Outros'],
+                labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
                 datasets: [{
-                    data: [25, 18, 15, 22, 12, 8],
+                    label: 'Quantidade de Itens por Criticidade',
+                    data: criticidadeCounts,
                     backgroundColor: [
-                        '#3498db',
-                        '#2ecc71',
-                        '#e74c3c',
-                        '#f39c12',
-                        '#9b59b6',
-                        '#34495e'
+                        '#e74c3c', '#e67e22', '#f39c12', '#f1c40f',
+                        '#2ecc71', '#27ae60', '#3498db', '#2980b9', '#9b59b6', '#34495e'
                     ]
                 }]
             },
@@ -449,12 +455,30 @@
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'right',
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Nível de Criticidade'
+                        }
                     }
                 }
             }
         });
     </script>
 </body>
+<pre>
+{{ print_r($criticidadeCounts) }}
+</pre>
 
 </html>
