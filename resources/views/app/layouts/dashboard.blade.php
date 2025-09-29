@@ -919,7 +919,7 @@
                 Novo Pedido de saída
             </button>
             <hr style="margin-bottom:2px;margin-top:2px;">
-            <div class="card text-white mb-3" style="max-width:100%;background-color:#cbe7d0;">
+            <div class="card text-white mb-3" style="max-width:100%;background-color:rgba(39,218,190,0.2);">
                 <div class="card-body">
                     <div class="container">
                         <table class="condensed-table" id="tb_pedidos_compra">
@@ -1090,7 +1090,7 @@
                 Estoque de produtos
             </button>
             <hr style="margin-bottom:2px;margin-top:2px;">
-            <div class="container" style="background-color: burlywood;">
+            <div class="container" style="background-color:rgba(100,58,27,0.1);">
                 <table class="condensed-table" id="tb_pedidos_compra">
                     <thead>
                         <tr>
@@ -1121,11 +1121,17 @@
                                 }
                             </style>
                             <td>{{ $produtoNome }}</td>
-                            <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
-                                {{ $produto_estoque_critico->quantidade }}
+                            <td>
+                                <div class="@if($produto_estoque_critico->quantidade <= 0) btn-bg-static-danger  @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) btn-bg-static-warning  @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) btn-bg-static-warning-ligth @endif">
+                                    {{ $produto_estoque_critico->quantidade }}
+                                </div>
+
                             </td>&nbsp
-                            <td class="@if($produto_estoque_critico->quantidade <= 0) bg-danger @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) bg-warning @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) bg-light-warning @endif">
-                                {{ $produto_estoque_critico->estoque_minimo }}
+                            <td>
+                                <div class="@if($produto_estoque_critico->quantidade <= 0) btn-bg-static-danger  @elseif($produto_estoque_critico->quantidade < $produto_estoque_critico->estoque_minimo) btn-bg-static-warning  @elseif($produto_estoque_critico->quantidade == $produto_estoque_critico->estoque_minimo) btn-bg-static-warning-ligth @endif">
+                                    {{ $produto_estoque_critico->estoque_minimo }}
+                                </div>
+
                             </td>
                             <td> {{$produto_estoque_critico->estoque_maximo}}</td>
 

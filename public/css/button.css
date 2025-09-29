@@ -7,7 +7,7 @@
     color: darkgoldenrod;
     background-color: rgba(236, 213, 120, 0.5);
     gap: 10px;
-    
+
 }
 
 /* Sucesso */
@@ -41,4 +41,190 @@
     color: darkblue;
     background-color: rgba(120, 180, 236, 0.5);
     gap: 10px;
+}
+
+/* ----------------- TAMANHO MÉDIO (md) ----------------- */
+/* Aviso */
+.btn-md-static-warning {
+    border-radius: 20px;
+    height: auto;
+    padding: 5px 15px;
+    font-size: 14px;
+    color: darkgoldenrod;
+    background-color: rgba(236, 213, 120, 0.5);
+    gap: 12px;
+}
+
+/* Sucesso */
+.btn-md-static-success {
+    border-radius: 20px;
+    height: auto;
+    padding: 5px 15px;
+    font-size: 14px;
+    color: darkgreen;
+    background-color: rgba(120, 236, 150, 0.5);
+    gap: 12px;
+}
+
+/* Erro / Perigo */
+.btn-md-static-danger {
+    border-radius: 20px;
+    height: auto;
+    padding: 5px 15px;
+    font-size: 14px;
+    color: darkred;
+    background-color: rgba(236, 120, 120, 0.5);
+    gap: 12px;
+}
+
+/* Informação */
+.btn-md-static-info {
+    border-radius: 20px;
+    height: auto;
+    padding: 5px 15px;
+    font-size: 14px;
+    color: darkblue;
+    background-color: rgba(120, 180, 236, 0.5);
+    gap: 12px;
+}
+
+
+/* ----------------- TAMANHO GRANDE (bg) ----------------- */
+/* Aviso */
+.btn-bg-static-warning {
+    border-radius: 25px;
+    height: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: rgb(139, 103, 9);
+    background-color: rgba(245, 199, 48, 0.5);
+    gap: 10px;
+}
+
+.btn-bg-static-warning-ligth {
+    border-radius: 25px;
+    height: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: rgb(102, 98, 38);
+    background-color: rgba(245, 225, 143, 0.5);
+    gap: 10px;
+}
+
+/* Sucesso */
+.btn-bg-static-success {
+    border-radius: 25px;
+    height: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: darkgreen;
+    background-color: rgba(120, 236, 150, 0.5);
+    gap: 10px;
+}
+
+/* Erro / Perigo */
+.btn-bg-static-danger {
+    border-radius: 25px;
+    height: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: darkred;
+    background-color: rgba(236, 120, 120, 0.5);
+    gap: 10px;
+}
+
+/* Informação */
+.btn-bg-static-info {
+    border-radius: 25px;
+    height: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: darkblue;
+    background-color: rgba(120, 180, 236, 0.5);
+    gap: 10px;
+}
+
+/* BASE: estilo comum a todos */
+[class*="btn-"] {
+    border-radius: 20px;
+    height: auto;
+    padding: 2px 10px;
+    font-size: 12px;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    outline: none;
+    /* remove borda de foco padrão */
+}
+
+/* Interações comuns */
+[class*="btn-"]:hover,
+[class*="btn-"]:focus {
+    transform: scale(1.05);
+}
+
+[class*="btn-"]:active {
+    transform: scale(0.95);
+}
+
+/* -------------------- Aviso -------------------- */
+.btn-sm-static-warning {
+    color: darkgoldenrod;
+    background-color: rgba(236, 213, 120, 0.5);
+}
+
+.btn-sm-static-warning:hover,
+.btn-sm-static-warning:focus {
+    background-color: rgba(236, 213, 120, 0.8);
+}
+
+.btn-sm-static-warning:active {
+    background-color: rgba(236, 213, 120, 1);
+}
+
+/* -------------------- Sucesso -------------------- */
+.btn-sm-static-success {
+    color: darkgreen;
+    background-color: rgba(120, 236, 150, 0.5);
+}
+
+.btn-sm-static-success:hover,
+.btn-sm-static-success:focus {
+    background-color: rgba(120, 236, 150, 0.8);
+}
+
+.btn-sm-static-success:active {
+    background-color: rgba(120, 236, 150, 1);
+}
+
+/* -------------------- Erro -------------------- */
+.btn-sm-static-danger {
+    color: darkred;
+    background-color: rgba(236, 120, 120, 0.5);
+}
+
+.btn-sm-static-danger:hover,
+.btn-sm-static-danger:focus {
+    background-color: rgba(236, 120, 120, 0.8);
+}
+
+.btn-sm-static-danger:active {
+    background-color: rgba(236, 120, 120, 1);
+}
+
+/* -------------------- Informação -------------------- */
+.btn-sm-static-info {
+    color: darkblue;
+    background-color: rgba(120, 180, 236, 0.5);
+}
+
+.btn-sm-static-info:hover,
+.btn-sm-static-info:focus {
+    background-color: rgba(120, 180, 236, 0.8);
+}
+
+.btn-sm-static-info:active {
+    background-color: rgba(120, 180, 236, 1);
 }
