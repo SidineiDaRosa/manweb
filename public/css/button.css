@@ -1,0 +1,44 @@
+/* Aviso */
+.btn-sm-static-warning {
+    border-radius: 20px;
+    height: auto;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: darkgoldenrod;
+    background-color: rgba(236, 213, 120, 0.5);
+    gap: 10px;
+    
+}
+
+/* Sucesso */
+.btn-sm-static-success {
+    border-radius: 20px;
+    height: auto;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: darkgreen;
+    background-color: rgba(120, 236, 150, 0.5);
+    gap: 10px;
+}
+
+/* Erro / Perigo */
+.btn-sm-static-danger {
+    border-radius: 20px;
+    height: auto;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: darkred;
+    background-color: rgba(236, 120, 120, 0.5);
+    gap: 10px;
+}
+
+/* Informação */
+.btn-sm-static-info {
+    border-radius: 20px;
+    height: auto;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: darkblue;
+    background-color: rgba(120, 180, 236, 0.5);
+    gap: 10px;
+}

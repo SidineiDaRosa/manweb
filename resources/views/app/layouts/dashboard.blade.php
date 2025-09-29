@@ -1,6 +1,7 @@
 @extends('app.layouts.app')
 @section('content')
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="{{ asset('css/button.css') }}">
 <meta http-equiv="refresh" content="60">
 <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
@@ -262,9 +263,9 @@
                                                 background-color: rgba(231, 180, 122, 0.5);
                                                 width: 50px;
                                                 color: rgba(192, 108, 11, 0.99);
-                                                border-radius:10px;
-                                               text-align: center;
-                                               justify-content: center;
+                                                border-radius: 10px;
+                                                text-align: center;
+                                                justify-content: center;
                                             }
                                         </style>
                                     </div>
@@ -463,7 +464,7 @@
                     <hr>
             </div>
         </div>
-        {{--Box 3--}}
+        {{--Box 3 Gráfico--}}
         <style>
             .txt-conteudo-sm {
                 font-size: 13px;
@@ -727,7 +728,7 @@
             @endforeach
             @endif
         </div>
-        {{--Box 4--}}
+        {{--Box 4 Gráfico--}}
         <div class="item" style="background-color: rgb(245, 246, 248);">
             <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. FECHADA POR MÁQUINA</h6> <!-- Ajuste a margem superior conforme necessário -->
             <!-- Bootstrap CSS -->
@@ -898,7 +899,7 @@
 
                 {{--//-------------------------------------------------//--}}
         </div>
-        {{--Box 5--}}
+        {{--Box 5 Pedido de Compra--}}
         {{--Box que contém a lista de pedidos abertos--}}
         <div class="item">
             <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">PEDIDOS</span> &nbsp&nbsp&nbsp&nbsp
@@ -951,9 +952,12 @@
                                         {{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/y') }} <br>
                                         {{ \Carbon\Carbon::parse($pedido_compra->hora_emissao)->format('h:i') }}
                                     </td>
-                                    <td class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
-                                        {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/y') }}
-                                        {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('h:i') }}
+                                    <td>
+                                        <div class="{{ $dataPrevista->lt($dataAtual) ? 'btn-sm-static-danger' : ($dataPrevista->eq($dataAtual) ? 'btn-sm-static-warning' : 'btn-sm-static-info') }}">
+                                            {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/y') }}
+                                            {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('h:i') }}
+                                        </div>
+
 
                                     </td>
                                     <td>{{ $pedido_compra->equipamento->nome }}</td>
