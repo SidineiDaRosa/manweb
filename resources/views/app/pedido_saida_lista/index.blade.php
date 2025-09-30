@@ -159,9 +159,7 @@
                 <div class="conteudo">
                     <input type="text" class="input-bordernone" name="ordem_servico_id" id="ordem_servico_id" placeholder="ordem_serviço_id" value="{{$pedido_saida_f->ordem_servico_id}}" readonly>
                     <a class="btn btn-sm-template btn-outline-primary" href="{{route('ordem-servico.show', ['ordem_servico'=>$pedido_saida_f->ordem_servico_id])}}">
-                        <span class="material-symbols-outlined">
-                            open_in_new
-                        </span>
+                       O.S.
                     </a>
                 </div>
                 <div class="titulo">Pedidos</div>
@@ -463,7 +461,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <select name="categoria_id" id="" class="form-control-template">
+                <select name="categoria_id" id="" class="form-control">
                     <option value=""> --Selecione a Categoria--</option>
                     @foreach ($categorias as $categoria)
                     <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
@@ -474,7 +472,7 @@
                 {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
             </div>
             <!--input box filtro buscar produto--------->
-            <input type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
+            <input class="form-control" type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
             <button type="submit">
                 <i class="icofont-search icofont-2x"></i>
             </button>
