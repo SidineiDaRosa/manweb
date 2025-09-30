@@ -1089,8 +1089,8 @@
                 onclick="window.location.href='{{ route('Estoque-produto.index') }}'">
                 Estoque de produtos
             </button>
-            <hr style="margin-bottom:2px;margin-top:2px;">
-            <div class="container" style="background-color:rgba(100,58,27,0.1);">
+            <hr style="margin-top:1px;">
+            <div class="container" style="background-color:rgba(100,58,27,0.1);margin-top:1px;">
                 <table class="condensed-table" id="tb_pedidos_compra">
                     <thead>
                         <tr>
