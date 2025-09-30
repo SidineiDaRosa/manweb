@@ -5,7 +5,7 @@
 <main class="content">
     <!-- Cabeçalho -->
     <div class="card-header-template d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded-top shadow-sm">
-        
+
         <!-- Título -->
         <h5 class="mb-0 fw-bold">Lista de Equipamentos</h5>
 
@@ -42,7 +42,7 @@
                 <div class="card-header bg-light">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0 fw-bold">#{{ $equipamento->id }} - {{ $equipamento->nome }}</h6>
-                        <span >{{ $equipamento->Empresa->razao_social }}</span>
+                        <span>{{ $equipamento->Empresa->razao_social }}</span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -55,50 +55,53 @@
                 <div class="card-footer bg-white">
                     <div class="btn-group w-100" role="group">
                         <!-- Ver -->
-                        <a class="btn btn-sm btn-outline-primary flex-fill" 
-                           href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}"
-                           data-bs-toggle="tooltip" title="Visualizar">
+                        <a class="btn btn-sm btn-outline-primary flex-fill"
+                            href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}"
+                            data-bs-toggle="tooltip" title="Visualizar">
                             <i class="icofont-eye-alt"></i>
                             <span class="d-none d-md-inline">Ver</span>
                         </a>
 
                         <!-- Editar -->
                         <a class="btn btn-sm btn-outline-success flex-fill @can('user') disabled @endcan"
-                           href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}"
-                           data-bs-toggle="tooltip" title="Editar">
+                            href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}"
+                            data-bs-toggle="tooltip" title="Editar">
                             <i class="icofont-ui-edit"></i>
                             <span class="d-none d-md-inline">Editar</span>
                         </a>
 
                         <!-- Deletar -->
-                        <form id="form_{{ $equipamento->id }}" 
-                              method="post" 
-                              action="{{ route('equipamento.destroy', ['equipamento' => $equipamento->id]) }}">
+                        <form id="form_{{ $equipamento->id }}"
+                            method="post"
+                            action="{{ route('equipamento.destroy', ['equipamento' => $equipamento->id]) }}">
                             @method('DELETE')
                             @csrf
                         </form>
                         <a class="btn btn-sm btn-outline-danger flex-fill @can('user') disabled @endcan"
-                           href="#" onclick="DeletarEquipamento({{ $equipamento->id }})"
-                           data-bs-toggle="tooltip" title="Excluir">
+                            href="#" onclick="DeletarEquipamento({{ $equipamento->id }})"
+                            data-bs-toggle="tooltip" title="Excluir">
                             <i class="icofont-ui-delete"></i>
                             <span class="d-none d-md-inline">Excluir</span>
                         </a>
                     </div>
-                    
+
                     <div class="btn-group w-100 mt-2" role="group">
                         <!-- Criar OS -->
-                        <a class="btn btn-sm btn-outline-primary flex-fill" 
-                           href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}"
-                           data-bs-toggle="tooltip" title="Criar Ordem de Serviço">
-                            <span class="d-none d-md-inline">O.S.</span>
+                        <a class="btn btn-sm btn-outline-primary flex-fill"
+                            href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}"
+                            data-bs-toggle="tooltip" title="Criar Ordem de Serviço">
+                            <i class="bi bi-plus-circle"></i>
+                            Criar O. S.</span>
                             <span class="d-md-none">OS</span>
                         </a>
 
                         <!-- Pedido de compra -->
-                        <a class="btn btn-sm btn-outline-success flex-fill" 
-                           href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}"
-                           data-bs-toggle="tooltip" title="Criar Pedido de Compra">
-                            <span class="d-none d-md-inline">Ped. Compra</span>
+                        <a class="btn btn-sm btn-outline-success flex-fill"
+                            href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}"
+                            data-bs-toggle="tooltip" title="Criar Pedido de Compra">
+                            <span class="d-none d-md-inline">
+                            <i class="bi bi-plus-circle"></i>    
+                            Ped. Compra</span>
                             <span class="d-md-none">PC</span>
                         </a>
 
@@ -112,8 +115,10 @@
                             <input type="hidden" name="situacao" value="fechado">
                             <input type="hidden" name="tipo_consulta" value="5">
                             <button type="submit" class="btn btn-sm btn-outline-success w-100"
-                                    data-bs-toggle="tooltip" title="OS Fechadas">
-                                <span class="d-none d-md-inline">OS Fech.</span>
+                                data-bs-toggle="tooltip" title="OS Fechadas">
+                                <span class="d-none d-md-inline">
+                                <i class="bi bi-list-check"></i>    
+                                O.S Concluídas.</span>
                                 <span class="d-md-none">Fech.</span>
                             </button>
                         </form>
@@ -150,6 +155,7 @@
                                 <i class="icofont-ui-delete"></i>
                             </a>
                             <a class="btn btn-outline-primary" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}">
+                                <i class="bi bi-plus-circle"></i>
                                 OS
                             </a>
                             <a class="btn btn-outline-success" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}">
@@ -201,24 +207,24 @@
         const listViewBtn = document.getElementById('list-view-btn');
         const cardContainer = document.getElementById('equipamentos-container');
         const listContainer = document.getElementById('list-view-container');
-        
+
         cardViewBtn.addEventListener('click', function() {
             cardContainer.classList.remove('d-none');
             listContainer.classList.add('d-none');
             cardViewBtn.classList.add('active');
             listViewBtn.classList.remove('active');
         });
-        
+
         listViewBtn.addEventListener('click', function() {
             cardContainer.classList.add('d-none');
             listContainer.classList.remove('d-none');
             cardViewBtn.classList.remove('active');
             listViewBtn.classList.add('active');
         });
-        
+
         // Inicializar tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
     });
@@ -228,11 +234,11 @@
     .equipamento-card {
         transition: transform 0.2s;
     }
-    
+
     .equipamento-card:hover {
         transform: translateY(-5px);
     }
-    
+
     .equipamento-info {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -240,19 +246,19 @@
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
     }
-    
+
     @media (max-width: 768px) {
         .btn-group .btn {
             padding: 0.25rem 0.5rem;
             font-size: 0.875rem;
         }
-        
+
         .card-header-template {
             flex-direction: column;
             gap: 15px;
         }
-        
-        .card-header-template > div {
+
+        .card-header-template>div {
             width: 100%;
             justify-content: center;
         }
