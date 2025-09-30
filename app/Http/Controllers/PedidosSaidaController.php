@@ -69,7 +69,8 @@ class PedidosSaidaController extends Controller
             ]);
         }
         if ((empty($tipoFiltro))) {
-            $pedidos_saida = PedidoSaida::where('id', 2)->get();
+            $pedidos_saida = PedidoSaida::orderBy('id', 'desc')->take(10)->get();
+
             return view('app.pedido_saida.index', [
                 'equipamentos' => $equipamentos,
                 'funcionarios' => $funcionarios,
@@ -267,11 +268,10 @@ class PedidosSaidaController extends Controller
      */
     public function destroy($id)
     {
-        
-            $pedido = PedidoSaida::findOrFail($id);
-            $pedido->delete();
-    
-            return back()->with('success', 'Pedido de saída deletado com sucesso!');
-       
+
+        $pedido = PedidoSaida::findOrFail($id);
+        $pedido->delete();
+
+        return back()->with('success', 'Pedido de saída deletado com sucesso!');
     }
 }

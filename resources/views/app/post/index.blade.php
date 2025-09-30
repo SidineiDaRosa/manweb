@@ -4,6 +4,7 @@
 
 @section('content')
 <main class="content">
+    
     <style>
         /* ===== Reset / base ===== */
         * {
@@ -244,7 +245,7 @@
         @endforeach
     </div>
 
-    <form action="{{ route('messages.store') }}" method="POST" aria-label="Formulário de envio de mensagem">
+    <form  action="{{ route('messages.store') }}" method="POST" aria-label="Formulário de envio de mensagem">
         @csrf
         <textarea name="message" placeholder="Digite sua mensagem..." required>{{ old('message') }}</textarea>
 
@@ -342,13 +343,13 @@
                 const div = document.createElement('div');
                 div.classList.add('message');
                 div.classList.add(msg.user_id === myId ? 'my-message' : 'other-message');
-                div.innerHTML = `
-            <div class="header">
-                ${msg.user_name} (<span title="${msg.timestamp_full}">${msg.timestamp}</span>)
-            </div>
-            <div class="subject"><strong>Assunto:</strong> ${msg.subject}</div>
-            <div class="body">${msg.message}</div>
-        `;
+        div.innerHTML = `
+    <div class="header">
+        ${msg.user_name} (<span title="${msg.timestamp_full}">${msg.timestamp}</span>)
+    </div>
+    <div class="subject"><strong>Assunto:</strong> ${msg.subject}</div>
+    <div class="body">${msg.message}</div>
+`;
                 return div;
             }
 
