@@ -45,9 +45,11 @@ class PedidoSaidaListaController extends Controller
                 'categorias' => $categorias
             ]);
         } else {
+
             //--------------------------------------------//
-            // Envia para pedido de sáida com os anexada
+            // Envia para pedido de saída com os anexada
             //--------------------------------------------//
+
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
             $saidas_produto = SaidaProduto::where('pedidos_saida_id', $pedido_saida_id_1)->get();
@@ -59,17 +61,35 @@ class PedidoSaidaListaController extends Controller
             $pecas_equipamento = PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)
                 ->where('status', 'ativado')->get();
             $patrimonio = Equipamento::where('id', $ped_said->equipamento_id)->get();
-            return view('app.pedido_saida_lista.index', [
-                'equipamentos' => $equipamentos,
-                'funcionarios' => $funcionarios,
-                'saidas_produto' => $saidas_produto,
-                'pedidos_saida' =>  $pedidos_saida,
-                //'Unidades_de_Medida' => $Unidades_de_Medida
-                'patrimonio' => $patrimonio,
-                'pecas_equipamento' => $pecas_equipamento,
-                'produtos' => $produtos,
-                'categorias' => $categorias
-            ]);
+            if ($ped_said->ordem_servico_id >= 1) {
+                return view('app.pedido_saida_lista.index', [
+                    'equipamentos' => $equipamentos,
+                    'funcionarios' => $funcionarios,
+                    'saidas_produto' => $saidas_produto,
+                    'pedidos_saida' =>  $pedidos_saida,
+                    //'Unidades_de_Medida' => $Unidades_de_Medida
+                    'patrimonio' => $patrimonio,
+                    'pecas_equipamento' => $pecas_equipamento,
+                    'produtos' => $produtos,
+                    'categorias' => $categorias
+                ]);
+            } else {
+
+
+                $categorias = Categoria::all();
+                $pedido_saida = PedidoSaida::find($pedido_saida_id_1);
+                $produtos = Produto::orderBy('nome')->get();
+
+                $saidas_produtos = SaidaProduto::where('pedidos_saida_id', $pedido_saida_id_1)->get();
+                $equipamentos = Equipamento::all();
+                return view('app.pedido_saida.show', [ // abre o pedido sem a O.S.
+                    'pedido_saida' => $pedido_saida,
+                    'categorias' => $categorias,
+                    'produtos' => $produtos,
+                    'saidas_produtos' => $saidas_produtos,
+                    'equipamentos' => $equipamentos
+                ]);
+            }
         }
     }
 

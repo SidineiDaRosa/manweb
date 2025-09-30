@@ -1,14 +1,8 @@
 @extends('app.layouts.app')
 @section('content')
-<!DOCTYPE html>
-<html>
 
-<head>
-    <title>Tabela Responsiva</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<main class="content">
 
-<body>
     @foreach($equipamentos as $equipamento_for)
     @endforeach
     <div class="card-body">
@@ -41,7 +35,7 @@
                                 <i class="icofont-list"></i></a>
                         </td>
                         <td>{{ \Carbon\Carbon::parse($saidas_do_produto_f->data)->format('d/m/Y') }}</td>
-                        <td>{{$saidas_do_produto_f->equipamento->nome}}</td>
+                        <td>{{ optional($saidas_do_produto_f->equipamento)->nome ?? 'Sem equipamento' }}</td>
                     </tr>
                     @endif
                     @endforeach
@@ -50,3 +44,4 @@
             </table>
         </div>
     </div>
+</main>

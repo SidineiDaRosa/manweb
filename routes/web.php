@@ -281,6 +281,7 @@ Route::middleware('auth')->post('/item-produto-filtro', [App\Http\Controllers\It
 //               Pedidos de saida
 //--------------------------------------------------------//
 Route::middleware('auth')->resource('/pedido-saida', 'App\Http\Controllers\PedidosSaidaController');
+//Busca saida do produto
 Route::middleware('auth')->resource('/pedido-saida-lista', 'App\Http\Controllers\PedidoSaidaListaController');
 Route::middleware('auth')->post('/pedido-saida-filtro', [App\Http\Controllers\PedidosSaidaController::class, 'index']);
 Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
