@@ -4,8 +4,14 @@
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div> Pedidos de saídas de produtos</div>
-
+            <div> Pedidos de Saídas Produtos</div>
+            <div>
+                <a href="{{route('pedido-saida.create')}}" class="btn-sm btn-success">
+                    <i class="icofont-database-add"></i>
+                    </span>
+                    <span class="text">Criar novo pedido de saída</span>
+                </a>
+            </div>
             <form id="formSearchingProducts" action="{{'pedido-saida-filtro'}}" method="POST">
                 @csrf
                 <div class="col-md-2 mb-0">
@@ -36,13 +42,7 @@
                     <i class="icofont-search icofont-2x"></i>
                 </button>
             </form>
-            <div>
-                <a href="{{route('pedido-saida.create')}}" class="btn-sm btn-success">
-                    <i class="icofont-database-add"></i>
-                    </span>
-                    <span class="text">Criar novo pedido de saída</span>
-                </a>
-            </div>
+
         </div>
         <div class="card-body">
             <style>
@@ -126,8 +126,8 @@
                         <td>{{ $pedido_saida->id }}</td>
                         <td>{{ \Carbon\Carbon::parse($pedido_saida->data_emissao)->format('d/m/Y') }} às {{ $pedido_saida->hora_emissao }}</td>
                         <td>{{ \Carbon\Carbon::parse($pedido_saida->data_prevista)->format('d/m/Y') }} às {{ $pedido_saida->hora_prevista }}</td>
-                        <td>{{ $pedido_saida->empresa->nome_fantasia }}</td>
-                        <td>{{ $pedido_saida->equipamento->nome }}</td>
+                        <td>{{ $pedido_saida->empresa?->nome_fantasia ?? '---' }}</td>
+                        <td>{{ $pedido_saida->equipamento?->nome ?? '---' }}</td>
                         @foreach($emissores as $emissor)
                         @endforeach
                         <td>
@@ -157,7 +157,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm-template btn-outline-danger" style="height:30px;">Deletar</button>
                                 </form>
-                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPedidoSaida({{ $pedido_saida->id }})"  hidden >
+                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPedidoSaida({{ $pedido_saida->id }})" hidden>
                                     <i class="icofont-ui-delete"></i>
                                 </a>
                             </div>
