@@ -68,6 +68,7 @@ class EntradaProdutoController extends Controller
             }
         } else {
             $entradas_produtos  = Produto::where('id', 0)->get();
+            $entradas_produtos = EntradaProduto::latest()->take(20)->get();
             return view('app.entrada_produto.index', [
                 'entradas_produtos' => $entradas_produtos,
                 'empresa' => $empresa

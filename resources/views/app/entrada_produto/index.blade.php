@@ -5,6 +5,18 @@
     <div class="card" style="background-color: rgb(245, 246, 248)">
         <div class="card-header-template">
             <span style="font-family: Arial, Helvetica, sans-serif;">Entradas de produtos</span>
+            <div>
+                <a href="{{ route('produto.index') }}" class="btn btn-md btn-outline-primary">
+                    Produtos
+                </a>
+                <a href="{{route('Estoque-produto.index')}}" class="btn btn-md btn-outline-primary">
+                    Estoque
+                    <i class="icofont-cubes"></i>
+                </a>
+                <a class="btn btn-outline-dark btn-md" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> Dashboard
+                </a>
+            </div>
             <form id="formSearchingProducts" action="{{'Ent-Produtos-filtro'}}" method="POST" style="width: 75%;">
                 @csrf
                 <!--------------------------------------------------------------------------------------->
@@ -80,18 +92,7 @@
                     <i class="icofont-search icofont-2x"></i>
                 </button>
             </form>
-            <div>
-                <a href="{{ route('produto.index') }}" class="btn btn-md btn-outline-primary">
-                    Produtos
-                </a>
-                <a href="{{route('Estoque-produto.index')}}" class="btn btn-md btn-outline-primary">
-                    Estoque
-                    <i class="icofont-cubes"></i>
-                </a>
-                <a class="btn btn-outline-dark btn-md" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> Dashboard
-                </a>
-            </div>
+
         </div>
         <div class="card-body">
             <table class="table table-hover" style="text-transform: none;">

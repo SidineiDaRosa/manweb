@@ -4,6 +4,18 @@
 <main class="content">
     <div>
         <h6>Estoque produtos</h6>
+        <div class="card">
+            <div>
+                <a href="{{ route('produto.index') }}" class="btn btn-sm btn-outline-primary">
+                    Produtos
+                </a>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-outline-dark mb-1" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> Dashboard
+                </a>
+            </div>
+        </div>
 
         <form id="formSearchingProducts" action="{{'Estoque-Produtos-filtro'}}" method="POST" style="margin-right:10%;">
             @csrf
@@ -73,13 +85,6 @@
             </button>
 
         </form>
-        <div> <a href="{{ route('produto.index') }}" class="btn btn-sm btn-outline-primary">
-                Produtos
-            </a>
-        </div>
-        <div> <a class="btn btn-sm btn-outline-dark mb-1" href="{{ route('app.home') }}">
-                <i class="icofont-dashboard"></i> Dashboard
-            </a></div>
 
         <div class="card-body">
             {{--Table stock os products searching--}}
