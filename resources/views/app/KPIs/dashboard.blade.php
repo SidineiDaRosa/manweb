@@ -17,12 +17,12 @@
 
     <script>
         // Criando os dados para o gráfico a partir dos dados de PHP
-        var funcionarios = @json($servicos_executados - > map(function($item) {
-            return $item - > funcionario - > primeiro_nome;
+        var funcionarios = @json($servicos_executados -> map(function($item) {
+            return $item -> funcionario -> primeiro_nome;
         }));
 
-        var totalHoras = @json($servicos_executados - > map(function($item) {
-            return $item - > total_horas;
+        var totalHoras = @json($servicos_executados -> map(function($item) {
+            return $item -> total_horas;
         }));
 
         // Inicializando o gráfico ECharts
@@ -79,17 +79,17 @@
     <div id="bar-chart-asset" style="width: 1000px; height: 400px; margin-left: 200px; margin-top: 20px;"></div>
     <script>
         // Criando os dados para o gráfico a partir dos dados de PHP, considerando apenas as ordens com total_horas > 0
-        var equipamentos = @json($ordens_servico - > filter(function($item) {
-            return $item - > total_horas > 0.0; // Filtra as ordens com total_horas > 0
-        }) - > map(function($item) {
-            return $item - > equipamento - > nome; // Extrai o nome do equipamento
-        }) - > values()); // .values() para garantir um array reindexado
+        var equipamentos = @json($ordens_servico -> filter(function($item) {
+            return $item -> total_horas > 0.0; // Filtra as ordens com total_horas > 0
+        }) -> map(function($item) {
+            return $item -> equipamento -> nome; // Extrai o nome do equipamento
+        }) -> values()); // .values() para garantir um array reindexado
 
-        var totalHoras = @json($ordens_servico - > filter(function($item) {
-            return $item - > total_horas > 0.0; // Filtra as ordens com total_horas > 0
-        }) - > map(function($item) {
-            return $item - > total_horas; // Extrai o total de horas
-        }) - > values()); // .values() para garantir um array reindexado
+        var totalHoras = @json($ordens_servico -> filter(function($item) {
+            return $item -> total_horas > 0.0; // Filtra as ordens com total_horas > 0
+        }) -> map(function($item) {
+            return $item -> total_horas; // Extrai o total de horas
+        }) -> values()); // .values() para garantir um array reindexado
 
         // Calcular a altura total do gráfico com base no número de equipamentos
         var alturaGrafico = equipamentos.length * 25; // 20px por barra
