@@ -443,7 +443,8 @@
                             <i class="fas fa-cubes"></i> Criar estoque
                         </a>
 
-                        <a class="btn-almoxarifado @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto">
+                        <a class="btn-almoxarifado @can('user') disabled @endcan" href="{{ route('produto.index', ['produto' => $produto->id,'tipofiltro'=>10]) }}" title="Onde é aplicado este produto"
+                            target="_blank">
                             <i class="fas fa-wrench"></i> Onde é aplicado
                         </a>
 
