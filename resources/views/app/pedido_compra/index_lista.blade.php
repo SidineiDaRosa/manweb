@@ -46,16 +46,19 @@
                 <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-compra-lista-printer', ['numpedidocompra'=>$pedido_compra->id]) }}">
                     <i class="icofont-printer"></i>
                 </a>
-                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}" title="Editar Pedido de compra">
-                    <i class="icofont-ui-edit"></i>
+                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('app.home') }}">
+                    <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
-                <a class="nav-btn" href="{{ route('app.home') }}">
-                    <i class="fas fa-chart-line"></i> Dashboard
+                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-compra.edit', ['pedido_compra' => $pedido_compra->id]) }}" title="Editar Dados do Pedido, Finalizar.">
+                    <i class="icofont-ui-edit"></i>
+                    <i class="bi bi-arrow-repeat"></i>
+                    Inserir Atualização
                 </a>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-                <a href="{{ route('pedido.open', $pedido_compra->id) }}" class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-arrow-repeat"></i> Atualizações
+                <a href="{{ route('pedido.open', $pedido_compra->id) }}" class="btn btn-sm-template btn-outline-primary">
+
+                    <i class="bi bi-card-checklist"></i> Eventos Inseridos
                 </a>
 
 
@@ -693,7 +696,7 @@
     <!-- Bootstrap JavaScript (bundle includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <div class="row mb-1">
+        <div class="row mb-1" hidden>
             <hr>
             <div class="col-md-12">
                 <button id="enviar" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">

@@ -200,7 +200,7 @@ class SaidaProdutoController extends Controller
                     //echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">
                     //Operação realizada com sucesso, e a manutenção do componente foi atualizada!</div>';
                 } else {
-                    echo '<div class="message" style="background-color:green; color: white; padding: 15px; border-radius: 5px; font-size: 16px; text-align: center; margin: 20px;">Operação realizada com sucesso!</div>';
+                   return redirect()->route('pedido-saida-lista.index', ['pedido_saida' => $pedido_saida_id]);
                 }
             }
         } else {
