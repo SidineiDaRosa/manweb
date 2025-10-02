@@ -51,7 +51,7 @@ class ProdutoController extends Controller
                 }
             }
             if ($tipoFiltro == 2) {
-                $produtos = Produto::where('nome', 'like', $nome_produto_like . '%')->get();
+                $produtos = Produto::where('nome', 'like', $nome_produto_like . '%')->where('status', 'ativo')->get();
                 //if (isset($_POST['id'])) {
 
                 if (!empty($nome_produto_like)) {
@@ -65,7 +65,7 @@ class ProdutoController extends Controller
                 //return view('app.produto.index', ['produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias]);
             }
             if ($tipoFiltro == 3) {
-                $produtos = Produto::where('cod_fabricante', 'like', $nome_produto_like . '%')->get();
+                $produtos = Produto::where('cod_fabricante', 'like', $nome_produto_like . '%')->where('status', 'ativado')->get();
                 //if (isset($_POST['id'])) {
 
                 if (!empty($nome_produto_like)) {
@@ -166,6 +166,7 @@ class ProdutoController extends Controller
             'unidade_medida_id' => 'required',
             'categoria_id' => 'required',
             'link_peca' => 'nullable',
+            'status' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // imagem obrigatória
             'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // opcional
             'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // opcional
@@ -180,7 +181,7 @@ class ProdutoController extends Controller
         $produto->unidade_medida_id = $request->unidade_medida_id;
         $produto->categoria_id = $request->categoria_id;
         $produto->link_peca = $request->link_peca;
-
+        $produto->status = $request->status;
         // 🖼 Upload da imagem principal
         if ($request->hasFile('image')) {
             $requestImage = $request->file('image');
@@ -275,6 +276,7 @@ class ProdutoController extends Controller
     public function update(Request $request, Produto $produto)
     {
 
+
         $id = $produto->id; //pega o código do produto
         $produto = Produto::findOrFail($id);
         $produto->cod_fabricante = $request->cod_fabricante;
@@ -284,7 +286,7 @@ class ProdutoController extends Controller
         $produto->unidade_medida_id = $request->unidade_medida_id;
         $produto->categoria_id = $request->categoria_id;
         $produto->link_peca = $request->link_peca;
-
+        $produto->status = $request->status;
         // Verifica se uma nova imagem foi enviada para image e a salva
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $this->uploadImage($request->file('image'), 'image', $produto);
