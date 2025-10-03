@@ -12,6 +12,7 @@ use App\Models\Categoria;
 use App\Models\EstoqueProdutos; //Include estoque produtos
 use App\Models\Empresas;
 use App\Models\Equipamento;
+use App\Models\Familia;
 use App\Models\PecasEquipamentos;
 use BaconQrCode\Renderer\Path\Move;
 use Illuminate\Support\Facades\File; // Importa a classe File
@@ -147,8 +148,9 @@ class ProdutoController extends Controller
         $marcas = Marca::orderBy('nome', 'asc')->get();
         $unidades = UnidadeMedida::orderBy('nome', 'asc')->get();
         $categorias = Categoria::orderBy('nome', 'asc')->get();
-
-        return view('app.produto.create', compact('marcas', 'unidades', 'categorias'));
+        $familias = Familia::orderBy('nome', 'asc')->get();
+       
+        return view('app.produto.create', compact('marcas', 'unidades', 'categorias', 'familias'));
     }
     /**
      * Store a newly created resource in storage.
@@ -180,8 +182,10 @@ class ProdutoController extends Controller
         $produto->marca_id = $request->marca_id;
         $produto->unidade_medida_id = $request->unidade_medida_id;
         $produto->categoria_id = $request->categoria_id;
+         $produto->familia_id = $request->familia_id;
         $produto->link_peca = $request->link_peca;
         $produto->status = $request->status;
+        // $produto->familia = $request->familia;
         // 🖼 Upload da imagem principal
         if ($request->hasFile('image')) {
             $requestImage = $request->file('image');
@@ -262,7 +266,8 @@ class ProdutoController extends Controller
         $unidades = UnidadeMedida::orderBy('nome', 'asc')->get();
         $categorias = Categoria::orderBy('nome', 'asc')->get();
         $marcas = Marca::orderBy('nome', 'asc')->get();
-        return view('app.produto.edit', ['produto' => $produto, 'marcas' => $marcas, 'unidades' => $unidades, 'categorias' => $categorias]);
+         $familias = Familia::orderBy('nome', 'asc')->get();
+        return view('app.produto.edit', ['produto' => $produto, 'marcas' => $marcas, 'unidades' => $unidades, 'categorias' => $categorias,'familias'=>$familias]);
     }
 
     /**
@@ -285,6 +290,7 @@ class ProdutoController extends Controller
         $produto->marca_id = $request->marca_id;
         $produto->unidade_medida_id = $request->unidade_medida_id;
         $produto->categoria_id = $request->categoria_id;
+         $produto->familia_id = $request->familia_id;
         $produto->link_peca = $request->link_peca;
         $produto->status = $request->status;
         // Verifica se uma nova imagem foi enviada para image e a salva

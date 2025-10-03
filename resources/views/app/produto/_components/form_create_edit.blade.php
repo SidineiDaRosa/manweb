@@ -60,21 +60,71 @@
                 {{ $errors->has('unidade_id') ? $errors->first('unidade_id') : '' }}
             </div>
         </div>
-
         <div class="row mb-1">
             <label for="categoria_id" class="col-md-4 col-form-label text-md-end text-right">Categoria</label>
             <div class="col-md-6">
-                <select name="categoria_id" id="" class="form-control">
-                    <option value=""> --Selecione a Categoria--</option>
+                <select name="categoria_id" id="categoria_id" class="form-control">
+                    <option value="">--Selecione a Categoria--</option>
                     @foreach ($categorias as $categoria)
                     <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
                         {{ $categoria->nome }}
                     </option>
                     @endforeach
                 </select>
-                {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
             </div>
         </div>
+
+        <div class="row mb-1">
+            <label for="familia_id" class="col-md-4 col-form-label text-md-end text-right">Família</label>
+            <div class="col-md-6">
+                <select name="familia_id" id="familia_id" class="form-control">
+                    <option value="">--Selecione a família--</option>
+                    @foreach ($familias as $familia)
+                    <option value="{{ $familia->id }}" data-categoria="{{ $familia->categoria_id }}"
+                        {{ (old('familia_id', $produto->familia_id ?? '') == $familia->id) ? 'selected' : '' }}>
+                        {{ $familia->nome }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const categoriaSelect = document.getElementById('categoria_id');
+                const familiaSelect = document.getElementById('familia_id');
+
+                // Guarda todas as opções de família originais
+                const todasFamilias = Array.from(familiaSelect.querySelectorAll('option'));
+
+                function filtrarFamilias() {
+                    const categoriaId = categoriaSelect.value;
+
+                    // Limpa todas as opções
+                    familiaSelect.innerHTML = '<option value="">--Selecione a família--</option>';
+
+                    // Adiciona somente as que pertencem à categoria
+                    todasFamilias.forEach(option => {
+                        if (option.value === "" || option.dataset.categoria === categoriaId) {
+                            // Clona a opção para evitar duplicação
+                            familiaSelect.appendChild(option.cloneNode(true));
+                        }
+                    });
+
+                    // Mantém a seleção antiga caso exista
+                    const selectedFamilia = "{{ $produto->familia_id ?? old('familia_id') }}";
+                    if (selectedFamilia) {
+                        familiaSelect.value = selectedFamilia;
+                    }
+                }
+
+                categoriaSelect.addEventListener('change', filtrarFamilias);
+
+                // Filtra ao carregar a página (para edição)
+                filtrarFamilias();
+            });
+        </script>
+
 
         <div class="row mb-1">
             <label for="link_peca" class="col-md-4 col-form-label text-md-end text-right">Link para peça</label>

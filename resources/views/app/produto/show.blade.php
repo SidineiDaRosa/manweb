@@ -426,6 +426,10 @@
                             <div class="spec-title">Unidade Medida:</div>
                             <div class="spec-value">{{$produto->unidade_medida->nome}}</div>
                         </div>
+                        <div class="spec">
+                            <div class="spec-title">Familia:</div>
+                            <div class="spec-value">{{$produto->familia_id}}</div>
+                        </div>
                     </div>
 
                     <!-- Botões de ação do almoxarifado -->

@@ -15,6 +15,7 @@ class Produto extends Model
         'marca_id',
         'unidade_medida_id',
         'categoria_id',
+        'familia_id',
         'estoque_minimo',
         'estoque_ideal',
         'estoque_maximo',
