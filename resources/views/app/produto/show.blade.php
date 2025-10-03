@@ -428,7 +428,7 @@
                         </div>
                         <div class="spec">
                             <div class="spec-title">Familia:</div>
-                            <div class="spec-value">{{$produto->familia_id}}</div>
+                            <div class="spec-value">{{$produto->familia->nome}}</div>
                         </div>
                     </div>
 
