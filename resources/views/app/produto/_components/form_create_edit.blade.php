@@ -136,7 +136,7 @@
         <div class="row mb-1">
             <label for="status" class="col-md-4 col-form-label text-md-end text-right">Status</label>
             <div class="col-md-6">
-                <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
+                <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
                     <option value="">Selecione...</option>
                     <option value="ativo" {{ (old('status') ?? $produto->status ?? '') == 'ativo' ? 'selected' : '' }}>Ativo</option>
                     <option value="inativo" {{ (old('status') ?? $produto->status ?? '') == 'inativo' ? 'selected' : '' }}>Inativo</option>
