@@ -428,7 +428,15 @@
                         </div>
                         <div class="spec">
                             <div class="spec-title">Familia:</div>
+                            @if (!empty($produto->familia->nome))
                             <div class="spec-value">{{$produto->familia->nome}}</div>
+                            @else
+                            <div class="spec-value">sem família</div>
+                            @endif
+                        </div>
+                         <div class="spec">
+                            <div class="spec-title">Status:</div>
+                            <div class="spec-value">{{$produto->status}}</div>
                         </div>
                     </div>
 
@@ -466,8 +474,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="estoques-container">
             <h5>Estoques Disponíveis</h5>
 
