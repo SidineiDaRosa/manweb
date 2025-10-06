@@ -78,9 +78,23 @@ Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'
 //-------------------------------------------------------------------------------------------------
 //Marca
 Route::middleware('auth')->resource('/marca', 'App\Http\Controllers\MarcaController');
+//-------------------------------------------------------------------------------------------------
 //Categoria
+//-------------------------------------------------------------------------------------------------
+use App\Http\Controllers\CategoriaController;
+
+Route::get('/categorias/{id}', [CategoriaController::class, 'show'])->name('categorias.show');
+
 Route::middleware('auth')->resource('/categoria', 'App\Http\Controllers\CategoriaController');
 Route::middleware('auth')->resource('/categoria-edit', 'App\Http\Controllers\CategoriaController');
+// familias
+
+use App\Http\Controllers\FamiliaController;
+
+// Rotas para famílias
+Route::middleware('auth')->resource('/familia', FamiliaController::class);
+
+
 //fornecedor
 Route::middleware('auth')->resource('/fornecedor', 'App\Http\Controllers\FornecedorController');
 

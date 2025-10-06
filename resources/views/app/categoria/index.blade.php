@@ -36,10 +36,10 @@
                         <td>{{ $categoria->nome }}</td>
                         <td>{{ $categoria->descricao }}</td>
                         <td>
-                       
+
+                            <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('categorias.show', $categoria->id) }}">
+                                <i class="bi bi-eye"></i></a>
                             <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="">
-                                <i class="icofont-ui-edit"></i> </a>
-                                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="">
                                 <i class="icofont-ui-edit"></i> </a>
                         </td>
 

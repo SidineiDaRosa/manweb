@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use App\Models\Familia;
+
 class CategoriaController extends Controller
 {
     /**
@@ -51,7 +54,10 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $categoria = Categoria::findOrFail($id);
+        $familias = Familia::where('categoria_id', $id)->get(); // busca famílias relacionadas
+        return view('app.categoria.show', compact('categoria', 'familias'));
     }
 
     /**
@@ -63,9 +69,9 @@ class CategoriaController extends Controller
     public function edit(Categoria $grupo)
     {
         //
-      
-      echo( $grupo);
-       //return view('app.categoria.edit', ['categoria' => $categoria]);
+
+        echo ($grupo);
+        //return view('app.categoria.edit', ['categoria' => $categoria]);
     }
     /**
      * Update the specified resource in storage.
