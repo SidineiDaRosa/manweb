@@ -107,7 +107,11 @@ class PedidoCompraController extends Controller
                 // é executado quando abre a lista sem nenuma seleção, por exemplo um botão.
                 $equipamentos = Equipamento::all();
                 $funcionarios = Funcionario::all();
-                $pedidos_compra = PedidoCompra::whereNotIn('status', ['fechado', 'cancelado'])->get();
+                $pedidos_compra = PedidoCompra::whereNotIn('status', ['fechado', 'cancelado'])
+                    ->with(['eventos' => function ($query) {
+                        $query->orderBy('data_prevista', 'desc');
+                    }])
+                    ->get();
                 // Eventos no período
                 $eventos = PedidoCompraEvento::whereIn('pedido_compra_id', $pedidos_compra->pluck('id'))->get();
                 return view('app.pedido_compra.index', [
@@ -115,7 +119,7 @@ class PedidoCompraController extends Controller
                     'funcionarios' => $funcionarios,
                     'pedidos_compra' => $pedidos_compra,
                     'emissores' => $emissores,
-                    'eventos'=>$eventos
+                    'eventos' => $eventos
                 ]);
             }
         }
