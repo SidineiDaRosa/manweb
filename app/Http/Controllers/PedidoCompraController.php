@@ -104,15 +104,18 @@ class PedidoCompraController extends Controller
                 ]);
             } else {
                 // A variável $situacao não está declarada
-                // Faça alguma outra coisa aqui
+                // é executado quando abre a lista sem nenuma seleção, por exemplo um botão.
                 $equipamentos = Equipamento::all();
                 $funcionarios = Funcionario::all();
-                $pedidos_compra = PedidoCompra::where('status', '')->get();
+                $pedidos_compra = PedidoCompra::whereNotIn('status', ['fechado', 'cancelado'])->get();
+                // Eventos no período
+                $eventos = PedidoCompraEvento::whereIn('pedido_compra_id', $pedidos_compra->pluck('id'))->get();
                 return view('app.pedido_compra.index', [
                     'equipamentos' => $equipamentos,
                     'funcionarios' => $funcionarios,
                     'pedidos_compra' => $pedidos_compra,
-                    'emissores' => $emissores
+                    'emissores' => $emissores,
+                    'eventos'=>$eventos
                 ]);
             }
         }
@@ -356,7 +359,7 @@ class PedidoCompraController extends Controller
             'success' => true,
             'mensagem' => 'Entrada registrada com sucesso!',
             'novo_estoque' => $estoque->quantidade,
-            'status' =>$request->status
+            'status' => $request->status
         ]);
     }
 }
