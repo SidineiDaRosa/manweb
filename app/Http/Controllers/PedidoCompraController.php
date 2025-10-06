@@ -108,10 +108,8 @@ class PedidoCompraController extends Controller
                 $equipamentos = Equipamento::all();
                 $funcionarios = Funcionario::all();
                 $pedidos_compra = PedidoCompra::whereNotIn('status', ['fechado', 'cancelado'])
-                    ->with(['eventos' => function ($query) {
-                        $query->orderBy('data_prevista', 'desc');
-                    }])
-                    ->get();
+                    ->orderBy('data_prevista', 'desc')->get();
+
                 // Eventos no período
                 $eventos = PedidoCompraEvento::whereIn('pedido_compra_id', $pedidos_compra->pluck('id'))->get();
                 return view('app.pedido_compra.index', [
