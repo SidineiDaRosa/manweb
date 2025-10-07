@@ -45,11 +45,15 @@ class PedidoCompraController extends Controller
             $equipamentos = Equipamento::all();
             $funcionarios = Funcionario::all();
 
+            // Eventos no período - CORREÇÃO AQUI
+            $eventos = PedidoCompraEvento::whereIn('pedido_compra_id', $pedido_ids)->get();
+
             return view('app.pedido_compra.index', [
                 'equipamentos' => $equipamentos,
                 'funcionarios' => $funcionarios,
                 'pedidos_compra' => $pedido_compra,
-                'emissores' => $emissores
+                'emissores' => $emissores,
+                'eventos' => $eventos
             ]);
         } else {
             $emissores = User::all();
