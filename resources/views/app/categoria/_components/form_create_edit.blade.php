@@ -1,5 +1,6 @@
+
 @if (isset($categoria->id))
-                <form action="{{ route('categoria.update', ['categoria' => $categoria->id]) }}" method="POST">
+                <form action="{{ route('categoria.update',$categoria->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                 @else
@@ -11,7 +12,7 @@
                     <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Nome</label>
 
                     <div class="col-md-6">
-                        <input id="nome" type="text" class="form-control-template" name="nome"
+                        <input id="nome" type="text" class="form-control" name="nome"
                             value="{{$categoria->nome ?? old('nome') }}" required autocomplete="nome" autofocus>
                             {{ $errors->has('categoria') ? $errors->first('categoria') : '' }}
                     </div>
@@ -22,7 +23,7 @@
                     <label for="descricao" class="col-md-4 col-form-label text-md-end text-right">Descrição</label>
 
                     <div class="col-md-6">
-                        <input id="descricao" name="descricao" type="text" class="form-control-template" descricao="descricao"
+                        <input id="descricao" name="descricao" type="text" class="form-control" descricao="descricao"
                             value="{{$categoria->descricao?? old('descricao') }}" required autocomplete="descricao">
                             {{ $errors->has('categoria') ? $errors->first('categoria') : '' }}                            
                     </div>

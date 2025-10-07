@@ -4,17 +4,12 @@
 @section('content')
 <main class="content">
     <div class="card">
-        <div class="card-header pb-1">
-            <p>Listagem de Produtos</p>
-        </div>
         <div class="card-header justify-content-left py-1">
-            <a href="" class="btn">
-                Listagem categoria
-            </a>
+         
             <div>
                 <a href="{{ route('categoria.create') }}" class="btn btn-sm btn-primary">
                     <i class="icofont-database-add icofont-2x"></i>
-                    Novo categoria
+                    Nova categoria
                 </a>
             </div>
         </div>
@@ -39,8 +34,10 @@
 
                             <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('categorias.show', $categoria->id) }}">
                                 <i class="bi bi-eye"></i></a>
-                            <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="">
-                                <i class="icofont-ui-edit"></i> </a>
+                            <a class="btn btn-sm-template btn-outline-success @can('user') disabled @endcan"
+                                href="{{ route('categoria.edit', ['id' => $categoria->id]) }}">
+                                <i class="icofont-ui-edit"></i>
+                            </a>
                         </td>
 
                         @endforeach

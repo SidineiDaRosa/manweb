@@ -86,7 +86,9 @@ use App\Http\Controllers\CategoriaController;
 Route::get('/categorias/{id}', [CategoriaController::class, 'show'])->name('categorias.show');
 
 Route::middleware('auth')->resource('/categoria', 'App\Http\Controllers\CategoriaController');
-Route::middleware('auth')->resource('/categoria-edit', 'App\Http\Controllers\CategoriaController');
+Route::middleware('auth')->get('/categoria-edit/{id}', [CategoriaController::class, 'edit'])->name('categoria.edit');
+// Rota para processar a atualização (PUT)
+Route::middleware('auth')->put('/categoria-update/{id}', [CategoriaController::class, 'update'])->name('categoria.update');
 // familias
 
 use App\Http\Controllers\FamiliaController;

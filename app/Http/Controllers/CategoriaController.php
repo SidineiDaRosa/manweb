@@ -59,20 +59,27 @@ class CategoriaController extends Controller
         $familias = Familia::where('categoria_id', $id)->get(); // busca famílias relacionadas
         return view('app.categoria.show', compact('categoria', 'familias'));
     }
-
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Categoria  $grupo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Categoria $grupo)
+    public function edit($id)
     {
-        //
+        // Buscar a categoria pelo ID
+        $categoria = Categoria::findOrFail($id);
 
-        echo ($grupo);
-        //return view('app.categoria.edit', ['categoria' => $categoria]);
+        // Verificar se a categoria existe
+        if (!$categoria) {
+            abort(404, 'Categoria não encontrada');
+        }
+     
+        // Retorno
+        return view('app.categoria.edit', ['categoria'=> $categoria, 'id' => $id]);
     }
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -82,7 +89,33 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Buscar a categoria
+        $categoria = Categoria::find($id);
+
+        if (!$categoria) {
+            abort(404, 'Categoria não encontrada');
+        }
+
+        // Validação
+        $request->validate([
+            'nome' => 'required|string|max:255|min:3'
+        ], [
+            'nome.required' => 'O nome da categoria é obrigatório',
+            'nome.min' => 'O nome deve ter pelo menos 3 caracteres'
+        ]);
+
+        try {
+            // Atualizar a categoria
+            $categoria->update([
+                'nome' => $request->nome
+            ]);
+
+            // Redirecionar com mensagem de sucesso
+            return redirect()->route('categoria.index')->with('success', 'Categoria atualizada com sucesso!');
+        } catch (\Exception $e) {
+            // Em caso de erro
+            return redirect()->back()->with('error', 'Erro ao atualizar categoria: ' . $e->getMessage());
+        }
     }
 
     /**
