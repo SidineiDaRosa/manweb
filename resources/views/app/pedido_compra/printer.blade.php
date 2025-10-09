@@ -52,9 +52,9 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--primary);
+            margin-bottom: 2px;
+            padding-bottom: 1px;
+            border-bottom: 1px solid var(--primary);
             position: relative;
         }
 
@@ -194,17 +194,21 @@
         /* ===== GRID DE INFORMAÇÕES ===== */
         .info-grid-modern {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
         .info-card-modern {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 6px 8px;
             transition: all 0.2s ease;
+            height: auto;
+            /* <-- Remove altura fixa */
+            min-height: 55px;
+            /* garante proporção mínima */
         }
 
         .info-card-modern:hover {
@@ -213,30 +217,32 @@
         }
 
         .card-icon {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             background: var(--light);
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
             color: var(--primary);
+            font-size: 14px;
         }
 
         .card-label {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--secondary);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
+            letter-spacing: 0.3px;
+            margin-bottom: 2px;
         }
 
         .card-value {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             color: var(--dark);
+            line-height: 1.3;
         }
 
         /* ===== TABELA MODERNA ===== */
@@ -454,7 +460,7 @@
         <!-- HEADER MODERNO -->
         <div class="modern-header">
             <div class="brand-section">
-                
+
                 <div class="brand-text">
                     <h1>Pedido de Compra</h1>
                     <div class="tagline">Solicitação de aquisição • Fapolpa</div>

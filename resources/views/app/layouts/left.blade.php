@@ -132,6 +132,7 @@
             <a href="javascript:void(0);" onclick="toggleSubmenu('dashboard-submenu')">
                 <div class="icon-wrapper">
                     <i class="icofont-settings icofont-2x"></i>
+
                 </div>
                 <span class="spn-txt-menu">Outros</span>
                 <span class="arrow"><i class="icofont-rounded-right"></i></i></span>
@@ -225,7 +226,6 @@
                 <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="patrimonio-submenu">
-                <a href="#">Ativos</a>
                 <a href="{{ route('Peca-equipamento.index') }}">
                     <i class="bi bi-gear"></i>
                     Peças de equipamentos</a>
@@ -235,8 +235,9 @@
                 <a href="{{ route('ordem-servico.index') }}">
                     <i class="bi bi-file-text"></i>
                     Ordem de Serviço</a>
-                <a href="{{ route('index_kpis') }}">KPIs</a>
-                <a href="#">Gráficos</a>
+                <a href="{{ route('index_kpis') }}">📊 KPIs</a>
+                <a href="{{ route('lubrificacao.index') }}"> ⚙️💧 Lubrificação</a>
+
             </div>
         </li>
 
@@ -246,25 +247,44 @@
                 <div class="icon-wrapper">
                     <i class="icofont-industries-4 icofont-2x"></i>
                 </div>
-                <span class="spn-txt-menu">Dashboard</span>
+                <span class="spn-txt-menu">Produção</span>
 
             </a>
         </li>
 
-        <!-- Usuários admin -->
-        @auth
-        @if(Auth::user()->level === 0)
+        <!-- Administração -->
         <li>
-            <a href="{{ route('register') }}">
+            <a href="javascript:void(0);" onclick="toggleSubmenu('administracao-submenu')">
                 <div class="icon-wrapper">
-                    <i class="icofont-users icofont-2x"></i>
+                    <i class="bi bi-gear"></i>
                 </div>
-                <span class="spn-txt-menu">Criar Usuários</span>
+                <span class="spn-txt-menu">Administração</span>
+                <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
+            <div class="submenu" id="administracao-submenu">
+              
+                <!-- Usuarios-->
+                @auth
+                @if(Auth::user()->level === 0)
+
+                <a href="{{ route('register') }}">
+                    <div class="icon-wrapper">
+                        <i class="icofont-users icofont-2x"></i>
+                        Usuarios
+                    </div>
+                </a>
+
+
+
+                @endif
+                @endauth
+            </div>
+            <!-- Usuários admin -->
+
+
         </li>
 
-        @endif
-        @endauth
+
     </ul>
 </aside>
 

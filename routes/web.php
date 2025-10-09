@@ -499,3 +499,21 @@ Route::get('/documentos/normas', [DocumentoController::class, 'normas'])->name('
 Route::get('/site_help', function () {
     return view('site.help');
 })->name('site.help');
+//============================================================//
+// Lubrificação 
+//-------------------------------------------------------------//
+
+use App\Http\Controllers\LubrificacaoController;
+
+Route::resource('lubrificacao', LubrificacaoController::class);
+Route::post('/lubrificacao-intervalo', [LubrificacaoController::class, 'store_intervalo'])->name('medicao.store');
+
+use App\Http\Controllers\LubrificacaoExecutadaController;
+
+Route::resource('lubrificacoes-executadas', LubrificacaoExecutadaController::class);
+
+// Abrir a view externa para execução
+Route::get('lubrificacao/{id}/executar-externo', [LubrificacaoExecutadaController::class, 'executarView'])
+    ->name('lubrificacao.executar.externo');
+Route::post('lubrificacao/{id}/executar-externo', [LubrificacaoExecutadaController::class, 'executar'])
+    ->name('lubrificacao.executar.externo.salvar');

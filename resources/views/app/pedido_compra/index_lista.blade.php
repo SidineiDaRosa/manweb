@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <main class="content">
     <div class="titulo-main">
-        Pedido de compra
+        Pedido de compra 
     </div>
     <div id="alerta-topo" class="alert d-none alert-dismissible fade show text-center" role="alert"
         style="position:fixed; top:10px; left:50%; transform:translateX(-50%);
@@ -166,10 +166,11 @@
             {{--Box 1--}}
             <div class="item">
 
-                <div class="titulo">Emissão</div>
+                <div class="titulo">
+                    📅 Emissão</div>
                 <hr style="margin:-5px;color:#ccc;">
                 <div class="conteudo">{{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/Y') }} {{ $pedido_compra->hora_emissao }}</div>
-                <div class="titulo">Previsão</div>
+                <div class="titulo"> 📅 Previsão</div>
                 <hr style="margin:-5px;color:#ccc;">
                 <div class="conteudo">{{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/Y') }} {{ $pedido_compra->hora_prevista}}</div>
                 <div class="titulo">Fechamento</div>
@@ -183,11 +184,11 @@
                 <div id=idOs class="conteudo" style="color:mediumblue">
                     ID:&nbsp&nbsp{{$pedido_compra->id}}
                 </div>
-                <div class="titulo">Patrimônio</div>
-                <hr style="margin:-5px;color:#ccc;">
+                <div class="titulo">⚙️ Patrimônio</div>
+                <hr style="margin:-3px;color:#ccc;">
                 <div class="conteudo">{{ $pedido_compra->equipamento->nome}}</div>
                 <div class="titulo">Emissor</div>
-                <hr style="margin:-5px;color:#ccc;">
+                <hr style="margin:-3px;color:#ccc;">
                 <div class="conteudo"> @php
                     $emissor = $emissores->firstWhere('id', $pedido_compra->funcionarios->id);
                     @endphp
