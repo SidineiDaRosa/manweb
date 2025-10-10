@@ -8,10 +8,10 @@
 
         {{-- 🔹 Mensagem de sucesso --}}
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                <i class="bi bi-check-circle-fill me-1"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-            </div>
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-check-circle-fill me-1"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
         @endif
 
         <div class="d-flex flex-wrap align-items-center justify-content-between my-3 gap-2">
@@ -23,9 +23,9 @@
                 <select name="equipamento_id" id="equipamento_id" class="form-control">
                     <option value="">Todos</option>
                     @foreach($equipamentos as $equipamento)
-                        <option value="{{ $equipamento->id }}" {{ request('equipamento_id') == $equipamento->id ? 'selected' : '' }}>
-                            {{ $equipamento->nome }}
-                        </option>
+                    <option value="{{ $equipamento->id }}" {{ request('equipamento_id') == $equipamento->id ? 'selected' : '' }}>
+                        {{ $equipamento->nome }}
+                    </option>
                     @endforeach
                 </select>
                 <button type="submit" class="btn btn-primary btn-sm">
@@ -42,6 +42,11 @@
                 {{-- 🔹 Criar nova lubrificação --}}
                 <a href="{{ route('lubrificacao.create') }}" class="btn btn-success btn-sm">
                     <i class="bi bi-plus-circle me-1"></i> Nova Lubrificação
+                </a>
+
+                {{-- 🔹 executadas--}}
+                <a href="{{ route('lubrificacao.executadas') }}" class="btn btn-primary">
+                    Ver Lubrificações Executadas
                 </a>
             </div>
         </div>
@@ -80,67 +85,67 @@
                 </thead>
                 <tbody>
                     @foreach($lubrificacoes as $lubrificacao)
-                        @php
-                            $status = 'ok';
-                            $icone = '✅';
-                            $horasPassadas = null;
-                            $corFundo = '#d4edda'; // verde claro por padrão
+                    @php
+                    $status = 'ok';
+                    $icone = '✅';
+                    $horasPassadas = null;
+                    $corFundo = '#d4edda'; // verde claro por padrão
 
-                            $ultimaData = $lubrificacao->atualizado_em ?? $lubrificacao->criado_em;
+                    $ultimaData = $lubrificacao->atualizado_em ?? $lubrificacao->criado_em;
 
-                            if ($ultimaData && $lubrificacao->intervalo) {
-                                $agora = now();
-                                $horasPassadas = $agora->diffInHours($ultimaData);
+                    if ($ultimaData && $lubrificacao->intervalo) {
+                    $agora = now();
+                    $horasPassadas = $agora->diffInHours($ultimaData);
 
-                                if ($horasPassadas > $lubrificacao->intervalo) {
-                                    $status = 'atrasado';
-                                    $icone = '⚠️';
-                                    $corFundo = '#f8d7da'; // vermelho claro
-                                } elseif ($horasPassadas >= $lubrificacao->intervalo - 24) {
-                                    $status = 'proximo';
-                                    $icone = '⚠️';
-                                    $corFundo = '#fff3cd'; // amarelo claro
-                                }
-                            }
-                        @endphp
-                        <tr>
-                            <td>{{ $lubrificacao->id }}</td>
-                            <td>{{ $lubrificacao->equipamento->nome ?? '-' }}</td>
-                            <td>{{ $lubrificacao->produto->nome ?? '-' }}</td>
-                            <td>{{ $lubrificacao->observacoes ?? '-' }}</td>
-                            <td>{{ $lubrificacao->tag ?? '-' }}</td>
-                            <td>{{ $lubrificacao->intervalo ?? '-' }}</td>
+                    if ($horasPassadas > $lubrificacao->intervalo) {
+                    $status = 'atrasado';
+                    $icone = '⚠️';
+                    $corFundo = '#f8d7da'; // vermelho claro
+                    } elseif ($horasPassadas >= $lubrificacao->intervalo - 24) {
+                    $status = 'proximo';
+                    $icone = '⚠️';
+                    $corFundo = '#fff3cd'; // amarelo claro
+                    }
+                    }
+                    @endphp
+                    <tr>
+                        <td>{{ $lubrificacao->id }}</td>
+                        <td>{{ $lubrificacao->equipamento->nome ?? '-' }}</td>
+                        <td>{{ $lubrificacao->produto->nome ?? '-' }}</td>
+                        <td>{{ $lubrificacao->observacoes ?? '-' }}</td>
+                        <td>{{ $lubrificacao->tag ?? '-' }}</td>
+                        <td>{{ $lubrificacao->intervalo ?? '-' }}</td>
 
-                            {{-- 🔹 Status --}}
-                            <td style="background-color: {{ $corFundo }};"
-                                title="{{ $horasPassadas ? $horasPassadas.'h desde a última lubrificação' : 'Sem intervalo definido' }}">
-                                {{ $icone }}
-                            </td>
+                        {{-- 🔹 Status --}}
+                        <td style="background-color: {{ $corFundo }};"
+                            title="{{ $horasPassadas ? $horasPassadas.'h desde a última lubrificação' : 'Sem intervalo definido' }}">
+                            {{ $icone }}
+                        </td>
 
-                            <td>{{ $lubrificacao->criado_em ? $lubrificacao->criado_em->format('d/m/Y H:i') : '-' }}</td>
-                            <td>{{ $lubrificacao->atualizado_em ? $lubrificacao->atualizado_em->format('d/m/Y H:i') : '-' }}</td>
+                        <td>{{ $lubrificacao->criado_em ? $lubrificacao->criado_em->format('d/m/Y H:i') : '-' }}</td>
+                        <td>{{ $lubrificacao->atualizado_em ? $lubrificacao->atualizado_em->format('d/m/Y H:i') : '-' }}</td>
 
-                            {{-- 🔹 Ações --}}
-                            <td>
-                                <a href="{{ route('lubrificacao.show', $lubrificacao->id) }}" class="btn btn-info btn-sm">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+                        {{-- 🔹 Ações --}}
+                        <td>
+                            <a href="{{ route('lubrificacao.show', $lubrificacao->id) }}" class="btn btn-info btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
 
-                                {{-- Corrigido: rota de edição da tabela correta --}}
-                                <a href="{{ route('lubrificacao.edit', $lubrificacao->id) }}" class="btn btn-warning btn-sm">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
+                            {{-- Corrigido: rota de edição da tabela correta --}}
+                            <a href="{{ route('lubrificacao.edit', $lubrificacao->id) }}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
 
-                                <form action="{{ route('lubrificacao.destroy', $lubrificacao->id) }}" method="POST"
-                                      class="d-inline-block" onsubmit="return confirm('Deseja realmente excluir esta lubrificação?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                            <form action="{{ route('lubrificacao.destroy', $lubrificacao->id) }}" method="POST"
+                                class="d-inline-block" onsubmit="return confirm('Deseja realmente excluir esta lubrificação?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

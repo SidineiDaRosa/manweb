@@ -17,14 +17,9 @@ class LubrificacaoExecutadaController extends Controller
      */
     public function index()
     {
-        //
-        // Pega todas as lubrificações executadas do banco de dados
-        $lubrificacoes_executadas = LubrificacaoExecutada::all();
-
-        // Retorna a view passando os dados
+        $lubrificacoes_executadas = LubrificacaoExecutada::all(); // mesma variável da view
         return view('app.lubrificacao.executadas', compact('lubrificacoes_executadas'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -115,7 +110,7 @@ class LubrificacaoExecutadaController extends Controller
         // Retorna com mensagem
         return redirect()->back()->with('success', 'Lubrificação executada e registrada com sucesso!');
     }
- 
+
     public function executar_lub($equipamento_id)
     {
         $equipamento = \App\Models\Equipamento::findOrFail($equipamento_id);
@@ -127,7 +122,7 @@ class LubrificacaoExecutadaController extends Controller
     }
     public function executar_open(Request $request)
     {
-    
+
         // Busca equipamento no banco
         $equipamento = Equipamento::findOrFail($request->equipamento_id);
 
@@ -148,7 +143,7 @@ class LubrificacaoExecutadaController extends Controller
         $executada = new LubrificacaoExecutada();
         $executada->lubrificacao_id = $lubrificacao->id;
         $executada->observacoes = $request->observacoes ?? null;
-        $executada->executante = $request->executante_nome?? 'Operador externo';
+        $executada->executante = $request->executante_nome ?? 'Operador externo';
         $executada->save();
 
         $lubrificacao->atualizado_em = now();

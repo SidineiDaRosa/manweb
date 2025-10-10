@@ -21,6 +21,7 @@ use App\Http\Controllers\CustosController;
 use App\Http\Controllers\ControlPanelController;
 use App\Models\OrdemServico;
 use Illuminate\Http\Request;
+use App\Http\Controllers\LubrificacaoExecutadaController;
 //use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -504,12 +505,12 @@ Route::get('/site_help', function () {
 //-------------------------------------------------------------//
 
 use App\Http\Controllers\LubrificacaoController;
+
 Route::get('/lubrificacoes', [LubrificacaoController::class, 'index'])->name('lubrificacao.index');
 
 Route::resource('lubrificacao', LubrificacaoController::class);
 Route::post('/lubrificacao-intervalo', [LubrificacaoController::class, 'store_intervalo'])->name('medicao.store');
 
-use App\Http\Controllers\LubrificacaoExecutadaController;
 
 Route::resource('lubrificacoes-executadas', LubrificacaoExecutadaController::class);
 Route::get('/lubrificacoes-executadas/{lubrificacao}/edit', [LubrificacaoExecutadaController::class, 'edit'])
@@ -531,3 +532,9 @@ Route::post('/open-lubrificacao/{equipamento}', [LubrificacaoExecutadaController
 
 Route::post('/lubrificacao/executar/{id}', [LubrificacaoExecutadaController::class, 'executarAcao'])
     ->name('lubrificacao.executar.acao');
+// Rota para buscar todas as lubrificações executadas
+
+
+Route::get('/lubrificacoes-feitas', [LubrificacaoExecutadaController::class, 'index'])
+    ->name('lubrificacao.executadas');
+
