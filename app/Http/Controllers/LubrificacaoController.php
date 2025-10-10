@@ -92,4 +92,16 @@ class LubrificacaoController extends Controller
 
         return redirect()->back()->with('success', 'Intervalo de medição adicionado com sucesso!');
     }
+    public function countPendentes()
+    {
+        $agora = now();
+        $pendentes = Lubrificacao::all()->filter(function ($lub) use ($agora) {
+            if (!$lub->intervalo) return false;
+            $ultimaData = $lub->atualizado_em ?? $lub->criado_em;
+            $horasPassadas = $agora->diffInHours($ultimaData);
+            return $horasPassadas >= $lub->intervalo; // atrasado
+        })->count();
+
+        return response()->json(['pendentes' => $pendentes]);
+    }
 }

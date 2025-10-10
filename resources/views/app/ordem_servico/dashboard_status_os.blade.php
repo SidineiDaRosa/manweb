@@ -20,24 +20,28 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <header style="display: flex; justify-content: center; text-align: center;">
     <div style="display: flex;flex-direction:row;">
-        <h3>Visualização de O.S.</h3>
+        <h3>Visualização de O.S.
+        </h3>
         <!-- Notificação de Check list -->
         <div class="dropdown" id="checklist-count" style="margin-top:15px;margin-right:50px">
         </div>
         <div id="checklist-count" class="notification" style="margin-top:20px;">
-           <div style="margin-right:25px;">Checklists pendentes</div>
+            <div style="margin-right:25px;">Checklists pendentes</div>
             <a href="/check-list-index" style="color:white;"></a>
             <span class="badge" id="checklist-badge">0</span>
+        </div>
+
+        <div id="lubrificacao-count" class="notification" style="margin-top:2px;">
+            <span id="lubrificacao-badge" style="width:30px;">0</span>
+            <div style="margin-right:25px;">Lubrificação</div>
         </div>
         <div>
             <!-- Botão que abre a modal -->
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalExemplo" style="height:35px;margin-top:5px;">
                 Criar O.S
             </button>
-
         </div>
     </div>
-
     <!-- CSS -->
     <style>
         .badge {
@@ -104,24 +108,53 @@
                         badge.innerText = data.pendentes;
 
                         if (data.pendentes > 0) {
-                            badge.classList.remove('zero');
-                            badge.classList.remove('non-zero');
+                            badge.classList.remove('zero', 'non-zero');
                             badge.classList.add('warning'); // Adiciona a classe warning
+                            document.getElementById('lubrificacao-badge').style.background='yellow'
                         } else {
-                            badge.classList.remove('non-zero');
-                            badge.classList.remove('warning'); // Remove a classe warning
+                            badge.classList.remove('non-zero', 'warning');
                             badge.classList.add('zero');
+
+                        }
+                    })
+                    .catch(error => console.error('Erro:', error));
+            }
+            // Função para atualizar a contagem de lubrificações
+            function atualizarContagemLubrificacao() {
+                fetch('/lubrificacao-count')
+                    .then(response => response.json())
+                    .then(data => {
+                        const badge = document.getElementById('lubrificacao-badge');
+
+                        // Atualiza o número
+                        badge.innerText = data.pendentes;
+                        badge.style.display = 'inline-block';
+
+                        // Atualiza a cor diretamente
+                        if (data.pendentes > 0) {
+                            badge.style.backgroundColor = 'yellow'; // cor quando houver pendentes
+                            badge.style.color = 'black'; // cor do texto para contraste
+                        } else {
+                            badge.style.backgroundColor = 'green'; // cor quando 0
+                            badge.style.color = 'white';
                         }
                     })
                     .catch(error => console.error('Erro:', error));
             }
 
-            setInterval(atualizarContagemChecklists, 30000);
+            // Atualiza a cada 30 segundos
+            setInterval(() => {
+                atualizarContagemChecklists();
+                atualizarContagemLubrificacao();
+            }, 30000);
 
-            // Atualiza as contagens imediatamente quando a página é carregad
+            // Atualiza imediatamente quando a página carrega
             atualizarContagemChecklists();
+            atualizarContagemLubrificacao();
+
         });
     </script>
+
 </header>
 <main>
 

@@ -250,9 +250,17 @@
 
     <!-- Notifications -->
     <div class="notifications">
+        @if(auth()->check() && auth()->user()->id == 3)
         <div id="alarms-count" class="notification">
             <a href="{{ route('notificacoes.index') }}" style="color:white;">Alarmes</a>
             <span class="badge" id="alarms-badge">0</span>
+        </div>
+        @endif
+        <div id="lubrificacao-count" class="notification">
+            <a href="{{ route('lubrificacao.index') }}" style="color:white;">
+                Lubrificação
+                <span class="badge" id="lubrificacao-badge">0</span>
+            </a>
         </div>
         <div id="checklist-count" class="notification">
             <a href="/check-list-index" style="color:white;">Check-list</a>
@@ -330,6 +338,7 @@
         atualizarBadge('checklist-badge', '/check-list-pendentes', 'zero', 'non-zero', 'warning');
         atualizarBadge('alarms-badge', '/alarms-count', 'zero', 'non-zero', 'yellow');
         atualizarBadge('messages-badge', '/messages-count', 'zero', 'non-zero', 'yellow');
+        atualizarBadge('lubrificacao-badge', '/lubrificacao-count', 'zero', 'non-zero', 'yellow');
     }, 30000);
 
     // Atualiza imediatamente
@@ -337,6 +346,7 @@
     atualizarBadge('checklist-badge', '/check-list-pendentes', 'zero', 'non-zero', 'warning');
     atualizarBadge('alarms-badge', '/alarms-count', 'zero', 'non-zero', 'yellow');
     atualizarBadge('messages-badge', '/messages-count', 'zero', 'non-zero', 'yellow');
+    atualizarBadge('lubrificacao-badge', '/lubrificacao-count', 'zero', 'non-zero', 'yellow');
 </script>
 
 </html>

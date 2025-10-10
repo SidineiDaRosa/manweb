@@ -504,6 +504,7 @@ Route::get('/site_help', function () {
 //-------------------------------------------------------------//
 
 use App\Http\Controllers\LubrificacaoController;
+Route::get('/lubrificacoes', [LubrificacaoController::class, 'index'])->name('lubrificacao.index');
 
 Route::resource('lubrificacao', LubrificacaoController::class);
 Route::post('/lubrificacao-intervalo', [LubrificacaoController::class, 'store_intervalo'])->name('medicao.store');
@@ -511,10 +512,15 @@ Route::post('/lubrificacao-intervalo', [LubrificacaoController::class, 'store_in
 use App\Http\Controllers\LubrificacaoExecutadaController;
 
 Route::resource('lubrificacoes-executadas', LubrificacaoExecutadaController::class);
+Route::get('/lubrificacoes-executadas/{lubrificacao}/edit', [LubrificacaoExecutadaController::class, 'edit'])
+    ->name('lubrificacoes-executadas.edit');
+//Count 
+Route::get('/lubrificacao-count', [LubrificacaoController::class, 'countPendentes']);
+
+
 
 // Abrir a view externa para execução
-Route::get('lubrificacao/{id}/executar-externo', [LubrificacaoExecutadaController::class, 'executarView'])
-    ->name('lubrificacao.executar.externo');
+
 Route::post('lubrificacao/{id}/executar-externo', [LubrificacaoExecutadaController::class, 'executar'])
     ->name('lubrificacao.executar.externo.salvar');
 

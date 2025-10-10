@@ -115,11 +115,7 @@ class LubrificacaoExecutadaController extends Controller
         // Retorna com mensagem
         return redirect()->back()->with('success', 'Lubrificação executada e registrada com sucesso!');
     }
-    public function executarView($id)
-    {
-        $lubrificacao = Lubrificacao::findOrFail($id);
-        return view('app.lubrificacao.executar_lubrificacao', compact('lubrificacao'));
-    }
+ 
     public function executar_lub($equipamento_id)
     {
         $equipamento = \App\Models\Equipamento::findOrFail($equipamento_id);

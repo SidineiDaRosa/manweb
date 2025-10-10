@@ -180,7 +180,6 @@
                         <th>Tag</th>
                         <th>Intervalo (h)</th>
                         <th>Status</th>
-                        <th>Criado em</th>
                         <th>Atualizado em</th>
                         <th>Ações</th>
                     </tr>
@@ -218,7 +217,6 @@
                             title="{{ $horasPassadas !== null ? $horasPassadas.'h desde a última lubrificação' : 'Sem intervalo definido' }}">
                             {{ $icone }}
                         </td>
-                        <td>{{ $lubrificacao->criado_em ? $lubrificacao->criado_em->format('d/m/Y H:i') : '-' }}</td>
                         <td>{{ $lubrificacao->atualizado_em ? $lubrificacao->atualizado_em->format('d/m/Y H:i') : '-' }}</td>
                         <td>
                             <form class="form-executar-lubrificacao" data-id="{{ $lubrificacao->id }}" style="display:inline-block;">
@@ -248,7 +246,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="funcionarioSelect" value="{{$funcionario->primeiro_nome}}" readonly>
+                    <div>Executante: {{$funcionario->primeiro_nome}} {{$funcionario->ultimo_nome}}</div>
+                    <input type="text" id="funcionarioSelect" value="{{$funcionario->primeiro_nome}}" readonly hidden>
                     <p>Deseja realmente executar esta lubrificação?</p>
                     <textarea id="observacoesModal" class="form-control" placeholder="Adicionar observações (opcional)"></textarea>
                     <div id="alertaExecucao" class="mt-2"></div>
