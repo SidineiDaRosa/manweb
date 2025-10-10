@@ -517,3 +517,11 @@ Route::get('lubrificacao/{id}/executar-externo', [LubrificacaoExecutadaControlle
     ->name('lubrificacao.executar.externo');
 Route::post('lubrificacao/{id}/executar-externo', [LubrificacaoExecutadaController::class, 'executar'])
     ->name('lubrificacao.executar.externo.salvar');
+
+Route::get('/executar-lubrificacao/{equipamento}', [LubrificacaoExecutadaController::class, 'executar_lub'])
+    ->name('executar.lubrificacao');
+Route::post('/open-lubrificacao/{equipamento}', [LubrificacaoExecutadaController::class, 'executar_open'])
+    ->name('open.lubrificacao');
+
+Route::post('/lubrificacao/executar/{id}', [LubrificacaoExecutadaController::class, 'executarAcao'])
+    ->name('lubrificacao.executar.acao');

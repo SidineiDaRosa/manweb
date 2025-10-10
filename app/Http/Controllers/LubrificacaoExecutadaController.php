@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funcionario;
 use Illuminate\Http\Request;
 use App\Models\LubrificacaoExecutada;
 use App\Models\Lubrificacao;
+use App\Models\Equipamento;
 
 class LubrificacaoExecutadaController extends Controller
 {
@@ -117,5 +119,50 @@ class LubrificacaoExecutadaController extends Controller
     {
         $lubrificacao = Lubrificacao::findOrFail($id);
         return view('app.lubrificacao.executar_lubrificacao', compact('lubrificacao'));
+    }
+    public function executar_lub($equipamento_id)
+    {
+        $equipamento = \App\Models\Equipamento::findOrFail($equipamento_id);
+
+        // Busca todas as lubrificações relacionadas a este equipamento
+        $lubrificacoes = \App\Models\Lubrificacao::where('equipamento_id', $equipamento_id)->get();
+        $funcionarios = Funcionario::whereIn('funcao', ['mecânico', 'eletricista'])->get();
+        return view('app.lubrificacao.executar', compact('equipamento', 'lubrificacoes', 'funcionarios'));
+    }
+    public function executar_open(Request $request)
+    {
+    
+        // Busca equipamento no banco
+        $equipamento = Equipamento::findOrFail($request->equipamento_id);
+
+        // Busca lubrificações relacionadas
+        $lubrificacoes = Lubrificacao::where('equipamento_id', $request->equipamento_id)->get();
+
+        // Se for um único funcionário pelo ID
+        $funcionario = Funcionario::find($request->funcionario_id);
+
+
+        return view('app.lubrificacao.executar_lubrificacao_list', compact('equipamento', 'lubrificacoes', 'funcionario'));
+    }
+
+    public function executarAcao(Request $request, $id)
+    {
+        $lubrificacao = Lubrificacao::findOrFail($id);
+
+        $executada = new LubrificacaoExecutada();
+        $executada->lubrificacao_id = $lubrificacao->id;
+        $executada->observacoes = $request->observacoes ?? null;
+        $executada->executante = $request->executante_nome?? 'Operador externo';
+        $executada->save();
+
+        $lubrificacao->atualizado_em = now();
+
+        if ($request->filled('observacoes')) {
+            //$lubrificacao->observacoes = $request->observacoes;
+        }
+
+        $lubrificacao->save();
+
+        return response()->json(['message' => 'Lubrificação executada e registrada com sucesso!']);
     }
 }

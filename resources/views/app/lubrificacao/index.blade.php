@@ -7,7 +7,7 @@
 
         <div class="d-flex justify-content-between mb-3">
             <!-- Formulário de filtro -->
-            <form action="{{ route('lubrificacao.index') }}" method="GET" class="d-flex align-items-center">
+            <form id="frm_filtro_por_equipamento" action="{{ route('lubrificacao.index') }}" method="GET" class="d-flex align-items-center">
                 <label for="equipamento_id" class="me-2">Filtrar por Equipamento:</label>
                 <select name="equipamento_id" id="equipamento_id" class="form-control">
                     <option value="">Todos</option>
@@ -17,9 +17,28 @@
                     </option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-primary">Filtrar</button>
             </form>
+            <button type="button" class="btn btn-primary" onclick="document.getElementById('frm_filtro_por_equipamento').submit();">
+                Filtrar
+            </button>
+            <button type="button" class="btn btn-success" onclick="abrirFormularioLubrificacao()">Executar lubrificação</button>
 
+            <script>
+                function abrirFormularioLubrificacao() {
+                    const equipamentoId = document.getElementById('equipamento_id').value;
+
+                    if (!equipamentoId) {
+                        alert('Selecione um equipamento primeiro!');
+                        return;
+                    }
+
+                    // Monta a rota dinamicamente
+                    const url = "{{ url('executar-lubrificacao') }}/" + equipamentoId;
+
+                    // Abre o formulário em uma nova aba (ou modal, se quiser)
+                    window.location.href = url;
+                }
+            </script>
             <!-- Botão de criar nova lubrificação -->
             <a href="{{ route('lubrificacao.create') }}" class="btn btn-success">
                 <i class="fas fa-oil-can"></i>
