@@ -537,4 +537,14 @@ Route::post('/lubrificacao/executar/{id}', [LubrificacaoExecutadaController::cla
 
 Route::get('/lubrificacoes-feitas', [LubrificacaoExecutadaController::class, 'index'])
     ->name('lubrificacao.executadas');
-
+//
+// Manutenção
+Route::prefix('manutencao')->group(function () {
+    Route::get('/preventiva', fn() => view('site.manutencao.manutencao_preventiva'))->name('manutencao.preventiva');
+    Route::get('/corretiva', fn() => view('site.manutencao.manutencao_corretiva'))->name('manutencao.corretiva');
+    Route::get('/preditiva', fn() => view('site.manutencao.manutencao_preditiva'))->name('manutencao.preditiva');
+    Route::get('/lubrificacao', fn() => view('site.manutencao.lubrificacao'))->name('manutencao.lubrificacao');
+});
+Route::get('/about', function () {
+    return view('site.about');
+})->name('about');

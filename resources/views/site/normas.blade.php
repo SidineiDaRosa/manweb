@@ -1,9 +1,10 @@
+@include('site.navigation_bar')
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Normas de Manutenção</title>
+  <title>Normas Regulamentadoras</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -36,8 +37,8 @@
 </head>
 <body>
 
-  <h1>Normas que Regem a Manutenção</h1>
-  <p>A manutenção eficiente é essencial para garantir a confiabilidade, segurança e longevidade dos ativos de uma organização. Abaixo destacamos as principais normas que orientam essas práticas.</p>
+  <h3>Normas Regulamentadoras</h3>
+  <h5>A manutenção é essencial para garantir a confiabilidade, segurança e longevidade dos ativos de uma organização</h5>
 
   <section>
     <h2>1. ISO 55000 – Gestão de Ativos</h2>

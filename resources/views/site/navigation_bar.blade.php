@@ -213,7 +213,7 @@
                             <div class="box-conteudo">
                                 <div class="titulo">Sobre</div>
                                 <div class="conteudo">
-                                    <a href="#">Sobre nós</a>
+                                    <a href="{{ route('about') }}">Sobre</a>
                                 </div>
                             </div>
                         </div>
@@ -296,13 +296,17 @@
                                 <div class="titulo">Guias e Procedimentos</div>
                                 <p></p>
                                 <div class="conteudo">
-                                    <a href="#">Procedimentos de Manutenção Preventiva</a>
+                                      <a href="{{ route('manutencao.preventiva') }}">🛠 Preventiva</a> |
                                 </div>
                                 <div class="conteudo">
-                                    <a href="#">Procedimentos de Manutenção Corretiva</a>
+                                     <a href="{{ route('manutencao.corretiva') }}">⚙️ Corretiva</a> |
                                 </div>
                                 <div class="conteudo">
-                                  <a href="{{ route('documentos.manutencao') }}">Checklists de Inspeção de Equipamentos</a>
+                                   <a href="{{ route('manutencao.preditiva') }}">📊 Preditiva</a> |
+                                </div>
+                                <div class="conteudo">
+                                  <a href="{{ route('manutencao.lubrificacao') }}">💧 Lubrificação</a>
+
                                 </div>
                             </div>
                         </div>
