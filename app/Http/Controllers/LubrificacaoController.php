@@ -33,7 +33,10 @@ class LubrificacaoController extends Controller
     {
         $equipamentos = Equipamento::all();
         $unidades = UnidadeMedida::all();
-        $produtos = Produto::where('familia_id', 65)->get();
+        $produtos = Produto::whereHas('familia', function ($query) {
+            $query->where('nome', 'like', 'ole%')
+                ->orWhere('nome', 'like', 'grax%');
+        })->get();
         return view('app.lubrificacao.create', compact('unidades', 'equipamentos', 'produtos'));
     }
 
