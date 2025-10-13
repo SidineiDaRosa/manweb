@@ -34,7 +34,7 @@
                     <input type="number" class="form-control" id="id" name="id" placeholder="ID Os" value="">
                 </div>
                 <p>
-                <div class="col-md-1">
+                <div class="col-sm-1">
                     <label for="data_inicio">Data inicial:</label>
                     <input type="date" class="form-control" name="data_inicio" id="data_inicio" placeholder="dataPrevista">
                 </div>
@@ -50,10 +50,10 @@
                     <label for="horaFim">Hora fim:</label>
                     <input type="time" class="form-control" name="hora_fim" id="horaFim" placeholder="horaFim" value="">
                 </div>
-                <div class="col-md-6 mb-0">
+                <div class="col-md-3 mb-0">
                     <label for="responsavel" class="">Responsável:</label>
                     <select name="responsavel" id="responsavel" class="form-control">
-                        <option value="todos">todos</option>
+                        <option value="todos">Todos</option>
                         @foreach ($funcionarios as $funcionario_find)
                         <option value="{{ $funcionario_find->primeiro_nome }}" {{ ($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
                             {{ $funcionario_find->primeiro_nome }}
@@ -61,6 +61,20 @@
                         @endforeach
                     </select>
                     {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
+                </div>
+                <div class="col-md-3 mb-0">
+                    <label for="responsavel" class="">Busca texto descrição:</label>
+                    <input value="" name="like" id="like" class="form-control" placeholder="--Digite aqui--" style="background-color: rgba(255, 255, 153, 0.3);">
+                </div>
+                <div class="col-md-0">
+                    <label for="btFiltrar" class="">Buscar</label>
+                    <p>
+                        <a href="#" class="btn btn-info btn-icon-split" onclick="">
+                            <span class="icon text-white-50">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <span class="text"></span>
+                        </a>
                 </div>
                 <!------------------------------------------------------------------------>
                 <div class="col-md-2 mb-0">
@@ -78,12 +92,13 @@
                     <label for="tipo_consulta" class="">Tipo de consulta:</label>
 
                     <select class="form-control" name="tipo_consulta" id="tipo_consulta" value="">
-                        <option value="1">Pelo ID único</option>
+                        <option value="6">🗓️ Data Inicial</option>
+                        <option value="5">🗓️ ⚙️Data inicial e Equipamento</option>
+                        <option value="1" style="background-color: #a3e6a3;" >🆔 Pelo ID</option>
+                        <option value="9" style="background-color: #81b0eeff;">📝Pela descrição</option>
                         <option value="2">>=Data inicial <= Data inicial </option>
                         <option value="3">>=Data inicial e <=Data final</option>
                         <option value="4">=Data final</option>
-                        <option value="5">Data inicial e equipamento</option>
-                        <option value="6">Data inicial e empresa</option>
                         <option value="7">Imprimir</option>
                         <option value="8">Ordenado pela Emissão</option>
                     </select>
@@ -130,7 +145,7 @@
                     <label for="btFiltrar" class="">Filtrar:</label>
                     <p>
                         <a href="#" class="btn btn-outline-warning btn-bg" onclick="FiltraOs()" style="color: orangered;"
-                        title="Alpicar filtro">
+                            title="Alpicar filtro">
                             <span class="text">
                                 <i class="icofont-filter"></i>Filtrar</span>
                         </a>
@@ -140,7 +155,7 @@
                 <div class="col-md-0">
                     <label for="btFiltrar" class="">Hoje</label>
                     <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetDataHoje()" >
+                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetDataHoje()">
                             <span class="icon text-white-50">
                                 <i class="icofont-filter"></i>
                             </span>
@@ -279,17 +294,9 @@
                         document.getElementById('form_filt_os').submit();
                     }
                 </script>
+
                 <div class="col-md-0">
-                    <label for="btFiltrar" class="">Nova O.S.</label>
-                    <p>
-                        <a href="{{ route('empresas.index') }}" class="btn btn-info btn-icon-split">
-                            <span class="material-symbols-outlined">
-                                docs_add_on
-                            </span>
-                        </a>
-                </div>
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">dashboard</label>
+                    <label for="btFiltrar" class="">Dashboard</label>
                     <p>
                         <a class="btn btn-info btn-icon-split btn-dark" href="{{ route('app.home') }}">
                             <i class="icofont-dashboard"></i> Dashboard
@@ -336,7 +343,7 @@
                     }
                 </style>
             </head>
-            <h6>Ordens em aberto</h6>
+            <h6>Ordens</h6>
 
             <body>
                 <table class="table table-striped table-hover">
@@ -627,15 +634,6 @@
     @endforeach
 
     </table>
-    </div>
-    {{-----------------------------------------------------------------------------------}}
-    {{--Bloco que gera o time line para mostrar no tempo como está adistribuição---------}}
-    <div class="row mb-0 md-0">
-        <div class="col-md-12">
-            <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="executaTimeLine()">
-                Gerar timeline de distribuição de ordens
-            </button>
-        </div>
     </div>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

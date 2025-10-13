@@ -123,7 +123,8 @@ Route::post('/ordem-servico/atualizar-intervalo', [OrdemServicoController::class
 //   Abre os  gantt
 Route::get('/filter-os-timeline', [OrdemServicoController::class, 'filter_os_timeline'])->name('filter.os.timeline');
 Route::get('/gantt-timeline', [OrdemServicoController::class, 'gantt_timeline'])->name('gantt.os.timeline');
-
+// Busca OS por texto like na descrição
+Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
 //--------------------------------------------------------//
 //                  Ordem de produção
 //--------------------------------------------------------//
