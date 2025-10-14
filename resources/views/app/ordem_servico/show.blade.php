@@ -331,6 +331,7 @@
                     <hr>
                     <div class="conteudo">
                        ID:  {{$ordem_servico->projeto_id}}
+                  
                     </div>
                 </div>
             </div>

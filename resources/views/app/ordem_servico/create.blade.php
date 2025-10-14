@@ -31,7 +31,7 @@
             'equipamentos'=>$equipamentos,'funcionarios'=>$funcionarios,
             'empresa'=>$empresa,
             'equipamento'=>$equipamento,
-            'pre_descricao_os'=>$pre_descricao_os,
+            'pre_descricao_os'=>$pre_descricao_os,'projetos'=>$projetos,
             'ss_id'=>$ss_id
             ])
             @endcomponent

@@ -576,7 +576,7 @@
             <div class="titulo">Solução</div>
             <hr>
             <div class="conteudo">
-                <select class="input-text" name="solucao" id="solucao" value="">
+                <select class="input-text"  name="solucao" id="solucao" value="">
                     <option value="5">Agilizar Mão de obra</option>
                     <option value="4">Mão de obra autonama</option>
                     <option value="3">Acionar segurança do trabalho</option>
@@ -585,15 +585,21 @@
                     Por favor, informe a tendência.
                 </div>
             </div>
-            <div class="titulo" hidden>SS de origem</div>
+            <div class="titulo">SS de origem</div>
             <hr>
             <div class="conteudo">
-                <input type="text" name="ss_id" value="{{$ss_id}}">
+                <input class="input-text" name="ss_id" value="{{$ss_id}}">
             </div>
             <div class="titulo">Projeto</div>
             <hr>
             <div class="conteudo">
-                <input class="input-text" type="number" id="projeto_id" name="projeto_id" style="color:#4caf50;">
+                <select class="input-text"  name="projeto_id" id="projeto_id">
+                    <option value="">Selecione um projeto</option> <!-- opcional -->
+                    @foreach($projetos as $projeto)
+                    <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
+                    @endforeach
+                </select>
+
             </div>
         </div>
         {{--fim card 3--}}

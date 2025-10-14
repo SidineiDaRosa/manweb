@@ -31,7 +31,8 @@
             'ordem_servico'=>$ordem_servico,
             'equipamentos'=>$equipamentos,
             'funcionarios'=>$funcionarios,
-            'empresas'=>$empresas
+            'empresas'=>$empresas,
+            'projetos'=>$projetos
             ])
             @endcomponent
         </div>

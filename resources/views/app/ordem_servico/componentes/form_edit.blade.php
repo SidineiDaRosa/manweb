@@ -744,7 +744,13 @@
             <div class="titulo">Projeto</div>
             <hr>
             <div class="conteudo">
-                <input class="input-text" type="number" id="projeto_id" name="projeto_id" style="color:#4caf50;" value="{{$ordem_servico->projeto_id}}">
+                <select class="input-text" name="projeto_id" id="projeto_id">
+                    <option value="">Selecione um projeto</option> <!-- opcional -->
+                    @foreach($projetos as $projeto)
+                    <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
+                    @endforeach
+                </select>
+
             </div>
         </div>
         {{--fim card 3--}}

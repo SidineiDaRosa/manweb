@@ -11,6 +11,7 @@ use App\Models\Equipamento;
 use App\Models\OrdemServico;
 use App\Models\Funcionario;
 use App\Models\PedidoSaida;
+use App\Models\Projeto;
 use App\Models\SaidaProduto;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,6 @@ class OrdemServicoController extends Controller
         $equipamento = Equipamento::all();
         $id = $request->get("id");
         $tipo_consulta = $request->get("tipo_consulta");
-
         switch ($tipo_consulta) {
 
             // 1️⃣ Consulta por ID
@@ -224,6 +224,7 @@ class OrdemServicoController extends Controller
     public function create(Request $empresa)
     {
         //---------------------------------------------------------//
+        $projetos = Projeto::where('status', 'ativo')->get();
         $id = $empresa->get('empresa');
         $equipamento = $empresa->get('equipamento');
         $pre_descricao_os = $empresa->get('descricao');
@@ -241,7 +242,8 @@ class OrdemServicoController extends Controller
             'empresa' => $empresa,
             'equipamento' => $equipamento,
             'pre_descricao_os' => $pre_descricao_os,
-            'ss_id' => $ss_id
+            'ss_id' => $ss_id,
+            'projetos' => $projetos
 
         ]);
     }
@@ -354,6 +356,7 @@ class OrdemServicoController extends Controller
             // acumula na coleção principal
             $produtos = $produtos->merge($produtosPedido);
         }
+        $projeto = Projeto::where('id', $ordem_servico->projeto_id)->get();
 
         return view('app.ordem_servico.show', [
             'ordem_servico'       => $ordem_servico,
@@ -361,7 +364,8 @@ class OrdemServicoController extends Controller
             'funcionarios'        => $funcionarios,
             'total_hs_os'         => $total_hs_os,
             'equipamentos'        => $equipamentos,
-            'produtos'            => $produtos
+            'produtos'            => $produtos,
+            'projeto' => $projeto
         ]);
     }
 
@@ -376,7 +380,7 @@ class OrdemServicoController extends Controller
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
         $empresas = Empresas::all();
-
+        $projetos = Projeto::where('status', 'ativo')->get();
 
         return view(
             'app.ordem_servico.edit',
@@ -384,8 +388,8 @@ class OrdemServicoController extends Controller
                 'ordem_servico' => $ordem_servico,
                 'equipamentos' => $equipamentos,
                 'funcionarios' => $funcionarios,
-                'empresas' => $empresas
-
+                'empresas' => $empresas,
+                'projetos' => $projetos
             ]
         );
         return view('app.ordem_servico.show', ['ordem_servico' => $ordem_servico,]);
@@ -466,7 +470,7 @@ class OrdemServicoController extends Controller
             'link_foto' => $ordem_servico->link_foto, // Caminho da imagem
             'signature_receptor' => $ordem_servico->signature_receptor, // Caminho da assinatura manual
             'anexo' => $request->anexo, // Caminho da assinatura manual
-            'projeto_id'=> $request->projeto_id // projeto id
+            'projeto_id' => $request->projeto_id // projeto id
         ]);
 
         // Recuperar dados atualizados para a view
