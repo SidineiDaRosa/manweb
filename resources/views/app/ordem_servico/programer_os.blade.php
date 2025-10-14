@@ -33,7 +33,12 @@
 
             <label for="fim">Fim:</label>
             <input class="form-control w-50" type="datetime-local" id="fim" name="fim" />
-
+            <select name="projeto_id" id="projeto_id" class="form-control" aria-placeholder="Selecione o projeto" style="background-color: #e6f1e7ff;">
+                <option value="0">Nenhum</option>
+                @foreach($projetos as $projeto)
+                <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
+                @endforeach
+            </select>
             <select class="form-control w-50" name="situacao" id="situacao">
                 <option value="padrao">Não finalizada</option>
                 <option value="aberto">Aberto</option>
@@ -44,7 +49,7 @@
             </select>
 
             &nbsp;
-            <button class="btn btn-danger" type="submit">Ver Gráfico de Gantt</button>
+            <button class="btn btn-danger" type="submit">Gerar Gantt</button>
         </form>
     </div>
     <style>

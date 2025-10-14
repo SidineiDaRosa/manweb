@@ -237,6 +237,7 @@
                     Ordem de Serviço</a>
                 <a href="{{ route('index_kpis') }}">📊 KPIs</a>
                 <a href="{{ route('lubrificacao.index') }}"> ⚙️💧 Lubrificação</a>
+                <a href="{{ route('projetos.index') }}" class="btn btn-secondary">Projetos</a>
 
             </div>
         </li>
@@ -262,7 +263,7 @@
                 <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="administracao-submenu">
-              
+
                 <!-- Usuarios-->
                 @auth
                 @if(Auth::user()->level === 0)

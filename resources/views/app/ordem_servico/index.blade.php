@@ -29,24 +29,24 @@
             <!----datas---------------------------------------------------------------------------------->
             <!------------------------------------------------------------------------------------------->
             <div class="form-row">
-                <div class="col-md-1">
+                <div class="col-md-0">
                     <label for="id">ID:</label>
                     <input type="number" class="form-control" id="id" name="id" placeholder="ID Os" value="">
                 </div>
                 <p>
-                <div class="col-sm-1">
+                <div class="col-sm-1.5">
                     <label for="data_inicio">Data inicial:</label>
                     <input type="date" class="form-control" name="data_inicio" id="data_inicio" placeholder="dataPrevista">
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-0">
                     <label for="hora_inicio">Hora prevista:</label>
                     <input type="time" class="form-control" name="hora_inicio" id="hora_inicio" placeholder="horaPrevista" value="">
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1.5">
                     <label for="dataFim">Data final:</label>
                     <input type="date" class="form-control" name="data_fim" id="data_fim" placeholder="dataFim" value="">
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-0">
                     <label for="horaFim">Hora fim:</label>
                     <input type="time" class="form-control" name="hora_fim" id="horaFim" placeholder="horaFim" value="">
                 </div>
@@ -66,43 +66,7 @@
                     <label for="responsavel" class="">Busca texto descrição:</label>
                     <input value="" name="like" id="like" class="form-control" placeholder="--Digite aqui--" style="background-color: rgba(255, 255, 153, 0.3);">
                 </div>
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">Buscar</label>
-                    <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="">
-                            <span class="icon text-white-50">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <span class="text"></span>
-                        </a>
-                </div>
-                <!------------------------------------------------------------------------>
-                <div class="col-md-2 mb-0">
-                    <label for="situacao" class="">Situação:</label>
-                    <select class="form-control" name="situacao" id="situacao" value="">
-                        <option value="aberto">Aberto</option>
-                        <option value="fechado">Fechado</option>
-                        <option value="indefinido">Indefinido</option>
-                        <option value="cancelada">Cancelada</option>
-                        <option value="em andamento">Em andamento</option>
-                        <option value="pausado">Pausado</option>
-                    </select>
-                </div>
-                <div class="col-md-2 mb-0">
-                    <label for="tipo_consulta" class="">Tipo de consulta:</label>
 
-                    <select class="form-control" name="tipo_consulta" id="tipo_consulta" value="">
-                        <option value="6">🗓️ Data Inicial</option>
-                        <option value="5">🗓️ ⚙️Data inicial e Equipamento</option>
-                        <option value="1" style="background-color: #a3e6a3;" >🆔 Pelo ID</option>
-                        <option value="9" style="background-color: #81b0eeff;">📝Pela descrição</option>
-                        <option value="2">>=Data inicial <= Data inicial </option>
-                        <option value="3">>=Data inicial e <=Data final</option>
-                        <option value="4">=Data final</option>
-                        <option value="7">Imprimir</option>
-                        <option value="8">Ordenado pela Emissão</option>
-                    </select>
-                </div>
                 <!--------------------------------------------------------------------------------------->
                 <!---------Select empresa------------->
                 <!--------------------------------------------------------------------------------------->
@@ -138,20 +102,39 @@
                          font-weight:300px;">Selecione um resultado</option>
                     </select>
                 </div>
+                <!------------------------------------------------------------------------>
+                <div class="col-md-2 mb-0">
+                    <label for="situacao">Situação:</label>
+                    <select class="form-control" name="situacao" id="situacao">
+                        <option value="aberto">🔓 Aberto</option>
+                        <option value="fechado">🔒 Fechado</option>
+                        <option value="indefinido">❔ Indefinido</option>
+                        <option value="cancelada">❌ Cancelada</option>
+                        <option value="em andamento">🕐 Em andamento</option>
+                        <option value="pausado">⏸️ Pausado</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 mb-0">
+                    <label for="tipo_consulta" class="">Tipo de consulta:</label>
+
+                    <select class="form-control" name="tipo_consulta" id="tipo_consulta" value="">
+                        <option value="6">🗓️ Data Inicial</option>
+                        <option value="5">🗓️ ⚙️Data inicial e Equipamento</option>
+                        <option value="1" style="background-color: #a3e6a3;">🆔 Pelo ID</option>
+                        <option value="9" style="background-color: #81b0eeff;">📝Pela descrição</option>
+                        <option value="2">>=Data inicial <= Data inicial </option>
+                        <option value="3">>=Data inicial e <=Data final</option>
+                        <option value="4">=Data final</option>
+                        <option value="7">Imprimir</option>
+                        <option value="8">Ordenado pela Emissão</option>
+                    </select>
+                </div>
+
                 </form>
                 {{----------------------------------------------------------------}}
                 {{--Conjunto de botão para ações de filtros de ordens de serviço--}}
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">Filtrar:</label>
-                    <p>
-                        <a href="#" class="btn btn-outline-warning btn-bg" onclick="FiltraOs()" style="color: orangered;"
-                            title="Alpicar filtro">
-                            <span class="text">
-                                <i class="icofont-filter"></i>Filtrar</span>
-                        </a>
 
-                        </input>
-                </div>
                 <div class="col-md-0">
                     <label for="btFiltrar" class="">Hoje</label>
                     <p>
@@ -201,6 +184,17 @@
                             </span>
                             <span class="text">O.S. Vencidas</span>
                         </a>
+                </div>
+                <div class="col-md-0">
+                    <label for="btFiltrar" class="">Filtrar:</label>
+                    <p>
+                        <a href="#" class="btn btn-outline-warning btn-bg" onclick="FiltraOs()" style="color: orangered;"
+                            title="Alpicar filtro">
+                            <span class="text">
+                                <i class="icofont-filter"></i>Filtrar</span>
+                        </a>
+
+                        </input>
                 </div>
                 <!--------------------------------Ajax para pesquisa------------------------------------->
                 <!-- resources/views/your_view.blade.php -->
@@ -359,6 +353,7 @@
                             <th>Responsável</th>
                             <th>Descrição</th>
                             <th>Status</th>
+                            <th>Projeto</th>
                             <th>Operações</th>
                             <th>check</th>
                         </tr>
@@ -435,7 +430,7 @@
                                     <div class="progress-bar text-bg-warning">{{ $ordem_servico->status_servicos}}%</div>
                                 </div>
                             </td>
-
+                            <td>{{ $ordem_servico->projeto_id}}</td>
                             <!--Div operaçoes do registro da ordem des serviço-->
                             <td>
                                 <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
@@ -528,6 +523,7 @@
                             <th scope="col" class="">Executado</th>
                             <th>link foto</th>
                             <th>Status</th>
+                            <th>ID Projeto</th>
                             <th>Operações</th>
                             <th>check</th>
                             <th hidden>G</th>
@@ -586,54 +582,55 @@
                                     //});
                                 </script>
                                 <!--Fim Exemplo de progressbar com um input texto-->
+                            </td>
+                            <td>{{ $ordem_servico->projeto_id}}</td>
+                            </td>
+                            <!--Div operaçoes do registro da ordem des serviço-->
+                            <td>
+                                <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
+                                    <a class="btn btn-sm-template btn-outline-primary" href="{{ route('ordem-servico.show', ['ordem_servico' => $ordem_servico->id]) }}">
+                                        <i class="icofont-eye-alt"></i>
+                                    </a>
+                                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
+
+                                        <i class="icofont-ui-edit"></i> </a>
+
+                                    <!--Condoçes para deletar a os-->
+                                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
+                                        <i class="icofont-ui-delete"></i></a>
+                            </td>
+                            <script>
+                                function DeletarOs() {
+                                    var x;
+                                    var r = confirm("Deseja deletar o registro os?");
+                                    if (r == true) {
+                                        document.getElementById('form_{{ $ordem_servico->id }}').submit()
+                                    } else {
+                                        x = "Você pressionou Cancelar!";
+                                    }
+                                    document.getElementById("demo").innerHTML = x;
+                                }
+                            </script>
+
+                            <form id="form_{{ $ordem_servico->id }}" method="post" action="{{ route('ordem-servico.destroy', ['ordem_servico' => $ordem_servico->id]) }}">
+                                @method('DELETE')
+                                @csrf
+                            </form>
+
         </div>
-        </td>
-        <!--Div operaçoes do registro da ordem des serviço-->
         <td>
-            <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('ordem-servico.show', ['ordem_servico' => $ordem_servico->id]) }}">
-                    <i class="icofont-eye-alt"></i>
-                </a>
-                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
-
-                    <i class="icofont-ui-edit"></i> </a>
-
-                <!--Condoçes para deletar a os-->
-                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
-                    <i class="icofont-ui-delete"></i></a>
+            <div class="col-md-2 mb-0">
+                <input type="checkbox" name="" id="">
+            </div>
         </td>
-        <script>
-            function DeletarOs() {
-                var x;
-                var r = confirm("Deseja deletar o registro os?");
-                if (r == true) {
-                    document.getElementById('form_{{ $ordem_servico->id }}').submit()
-                } else {
-                    x = "Você pressionou Cancelar!";
-                }
-                document.getElementById("demo").innerHTML = x;
-            }
-        </script>
+        <td hidden>{{ $ordem_servico->gravidade}} </td>
+        <td hidden>{{ $ordem_servico->urgencia}} </td>
+        <td hidden>{{ $ordem_servico->tendencia}} </td>
+        </tr>
+        </tbody>
+        @endforeach
 
-        <form id="form_{{ $ordem_servico->id }}" method="post" action="{{ route('ordem-servico.destroy', ['ordem_servico' => $ordem_servico->id]) }}">
-            @method('DELETE')
-            @csrf
-        </form>
-
-    </div>
-    <td>
-        <div class="col-md-2 mb-0">
-            <input type="checkbox" name="" id="">
-        </div>
-    </td>
-    <td hidden>{{ $ordem_servico->gravidade}} </td>
-    <td hidden>{{ $ordem_servico->urgencia}} </td>
-    <td hidden>{{ $ordem_servico->tendencia}} </td>
-    </tr>
-    </tbody>
-    @endforeach
-
-    </table>
+        </table>
     </div>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

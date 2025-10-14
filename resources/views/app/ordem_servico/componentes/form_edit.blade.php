@@ -643,8 +643,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="titulo">Causa</div>
             <hr>
             <div class="conteudo">
@@ -743,7 +741,11 @@
                 }
             </script>
             {{-- Fim de assinatura manual --}}
-
+            <div class="titulo">Projeto</div>
+            <hr>
+            <div class="conteudo">
+                <input class="input-text" type="number" id="projeto_id" name="projeto_id" style="color:#4caf50;" value="{{$ordem_servico->projeto_id}}">
+            </div>
         </div>
         {{--fim card 3--}}
         <div class="row sm-3 mb-0">

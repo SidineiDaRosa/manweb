@@ -16,6 +16,7 @@ use App\Models\Funcionario;
 use App\Models\PedidoCompra;
 use App\Models\Prduto;
 use App\Models\Produto;
+use App\Models\Projeto;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
@@ -324,7 +325,7 @@ class DahboardStatusOsController extends Controller
         $fridayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(4)->format('Y-m-d'));
         $saturdayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(5)->format('Y-m-d'));
         $sundayOrders = $this->getOrdersForDay(Carbon::parse($startOfWeek)->addDays(6)->format('Y-m-d'));
-      
+
         //---------------------------------------------------//
         //  envia dados para view                           //
         //--------------------------------------------------//
@@ -438,7 +439,7 @@ class DahboardStatusOsController extends Controller
         }
         $ordem_servico_gantt = OrdemServico::where('situacao', 'aberto')->get();
         // echo ($ordem_servico_gantt);
-
+        $projetos = Projeto::all();
         return view('app.ordem_servico.programer_os', [
             'mondayOrders' => $mondayOrders,
             'tuesdayOrders' => $tuesdayOrders,
@@ -448,7 +449,8 @@ class DahboardStatusOsController extends Controller
             'saturdayOrders' => $saturdayOrders,
             'sundayOrders' => $sundayOrders,
             'ordens_servicos_por_semana' => $ordens_servicos_por_semana,
-            'ordem_servico_gantt' => $ordem_servico_gantt
+            'ordem_servico_gantt' => $ordem_servico_gantt,
+            'projetos' => $projetos
 
         ]);
     }

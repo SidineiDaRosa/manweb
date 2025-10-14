@@ -549,3 +549,11 @@ Route::prefix('manutencao')->group(function () {
 Route::get('/about', function () {
     return view('site.about');
 })->name('about');
+//========================================================//
+// Projetos
+
+use App\Http\Controllers\ProjectController;
+
+Route::resource('projetos', ProjectController::class);
+// Rota para listar todos os projetos
+Route::get('/projetos-index', [ProjectController::class, 'index'])->name('projetos.index');

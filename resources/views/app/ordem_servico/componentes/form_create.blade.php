@@ -429,7 +429,7 @@
                     border-radius: 8px;
                     font-weight: bold;
                     font-size: 18px;
-                    margin-top:10px;
+                    margin-top: 10px;
                 }
 
                 /* Botões */
@@ -585,10 +585,15 @@
                     Por favor, informe a tendência.
                 </div>
             </div>
-            <div class="titulo">SS de origem</div>
+            <div class="titulo" hidden>SS de origem</div>
             <hr>
             <div class="conteudo">
                 <input type="text" name="ss_id" value="{{$ss_id}}">
+            </div>
+            <div class="titulo">Projeto</div>
+            <hr>
+            <div class="conteudo">
+                <input class="input-text" type="number" id="projeto_id" name="projeto_id" style="color:#4caf50;">
             </div>
         </div>
         {{--fim card 3--}}

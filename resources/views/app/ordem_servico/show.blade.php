@@ -249,7 +249,9 @@
                         <!--Anexo-->
 
                         <div class="conteudo">
+
                             <a class="txt-link" id="anexo" target="_blank" href="{{$ordem_servico->anexo}}">
+                                <i class="bi bi-paperclip"></i>
                                 Anexo: {{$ordem_servico->anexo}}
                             </a>
                         </div>
@@ -324,6 +326,11 @@
                             {{ $texto }}
                         </div>
 
+                    </div>
+                    <div class="titulo">Projeto</div>
+                    <hr>
+                    <div class="conteudo">
+                       ID:  {{$ordem_servico->projeto_id}}
                     </div>
                 </div>
             </div>

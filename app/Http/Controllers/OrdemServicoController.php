@@ -298,7 +298,8 @@ class OrdemServicoController extends Controller
             'natureza_do_servico' => $request->natureza_do_servico,
             'especialidade_do_servico' => $request->especialidade_do_servico,
             'ss_id' => $request->ss_id,
-            'anexo' => $request->anexo //Link anexado com algum documento
+            'anexo' => $request->anexo, //Link anexado com algum documento
+            'projeto_id' => $request->projeto_id
 
 
         ]);
@@ -464,7 +465,8 @@ class OrdemServicoController extends Controller
             'situacao' => $request->situacao,
             'link_foto' => $ordem_servico->link_foto, // Caminho da imagem
             'signature_receptor' => $ordem_servico->signature_receptor, // Caminho da assinatura manual
-            'anexo' => $request->anexo // Caminho da assinatura manual
+            'anexo' => $request->anexo, // Caminho da assinatura manual
+            'projeto_id'=> $request->projeto_id // projeto id
         ]);
 
         // Recuperar dados atualizados para a view
@@ -481,11 +483,11 @@ class OrdemServicoController extends Controller
         ]);
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
      * * @param  \Illuminate\Http\Request  $request
+     * 
      * @param  \App\OrdemServico  $marca
      * @return \Illuminate\Http\Response
      */
@@ -587,7 +589,7 @@ class OrdemServicoController extends Controller
     }
     public function filter_os_timeline(Request $request)
     {
-        dd($request);
+
         $dataInicio = $request->input('data_inicio') ?: date('Y-m-01');
         $dataFim = $request->input('data_fim') ?: date('Y-m-t');
 
@@ -636,13 +638,17 @@ class OrdemServicoController extends Controller
 
         return view('app.ordem_servico.gantt_os', compact('tarefas', 'inicio', 'diasIntervalo', 'dataInicio', 'dataFim'));
     }
+    //===============================================//
+    // Gera gráfico de gantt
+    //--------------------------------------------//
     public function gantt_timeline(Request $request)
     {
         $situacao = $request->query('situacao');
         $inicioFiltro = $request->query('inicio');
         $fimFiltro = $request->query('fim');
-
+        $projeto = $request->projeto_id;
         // Validação da janela de tempo
+
         if (!$inicioFiltro || !$fimFiltro) {
             // Retorna uma view simples com mensagem de erro
             return redirect()->back()->with('erro', 'Data início não pode ser maior que data fim.');
@@ -654,41 +660,82 @@ class OrdemServicoController extends Controller
         if ($dtInicio->greaterThan($dtFim)) {
             return redirect()->back()->with('erro', 'Data início não pode ser maior que data fim.');
         }
+        if ($projeto == 0) {
+            $query = OrdemServico::query();
+            // busca apenas pela data inicial
+            $query->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') >= ?", [$dtInicio])
+                //->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
+                ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
 
-        $query = OrdemServico::query();
-        // busca apenas pela data inicial
-        $query->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') >= ?", [$dtInicio])
-            //->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
-            ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
-
-        if ($situacao) {
-            if ($situacao === 'padrao') {
-                $query->whereIn('situacao', ['aberto', 'em andamento', 'pausado']);
-            } else {
-                $query->whereRaw('LOWER(situacao) = LOWER(?)', [$situacao]);
+            if ($situacao) {
+                if ($situacao === 'padrao') {
+                    $query->whereIn('situacao', ['aberto', 'em andamento', 'pausado']);
+                } else {
+                    $query->whereRaw('LOWER(situacao) = LOWER(?)', [$situacao]);
+                }
             }
+
+            $ordens = $query->orderBy('data_inicio')
+                ->orderBy('hora_inicio')
+                ->get()->map(function ($o) {
+                    return [
+                        'id' => $o->id,
+                        'responsavel' => $o->responsavel,
+                        'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
+                        'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
+                        'descricao' => $o->descricao,
+                        'equipamento' => $o->equipamento,
+                        'especialidade' => $o->especialidade_do_servico,
+                        'status_servicos' => $o->status_servicos,
+                        'situacao' => $o->situacao,
+                        'gravidade' => $o->gravidade,
+                        'urgencia' => $o->urgencia,
+                        'tendencia' => $o->tendencia
+                    ];
+                });
+
+            return view('app.ordem_servico.gantt_os', compact('ordens', 'inicioFiltro', 'fimFiltro'));
+        } else {
+            $query = OrdemServico::query();
+
+            // busca apenas pela data inicial
+            $query->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') >= ?", [$dtInicio])
+                ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$dtFim]);
+
+            // 🔹 filtra pelo projeto_id
+            if (!empty($projeto)) {
+                $query->where('projeto_id', $projeto);
+            }
+
+            if ($situacao) {
+                if ($situacao === 'padrao') {
+                    $query->whereIn('situacao', ['aberto', 'em andamento', 'pausado']);
+                } else {
+                    $query->whereRaw('LOWER(situacao) = LOWER(?)', [$situacao]);
+                }
+            }
+
+            $ordens = $query->orderBy('data_inicio')
+                ->orderBy('hora_inicio')
+                ->get()->map(function ($o) {
+                    return [
+                        'id' => $o->id,
+                        'responsavel' => $o->responsavel,
+                        'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
+                        'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
+                        'descricao' => $o->descricao,
+                        'equipamento' => $o->equipamento,
+                        'especialidade' => $o->especialidade_do_servico,
+                        'status_servicos' => $o->status_servicos,
+                        'situacao' => $o->situacao,
+                        'gravidade' => $o->gravidade,
+                        'urgencia' => $o->urgencia,
+                        'tendencia' => $o->tendencia
+                    ];
+                });
+
+            return view('app.ordem_servico.gantt_os', compact('ordens', 'inicioFiltro', 'fimFiltro'));
         }
-
-        $ordens = $query->orderBy('data_inicio')
-            ->orderBy('hora_inicio')
-            ->get()->map(function ($o) {
-                return [
-                    'id' => $o->id,
-                    'responsavel' => $o->responsavel,
-                    'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
-                    'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
-                    'descricao' => $o->descricao,
-                    'equipamento' => $o->equipamento,
-                    'especialidade' => $o->especialidade_do_servico,
-                    'status_servicos' => $o->status_servicos,
-                    'situacao' => $o->situacao,
-                    'gravidade' => $o->gravidade,
-                    'urgencia' => $o->urgencia,
-                    'tendencia' => $o->tendencia
-                ];
-            });
-
-        return view('app.ordem_servico.gantt_os', compact('ordens', 'inicioFiltro', 'fimFiltro'));
     }
 
     public function storeFromModal(Request $request)
