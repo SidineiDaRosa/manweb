@@ -84,6 +84,11 @@ class CheckListExecutadoController extends Controller
                 return response()->json(['message' => 'Imagem obrigatória para gravidade Gravíssimo'], 422);
             }
         }
+        if ($validated['gravidade'] > 1) {
+            $status_checagem = 'Pendente';
+        } else {
+            $status_checagem = 'OK';
+        }
 
         $checkListCheked = new CheckListExecutado();
         $checkListCheked->check_list_id = $validated['check_list_id'];
@@ -96,6 +101,7 @@ class CheckListExecutadoController extends Controller
         $checkListCheked->imagem = $imagemPath; // Salva o caminho da imagem aqui
         $checkListCheked->data_verificacao = Carbon::now('America/Sao_Paulo')->toDateString();
         $checkListCheked->hora_verificacao = Carbon::now('America/Sao_Paulo')->toTimeString();
+        $checkListCheked->status = $status_checagem;
 
         // ... seu restante de lógica para salvar, atualizar datas e retornar view
 

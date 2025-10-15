@@ -56,9 +56,7 @@
                     <th>Intervalo</th>
                     <th>Data de Verificação</th>
                     <th>Hora de Verificação</th>
-                    <th>Natureza</th>
-                    <th>Criado em</th>
-                    <th>Atualizado em</th>
+                    <th>Especialidade</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,13 +64,11 @@
                 <tr>
                     <td>{{$check_lists_open_f->id}}</td>
                     <td>{{$check_lists_open_f->descricao}}</td>
-                    <td>{{$check_lists_open_f->equipamento_id}}</td>
-                    <td>{{$check_lists_open_f->intervalo}}</td>
+                    <td>{{$check_lists_open_f->equipamento->nome}}</td>
+                    <td>{{$check_lists_open_f->intervalo}}hs</td>
                     <td>{{$check_lists_open_f->data_verificacao}}</td>
                     <td>{{$check_lists_open_f->hora_verificacao}}</td>
                     <td>{{$check_lists_open_f->natureza}}</td>
-                    <td>{{$check_lists_open_f->created_at}}</td>
-                    <td>{{$check_lists_open_f->updated_at}}</td>
                 </tr>
                 @endforeach
             </tbody>

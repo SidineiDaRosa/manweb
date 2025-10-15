@@ -53,18 +53,22 @@ class CheckListController extends Controller
         //Fim Contagem por grupo
         //---------------------------
         $checkLists = CheckList::all();
-        $checkListExcAlerts = collect(); // Coleção vazia para armazenar os alertas
+        $checkListExcAlerts = collect(); // Coleção para armazenar alertas
 
         foreach ($checkLists as $checkList) {
             $ultimoExecutado = CheckListExecutado::where('check_list_id', $checkList->id)
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('updated_at', 'desc') // Pega o último executado
                 ->first();
 
-            if ($ultimoExecutado && $ultimoExecutado->gravidade >= 2) {
+            // Verifica se existe, se o status é "Pendente" e gravidade >= 2
+            if (
+                $ultimoExecutado
+                && $ultimoExecutado->status === 'Pendente'
+                && $ultimoExecutado->gravidade >= 2
+            ) {
                 $checkListExcAlerts->push($ultimoExecutado);
             }
         }
-
         if ($type >= 1) {
             $checkListsOpen = CheckList::where('natureza', '=', $request->nat)->where('data_verificacao', '<=', $dataLimite)->get();
             return view('app.check_list.index', [

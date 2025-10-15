@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ExampleMail;
+use App\Models\CheckListExecutado;
 use App\Models\Empresas;
 use Illuminate\Http\Request;
 use App\Models\Equipamento;
@@ -516,8 +517,12 @@ class OrdemServicoController extends Controller
         // Parar a execução para garantir que a mensagem seja exibida
         exit;
     }
+    //==============================================//
+    // Cria nova os apartir de um checklist
+    //----------------------------------------------//
     public function new_os_check_list(Request $request)
     {
+        // dd($id = $request->checagem_id);
         // Define o fuso horário de São Paulo
         $dataHoraAtual = Carbon::now('America/Sao_Paulo');
 
@@ -546,10 +551,11 @@ class OrdemServicoController extends Controller
             'situacao' => 'Aberto',
             'natureza_do_servico' => 'Preventiva',
             'especialidade_do_servico' => $request->natureza,
-            //'ss_id' => $request->ss_id
-
 
         ]);
+        $checagem = CheckListExecutado::find($request->checagem_id);
+        $checagem->status = 'Verificado';
+        $checagem->save();
         echo 'Criar nova OS a partir do checklist';
         // Para debug: dd($request->all());
         return back(); // Volta para a página anterior (onde estava o formulário)

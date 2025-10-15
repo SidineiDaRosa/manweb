@@ -20,7 +20,7 @@
 <body style="background-color:antiquewhite;height:auto;">
     <div>
         <div class="card-header pb-2">
-            <h2 style="font-family: Arial, Helvetica, sans-serif;">Check-List</h2>
+            <h2 style="font-family: Arial, Helvetica, sans-serif;">CheckList</h2>
         </div>
 
         <div class="card-header justify-content-left pt-1">
@@ -169,7 +169,7 @@
                                     <!-- Observações -->
                                     <div class="mb-3 mt-4">
                                         <label for="observacoes" class="form-label">Observações</label>
-                                        <input type="text" id="observacao" class="form-control" name="observacao" value="Normal" required>
+                                        <textarea id="observacao" class="form-control" name="observacao" required rows="2" cols="20">Normal</textarea>
                                     </div>
                                     <!-- Upload da Imagem -->
                                     <div class="mb-3 mt-3" id="imagem-container" style="display: none;">

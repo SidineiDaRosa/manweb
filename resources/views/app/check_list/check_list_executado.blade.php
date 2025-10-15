@@ -38,7 +38,7 @@
             </form>
         </div>
 
-        <div>
+        <div style="margin-top:10px;">
             @if(isset($check_list_executado))
             @foreach($check_list_executado as $check_list_executado_f)
             <div calss=" div-row" style="display:flex;flex-direction:row;margin-right:5px;">
@@ -46,7 +46,7 @@
                     <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkgrey;">ID: </h6> {{$check_list_executado_f->id}}
                 </span>
                 <span style="font-family: Arial, Helvetica, sans-serif;margin-top:4px;margin-right:20px;width:20%;">
-                    <span style="font-family:Arial,sanserif;font-weight:700;color:dimgrey;font-weight:300">Descrição do check-List:<br>
+                    <span style="font-family:Arial,sanserif;font-weight:700;color:dimgrey;font-weight:300">Descrição do checklist:<br>
 
                     </span>
                     id:{{ $check_list_executado_f->checkList->id}},
@@ -101,6 +101,9 @@
                 <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-left:20px; width:20%;">
                     <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkgrey;">Data e hora: </h6> {{ \Carbon\Carbon::parse($check_list_executado_f->data_verificacao)->format('d/m/Y') }} às {{ $check_list_executado_f->hora_verificacao }}
                 </span>
+                <span style="font-family: Arial, Helvetica, sans-serif; margin-top:4px; margin-left:20px; width:20%;">
+                    <h6 style="font-family:Arial,sanserif;font-weight:700;color:darkgrey;">Status: </h6> {{$check_list_executado_f->status}}
+                </span>
                 <!-- Imagem -->
                 @php
                 $caminhoCompleto = public_path($check_list_executado_f->imagem);
@@ -123,6 +126,7 @@
                     style="float:right;margin-left:5px;height:38px;margin-right:5px;">
                     Criar O.S.
                 </button>
+
                 <form action="{{ route('check-list-exec-delete', $check_list_executado_f->id) }}" method="POST" onsubmit="return confirm('Tem certeza de que deseja deletar este registro: {{$check_list_executado_f->id}}?');">
                     @csrf
                     @method('DELETE')
@@ -145,7 +149,7 @@
         <!-- Bootstrap JS (para modais, precisa da biblioteca JS) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Modal -->
+        <!-- Modal Que cria a OS-->
         <div class="modal fade" id="dateTimeModal" tabindex="-1" aria-labelledby="dateTimeModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -165,15 +169,16 @@
                         <form id="new-os-form" method="POST" action="{{route('new_os_check_list') }}">
                             @csrf
 
-                            <span>{{$equipamento->id}}</span>
-                            <span>{{$equipamento->nome}}</span>
+                            <h3><span>{{$equipamento->id}}</span>
+                                <span>{{$equipamento->nome}}</span>
+                            </h3>
                             <input type="text" id="equipamento_id" value="{{$equipamento->id}}" name="equipamento_id" hidden>
                             <div class="mb-3">
 
-                                Checagem ID: <input type="text" id="dynamicId" value="" readonly> <br>
-                                Data time: <input type="text" id="data_time_modal" value="" readonly> <br>
-                                Check list id: <input type="text" id="check_list_id" value="" readonly> <br>
-                                check list desc: <input type="text" id="check_list_desc" value="" readonly> <br>
+                                Checagem ID: <input class="form-control" type="text" id="dynamicId" name="checagem_id" readonly> <br>
+                                Agora: <input class="form-control" type="text" id="data_time_modal" value="" readonly> <br>
+                                ID do checklist: <input class="form-control" type="text" id="check_list_id" value="" readonly> <br>
+                                Descrição do checklist: <input class="form-control" type="text" id="check_list_desc" value="" readonly> <br>
                                 <label for="startDateTime" class="form-label">Data e Hora Inicial</label>
                                 <input type="datetime-local" class="form-control" id="startDateTime" name="data_inicio" required>
                             </div>
@@ -182,16 +187,17 @@
                                 <input type="datetime-local" class="form-control" id="endDateTime" name="data_fim" required>
                             </div>
                             <div class="mb-3">
-                                <label for="endDateTime" class="form-label">Descrição</label>
+                                <label for="endDateTime" class="form-label">Pré descrição da O.S.:</label>
                                 <textarea class="form-control" rows="4" maxlength="300" id="text_area_desc" name="descricao">
                                 </textarea>
                             </div>
+                            Especialidade:
                             <div class="orm-control" style="width:300px;">
-                                <select class="orm-control" style="width:300px;" id="specialidade_do_servico" name="natureza">
-                                    <option value="mecanica">Mecânica</option>
-                                    <option value="eletrica">Elétrica</option>
-                                    <option value="civil">Civil</option>
-                                    <option value="sesmt">SESMT</option>
+                                <select class="form-control" style="width:300px;" id="specialidade_do_servico" name="natureza">
+                                    <option value="mecanica">⚙️ Mecânica</option>
+                                    <option value="eletrica">💡 Elétrica</option>
+                                    <option value="civil">🏗️ Civil</option>
+                                    <option value="sesmt">🚧 SESMT</option>
                                     <!-- Outras especialidades conforme necessário -->
                                 </select>
                             </div>
