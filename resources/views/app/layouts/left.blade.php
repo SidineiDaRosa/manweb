@@ -237,7 +237,7 @@
                     Ordem de Serviço</a>
                 <a href="{{ route('index_kpis') }}">📊 KPIs</a>
                 <a href="{{ route('lubrificacao.index') }}"> ⚙️💧 Lubrificação</a>
-                <a href="{{ route('projetos.index') }}" class="btn btn-secondary">Projetos</a>
+                <a href="{{ route('projetos.index') }}" class="btn btn-secondary"><i class="bi bi-building-fill-gear"></i>Projetos</a>
 
             </div>
         </li>

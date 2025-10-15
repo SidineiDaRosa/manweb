@@ -805,7 +805,7 @@
             <!--Chart   Gerado pelo Echart ------------------------------------------------------>
 
             <body style="height: 100%; margin: 0">
-                <div id="container" style="height: 100%"></div>
+                <div class="container-chart" id="container" style="height: 100%"></div>
 
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
 
@@ -921,7 +921,7 @@
             <hr style="margin-bottom:2px;margin-top:2px;">
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgba(39,218,190,0.2);">
                 <div class="card-body">
-                    <div class="container">
+                    <div >
                         <table class="condensed-table" id="tb_pedidos_compra">
                             <thead>
                                 <tr>
@@ -1090,8 +1090,8 @@
                 Estoque de produtos
             </button>
             <hr style="margin-top:1px;">
-            <div class="container" style="background-color:rgba(100,58,27,0.1);margin-top:1px;">
-                <table class="condensed-table" id="tb_pedidos_compra">
+            <div class="container-chart" style="background-color:rgba(100,58,27,0.1);margin-top:-5px;">
+                <table class="condensed-table" id="tb_pedidos_compra" style="margin-top:-20px;">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -1218,7 +1218,7 @@
 
         table.condensed-table th,
         table.condensed-table td {
-            padding: 2px;
+            padding: 1px;
             /* Define o padding como 0 para as células */
             font-size: 14px;
             border-bottom: 1px solid rgb(255, 255, 200, 0.3);
@@ -1232,6 +1232,9 @@
             background-color: rgb(255, 255, 255);
             /* Altera a cor de fundo para cinza claro */
             cursor: pointer;
+
+
+
             transition: 1.5s;
             opacity: 0.9;
         }
