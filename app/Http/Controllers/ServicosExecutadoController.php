@@ -39,7 +39,12 @@ class ServicosExecutadoController extends Controller
     {
         //
         $ordem_servico_id = $request->get("ordem_servico");
-        $funcionarios = Funcionario::all();
+        $funcionarios = Funcionario::where('funcao', 'like', '%eletricista%')
+            ->orWhere('funcao', 'like', '%mecanico%')
+            ->orWhere('funcao', 'like', '%pedreiro%')
+            ->orWhere('funcao', 'like', '%auxiliar%')
+            ->orWhere('funcao', 'like', '%Supervisor de Manu%')
+            ->get();
         $ordem_servico = OrdemServico::all();
         // return view('app.marca.index',['marcas'=> $marcas]);
         return view('app.servicos_executado.create', ['ordem_servico' => $ordem_servico, 'funcionarios' => $funcionarios, 'ordem_servico_id' => $ordem_servico_id]);
@@ -85,8 +90,8 @@ class ServicosExecutadoController extends Controller
         if ($option == 2) {
             return redirect()->route('pedido-saida.create', ['ordem_servico' => $ordem_servico->id]);
         };
-        if ($option == 3){
-            return redirect()->route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4]);
+        if ($option == 3) {
+            return redirect()->route('pedido-saida.index', ['ordem_servico' => $ordem_servico->id, 'tipofiltro' => 4]);
         };
     }
     /**
