@@ -24,6 +24,7 @@ class ProjectController extends Controller
     {
         $funcionarios = Funcionario::all();
         return view('app.projetos.create', compact('funcionarios'));
+        //
     }
 
     /**
