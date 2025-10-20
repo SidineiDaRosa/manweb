@@ -1177,7 +1177,6 @@
                     quantidade: parseInt(row.cells[2].textContent)
                 });
             }
-
             // Extrair datas e quantidades da tabela
             const dates = data.map(item => item.data);
             const quantities = data.map(item => item.quantidade);
@@ -1232,12 +1231,8 @@
             background-color: rgb(255, 255, 255);
             /* Altera a cor de fundo para cinza claro */
             cursor: pointer;
-
-
-
             transition: 1.5s;
             opacity: 0.9;
         }
     </style>
-
 </main>

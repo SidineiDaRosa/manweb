@@ -156,7 +156,7 @@
                 <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="home-submenu">
-                <a href="{{ route('empresas.index') }}">Busca unidade empresarial</a>
+                <a href="{{ route('empresas.index') }}">Unidade empresarial</a>
             </div>
         </li>
 
@@ -182,7 +182,7 @@
                     <i class="icofont-cubes icofont-2x"></i>
                 </div>
                 <span class="spn-txt-menu">
-                    Gestão de Suprimentos</span>
+                    Suprimentos</span>
                 <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="recursos-submenu">
