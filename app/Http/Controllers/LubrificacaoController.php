@@ -7,7 +7,7 @@ use App\Models\Lubrificacao;
 use App\Models\UnidadeMedida;
 use App\Models\Equipamento;
 use App\Models\Produto;
-use App\Models\lubrificacaoIntervalo;
+use App\Models\LubrificacaoIntervalo;
 
 class LubrificacaoController extends Controller
 {
