@@ -330,8 +330,13 @@
                     <div class="titulo">Projeto</div>
                     <hr>
                     <div class="conteudo">
-                       ID: {{$projeto->nome}}
-                  
+                        <?php
+                        if (isset($projeto)) {
+                            echo "ID: " . $projeto->nome;
+                        } else {
+                            echo "Não anexado a um projeto";
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
