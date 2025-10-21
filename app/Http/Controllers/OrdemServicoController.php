@@ -320,12 +320,15 @@ class OrdemServicoController extends Controller
         }
         //return response()->json($ordem_servico->toJson()); // Converte o objeto para JSON e retorna como resposta
         //return response()->json($ordem_servico->toArray()); // Converte o objeto para um array e retorna como resposta
+    
+        $projeto = Projeto::find($ordem_servico_f->projeto_id);
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $idLastOs)->get();
         return view('app.ordem_servico.show', [
             'ordem_servico' => $ordem_servico_f,
             'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
-            'total_hs_os' => $total_hs_os
+            'total_hs_os' => $total_hs_os,
+            'projeto' => $projeto
         ]);
     }
     /**
@@ -357,7 +360,7 @@ class OrdemServicoController extends Controller
             // acumula na coleção principal
             $produtos = $produtos->merge($produtosPedido);
         }
-        $projeto = Projeto::where('id', $ordem_servico->projeto_id)->get();
+        $projeto = Projeto::find($ordem_servico->projeto_id);
 
         return view('app.ordem_servico.show', [
             'ordem_servico'       => $ordem_servico,
@@ -448,7 +451,7 @@ class OrdemServicoController extends Controller
                 $ordem_servico->signature_receptor = 'img/assinaturas/' . $assinaturaNome;
             }
         }
-
+        $projeto = Projeto::find($ordem_servico->projeto_id);
         // Atualizar os outros campos da ordem de serviço
         $ordem_servico->update([
             'data_emissao' => $request->data_emissao,
@@ -484,7 +487,8 @@ class OrdemServicoController extends Controller
             'ordem_servico' => $ordem_servico,
             'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
-            'total_hs_os' => $total_hs_os
+            'total_hs_os' => $total_hs_os,
+            'projeto' => $projeto
         ]);
     }
 

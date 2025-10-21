@@ -42,7 +42,12 @@ class OrdemServico extends Model
     {
         return $this->belongsTo('App\Models\Funcionario');
     }
-    public function Empresa(){
+    public function Empresa()
+    {
         return $this->belongsTo('App\Models\Empresas');
+    }
+    public function Projeto()
+    {
+        return $this->belongsTo('App\Models\Projeto', 'projeto_id');
     }
 }

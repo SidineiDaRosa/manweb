@@ -24,6 +24,7 @@
 
         .navbar {
             background-color: white;
+            
         }
 
         .menu-item {
@@ -181,12 +182,17 @@
     <nav class="navbar">
         <div class="menu" id="menu">
             <div class="menu-item">
-                <a href="#">Home</a>
+                <a href="#">Home
+                    <span class="arrow"><i class="icofont-rounded-down"></i></span>
+                </a>
 
 
             </div>
+            |
             <div class="menu-item">
-                <a href="#">Sobre nós</a>
+                <a href="#">Sobre nós
+                    <span class="arrow"><i class="icofont-rounded-down"></i></span>
+                </a>
                 <div class="dropdown">
                     {{--------------Início continer box----------------------------------------}}
                     <div class="container-box">
@@ -222,8 +228,11 @@
                 </div>
 
             </div>
+            |
             <div class="menu-item">
-                <a href="#">Produtos e serviços</a>
+                <a href="#">Produtos e serviços
+                    <span class="arrow"><i class="icofont-rounded-down"></i></span>
+                </a>
                 <div class="dropdown">
                     {{--------------Início continer box----------------------------------------}}
                     <div class="container-box">
@@ -273,8 +282,11 @@
                 </div>
             </div>
             <!---Grupo documentos-->
+            |
             <div class="menu-item">
-                <a href="#">Manutenção</a>
+                <a href="#">Manutenção
+                    <span class="arrow"><i class="icofont-rounded-down"></i></span>
+                </a>
                 <div class="dropdown">
                     {{--------------Início container box----------------------------------------}}
                     <div class="container-box">
@@ -286,7 +298,7 @@
                                 <div class="conteudo">
                                     <a href="{{route('documentos.normas')}}">NRs</a>
                                 </div>
-                              
+
                             </div>
                         </div>
 
@@ -296,16 +308,16 @@
                                 <div class="titulo">Guias e Procedimentos</div>
                                 <p></p>
                                 <div class="conteudo">
-                                      <a href="{{ route('manutencao.preventiva') }}">🛠 Preventiva</a> |
+                                    <a href="{{ route('manutencao.preventiva') }}">🛠 Preventiva</a> |
                                 </div>
                                 <div class="conteudo">
-                                     <a href="{{ route('manutencao.corretiva') }}">⚙️ Corretiva</a> |
+                                    <a href="{{ route('manutencao.corretiva') }}">⚙️ Corretiva</a> |
                                 </div>
                                 <div class="conteudo">
-                                   <a href="{{ route('manutencao.preditiva') }}">📊 Preditiva</a> |
+                                    <a href="{{ route('manutencao.preditiva') }}">📊 Preditiva</a> |
                                 </div>
                                 <div class="conteudo">
-                                  <a href="{{ route('manutencao.lubrificacao') }}">💧 Lubrificação</a>
+                                    <a href="{{ route('manutencao.lubrificacao') }}">💧 Lubrificação</a>
 
                                 </div>
                             </div>

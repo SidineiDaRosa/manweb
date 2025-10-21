@@ -330,7 +330,7 @@
                     <div class="titulo">Projeto</div>
                     <hr>
                     <div class="conteudo">
-                       ID:  {{$ordem_servico->projeto_id}}
+                       ID: {{$projeto->nome}}
                   
                     </div>
                 </div>
