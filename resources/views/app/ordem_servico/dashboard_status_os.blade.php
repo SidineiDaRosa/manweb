@@ -563,7 +563,6 @@
                                         <div class="{{ $horaInicio->lt($horaAtual) ? 'text-danger' : ($horaInicio->eq($horaAtual) ? 'text-warning' : 'text-primary') }}"
                                             style="font-size:15px;font-family:Arial, Helvetica, sans-serif;">
 
-                                            <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;"> {{$os_hoje->id}}</span>
                                             <div style="background-color:white;border-radius:4px;margin:2px;">
                                                 {{ \Carbon\Carbon::parse($os_hoje->data_inicio)->format('d/m/y') }}
                                                 <hr style="margin:1px;">
@@ -580,7 +579,11 @@
                                         </div>
                                     </td>
 
-                                    <td>{{$os_hoje->descricao}}</td>
+                                    <td>
+                                        <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;"> {{$os_hoje->id}}</span><br>
+                                       <hr style="margin:1px;">
+                                        {{$os_hoje->descricao}}
+                                    </td>
                                     <td style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;font-stretch:extra-condensed;">
                                         {{$os_hoje->equipamento->nome}}
                                         <hr style="margin:4px;">
