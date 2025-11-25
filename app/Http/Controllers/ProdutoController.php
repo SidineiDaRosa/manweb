@@ -53,7 +53,6 @@ class ProdutoController extends Controller
             }
             if ($tipoFiltro == 2) {
                 $produtos = Produto::where('nome', 'like', $nome_produto_like . '%')->where('status', 'ativo')->get();
-                //if (isset($_POST['id'])) {
 
                 if (!empty($nome_produto_like)) {
                     return view('app.produto.index', [
@@ -65,9 +64,9 @@ class ProdutoController extends Controller
                 }
                 //return view('app.produto.index', ['produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias]);
             }
+            //Fitra pelo código do fabricante
             if ($tipoFiltro == 3) {
-                $produtos = Produto::where('cod_fabricante', 'like', $nome_produto_like . '%')->where('status', 'ativado')->get();
-                //if (isset($_POST['id'])) {
+                $produtos = Produto::where('cod_fabricante', 'like','%'. $nome_produto_like . '%')->where('status', 'ativo')->get();
 
                 if (!empty($nome_produto_like)) {
                     return view('app.produto.index', [
@@ -77,7 +76,6 @@ class ProdutoController extends Controller
                         'num_pedido' => $numPedido
                     ]);
                 }
-                //return view('app.produto.index', ['produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias]);
             }
             if ($tipoFiltro == 4) {
                 $produtos = Produto::where('categoria_id', $categoria_id)->get();
@@ -149,7 +147,7 @@ class ProdutoController extends Controller
         $unidades = UnidadeMedida::orderBy('nome', 'asc')->get();
         $categorias = Categoria::orderBy('nome', 'asc')->get();
         $familias = Familia::orderBy('nome', 'asc')->get();
-       
+
         return view('app.produto.create', compact('marcas', 'unidades', 'categorias', 'familias'));
     }
     /**
@@ -182,7 +180,7 @@ class ProdutoController extends Controller
         $produto->marca_id = $request->marca_id;
         $produto->unidade_medida_id = $request->unidade_medida_id;
         $produto->categoria_id = $request->categoria_id;
-         $produto->familia_id = $request->familia_id;
+        $produto->familia_id = $request->familia_id;
         $produto->link_peca = $request->link_peca;
         $produto->status = $request->status;
         // $produto->familia = $request->familia;
@@ -266,8 +264,8 @@ class ProdutoController extends Controller
         $unidades = UnidadeMedida::orderBy('nome', 'asc')->get();
         $categorias = Categoria::orderBy('nome', 'asc')->get();
         $marcas = Marca::orderBy('nome', 'asc')->get();
-         $familias = Familia::orderBy('nome', 'asc')->get();
-        return view('app.produto.edit', ['produto' => $produto, 'marcas' => $marcas, 'unidades' => $unidades, 'categorias' => $categorias,'familias'=>$familias]);
+        $familias = Familia::orderBy('nome', 'asc')->get();
+        return view('app.produto.edit', ['produto' => $produto, 'marcas' => $marcas, 'unidades' => $unidades, 'categorias' => $categorias, 'familias' => $familias]);
     }
 
     /**
@@ -290,7 +288,7 @@ class ProdutoController extends Controller
         $produto->marca_id = $request->marca_id;
         $produto->unidade_medida_id = $request->unidade_medida_id;
         $produto->categoria_id = $request->categoria_id;
-         $produto->familia_id = $request->familia_id;
+        $produto->familia_id = $request->familia_id;
         $produto->link_peca = $request->link_peca;
         $produto->status = $request->status;
         // Verifica se uma nova imagem foi enviada para image e a salva
