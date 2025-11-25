@@ -409,7 +409,7 @@
                                 <td>{{$ordens_servicos_fech->descricao}}</td>
                                 <td>{{$ordens_servicos_fech->equipamento->nome}}
                                     <hr style="margin:1px;">
-                                    <span style="font-weight: 700;">{{$ordens_servicos_fech->responsavel}}</span>
+                                    <span style="font-weight:600;">{{$ordens_servicos_fech->responsavel}}</span>
                                 </td>
                                 <td><img src="{{ asset('img/check-mark.png') }}" alt="" id="check"></td>
                                 <style>
