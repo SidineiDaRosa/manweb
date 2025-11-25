@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #2c3e50;
+            --primary: rgba(44, 62, 80, 1);
             --secondary: #3498db;
             --success: #2ecc71;
             --warning: #f39c12;
