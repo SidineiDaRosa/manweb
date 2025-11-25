@@ -110,7 +110,7 @@
                         if (data.pendentes > 0) {
                             badge.classList.remove('zero', 'non-zero');
                             badge.classList.add('warning'); // Adiciona a classe warning
-                            document.getElementById('lubrificacao-badge').style.background='yellow'
+                            document.getElementById('lubrificacao-badge').style.background = 'yellow'
                         } else {
                             badge.classList.remove('non-zero', 'warning');
                             badge.classList.add('zero');
@@ -382,12 +382,10 @@
                     <table class="condensed-table">
                         <thead>
                             <tr>
-
-
                                 <th>Finalização</th>
                                 <th>Descrição</th>
-                                <th>Patrimônio</th>
-                                <th> executante</th>
+                                <th>Patrimônio
+                                </th>
                                 <th>chk</th>
                             </tr>
                         </thead>
@@ -409,8 +407,10 @@
                                     {{ \Carbon\Carbon::parse($ordens_servicos_fech->hora_fim)->format('H:i') }}
                                 </td>
                                 <td>{{$ordens_servicos_fech->descricao}}</td>
-                                <td>{{$ordens_servicos_fech->equipamento->nome}}</td>
-                                <td>{{$ordens_servicos_fech->responsavel}}</td>
+                                <td>{{$ordens_servicos_fech->equipamento->nome}}
+                                    <hr style="margin:1px;">
+                                    <span style="font-weight: 700;">{{$ordens_servicos_fech->responsavel}}</span>
+                                </td>
                                 <td><img src="{{ asset('img/check-mark.png') }}" alt="" id="check"></td>
                                 <style>
                                     #check {
