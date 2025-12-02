@@ -57,14 +57,15 @@ class ProdutoController extends Controller
                 $produtos = Produto::whereRaw('LOWER(nome) LIKE LOWER(?)', ['%' . $nome_produto_like . '%'])
                     ->where('status', 'ativo')
                     ->get();
-                if (!empty($nome_produto_like)) {
-                    return view('app.produto.index', [
-                        'produtos' => $produtos,
-                        'unidades' => $unidades,
-                        'categorias' => $categorias,
-                        'num_pedido' => $numPedido
-                    ]);
-                }
+                echo ($produtos);
+                // if (!empty($nome_produto_like)) {
+                //   return view('app.produto.index', [
+                //  'produtos' => $produtos,
+                //  'unidades' => $unidades,
+                //  'categorias' => $categorias,
+                //  'num_pedido' => $numPedido
+                //  ]);
+                // }
             }
             //--------------------------------
             //Fitra pelo código do fabricante
