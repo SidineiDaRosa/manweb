@@ -8,21 +8,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Produto extends Model
 {
     use HasFactory;
+
     protected $fillable = [
+        'familia_id',
         'cod_fabricante',
         'nome',
         'descricao',
         'marca_id',
         'unidade_medida_id',
         'categoria_id',
-        'familia_id',
-        'estoque_minimo',
-        'estoque_ideal',
-        'estoque_maximo',
         'link_peca',
-        'local_estoque',
+        'image',
+        'image2',
+        'image3',
         'status'
-
     ];
 
     public function marca()
@@ -37,12 +36,9 @@ class Produto extends Model
 
     public function unidade_medida()
     {
-        //  return $this->belongsTo('App\Models\UnidadeMedida', 'unidade_medida_id', 'id');
         return $this->belongsTo('App\Models\UnidadeMedida');
     }
-    /**
-     * Relacionamento com a família
-     */
+
     public function familia()
     {
         return $this->belongsTo(Familia::class);

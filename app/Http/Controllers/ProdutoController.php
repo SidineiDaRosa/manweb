@@ -57,7 +57,7 @@ class ProdutoController extends Controller
                 // $produtos = Produto::whereRaw('LOWER(nome) LIKE LOWER(?)', ['%' . $nome_produto_like . '%'])
                 // ->where('status', 'ativo')
                 //->get();
-               $produtos = Produto::where('cod_fabricante', 'like', '%' . $nome_produto_like . '%')->get();
+               $produtos = Produto::where('cod_fabricante', 'like', '%' . 'Sen'. '%')->get();
                 echo ($produtos);
                 // if (!empty($nome_produto_like)) {
                 //   return view('app.produto.index', [
