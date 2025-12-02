@@ -53,22 +53,16 @@ class ProdutoController extends Controller
             // Busca Pelas Iniciais
             //-------------------------------
             if ($tipoFiltro == 2) {
-                //dd($nome_produto_like);
-                //$produtos = Produto::whereRaw('LOWER(nome) LIKE LOWER(?)', ['%' . $nome_produto_like . '%'])
-                // ->where('status', 'ativo')
-                // ->get();
 
-                dd(
-                    Produto::where('nome', 'like', '%sensor%')->get()->toArray()
-                );
-                // if (!empty($nome_produto_like)) {
-                //   return view('app.produto.index', [
-                //  'produtos' => $produtos,
-                //  'unidades' => $unidades,
-                //  'categorias' => $categorias,
-                //  'num_pedido' => $numPedido
-                //  ]);
-                // }
+                $produtos = Produto::where('nome', 'like', '%' . $nome_produto_like . '%')
+                    ->get();
+
+                return view('app.produto.index', [
+                    'produtos' => $produtos,
+                    'unidades' => $unidades,
+                    'categorias' => $categorias,
+                    'num_pedido' => $numPedido
+                ]);
             }
             //--------------------------------
             //Fitra pelo código do fabricante
