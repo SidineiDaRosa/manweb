@@ -39,8 +39,8 @@ class DahboardStatusOsController extends Controller
         $id = $request->get("id");
         $printerOs = $request->get("printer");
         $tipo_consulta = $request->get("tipo_consulta");
-
-        $funcionarios = Funcionario::all();
+        //Busca funcionários ativos
+        $funcionarios = Funcionario::where('status', 'Ativo')->get();
         $ordens_servicos = OrdemServico::where('id', 0)->get();
         $valorTotal = 0;
         //
