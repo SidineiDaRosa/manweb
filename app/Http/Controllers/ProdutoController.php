@@ -54,8 +54,11 @@ class ProdutoController extends Controller
             //-------------------------------
             if ($tipoFiltro == 2) {
                 //dd($nome_produto_like);
-                $produtos = Produto::whereRaw('LOWER(nome) LIKE LOWER(?)', ['%' . $nome_produto_like . '%'])
-                    ->where('status', 'ativo')
+                // $produtos = Produto::whereRaw('LOWER(nome) LIKE LOWER(?)', ['%' . $nome_produto_like . '%'])
+                // ->where('status', 'ativo')
+                //->get();
+                $produtos = Produto::
+                    where('status', 'ativo')
                     ->get();
                 echo ($produtos);
                 // if (!empty($nome_produto_like)) {
