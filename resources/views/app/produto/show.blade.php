@@ -461,8 +461,9 @@
                         </a>
 
                         <!-- Botão para abrir o modal -->
-                        <a class="btn-almoxarifado @can('user') disabled @endcan" data-toggle="modal" data-target="#myModal" title="Gerar Pedido de Compra">
+                        <a class="btn-almoxarifado @can('user') disabled @endcan" data-toggle="modal" data-target="#myModal" title="Gerar Pedido de Compra" style="cursor:pointer;">
                             <i class="fas fa-shopping-cart"></i> Gerar Pedido de Compra
+                            
                         </a>
                     </div>
                 </div>

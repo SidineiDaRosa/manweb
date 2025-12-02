@@ -44,8 +44,8 @@ class PedidoCompraAutoGenerateController extends Controller
             'hora_prevista' => $hora_prevista,
             'equipamento_id' => $patrimonio_id,                      // ID do equipamento
             'funcionarios_id' => auth()->id(), // ID do funcionário usuário logado no momento
-            'status' => 'aberto',                     // Status
-            'descricao' => 'Descrição do pedido de compra gerado ', // Descrição
+            'status' => 'Aberto',                     // Status
+            'descricao' => 'Descrição do pedido de compra ', // Descrição
         ];
         // Log dos dados para depuração
         Log::info('Dados do pedido de compra:', $pedidoData);
@@ -65,6 +65,7 @@ class PedidoCompraAutoGenerateController extends Controller
                 'pedidos_compra_id' => $ultimoPedido->id,
                 'produto_id' => $produto_id,
                 'quantidade' => $quantidade,
+                'status' => 'Pendente',
             ]);
 
             $pedidoCompraLista->save();

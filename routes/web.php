@@ -371,10 +371,7 @@ Route::middleware('auth')->delete('/saida-produto/{id}', [SaidaProdutoController
 //----------------------------------------------------------//
 //   PedidoCompraAutoGenerateController
 
-//Route::get('/pedido-compra/auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])
-// ->name('pedido-compra-auto-generate');
-
-// routes/web.php
+//Gerar pedido de compra apartir de produtos
 Route::middleware('auth')->post('/pedido-compra-auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])->name('pedido-compra-auto-generate');
 Route::middleware('auth')->get('/pedido-compra/show', [PedidoCompraAutoGenerateController::class, 'show'])
     ->name('pedido.compra.show');
