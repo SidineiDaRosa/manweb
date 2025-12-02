@@ -152,7 +152,7 @@
         <div class="top-card">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-4">
                 <!-- Formulário de busca -->
-                <form id="formSearchingProducts" action="{{'Produtos-filtro'}}" method="POST" class="search-form">
+                <form id="formSearchingProducts" action="{{'produtos-filtro'}}" method="POST" class="search-form">
                     @csrf
                     <input type="number" name="num_pedido" value="{{$num_pedido}}" hidden>
                     

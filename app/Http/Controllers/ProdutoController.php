@@ -31,18 +31,16 @@ class ProdutoController extends Controller
         $tipoFiltro = $request->get('tipofiltro');
         $nome_produto_like = $request->get('produto');
         $categoria_id = $request->get('categoria_id');
-        //$nome_produto_like='DIE';
-        //$produtos=Produto::all();
         $unidades = UnidadeMedida::all();
         $categorias = Categoria::all();
+        //-------------------------------
+        // Busca Pelo ID
+        //-------------------------------
         if ($tipoFiltro >= 1) {
             if ($tipoFiltro == 1) {
                 $produtos = Produto::where('id', $nome_produto_like)->get();
-                //if (isset($_POST['id'])) {
-
                 if (!empty($nome_produto_like)) {
 
-                    //return QrCode::size(300)->generate('$nome_produto_like');
                     return view('app.produto.index', [
                         'produtos' => $produtos,
                         'unidades' => $unidades,
@@ -51,6 +49,9 @@ class ProdutoController extends Controller
                     ]);
                 }
             }
+            //-------------------------------
+            // Busca Pelas Iniciais
+            //-------------------------------
             if ($tipoFiltro == 2) {
                 $produtos = Produto::where('nome', 'like', $nome_produto_like . '%')->where('status', 'ativo')->get();
 
@@ -62,11 +63,12 @@ class ProdutoController extends Controller
                         'num_pedido' => $numPedido
                     ]);
                 }
-                //return view('app.produto.index', ['produtos' => $produtos, 'unidades' => $unidades, 'categorias' => $categorias]);
             }
+            //--------------------------------
             //Fitra pelo código do fabricante
+            //--------------------------------
             if ($tipoFiltro == 3) {
-                $produtos = Produto::where('cod_fabricante', 'like','%'. $nome_produto_like . '%')->where('status', 'ativo')->get();
+                $produtos = Produto::where('cod_fabricante', 'like', '%' . $nome_produto_like . '%')->where('status', 'ativo')->get();
 
                 if (!empty($nome_produto_like)) {
                     return view('app.produto.index', [
@@ -77,11 +79,11 @@ class ProdutoController extends Controller
                     ]);
                 }
             }
+            //------------------------
+            // Busca por Categoria
+            //------------------------
             if ($tipoFiltro == 4) {
                 $produtos = Produto::where('categoria_id', $categoria_id)->get();
-                //if (isset($_POST['id'])) {
-
-                // if (!empty($nome_produto_like)) {
                 return view('app.produto.index', [
                     'produtos' => $produtos,
                     'unidades' => $unidades,

@@ -68,7 +68,7 @@ Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home
 
 Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce@index');
 //Route::post('/e-comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
-Route::post('/Produtos-filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
+Route::post('/produtos-filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
 //Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce');
 //Route::get('/filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
 Route::post('/comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
@@ -244,7 +244,7 @@ Route::middleware('auth')->post(
 Route::middleware('auth')->post('/Empresas-filtro', [App\Http\Controllers\EmpresasController::class, 'index']);
 Route::middleware('auth')->resource('/empresas', 'App\Http\Controllers\EmpresasController');
 //Filtro Produtos
-Route::middleware('auth')->post('/Produtos-filtro', [App\Http\Controllers\ProdutoController::class, 'index']);
+Route::middleware('auth')->post('/produtos-filtro', [App\Http\Controllers\ProdutoController::class, 'index']);
 //Rota saida de produtos
 Route::middleware('auth')->resource('/Saida-produto', 'App\Http\Controllers\SaidaProdutoController');
 Route::middleware('auth')->resource('/mostra-produto', 'App\Http\Controllers\SaidaProdutoController');
