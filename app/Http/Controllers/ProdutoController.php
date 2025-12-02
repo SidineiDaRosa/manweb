@@ -53,8 +53,8 @@ class ProdutoController extends Controller
             // Busca Pelas Iniciais
             //-------------------------------
             if ($tipoFiltro == 2) {
-                dd($nome_produto_like);
-                $produtos = Produto::where('nome', 'like', $nome_produto_like . '%')->where('status', 'ativo')->get();
+                //dd($nome_produto_like);
+                $produtos = Produto::where('nome', 'like', '%' . $nome_produto_like . '%')->where('status', 'ativo')->get();
 
                 if (!empty($nome_produto_like)) {
                     return view('app.produto.index', [
