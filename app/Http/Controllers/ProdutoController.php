@@ -55,6 +55,7 @@ class ProdutoController extends Controller
             if ($tipoFiltro == 2) {
 
                 $produtos = Produto::where('nome', 'like', '%' . $nome_produto_like . '%')
+                    ->where('status', 'ativo')
                     ->get();
 
                 return view('app.produto.index', [
