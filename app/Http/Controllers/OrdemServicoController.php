@@ -230,8 +230,8 @@ class OrdemServicoController extends Controller
         $equipamento = $empresa->get('equipamento');
         $pre_descricao_os = $empresa->get('descricao');
         $ss_id = $empresa->get('ss_id');
-        // $funcionarios=Funcionario::all();
-        $funcionarios = Funcionario::all(); //Busca todos os funcionários
+         // Seleciona funcionários ativos
+        $funcionarios = Funcionario::where('status','Ativo')->get();
         $equipamentos = Equipamento::where('empresa_id', $id)->get();
         $ordem_servico = OrdemServico::all();
         $empresa = Empresas::where('id', $id)->get();
@@ -382,7 +382,8 @@ class OrdemServicoController extends Controller
     public function edit(OrdemServico $ordem_servico)
     {
         $equipamentos = Equipamento::all();
-        $funcionarios = Funcionario::all();
+        // Seleciona funcionários ativos
+        $funcionarios = Funcionario::where('status','Ativo')->get();
         $empresas = Empresas::all();
         $projetos = Projeto::where('status', 'ativo')->get();
 
