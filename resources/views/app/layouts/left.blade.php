@@ -9,7 +9,8 @@
         width: 60px;
         /* sidebar recolhida */
         height: calc(100vh - 60px);
-        background-color: rgba(44, 62, 80, 1);;
+        background-color: rgba(44, 62, 80, 1);
+        ;
         overflow-x: hidden;
         overflow-y: auto;
         transition: width 0.5s ease;
@@ -263,7 +264,7 @@
                 <span class="arrow"><i class="icofont-rounded-right"></i></span>
             </a>
             <div class="submenu" id="administracao-submenu">
-
+                <a href="{{ route('funcionarios.index') }}">Funcionários</a>
                 <!-- Usuarios-->
                 @auth
                 @if(Auth::user()->level === 0)

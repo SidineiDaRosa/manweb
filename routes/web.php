@@ -554,3 +554,28 @@ use App\Http\Controllers\ProjectController;
 Route::resource('projetos', ProjectController::class);
 // Rota para listar todos os projetos
 Route::get('/projetos-index', [ProjectController::class, 'index'])->name('projetos.index');
+//===================================================
+// Funcionários
+//===================================================
+use App\Http\Controllers\FuncionarioController;
+// Lista todos os funcionários
+Route::get('/funcionarios', [FuncionarioController::class, 'index'])
+    ->name('funcionarios.index');
+
+// Exibe o formulário para criar um novo funcionário
+Route::get('/funcionarios/create', [FuncionarioController::class, 'create'])->name('funcionarios.create');
+
+// Salva o novo funcionário no banco de dados
+Route::post('/funcionarios', [FuncionarioController::class, 'store'])->name('funcionarios.store');
+
+// Exibe um funcionário específico (opcional)
+Route::get('/funcionarios/{id}', [FuncionarioController::class, 'show'])->name('funcionarios.show');
+
+// Exibe o formulário de edição de um funcionário
+Route::get('/funcionarios/{id}/edit', [FuncionarioController::class, 'edit'])->name('funcionarios.edit');
+
+// Atualiza os dados de um funcionário
+Route::put('/funcionarios/{id}', [FuncionarioController::class, 'update'])->name('funcionarios.update');
+
+// Exclui um funcionário
+Route::delete('/funcionarios/{id}', [FuncionarioController::class, 'destroy'])->name('funcionarios.destroy');
