@@ -12,7 +12,7 @@
             <p><strong>Descrição:</strong> {{ $projeto->descricao ?? '-' }}</p>
             <p><strong>Data de Início:</strong> {{ $projeto->data_inicio ? \Carbon\Carbon::parse($projeto->data_inicio)->format('d/m/Y') : '-' }}</p>
             <p><strong>Data de Fim:</strong> {{ $projeto->data_fim ? \Carbon\Carbon::parse($projeto->data_fim)->format('d/m/Y') : '-' }}</p>
-            <p><strong>Status:</strong> 
+            <p><strong>Status:</strong>
                 <span class="badge 
                     @if($projeto->status == 'ativo') bg-success
                     @elseif($projeto->status == 'concluido') bg-primary
@@ -28,6 +28,14 @@
         <div class="card-footer">
             <a href="{{ route('projetos.edit', $projeto->id) }}" class="btn btn-warning">Editar</a>
             <a href="{{ route('projetos.index') }}" class="btn btn-secondary">Voltar</a>
+            <a href="{{ route('ordem.servico.projeto', ['projeto_id' => $projeto->id]) }}">
+                Ver OS deste Projeto
+            </a>
+            <a href="{{ route('ordem.servico.projeto.gantt', $projeto->id) }}">
+                Ver OS deste Projeto no Gantt
+            </a>
+
+
         </div>
     </div>
 </div>

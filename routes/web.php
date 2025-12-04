@@ -554,6 +554,12 @@ use App\Http\Controllers\ProjectController;
 Route::resource('projetos', ProjectController::class);
 // Rota para listar todos os projetos
 Route::get('/projetos-index', [ProjectController::class, 'index'])->name('projetos.index');
+//Busca os relacionadas a projeto
+Route::get('/ordem-servico/projeto/{projeto_id}', [ProjectController::class, 'get_os_project'])
+    ->name('ordem.servico.projeto');
+//retrona para o gantt
+Route::get('/ordem-servico/projeto/{projeto_id}/gantt', [ProjectController::class, 'gantt_timeline'])
+    ->name('ordem.servico.projeto.gantt');
 //===================================================
 // Funcionários
 //===================================================

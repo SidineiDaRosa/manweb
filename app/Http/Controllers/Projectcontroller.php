@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Projeto;
 use App\Models\Funcionario;
+use App\Models\OrdemServico;
+use App\Models\Servicos_executado;
+use App\Models\Empresas;
+use App\Models\Equipamento;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -69,25 +74,25 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-  public function update(Request $request, $id)
-{
-    $projeto = Projeto::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $projeto = Projeto::findOrFail($id);
 
-    $validated = $request->validate([
-        'nome' => 'required|string|max:100',
-        'descricao' => 'nullable|string',
-        'data_inicio' => 'nullable|date',
-        'data_fim' => 'nullable|date|after_or_equal:data_inicio',
-        'status' => 'required|in:ativo,concluido,cancelado',
-        'responsavel_id' => 'nullable|exists:funcionarios,id',
-    ]);
+        $validated = $request->validate([
+            'nome' => 'required|string|max:100',
+            'descricao' => 'nullable|string',
+            'data_inicio' => 'nullable|date',
+            'data_fim' => 'nullable|date|after_or_equal:data_inicio',
+            'status' => 'required|in:ativo,concluido,cancelado',
+            'responsavel_id' => 'nullable|exists:funcionarios,id',
+        ]);
 
-    $projeto->update($validated);
+        $projeto->update($validated);
 
-    // Se quiser redirecionar para a view 'show':
-    return redirect()->route('projetos.show', $projeto->id)
-                     ->with('success', 'Projeto atualizado com sucesso!');
-}
+        // Se quiser redirecionar para a view 'show':
+        return redirect()->route('projetos.show', $projeto->id)
+            ->with('success', 'Projeto atualizado com sucesso!');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -98,5 +103,72 @@ class ProjectController extends Controller
         $projeto->delete();
 
         return redirect()->route('app.projetos.index')->with('success', 'Projeto excluído com sucesso!');
+    }
+    public function get_os_project($projeto_id)
+    {
+        $empresa = Empresas::all();
+        $equipamento = Equipamento::all();
+        $funcionarios = Funcionario::all();
+
+        $ordens_servicos = OrdemServico::where('projeto_id', $projeto_id)
+            ->orderBy('data_inicio')
+            ->orderBy('hora_inicio')
+            ->get();
+
+        $servicos_executado = Servicos_executado::whereIn('ordem_servico_id', $ordens_servicos->pluck('id'))->get();
+
+        return view('app.ordem_servico.index', compact(
+            'equipamento',
+            'ordens_servicos',
+            'funcionarios',
+            'empresa',
+            'servicos_executado'
+        ));
+    }
+
+
+    public function gantt_timeline(Request $request, $projeto_id)
+    {
+        $situacao = $request->query('situacao'); // opcional, ex: 'aberto', 'em andamento', 'padrao'
+
+        // Consulta todas as OS do projeto
+        $query = OrdemServico::where('projeto_id', $projeto_id);
+
+        // Filtro de situação
+        if ($situacao) {
+            if (strtolower($situacao) === 'padrao') {
+                $query->whereIn('situacao', ['aberto', 'em andamento', 'pausado']);
+            } else {
+                $query->whereRaw('LOWER(TRIM(situacao)) = ?', [strtolower(trim($situacao))]);
+            }
+        }
+
+        // Busca as OS e formata para o gráfico
+        $ordens = $query->orderBy('data_inicio')
+            ->orderBy('hora_inicio')
+            ->get()
+            ->map(function ($o) {
+                return [
+                    'id' => $o->id,
+                    'responsavel' => $o->responsavel,
+                    'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
+                    'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
+                    'descricao' => $o->descricao,
+                    'equipamento' => $o->equipamento,
+                    'especialidade' => $o->especialidade_do_servico,
+                    'status_servicos' => $o->status_servicos,
+                    'situacao' => $o->situacao,
+                    'gravidade' => $o->gravidade,
+                    'urgencia' => $o->urgencia,
+                    'tendencia' => $o->tendencia,
+                ];
+            });
+
+        // Retorna a view com todas as OS do projeto
+        return view('app.ordem_servico.gantt_os', [
+            'ordens' => $ordens,
+            'inicioFiltro' => null, // Evita erro de variável indefinida
+            'fimFiltro' => null
+        ]);
     }
 }
