@@ -9,8 +9,8 @@
     </div>
     <style>
         .titulo-main {
-            font-size: 20px;
-            color: gray;
+            font-size: 15px;
+            color:dimgrey;
             text-align: center;
             margin-top: -2;
         }
@@ -93,9 +93,9 @@
 
         .conteudo {
             display: flex;
-            font-size: 20px;
+            font-size: 16px;
             font-family: 'Poppins', sans-serif;
-            color: #007b00;
+            color: #9ea39eff;
             margin-bottom: 5px;
         }
 
@@ -159,7 +159,7 @@
                 <div class="conteudo">
                     <input type="text" class="input-bordernone" name="ordem_servico_id" id="ordem_servico_id" placeholder="ordem_serviço_id" value="{{$pedido_saida_f->ordem_servico_id}}" readonly>
                     <a class="btn btn-sm-template btn-outline-primary" href="{{route('ordem-servico.show', ['ordem_servico'=>$pedido_saida_f->ordem_servico_id])}}">
-                       O.S.
+                        O.S.
                     </a>
                 </div>
                 <div class="titulo">Pedidos</div>
@@ -207,7 +207,7 @@
                 <tr>
                     <th scope="row">{{$saida_produto->id }}</td>
                     <td>{{ $saida_produto->produto->cod_fabricante}}</td>
-                    <td >{{ $saida_produto->produto->id}}
+                    <td>{{ $saida_produto->produto->id}}
                         <a class="btn btn-sm-template btn-outline-primary" href="{{ route('produto.show', ['produto' => $saida_produto->produto->id]) }}">
                             <i class="icofont-eye-alt"></i>
                         </a>
@@ -278,7 +278,7 @@
     {{------------------------------------------------}}
     {{--Tabela de peças dos equipamento---------------}}
     {{------------------------------------------------}}
-  
+
 
     <span style="margin-left:20px;">
         <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Componentes do equipamento com periodicidade programada</h5>
@@ -300,7 +300,7 @@
                 }
             </script>
     </span>
-   
+
     <table class="table" id="tblPecas" style="margin-left:1px; border:solid 1px blue; margin-top:10px;">
         <thead>
             <tr>
@@ -361,7 +361,7 @@
                 @endforeach
         </tbody>
     </table>
- 
+
     <style>
         tr:hover {
             background-color: rgba(255, 165, 0, 0.2);
@@ -453,15 +453,16 @@
             @csrf
             <input type=" text" name="pedido_saida_id" value="{{$pedido_saida_f->id}}" hidden></input>
             <div class="col-md-4 mb-0">
-                <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
-                    <option value="2">Busca Pelas inicias</option>
+                <select class="form-control" name="tipofiltro" id="tipofiltro">
+                    <option value="2">Busca Pelas iniciais</option>
                     <option value="1">Busca pelo ID</option>
                     <option value="3">Busca pelo Código do Fabricante</option>
                     <option value="4">Busca por categoria</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <select name="categoria_id" id="" class="form-control">
+
+            <div class="col-md-4" id="categoriaDiv" style="display: none;">
+                <select name="categoria_id" class="form-control">
                     <option value=""> --Selecione a Categoria--</option>
                     @foreach ($categorias as $categoria)
                     <option value="{{ $categoria->id }}" {{ ($produto->categoria_id ?? old('categoria_id')) == $categoria->id ? 'selected' : '' }}>
@@ -471,10 +472,31 @@
                 </select>
                 {{ $errors->has('categoria_id') ? $errors->first('categoria_id') : '' }}
             </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $('#tipofiltro').change(function() {
+                    if ($(this).val() == '4') { // categoria
+                        $('#categoriaDiv').show();
+                        $('#categoriaDiv select').focus(); // foco no select
+                        $('#query').hide(); // esconde o input de texto
+                    } else {
+                        $('#categoriaDiv').hide();
+                        $('#query').show(); // mostra o input de texto
+                        $('#query').focus(); // foco no input de texto
+                    }
+                });
+
+                // Opcional: dispara o change ao carregar a página para ajustar a visibilidade inicial
+                $(document).ready(function() {
+                    $('#tipofiltro').trigger('change');
+                });
+            </script>
+
             <!--input box filtro buscar produto--------->
             <input class="form-control" type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
-            <button type="submit">
-                <i class="icofont-search icofont-2x"></i>
+            <button type="submit" class="btn btn-outline-primary">
+                <i class="icofont-search"></i> Buscar
             </button>
         </form>
     </div>
@@ -484,20 +506,21 @@
         <table class="table" id="tblProdutos">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>cod_fabricante</th>
+                    <th>ID</th>
+                    <th>cod.Fab.</th>
                     <th>Nome</th>
                     <th>un medida</th>
                     <th>Fabricante</th>
                     <th>Ver peça</th>
                     <th>Imagem</th>
                     <th>Categoria</th>
-                    <th>Operações</th>
+                    <th>Ações</th>
 
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody title="De um duplo Clique para adicionar um produto 📦">
+
                 @foreach ($produtos as $produto)
                 <tr>
                     <th>{{ $produto->id }}</td>
@@ -537,9 +560,6 @@
                                             alert("Os dados do produto estão incompletos.");
                                             return;
                                         }
-
-
-
                                         // Preenchendo os inputs com os valores obtidos
                                         document.getElementById('produto_id').value = produto_id;
                                         document.getElementById('produto_nome').value = produtoNome;

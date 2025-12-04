@@ -170,6 +170,7 @@ class PedidoSaidaListaController extends Controller
         // Redirecionar ou retornar uma resposta adequada
         //return redirect()->back()->with('status', 'Pedido de compra excluído com sucesso');
     }
+    //Filtra produtos apartir do pedido de sáida com os
     public function searching_products(Request $request)
     {
         $categorias = Categoria::all();
@@ -180,15 +181,54 @@ class PedidoSaidaListaController extends Controller
         $pedidos_saida = PedidoSaida::where('id', $pedido_saida_id)->get();
         $ped_said = PedidoSaida::find($pedido_saida_id);
         $Unidades_de_Medida = UnidadeMedida::all();
-        // Capture o valor da requisição, com '%' como valor padrão
+
+        $tipofiltro = $request->get('tipofiltro');
         $query_like_producto_name = $request->get('query_like_producto_name', '%');
+        $categoria_id = $request->get('categoria_id');
 
-        // Realize a busca com LIKE para permitir buscas parciais
-        $produtos = Produto::where('nome', 'LIKE', "%{$query_like_producto_name}%")->get();
+        // Query base
+        $produtos = Produto::query();
 
-        $pecas_equipamento = PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)->where('tipo_componente', 'Componente')
-            ->where('status', 'ativado')->get();
+        switch ($tipofiltro) {
+            case 1: // Busca pelo ID
+                if (!empty($query_like_producto_name)) {
+                    $produtos->where('id', $query_like_producto_name);
+                }
+                break;
+
+            case 2: // Busca pelas iniciais do nome
+                if (!empty($query_like_producto_name)) {
+                    $produtos->where('nome', 'LIKE', $query_like_producto_name . '%');
+                }
+                break;
+
+            case 3: // Busca pelo código do fabricante
+                if (!empty($query_like_producto_name)) {
+                    $produtos->where('codigo_fabricante', 'LIKE', '%' . $query_like_producto_name . '%');
+                }
+                break;
+
+            case 4: // Busca por categoria
+                if (!empty($categoria_id)) {
+                    $produtos->where('categoria_id', $categoria_id);
+                }
+                break;
+
+            default:
+                // Caso nenhum filtro seja selecionado, traz todos os produtos
+                $produtos->where('nome', 'LIKE', "%{$query_like_producto_name}%");
+                break;
+        }
+
+        $produtos = $produtos->get();
+
+        $pecas_equipamento = PecasEquipamentos::where('equipamento', $ped_said->equipamento_id)
+            ->where('tipo_componente', 'Componente')
+            ->where('status', 'ativado')
+            ->get();
+
         $patrimonio = Equipamento::where('id', $ped_said->equipamento_id)->get();
+
         return view('app.pedido_saida_lista.index', [
             'equipamentos' => $equipamentos,
             'funcionarios' => $funcionarios,
