@@ -1,16 +1,16 @@
 @extends('app.layouts.app')
 
 @section('content')
-<main class="content">
+<main class="content" style="display:flex; justify-content:center; align-items:center; min-height:80vh; flex-direction:column;">
 
     <h2 style="margin-bottom: 20px;">Cadastrar Novo Funcionário</h2>
 
     <a href="{{ route('funcionarios.index') }}"
-        style="padding: 8px 14px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px;">
+        style="padding: 8px 14px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 20px;">
         ← Voltar para Lista
     </a>
 
-    <form action="{{ route('funcionarios.store') }}" method="POST" style="margin-top:20px; max-width:600px;">
+    <form action="{{ route('funcionarios.store') }}" method="POST" style="width:100%; max-width:600px; background:#f8f9fa; padding:20px; border-radius:8px; border:1px solid #ccc;">
         @csrf
 
         @php
@@ -42,10 +42,12 @@
         </div>
         @endforeach
 
-        <button type="submit"
-            style="padding:10px 15px; background:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;">
-            Salvar
-        </button>
+        <div style="text-align:center; margin-top:15px;">
+            <button type="submit"
+                style="padding:10px 15px; background:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;">
+                Salvar
+            </button>
+        </div>
 
     </form>
 

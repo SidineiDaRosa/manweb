@@ -266,20 +266,6 @@
             <div class="submenu" id="administracao-submenu">
                 <a href="{{ route('funcionarios.index') }}">Funcionários</a>
                 <!-- Usuarios-->
-                @auth
-                @if(Auth::user()->level === 0)
-
-                <a href="{{ route('register') }}">
-                    <div class="icon-wrapper">
-                        <i class="icofont-users icofont-2x"></i>
-                        Usuarios
-                    </div>
-                </a>
-
-
-
-                @endif
-                @endauth
             </div>
             <!-- Usuários admin -->
 
