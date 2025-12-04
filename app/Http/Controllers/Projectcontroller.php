@@ -129,7 +129,7 @@ class ProjectController extends Controller
 
     public function gantt_timeline(Request $request, $projeto_id)
     {
-        $situacao = $request->query('situacao'); // opcional, ex: 'aberto', 'em andamento', 'padrao'
+        $situacao = $request->query('situacao'); // opcional
 
         // Consulta todas as OS do projeto
         $query = OrdemServico::where('projeto_id', $projeto_id);
@@ -143,32 +143,51 @@ class ProjectController extends Controller
             }
         }
 
-        // Busca as OS e formata para o gráfico
-        $ordens = $query->orderBy('data_inicio')
+        // Busca todas as OS do projeto
+        $ordensRaw = $query->orderBy('data_inicio')
             ->orderBy('hora_inicio')
-            ->get()
-            ->map(function ($o) {
-                return [
-                    'id' => $o->id,
-                    'responsavel' => $o->responsavel,
-                    'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
-                    'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
-                    'descricao' => $o->descricao,
-                    'equipamento' => $o->equipamento,
-                    'especialidade' => $o->especialidade_do_servico,
-                    'status_servicos' => $o->status_servicos,
-                    'situacao' => $o->situacao,
-                    'gravidade' => $o->gravidade,
-                    'urgencia' => $o->urgencia,
-                    'tendencia' => $o->tendencia,
-                ];
-            });
+            ->get();
 
-        // Retorna a view com todas as OS do projeto
+        if ($ordensRaw->isEmpty()) {
+            // Nenhuma OS encontrada
+            return view('app.ordem_servico.gantt_os', [
+                'ordens' => [],
+                'inicioFiltro' => null,
+                'fimFiltro' => null
+            ]);
+        }
+
+        // Determina intervalo de datas automaticamente
+        $inicioFiltro = $ordensRaw->min(function ($o) {
+            return Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio);
+        });
+
+        $fimFiltro = $ordensRaw->max(function ($o) {
+            return Carbon::parse($o->data_fim . ' ' . $o->hora_fim);
+        });
+
+        // Formata as OS para o gráfico
+        $ordens = $ordensRaw->map(function ($o) {
+            return [
+                'id' => $o->id,
+                'responsavel' => $o->responsavel,
+                'inicio' => Carbon::parse($o->data_inicio . ' ' . $o->hora_inicio)->format('Y-m-d\TH:i'),
+                'fim' => Carbon::parse($o->data_fim . ' ' . $o->hora_fim)->format('Y-m-d\TH:i'),
+                'descricao' => $o->descricao,
+                'equipamento' => $o->equipamento,
+                'especialidade' => $o->especialidade_do_servico,
+                'status_servicos' => $o->status_servicos,
+                'situacao' => $o->situacao,
+                'gravidade' => $o->gravidade,
+                'urgencia' => $o->urgencia,
+                'tendencia' => $o->tendencia,
+            ];
+        });
+
         return view('app.ordem_servico.gantt_os', [
             'ordens' => $ordens,
-            'inicioFiltro' => null, // Evita erro de variável indefinida
-            'fimFiltro' => null
+            'inicioFiltro' => $inicioFiltro->format('Y-m-d\TH:i'),
+            'fimFiltro' => $fimFiltro->format('Y-m-d\TH:i')
         ]);
     }
 }
