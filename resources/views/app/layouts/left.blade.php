@@ -265,13 +265,10 @@
             </a>
             <div class="submenu" id="administracao-submenu">
                 <a href="{{ route('funcionarios.index') }}">Funcionários</a>
-                <!-- Usuarios-->
+                <a href="{{ route('apr.index') }}">APR</a>
             </div>
-            <!-- Usuários admin -->
-
-
+        
         </li>
-
 
     </ul>
 </aside>

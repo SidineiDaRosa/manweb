@@ -585,3 +585,15 @@ Route::put('/funcionarios/{id}', [FuncionarioController::class, 'update'])->name
 
 // Exclui um funcionário
 Route::delete('/funcionarios/{id}', [FuncionarioController::class, 'destroy'])->name('funcionarios.destroy');
+//=========================================================
+// APR 
+//=======================================================
+use App\Http\Controllers\APRController;
+
+Route::get('/apr', [APRController::class, 'index'])->name('apr.index');
+Route::get('/apr/create', [APRController::class, 'create'])->name('apr.create');
+Route::post('/apr', [APRController::class, 'store'])->name('apr.store');
+Route::get('/apr/{id}', [APRController::class, 'show'])->name('apr.show');
+Route::get('/apr/{id}/edit', [APRController::class, 'edit'])->name('apr.edit');
+Route::put('/apr/{id}', [APRController::class, 'update'])->name('apr.update');
+Route::delete('/apr/{id}', [APRController::class, 'destroy'])->name('apr.destroy');
