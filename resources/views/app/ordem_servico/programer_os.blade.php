@@ -1,9 +1,11 @@
 @extends('app.layouts.app')
 @section('content')
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
+
     <!--mensagem de erro caso datas erradas-->
     @if(session('erro'))
     <div id="alerta-erro" style="padding:20px; background:#f8d7da; color:#842029; border:1px solid #f5c2c7; border-radius:4px; margin-bottom:15px; position: relative;">
@@ -26,31 +28,36 @@
     <style>
 
     </style>
-    <div id="intervalo" style="margin-left:480px;display:flex;flex-direction:row;">
-        <form style="display:flex;flex-direction:row;" action="{{ route('gantt.os.timeline') }}" method="GET">
-            <label for="inicio">Início:</label>
-            <input class="form-control w-50" type="datetime-local" id="inicio" name="inicio" />
+    <div style="display:flex; justify-content:center;width:100%;">
+        <div id="intervalo" style="display:flex; flex-direction:row; border:solid rgba(126, 118, 118, 0.5) 1px ;padding:10px;border-radius:10px;">
+            <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
+                <i class="icofont-dashboard"></i> Dashboard
+            </a>
+            <form style="display:flex;flex-direction:row;" action="{{ route('gantt.os.timeline') }}" method="GET">
+                <label for="inicio">Início:</label>
+                <input class="form-control w-50" type="datetime-local" id="inicio" name="inicio" />
 
-            <label for="fim">Fim:</label>
-            <input class="form-control w-50" type="datetime-local" id="fim" name="fim" />
-            <select name="projeto_id" id="projeto_id" class="form-control" aria-placeholder="Selecione o projeto" style="background-color: #e6f1e7ff;">
-                <option value="0">Nenhum</option>
-                @foreach($projetos as $projeto)
-                <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
-                @endforeach
-            </select>
-            <select class="form-control w-50" name="situacao" id="situacao">
-                <option value="padrao">Não finalizada</option>
-                <option value="aberto">Aberto</option>
-                <option value="fechado">Fechado</option>
-                <option value="indefinido">Indefinido</option>
-                <option value="em andamento">Em andamento</option>
-                <option value="pausado">Pausado</option>
-            </select>
+                <label for="fim">Fim:</label>
+                <input class="form-control w-50" type="datetime-local" id="fim" name="fim" />
+                <select name="projeto_id" id="projeto_id" class="form-control" aria-placeholder="Selecione o projeto" style="background-color: #e6f1e7ff;">
+                    <option value="0">Nenhum</option>
+                    @foreach($projetos as $projeto)
+                    <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
+                    @endforeach
+                </select>
+                <select class="form-control w-50" name="situacao" id="situacao">
+                    <option value="padrao">Não finalizada</option>
+                    <option value="aberto">Aberto</option>
+                    <option value="fechado">Fechado</option>
+                    <option value="indefinido">Indefinido</option>
+                    <option value="em andamento">Em andamento</option>
+                    <option value="pausado">Pausado</option>
+                </select>
 
-            &nbsp;
-            <button class="btn btn-danger" type="submit">Gerar Gantt</button>
-        </form>
+                &nbsp;
+                <button class="btn btn-danger" type="submit">Gerar Gantt</button>
+            </form>
+        </div>
     </div>
     <style>
         .container-box {
