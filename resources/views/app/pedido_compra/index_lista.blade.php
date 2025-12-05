@@ -292,7 +292,7 @@
                     <hr style="margin:-1px;color:#ccc;">
                     <div class="conteudo">
                         <div class="col-md-0 offset-md-0">
-                            <button type="button" id="executarFormulario" class="btn btn-success sm" value="">
+                            <button type="button" id="executarFormulario" class="btn btn-success sm">
                                 Buscar
                                 <i class="icofont-search"></i>
                             </button>
@@ -342,7 +342,7 @@
                 </script>
             </div>
         </form>
-        <form id="formSearchingProducts" action="{{'Produtos-filtro'}}" method="POST" class="row mb-1">
+        <form id="formSearchingProducts" action="{{'produtos-filtro'}}" method="POST" class="row mb-1">
             @csrf
             <div class="row mb-1">
                 <div class="col-md-6">
@@ -353,6 +353,7 @@
         </form>
         <script>
             // Quando o botão for clicado
+            
             $('#executarFormulario').click(function(e) {
                 e.preventDefault(); // Evita o comportamento padrão de enviar o formulário
 
