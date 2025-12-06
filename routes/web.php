@@ -591,7 +591,8 @@ Route::delete('/funcionarios/{id}', [FuncionarioController::class, 'destroy'])->
 use App\Http\Controllers\APRController;
 
 Route::get('/apr', [APRController::class, 'index'])->name('apr.index');
-Route::get('/apr/create', [APRController::class, 'create'])->name('apr.create');
+Route::get('/apr/create/{os_id}', [APRController::class, 'create'])->name('apr.create');
+
 Route::post('/apr', [APRController::class, 'store'])->name('apr.store');
 Route::get('/apr/{id}', [APRController::class, 'show'])->name('apr.show');
 Route::get('/apr/{id}/edit', [APRController::class, 'edit'])->name('apr.edit');

@@ -46,6 +46,10 @@
                 <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> Dashboard
                 </a>
+
+                <a class="btn btn-warning mb-1" href="{{ route('apr.create', $ordem_servico->id) }}">
+                    Gerar APR
+                </a>
             </div>
         </div>
         <!--!Ao abrir verifica algumas status-->
