@@ -30,25 +30,25 @@
                 </a>
                 @if($ordem_servico->situacao !== 'fechado')
                 <a id="Btn_novo_ped_compra" class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
-                    <i class="icofont-database-add"></i>
-                    Criar novo pedido de saída
+                    <i class="icofont-plus-circle"></i>
+                    Novo Pedido de saída
                 </a>
                 @endif
                 <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4])}}">
                     <i class="icofont-search"></i>
-                    </i>Busca Pedidos </a>
+                    </i>Pedidos </a>
                 <a class="btn btn-outline-success mb-1" href="{{route('equipamento.show', ['equipamento' => $ordem_servico->equipamento->id]) }}">
                     <i class="icofont-tractor"></i>
-                    ir para o equipamento
+                    Equipamento
                 </a>
                 <a id="btn-edit" class="btn btn-outline-primary mb-1" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-ui-edit"></i>Editar</a>
-                <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> Dashboard
-                </a>
 
                 <a class="btn btn-warning mb-1" href="{{ route('apr.create', $ordem_servico->id) }}">
                     Gerar APR
+                </a>
+                <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> Dashboard
                 </a>
             </div>
         </div>

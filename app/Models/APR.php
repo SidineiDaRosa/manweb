@@ -16,7 +16,6 @@ class Apr extends Model
      */
     protected $fillable = [
         'ordem_servico_id',
-        'data_apr',
         'local_trabalho',
         'descricao_atividade',
         'riscos_identificados',
@@ -42,4 +41,5 @@ class Apr extends Model
     {
         return $this->status === 'finalizada';
     }
+   
 }
