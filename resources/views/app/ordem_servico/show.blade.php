@@ -43,7 +43,7 @@
                 </a>
                 <a id="btn-edit" class="btn btn-outline-primary mb-1" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-ui-edit"></i>Editar</a>
-                @if($aprs->isEmpty())
+                @if(!isset($aprs))
                 <a class="btn btn-warning mb-1" href="{{ route('apr.create', $ordem_servico->id) }}">
                     Gerar APR
                 </a>
@@ -501,8 +501,10 @@
 
     @foreach($ped_saidas as $ped_saida)
     <div>
-        <div style="background-color: #2174d4;"><h5>Pedido: {{ $ped_saida->id }}</h5></div>
-        
+        <div style="background-color: #2174d4;">
+            <h5>Pedido: {{ $ped_saida->id }}</h5>
+        </div>
+
 
         <h6>Produtos usados:</h6>
 
@@ -533,7 +535,7 @@
                         </a>
                     </td>
                     <td>
-                            {{$produto->produto->nome }}
+                        {{$produto->produto->nome }}
                     </td>
                     <td>{{ $produto->unidade_medida }}</td>
                     <td>{{ $produto->quantidade }}</td>
@@ -552,14 +554,22 @@
     @endforeach
 
     @else
-         <div style="background-color: #78c799ff;"><h5> <p>Nenhum produto usado.</p></h5></div>
-   
+    <div style="background-color: #78c799ff;">
+        <h5>
+            <p>Nenhum produto usado.</p>
+        </h5>
+    </div>
+
     @endif
     @endisset
 
     @else
-      <div style="background-color: #78c799ff;"><h5><p>Nenhum pedido encontrado.</p></h5></div>
-    
+    <div style="background-color: #78c799ff;">
+        <h5>
+            <p>Nenhum pedido encontrado.</p>
+        </h5>
+    </div>
+
     @endif
     @endisset
 
