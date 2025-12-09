@@ -43,4 +43,8 @@ class Produto extends Model
     {
         return $this->belongsTo(Familia::class);
     }
+      public function produto()
+    {
+        return $this->belongsTo('App\Models\Produto');
+    }
 }

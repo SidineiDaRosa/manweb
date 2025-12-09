@@ -31,7 +31,7 @@
                 @if($ordem_servico->situacao !== 'fechado')
                 <a id="Btn_novo_ped_compra" class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.create', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-plus-circle"></i>
-                    Novo Pedido de saída
+                    Pedido saída
                 </a>
                 @endif
                 <a class="btn btn-outline-primary mb-1" href="{{route('pedido-saida.index',['ordem_servico'=>$ordem_servico->id,'tipofiltro'=>4])}}">
@@ -43,13 +43,15 @@
                 </a>
                 <a id="btn-edit" class="btn btn-outline-primary mb-1" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-ui-edit"></i>Editar</a>
-
+                @if($aprs->isEmpty())
                 <a class="btn btn-warning mb-1" href="{{ route('apr.create', $ordem_servico->id) }}">
                     Gerar APR
                 </a>
+                @endif
                 <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> Dashboard
                 </a>
+
             </div>
         </div>
         <!--!Ao abrir verifica algumas status-->
@@ -462,7 +464,7 @@
             {{--//--------------------------------------//--}}
             @if($ordem_servico->situacao !== 'fechado')
             <a id="btn-add-task" class="btn btn-outline-primary mb-1" href="{{ route('Servicos-executado.create', ['ordem_servico' => $ordem_servico->id]) }}" style="width: 300px;">
-                <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height: 25px; width: 25px;"> Adicionar serviço
+                <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height: 25px; width: 25px;"> 🛠️ Adicionar serviço
             </a>
             <button id="enviar" class="btn btn-outline-secondary mb-1" data-bs-toggle="modal" data-bs-target="#confirmModal" style="width:300px;">
                 <img src="{{ asset('img/icon/finished-work.png') }}" alt="" style="height:25px; width:25px;">
@@ -491,22 +493,75 @@
         @csrf
         <input type="number" class="form-control" id="ordem_servico_id" name="ordem_servico_id" required value="{{$ordem_servico->id}}" hidden>
     </form>
-    <h6>Produtos usados</h6>
+    @isset($ped_saidas)
+    @if($ped_saidas->isNotEmpty())
+
+    @isset($produtos)
+    @if($produtos->isNotEmpty())
+
+    @foreach($ped_saidas as $ped_saida)
     <div>
-        @isset($produtos)
-        @if($produtos->isNotEmpty())
-        @foreach($produtos as $produto)
-        ID: {{ $produto->id }}
-        Descrição: {{ $produto->produto->nome }}
-        Un. Medida: {{ $produto->produto->unidade_medida_id }}
-        Quant.: {{ $produto->quantidade }}
-        <br>
-        @endforeach
+        <div style="background-color: #2174d4;"><h5>Pedido: {{ $ped_saida->id }}</h5></div>
+        
+
+        <h6>Produtos usados:</h6>
+
+        @php
+        $produtosDoPedido = $produtos->where('pedidos_saida_id', $ped_saida->id);
+        @endphp
+
+        @if($produtosDoPedido->isNotEmpty())
+        @if($produtosDoPedido->isNotEmpty())
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Unidade</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach($produtosDoPedido as $produto)
+                <tr>
+                    <td>
+                        <a class="txt-link"
+                            href="{{ route('produto.show', ['produto' => $produto->produto->id]) }}"
+                            target="_blank">
+                            {{ $produto->id }}
+                        </a>
+                    </td>
+                    <td>
+                            {{$produto->produto->nome }}
+                    </td>
+                    <td>{{ $produto->unidade_medida }}</td>
+                    <td>{{ $produto->quantidade }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
         @else
-        <p>Nenhum produto usado.</p>
+        <p>Nenhum produto encontrado para este pedido.</p>
         @endif
-        @endisset
+
+        @else
+        <p>Nenhum produto para este pedido.</p>
+        @endif
     </div>
+    @endforeach
+
+    @else
+         <div style="background-color: #21d46cff;"><h5> <p>Nenhum produto usado.</p></h5></div>
+   
+    @endif
+    @endisset
+
+    @else
+    <p>Nenhum pedido encontrado.</p>
+    @endif
+    @endisset
+
 
     <hr>
     <div id="mensagem"></div>
@@ -579,7 +634,34 @@
     @else
     <p>Imagem não disponível</p>
     @endif
+    <!--APR-->
+    @foreach($aprs as $apr)
+    <div style="
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: #f9f9f9;
+    align-items: flex-start;
+    overflow-x: auto;
+">
 
+        <div><strong>ID APR:</strong> {{ $apr->id }}</div>
+        <div><strong>OS:</strong> {{ $apr->ordem_servico_id }}</div>
+        <div><strong>Local:</strong> {{ $apr->local_trabalho }}</div>
+        <div><strong>Atividade:</strong> {{ $apr->descricao_atividade }}</div>
+        <div><strong>Riscos:</strong> {{ $apr->riscos_identificados }}</div>
+        <div><strong>Controle:</strong> {{ $apr->medidas_controle }}</div>
+        <div><strong>EPI:</strong> {{ $apr->epi_obrigatorio }}</div>
+        <div><strong>Responsável:</strong> {{ $apr->responsavel }}</div>
+        <div><strong>Status:</strong> {{ $apr->status }}</div>
+
+    </div>
+
+    @endforeach
     @endsection
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{--====================================================================--}}
@@ -639,6 +721,7 @@
         </div>
     </div>
     <input type="text" id="valor" placeholder="Digite um valor" value="{{$ordem_servico->id}}" hidden readonly>
+
 </main>
 <script>
     $(document).ready(function() {

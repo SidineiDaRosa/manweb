@@ -14,6 +14,7 @@ use App\Models\Funcionario;
 use App\Models\PedidoSaida;
 use App\Models\Projeto;
 use App\Models\SaidaProduto;
+use App\Models\Apr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
@@ -230,8 +231,8 @@ class OrdemServicoController extends Controller
         $equipamento = $empresa->get('equipamento');
         $pre_descricao_os = $empresa->get('descricao');
         $ss_id = $empresa->get('ss_id');
-         // Seleciona funcionários ativos
-        $funcionarios = Funcionario::where('status','Ativo')->get();
+        // Seleciona funcionários ativos
+        $funcionarios = Funcionario::where('status', 'Ativo')->get();
         $equipamentos = Equipamento::where('empresa_id', $id)->get();
         $ordem_servico = OrdemServico::all();
         $empresa = Empresas::where('id', $id)->get();
@@ -320,7 +321,7 @@ class OrdemServicoController extends Controller
         }
         //return response()->json($ordem_servico->toJson()); // Converte o objeto para JSON e retorna como resposta
         //return response()->json($ordem_servico->toArray()); // Converte o objeto para um array e retorna como resposta
-    
+
         $projeto = Projeto::find($ordem_servico_f->projeto_id);
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $idLastOs)->get();
         return view('app.ordem_servico.show', [
@@ -361,7 +362,8 @@ class OrdemServicoController extends Controller
             $produtos = $produtos->merge($produtosPedido);
         }
         $projeto = Projeto::find($ordem_servico->projeto_id);
-
+        $aprs = Apr::where('ordem_servico_id', $ordem_servico->id)->get();
+        $ped_saidas=PedidoSaida::where('ordem_servico_id',$ordem_servico->id)->get();
         return view('app.ordem_servico.show', [
             'ordem_servico'       => $ordem_servico,
             'servicos_executado'  => $servicos_executado,
@@ -369,7 +371,9 @@ class OrdemServicoController extends Controller
             'total_hs_os'         => $total_hs_os,
             'equipamentos'        => $equipamentos,
             'produtos'            => $produtos,
-            'projeto' => $projeto
+            'projeto' => $projeto,
+            'aprs' => $aprs,
+            'ped_saidas'=>$ped_saidas
         ]);
     }
 
@@ -383,7 +387,7 @@ class OrdemServicoController extends Controller
     {
         $equipamentos = Equipamento::all();
         // Seleciona funcionários ativos
-        $funcionarios = Funcionario::where('status','Ativo')->get();
+        $funcionarios = Funcionario::where('status', 'Ativo')->get();
         $empresas = Empresas::all();
         $projetos = Projeto::where('status', 'ativo')->get();
 
