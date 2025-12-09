@@ -646,6 +646,7 @@
     <p>Imagem não disponível</p>
     @endif
     <!--APR-->
+    @if(isset($aprs))
     @foreach($aprs as $apr)
     <div style="
     display: flex;
@@ -673,7 +674,9 @@
     </div>
 
     @endforeach
+    @endif
     @endsection
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{--====================================================================--}}
     {{--Função que fecha a ordem de serviço--}}
