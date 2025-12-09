@@ -552,13 +552,14 @@
     @endforeach
 
     @else
-         <div style="background-color: #21d46cff;"><h5> <p>Nenhum produto usado.</p></h5></div>
+         <div style="background-color: #78c799ff;"><h5> <p>Nenhum produto usado.</p></h5></div>
    
     @endif
     @endisset
 
     @else
-    <p>Nenhum pedido encontrado.</p>
+      <div style="background-color: #78c799ff;"><h5><p>Nenhum pedido encontrado.</p></h5></div>
+    
     @endif
     @endisset
 
