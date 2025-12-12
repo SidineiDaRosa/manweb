@@ -41,5 +41,9 @@ class Apr extends Model
     {
         return $this->status === 'finalizada';
     }
-   
+    // No modelo Apr
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'responsavel'); // assumindo que 'responsavel' guarda o ID do usuário mostra o nome em show apr
+    }
 }

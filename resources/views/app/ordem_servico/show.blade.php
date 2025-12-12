@@ -43,7 +43,7 @@
                 </a>
                 <a id="btn-edit" class="btn btn-outline-primary mb-1" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-ui-edit"></i>Editar</a>
-                @if(!isset($aprs))
+                @if($aprs->isEmpty())
                 <a class="btn btn-warning mb-1" href="{{ route('apr.create', $ordem_servico->id) }}">
                     Gerar APR
                 </a>
@@ -443,20 +443,13 @@
                 </div>
             </div>
             @endforeach
+            <div style="display:flex;float:right;margin-right:20px;"> <span style="font-weight:700;">Total de horas trabalhadas: {{ number_format($total_hs_os, 2, ',', '.') }}hs</span></div>
+
+            <!--fim seriços executados-->
         </div>
 
     </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card text-sm-info mb-4 float-right" style="width: 18rem; text-align: right;">
-                <div class="card-header ext-sm-info">Total de horas trabalhadas</div>
-                <div class="card-body" style="height:20px;">
-                    <h6 class="card-title">{{ number_format($total_hs_os, 2, ',', '.') }}hs</h6>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!--Botoes inferior-->
     <div class="card-header-template  text-center">
         <div>
             {{--//--------------------------------------//--}}
@@ -489,10 +482,13 @@
             </script>
         </div>
     </div>
+    <!--Botoes inferior fim-->
+    <!--Imprimir os PDF-->
     <form id="frm-pdf" action="{{ route('gerar.pdf') }}" method="POST" target="_blank">
         @csrf
         <input type="number" class="form-control" id="ordem_servico_id" name="ordem_servico_id" required value="{{$ordem_servico->id}}" hidden>
     </form>
+    <!--Pedidos de sáidas-->
     @isset($ped_saidas)
     @if($ped_saidas->isNotEmpty())
 
@@ -572,7 +568,7 @@
 
     @endif
     @endisset
-
+    <!--Fim Pedidos de saídas-->
 
     <hr>
     <div id="mensagem"></div>
@@ -661,8 +657,9 @@
     overflow-x: auto;
 ">
 
-        <div><strong>ID APR:</strong> {{ $apr->id }}</div>
-        <div><strong>OS:</strong> {{ $apr->ordem_servico_id }}</div>
+        <div>
+            <a class="txt-link" href="{{route('apr.show',['apr_id'=>$apr->id])}}"><strong>ID APR:</strong> {{ $apr->id }}</a>
+        </div>
         <div><strong>Local:</strong> {{ $apr->local_trabalho }}</div>
         <div><strong>Atividade:</strong> {{ $apr->descricao_atividade }}</div>
         <div><strong>Riscos:</strong> {{ $apr->riscos_identificados }}</div>

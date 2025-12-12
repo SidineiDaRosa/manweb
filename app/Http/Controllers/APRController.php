@@ -9,6 +9,7 @@ use App\Models\APR;
 use App\Models\APRItem;
 use App\Models\Equipamento;
 use App\Models\Funcionario;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -80,7 +81,7 @@ class APRController extends Controller
      */
     public function show($id)
     {
-        $apr = APR::with('itens')->findOrFail($id);
+        $apr = APR::findOrFail($id);
 
         return view('app.SESMT.show', compact('apr'));
     }
