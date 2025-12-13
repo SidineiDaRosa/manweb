@@ -9,6 +9,7 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
     <link rel="icon" href="https://manweb.com.br/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
+     <meta name="google-site-verification" content="sPnm1Efi9wRNCBh49qTNrGGnKU1r2zCkwoqgh8KtCC0" />
     <style>
         body {
             font-family: Arial, sans-serif;
