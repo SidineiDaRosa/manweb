@@ -47,6 +47,9 @@ Route::get('/site-panel', function () {
 Route::get('/configuracoes', function () {
     return view('site.configuracoes');
 })->name('site.configuracoes');
+Route::get('/link_produtos', function () {
+    return view('app.produto.link_produtos');
+});
 //---------------------------------------------------------//
 //    Status Os
 //---------------------------------------------------------//
