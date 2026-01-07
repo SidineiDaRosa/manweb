@@ -79,12 +79,14 @@ class ServicosExecutadoController extends Controller
         $total_hs_os = Servicos_executado::where('ordem_servico_id', $id)->sum('subtotal');
 
         $funcionarios = Funcionario::all();
+        $aprs = collect(); // collection vazia
         if ($option == 1) {
             return view('app.ordem_servico.show', [
                 'ordem_servico' => $ordem_servico,
                 'servicos_executado' => $servicos_executado,
                 'funcionarios' => $funcionarios,
-                'total_hs_os' => $total_hs_os
+                'total_hs_os' => $total_hs_os,
+                'aprs' => $aprs // envia a var aprs vazia
             ]);
         };
         if ($option == 2) {
