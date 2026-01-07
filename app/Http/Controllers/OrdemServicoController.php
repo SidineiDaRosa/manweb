@@ -43,7 +43,7 @@ class OrdemServicoController extends Controller
                     $funcionarios = Funcionario::all();
                     $ordens_servicos = OrdemServico::where('id', $id)
                         ->orderBy('data_inicio','desc')
-                        ->orderBy('hora_inicio')
+                        ->orderBy('hora_inicio','desc')
                         ->get();
 
                     $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
@@ -71,7 +71,7 @@ class OrdemServicoController extends Controller
                     $ordens_servicos = OrdemServico::where('situacao', $situacao)
                         ->whereBetween('data_inicio', [$dataInicio, $dataFim])
                         ->orderBy('data_inicio','desc')
-                        ->orderBy('hora_inicio')
+                        ->orderBy('hora_inicio','desc')
                         ->get();
 
                     $valorTotal = OrdemServico::where('situacao', $situacao)
@@ -102,7 +102,7 @@ class OrdemServicoController extends Controller
                         ->where('equipamento_id', $patrimonio)
                         ->where('situacao', $situacao)
                         ->orderBy('data_inicio','desc')
-                        ->orderBy('hora_inicio')
+                        ->orderBy('hora_inicio','desc')
                         ->get();
                 } else {
                     $ordens_servicos = OrdemServico::where('equipamento_id', $patrimonio)
@@ -132,7 +132,7 @@ class OrdemServicoController extends Controller
                     ->where('empresa_id', $empresa_id)
                     ->where('situacao', $situacao)
                     ->orderBy('data_inicio','desc')
-                    ->orderBy('hora_inicio')
+                    ->orderBy('hora_inicio','desc')
                     ->get();
 
                 $valorTotal = 0;
@@ -156,7 +156,7 @@ class OrdemServicoController extends Controller
                     ->where('empresa_id', $empresa_id)
                     ->where('situacao', $situacao)
                     ->orderBy('data_inicio','desc')
-                    ->orderBy('hora_inicio')
+                    ->orderBy('hora_inicio','desc')
                     ->get();
 
                 return view('app.ordem_servico.printer_list_os', compact('empresa', 'ordens_servicos'));
@@ -189,7 +189,7 @@ class OrdemServicoController extends Controller
                 $funcionarios = Funcionario::all();
                 $ordens_servicos = OrdemServico::where('descricao', 'like', '%' . $request->like . '%')
                     ->orderBy('data_inicio','desc')
-                    ->orderBy('hora_inicio')
+                    ->orderBy('hora_inicio','desc')
                     ->get();
 
                 $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
