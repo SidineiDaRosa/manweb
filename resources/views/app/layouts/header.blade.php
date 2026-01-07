@@ -278,22 +278,97 @@
     </div>
 
     <!-- Usuário -->
-    <div class="dropdown ml-3">
-        <div class="dropdown-button">
+    <div class="user-menu ml-3">
+        <div class="user-menu-btn" id="userMenuBtn">
             {{ Auth::user()->name }}
             <i class="icofont-simple-down mx-2"></i>
         </div>
-        <div class="dropdown-content">
-            <ul class="nav-item">
-                <li class="nav-item">
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('form_logout').submit();">
+
+        <div class="user-menu-box" id="userMenuBox">
+            <ul>
+                <li>
+                    <a href="#"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Sair
                     </a>
-                    <form action="{{ route('logout') }}" method="POST" id="form_logout">@csrf</form>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                    </form>
                 </li>
             </ul>
         </div>
     </div>
+
+    <style>
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .user-menu-btn {
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .user-menu-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .user-menu-box {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 110%;
+            background: #ffffff;
+            min-width: 160px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+            z-index: 9999;
+            padding: 6px 0;
+        }
+
+        .user-menu-box.active {
+            display: block;
+        }
+
+        /* lista */
+        .user-menu-box ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .user-menu-box li a {
+            display: block;
+            padding: 10px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .user-menu-box li a:hover {
+            background: #f5f5f5;
+            color: #000;
+        }
+    </style>
+    <script>
+        document.getElementById('userMenuBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('userMenuBox').classList.toggle('active');
+        });
+
+        document.addEventListener('click', function() {
+            document.getElementById('userMenuBox').classList.remove('active');
+        });
+    </script>
+
+
+
 </header>
 @include('app.layouts.left') <!-- Sidebar -->
 <script>

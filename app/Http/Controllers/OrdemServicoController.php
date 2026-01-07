@@ -42,7 +42,7 @@ class OrdemServicoController extends Controller
                 if ($id >= 1) {
                     $funcionarios = Funcionario::all();
                     $ordens_servicos = OrdemServico::where('id', $id)
-                        ->orderBy('data_inicio')
+                        ->orderBy('data_inicio','desc')
                         ->orderBy('hora_inicio')
                         ->get();
 
@@ -70,7 +70,7 @@ class OrdemServicoController extends Controller
 
                     $ordens_servicos = OrdemServico::where('situacao', $situacao)
                         ->whereBetween('data_inicio', [$dataInicio, $dataFim])
-                        ->orderBy('data_inicio')
+                        ->orderBy('data_inicio','desc')
                         ->orderBy('hora_inicio')
                         ->get();
 
@@ -101,7 +101,7 @@ class OrdemServicoController extends Controller
                     $ordens_servicos = OrdemServico::whereBetween('data_inicio', [$dataInicio, $dataFim])
                         ->where('equipamento_id', $patrimonio)
                         ->where('situacao', $situacao)
-                        ->orderBy('data_inicio')
+                        ->orderBy('data_inicio','desc')
                         ->orderBy('hora_inicio')
                         ->get();
                 } else {
@@ -131,7 +131,7 @@ class OrdemServicoController extends Controller
                 $ordens_servicos = OrdemServico::whereBetween('data_inicio', [$dataInicio, $dataFim])
                     ->where('empresa_id', $empresa_id)
                     ->where('situacao', $situacao)
-                    ->orderBy('data_inicio')
+                    ->orderBy('data_inicio','desc')
                     ->orderBy('hora_inicio')
                     ->get();
 
@@ -155,7 +155,7 @@ class OrdemServicoController extends Controller
                 $ordens_servicos = OrdemServico::whereBetween('data_inicio', [$dataInicio, $dataFim])
                     ->where('empresa_id', $empresa_id)
                     ->where('situacao', $situacao)
-                    ->orderBy('data_inicio')
+                    ->orderBy('data_inicio','desc')
                     ->orderBy('hora_inicio')
                     ->get();
 
@@ -172,7 +172,7 @@ class OrdemServicoController extends Controller
                 $ordens_servicos = OrdemServico::whereBetween('data_emissao', [$dataInicio, $dataFim])
                     ->where('empresa_id', $empresa_id)
                     ->where('situacao', $situacao)
-                    ->orderBy('data_emissao')
+                    ->orderBy('data_emissao','desc')
                     ->get();
 
                 $valorTotal = 0;
@@ -188,7 +188,7 @@ class OrdemServicoController extends Controller
             case 9:
                 $funcionarios = Funcionario::all();
                 $ordens_servicos = OrdemServico::where('descricao', 'like', '%' . $request->like . '%')
-                    ->orderBy('data_inicio')
+                    ->orderBy('data_inicio','desc')
                     ->orderBy('hora_inicio')
                     ->get();
 
@@ -303,9 +303,8 @@ class OrdemServicoController extends Controller
             'especialidade_do_servico' => $request->especialidade_do_servico,
             'ss_id' => $request->ss_id,
             'anexo' => $request->anexo, //Link anexado com algum documento
-            'projeto_id' => $request->projeto_id
-
-
+            'projeto_id' => $request->projeto_id,
+           
         ]);
         //------------------------------------------------------------//
         $equipamentos = Equipamento::all();
@@ -324,12 +323,14 @@ class OrdemServicoController extends Controller
 
         $projeto = Projeto::find($ordem_servico_f->projeto_id);
         $servicos_executado = Servicos_executado::where('ordem_servico_id', $idLastOs)->get();
+        $aprs = collect(); // collection vazia
         return view('app.ordem_servico.show', [
             'ordem_servico' => $ordem_servico_f,
             'servicos_executado' => $servicos_executado,
             'funcionarios' => $funcionarios,
             'total_hs_os' => $total_hs_os,
-            'projeto' => $projeto
+            'projeto' => $projeto,
+           'aprs' => $aprs// envia a var aprs vazia
         ]);
     }
     /**
@@ -363,7 +364,7 @@ class OrdemServicoController extends Controller
         }
         $projeto = Projeto::find($ordem_servico->projeto_id);
         $aprs = Apr::where('ordem_servico_id', $ordem_servico->id)->get();
-        $ped_saidas=PedidoSaida::where('ordem_servico_id',$ordem_servico->id)->get();
+        $ped_saidas = PedidoSaida::where('ordem_servico_id', $ordem_servico->id)->get();
         return view('app.ordem_servico.show', [
             'ordem_servico'       => $ordem_servico,
             'servicos_executado'  => $servicos_executado,
@@ -373,7 +374,7 @@ class OrdemServicoController extends Controller
             'produtos'            => $produtos,
             'projeto' => $projeto,
             'aprs' => $aprs,
-            'ped_saidas'=>$ped_saidas
+            'ped_saidas' => $ped_saidas
         ]);
     }
 

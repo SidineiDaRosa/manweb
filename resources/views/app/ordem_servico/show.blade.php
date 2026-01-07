@@ -51,7 +51,6 @@
                 <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
                     <i class="icofont-dashboard"></i> Dashboard
                 </a>
-
             </div>
         </div>
         <!--!Ao abrir verifica algumas status-->

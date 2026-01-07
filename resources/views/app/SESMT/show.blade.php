@@ -82,7 +82,7 @@
                                     <div class="card-body">
                                         <div class="row mb-2">
                                             <div class="col-5 fw-bold">Elaborado por:</div>
-                                            <div class="col-7 fs-5">{{ $apr->user->name }}</div>
+                                            <div class="col-7 fs-5"></div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-5 fw-bold">Assinatura:</div>
