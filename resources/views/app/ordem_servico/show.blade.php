@@ -733,6 +733,7 @@
 
 </main>
 <script>
+    //Fechar ordem de serviço pelo botão finalizar
     $(document).ready(function() {
         $('#confirmarEnvio').click(function() {
             var valor = $('#valor').val(); // Obtém o valor do input

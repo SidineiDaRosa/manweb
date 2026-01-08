@@ -92,7 +92,7 @@ class UtilsController extends Controller
         $timeNew = date('H:i:s');
         $ordem_servico->data_fim =$data_fim ;
         $ordem_servico->hora_fim =  $timeNew;
-        $ordem_servico->situacao = 'fechado'; //fecha a situação
+        $ordem_servico->situacao = 'Fechado'; //fecha a situação
         $ordem_servico->status_servicos = 100; //coloca o status em 100%
         $ordem_servico->save(); //salva a atleração da ordem
         // Encontre o pedido de saida pelo ID

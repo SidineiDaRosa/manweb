@@ -205,7 +205,7 @@ Route::middleware('auth')->get(
     'App\Http\Controllers\UtilsController@getHorimetroInicial'
 )->name('utils.get-horimetro-inicial');
 //------------------------------------------------------//
-//----------------   os   ------------------------------//
+//----------------Ordem de Serviço------------------------------//
 Route::middleware('auth')->get(
     'utils/updateos',
     'App\Http\Controllers\UtilsController@updateos'
