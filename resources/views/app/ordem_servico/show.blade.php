@@ -332,16 +332,15 @@
                         </div>
 
                     </div>
+                <br>
                     <div class="titulo">Projeto</div>
-                    <hr>
                     <div class="conteudo">
-                        <?php
-                        if (isset($projeto)) {
-                            echo "ID: " . $projeto->nome;
-                        } else {
-                            echo "Não anexado a um projeto";
-                        }
-                        ?>
+                        @if((isset($projeto)))
+                        ID: {{$projeto->id}} -Nome: {{$projeto->nome}};
+                        <a href="{{ route('projetos.show', $projeto->id) }}" class="btn btn-outline-primary mb-1">Ver Projeto</a>
+                        @else
+                        Não anexado a um projeto
+                        @endif
                     </div>
                 </div>
             </div>

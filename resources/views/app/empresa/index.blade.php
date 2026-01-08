@@ -1,117 +1,185 @@
 @extends('app.layouts.app')
 
-@section('titulo', 'Marcas')
+@section('titulo', 'Empresas')
 
 @section('content')
-
 <main class="content">
     <div class="card">
         <div class="card-header-template">
-            <div>Listagem de Empresas</div>
-            <form action="{{'Empresas-filtro'}}" method="POST">
-                @csrf
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <h5 class="mb-0"><i class="icofont-company me-2"></i>Listagem de Empresas</h5>
 
-                <!--input box filtro buscar empresas--------->
+                <div class="d-flex gap-3 align-items-center">
+                    <!-- Formulário de Busca -->
+                    <!-- Formulário de Busca -->
+                    <form action="{{ route('empresas.filtro') }}" method="POST" class="search-form">
+                        @csrf
+                        <div class="input-group">
+                            <input type="text"
+                                class="form-control form-control-sm"
+                                name="empresa1"
+                                placeholder="Buscar empresa..."
+                                aria-label="Buscar empresa"
+                                style="min-width: 250px;">
+                            <button class="btn btn-template btn-sm" type="submit">
+                                <i class="icofont-search"></i>
+                            </button>
+                        </div>
+                    </form>
 
-                <input type="text" id="query" name="empresa1" placeholder="Buscar empresa..." aria-label="Search through site content">
-                <button type="submit">
-                    <i class="icofont-search"></i>
 
-                </button>
-
-            </form>
-            <div>
-                <a class="btn btn-bg-template btn-outline-primary" href="{{route('empresas.create')}}">
-
-                    <i class="icofont-company"></i>
-                   new unit company
-                </a>
-
+                    <!-- Botão Nova Empresa -->
+                    <a class="btn btn-bg-template btn-outline-primary btn-sm d-flex align-items-center"
+                        href="{{ route('empresas.create') }}">
+                        <i class="icofont-plus me-1"></i>
+                        Nova Empresa
+                    </a>
+                </div>
             </div>
         </div>
-        <!-------------------------------------------------------------------------->
-        <style>
-            form {
-                background-color: white;
-                width: 500px;
-                height: 44px;
-                border-radius: 5px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
-
-            input {
-                all: unset;
-                font: 16px system-ui;
-                color: blue;
-                height: 100%;
-                width: 100%;
-                padding: 6px 10px;
-            }
-
-            ::placeholder {
-                color: blueviolet;
-                opacity: 0.9;
-            }
-
-
-            button {
-                all: unset;
-                cursor: pointer;
-                width: 44px;
-                height: 44px;
-            }
-        </style>
-        <!-------------------------------------------------------------------------->
 
         <div class="card-body">
-            <table class="table-template table-hover table-striped table-bordered">
-                <thead class="bg-active ">
-                    <tr>
-                        <th scope="col" class="th-title">Id</th>
-                        <th scope="col" class="th-title">Razão social</th>
-                        <th scope="col" class="th-title">Nome fantasia</th>
-                        <th scope="col" class="th-title">Cnpj</th>
-                        <th scope="col" class="th-title">Inscrição estadual</th>
-                        <th scope="col" class="th-title">Endereço</th>
-                        <th scope="col" class="th-title">Bairro</th>
-                        <th scope="col" class="th-title">Cidade</th>
-                        <th scope="col" class="th-title">Operações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($empresas as $empresa)
-                    <tr>
+            @if($empresas->isEmpty())
+            <div class="text-center py-5">
+                <i class="icofont-company icofont-3x text-muted mb-3"></i>
+                <p class="text-muted">Nenhuma empresa encontrada</p>
+            </div>
+            @else
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-bordered">
+                    <thead class="bg-template text-white">
+                        <tr>
+                            <th width="50">ID</th>
+                            <th>Razão Social</th>
+                            <th>Nome Fantasia</th>
+                            <th>CNPJ</th>
+                            <th>Insc. Estadual</th>
+                            <th>Cidade</th>
+                            <th width="150" class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($empresas as $empresa)
+                        <tr>
+                            <td class="text-center">{{ $empresa->id }}</td>
+                            <td>{{ $empresa->razao_social }}</td>
+                            <td>{{ $empresa->nome_fantasia }}</td>
+                            <td>{{ $empresa->cnpj }}</td>
+                            <td>{{ $empresa->insc_estadual }}</td>
+                            <td>{{ $empresa->cidade }}</td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ route('equipamento.index', ['empresa' => $empresa->id]) }}"
+                                        class="btn btn-sm btn-success d-flex align-items-center"
+                                        title="Ver equipamentos">
+                                        <i class="icofont-search me-1"></i>
+                                        Equipamentos
+                                    </a>
 
-                        <th scope="row">{{ $empresa->id }}</th>
-                        <td>{{ $empresa->razao_social }}</td>
-                        <td>{{ $empresa->nome_fantasia }}</td>
-                        <td>{{ $empresa->cnpj }}</td>
-                        <td>{{ $empresa->insc_estadual }}</td>
-                        <td>{{ $empresa->endereco}}</td>
-                        <td>{{ $empresa->bairro}}</td>
-                        <td>{{ $empresa->cidade}}</td>
-                        <td>
-                            <div class="col-sm-0">
-                                <a href="{{route('equipamento.index', ['empresa'=>$empresa->id])}}" class="btn-sm btn-success">
-                                    <span class="icon text-white-50">
-                                        <i class="icofont-search"></i>
-                                    </span>
-                                    <span class="text">Busca Equipamentos</span>
-                                </a>
-                            </div>
-                        </td>
-                        @csrf
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                    <!-- Adicione mais ações se necessário -->
+                                    <!--
+                                        <a href="{{ route('empresas.edit', $empresa->id) }}" 
+                                           class="btn btn-sm btn-primary" 
+                                           title="Editar">
+                                            <i class="icofont-edit"></i>
+                                        </a>
+                                        -->
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            @endif
         </div>
-
     </div>
-
-
 </main>
 
+<style>
+    .search-form .input-group {
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-form input {
+        border-right: none;
+        border-color: #dee2e6;
+    }
+
+    .search-form input:focus {
+        box-shadow: none;
+        border-color: #dee2e6;
+    }
+
+    .search-form button {
+        background-color: #f8f9fa;
+        border-left: none;
+        transition: all 0.3s ease;
+    }
+
+    .search-form button:hover {
+        background-color: #e9ecef;
+    }
+
+    .table th {
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 12px 8px;
+    }
+
+    .table td {
+        padding: 10px 8px;
+        vertical-align: middle;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .card-header-template .d-flex {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-form .input-group {
+            width: 100%;
+        }
+
+        .search-form input {
+            min-width: unset !important;
+        }
+
+        .table-responsive {
+            font-size: 0.85rem;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.4rem;
+        }
+    }
+</style>
 @endsection
+
+@php
+// Helper para formatar CNPJ (adicione isso em um helper global ou no model)
+if (!function_exists('formatCnpj')) {
+function formatCnpj($cnpj) {
+$cnpj = preg_replace('/[^0-9]/', '', $cnpj);
+if (strlen($cnpj) === 14) {
+return substr($cnpj, 0, 2) . '.' .
+substr($cnpj, 2, 3) . '.' .
+substr($cnpj, 5, 3) . '/' .
+substr($cnpj, 8, 4) . '-' .
+substr($cnpj, 12, 2);
+}
+return $cnpj;
+}
+}
+@endphp

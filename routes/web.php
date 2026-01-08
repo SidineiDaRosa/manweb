@@ -244,7 +244,9 @@ Route::middleware('auth')->post(
 //-------------------------------------------------------------//
 //                Busca empresas
 //-------------------------------------------------------------//
-Route::middleware('auth')->post('/Empresas-filtro', [App\Http\Controllers\EmpresasController::class, 'index']);
+Route::middleware('auth')
+    ->post('/empresas/filtro', [App\Http\Controllers\EmpresasController::class, 'filtro'])
+    ->name('empresas.filtro');
 Route::middleware('auth')->resource('/empresas', 'App\Http\Controllers\EmpresasController');
 //Filtro Produtos
 Route::middleware('auth')->post('/produtos-filtro', [App\Http\Controllers\ProdutoController::class, 'index']);

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Empresas;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Emphasis;
@@ -11,49 +12,31 @@ class EmpresasController extends Controller
      * Display a listing of the resource.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+     */ public function index(Request $request)
     {
-        $razao_social_like=$request->get('empresa1');
-        
-        //$idEmpresa =Empresas::where('razao_social','like',$razao_social_like.'%')->get('id');
-       // return view('app.empresa.index', ['empresas' => $empresas]);
-       if (isset($_POST['empresa1'])){
-        if (!empty($razao_social_like)) {
-           $empresas =Empresas::where('razao_social','like',$razao_social_like.'%')->get();
-            return view('app.empresa.index', ['empresas' => $empresas]);
-    }else{
-        //$empresas =Empresas::where('razao_social','like','ita'.'%')->get('id')->toJson();
-        $empresas =Empresas::where('razao_social','like','ita'.'%')->get();
-        foreach($empresas as $emp){
-            echo($emp->razao_social);
-        }
-        
-        $empresas =Empresas::where('razao_social','like','ita'.'%')->first();
-            $empresas->teste= 'teste';
-            unset($empresas->razao_social);
-            dd($empresas);
-            echo($emp->razao_social);
+        $busca = $request->input('empresa1');
 
+        $empresas = Empresas::query()
+            ->when($busca, function ($query) use ($busca) {
+                $query->where('razao_social', 'like', "%{$busca}%")
+                    ->orWhere('nome_fantasia', 'like', "%{$busca}%")
+                    ->orWhere('cnpj', 'like', "%{$busca}%");
+            })
+            ->orderBy('razao_social')
+            ->get();
 
-        /* echo($empresas->razao_social); */
-        /* dd($empresas->razao_social); */
+        return view('app.empresa.index', compact('empresas'));
     }
-    }else{
-        $empresas =Empresas::where('id',0)->get();
-          return view('app.empresa.index', ['empresas' => $empresas]);
-    }
-}
-       /**
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $empresa=Empresas::all();
-      return view('app.empresa.create', ['empresa'=>$empresa]); //
- 
+        $empresa = Empresas::all();
+        return view('app.empresa.create', ['empresa' => $empresa]); //
+
     }
     /**
      * Store a newly created resource in storage.
@@ -63,7 +46,7 @@ class EmpresasController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         //
         Empresas::create($request->all());
         return redirect()->route('empresas.index');
@@ -76,11 +59,10 @@ class EmpresasController extends Controller
      */
     public function show(Empresas $empresa)
     {
-      
-        //
-      //dd($empresa);
-        return view('app.empresa.show', ['empresa' => $empresa]);
 
+        //
+        //dd($empresa);
+        return view('app.empresa.show', ['empresa' => $empresa]);
     }
     /**
      * Show the form for editing the specified resource.
@@ -91,8 +73,8 @@ class EmpresasController extends Controller
     public function edit(Empresas $empresa)
     {
         //
-        $empresa = Empresas::all(); 
-        return view('app.empresa.create', ['empresa'=>$empresa]); //
+        $empresa = Empresas::all();
+        return view('app.empresa.create', ['empresa' => $empresa]); //
         //
     }
 

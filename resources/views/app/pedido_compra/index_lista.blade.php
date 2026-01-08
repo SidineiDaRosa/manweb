@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <main class="content">
     <div class="titulo-main">
-        Pedido de compra 
+        Pedido de compra
     </div>
     <div id="alerta-topo" class="alert d-none alert-dismissible fade show text-center" role="alert"
         style="position:fixed; top:10px; left:50%; transform:translateX(-50%);
@@ -353,7 +353,7 @@
         </form>
         <script>
             // Quando o botão for clicado
-            
+
             $('#executarFormulario').click(function(e) {
                 e.preventDefault(); // Evita o comportamento padrão de enviar o formulário
 
@@ -525,11 +525,13 @@
                     <a class="btn btn-sm btn-outline-primary" href="{{ route('produto.show', ['produto' => $pedido_compra_ls->produto_id]) }}" target="blank">
                         <i class="icofont-eye-alt"></i> Ver
                     </a>
+                    @if($pedido_compra_ls->status != 'Concluido')
                     <a href="javascript:void(0);"
                         class="btn btn-sm btn-outline-danger"
                         onclick="confirmDelete({{ $pedido_compra_ls->id }})">
                         <i class="icofont-delete"></i> Excluir
                     </a>
+
                     <form id="delete-item-form-{{ $pedido_compra_ls->id }}"
                         action="{{ route('pedido-compra-lista.destroy', $pedido_compra_ls->id) }}"
                         method="POST" style="display: none;">
@@ -539,7 +541,7 @@
                     <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#entradaModal-{{ $produto->id }}">
                         <i class="icofont-check-circled"></i> Dar Entrada
                     </button>
-
+                    @endif
                     <!-- Modal Atulizar item -->
                     <div class="modal fade" id="entradaModal-{{ $produto->id }}" tabindex="-1" aria-labelledby="entradaModalLabel-{{ $produto->id }}" aria-hidden="true">
                         <div class="modal-dialog">
