@@ -84,6 +84,11 @@
                                             <i class="icofont-edit"></i>
                                         </a>
                                         -->
+                                    <a href="{{ route('empresas.show', $empresa->id) }}"
+                                        class="btn btn-sm btn-primary"
+                                        title="Editar">
+                                        <i class="icofont-eye"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -166,20 +171,3 @@
     }
 </style>
 @endsection
-
-@php
-// Helper para formatar CNPJ (adicione isso em um helper global ou no model)
-if (!function_exists('formatCnpj')) {
-function formatCnpj($cnpj) {
-$cnpj = preg_replace('/[^0-9]/', '', $cnpj);
-if (strlen($cnpj) === 14) {
-return substr($cnpj, 0, 2) . '.' .
-substr($cnpj, 2, 3) . '.' .
-substr($cnpj, 5, 3) . '/' .
-substr($cnpj, 8, 4) . '-' .
-substr($cnpj, 12, 2);
-}
-return $cnpj;
-}
-}
-@endphp

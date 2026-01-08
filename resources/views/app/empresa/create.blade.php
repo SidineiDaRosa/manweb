@@ -14,16 +14,12 @@
                 </a>
             </div>
         </div>
-        
+
         <div class="card-body">
-        @component('app.empresa._components.form_create', ['empresa'=>$empresa])     
+            @component('app.empresa.components.form_create', ['empresa'=>$empresa])
             @endcomponent
         </div>
-
     </div>
-
-
 </main>
 
 @endsection
-

@@ -254,7 +254,7 @@
             }
         </style>
 
-        <footer>
+        <footer hidden>
             <div class="footer-container">
                 <nav class="footer-nav">
                     <a href="#" class="footer-link">HOME</a>
