@@ -10,7 +10,7 @@
     <style>
         .titulo-main {
             font-size: 15px;
-            color:dimgrey;
+            color: dimgrey;
             text-align: center;
             margin-top: -2;
         }
@@ -199,7 +199,7 @@
                     <th>Subtotal</th>
                     <th>Data</th>
                     <th>Patrmônio</th>
-                    <th>Operações</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -220,7 +220,8 @@
                     <td>{{ $saida_produto->data }}</td>
                     <td>{{ $saida_produto->equipamento->nome}}</td>
                     <td>
-                        <!-- Botão de exclusão -->
+                        @if($pedido_saida_f->status!='fechado')
+                        <!-- Botão de exclusão esconde caso o pedido fechado-->
                         <form id="delete-form-{{ $saida_produto->id }}" action="{{ route('saida-produto.destroy', $saida_produto->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
@@ -228,6 +229,7 @@
                             <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $saida_produto->id }})">Deletar</button>
                         </form>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
