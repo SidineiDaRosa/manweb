@@ -78,8 +78,6 @@
 </head>
 <body>
 
-<h1>Painel de Ordens de Serviço</h1>
-
 <div class="grid-os">
     @foreach($ordem_servicos as $ordem_servico)
         <div class="os-card">
