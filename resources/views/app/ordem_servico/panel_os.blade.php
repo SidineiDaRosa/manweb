@@ -69,13 +69,10 @@
     <div class="grid-os">
         @foreach($ordem_servicos as $ordem_servico)
         <div class="os-card">
-            <h3>{{ $ordem_servico->id }}-----{{ $ordem_servico->equipamento->nome }}</h3>
+            <h3>{{ $ordem_servico->id }} <span style="color: darkblue;">{{ $ordem_servico->equipamento->nome }}</span>-{{ $ordem_servico->situacao ?? 'Não definido' }}</h3>
 
-            <div class="item"><span class="label">Data Início:</span> {{ $ordem_servico->data_inicio }} - {{ $ordem_servico->hora_inicio }}</div>
-            <div class="item"><span class="label">Data Fim:</span> {{ $ordem_servico->data_fim }} - {{ $ordem_servico->hora_fim }}</div>
+            <div class="item"><span class="label">Datas:</span> {{ $ordem_servico->data_inicio }} - {{ $ordem_servico->hora_inicio }},{{ $ordem_servico->data_fim }} - {{ $ordem_servico->hora_fim }}</div>
             <div class="item"><span class="label">Descrição:</span> {{ $ordem_servico->descricao }}</div>
-            <div class="item"><span class="label">Status:</span> {{ $ordem_servico->situacao ?? 'Não definido' }}</div>
-            <div class="item"><span class="label">SS:</span> {{ $ordem_servico->ss_id }}</div>
 
             @if($ordem_servico->ss && $ordem_servico->ss->imagem)
             <div class="item" style="margin-top:10px;">
