@@ -4,98 +4,112 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empresas;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Emphasis;
 
 class EmpresasController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */ public function index(Request $request)
+     */
+    public function index(Request $request)
     {
         $busca = $request->input('empresa1');
 
         $empresas = Empresas::query()
             ->when($busca, function ($query) use ($busca) {
-                $query->where('razao_social', 'like', "%{$busca}%")
-                    ->orWhere('nome_fantasia', 'like', "%{$busca}%")
-                    ->orWhere('cnpj', 'like', "%{$busca}%");
+                $query->where('nome1', 'like', "%{$busca}%")
+                    ->orWhere('nome2', 'like', "%{$busca}%")
+                    ->orWhere('cnpj', 'like', "%{$busca}%"); // documento
             })
-            ->orderBy('razao_social')
+            ->orderBy('nome1')
             ->get();
 
         return view('app.empresa.index', compact('empresas'));
     }
+
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $empresa = Empresas::all();
-        return view('app.empresa.create', ['empresa' => $empresa]); //
-
+        return view('app.empresa.create'); // não precisa buscar todas
     }
+
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        // Validação básica
+        $request->validate([
+            'tipo' => 'required|in:F,J',
+            'nome1' => 'required|string|max:150',
+            'nome2' => 'nullable|string|max:150',
+            'cnpj' => 'required|string|max:20', // CPF ou CNPJ
+            'cidade' => 'required|string|max:191',
+            'estado' => 'required|string|max:50',
+        ]);
 
-        //
         Empresas::create($request->all());
-        return redirect()->route('empresas.index');
+
+        return redirect()->route('empresas.index')
+            ->with('success', 'Empresa cadastrada com sucesso!');
     }
 
     /**
      * Display the specified resource.
-     * @param  \App\Models\Empresas  $empresa
-     * @return \Illuminate\Http\Response
      */
     public function show(Empresas $empresa)
     {
-
-        //
-        //dd($empresa);
         return view('app.empresa.show', ['empresa' => $empresa]);
     }
+
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(Empresas $empresa)
     {
-        $cadastro_empresa = Empresas::find($empresa->id);
-        return view('app.empresa.edit', ['empresa' => $cadastro_empresa]);
+        return view('app.empresa.edit', ['empresa' => $empresa]);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $empresa = Empresas::findOrFail($id);
+
+        // Validação básica
+        $request->validate([
+            'nome1' => 'required|string|max:150',
+            'nome2' => 'nullable|string|max:150',
+            'cidade' => 'required|string|max:191',
+            'estado' => 'required|string|max:50',
+        ]);
+
+        // Campos que NÃO podem ser alterados
+        $dados = $request->except([
+            'tipo',    // tipo de pessoa não altera
+            'cnpj',    // CPF/CNPJ não altera
+            '_token',
+            '_method',
+        ]);
+
+        $empresa->update($dados);
+
+        return redirect()
+            ->route('empresas.show', $empresa->id)
+            ->with('success', 'Empresa atualizada com sucesso!');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $empresa = Empresas::findOrFail($id);
+        $empresa->delete();
+
+        return redirect()->route('empresas.index')
+            ->with('success', 'Empresa removida com sucesso!');
     }
 }

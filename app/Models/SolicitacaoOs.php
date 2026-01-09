@@ -21,4 +21,8 @@ class SolicitacaoOs extends Model
     {
         return $this->belongsTo('App\Models\Funcionario');
     }
+    public function ordem_servico()
+    {
+        return $this->belongsTo(OrdemServico::class, 'os_id');
+    }
 }

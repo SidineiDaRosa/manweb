@@ -54,7 +54,7 @@ Route::get('/link_produtos', function () {
 //    Status Os
 //---------------------------------------------------------//
 Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])->name('dashboard-status-os');
-
+Route::get('/show-panel-os', [DahboardStatusOsController::class, 'show_os'])->name('show-panel-os');
 //Route::get('/', function () {
 //return view('auth.login');
 //});
@@ -242,12 +242,16 @@ Route::middleware('auth')->post(
     'App\Http\Controllers\UtilsController@validarDataHoraTermino'
 )->name('validar-data-hora-termino');
 //-------------------------------------------------------------//
-//                Busca empresas
+//                Empresas
 //-------------------------------------------------------------//
 Route::middleware('auth')
     ->post('/empresas/filtro', [App\Http\Controllers\EmpresasController::class, 'filtro'])
     ->name('empresas.filtro');
 Route::middleware('auth')->resource('/empresas', 'App\Http\Controllers\EmpresasController');
+//-------------------------------------------------------------//
+//                Busca empresas
+//-------------------------------------------------------------//
+
 //Filtro Produtos
 Route::middleware('auth')->post('/produtos-filtro', [App\Http\Controllers\ProdutoController::class, 'index']);
 //Rota saida de produtos
@@ -603,3 +607,22 @@ Route::get('/apr-show/{apr_id}', [APRController::class, 'show'])->name('apr.show
 Route::get('/apr/{id}/edit', [APRController::class, 'edit'])->name('apr.edit');
 Route::put('/apr/{id}', [APRController::class, 'update'])->name('apr.update');
 Route::delete('/apr/{id}', [APRController::class, 'destroy'])->name('apr.destroy');
+//-------------------------------------------------------------//
+//                Business Partner
+//-------------------------------------------------------------//
+use App\Http\Controllers\BusinessPartnerController;
+Route::middleware('auth')->group(function () {
+Route::resource('business-partners', BusinessPartnerController::class);
+});
+//-------------------------------------------------------------//
+//                Business Partner roles
+//-------------------------------------------------------------//
+Route::middleware('auth')->group(function () {
+Route::resource('business-partners-roles', BusinessPartnerController::class);
+});
+//-------------------------------------------------------------//
+//                Business Partner anderess
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+//                Anderess
+//-------------------------------------------------------------//

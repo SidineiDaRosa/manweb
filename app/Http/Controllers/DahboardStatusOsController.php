@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
 use App\Models\Servicos_executado;
+use Facade\FlareClient\View;
 
 class DahboardStatusOsController extends Controller
 {
@@ -453,5 +454,12 @@ class DahboardStatusOsController extends Controller
             'projetos' => $projetos
 
         ]);
+    }
+    public function show_os()
+    {
+        $ordem_servicos = OrdemServico::where('situacao', 'aberto')
+        ->orderby('data_inicio','desc')
+        ->get();
+        return View('app.ordem_servico.panel_os', ['ordem_servicos' => $ordem_servicos]);
     }
 }

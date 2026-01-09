@@ -158,7 +158,12 @@
             </a>
             <div class="submenu" id="home-submenu">
                 <a href="{{ route('empresas.index') }}">Unidade empresarial</a>
+                <a class="submenu" href="{{ route('business-partners.index') }}">
+                    Business Partners
+                </a>
             </div>
+
+
         </li>
 
         <!-- Marcas -->
@@ -267,7 +272,7 @@
                 <a href="{{ route('funcionarios.index') }}">Funcionários</a>
                 <a href="{{ route('apr.index') }}">APR</a>
             </div>
-        
+
         </li>
 
     </ul>

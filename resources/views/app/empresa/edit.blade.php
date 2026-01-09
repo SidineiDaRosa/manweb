@@ -19,7 +19,7 @@
         </div>
 
         <div class="card-body">
-            @component('app.empresa.components.form_create', ['empresa'=>$empresa])
+            @component('app.empresa.components.form_edit', ['empresa'=>$empresa])
             @endcomponent
         </div>
 

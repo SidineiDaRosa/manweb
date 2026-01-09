@@ -50,4 +50,8 @@ class OrdemServico extends Model
     {
         return $this->belongsTo('App\Models\Projeto', 'projeto_id');
     }
+   public function ss()
+{
+    return $this->belongsTo(SolicitacaoOs::class, 'ss_id'); // ss_id é a FK na ordem_servicos
+}
 }

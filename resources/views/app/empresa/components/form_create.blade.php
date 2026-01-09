@@ -1,123 +1,88 @@
-@if (isset($produto->id))
-<form action="{{ route('empresas.update', ['fornecedor' => $fornecedor->id]) }}" method="POST">
+<form action="{{ isset($fornecedor->id) ? route('empresas.update', $fornecedor->id) : route('empresas.store') }}" method="POST">
     @csrf
-    @method('PUT')
-    @else
-    <form action="{{ route('empresas.store') }}" method="POST">
-        @csrf
-        @endif
+    @if(isset($fornecedor->id))
+        @method('PUT')
+    @endif
+
+    {{-- Tipo PF/PJ --}}
+    <div class="row mb-1">
+        <label class="col-md-4 col-form-label text-md-end">Tipo PF/PJ</label>
+        <div class="col-md-6">
+            <select name="tipo" class="form-control" {{ isset($fornecedor->id) ? 'disabled' : 'required' }}>
+                <option value="">Selecione</option>
+                <option value="F" {{ (old('tipo', $fornecedor->tipo ?? '') == 'F') ? 'selected' : '' }}>Pessoa Física</option>
+                <option value="J" {{ (old('tipo', $fornecedor->tipo ?? '') == 'J') ? 'selected' : '' }}>Pessoa Jurídica</option>
+            </select>
+            {{-- Desabilitado no edit, obrigatório no create --}}
+        </div>
+    </div>
+
+    {{-- Name1 / Razão Social --}}
+    <div class="row mb-1">
+        <label class="col-md-4 col-form-label text-md-end">Razão Social / Nome</label>
+        <div class="col-md-6">
+            <input type="text" name="name1" class="form-control"
+                value="{{ old('name1', $fornecedor->name1 ?? '') }}" required>
+        </div>
+    </div>
+
+    {{-- Name2 / Nome Fantasia --}}
+    <div class="row mb-1">
+        <label class="col-md-4 col-form-label text-md-end">Nome Fantasia / Apelido</label>
+        <div class="col-md-6">
+            <input type="text" name="name2" class="form-control"
+                value="{{ old('name2', $fornecedor->name2 ?? '') }}">
+        </div>
+    </div>
+
+    {{-- Name3 --}}
+    <div class="row mb-1">
+        <label class="col-md-4 col-form-label text-md-end">Complemento 1</label>
+        <div class="col-md-6">
+            <input type="text" name="name3" class="form-control"
+                value="{{ old('name3', $fornecedor->name3 ?? '') }}">
+        </div>
+    </div>
+
+    {{-- Name4 --}}
+    <div class="row mb-1">
+        <label class="col-md-4 col-form-label text-md-end">Complemento 2</label>
+        <div class="col-md-6">
+            <input type="text" name="name4" class="form-control"
+                value="{{ old('name4', $fornecedor->name4 ?? '') }}">
+        </div>
+    </div>
+
+    {{-- Documento (CPF/CNPJ) --}}
+    <div class="row mb-1">
+        <label class="col-md-4 col-form-label text-md-end">CPF / CNPJ</label>
+        <div class="col-md-6">
+            <input type="text" name="documento" class="form-control"
+                value="{{ old('documento', $fornecedor->documento ?? '') }}" {{ isset($fornecedor->id) ? 'disabled' : 'required' }}>
+        </div>
+    </div>
+
+    {{-- Demais campos (Inscrição estadual, Cidade, Bairro, Endereço, Telefone, Contato, Email, Site) --}}
+    @foreach(['insc_estadual', 'cidade', 'bairro', 'endereco', 'telefone', 'contato', 'email', 'site'] as $campo)
         <div class="row mb-1">
-            <label for="tipo_pessoa" class="col-md-4 col-form-label text-md-end text-right">
-                Tipo PF/PJ
-            </label>
-
+            <label class="col-md-4 col-form-label text-md-end">{{ ucwords(str_replace('_', ' ', $campo)) }}</label>
             <div class="col-md-6">
-                <select id="tipo_pessoa"
-                    name="tipo_pessoa"
-                    class="form-control"
-                    required>
-
-                    <option value="">Selecione</option>
-
-                    <option value="PF"
-                        {{ (old('tipo_pessoa', $fornecedor->tipo_pessoa ?? '') == 'PF') ? 'selected' : '' }}>
-                        Pessoa Física
-                    </option>
-
-                    <option value="PJ"
-                        {{ (old('tipo_pessoa', $fornecedor->tipo_pessoa ?? '') == 'PJ') ? 'selected' : '' }}>
-                        Pessoa Jurídica
-                    </option>
-
-                </select>
-
-                {{ $errors->has('tipo_pessoa') ? $errors->first('tipo_pessoa') : '' }}
+                <input type="{{ $campo == 'email' ? 'email' : ($campo == 'site' ? 'url' : 'text') }}"
+                       name="{{ $campo }}" class="form-control"
+                       value="{{ old($campo, $fornecedor->$campo ?? '') }}">
             </div>
         </div>
+    @endforeach
 
-        <div class="row mb-1">
-            <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Razão Social PJ/Nome completo PF</label>
-
-            <div class="col-md-6">
-                <input id="razao_social" type="text" class="form-control" name="razao_social"
-                    value="{{$fornecedor->razao_social ?? old('razao_social') }}" required autocomplete="razao_social" autofocus>
-                {{ $errors->has('razao_social') ? $errors->first('razao_social') : '' }}
-            </div>
+    {{-- Botão --}}
+    <div class="row mb-0">
+        <div class="col-md-6 offset-md-4">
+            <button type="submit" class="btn btn-primary">
+                {{ isset($fornecedor->id) ? 'Atualizar' : 'Cadastrar' }}
+            </button>
         </div>
-
-
-        <div class="row mb-1">
-            <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Nome Fantasia PJ/Apelido PF</label>
-
-            <div class="col-md-6">
-                <input id="nome_fantasia" name="nome_fantasia" type="text" class="form-control" nome_fantasia="nome_fantasia"
-                    value="{{$fornecedor->nome_fantasia?? old('nome_fantasia') }}" required autocomplete="nome_fantasia" autofocus>
-                {{ $errors->has('nome_fantasia') ? $errors->first('nome_fantasia') : '' }}
-            </div>
-        </div>
-
-        <div class="row mb-1">
-            <label for="cnpj" class="col-md-4 col-form-label text-md-end text-right">CNPJ PJ/CPF PF</label>
-
-            <div class="col-md-6">
-                <input id="cnpj" name="cnpj" type="text" class="form-control" cnpj="cnpj"
-                    value="{{$fornecedor->cnpj?? old('cnpj') }}" required autocomplete="cnpj" autofocus>
-                {{ $errors->has('cnpj') ? $errors->first('cnpj') : '' }}
-            </div>
-        </div>
-
-        <div class="row mb-1">
-            <label for="insc_estadual" class="col-md-4 col-form-label text-md-end text-right">Inscrição Estadual</label>
-
-            <div class="col-md-6">
-                <input id="insc_estadual" name="insc_estadual" type="text" class="form-control" insc_estadual="insc_estadual"
-                    value="{{$fornecedor->insc_estadual?? old('insc_estadual') }}" required autocomplete="insc_estadual" autofocus>
-                {{ $errors->has('insc_estadual') ? $errors->first('insc_estadual') : '' }}
-            </div>
-        </div>
-        <!--Busca país-->
-        <div class="row mb-1">
-            <label class="col-md-4 col-form-label text-md-end text-right">
-                País
-            </label>
-            <div class="col-md-6">
-                <select id="pais" name="pais" class="form-control" required>
-                    <option value="">Selecione o país</option>
-                </select>
-            </div>
-        </div>
-
-        <!--busca estado da federação brasileira-->
-        <!-- Estado (select – Brasil) -->
-        <div class="row mb-1" id="estado-select-group" style="display:none;">
-            <label class="col-md-4 col-form-label text-md-end text-right">
-                Estado
-            </label>
-
-            <div class="col-md-6">
-                <select id="estado_select" name="estado" class="form-control">
-                    <option value="">Selecione o estado</option>
-                </select>
-                {{ $errors->first('estado') }}
-            </div>
-        </div>
-
-        <!-- Estado / Província (texto livre – exterior) -->
-        <div class="row mb-1" id="estado-input-group" style="display:none;">
-            <label class="col-md-4 col-form-label text-md-end text-right">
-                Estado / Província
-            </label>
-
-            <div class="col-md-6">
-                <input type="text"
-                    id="estado_input"
-                    name="estado"
-                    class="form-control"
-                    placeholder="Ex: Buenos Aires"
-                    value="{{ old('estado') }}">
-                {{ $errors->first('estado') }}
-            </div>
-        </div>
+    </div>
+</form>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {

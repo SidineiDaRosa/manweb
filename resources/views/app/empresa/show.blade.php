@@ -6,19 +6,17 @@
 
 <main class="content">
     <div class="card">
-        <div class="card-header-template">
+        <div class="card-header-template d-flex justify-content-between align-items-center">
             <div>
                 <i class="icofont-building-alt mr-2"></i>
                 Visualizar Empresa
             </div>
             <div>
                 <a href="{{ route('empresas.index') }}" class="btn btn-primary btn-sm">
-                    <i class="icofont-list mr-1"></i>
-                    LISTAGEM
+                    <i class="icofont-list mr-1"></i> LISTAGEM
                 </a>
                 <a href="{{ route('empresas.edit', $empresa->id) }}" class="btn btn-warning btn-sm ml-1">
-                    <i class="icofont-edit mr-1"></i>
-                    EDITAR
+                    <i class="icofont-edit mr-1"></i> EDITAR
                 </a>
             </div>
         </div>
@@ -26,23 +24,22 @@
         <div class="card-body">
             <!-- Cabeçalho da Empresa -->
             <div class="row mb-4">
-                <div class="col-md-8">
-                    <div class="d-flex align-items-center">
-                        <div class="mr-3">
-                            <div class="company-icon bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                                <i class="icofont-building-alt text-white" style="font-size: 28px;"></i>
-                            </div>
+                <div class="col-md-8 d-flex align-items-center">
+                    <div class="mr-3">
+                        <div class="company-icon bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="icofont-building-alt text-white" style="font-size: 28px;"></i>
                         </div>
-                        <div>
-                            <h2 class="mb-0">{{ $empresa->nome_fantasia }}</h2>
-                            <p class="text-muted mb-0">{{ $empresa->razao_social }}</p>
-                        </div>
+                    </div>
+                    <div>
+                        <h2 class="mb-0">{{ $empresa->name2 ?: $empresa->name1 }}</h2>
+                        <p class="text-muted mb-0">{{ $empresa->name1 }}</p>
+                        @if($empresa->name3) <p class="text-muted mb-0 small">{{ $empresa->name3 }}</p> @endif
+                        @if($empresa->name4) <p class="text-muted mb-0 small">{{ $empresa->name4 }}</p> @endif
                     </div>
                 </div>
                 <div class="col-md-4 text-right">
                     <div class="badge badge-secondary p-2">
-                        <i class="icofont-id mr-1"></i>
-                        ID: {{ $empresa->id }}
+                        <i class="icofont-id mr-1"></i> ID: {{ $empresa->id }}
                     </div>
                 </div>
             </div>
@@ -53,8 +50,7 @@
                     <div class="card border-light mb-4">
                         <div class="card-header bg-light">
                             <h5 class="mb-0">
-                                <i class="icofont-info-circle mr-2"></i>
-                                Informações Principais
+                                <i class="icofont-info-circle mr-2"></i> Informações Principais
                             </h5>
                         </div>
                         <div class="card-body">
@@ -62,12 +58,12 @@
                                 <div class="d-flex align-items-start">
                                     <i class="icofont-id-card text-primary mr-3 mt-1"></i>
                                     <div>
-                                        <small class="text-muted">CNPJ</small>
-                                        <p class="mb-0 font-weight-bold">{{ $empresa->cnpj }}</p>
+                                        <small class="text-muted">CPF / CNPJ</small>
+                                        <p class="mb-0 font-weight-bold">{{ $empresa->documento ?: 'Não informado' }}</p>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-item mb-3">
                                 <div class="d-flex align-items-start">
                                     <i class="icofont-paper text-primary mr-3 mt-1"></i>
@@ -77,7 +73,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-item mb-3">
                                 <div class="d-flex align-items-start">
                                     <i class="icofont-ui-call text-primary mr-3 mt-1"></i>
@@ -87,7 +83,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-item mb-3">
                                 <div class="d-flex align-items-start">
                                     <i class="icofont-email text-primary mr-3 mt-1"></i>
@@ -97,7 +93,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-item">
                                 <div class="d-flex align-items-start">
                                     <i class="icofont-web text-primary mr-3 mt-1"></i>
@@ -112,8 +108,7 @@
                                             @endphp
                                             <p class="mb-0">
                                                 <a href="{{ $site }}" target="_blank" rel="noopener noreferrer" class="text-primary">
-                                                    {{ $empresa->site }}
-                                                    <i class="icofont-external-link ml-1" style="font-size: 12px;"></i>
+                                                    {{ $empresa->site }} <i class="icofont-external-link ml-1" style="font-size: 12px;"></i>
                                                 </a>
                                             </p>
                                         @else
@@ -130,10 +125,7 @@
                 <div class="col-md-6">
                     <div class="card border-light">
                         <div class="card-header bg-light">
-                            <h5 class="mb-0">
-                                <i class="icofont-location-pin mr-2"></i>
-                                Endereço
-                            </h5>
+                            <h5 class="mb-0"><i class="icofont-location-pin mr-2"></i> Endereço</h5>
                         </div>
                         <div class="card-body">
                             <div class="info-item mb-3">
@@ -145,7 +137,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-item mb-3">
                                 <div class="d-flex align-items-start">
                                     <i class="icofont-ui-home text-primary mr-3 mt-1"></i>
@@ -155,31 +147,29 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="info-item mb-3">
-                                <div class="d-flex">
-                                    <div class="mr-4">
-                                        <div class="d-flex align-items-start mb-2">
-                                            <i class="icofont-city text-primary mr-2 mt-1"></i>
-                                            <div>
-                                                <small class="text-muted">Cidade</small>
-                                                <p class="mb-0">{{ $empresa->cidade ?: 'Não informado' }}</p>
-                                            </div>
+
+                            <div class="info-item mb-3 d-flex">
+                                <div class="mr-4">
+                                    <div class="d-flex align-items-start mb-2">
+                                        <i class="icofont-city text-primary mr-2 mt-1"></i>
+                                        <div>
+                                            <small class="text-muted">Cidade</small>
+                                            <p class="mb-0">{{ $empresa->cidade ?: 'Não informado' }}</p>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="d-flex align-items-start mb-2">
-                                            <i class="icofont-map-pins text-primary mr-2 mt-1"></i>
-                                            <div>
-                                                <small class="text-muted">Estado</small>
-                                                <p class="mb-0">{{ $empresa->estado ?: 'Não informado' }}</p>
-                                            </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex align-items-start mb-2">
+                                        <i class="icofont-map-pins text-primary mr-2 mt-1"></i>
+                                        <div>
+                                            <small class="text-muted">Estado</small>
+                                            <p class="mb-0">{{ $empresa->estado ?: 'Não informado' }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Observações ou Informações Adicionais -->
+
+                            <!-- Observações -->
                             @if($empresa->observacoes)
                             <div class="info-item mt-4">
                                 <div class="d-flex align-items-start">
@@ -196,24 +186,20 @@
                 </div>
             </div>
 
-            <!-- Ações -->
+            <!-- Rodapé com ações -->
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-between border-top pt-3">
-                        <div>
-                            <small class="text-muted">
-                                <i class="icofont-calendar mr-1"></i>
-                                Cadastrado em: {{ $empresa->created_at->format('d/m/Y H:i') }}
-                            </small>
-                        </div>
+                        <small class="text-muted">
+                            <i class="icofont-calendar mr-1"></i>
+                            Cadastrado em: {{ $empresa->created_at->format('d/m/Y H:i') }}
+                        </small>
                         <div>
                             <a href="{{ route('empresas.edit', $empresa->id) }}" class="btn btn-warning btn-sm">
-                                <i class="icofont-edit mr-1"></i>
-                                Editar Empresa
+                                <i class="icofont-edit mr-1"></i> Editar Empresa
                             </a>
                             <a href="{{ route('empresas.index') }}" class="btn btn-outline-secondary btn-sm ml-2">
-                                <i class="icofont-arrow-left mr-1"></i>
-                                Voltar para Listagem
+                                <i class="icofont-arrow-left mr-1"></i> Voltar para Listagem
                             </a>
                         </div>
                     </div>
@@ -224,23 +210,11 @@
 </main>
 
 <style>
-.info-item {
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #f1f1f1;
-}
-.info-item:last-child {
-    border-bottom: none;
-}
-.company-icon {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.badge-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-.card-header.bg-light {
-    background-color: #f8f9fa !important;
-}
+.info-item { padding-bottom: 0.5rem; border-bottom: 1px solid #f1f1f1; }
+.info-item:last-child { border-bottom: none; }
+.company-icon { box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.badge-secondary { background-color: #6c757d; color: white; }
+.card-header.bg-light { background-color: #f8f9fa !important; }
 </style>
 
 @endsection
