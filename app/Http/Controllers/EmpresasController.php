@@ -72,10 +72,8 @@ class EmpresasController extends Controller
      */
     public function edit(Empresas $empresa)
     {
-        //
-        $empresa = Empresas::all();
-        return view('app.empresa.create', ['empresa' => $empresa]); //
-        //
+        $cadastro_empresa = Empresas::find($empresa->id);
+        return view('app.empresa.edit', ['empresa' => $cadastro_empresa]);
     }
 
     /**
