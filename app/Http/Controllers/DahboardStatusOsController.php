@@ -468,7 +468,11 @@ class DahboardStatusOsController extends Controller
 
         $ordem_servico->check = 1;
         $ordem_servico->save();
+        $hoje = Carbon::today();
+
         $ordens_servicos = OrdemServico::where('situacao', 'aberto')
+            ->whereDate('data_inicio', '<=', $hoje)
+            ->whereDate('data_fim', '>=', $hoje)
             ->orderByRaw("
         CASE 
             WHEN `check` = 1 THEN 2
