@@ -486,7 +486,7 @@
                         let emoji = 'ℹ️';
                         if (msg.tipo === 'alerta') emoji = '⚠️';
                         if (msg.tipo === 'urgente') emoji = '❗';
-                        span.textContent = `${emoji} ${msg.mensagem} •`;
+                        span.textContent = `${emoji} ${msg.mensagem}`;
                         track.appendChild(span);
                     });
                 } catch (err) {
