@@ -53,7 +53,7 @@
         }
 
         .header-title h1 {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 5px;
             display: flex;
@@ -102,7 +102,7 @@
         }
 
         .stat-number {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             color: white;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -158,10 +158,10 @@
         }
 
         .os-id {
-            color: #0d6efd;
-            font-size: 20px;
+            color: #5d82b9;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -194,7 +194,7 @@
         }
 
         .info-group {
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .info-label {
@@ -353,7 +353,7 @@
         }
 
         .badge-verificado {
-            background: #28a745;
+            background: rgb(40, 167, 69, 0.6);
             color: white;
         }
 
