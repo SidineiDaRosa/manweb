@@ -523,31 +523,73 @@
                     <span class="info-label">Descrição</span>
                     <div class="info-value">{{ $ordem_servico->descricao }}</div>
                 </div>
+                <div class="imagem-container {{ (!$ordem_servico->ss || !$ordem_servico->ss->imagem) ? 'sem-imagem' : '' }}">
 
-                @if($ordem_servico->ss && $ordem_servico->ss->imagem)
-                <div class="imagem-container">
+                    @if($ordem_servico->ss && $ordem_servico->ss->imagem)
                     <img src="{{ asset('img/request_os/' . $ordem_servico->ss->imagem) }}"
                         alt="Foto da Ordem de Serviço"
-                        class="imagem-os"
-                        onclick="this.classList.toggle('expanded')">
+                        class="imagem-os">
+                    @endif
+
+                    @if ($ordem_servico->check != 1)
+                    <div class="alerta-overlay">
+                        <div class="alerta-texto">
+                            ⚠️ Ordem não verificada
+                        </div>
+                        <form action="{{ route('check.odem.servico') }}" method="get">
+                            <input type="hidden" name="id_os" value="{{ $ordem_servico->id }}">
+                            <button type="submit" class="btn-checar">
+                                ✅ Verificar
+                            </button>
+                        </form>
+                    </div>
+                    @endif
+
                 </div>
-                @endif
+
+                <style>
+                    .imagem-container {
+                        position: relative;
+                        border-radius: 8px;
+                        overflow: hidden;
+                    }
+
+                    /* quando TEM imagem → overlay */
+                    .imagem-container:not(.sem-imagem) .alerta-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: rgba(0, 0, 0, 0.55);
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                    }
+
+                    /* quando NÃO TEM imagem → layout normal */
+                    .imagem-container.sem-imagem .alerta-overlay {
+                        position: relative;
+                        background: #fff3cd;
+                        border: 1px solid #ffd43b;
+                        padding: 15px;
+                        border-radius: 8px;
+                    }
+
+                    /* texto */
+                    .alerta-texto {
+                        font-weight: bold;
+                        text-align: center;
+                    }
+
+                    /* botão */
+                    .alerta-overlay .btn-checar {
+                        padding: 8px 14px;
+                    }
+                </style>
             </div>
 
-            <div class="card-footer">
-                @if ($ordem_servico->check != 1)
-                <div class="alerta-container">
-                    <div class="alerta-texto">
-                        ⚠️ ATENÇÃO - Ordem não verificada
-                    </div>
-                    <form action="{{ route('check.odem.servico') }}" method="get" style="margin: 0;">
-                        <input type="hidden" name="id_os" value="{{ $ordem_servico->id }}">
-                        <button type="submit" class="btn-checar">
-                            ✅ Marcar como Verificada
-                        </button>
-                    </form>
-                </div>
-                @endif
+            <div class="card-footer" hidden>
+
 
                 <!--  <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}" hidden>
                     🗣️ Falar esta OS
