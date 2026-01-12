@@ -469,7 +469,8 @@ class DahboardStatusOsController extends Controller
         $ordem_servico->check = 1;
         $ordem_servico->save();
         $ordens_servicos = OrdemServico::where('situacao', 'aberto')
-        ->orderby('urgencia', 'desc')
+            ->orderby('check', 'asc')
+            ->orderby('urgencia', 'desc')
             ->orderby('data_inicio', 'desc')
             ->get();
         return View('app.ordem_servico.panel_os', ['ordens_servicos' => $ordens_servicos]);
