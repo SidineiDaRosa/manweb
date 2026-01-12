@@ -3,9 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="refresh" content="60">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel OS Grid</title>
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/comum.css') }}">
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+    <script src="{{ asset('js/date_time.js') }}"></script>
+    <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 
     <style>
         * {
@@ -258,8 +268,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 212, 59, 0.4); }
-            50% { box-shadow: 0 0 0 6px rgba(255, 212, 59, 0); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 212, 59, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px rgba(255, 212, 59, 0);
+            }
         }
 
         .alerta-texto {
@@ -353,21 +370,21 @@
                 text-align: center;
                 gap: 20px;
             }
-            
+
             .header-title {
                 min-width: 100%;
             }
-            
+
             .header-stats {
                 justify-content: center;
                 width: 100%;
             }
-            
+
             .stat-item {
                 flex: 1;
                 min-width: 70px;
             }
-            
+
             .grid-os {
                 grid-template-columns: 1fr;
             }
@@ -377,22 +394,36 @@
             body {
                 padding: 8px;
             }
-            
+
             .os-card {
                 padding: 15px;
             }
-            
+
             .stat-number {
                 font-size: 20px;
             }
         }
 
         /* CORES DE URGÊNCIA */
-        .urgencia-5 { background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%); }
-        .urgencia-4 { background: linear-gradient(135deg, #ffd93d 0%, #ffc107 100%); }
-        .urgencia-3 { background: linear-gradient(135deg, #6bc5ff 0%, #4d96ff 100%); }
-        .urgencia-2 { background: linear-gradient(135deg, #4d96ff 0%, #1e7af0 100%); }
-        .urgencia-1 { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); }
+        .urgencia-5 {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+        }
+
+        .urgencia-4 {
+            background: linear-gradient(135deg, #ffd93d 0%, #ffc107 100%);
+        }
+
+        .urgencia-3 {
+            background: linear-gradient(135deg, #6bc5ff 0%, #4d96ff 100%);
+        }
+
+        .urgencia-2 {
+            background: linear-gradient(135deg, #4d96ff 0%, #1e7af0 100%);
+        }
+
+        .urgencia-1 {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
     </style>
 </head>
 
@@ -405,8 +436,9 @@
                 ⏱️ Atualiza a cada 60 segundos •
                 <span id="lastUpdate">{{ now()->format('H:i:s') }}</span>
             </div>
+
         </div>
-        
+
         <div class="header-stats">
             <div class="stat-item" title="Total de Ordens de Serviço">
                 <div class="stat-number">{{ count($ordens_servicos) }}</div>
@@ -432,21 +464,47 @@
         <div class="os-card">
 
             <div class="card-header">
+
                 <div class="os-info">
                     <div class="os-id">
                         {{ $ordem_servico->id }}
                         @if($ordem_servico->check == 1)
-                            <span class="status-badge badge-verificado">✅ Verificada</span>
+                        <span class="status-badge badge-verificado">✅ Verificada</span>
                         @else
-                            <span class="status-badge badge-pendente">⚠️ Pendente</span>
+                        <span class="status-badge badge-pendente">⚠️ Pendente</span>
                         @endif
                     </div>
                     <div class="equipamento">{{ $ordem_servico->equipamento->nome }}</div>
                 </div>
+
                 <div class="indicador-urgencia urgencia-{{ $ordem_servico->urgencia }}"
-                     title="Nível de urgência: {{ $ordem_servico->urgencia }}/5">
+                    title="Nível de urgência: {{ $ordem_servico->urgencia }}/5">
                     {{ $ordem_servico->urgencia }}
                 </div>
+                <!--Botão imprimir-->
+                <button type="button" class="gerarPdfButton btn btn-outline-secondary mb-1" title="Imprimir O.S">
+                    <i class="icofont-print"></i>
+                </button>
+
+                <form class="frm-pdf" action="{{ route('gerar.pdf') }}" method="POST" target="_blank">
+                    @csrf
+                    <input type="hidden" name="ordem_servico_id" value="{{ $ordem_servico->id }}">
+                </form>
+                <script>
+                    document.querySelectorAll('.gerarPdfButton').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const card = button.closest('.os-card');
+                            const form = card.querySelector('.frm-pdf');
+
+                            if (form) {
+                                form.submit();
+                            } else {
+                                console.error('Formulário de PDF não encontrado');
+                            }
+                        });
+                    });
+                </script>
+
             </div>
 
             <div class="card-content">
@@ -455,7 +513,7 @@
                         <div class="periodo-item">
                             <span class="periodo-icon">📅</span>
                             <span>Início: {{ \Carbon\Carbon::parse($ordem_servico->data_inicio)->format('d/m/Y') }} às {{ $ordem_servico->hora_inicio }}</span>
-                             <span class="periodo-icon">⏰</span>
+                            <span class="periodo-icon">⏰</span>
                             <span>Término: {{ \Carbon\Carbon::parse($ordem_servico->data_fim)->format('d/m/Y') }} às {{ $ordem_servico->hora_fim }}</span>
                         </div>
                     </div>
@@ -468,10 +526,10 @@
 
                 @if($ordem_servico->ss && $ordem_servico->ss->imagem)
                 <div class="imagem-container">
-                    <img src="{{ asset('img/request_os/' . $ordem_servico->ss->imagem) }}" 
-                         alt="Foto da Ordem de Serviço" 
-                         class="imagem-os"
-                         onclick="this.classList.toggle('expanded')">
+                    <img src="{{ asset('img/request_os/' . $ordem_servico->ss->imagem) }}"
+                        alt="Foto da Ordem de Serviço"
+                        class="imagem-os"
+                        onclick="this.classList.toggle('expanded')">
                 </div>
                 @endif
             </div>
@@ -491,7 +549,7 @@
                 </div>
                 @endif
 
-              <!--  <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}" hidden>
+                <!--  <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}" hidden>
                     🗣️ Falar esta OS
                 </button>-->
             </div>
@@ -504,10 +562,10 @@
         // Atualizar timestamp
         function atualizarTimestamp() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('pt-BR', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit' 
+            const timeString = now.toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
             });
             document.getElementById('lastUpdate').textContent = timeString;
         }
@@ -515,7 +573,7 @@
 
         // Sistema de voz
         let vozAtual = null;
-        
+
         async function inicializarVoz() {
             return new Promise((resolve) => {
                 const vozes = speechSynthesis.getVoices();
@@ -534,7 +592,7 @@
 
             // Parar fala atual
             speechSynthesis.cancel();
-            
+
             const card = e.target.closest('.os-card');
             if (!card) return;
 
@@ -544,7 +602,7 @@
             const periodoItems = card.querySelectorAll('.periodo-item span:last-child');
             const periodoText = Array.from(periodoItems).map(span => span.textContent).join('. ');
             const descricao = card.querySelector('.info-group:nth-child(2) .info-value').textContent.trim();
-            
+
             const temAlerta = card.querySelector('.alerta-container');
             const status = temAlerta ? 'NÃO VERIFICADA' : 'VERIFICADA';
 
@@ -573,7 +631,7 @@
             e.target.innerHTML = '🔊 Falando...';
             e.target.style.opacity = '0.8';
             e.target.disabled = true;
-            
+
             fala.onend = fala.onerror = () => {
                 e.target.innerHTML = '🗣️ Falar esta OS';
                 e.target.style.opacity = '1';
@@ -586,7 +644,7 @@
         // Auto-fala para primeira OS pendente
         window.addEventListener('load', async function() {
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             const primeiraOSPendente = document.querySelector('.alerta-container');
             if (primeiraOSPendente) {
                 const btnFalar = primeiraOSPendente.closest('.os-card').querySelector('.btnFalarOS');
@@ -620,4 +678,5 @@
     </script>
 
 </body>
+
 </html>
