@@ -53,7 +53,7 @@
         }
 
         .header-title h1 {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 600;
             margin-bottom: 5px;
             display: flex;
@@ -64,6 +64,7 @@
         .refresh-info {
             font-size: 13px;
             opacity: 0.9;
+
             display: flex;
             align-items: center;
             gap: 8px;
@@ -424,6 +425,30 @@
         .urgencia-1 {
             background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
         }
+
+        /*  Mensagem toolbar*/
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeLoop 20s linear infinite;
+        }
+
+        .marquee-track span {
+            padding-right: 50px;
+            white-space: nowrap;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        @keyframes marqueeLoop {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
     </style>
 </head>
 
@@ -431,34 +456,70 @@
 
     <div class="header">
         <div class="header-title">
-            <h1>📋 Painel de Ordens de Serviço</h1>
-            <div class="refresh-info">
-                ⏱️ Atualiza a cada 60 segundos •
-                <span id="lastUpdate">{{ now()->format('H:i:s') }}</span>
-            </div>
+            <h1>📋 Painel de Ordens de Serviço <div class="refresh-info">
+                    ⏱️ Atualiza a cada 60 segundos •
+                    <span id="lastUpdate">{{ now()->format('H:i:s') }}</span>
+                </div>
+            </h1>
+
 
         </div>
 
-        <div class="header-stats">
-            <div class="stat-item" title="Total de Ordens de Serviço">
-                <div class="stat-number">{{ count($ordens_servicos) }}</div>
-                <div class="stat-label">Total OS</div>
+        <div class="toolbar-marquee">
+            <div class="marquee-track" id="marqueeTrack">
+                <!-- Mensagens serão inseridas via JS -->
             </div>
-            <div class="stat-item" title="Ordens com urgência alta (4-5)">
-                <div class="stat-number">{{ $ordens_servicos->where('urgencia', '>=', 4)->count() }}</div>
-                <div class="stat-label">Urgentes</div>
-            </div>
-            <div class="stat-item" title="Ordens não verificadas">
-                <div class="stat-number">{{ $ordens_servicos->where('check', 0)->count() }}</div>
-                <div class="stat-label">Pendentes</div>
-            </div>
-            <div class="stat-item" title="Ordens verificadas">
-                <div class="stat-number">{{ $ordens_servicos->where('check', 1)->count() }}</div>
-                <div class="stat-label">Verificadas</div>
-            </div>
+        </div>
+
+
+        <script>
+            async function atualizarMensagens() {
+                try {
+                    const response = await fetch('/mensagens-ativas');
+                    const mensagens = await response.json();
+
+                    const track = document.getElementById('marqueeTrack');
+                    track.innerHTML = ''; // limpa mensagens antigas
+
+                    mensagens.forEach(msg => {
+                        const span = document.createElement('span');
+                        let emoji = 'ℹ️';
+                        if (msg.tipo === 'alerta') emoji = '⚠️';
+                        if (msg.tipo === 'urgente') emoji = '❗';
+                        span.textContent = `${emoji} ${msg.mensagem} •`;
+                        track.appendChild(span);
+                    });
+                } catch (err) {
+                    console.error('Erro ao carregar mensagens:', err);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                atualizarMensagens();
+                setInterval(atualizarMensagens, 30000);
+            });
+        </script>
+
+
+    </div>
+    <div class="header-stats" hidden>
+        <div class="stat-item" title="Total de Ordens de Serviço">
+            <div class="stat-number">{{ count($ordens_servicos) }}</div>
+            <div class="stat-label">Total OS</div>
+        </div>
+        <div class="stat-item" title="Ordens com urgência alta (4-5)">
+            <div class="stat-number">{{ $ordens_servicos->where('urgencia', '>=', 4)->count() }}</div>
+            <div class="stat-label">Urgentes</div>
+        </div>
+        <div class="stat-item" title="Ordens não verificadas">
+            <div class="stat-number">{{ $ordens_servicos->where('check', 0)->count() }}</div>
+            <div class="stat-label">Pendentes</div>
+        </div>
+        <div class="stat-item" title="Ordens verificadas">
+            <div class="stat-number">{{ $ordens_servicos->where('check', 1)->count() }}</div>
+            <div class="stat-label">Verificadas</div>
         </div>
     </div>
-
     <div class="grid-os">
         @foreach($ordens_servicos as $ordem_servico)
         <div class="os-card">

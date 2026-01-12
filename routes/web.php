@@ -630,3 +630,16 @@ Route::middleware('auth')->group(function () {
 //-------------------------------------------------------------//
 //                Anderess
 //-------------------------------------------------------------//
+//-------------------------------------------------------------//
+//                Mensagens Painel
+//-------------------------------------------------------------//
+use App\Http\Controllers\MensagemPainelController;
+
+// Resource com binding correto
+Route::resource('mensagens', MensagemPainelController::class)->parameters([
+    'mensagens' => 'mensagem'
+]);
+
+
+// Para AJAX: retorna mensagens ativas em JSON
+Route::get('/mensagens-ativas', [MensagemPainelController::class, 'mensagensAtivas']);
