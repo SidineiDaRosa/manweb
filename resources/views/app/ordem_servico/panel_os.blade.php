@@ -159,7 +159,7 @@
         }
 
         .os-id {
-            color: #5d82b9;
+            color: #0c274e;
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 2px;
@@ -523,8 +523,31 @@
     <div class="grid-os">
         @foreach($ordens_servicos as $ordem_servico)
         <div class="os-card">
+            @php
+            $headerClass = '';
+            if ($ordem_servico->especialidade_do_servico == 'mecanica') {
+            $headerClass = 'header-mecanica';
+            } elseif ($ordem_servico->especialidade_do_servico == 'eletrica') {
+            $headerClass = 'header-eletrica';
+            }
+            @endphp
+            <style>
+                .header-mecanica {
+                    background-color: rgba(59, 80, 100, 0.6);
+                    /* azul escuro mais leve */
+                    color: white;
+                }
 
-            <div class="card-header">
+                .header-eletrica {
+                    background-color: rgba(40, 167, 69, 0.3);
+                    /* verde claro mais suave */
+                    color: black;
+                }
+            </style>
+            <div class="card-header {{ $headerClass }}">
+
+
+
 
                 <div class="os-info">
                     <div class="os-id">
@@ -534,7 +557,9 @@
                         @else
                         <span class="status-badge badge-pendente">⚠️ Pendente</span>
                         @endif
+
                     </div>
+
                     <div class="equipamento">{{ $ordem_servico->equipamento->nome }}</div>
                 </div>
 
