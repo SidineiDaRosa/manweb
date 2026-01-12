@@ -134,6 +134,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+
             border: 1px solid #eef2f7;
         }
 
@@ -148,9 +149,8 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 5px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #f0f4f8;
+            margin-bottom: 2px;
+            padding-bottom: 2px;
         }
 
         .os-info {
