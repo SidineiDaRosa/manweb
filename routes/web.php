@@ -55,6 +55,9 @@ Route::get('/link_produtos', function () {
 //---------------------------------------------------------//
 Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])->name('dashboard-status-os');
 Route::get('/show-panel-os', [DahboardStatusOsController::class, 'show_os'])->name('show-panel-os');
+//verifica a os pelo painel 
+Route::get('/check-ordem-servico', [DahboardStatusOsController::class, 'check_ordem_servico'])->name('check.odem.servico');
+
 //Route::get('/', function () {
 //return view('auth.login');
 //});
@@ -611,14 +614,15 @@ Route::delete('/apr/{id}', [APRController::class, 'destroy'])->name('apr.destroy
 //                Business Partner
 //-------------------------------------------------------------//
 use App\Http\Controllers\BusinessPartnerController;
+
 Route::middleware('auth')->group(function () {
-Route::resource('business-partners', BusinessPartnerController::class);
+    Route::resource('business-partners', BusinessPartnerController::class);
 });
 //-------------------------------------------------------------//
 //                Business Partner roles
 //-------------------------------------------------------------//
 Route::middleware('auth')->group(function () {
-Route::resource('business-partners-roles', BusinessPartnerController::class);
+    Route::resource('business-partners-roles', BusinessPartnerController::class);
 });
 //-------------------------------------------------------------//
 //                Business Partner anderess
