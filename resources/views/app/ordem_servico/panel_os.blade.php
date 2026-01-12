@@ -127,9 +127,9 @@
 
         .os-card {
             background: white;
-            padding: 20px;
+            padding: 5px;
             border-radius: 12px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
