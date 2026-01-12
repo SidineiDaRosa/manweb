@@ -148,8 +148,8 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
             border-bottom: 2px solid #f0f4f8;
         }
 
@@ -194,7 +194,7 @@
         }
 
         .info-group {
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
 
         .info-label {
