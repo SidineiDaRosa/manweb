@@ -412,13 +412,13 @@
                                     <hr style="margin:1px;">
                                     <span style="font-weight:600;">{{$ordens_servicos_fech->responsavel}}</span>
                                 </td>
-                                <td><img src="{{ asset('img/check-mark.png') }}" alt="" id="check"></td>
-                                <style>
-                                    #check {
-                                        height: 15;
-                                        width: 15;
-                                    }
-                                </style>
+                                <td>
+                                <td>
+                                    <img src="{{ asset('img/check-mark.png') }}"
+                                        alt=""
+                                        style="width:15px; height:15px;">
+                                </td>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
