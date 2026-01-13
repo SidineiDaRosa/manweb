@@ -1,6 +1,7 @@
 @extends('app.layouts.footer')
 
-</html>
+<!DOCTYPE html>
+<html lang="pt">
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <!--<meta http-equiv="refresh" content="60">-->
@@ -581,7 +582,7 @@
 
                                     <td>
                                         <span style="color: black;">ID: </span> <span style="font-weight: 800;color:blue;font-size:18px;"> {{$os_hoje->id}}</span><br>
-                                       <hr style="margin:1px;">
+                                        <hr style="margin:1px;">
                                         {{$os_hoje->descricao}}
                                     </td>
                                     <td style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;font-stretch:extra-condensed;">
@@ -1088,6 +1089,7 @@
     </script>
     <script>
         function salvar() {
+            alert('');
             const formData = new FormData();
 
             // Campos do formulário

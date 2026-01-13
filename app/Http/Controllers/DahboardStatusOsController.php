@@ -457,19 +457,10 @@ class DahboardStatusOsController extends Controller
     }
     public function show_os()
     {
-        $ordens_servicos = OrdemServico::where('situacao', 'aberto')
-            ->orderby('data_inicio', 'desc')
-            ->get();
-        return View('app.ordem_servico.panel_os', ['ordens_servicos' => $ordens_servicos]);
-    }
-    public function check_ordem_servico(Request $request)
-    {
-        $ordem_servico = OrdemServico::find($request->id_os);
 
-        $ordem_servico->check = 1;
-        $ordem_servico->save();
         $hoje = Carbon::today();
-
+        $equipamentos = Equipamento::all();
+        $funcionarios = Funcionario::all();
         $ordens_servicos = OrdemServico::where('situacao', 'aberto')
             ->whereDate('data_inicio', '<=', $hoje)
             ->whereDate('data_fim', '>=', $hoje)
@@ -481,6 +472,36 @@ class DahboardStatusOsController extends Controller
     ")
             ->orderBy('urgencia', 'desc')
             ->get();
-        return View('app.ordem_servico.panel_os', ['ordens_servicos' => $ordens_servicos]);
+        return View('app.ordem_servico.panel_os', [
+            'ordens_servicos' => $ordens_servicos,
+            'equipamentos' => $equipamentos,
+            'funcionarios' => $funcionarios
+        ]);
+    }
+    public function check_ordem_servico(Request $request)
+    {
+        $ordem_servico = OrdemServico::find($request->id_os);
+
+        $ordem_servico->check = 1;
+        $ordem_servico->save();
+        $hoje = Carbon::today();
+        $equipamentos = Equipamento::all();
+        $funcionarios = Funcionario::all();
+        $ordens_servicos = OrdemServico::where('situacao', 'aberto')
+            ->whereDate('data_inicio', '<=', $hoje)
+            ->whereDate('data_fim', '>=', $hoje)
+            ->orderByRaw("
+        CASE 
+            WHEN `check` = 1 THEN 2
+            ELSE 1
+        END
+    ")
+            ->orderBy('urgencia', 'desc')
+            ->get();
+        return View('app.ordem_servico.panel_os', [
+            'ordens_servicos' => $ordens_servicos,
+            'equipamentos' => $equipamentos,
+            'funcionarios' => $funcionarios
+        ]);
     }
 }
