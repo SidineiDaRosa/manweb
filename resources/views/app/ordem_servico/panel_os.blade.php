@@ -647,22 +647,17 @@
             }
             @endphp
             <style>
-                .header-mecanica {
-                    background-color: rgba(59, 80, 100, 0.6);
-                    /* azul escuro mais leve */
+                .os-card .card-header.header-mecanica {
+                    background-color: rgba(59, 80, 100, 0.6) !important;
                     color: white;
                 }
 
-                .header-eletrica {
-                    background-color: rgba(40, 167, 69, 0.3);
-                    /* verde claro mais suave */
+                .os-card .card-header.header-eletrica {
+                    background-color: rgba(40, 167, 69, 0.3) !important;
                     color: black;
                 }
             </style>
             <div class="card-header {{ $headerClass }}">
-
-
-
 
                 <div class="os-info">
                     <div class="os-id">
@@ -1043,8 +1038,8 @@
                         <label for="especialidade_do_servico" class="form-label">Especialidade do Serviço</label>
                         <select class="form-select" id="especialidade_do_servico" name="especialidade_do_servico" required>
                             <option value="">-- Selecione --</option>
-                            <option value="Mecanica">Mecânico</option>
-                            <option value="Eletrica">Elétrico</option>
+                            <option value="mecanica">Mecânico</option>
+                            <option value="eletrica">Elétrico</option>
                         </select>
                     </div>
 
@@ -1083,7 +1078,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function salvar() {
-            alert('');
             const formData = new FormData();
 
             // Campos do formulário
