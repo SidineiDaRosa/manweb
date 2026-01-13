@@ -36,15 +36,15 @@
         .header {
             background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
             color: white;
-            padding: 15px 20px;
+            padding: 10px 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
+            gap: 10px;
         }
 
         .header-title {
@@ -122,8 +122,9 @@
         .grid-os {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+            gap: 10px;
             width: 100%;
+            
         }
 
         .os-card {
