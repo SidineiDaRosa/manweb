@@ -46,4 +46,8 @@ class Apr extends Model
     {
         return $this->belongsTo(User::class, 'responsavel'); // assumindo que 'responsavel' guarda o ID do usuário mostra o nome em show apr
     }
+    public function responsavel()
+    {
+        return $this->belongsTo(Funcionario::class, 'responsavel');
+    }
 }

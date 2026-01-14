@@ -273,7 +273,7 @@
             </a>
             <div class="submenu" id="administracao-submenu">
                 <a href="{{ route('funcionarios.index') }}">Funcionários</a>
-                <a href="{{ route('apr.index') }}">APR</a>
+                <a href="{{ route('sesmt.dashboard') }}">SESMT</a>
             </div>
 
         </li>

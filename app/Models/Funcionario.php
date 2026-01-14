@@ -33,4 +33,8 @@ class Funcionario extends Model
     {
         return $this->hasMany(Servicos_Executado::class, 'funcionario_id');
     }
+        public function responsavel()
+    {
+        return $this->hasMany(APR::class, 'responsavel');
+    }
 }

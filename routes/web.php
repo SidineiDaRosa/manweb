@@ -643,3 +643,10 @@ Route::resource('mensagens', MensagemPainelController::class)->parameters([
 
 // Para AJAX: retorna mensagens ativas em JSON
 Route::get('/mensagens-ativas', [MensagemPainelController::class, 'mensagensAtivas']);
+//-------------------------------------------------------------//
+//                SESMT
+//-------------------------------------------------------------//
+
+Route::get('/sesmt-dashboard', [APRController::class, 'dashboard'])->name('sesmt.dashboard');
+Route::post('/risco-store', [APRController::class, 'risco_store'])
+    ->name('risco.store');

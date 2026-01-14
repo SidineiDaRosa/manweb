@@ -10,6 +10,9 @@ use App\Models\APRItem;
 use App\Models\Equipamento;
 use App\Models\Funcionario;
 use App\Models\User;
+use App\Models\Risco;
+use App\Models\AprRisco;
+use App\Models\AprRiscoMedidaControle;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,14 +37,14 @@ class APRController extends Controller
         $ordem = OrdemServico::findOrFail($os_id);
         $ativos = Equipamento::orderBy('nome')->get();
         $funcionarios = Funcionario::where('status', 'Ativo')->get();
-        return view('app.SESMT.apr_create', compact('ordem', 'ativos','funcionarios'));
+        return view('app.SESMT.apr_create', compact('ordem', 'ativos', 'funcionarios'));
     }
 
     /**
      * Salvar APR
      */ public function store(Request $request)
     {
-       // dd($request);
+        // dd($request);
         // 1. Validação dos dados
         $request->validate([
             'ordem_servico_id'      => 'required|exists:ordens_servicos,id',
@@ -83,6 +86,54 @@ class APRController extends Controller
     {
         $apr = APR::findOrFail($id);
 
-        return view('app.SESMT.show', compact('apr'));
+        $riscos = Risco::where('ativo', 1)
+            ->orderBy('tipo_risco')
+            ->orderBy('nome')
+            ->get()
+            ->groupBy('tipo_risco');
+        $apr_riscos_medidas_controle = AprRiscoMedidaControle::all();
+        return view('app.SESMT.show', compact('apr', 'riscos','apr_riscos_medidas_controle'));
+    }
+    public function dashboard()
+    {
+        $aprs = APR::all();
+        return view('app.SESMT.dashboard', ['aprs' => $aprs]);
+    }
+    public function risco_store(Request $request)
+    {
+        // Validação
+        $request->validate([
+            'apr_id'       => 'required|exists:aprs,id',
+            'risco_id'     => 'required|exists:riscos,id',
+            'status'       => 'required|string|max:255',
+            'probabilidade' => 'required|string|max:50',
+            'severidade'   => 'required|string|max:50',
+            'grau'         => 'required|integer|min:1'
+        ]);
+
+        // Verifica se o risco já foi identificado para essa APR
+        $existe = AprRisco::where('apr_id', $request->apr_id)
+            ->where('risco_id', $request->risco_id)
+            ->exists();
+
+        if ($existe) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Risco já identificado.'
+            ]);
+        }
+
+        // Cria o registro no banco
+        AprRisco::create([
+            'apr_id'       => $request->apr_id,
+            'risco_id'     => $request->risco_id,
+            'status'       => $request->status,
+            'probabilidade' => $request->probabilidade,
+            'severidade'   => $request->severidade,
+            'grau'         => $request->grau,
+            'status'         => 1
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }
