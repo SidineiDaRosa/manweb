@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="60">
     <title>Painel OS Grid</title>
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
@@ -124,7 +123,7 @@
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 10px;
             width: 100%;
-            
+
         }
 
         .os-card {
@@ -579,6 +578,39 @@
                 });
             </script>
 
+            <script>
+                //Recarrega a págian automaticamante -1
+                let refreshTimeout;
+
+                function startAutoRefresh() {
+                    stopAutoRefresh(); // garante que não haja timers duplicados
+                    refreshTimeout = setTimeout(() => {
+                        location.reload();
+                    }, 60000); // 60 segundos
+                }
+
+                function stopAutoRefresh() {
+                    clearTimeout(refreshTimeout);
+                }
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const modal = document.getElementById('modalExemplo');
+
+                    if (modal) {
+                        // Para o timer quando a modal abrir
+                        modal.addEventListener('show.bs.modal', stopAutoRefresh);
+
+                        // Reinicia o timer quando a modal fechar
+                        modal.addEventListener('hidden.bs.modal', startAutoRefresh);
+                    }
+
+                    // Inicia o auto-refresh ao carregar a página
+                    startAutoRefresh();
+                });
+            </script>
+
+
+
         </div>
 
         <div class="toolbar-marquee">
@@ -909,11 +941,6 @@
                 }
             }
         });
-
-        // Atualização automática da página
-        setTimeout(() => {
-            location.reload();
-        }, 60000); // 60 segundos
     </script>
 
 

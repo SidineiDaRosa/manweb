@@ -43,7 +43,9 @@ class SolicitacaoOsController extends Controller
     public function create()
     {
         //
-        $funcionarios = Funcionario::where('funcao', 'supervisor')->get();
+        $funcionarios = Funcionario::where('status', 'ativo')
+            ->orderby('primeiro_nome', 'asc')
+            ->get();
         return view('app.solicitacao_os.solicitacao_create', ['funcionarios' => $funcionarios]);
     }
     /**
@@ -221,7 +223,7 @@ class SolicitacaoOsController extends Controller
         if (isset($id)) {
 
             // Faz a busca das solicitações com base na data e hora
-            $solicitacoes = SolicitacaoOs::where('id',$id)->get();
+            $solicitacoes = SolicitacaoOs::where('id', $id)->get();
             // Obtém todos os funcionários
             $funcionarios = Funcionario::all();
 

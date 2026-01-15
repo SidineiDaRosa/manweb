@@ -259,370 +259,410 @@
 
                         {{-- FORMULÁRIO DE EDIÇÃO DA APR --}}
 
-                        <form action="{{ route('apr.update', $apr->id) }}" method="POST" id="aprForm">
-                            @csrf
-                            @method('PUT')
 
-                            {{-- ANÁLISE DE RISCO DETALHADA COM CHECKBOXES EDITÁVEIS --}}
-                            <div class="card border-danger mb-4">
-                                <div class="card-header bg-danger text-white py-3">
-                                    <h4 class="mb-0">
-                                        <i class="fas fa-exclamation-triangle me-2"></i> ANÁLISE DE RISCOS
-                                    </h4>
-                                    <p class="mb-0 opacity-75">Marque os riscos identificados para esta atividade</p>
-                                </div>
-                                <div class="card-body">
-                                  
-                                    {{-- TABELA DE RISCOS COM CHECKBOXES EDITÁVEIS --}}
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped">
-                                            <thead class="table-danger">
-                                                <tr>
-                                                    <th width="5%" class="text-center align-middle">ID</th>
-                                                    <th width="10%" class="text-center align-middle">Tipo de Risco</th>
-                                                    <th width="25%" class="align-middle">Descrição do Risco</th>
-                                                    <th width="10%" class="text-center align-middle">Probabilidade</th>
-                                                    <th width="10%" class="text-center align-middle">Severidade</th>
-                                                    <th width="8%" class="text-center align-middle">Grau</th>
-                                                    <th width="27%" class="align-middle">Medidas de Controle</th>
-                                                    <th width="5%" class="text-center align-middle">Identificado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($riscos as $tipo => $listaRiscos)
-
-                                                {{-- CABEÇALHO DO TIPO DE RISCO --}}
-                                                <tr class="table-warning">
-                                                    <td colspan="8" class="fw-bold fs-5 text-uppercase">
-                                                        {{ $tipo }}
-                                                    </td>
-                                                </tr>
-
-                                                {{-- RISCOS --}}
-                                                @foreach ($listaRiscos as $risco)
-                                                <tr>
-                                                    {{-- ID --}}
-                                                    <td class="text-center align-middle">
-                                                        <span class="badge bg-dark text-white fs-6">
-                                                            {{ $risco->id }}
-                                                        </span>
-                                                    </td>
-
-                                                    {{-- TIPO --}}
-                                                    <td class="text-center align-middle">
-                                                        <div class="fw-bold">
-                                                            {{ $risco->nome }}
-                                                        </div>
-                                                    </td>
-
-                                                    {{-- DESCRIÇÃO --}}
-                                                    <td class="align-middle">
-                                                        {{ $risco->descricao }}
-                                                    </td>
-
-                                                    {{-- PROBABILIDADE --}}
-                                                    <td class="text-center align-middle">
-                                                        <select name="riscos[{{ $risco->id }}][probabilidade]" class="form-select form-select-sm">
-                                                            <option value="baixa">Baixa</option>
-                                                            <option value="media">Média</option>
-                                                            <option value="alta">Alta</option>
-                                                        </select>
-                                                    </td>
-
-                                                    {{-- SEVERIDADE --}}
-                                                    <td class="text-center align-middle">
-                                                        <select name="riscos[{{ $risco->id }}][severidade]" class="form-select form-select-sm">
-                                                            <option value="leve">Leve</option>
-                                                            <option value="moderada">Moderada</option>
-                                                            <option value="grave">Grave</option>
-                                                        </select>
-                                                    </td>
-
-                                                    {{-- GRAU --}}
-                                                    <td class="text-center align-middle">
-                                                        <span class="badge bg-secondary fs-5 px-3 py-2 fw-bold grau"
-                                                            data-risco="{{ $risco->id }}">
-                                                            -
-                                                        </span>
-                                                    </td>
-
-                                                    {{-- MEDIDAS DE CONTROLE --}}
-                                                    <td class="align-middle">
-                                                        <textarea
-                                                            name="riscos[{{ $risco->id }}][medidas]"
-                                                            class="form-control form-control-sm"
-                                                            rows="2"
-                                                            placeholder="Informe as medidas de controle"></textarea>
-                                                    </td>
-
-                                                    {{-- IDENTIFICADO --}}
-                                                    <td class="text-center align-middle">
-                                                        <input type="checkbox"
-                                                            class="form-check-input risco-identificado"
-                                                            data-risco-id="{{ $risco->id }}"
-                                                            data-risco-nome="{{ $risco->nome }}"
-                                                            style="width:20px;height:20px;">
-
-                                                    </td>
-
-
-
-
-                                                </tr>
-                                                @endforeach
-
-                                                @endforeach
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-
-                                    {{-- MATRIZ DE RISCO --}}
-                                    <div class="card border-secondary mt-4 shadow-sm">
-                                        <div class="card-header bg-secondary text-white py-3">
-                                            <h5 class="mb-0">
-                                                <i class="fas fa-table me-2"></i> Matriz de Risco Aplicada
-                                            </h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-lg-8">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered text-center mb-0">
-                                                            <thead>
-                                                                <tr class="table-light">
-                                                                    <th colspan="6" class="fs-5">MATRIZ DE PROBABILIDADE x SEVERIDADE</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th width="20%" class="align-middle">Probabilidade \ Severidade</th>
-                                                                    <th width="16%" class="bg-success text-white align-middle">Leve</th>
-                                                                    <th width="16%" class="bg-warning text-dark align-middle">Moderada</th>
-                                                                    <th width="16%" class="bg-orange text-white align-middle">Significativa</th>
-                                                                    <th width="16%" class="bg-danger text-white align-middle">Grave</th>
-                                                                    <th width="16%" class="bg-dark text-white align-middle">Catastrófica</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="fw-bold bg-danger text-white align-middle py-3">Alta</td>
-                                                                    <td class="bg-warning text-dark align-middle">
-                                                                        <div class="fs-5 fw-bold">3</div>
-                                                                        <small>Moderado</small>
-                                                                    </td>
-                                                                    <td class="bg-orange text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">4</div>
-                                                                        <small>Significativo</small>
-                                                                    </td>
-                                                                    <td class="bg-danger text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">5</div>
-                                                                        <small>Alto</small>
-                                                                    </td>
-                                                                    <td class="bg-danger text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">6</div>
-                                                                        <small>Alto</small>
-                                                                    </td>
-                                                                    <td class="bg-dark text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">7</div>
-                                                                        <small>Crítico</small>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="fw-bold bg-warning text-dark align-middle py-3">Média</td>
-                                                                    <td class="bg-success text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">2</div>
-                                                                        <small>Baixo</small>
-                                                                    </td>
-                                                                    <td class="bg-warning text-dark align-middle">
-                                                                        <div class="fs-5 fw-bold">3</div>
-                                                                        <small>Moderado</small>
-                                                                    </td>
-                                                                    <td class="bg-orange text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">4</div>
-                                                                        <small>Significativo</small>
-                                                                    </td>
-                                                                    <td class="bg-danger text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">5</div>
-                                                                        <small>Alto</small>
-                                                                    </td>
-                                                                    <td class="bg-danger text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">6</div>
-                                                                        <small>Alto</small>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="fw-bold bg-success text-white align-middle py-3">Baixa</td>
-                                                                    <td class="bg-success text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">1</div>
-                                                                        <small>Baixo</small>
-                                                                    </td>
-                                                                    <td class="bg-success text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">2</div>
-                                                                        <small>Baixo</small>
-                                                                    </td>
-                                                                    <td class="bg-warning text-dark align-middle">
-                                                                        <div class="fs-5 fw-bold">3</div>
-                                                                        <small>Moderado</small>
-                                                                    </td>
-                                                                    <td class="bg-orange text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">4</div>
-                                                                        <small>Significativo</small>
-                                                                    </td>
-                                                                    <td class="bg-danger text-white align-middle">
-                                                                        <div class="fs-5 fw-bold">5</div>
-                                                                        <small>Alto</small>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 mt-4 mt-lg-0">
-                                                    <div class="card border-0 shadow-sm h-100">
-                                                        <div class="card-header bg-primary text-white">
-                                                            <h6 class="mb-0">Legenda do Grau de Risco</h6>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="d-flex align-items-center mb-3 p-2 border rounded">
-                                                                <span class="badge bg-success text-white fs-6 px-3 py-2 me-3">1-2</span>
-                                                                <div>
-                                                                    <div class="fw-bold">BAIXO</div>
-                                                                    <small class="text-muted">Aceitável com controle básico</small>
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-flex align-items-center mb-3 p-2 border rounded">
-                                                                <span class="badge bg-warning text-dark fs-6 px-3 py-2 me-3">3</span>
-                                                                <div>
-                                                                    <div class="fw-bold">MODERADO</div>
-                                                                    <small class="text-muted">Necessita controle adicional</small>
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-flex align-items-center mb-3 p-2 border rounded">
-                                                                <span class="badge bg-orange text-white fs-6 px-3 py-2 me-3">4</span>
-                                                                <div>
-                                                                    <div class="fw-bold">SIGNIFICATIVO</div>
-                                                                    <small class="text-muted">Exige atenção imediata</small>
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-flex align-items-center p-2 border rounded">
-                                                                <span class="badge bg-danger text-white fs-6 px-3 py-2 me-3">5-7</span>
-                                                                <div>
-                                                                    <div class="fw-bold">ALTO</div>
-                                                                    <small class="text-muted">Inaceitável - Parar atividade</small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- CAMPO PARA OBSERVAÇÕES ADICIONAIS --}}
-                                    <div class="mt-4">
-                                        <label for="observacoes" class="form-label fw-bold">
-                                            <i class="fas fa-sticky-note me-2"></i>Observações Adicionais
-                                        </label>
-                                        <textarea class="form-control" id="observacoes" name="observacoes" rows="3" placeholder="Adicione observações relevantes sobre os riscos ou medidas de controle...">{{ old('observacoes', $apr->observacoes ?? '') }}</textarea>
-                                    </div>
-                                </div>
+                        {{-- ANÁLISE DE RISCO DETALHADA COM CHECKBOXES EDITÁVEIS --}}
+                        <div class="card border-danger mb-4">
+                            <div class="card-header bg-danger text-white py-3">
+                                <h4 class="mb-0">
+                                    <i class="fas fa-exclamation-triangle me-2"></i> ANÁLISE DE RISCOS
+                                </h4>
+                                <p class="mb-0 opacity-75">Marque os riscos identificados para esta atividade</p>
                             </div>
+                            <div class="card-body">
+                                {{-- TABELA DE RISCOS COM CHECKBOXES PARA MEDIDAS DE CONTROLE --}}
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead class="table-danger">
+                                            <tr>
+                                                <th width="5%" class="text-center align-middle">ID</th>
+                                                <th width="10%" class="text-center align-middle">Tipo de Risco</th>
+                                                <th width="25%" class="align-middle">Descrição do Risco</th>
+                                                <th width="10%" class="text-center align-middle">Probabilidade</th>
+                                                <th width="10%" class="text-center align-middle">Severidade</th>
+                                                <th width="8%" class="text-center align-middle">Grau</th>
+                                                <th width="27%" class="align-middle">Medidas de Controle</th>
+                                                <th width="5%" class="text-center align-middle">Identificado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($riscos as $tipo => $listaRiscos)
 
-                            {{-- EPIs NECESSÁRIOS EDITÁVEIS --}}
-                            <div class="card border-primary mb-4 shadow-sm">
-                                <div class="card-header bg-primary text-white py-3">
-                                    <h4 class="mb-0">
-                                        <i class="fas fa-hard-hat me-2"></i> EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs)
-                                    </h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-4">
-                                        @php
-                                        $epis = [
-                                        ['icon' => 'hard-hat', 'name' => 'Capacete', 'color' => 'warning', 'id' => 'epi_capacete', 'ca' => '12345-6789'],
-                                        ['icon' => 'glasses', 'name' => 'Óculos', 'color' => 'info', 'id' => 'epi_oculos', 'ca' => '23456-7890'],
-                                        ['icon' => 'hand-paper', 'name' => 'Luva', 'color' => 'success', 'id' => 'epi_luva', 'ca' => '34567-8901'],
-                                        ['icon' => 'shoe-prints', 'name' => 'Botina', 'color' => 'dark', 'id' => 'epi_botina', 'ca' => '45678-9012']
-                                        ];
-                                        @endphp
+                                            {{-- CABEÇALHO DO TIPO DE RISCO --}}
+                                            <tr class="table-warning">
+                                                <td colspan="8" class="fw-bold fs-5 text-uppercase">{{ $tipo }}</td>
+                                            </tr>
 
-                                        @foreach($epis as $epi)
-                                        <div class="col-md-3 col-sm-6">
-                                            <div class="card border h-100 shadow">
-                                                <div class="card-body text-center p-4">
-                                                    <div class="mb-3">
-                                                        <i class="fas fa-{{ $epi['icon'] }} fa-3x text-{{ $epi['color'] }}"></i>
-                                                    </div>
-                                                    <h5 class="fw-bold mb-2">{{ $epi['name'] }} de Segurança</h5>
-                                                    <div class="form-check form-switch d-inline-block mb-2">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="{{ $epi['id'] }}"
-                                                            id="{{ $epi['id'] }}"
-                                                            {{ old($epi['id'], true) ? 'checked' : '' }}>
-                                                        <label class="form-check-label fw-bold ms-2" for="{{ $epi['id'] }}">
-                                                            Obrigatório
+                                            {{-- RISCOS --}}
+                                            @foreach ($listaRiscos as $risco)
+                                            <tr>
+                                                {{-- ID --}}
+                                                <td class="text-center align-middle">
+                                                    <span class="badge bg-dark text-white fs-6">{{ $risco->id }}</span>
+                                                </td>
+
+                                                {{-- TIPO --}}
+                                                <td class="text-center align-middle">
+                                                    <div class="fw-bold">{{ $risco->nome }}</div>
+                                                </td>
+
+                                                {{-- DESCRIÇÃO --}}
+                                                <td class="align-middle">{{ $risco->descricao }}</td>
+
+                                                {{-- PROBABILIDADE --}}
+                                                <td class="text-center align-middle">
+                                                    <select name="riscos[{{ $risco->id }}][probabilidade]" class="form-select form-select-sm">
+                                                        <option value="baixa">Baixa</option>
+                                                        <option value="media">Média</option>
+                                                        <option value="alta">Alta</option>
+                                                    </select>
+                                                </td>
+
+                                                {{-- SEVERIDADE --}}
+                                                <td class="text-center align-middle">
+                                                    <select name="riscos[{{ $risco->id }}][severidade]" class="form-select form-select-sm">
+                                                        <option value="leve">Leve</option>
+                                                        <option value="moderada">Moderada</option>
+                                                        <option value="grave">Grave</option>
+                                                    </select>
+                                                </td>
+
+                                                {{-- GRAU --}}
+                                                <td class="text-center align-middle">
+                                                    <span class="badge bg-secondary fs-5 px-3 py-2 fw-bold grau" data-risco="{{ $risco->id }}">
+                                                        -
+                                                    </span>
+                                                </td>
+
+                                                {{-- MEDIDAS DE CONTROLE COMO CHECKBOXES --}}
+                                                <td class="align-middle">
+                                                    @foreach($riscos_medidas_controle as $medida)
+                                                    @if($medida->risco_id == $risco->id)
+                                                    <div class="form-check">
+                                                        <input type="checkbox"
+                                                            class="form-check-input medida-controle"
+                                                            data-risco-id="{{ $risco->id }}"
+                                                            value="{{ $medida->id }}"
+                                                            id="medida-{{ $medida->id }}">
+                                                        <label class="form-check-label" for="medida-{{ $medida->id }}">
+                                                            {{ $medida->descricao }}
                                                         </label>
                                                     </div>
-                                                    <div class="mt-3">
-                                                        <input type="text" class="form-control form-control-sm text-center"
-                                                            name="{{ $epi['id'] }}_ca"
-                                                            value="{{ old($epi['id'].'_ca', $epi['ca']) }}"
-                                                            placeholder="Nº do CA">
+                                                    @endif
+                                                    @endforeach
+                                                </td>
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+
+                                                        document.querySelectorAll('.medida-controle').forEach(checkbox => {
+
+                                                            checkbox.addEventListener('change', function() {
+
+                                                                const linha = this.closest('tr');
+                                                                const riscoCheckbox = linha.querySelector('.risco-identificado');
+
+                                                                // Se risco ainda não foi salvo
+                                                                if (!riscoCheckbox.dataset.aprRiscoId) {
+                                                                    alert('Confirme o risco antes de selecionar as medidas.');
+                                                                    this.checked = false;
+                                                                    return;
+                                                                }
+
+                                                                const payload = {
+                                                                    apr_risco_id: riscoCheckbox.dataset.aprRiscoId,
+                                                                    medida_id: this.dataset.medidaId,
+                                                                    acao: this.checked ? 'add' : 'remove'
+                                                                };
+
+                                                                fetch('{{ route("risco.medida.toggle") }}', {
+                                                                        method: 'POST',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json',
+                                                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                                                        },
+                                                                        body: JSON.stringify(payload)
+                                                                    })
+                                                                    .then(r => r.json())
+                                                                    .then(resp => {
+                                                                        if (!resp.success) {
+                                                                            this.checked = !this.checked;
+                                                                        }
+                                                                    })
+                                                                    .catch(() => {
+                                                                        this.checked = !this.checked;
+                                                                    });
+
+                                                            });
+
+                                                        });
+
+                                                    });
+                                                </script>
+
+
+                                                {{-- IDENTIFICADO --}}
+                                                <td class="text-center align-middle">
+                                                    <input type="checkbox"
+                                                        name="riscos[{{ $risco->id }}][identificado]"
+                                                        class="form-check-input risco-identificado"
+                                                        data-risco-id="{{ $risco->id }}"
+                                                        data-risco-nome="{{ $risco->nome }}"
+                                                        style="width:20px;height:20px;">
+                                                </td>
+
+                                            </tr>
+                                            @endforeach
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                {{-- MATRIZ DE RISCO --}}
+                                <div class="card border-secondary mt-4 shadow-sm">
+                                    <div class="card-header bg-secondary text-white py-3">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-table me-2"></i> Matriz de Risco Aplicada
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered text-center mb-0">
+                                                        <thead>
+                                                            <tr class="table-light">
+                                                                <th colspan="6" class="fs-5">MATRIZ DE PROBABILIDADE x SEVERIDADE</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th width="20%" class="align-middle">Probabilidade \ Severidade</th>
+                                                                <th width="16%" class="bg-success text-white align-middle">Leve</th>
+                                                                <th width="16%" class="bg-warning text-dark align-middle">Moderada</th>
+                                                                <th width="16%" class="bg-orange text-white align-middle">Significativa</th>
+                                                                <th width="16%" class="bg-danger text-white align-middle">Grave</th>
+                                                                <th width="16%" class="bg-dark text-white align-middle">Catastrófica</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="fw-bold bg-danger text-white align-middle py-3">Alta</td>
+                                                                <td class="bg-warning text-dark align-middle">
+                                                                    <div class="fs-5 fw-bold">3</div>
+                                                                    <small>Moderado</small>
+                                                                </td>
+                                                                <td class="bg-orange text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">4</div>
+                                                                    <small>Significativo</small>
+                                                                </td>
+                                                                <td class="bg-danger text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">5</div>
+                                                                    <small>Alto</small>
+                                                                </td>
+                                                                <td class="bg-danger text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">6</div>
+                                                                    <small>Alto</small>
+                                                                </td>
+                                                                <td class="bg-dark text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">7</div>
+                                                                    <small>Crítico</small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="fw-bold bg-warning text-dark align-middle py-3">Média</td>
+                                                                <td class="bg-success text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">2</div>
+                                                                    <small>Baixo</small>
+                                                                </td>
+                                                                <td class="bg-warning text-dark align-middle">
+                                                                    <div class="fs-5 fw-bold">3</div>
+                                                                    <small>Moderado</small>
+                                                                </td>
+                                                                <td class="bg-orange text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">4</div>
+                                                                    <small>Significativo</small>
+                                                                </td>
+                                                                <td class="bg-danger text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">5</div>
+                                                                    <small>Alto</small>
+                                                                </td>
+                                                                <td class="bg-danger text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">6</div>
+                                                                    <small>Alto</small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="fw-bold bg-success text-white align-middle py-3">Baixa</td>
+                                                                <td class="bg-success text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">1</div>
+                                                                    <small>Baixo</small>
+                                                                </td>
+                                                                <td class="bg-success text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">2</div>
+                                                                    <small>Baixo</small>
+                                                                </td>
+                                                                <td class="bg-warning text-dark align-middle">
+                                                                    <div class="fs-5 fw-bold">3</div>
+                                                                    <small>Moderado</small>
+                                                                </td>
+                                                                <td class="bg-orange text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">4</div>
+                                                                    <small>Significativo</small>
+                                                                </td>
+                                                                <td class="bg-danger text-white align-middle">
+                                                                    <div class="fs-5 fw-bold">5</div>
+                                                                    <small>Alto</small>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 mt-4 mt-lg-0">
+                                                <div class="card border-0 shadow-sm h-100">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h6 class="mb-0">Legenda do Grau de Risco</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                                                            <span class="badge bg-success text-white fs-6 px-3 py-2 me-3">1-2</span>
+                                                            <div>
+                                                                <div class="fw-bold">BAIXO</div>
+                                                                <small class="text-muted">Aceitável com controle básico</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                                                            <span class="badge bg-warning text-dark fs-6 px-3 py-2 me-3">3</span>
+                                                            <div>
+                                                                <div class="fw-bold">MODERADO</div>
+                                                                <small class="text-muted">Necessita controle adicional</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                                                            <span class="badge bg-orange text-white fs-6 px-3 py-2 me-3">4</span>
+                                                            <div>
+                                                                <div class="fw-bold">SIGNIFICATIVO</div>
+                                                                <small class="text-muted">Exige atenção imediata</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center p-2 border rounded">
+                                                            <span class="badge bg-danger text-white fs-6 px-3 py-2 me-3">5-7</span>
+                                                            <div>
+                                                                <div class="fw-bold">ALTO</div>
+                                                                <small class="text-muted">Inaceitável - Parar atividade</small>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        @endforeach
+                                    </div>
+                                </div>
+
+                                {{-- CAMPO PARA OBSERVAÇÕES ADICIONAIS --}}
+                                <div class="mt-4">
+                                    <label for="observacoes" class="form-label fw-bold">
+                                        <i class="fas fa-sticky-note me-2"></i>Observações Adicionais
+                                    </label>
+                                    <textarea class="form-control" id="observacoes" name="observacoes" rows="3" placeholder="Adicione observações relevantes sobre os riscos ou medidas de controle...">{{ old('observacoes', $apr->observacoes ?? '') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- EPIs NECESSÁRIOS EDITÁVEIS --}}
+                        <div class="card border-primary mb-4 shadow-sm">
+                            <div class="card-header bg-primary text-white py-3">
+                                <h4 class="mb-0">
+                                    <i class="fas fa-hard-hat me-2"></i> EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs)
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-4">
+                                    @php
+                                    $epis = [
+                                    ['icon' => 'hard-hat', 'name' => 'Capacete', 'color' => 'warning', 'id' => 'epi_capacete', 'ca' => '12345-6789'],
+                                    ['icon' => 'glasses', 'name' => 'Óculos', 'color' => 'info', 'id' => 'epi_oculos', 'ca' => '23456-7890'],
+                                    ['icon' => 'hand-paper', 'name' => 'Luva', 'color' => 'success', 'id' => 'epi_luva', 'ca' => '34567-8901'],
+                                    ['icon' => 'shoe-prints', 'name' => 'Botina', 'color' => 'dark', 'id' => 'epi_botina', 'ca' => '45678-9012']
+                                    ];
+                                    @endphp
+
+                                    @foreach($epis as $epi)
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="card border h-100 shadow">
+                                            <div class="card-body text-center p-4">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-{{ $epi['icon'] }} fa-3x text-{{ $epi['color'] }}"></i>
+                                                </div>
+                                                <h5 class="fw-bold mb-2">{{ $epi['name'] }} de Segurança</h5>
+                                                <div class="form-check form-switch d-inline-block mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="{{ $epi['id'] }}"
+                                                        id="{{ $epi['id'] }}"
+                                                        {{ old($epi['id'], true) ? 'checked' : '' }}>
+                                                    <label class="form-check-label fw-bold ms-2" for="{{ $epi['id'] }}">
+                                                        Obrigatório
+                                                    </label>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <input type="text" class="form-control form-control-sm text-center"
+                                                        name="{{ $epi['id'] }}_ca"
+                                                        value="{{ old($epi['id'].'_ca', $epi['ca']) }}"
+                                                        placeholder="Nº do CA">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- CAMPO DE ASSINATURA --}}
+                        <div class="card border-secondary mb-4 shadow-sm">
+                            <div class="card-header bg-secondary text-white py-3">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-signature me-2"></i> Assinatura do Responsável
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label for="assinatura_responsavel" class="form-label fw-bold">Digite sua assinatura:</label>
+                                        <input type="text" class="form-control form-control-lg"
+                                            id="assinatura_responsavel"
+                                            name="assinatura_responsavel"
+                                            value="{{ old('assinatura_responsavel', $apr->assinatura_responsavel ?? '') }}"
+                                            placeholder="Digite seu nome completo para assinar">
+                                        <div class="form-text">Esta assinatura confirma sua responsabilidade sobre a análise de riscos.</div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-bold">Status da APR:</label>
+                                        <select class="form-select form-select-lg" name="status">
+                                            <option value="aberta" {{ old('status', $apr->status) == 'aberta' ? 'selected' : '' }}>Aberta</option>
+                                            <option value="finalizada" {{ old('status', $apr->status) == 'finalizada' ? 'selected' : '' }}>Finalizada</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            {{-- CAMPO DE ASSINATURA --}}
-                            <div class="card border-secondary mb-4 shadow-sm">
-                                <div class="card-header bg-secondary text-white py-3">
-                                    <h5 class="mb-0">
-                                        <i class="fas fa-signature me-2"></i> Assinatura do Responsável
-                                    </h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <label for="assinatura_responsavel" class="form-label fw-bold">Digite sua assinatura:</label>
-                                            <input type="text" class="form-control form-control-lg"
-                                                id="assinatura_responsavel"
-                                                name="assinatura_responsavel"
-                                                value="{{ old('assinatura_responsavel', $apr->assinatura_responsavel ?? '') }}"
-                                                placeholder="Digite seu nome completo para assinar">
-                                            <div class="form-text">Esta assinatura confirma sua responsabilidade sobre a análise de riscos.</div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label fw-bold">Status da APR:</label>
-                                            <select class="form-select form-select-lg" name="status">
-                                                <option value="aberta" {{ old('status', $apr->status) == 'aberta' ? 'selected' : '' }}>Aberta</option>
-                                                <option value="finalizada" {{ old('status', $apr->status) == 'finalizada' ? 'selected' : '' }}>Finalizada</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- BOTÕES DE AÇÃO --}}
-                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
-                                <a href="{{ route('apr.index') }}" class="btn btn-lg btn-outline-secondary mb-2 mb-md-0">
-                                    <i class="fas fa-arrow-left me-2"></i> Voltar para Lista
+                        {{-- BOTÕES DE AÇÃO --}}
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
+                            <a href="{{ route('apr.index') }}" class="btn btn-lg btn-outline-secondary mb-2 mb-md-0">
+                                <i class="fas fa-arrow-left me-2"></i> Voltar para Lista
+                            </a>
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <button type="button" class="btn btn-lg btn-outline-primary" onclick="window.print()">
+                                    <i class="fas fa-print me-2"></i> Imprimir APR
+                                </button>
+                                <button type="submit" class="btn btn-lg btn-success">
+                                    <i class="fas fa-save me-2"></i> Salvar Alterações
+                                </button>
+                                <a href="{{ route('apr.edit', $apr->id) }}" class="btn btn-lg btn-warning">
+                                    <i class="fas fa-redo me-2"></i> Recarregar
                                 </a>
-                                <div class="d-flex flex-wrap justify-content-center gap-2">
-                                    <button type="button" class="btn btn-lg btn-outline-primary" onclick="window.print()">
-                                        <i class="fas fa-print me-2"></i> Imprimir APR
-                                    </button>
-                                    <button type="submit" class="btn btn-lg btn-success">
-                                        <i class="fas fa-save me-2"></i> Salvar Alterações
-                                    </button>
-                                    <a href="{{ route('apr.edit', $apr->id) }}" class="btn btn-lg btn-warning">
-                                        <i class="fas fa-redo me-2"></i> Recarregar
-                                    </a>
-                                </div>
                             </div>
-                        </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -799,27 +839,6 @@
         ['f01', 'q01', 'c01'].forEach(riscoId => {
             atualizarGrauRisco(riscoId);
         });
-    });
-
-    // Validação do formulário
-    document.getElementById('aprForm').addEventListener('submit', function(e) {
-        const assinatura = document.getElementById('assinatura_responsavel').value.trim();
-
-        if (!assinatura) {
-            e.preventDefault();
-            alert('Por favor, insira sua assinatura para continuar.');
-            document.getElementById('assinatura_responsavel').focus();
-            return false;
-        }
-
-        // Confirmação se estiver finalizando a APR
-        const status = document.querySelector('select[name="status"]').value;
-        if (status === 'finalizada') {
-            if (!confirm('Tem certeza que deseja finalizar esta APR? Após finalizada, não será mais possível editar.')) {
-                e.preventDefault();
-                return false;
-            }
-        }
     });
 </script>
 

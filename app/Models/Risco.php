@@ -25,4 +25,8 @@ class Risco extends Model
     {
         return $this->hasMany(AprRisco::class, 'risco_id');
     }
+    public function medidasControle()
+    {
+        return $this->hasMany(RiscoMedidaControle::class, 'risco_id');
+    }
 }

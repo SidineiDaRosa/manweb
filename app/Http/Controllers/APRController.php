@@ -12,6 +12,7 @@ use App\Models\Funcionario;
 use App\Models\User;
 use App\Models\Risco;
 use App\Models\AprRisco;
+use App\Models\RiscoMedidaControle;
 use App\Models\AprRiscoMedidaControle;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -91,8 +92,8 @@ class APRController extends Controller
             ->orderBy('nome')
             ->get()
             ->groupBy('tipo_risco');
-        $apr_riscos_medidas_controle = AprRiscoMedidaControle::all();
-        return view('app.SESMT.show', compact('apr', 'riscos','apr_riscos_medidas_controle'));
+        $riscos_medidas_controle = RiscoMedidaControle::all();
+        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle'));
     }
     public function dashboard()
     {
@@ -133,6 +134,29 @@ class APRController extends Controller
             'grau'         => $request->grau,
             'status'         => 1
         ]);
+        $apr = APR::findOrFail($request->apr_id);
+
+        $riscos = Risco::where('ativo', 1)
+            ->orderBy('tipo_risco')
+            ->orderBy('nome')
+            ->get()
+            ->groupBy('tipo_risco');
+        $riscos_medidas_controle = RiscoMedidaControle::all();
+        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle'));
+    }
+    public function toggleMedida(Request $request)
+    {
+        if ($request->acao === 'add') {
+            AprRiscoMedidaControle::firstOrCreate([
+                'apr_risco_id' => $request->apr_risco_id,
+                'medida_id' => $request->medida_id
+            ]);
+        } else {
+            AprRiscoMedidaControle::where([
+                'apr_risco_id' => $request->apr_risco_id,
+                'medida_id' => $request->medida_id
+            ])->delete();
+        }
 
         return response()->json(['success' => true]);
     }

@@ -650,3 +650,8 @@ Route::get('/mensagens-ativas', [MensagemPainelController::class, 'mensagensAtiv
 Route::get('/sesmt-dashboard', [APRController::class, 'dashboard'])->name('sesmt.dashboard');
 Route::post('/risco-store', [APRController::class, 'risco_store'])
     ->name('risco.store');
+
+Route::post(
+    '/apr/risco/medida/toggle',
+    [APRController::class, 'toggle']
+)->name('risco.medida.toggle');
