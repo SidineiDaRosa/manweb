@@ -586,7 +586,7 @@
                     stopAutoRefresh(); // garante que não haja timers duplicados
                     refreshTimeout = setTimeout(() => {
                         location.reload();
-                    }, 60000); // 60 segundos
+                    }, 30000); // 60 segundos
                 }
 
                 function stopAutoRefresh() {

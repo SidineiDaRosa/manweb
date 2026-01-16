@@ -653,5 +653,5 @@ Route::post('/risco-store', [APRController::class, 'risco_store'])
 
 Route::post(
     '/apr/risco/medida/toggle',
-    [APRController::class, 'toggle']
-)->name('risco.medida.toggle');
+    [APRController::class, 'risco_medida_controle_store']
+)->name('apr.risco.medida.toggle');

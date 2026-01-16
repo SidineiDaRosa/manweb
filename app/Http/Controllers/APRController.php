@@ -86,6 +86,18 @@ class APRController extends Controller
     public function show($id)
     {
         $apr = APR::findOrFail($id);
+        //filtra os riscos salvo desta apr
+        $apr_riscos = AprRisco::where('apr_id', $id)->get();
+
+
+        // IDs dos riscos
+        $idsRiscos = $apr_riscos->pluck('id');
+
+        // TODAS as medidas (sem agrupar)
+        $apr_riscos_medidas = AprRiscoMedidaControle::whereIn(
+            'apr_risco_id',
+            $idsRiscos
+        )->get();
 
         $riscos = Risco::where('ativo', 1)
             ->orderBy('tipo_risco')
@@ -93,7 +105,8 @@ class APRController extends Controller
             ->get()
             ->groupBy('tipo_risco');
         $riscos_medidas_controle = RiscoMedidaControle::all();
-        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle'));
+
+        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos', 'apr_riscos_medidas'));
     }
     public function dashboard()
     {
@@ -135,29 +148,46 @@ class APRController extends Controller
             'status'         => 1
         ]);
         $apr = APR::findOrFail($request->apr_id);
-
+        // pega os riscos gravados desta apr
+        $apr_riscos = AprRisco::where('apr_id', $request->apr_id)->get();
         $riscos = Risco::where('ativo', 1)
             ->orderBy('tipo_risco')
             ->orderBy('nome')
             ->get()
             ->groupBy('tipo_risco');
         $riscos_medidas_controle = RiscoMedidaControle::all();
-        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle'));
-    }
-    public function toggleMedida(Request $request)
-    {
-        if ($request->acao === 'add') {
-            AprRiscoMedidaControle::firstOrCreate([
-                'apr_risco_id' => $request->apr_risco_id,
-                'medida_id' => $request->medida_id
-            ]);
-        } else {
-            AprRiscoMedidaControle::where([
-                'apr_risco_id' => $request->apr_risco_id,
-                'medida_id' => $request->medida_id
-            ])->delete();
-        }
+        // IDs dos riscos
+        $idsRiscos = $apr_riscos->pluck('id');
 
+        // TODAS as medidas (sem agrupar)
+        $apr_riscos_medidas = AprRiscoMedidaControle::whereIn(
+            'apr_risco_id',
+            $idsRiscos
+        )->get();
+
+        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos','apr_riscos_medidas'));
+    }
+    public function risco_medida_controle_store(Request $request)
+    {
+        $request->validate([
+            'apr_risco_id' => 'required|integer',
+            'medida_id'    => 'required|integer',
+            'status'       => 'required|boolean' // 1 ou 0
+        ]);
+
+        AprRiscoMedidaControle::updateOrCreate(
+            [
+                'apr_risco_id' => $request->apr_risco_id,
+                'medida_id'    => $request->medida_id
+            ],
+            [
+                'status' => $request->status
+            ]
+        );
+        $apr_risco_salvo = AprRiscoMedidaControle::where('apr_risco_id', $request->apr_risco_id)
+
+            ->get()
+            ->keyBy('medida_id'); // chave = medida_id para facilitar
         return response()->json(['success' => true]);
     }
 }

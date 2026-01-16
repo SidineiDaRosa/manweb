@@ -260,6 +260,7 @@
                         {{-- FORMULÁRIO DE EDIÇÃO DA APR --}}
 
 
+                        <!------------------------------------------------------------->
                         {{-- ANÁLISE DE RISCO DETALHADA COM CHECKBOXES EDITÁVEIS --}}
                         <div class="card border-danger mb-4">
                             <div class="card-header bg-danger text-white py-3">
@@ -268,20 +269,25 @@
                                 </h4>
                                 <p class="mb-0 opacity-75">Marque os riscos identificados para esta atividade</p>
                             </div>
+
+                            @foreach($apr_riscos as $apr_risco_1)
+
+                            @endforeach
+
                             <div class="card-body">
                                 {{-- TABELA DE RISCOS COM CHECKBOXES PARA MEDIDAS DE CONTROLE --}}
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead class="table-danger">
+                                    <table class="table table-bordered">
+                                        <thead>
                                             <tr>
-                                                <th width="5%" class="text-center align-middle">ID</th>
-                                                <th width="10%" class="text-center align-middle">Tipo de Risco</th>
-                                                <th width="25%" class="align-middle">Descrição do Risco</th>
-                                                <th width="10%" class="text-center align-middle">Probabilidade</th>
-                                                <th width="10%" class="text-center align-middle">Severidade</th>
-                                                <th width="8%" class="text-center align-middle">Grau</th>
-                                                <th width="27%" class="align-middle">Medidas de Controle</th>
-                                                <th width="5%" class="text-center align-middle">Identificado</th>
+                                                <th>ID</th>
+                                                <th>Tipo</th>
+                                                <th>Descrição</th>
+                                                <th>Probabilidade</th>
+                                                <th>Severidade</th>
+                                                <th>Grau</th>
+                                                <th>Identificado</th>
+                                                <th>Medidas de Controle</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -292,12 +298,18 @@
                                                 <td colspan="8" class="fw-bold fs-5 text-uppercase">{{ $tipo }}</td>
                                             </tr>
 
-                                            {{-- RISCOS --}}
                                             @foreach ($listaRiscos as $risco)
+                                            @php
+                                            $apr_risco_salvo = collect($apr_riscos)->first(function($r) use ($risco) {
+                                            return $r->risco_id == $risco->id;
+                                            });
+                                            @endphp
+
                                             <tr>
                                                 {{-- ID --}}
                                                 <td class="text-center align-middle">
-                                                    <span class="badge bg-dark text-white fs-6">{{ $risco->id }}</span>
+                                                    <span class="badge bg-dark text-white fs-6"></span>
+                                                    ID: {{$risco->id}} <br>
                                                 </td>
 
                                                 {{-- TIPO --}}
@@ -311,94 +323,49 @@
                                                 {{-- PROBABILIDADE --}}
                                                 <td class="text-center align-middle">
                                                     <select name="riscos[{{ $risco->id }}][probabilidade]" class="form-select form-select-sm">
-                                                        <option value="baixa">Baixa</option>
-                                                        <option value="media">Média</option>
-                                                        <option value="alta">Alta</option>
+                                                        <option value="baixa" {{ ($apr_risco_salvo->probabilidade ?? '') == 'baixa' ? 'selected' : '' }}>Baixa</option>
+                                                        <option value="media" {{ ($apr_risco_salvo->probabilidade ?? '') == 'media' ? 'selected' : '' }}>Média</option>
+                                                        <option value="alta" {{ ($apr_risco_salvo->probabilidade ?? '') == 'alta' ? 'selected' : '' }}>Alta</option>
                                                     </select>
                                                 </td>
 
                                                 {{-- SEVERIDADE --}}
                                                 <td class="text-center align-middle">
                                                     <select name="riscos[{{ $risco->id }}][severidade]" class="form-select form-select-sm">
-                                                        <option value="leve">Leve</option>
-                                                        <option value="moderada">Moderada</option>
-                                                        <option value="grave">Grave</option>
+                                                        <option value="leve" {{ ($apr_risco_salvo->severidade ?? '') == 'leve' ? 'selected' : '' }}>Leve</option>
+                                                        <option value="moderada" {{ ($apr_risco_salvo->severidade ?? '') == 'moderada' ? 'selected' : '' }}>Moderada</option>
+                                                        <option value="grave" {{ ($apr_risco_salvo->severidade ?? '') == 'grave' ? 'selected' : '' }}>Grave</option>
                                                     </select>
                                                 </td>
 
+
                                                 {{-- GRAU --}}
-                                                <td class="text-center align-middle">
-                                                    <span class="badge bg-secondary fs-5 px-3 py-2 fw-bold grau" data-risco="{{ $risco->id }}">
-                                                        -
+                                                @php
+                                                $classeTd = 'bg-secondary';
+
+                                                foreach ($apr_riscos as $apr_risco) {
+                                                if ($apr_risco->risco_id == $risco->id) {
+                                                $classeTd = match($apr_risco->grau) {
+                                                2 => 'bg-sucess text-white',
+                                                4 => 'bg-warning text-dark',
+                                                5 => 'bg-danger text-white',
+                                                default => 'bg-secondary text-white'
+                                                };
+                                                break;
+                                                }
+                                                }
+                                                @endphp
+
+                                                <td class="text-center align-middle {{ $classeTd }}">
+                                                    <span data-risco="{{ $risco->id }}">
+                                                        @foreach($apr_riscos as $apr_risco)
+                                                        @if($apr_risco->risco_id == $risco->id)
+                                                        {{ $apr_risco->grau }}
+                                                        @break
+                                                        @endif
+                                                        @endforeach
                                                     </span>
                                                 </td>
-
-                                                {{-- MEDIDAS DE CONTROLE COMO CHECKBOXES --}}
-                                                <td class="align-middle">
-                                                    @foreach($riscos_medidas_controle as $medida)
-                                                    @if($medida->risco_id == $risco->id)
-                                                    <div class="form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input medida-controle"
-                                                            data-risco-id="{{ $risco->id }}"
-                                                            value="{{ $medida->id }}"
-                                                            id="medida-{{ $medida->id }}">
-                                                        <label class="form-check-label" for="medida-{{ $medida->id }}">
-                                                            {{ $medida->descricao }}
-                                                        </label>
-                                                    </div>
-                                                    @endif
-                                                    @endforeach
-                                                </td>
-                                                <script>
-                                                    document.addEventListener('DOMContentLoaded', function() {
-
-                                                        document.querySelectorAll('.medida-controle').forEach(checkbox => {
-
-                                                            checkbox.addEventListener('change', function() {
-
-                                                                const linha = this.closest('tr');
-                                                                const riscoCheckbox = linha.querySelector('.risco-identificado');
-
-                                                                // Se risco ainda não foi salvo
-                                                                if (!riscoCheckbox.dataset.aprRiscoId) {
-                                                                    alert('Confirme o risco antes de selecionar as medidas.');
-                                                                    this.checked = false;
-                                                                    return;
-                                                                }
-
-                                                                const payload = {
-                                                                    apr_risco_id: riscoCheckbox.dataset.aprRiscoId,
-                                                                    medida_id: this.dataset.medidaId,
-                                                                    acao: this.checked ? 'add' : 'remove'
-                                                                };
-
-                                                                fetch('{{ route("risco.medida.toggle") }}', {
-                                                                        method: 'POST',
-                                                                        headers: {
-                                                                            'Content-Type': 'application/json',
-                                                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                                                                        },
-                                                                        body: JSON.stringify(payload)
-                                                                    })
-                                                                    .then(r => r.json())
-                                                                    .then(resp => {
-                                                                        if (!resp.success) {
-                                                                            this.checked = !this.checked;
-                                                                        }
-                                                                    })
-                                                                    .catch(() => {
-                                                                        this.checked = !this.checked;
-                                                                    });
-
-                                                            });
-
-                                                        });
-
-                                                    });
-                                                </script>
-
-
                                                 {{-- IDENTIFICADO --}}
                                                 <td class="text-center align-middle">
                                                     <input type="checkbox"
@@ -406,14 +373,152 @@
                                                         class="form-check-input risco-identificado"
                                                         data-risco-id="{{ $risco->id }}"
                                                         data-risco-nome="{{ $risco->nome }}"
-                                                        style="width:20px;height:20px;">
+                                                        style="width:20px;height:20px;"
+                                                        {{ $apr_risco_salvo ? 'checked' : '' }}>
                                                 </td>
+
+                                                {{-- MEDIDAS DE CONTROLE --}}
+                                                <td class="align-middle">
+                                                    @foreach($riscos_medidas_controle as $medida)
+                                                    @if($medida->risco_id == $risco->id)
+                                                    @php
+                                                    $estado = null;
+                                                    if($apr_risco_salvo && $apr_risco_salvo->medidas) {
+                                                    $medidaSalva = $apr_risco_salvo->medidas->firstWhere('medida_id', $medida->id);
+                                                    $estado = $medidaSalva->marcado ?? null;
+                                                    }
+                                                    @endphp
+
+                                                    <div class="d-flex align-items-center mb-1">
+
+                                                        @php
+                                                        $aprRiscoMedida = $apr_riscos_medidas
+                                                        ->where('apr_risco_id', $apr_risco->id)
+                                                        ->where('medida_id', $medida->id)
+                                                        ->first();
+                                                        @endphp
+
+                                                        @if($aprRiscoMedida)
+
+                                                        @endif
+                                                        {{-- Radio Existente --}}
+                                                        <div class="form-check form-check-inline" style="background-color: #198754; padding: 2px; border-radius: 4px;">
+                                                            @foreach($apr_riscos_medidas as $apr_risco_medida_controle)
+                                                            @if(
+                                                            $apr_risco_medida_controle->apr_risco_id == $apr_risco->id &&
+                                                            $apr_risco_medida_controle->medida_id == $medida->id &&
+                                                            $apr_risco_medida_controle->status == 1
+                                                            )
+                                                            ✅
+                                                            @endif
+                                                            @endforeach
+
+
+                                                            <input type="radio"
+                                                                name="medida_{{ $medida->id }}"
+                                                                value="existente"
+                                                                class="form-check-input medida-radio"
+                                                                data-medida-id="{{ $medida->id }}"
+                                                                data-apr-risco-id="{{ $apr_risco_salvo->id ?? '' }}"
+                                                                id="medida-{{ $medida->id }}-existente"
+                                                                {{ $estado === 'existente' ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="medida-{{ $medida->id }}-existente"></label>
+                                                        </div>
+
+                                                        {{-- Radio Inexistente --}}
+                                                        <div class="form-check form-check-inline ms-2" style="background-color: #fdda14; padding: 2px; border-radius: 4px;">
+                                                            @foreach($apr_riscos_medidas as $apr_risco_medida_controle)
+                                                            @if(
+                                                            $apr_risco_medida_controle->apr_risco_id == $apr_risco->id &&
+                                                            $apr_risco_medida_controle->medida_id == $medida->id &&
+                                                            $apr_risco_medida_controle->status == 0
+                                                            )
+                                                            ✅
+                                                            @endif
+                                                            @endforeach
+
+                                                            <input type="radio"
+                                                                name="medida_{{ $medida->id }}"
+                                                                value="inexistente"
+                                                                class="form-check-input medida-radio"
+                                                                data-medida-id="{{ $medida->id }}"
+                                                                data-apr-risco-id="{{ $apr_risco_salvo->id ?? '' }}"
+                                                                id="medida-{{ $medida->id }}-inexistente"
+                                                                {{ $estado === 'inexistente' ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="medida-{{ $medida->id }}-inexistente"></label>
+                                                        </div>
+
+                                                        {{-- Descrição --}}
+                                                        <span class="ms-2">{{ $medida->descricao }}</span>
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                </td>
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        document.querySelectorAll('.medida-radio').forEach(radio => {
+                                                            radio.addEventListener('mousedown', function(e) {
+                                                                const medidaId = this.dataset.medidaId;
+                                                                const aprRiscoId = this.dataset.aprRiscoId;
+                                                                const valor = this.value; // "existente" ou "inexistente"
+
+                                                                // Se o radio já estava selecionado, permite continuar
+                                                                if (this.checked) return;
+
+                                                                // Evita que o radio seja marcado antes do confirm
+                                                                e.preventDefault();
+
+                                                                if (confirm(`Deseja realmente marcar esta medida como "${valor}"?`)) {
+                                                                    // Atualiza visualmente o radio
+                                                                    this.checked = true;
+
+                                                                    // Converte para 1 ou 0 para enviar ao backend
+                                                                    const status = valor === 'existente' ? 1 : 0;
+
+                                                                    // Envia via AJAX
+                                                                    fetch("{{ route('apr.risco.medida.toggle') }}", {
+                                                                            method: 'POST',
+                                                                            headers: {
+                                                                                'Content-Type': 'application/json',
+                                                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                                            },
+                                                                            body: JSON.stringify({
+                                                                                medida_id: medidaId,
+                                                                                apr_risco_id: aprRiscoId,
+                                                                                status: status // 1 ou 0
+                                                                            })
+                                                                        })
+                                                                        .then(response => response.json())
+                                                                        .then(data => {
+                                                                            if (data.success) {
+                                                                                alert('Medida salva com sucesso!');
+                                                                            } else {
+                                                                                alert('Erro ao salvar a medida.');
+                                                                                this.checked = false;
+                                                                            }
+                                                                        })
+                                                                        .catch(error => {
+                                                                            console.error(error);
+                                                                            alert('Erro ao salvar a medida.');
+                                                                            this.checked = false;
+                                                                        });
+
+                                                                } else {
+                                                                    // Se cancelar, não marca nada
+                                                                    this.checked = false;
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                </script>
+
 
                                             </tr>
                                             @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
+
                                 </div>
 
 
