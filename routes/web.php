@@ -655,3 +655,8 @@ Route::post(
     '/apr/risco/medida/toggle',
     [APRController::class, 'risco_medida_controle_store']
 )->name('apr.risco.medida.toggle');
+//-------------------------------------------------------------//
+//                Materiais EPIs
+//-------------------------------------------------------------//
+use App\Http\Controllers\MaterialEpiController;
+Route::resource('material_epis', MaterialEpiController::class);

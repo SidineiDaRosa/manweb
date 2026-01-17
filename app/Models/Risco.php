@@ -29,4 +29,20 @@ class Risco extends Model
     {
         return $this->hasMany(RiscoMedidaControle::class, 'risco_id');
     }
+    // Relacionamento com o pivô material_risco
+    public function materiaisRiscos()
+    {
+        return $this->hasMany(MaterialRisco::class, 'material_id');
+    }
+
+    // Relacionamento direto com Riscos via pivô
+    public function riscos()
+    {
+        return $this->belongsToMany(
+            Risco::class,       // Modelo final
+            'material_risco',   // Tabela pivô
+            'material_id',      // FK no pivô para Material
+            'risco_id'          // FK no pivô para Risco
+        )->withPivot('status', 'observacoes', 'created_at', 'updated_at');
+    }
 }

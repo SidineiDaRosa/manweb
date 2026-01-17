@@ -117,45 +117,42 @@ class APRController extends Controller
     {
         // Validação
         $request->validate([
-            'apr_id'       => 'required|exists:aprs,id',
-            'risco_id'     => 'required|exists:riscos,id',
-            'status'       => 'required|string|max:255',
+            'apr_id'        => 'required|exists:aprs,id',
+            'risco_id'      => 'required|exists:riscos,id',
+            'status'        => 'required|string|max:255',
             'probabilidade' => 'required|string|max:50',
-            'severidade'   => 'required|string|max:50',
-            'grau'         => 'required|integer|min:1'
+            'severidade'    => 'required|string|max:50',
+            'grau'          => 'required|integer|min:1'
         ]);
 
-        // Verifica se o risco já foi identificado para essa APR
-        $existe = AprRisco::where('apr_id', $request->apr_id)
-            ->where('risco_id', $request->risco_id)
-            ->exists();
+        // Cria ou atualiza o risco diretamente
+        $aprRisco = AprRisco::updateOrCreate(
+            [
+                'apr_id'   => $request->apr_id,
+                'risco_id' => $request->risco_id
+            ],
+            [
+                'status'        => $request->status,
+                'probabilidade' => $request->probabilidade,
+                'severidade'    => $request->severidade,
+                'grau'          => $request->grau,
+                'status'        => 1
+            ]
+        );
 
-        if ($existe) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Risco já identificado.'
-            ]);
-        }
-
-        // Cria o registro no banco
-        AprRisco::create([
-            'apr_id'       => $request->apr_id,
-            'risco_id'     => $request->risco_id,
-            'status'       => $request->status,
-            'probabilidade' => $request->probabilidade,
-            'severidade'   => $request->severidade,
-            'grau'         => $request->grau,
-            'status'         => 1
-        ]);
+        // Carrega os dados atualizados para a view
         $apr = APR::findOrFail($request->apr_id);
-        // pega os riscos gravados desta apr
+
         $apr_riscos = AprRisco::where('apr_id', $request->apr_id)->get();
+
         $riscos = Risco::where('ativo', 1)
             ->orderBy('tipo_risco')
             ->orderBy('nome')
             ->get()
             ->groupBy('tipo_risco');
+
         $riscos_medidas_controle = RiscoMedidaControle::all();
+
         // IDs dos riscos
         $idsRiscos = $apr_riscos->pluck('id');
 
@@ -165,8 +162,15 @@ class APRController extends Controller
             $idsRiscos
         )->get();
 
-        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos','apr_riscos_medidas'));
+        return view('app.SESMT.show', compact(
+            'apr',
+            'riscos',
+            'riscos_medidas_controle',
+            'apr_riscos',
+            'apr_riscos_medidas'
+        ));
     }
+
     public function risco_medida_controle_store(Request $request)
     {
         $request->validate([

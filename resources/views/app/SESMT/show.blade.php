@@ -388,6 +388,7 @@
                                                     $estado = $medidaSalva->marcado ?? null;
                                                     }
                                                     @endphp
+                                                    <!---------------------------------------------------->
 
                                                     <div class="d-flex align-items-center mb-1">
 
