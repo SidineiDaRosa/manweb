@@ -135,16 +135,22 @@
 </script>
 
 
-
 <main class="content">
     <div class="container-fluid p-0">
         <div class="mb-3">
-            <h1 class="h3 d-inline align-middle">Visualizar APR</h1>
             <div class="text-muted mt-1">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('apr.index') }}">APRs</a></li>
                         <li class="breadcrumb-item active">APR #{{ $apr->id }}</li>
+                        <a href="{{ route('apr.pdf', $apr->id) }}"
+                            class="btn btn-lg btn-outline-danger"
+                            target="_blank">
+                            <i class="fas fa-file-pdf me-2"></i> Visualizar PDF
+                        </a>
+                        <a href="{{ route('apr.pt_pdf', ['apr' => $apr->id]) }}" target="_blank" class="btn btn-primary">
+                            Gerar PT em PDF
+                        </a>
                     </ol>
                 </nav>
             </div>
@@ -288,6 +294,7 @@
                                                 <th>Grau</th>
                                                 <th>Identificado</th>
                                                 <th>Medidas de Controle</th>
+                                                <th>Materiais EPIs</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -512,7 +519,18 @@
                                                         });
                                                     });
                                                 </script>
+                                                <td>
+                                                    @foreach($materiais_risco as $material_risco)
+                                                    @if($material_risco->risco_id == $risco->id)
+                                                    <input type="checkbox" name="" id="">
+                                                    Material: <span style="font-weight: 700;color:darkblue">{{ $material_risco->material->nome ?? 'Material não encontrado' }} </span>
+                                                    <br>
+                                                    Observações: {{ $material_risco->observacoes }}
 
+                                                    <br><br>
+                                                    @endif
+                                                    @endforeach
+                                                </td>
 
                                             </tr>
                                             @endforeach
@@ -673,54 +691,6 @@
                             </div>
                         </div>
 
-                        {{-- EPIs NECESSÁRIOS EDITÁVEIS --}}
-                        <div class="card border-primary mb-4 shadow-sm">
-                            <div class="card-header bg-primary text-white py-3">
-                                <h4 class="mb-0">
-                                    <i class="fas fa-hard-hat me-2"></i> EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs)
-                                </h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row g-4">
-                                    @php
-                                    $epis = [
-                                    ['icon' => 'hard-hat', 'name' => 'Capacete', 'color' => 'warning', 'id' => 'epi_capacete', 'ca' => '12345-6789'],
-                                    ['icon' => 'glasses', 'name' => 'Óculos', 'color' => 'info', 'id' => 'epi_oculos', 'ca' => '23456-7890'],
-                                    ['icon' => 'hand-paper', 'name' => 'Luva', 'color' => 'success', 'id' => 'epi_luva', 'ca' => '34567-8901'],
-                                    ['icon' => 'shoe-prints', 'name' => 'Botina', 'color' => 'dark', 'id' => 'epi_botina', 'ca' => '45678-9012']
-                                    ];
-                                    @endphp
-
-                                    @foreach($epis as $epi)
-                                    <div class="col-md-3 col-sm-6">
-                                        <div class="card border h-100 shadow">
-                                            <div class="card-body text-center p-4">
-                                                <div class="mb-3">
-                                                    <i class="fas fa-{{ $epi['icon'] }} fa-3x text-{{ $epi['color'] }}"></i>
-                                                </div>
-                                                <h5 class="fw-bold mb-2">{{ $epi['name'] }} de Segurança</h5>
-                                                <div class="form-check form-switch d-inline-block mb-2">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        name="{{ $epi['id'] }}"
-                                                        id="{{ $epi['id'] }}"
-                                                        {{ old($epi['id'], true) ? 'checked' : '' }}>
-                                                    <label class="form-check-label fw-bold ms-2" for="{{ $epi['id'] }}">
-                                                        Obrigatório
-                                                    </label>
-                                                </div>
-                                                <div class="mt-3">
-                                                    <input type="text" class="form-control form-control-sm text-center"
-                                                        name="{{ $epi['id'] }}_ca"
-                                                        value="{{ old($epi['id'].'_ca', $epi['ca']) }}"
-                                                        placeholder="Nº do CA">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
 
                         {{-- CAMPO DE ASSINATURA --}}
                         <div class="card border-secondary mb-4 shadow-sm">

@@ -18,8 +18,6 @@ class Apr extends Model
         'ordem_servico_id',
         'local_trabalho',
         'descricao_atividade',
-        'riscos_identificados',
-        'medidas_controle',
         'epi_obrigatorio',
         'responsavel',
         'assinatura_responsavel',

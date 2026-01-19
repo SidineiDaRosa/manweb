@@ -14,8 +14,12 @@ use App\Models\Risco;
 use App\Models\AprRisco;
 use App\Models\RiscoMedidaControle;
 use App\Models\AprRiscoMedidaControle;
+use App\Models\MaterialEpi;
+use App\Models\MaterialRisco;
+use App\Models\PermissaoTrabalho;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class APRController extends Controller
 {
@@ -26,7 +30,6 @@ class APRController extends Controller
     {
         $ordens = OrdemServico::orderBy('id', 'desc')->get();
         $ativos = Equipamento::orderBy('nome')->get();
-
         return view('app.SESMT.index', compact('ordens', 'ativos'));
     }
 
@@ -105,8 +108,9 @@ class APRController extends Controller
             ->get()
             ->groupBy('tipo_risco');
         $riscos_medidas_controle = RiscoMedidaControle::all();
+        $materiais_risco = MaterialRisco::all();
 
-        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos', 'apr_riscos_medidas'));
+        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos', 'apr_riscos_medidas', 'materiais_risco'));
     }
     public function dashboard()
     {
@@ -124,7 +128,7 @@ class APRController extends Controller
             'severidade'    => 'required|string|max:50',
             'grau'          => 'required|integer|min:1'
         ]);
-
+        $materiais_risco = MaterialRisco::all();
         // Cria ou atualiza o risco diretamente
         $aprRisco = AprRisco::updateOrCreate(
             [
@@ -167,7 +171,8 @@ class APRController extends Controller
             'riscos',
             'riscos_medidas_controle',
             'apr_riscos',
-            'apr_riscos_medidas'
+            'apr_riscos_medidas',
+            'materiais_risco'
         ));
     }
 
@@ -194,4 +199,83 @@ class APRController extends Controller
             ->keyBy('medida_id'); // chave = medida_id para facilitar
         return response()->json(['success' => true]);
     }
+    //PDF
+    public function pdf($id)
+    {
+        $apr = APR::findOrFail($id);
+
+        // Riscos salvos desta APR
+        $apr_riscos = AprRisco::where('apr_id', $id)->get();
+
+        // IDs dos apr_riscos
+        $idsRiscos = $apr_riscos->pluck('id');
+
+        // Medidas marcadas nesta APR
+        $apr_riscos_medidas = AprRiscoMedidaControle::whereIn(
+            'apr_risco_id',
+            $idsRiscos
+        )->get();
+
+        // Lista de riscos (igual ao show)
+        $riscos = Risco::where('ativo', 1)
+            ->orderBy('tipo_risco')
+            ->orderBy('nome')
+            ->get()
+            ->groupBy('tipo_risco');
+
+        // Medidas de controle
+        $riscos_medidas_controle = RiscoMedidaControle::all();
+
+        // Materiais x Risco
+        $materiais_risco = MaterialRisco::with('material')->get();
+
+        $pdf = Pdf::loadView(
+            'app.SESMT.pdf',
+            compact(
+                'apr',
+                'riscos',
+                'riscos_medidas_controle',
+                'apr_riscos',
+                'apr_riscos_medidas',
+                'materiais_risco'
+            )
+        )->setPaper('a4', 'portrait');
+
+        return $pdf->stream("APR-{$apr->id}.pdf");
+    }
+   public function pt_pdf(Apr $apr)
+{
+    // Buscar riscos agrupados por tipo
+    $riscos = Risco::all()->groupBy('tipo');
+
+    // Riscos da APR com grau >= 1
+    $apr_riscos = AprRisco::where('apr_id', $apr->id)
+        ->where('grau', '>', 1)
+        ->get();
+
+    // Medidas de controle
+    $riscos_medidas_controle = RiscoMedidaControle::all();
+
+    // Medidas marcadas para cada risco da APR
+    $apr_riscos_medidas = AprRiscoMedidaControle::whereIn('apr_risco_id', $apr_riscos->pluck('id'))->get();
+
+    // Materiais / EPIs
+    $materiais_risco = MaterialRisco::all();
+
+    // PT vinculada
+    $pt = PermissaoTrabalho::where('apr_id', $apr->id)->first();
+
+    $pdf = Pdf::loadView('app.SESMT.pt_pdf', compact(
+        'apr',
+        'riscos',
+        'apr_riscos',
+        'riscos_medidas_controle',
+        'apr_riscos_medidas',
+        'materiais_risco',
+        'pt'
+    ));
+
+    return $pdf->stream('PT_' . $apr->id . '.pdf');
+}
+
 }

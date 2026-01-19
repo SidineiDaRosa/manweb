@@ -646,17 +646,23 @@ Route::get('/mensagens-ativas', [MensagemPainelController::class, 'mensagensAtiv
 //-------------------------------------------------------------//
 //                SESMT
 //-------------------------------------------------------------//
+Route::middleware('auth')->group(function () {
+    Route::get('/sesmt-dashboard', [APRController::class, 'dashboard'])->name('sesmt.dashboard');
+    Route::post('/risco-store', [APRController::class, 'risco_store'])
+        ->name('risco.store');
 
-Route::get('/sesmt-dashboard', [APRController::class, 'dashboard'])->name('sesmt.dashboard');
-Route::post('/risco-store', [APRController::class, 'risco_store'])
-    ->name('risco.store');
-
-Route::post(
-    '/apr/risco/medida/toggle',
-    [APRController::class, 'risco_medida_controle_store']
-)->name('apr.risco.medida.toggle');
+    Route::post(
+        '/apr/risco/medida/toggle',
+        [APRController::class, 'risco_medida_controle_store']
+    )->name('apr.risco.medida.toggle');
+    Route::get('/apr/{apr}/pdf', [AprController::class, 'pdf'])
+        ->name('apr.pdf');
+    Route::get('/apr/{apr}/pt-pdf', [App\Http\Controllers\AprController::class, 'pt_pdf'])
+        ->name('apr.pt_pdf');
+});
 //-------------------------------------------------------------//
 //                Materiais EPIs
 //-------------------------------------------------------------//
 use App\Http\Controllers\MaterialEpiController;
+
 Route::resource('material_epis', MaterialEpiController::class);
