@@ -659,6 +659,13 @@ Route::middleware('auth')->group(function () {
         ->name('apr.pdf');
     Route::get('/apr/{apr}/pt-pdf', [App\Http\Controllers\AprController::class, 'pt_pdf'])
         ->name('apr.pt_pdf');
+    //rota show
+    Route::get('/apr/{apr}', [AprController::class, 'show'])
+        ->name('aprs.show');
+
+    //PT
+
+    Route::get('/pt/{id}', [AprController::class, 'show'])->name('pt.show');
 });
 //-------------------------------------------------------------//
 //                Materiais EPIs

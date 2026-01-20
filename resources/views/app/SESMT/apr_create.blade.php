@@ -49,6 +49,13 @@
                                     @error('local_trabalho')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                    <label for="localizacao">Local / Área:</label>
+                                    <select name="localizacao_id" id="localizacao" required class="form-control form-control-lg @error('local_trabalho') is-invalid @enderror">
+                                        <option value="">Selecione o local</option>
+                                        @foreach($localizacao as $local)
+                                        <option value="{{ $local->id }}">{{ $local->nome }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 {{-- Status --}}
@@ -90,53 +97,10 @@
                                     </h6>
                                 </div>
                                 <div class="card-body">
-                                    {{-- Riscos Identificados --}}
-                                    <div class="mb-3">
-                                        <label for="riscos_identificados" class="form-label fw-bold text-danger">
-                                            Riscos Identificados
-                                        </label>
-                                        <textarea class="form-control @error('riscos_identificados') is-invalid @enderror"
-                                            id="riscos_identificados"
-                                            name="riscos_identificados"
-                                            rows="3"
-                                            placeholder="Liste todos os riscos identificados (físicos, químicos, biológicos, ergonômicos, acidentes)...">{{ old('riscos_identificados') }}</textarea>
-                                        @error('riscos_identificados')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                        <div class="form-text text-danger">Identifique os perigos potenciais associados à atividade.</div>
-                                    </div>
 
-                                    {{-- Medidas de Controle --}}
-                                    <div class="mb-3">
-                                        <label for="medidas_controle" class="form-label fw-bold text-success">
-                                            Medidas de Controle
-                                        </label>
-                                        <textarea class="form-control @error('medidas_controle') is-invalid @enderror"
-                                            id="medidas_controle"
-                                            name="medidas_controle"
-                                            rows="3"
-                                            placeholder="Descreva as medidas preventivas a serem adotadas...">{{ old('medidas_controle') }}</textarea>
-                                        @error('medidas_controle')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                        <div class="form-text text-success">Especifique as ações para eliminar ou reduzir os riscos.</div>
-                                    </div>
 
-                                    {{-- EPI Obrigatório --}}
-                                    <div>
-                                        <label for="epi_obrigatorio" class="form-label fw-bold text-primary">
-                                            EPI Obrigatório
-                                        </label>
-                                        <textarea class="form-control @error('epi_obrigatorio') is-invalid @enderror"
-                                            id="epi_obrigatorio"
-                                            name="epi_obrigatorio"
-                                            rows="2"
-                                            placeholder="Liste os Equipamentos de Proteção Individual necessários...">{{ old('epi_obrigatorio') }}</textarea>
-                                        @error('epi_obrigatorio')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                        <div class="form-text text-primary">Equipamentos obrigatórios para a execução segura da atividade.</div>
-                                    </div>
+
+
                                 </div>
                             </div>
 

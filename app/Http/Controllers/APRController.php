@@ -17,6 +17,7 @@ use App\Models\AprRiscoMedidaControle;
 use App\Models\MaterialEpi;
 use App\Models\MaterialRisco;
 use App\Models\PermissaoTrabalho;
+use App\Models\AreaLocal;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -41,46 +42,45 @@ class APRController extends Controller
         $ordem = OrdemServico::findOrFail($os_id);
         $ativos = Equipamento::orderBy('nome')->get();
         $funcionarios = Funcionario::where('status', 'Ativo')->get();
-        return view('app.SESMT.apr_create', compact('ordem', 'ativos', 'funcionarios'));
+        $localizacao = AreaLocal::all();
+        return view('app.SESMT.apr_create', compact('ordem', 'ativos', 'funcionarios', 'localizacao'));
     }
 
     /**
      * Salvar APR
-     */ public function store(Request $request)
+     */
+    public function store(Request $request)
     {
-        // dd($request);
         // 1. Validação dos dados
         $request->validate([
-            'ordem_servico_id'      => 'required|exists:ordens_servicos,id',
-            'responsavel'           => 'required|string|max:255',
-            'local_trabalho'        => 'nullable|string|max:255',
-            'descricao_atividade'   => 'required|string',
-            'riscos_identificados'  => 'nullable|string',
-            'medidas_controle'      => 'nullable|string',
-            'epi_obrigatorio'       => 'nullable|string',
-            'status'                => 'nullable|in:Aberta',
+            'ordem_servico_id'     => 'required|exists:ordens_servicos,id',
+            'responsavel'          => 'required|exists:funcionarios,id',
+            'localizacao_id'       => 'required|exists:area_local,id', // valida o local
+            'local_trabalho'       => 'nullable|string|max:255',
+            'descricao_atividade'  => 'required|string',
+            'riscos_identificados' => 'nullable|string',
+            'medidas_controle'     => 'nullable|string',
+            'epi_obrigatorio'      => 'nullable|string',
+            'status'               => 'nullable|in:Aberta,aberta',
         ]);
 
         // 2. Criar registro da APR
-        $apr = APR::create([
-            'ordem_servico_id'       => $request->ordem_servico_id,
-            'responsavel'            => $request->responsavel,
-            'local_trabalho'         => $request->local_trabalho ?? 'Não informado',
-            'descricao_atividade'    => $request->descricao_atividade,
-            'riscos_identificados'   => $request->riscos_identificados,
-            'medidas_controle'       => $request->medidas_controle,
-            'epi_obrigatorio'        => $request->epi_obrigatorio,
-            'status'                 => $request->status ?? 'aberta',
+        $apr = Apr::create([
+            'ordem_servico_id'     => $request->ordem_servico_id,
+            'responsavel_id'       => $request->responsavel,
+            'localizacao_id'       => $request->localizacao_id, // adiciona o local
+            'local_trabalho'       => $request->local_trabalho ?? 'Não informado',
+            'descricao_atividade'  => $request->descricao_atividade,
+            'riscos_identificados' => $request->riscos_identificados,
+            'medidas_controle'     => $request->medidas_controle,
+            'epi_obrigatorio'      => $request->epi_obrigatorio,
+            'status'               => $request->status ?? 'aberta',
         ]);
-        // Busca o último registro inserido na tabela aprs
-        $apr = APR::latest('id')->first();
 
-        if (!$apr) {
-            abort(404, 'Nenhuma APR encontrada.');
-        }
-
-        return view('app.SESMT.show', compact('apr'));
+        // 3. Redirecionar para a tela de exibição da APR
+        return redirect()->route('aprs.show', $apr->id);
     }
+
 
 
     /**
@@ -243,39 +243,50 @@ class APRController extends Controller
 
         return $pdf->stream("APR-{$apr->id}.pdf");
     }
-   public function pt_pdf(Apr $apr)
-{
-    // Buscar riscos agrupados por tipo
-    $riscos = Risco::all()->groupBy('tipo');
+    public function pt_pdf(Apr $apr)
+    {
+        // Buscar riscos agrupados por tipo
+        $riscos = Risco::all()->groupBy('tipo');
 
-    // Riscos da APR com grau >= 1
-    $apr_riscos = AprRisco::where('apr_id', $apr->id)
-        ->where('grau', '>', 1)
-        ->get();
+        // Riscos da APR com grau >= 1
+        $apr_riscos = AprRisco::where('apr_id', $apr->id)
+            ->where('grau', '>', 1)
+            ->get();
 
-    // Medidas de controle
-    $riscos_medidas_controle = RiscoMedidaControle::all();
+        // Medidas de controle
+        $riscos_medidas_controle = RiscoMedidaControle::all();
 
-    // Medidas marcadas para cada risco da APR
-    $apr_riscos_medidas = AprRiscoMedidaControle::whereIn('apr_risco_id', $apr_riscos->pluck('id'))->get();
+        // Medidas marcadas para cada risco da APR
+        $apr_riscos_medidas = AprRiscoMedidaControle::whereIn('apr_risco_id', $apr_riscos->pluck('id'))->get();
 
-    // Materiais / EPIs
-    $materiais_risco = MaterialRisco::all();
+        // Materiais / EPIs
+        $materiais_risco = MaterialRisco::all();
 
-    // PT vinculada
-    $pt = PermissaoTrabalho::where('apr_id', $apr->id)->first();
+        // Filtrar apenas os materiais dos riscos selecionados
+        $materiais_selecionados = collect();
+        foreach ($apr_riscos as $apr_risco) {
+            $materiais_do_risco = $materiais_risco
+                ->where('risco_id', $apr_risco->risco_id);
+            $materiais_selecionados = $materiais_selecionados->concat($materiais_do_risco);
+        }
 
-    $pdf = Pdf::loadView('app.SESMT.pt_pdf', compact(
-        'apr',
-        'riscos',
-        'apr_riscos',
-        'riscos_medidas_controle',
-        'apr_riscos_medidas',
-        'materiais_risco',
-        'pt'
-    ));
+        // Remove duplicados
+        $materiais_selecionados = $materiais_selecionados->unique('id');
 
-    return $pdf->stream('PT_' . $apr->id . '.pdf');
-}
+        // PT vinculada
+        $pt = PermissaoTrabalho::where('apr_id', $apr->id)->first();
+       
+        // Gerar PDF
+        $pdf = Pdf::loadView('app.SESMT.pt_pdf', compact(
+            'apr',
+            'riscos',
+            'apr_riscos',
+            'riscos_medidas_controle',
+            'apr_riscos_medidas',
+            'materiais_selecionados', // materiais necessários
+            'pt'
+        ));
 
+        return $pdf->stream('PT_' . $apr->id . '.pdf');
+    }
 }

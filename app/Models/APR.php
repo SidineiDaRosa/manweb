@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Funcionario;
 
 class Apr extends Model
 {
@@ -17,9 +18,9 @@ class Apr extends Model
     protected $fillable = [
         'ordem_servico_id',
         'local_trabalho',
+        'localizacao_id',
         'descricao_atividade',
-        'epi_obrigatorio',
-        'responsavel',
+        'responsavel_id',
         'assinatura_responsavel',
         'status',
     ];
@@ -39,13 +40,13 @@ class Apr extends Model
     {
         return $this->status === 'finalizada';
     }
-    // No modelo Apr
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'responsavel'); // assumindo que 'responsavel' guarda o ID do usuário mostra o nome em show apr
-    }
+
     public function responsavel()
     {
-        return $this->belongsTo(Funcionario::class, 'responsavel');
+        return $this->belongsTo(Funcionario::class, 'responsavel_id');
+    }
+    public function localizacao()
+    {
+        return $this->belongsTo(AreaLocal::class, 'localizacao_id');
     }
 }

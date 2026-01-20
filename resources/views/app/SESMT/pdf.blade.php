@@ -4,7 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <title>APR Nº {{ $apr->id }}</title>
+    <table style="width:100%; border-collapse:collapse;">
+        <tr>
+            <!-- Coluna 1: Logo -->
+            <td style="width:130px; vertical-align:top;">
+                <img src="{{ public_path('img/logo_fapolpa.png') }}" style="width:120px; height:auto;">
+            </td>
 
+            <!-- Coluna 2: Dados da empresa -->
+            <td style="text-align:right; vertical-align:top;">
+                <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
+                CNPJ: 82.653.700/0001-40<br>
+                Endereço: Rua Ema Mazalotti Cardoso, 170, Palmas - PR, 85.692-210.- Palmas/PR<br>
+            </td>
+        </tr>
+    </table>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -80,9 +94,9 @@
         <div style="border: solid 1px">
             Status: {{ strtoupper($apr->status) }} <br>
             Ordem Serviço: {{ $apr->ordem_servico_id }} <br>
-            Local de Trabalho: {{ $apr->local_trabalho }} <br>
+            Local de Trabalho: {{ $apr->localizacao->nome}} <br>
             Descrição da atividade: {{ $apr->descricao_atividade }} <br>
-            Responsável: {{ $apr->responsavel }}
+            Responsável: {{$apr->responsavel->primeiro_nome}} {{$apr->responsavel->ultimo_nome}}
         </div>
 
         <h4 style="margin-top:20px;">Análise de Riscos</h4>

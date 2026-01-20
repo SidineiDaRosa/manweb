@@ -162,13 +162,7 @@
                     {{-- CABEÇALHO DA APR --}}
                     <div class="card-header bg-primary bg-opacity-10 border-primary py-3">
                         <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <img src="{{ asset('images/logo-empresa.png') }}" alt="Logo" height="70" class="img-fluid">
-                            </div>
-                            <div class="col-md-4 text-center">
-                                <h3 class="text-primary mb-0 fw-bold">ANÁLISE PRELIMINAR DE RISCO</h3>
-                                <small class="text-muted">Documento de Segurança do Trabalho</small>
-                            </div>
+
                             <div class="col-md-4 text-end">
                                 <div class="text-primary fw-bold">Código: APR-{{ str_pad($apr->id, 5, '0', STR_PAD_LEFT) }}</div>
                             </div>
@@ -221,7 +215,7 @@
                                     <div class="card-body">
                                         <div class="row mb-2">
                                             <div class="col-5 fw-bold">Elaborado por:</div>
-                                            <div class="col-7 fs-5"></div>
+                                            <div class="col-7 fs-5">{{$apr->responsavel->primeiro_nome}} {{$apr->responsavel->ultimo_nome}}</div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-5 fw-bold">Assinatura:</div>
@@ -348,31 +342,37 @@
 
                                                 {{-- GRAU --}}
                                                 @php
-                                                $classeTd = 'bg-secondary';
+                                                $classeTd = 'bg-secondary text-white'; // valor padrão
 
+                                                if (!empty($apr_riscos)) {
                                                 foreach ($apr_riscos as $apr_risco) {
                                                 if ($apr_risco->risco_id == $risco->id) {
                                                 $classeTd = match($apr_risco->grau) {
-                                                2 => 'bg-sucess text-white',
+                                                2 => 'bg-success text-white',
                                                 4 => 'bg-warning text-dark',
                                                 5 => 'bg-danger text-white',
                                                 default => 'bg-secondary text-white'
                                                 };
-                                                break;
+                                                break; // sai do loop quando encontrar o primeiro correspondente
+                                                }
                                                 }
                                                 }
                                                 @endphp
 
                                                 <td class="text-center align-middle {{ $classeTd }}">
                                                     <span data-risco="{{ $risco->id }}">
+                                                        @php $grauExibido = null; @endphp
                                                         @foreach($apr_riscos as $apr_risco)
                                                         @if($apr_risco->risco_id == $risco->id)
-                                                        {{ $apr_risco->grau }}
+                                                        @php $grauExibido = $apr_risco->grau; @endphp
                                                         @break
                                                         @endif
                                                         @endforeach
+
+                                                        {{ $grauExibido ?? '-' }} {{-- mostra '-' se não houver risco --}}
                                                     </span>
                                                 </td>
+
                                                 {{-- IDENTIFICADO --}}
                                                 <td class="text-center align-middle">
                                                     <input type="checkbox"
@@ -388,39 +388,48 @@
                                                 <td class="align-middle">
                                                     @foreach($riscos_medidas_controle as $medida)
                                                     @if($medida->risco_id == $risco->id)
+
                                                     @php
                                                     $estado = null;
+
+                                                    // Tenta encontrar o risco salvo correspondente
+                                                    $apr_risco_atual = null;
+                                                    if(!empty($apr_riscos)) {
+                                                    foreach($apr_riscos as $apr_risco) {
+                                                    if($apr_risco->risco_id == $risco->id) {
+                                                    $apr_risco_atual = $apr_risco;
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+
+                                                    // Pega a medida salva, se existir
                                                     if($apr_risco_salvo && $apr_risco_salvo->medidas) {
                                                     $medidaSalva = $apr_risco_salvo->medidas->firstWhere('medida_id', $medida->id);
                                                     $estado = $medidaSalva->marcado ?? null;
                                                     }
+
+                                                    // Pega o aprRiscoMedida correspondente
+                                                    $aprRiscoMedida = null;
+                                                    if($apr_risco_atual) {
+                                                    $aprRiscoMedida = $apr_riscos_medidas
+                                                    ->where('apr_risco_id', $apr_risco_atual->id)
+                                                    ->where('medida_id', $medida->id)
+                                                    ->first();
+                                                    }
                                                     @endphp
-                                                    <!---------------------------------------------------->
 
                                                     <div class="d-flex align-items-center mb-1">
-
-                                                        @php
-                                                        $aprRiscoMedida = $apr_riscos_medidas
-                                                        ->where('apr_risco_id', $apr_risco->id)
-                                                        ->where('medida_id', $medida->id)
-                                                        ->first();
-                                                        @endphp
-
-                                                        @if($aprRiscoMedida)
-
-                                                        @endif
                                                         {{-- Radio Existente --}}
                                                         <div class="form-check form-check-inline" style="background-color: #198754; padding: 2px; border-radius: 4px;">
                                                             @foreach($apr_riscos_medidas as $apr_risco_medida_controle)
-                                                            @if(
-                                                            $apr_risco_medida_controle->apr_risco_id == $apr_risco->id &&
+                                                            @if($apr_risco_atual &&
+                                                            $apr_risco_medida_controle->apr_risco_id == $apr_risco_atual->id &&
                                                             $apr_risco_medida_controle->medida_id == $medida->id &&
-                                                            $apr_risco_medida_controle->status == 1
-                                                            )
+                                                            $apr_risco_medida_controle->status == 1)
                                                             ✅
                                                             @endif
                                                             @endforeach
-
 
                                                             <input type="radio"
                                                                 name="medida_{{ $medida->id }}"
@@ -436,11 +445,10 @@
                                                         {{-- Radio Inexistente --}}
                                                         <div class="form-check form-check-inline ms-2" style="background-color: #fdda14; padding: 2px; border-radius: 4px;">
                                                             @foreach($apr_riscos_medidas as $apr_risco_medida_controle)
-                                                            @if(
-                                                            $apr_risco_medida_controle->apr_risco_id == $apr_risco->id &&
+                                                            @if($apr_risco_atual &&
+                                                            $apr_risco_medida_controle->apr_risco_id == $apr_risco_atual->id &&
                                                             $apr_risco_medida_controle->medida_id == $medida->id &&
-                                                            $apr_risco_medida_controle->status == 0
-                                                            )
+                                                            $apr_risco_medida_controle->status == 0)
                                                             ✅
                                                             @endif
                                                             @endforeach
@@ -456,12 +464,13 @@
                                                             <label class="form-check-label" for="medida-{{ $medida->id }}-inexistente"></label>
                                                         </div>
 
-                                                        {{-- Descrição --}}
+                                                        {{-- Descrição da Medida --}}
                                                         <span class="ms-2">{{ $medida->descricao }}</span>
                                                     </div>
                                                     @endif
                                                     @endforeach
                                                 </td>
+
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function() {
                                                         document.querySelectorAll('.medida-radio').forEach(radio => {
