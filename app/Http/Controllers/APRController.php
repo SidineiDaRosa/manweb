@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\OrdemServico;
 use App\Models\Ativo;
 use App\Models\APR;
+use App\Models\Apr as ModelsApr;
 use App\Models\APRItem;
 use App\Models\Equipamento;
 use App\Models\Funcionario;
@@ -199,7 +200,7 @@ class APRController extends Controller
             ->keyBy('medida_id'); // chave = medida_id para facilitar
         return response()->json(['success' => true]);
     }
-    //PDF
+    // imprime a apr PDF
     public function pdf($id)
     {
         $apr = APR::findOrFail($id);
@@ -275,7 +276,7 @@ class APRController extends Controller
 
         // PT vinculada
         $pt = PermissaoTrabalho::where('apr_id', $apr->id)->first();
-       
+
         // Gerar PDF
         $pdf = Pdf::loadView('app.SESMT.pt_pdf', compact(
             'apr',
@@ -288,5 +289,34 @@ class APRController extends Controller
         ));
 
         return $pdf->stream('PT_' . $apr->id . '.pdf');
+    }
+    //apr em branco
+    public function apr_modelo($apr_id)
+    {
+        $apr = APR::find($apr_id);
+        // Lista de riscos ativos
+        $riscos = Risco::where('ativo', 1)
+            ->orderBy('tipo_risco')
+            ->orderBy('nome')
+            ->get()
+            ->groupBy('tipo_risco');
+
+        // Medidas de controle
+        $riscos_medidas_controle = RiscoMedidaControle::all();
+
+        // Materiais / EPIs vinculados aos riscos
+        $materiais_risco = MaterialRisco::with('material')->get();
+
+        $pdf = Pdf::loadView(
+            'app.SESMT.apr_vazia',
+            compact(
+                'apr',
+                'riscos',
+                'riscos_medidas_controle',
+                'materiais_risco'
+            )
+        )->setPaper('a4', 'portrait');
+
+        return $pdf->stream('APR-EM-BRANCO.pdf');
     }
 }

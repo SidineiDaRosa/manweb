@@ -554,9 +554,9 @@
                                     <td>
                                         <a class="txt-link" href="{{route('apr.show',['apr_id'=>$apr->id])}}"><strong>ID APR:</strong> {{ $apr->id }}</a>
                                     </td>
-                                    <td>{{ $apr->local_trabalho }}</td>
+                                    <td>{{ $apr->localizacao->nome}}</td>
                                     <td>{{ $apr->descricao_atividade }}</td>
-                                    <td>{{ $apr->responsavel}}</td>
+                                    <td>{{ $apr->responsavel->primeiro_nome}} {{ $apr->responsavel->ultimo_nome}}</td>
                                     <td>{{ \Carbon\Carbon::parse($apr->prazo)->format('d/m/Y') }}</td>
 
                                     <td>

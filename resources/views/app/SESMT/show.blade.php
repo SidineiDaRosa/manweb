@@ -151,6 +151,10 @@
                         <a href="{{ route('apr.pt_pdf', ['apr' => $apr->id]) }}" target="_blank" class="btn btn-primary">
                             Gerar PT em PDF
                         </a>
+                        <a href="{{ route('apr.modelo', ['apr_id' => $apr->id]) }}" target="_blank" class="btn btn-secondary">
+                            🖨️ Imprimir APR em Branco
+                        </a>
+
                     </ol>
                 </nav>
             </div>

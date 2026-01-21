@@ -666,10 +666,17 @@ Route::middleware('auth')->group(function () {
     //PT
 
     Route::get('/pt/{id}', [AprController::class, 'show'])->name('pt.show');
+    Route::get('/apr-modelo/{apr_id}', [AprController::class, 'apr_modelo'])
+    ->name('apr.modelo');
 });
+
+
 //-------------------------------------------------------------//
 //                Materiais EPIs
 //-------------------------------------------------------------//
 use App\Http\Controllers\MaterialEpiController;
 
 Route::resource('material_epis', MaterialEpiController::class);
+
+
+Route::get('/teste-controller', [AprController::class, 'teste']);
