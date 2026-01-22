@@ -158,7 +158,7 @@
         @if($materiais_selecionados->count())
         <ul>
             @foreach($materiais_selecionados as $material)
-            <li>{{$material}}</li>
+            <li>{{$material->material->nome}} | {{$material->observacoes}}</li>
             @endforeach
         </ul>
         @else
@@ -166,9 +166,9 @@
         @endif
 
         <div style="margin-top:10px;">
-            <strong>Data/Hora de Início:</strong> __________________________<br>
-            <strong>Data/Hora de Término:</strong> ________________________<br>
-            <strong>Observações / Procedimentos especiais:</strong>
+            <strong>Data/Hora de Início:</strong> __________________________<br><p></p>
+            <strong>Data/Hora de Término:</strong> ________________________<br><p></p>
+            <strong>Observações / Procedimentos especiais:</strong><p></p>
             <div class="observacoes-box"></div>
         </div>
 
