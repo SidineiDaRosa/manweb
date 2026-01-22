@@ -420,7 +420,7 @@
         <div class="sidebar">
             <div class="logo">
                 <i class="fas fa-shield-alt"></i>
-                <h2>SafeWork Dashboard</h2>
+                <h2>SESMT</h2>
             </div>
 
             <div class="menu-item active">
@@ -433,11 +433,13 @@
             </div>
             <div class="menu-item">
                 <i class="fas fa-exclamation-triangle"></i>
-                <span>Riscos Identificados</span>
+                <span><a href="{{route('riscos.medidas')}}" style="color: white;">Riscos indentificados</a>
+                </span>
             </div>
             <div class="menu-item">
                 <i class="fas fa-user-hard-hat"></i>
-                <span>EPIs</span>
+                <span><a href="" style="color: white;">EPIs</a>
+                </span>
             </div>
             <div class="menu-item">
                 <i class="fas fa-clipboard-check"></i>
@@ -707,7 +709,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p>SafeWork Dashboard &copy; 2023 - Sistema de Gestão de Segurança do Trabalho</p>
+            <p>SESMT &copy; 2023 - Sistema de Gestão de Segurança do Trabalho</p>
             <p style="margin-top: 5px;">Última atualização: 10/08/2023 14:30</p>
         </div>
     </div>

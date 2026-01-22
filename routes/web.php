@@ -634,7 +634,8 @@ Route::middleware('auth')->group(function () {
 //                Mensagens Painel
 //-------------------------------------------------------------//
 use App\Http\Controllers\MensagemPainelController;
-
+use App\Http\Controllers\RiscoController;
+use App\Http\Controllers\MedidaControleController;
 // Resource com binding correto
 Route::resource('mensagens', MensagemPainelController::class)->parameters([
     'mensagens' => 'mensagem'
@@ -667,7 +668,19 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pt/{id}', [AprController::class, 'show'])->name('pt.show');
     Route::get('/apr-modelo/{apr_id}', [AprController::class, 'apr_modelo'])
-    ->name('apr.modelo');
+        ->name('apr.modelo');
+
+    //Riscos Medidas de controle
+
+    Route::get('/riscos-medidas', [RiscoController::class, 'index'])
+        ->name('riscos.medidas');
+    Route::put('/riscos/{id}', [RiscoController::class, 'update'])->name('riscos.update');
+    Route::post('/riscos', [RiscoController::class, 'store'])->name('riscos.store');
+
+    //Medidas de controle
+
+    Route::get('/riscos/{id}/medidas', [MedidaControleController::class, 'index'])->name('riscos.medidas.index');
+    Route::post('/riscos/{id}/medidas', [MedidaControleController::class, 'store'])->name('riscos.medidas.store');
 });
 
 
@@ -677,6 +690,10 @@ Route::middleware('auth')->group(function () {
 use App\Http\Controllers\MaterialEpiController;
 
 Route::resource('material_epis', MaterialEpiController::class);
+// Store novo EPI
+Route::post('/material-epis', [MaterialEpiController::class, 'store'])->name('material_epis.store');
 
-
-Route::get('/teste-controller', [AprController::class, 'teste']);
+Route::get('/epis/{id}', [MaterialEpiController::class, 'epis_index'])
+    ->name('epis_index');
+Route::post('/epis/{id}', [MaterialEpiController::class, 'store_epi'])
+    ->name('epis.store');

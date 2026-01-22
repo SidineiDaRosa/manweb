@@ -158,7 +158,7 @@
         @if($materiais_selecionados->count())
         <ul>
             @foreach($materiais_selecionados as $material)
-            <li>{{ $material->nome }} @if($material->observacoes)- {{ $material->observacoes }}@endif</li>
+            <li>{{$material}}</li>
             @endforeach
         </ul>
         @else

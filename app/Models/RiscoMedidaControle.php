@@ -12,9 +12,10 @@ class RiscoMedidaControle extends Model
     protected $table = 'risco_medidas';
 
     protected $fillable = [
-        'apr_risco_id',
+        'risco_id',
         'descricao',
     ];
+
 
     /**
      * Cada medida pertence a um registro de risco da APR
@@ -22,5 +23,10 @@ class RiscoMedidaControle extends Model
     public function aprRisco()
     {
         return $this->belongsTo(AprRisco::class);
+    }
+
+    public function risco()
+    {
+        return $this->belongsTo(Risco::class, 'risco_id');
     }
 }

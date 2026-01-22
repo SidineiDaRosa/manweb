@@ -35,21 +35,11 @@
                             <div class="row">
                                 {{-- Local de Trabalho --}}
                                 <div class="col-md-6 mb-3">
-                                    <label for="local_trabalho" class="form-label fw-bold">
-                                        <i class="align-middle me-1" data-feather="map-pin"></i>
-                                        Local de Trabalho <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control form-control-lg @error('local_trabalho') is-invalid @enderror"
-                                        id="local_trabalho"
-                                        name="local_trabalho"
-                                        value="{{ old('local_trabalho') }}"
-                                        placeholder="Ex: Área de Manutenção Predial"
-                                        required>
+
                                     @error('local_trabalho')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <label for="localizacao">Local / Área:</label>
+                                    <label for="localizacao">Local / Área:<span class="text-danger">*</span></label>
                                     <select name="localizacao_id" id="localizacao" required class="form-control form-control-lg @error('local_trabalho') is-invalid @enderror">
                                         <option value="">Selecione o local</option>
                                         @foreach($localizacao as $local)
@@ -71,37 +61,29 @@
                             </div>
 
                             {{-- Descrição da Atividade --}}
-                            <div class="mb-4">
-                                <label for="descricao_atividade" class="form-label fw-bold">
-                                    <i class="align-middle me-1" data-feather="clipboard"></i>
-                                    Descrição da Atividade <span class="text-danger">*</span>
-                                </label>
-                                <textarea class="form-control @error('descricao_atividade') is-invalid @enderror"
-                                    id="descricao_atividade"
-                                    name="descricao_atividade"
-                                    rows="4"
-                                    placeholder="Descreva detalhadamente a atividade a ser realizada..."
-                                    required>{{ old('descricao_atividade') }}</textarea>
-                                @error('descricao_atividade')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <div class="form-text">Descreva passo a passo as tarefas a serem executadas.</div>
-                            </div>
-
-                            {{-- Card de Análise de Riscos --}}
                             <div class="card mb-4 border-warning">
                                 <div class="card-header bg-warning bg-opacity-10 border-warning">
-                                    <h6 class="card-title mb-0 text-warning">
-                                        <i class="align-middle me-1" data-feather="alert-triangle"></i>
-                                        Análise de Riscos
-                                    </h6>
+                                    <div class="mb-4">
+                                        <label for="descricao_atividade" class="form-label fw-bold">
+                                            <i class="align-middle me-1" data-feather="clipboard"></i>
+                                            Descrição da Atividade <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea class="form-control @error('descricao_atividade') is-invalid @enderror"
+                                            id="descricao_atividade"
+                                            name="descricao_atividade"
+                                            rows="4"
+                                            placeholder="Descreva detalhadamente a atividade a ser realizada..."
+                                            required>{{ old('descricao_atividade') }}</textarea>
+                                        @error('descricao_atividade')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <div class="form-text">Descreva passo a passo as tarefas a serem executadas.</div>
+                                    </div>
+
+
+
                                 </div>
-                                <div class="card-body">
 
-
-
-
-                                </div>
                             </div>
 
                             <div class="col-md-6 mb-3">

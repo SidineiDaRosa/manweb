@@ -45,4 +45,12 @@ class Risco extends Model
             'risco_id'          // FK no pivô para Risco
         )->withPivot('status', 'observacoes', 'created_at', 'updated_at');
     }
+    public function medidas()
+    {
+        return $this->hasMany(RiscoMedidaControle::class, 'risco_id');
+    }
+    public function materiais()
+    {
+        return $this->hasMany(MaterialRisco::class, 'risco_id');
+    }
 }

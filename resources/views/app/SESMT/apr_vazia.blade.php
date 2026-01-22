@@ -77,10 +77,9 @@
             APR Nº: {{$apr->id}} | Ordem Serviço: {{$apr->ordem_servico_id}} <br>
             Local de trabalho: {{$apr->localizacao->nome}} <br>
             Data: ____/____/________ <br><br>
-            Status: ________________________ <br>
-            Descrição da atividade: ____________________________________ <br>
-            Responsável: ______________________________________________
-        </div>
+            Status: ________________________ <br><p></p>
+            Descrição da atividade: ____________________________________  |  Responsável: ______________________________________________
+        </div> 
 
         <h4 style="margin-top:20px;">Análise de Riscos</h4>
 

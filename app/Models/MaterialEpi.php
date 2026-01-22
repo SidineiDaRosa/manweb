@@ -44,4 +44,8 @@ class MaterialEpi extends Model
             'risco_id'           // FK no pivô apontando para o Risco
         );
     }
+    public function material()
+    {
+        return $this->belongsTo(MaterialEpi::class, 'material_id');
+    }
 }

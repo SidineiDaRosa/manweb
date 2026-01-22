@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MaterialEpi;
 use App\Models\MaterialRisco;
+use App\Models\Risco;
+
 
 class MaterialEpiController extends Controller
 {
     public function index()
     {
         $materiais = MaterialEpi::with('riscos')->get();
-        $materiais_risco=MaterialRisco::all();
-        return view('app.material_epi.index', compact('materiais','materiais_risco'));
+        $materiais_risco = MaterialRisco::all();
+        return view('app.material_epi.index', compact('materiais', 'materiais_risco'));
     }
 
 
@@ -25,17 +27,18 @@ class MaterialEpiController extends Controller
     {
         $request->validate([
             'nome' => 'required|string|max:255',
-            'tipo' => 'required|string|max:100',
-            'codigo' => 'nullable|string|max:100',
-            'ca' => 'nullable|string|max:50',
+            'tipo' => 'required|string',
+            'ca' => 'nullable|string|max:100',
             'validade' => 'nullable|date',
-            'quantidade_estoque' => 'nullable|integer|min:0',
+            'quantidade_estoque' => 'required|integer|min:0',
+            'status' => 'required|boolean',
         ]);
 
         MaterialEpi::create($request->all());
 
-        return redirect()->route('app.material_epi.index')->with('success', 'Material/EPI cadastrado com sucesso!');
+        return redirect()->back()->with('success', 'Material/EPI cadastrado com sucesso!');
     }
+
 
     public function show($id)
     {
@@ -73,5 +76,30 @@ class MaterialEpiController extends Controller
         $material->delete();
 
         return redirect()->route('app.material_epi.index')->with('success', 'Material/EPI excluído com sucesso!');
+    }
+    public function epis_index($id)
+    {
+        echo ('epis');
+        $risco = Risco::with('materiais.material')->findOrFail($id);
+        $materiais_epis = MaterialEpi::all();
+
+        return view('app.SESMT.epi.index', compact('risco', 'materiais_epis'));
+    }
+    public function store_epi(Request $request, $riscoId)
+    {
+        $request->validate([
+            'material_id' => 'required|exists:materiais,id',
+            'status' => 'required|boolean',
+            'observacoes' => 'nullable|string',
+        ]);
+
+        MaterialRisco::create([
+            'risco_id' => $riscoId,
+            'material_id' => $request->material_id,
+            'status' => $request->status,
+            'observacoes' => $request->observacoes,
+        ]);
+
+        return redirect()->back()->with('success', 'EPI vinculado com sucesso!');
     }
 }

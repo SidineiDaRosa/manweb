@@ -7,15 +7,20 @@
 
         {{-- Mensagens de sucesso --}}
         @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+                &times;
+            </button>
         </div>
         @endif
 
+
+
         {{-- Botão para criar novo material --}}
-        <div class="mb-3">
-            <a href="{{ route('material_epis.create') }}" class="btn btn-primary">Cadastrar Novo Material / EPI</a>
-        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovoMaterial">
+            Cadastrar Novo Material / EPI
+        </button>
 
         {{-- Tabela de materiais --}}
         <table class="table table-bordered table-striped">
@@ -88,5 +93,71 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Antes do fechamento do body -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <div class="modal fade" id="modalNovoMaterial" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('material_epis.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Cadastrar Novo Material / EPI</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome</label>
+                                <input type="text" name="nome" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tipo</label>
+                                <select name="tipo" class="form-control" required>
+                                    <option value="">Selecione</option>
+                                    <option value="EPI">EPI</option>
+                                    <option value="Ferramenta">Ferramenta</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">CA</label>
+                                <input type="text" name="ca" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Validade</label>
+                                <input type="date" name="validade" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Quantidade</label>
+                                <input type="number" name="quantidade_estoque" class="form-control" required min="0">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-control">
+                                    <option value="1" selected>Ativo</option>
+                                    <option value="0">Inativo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </main>
 @endsection

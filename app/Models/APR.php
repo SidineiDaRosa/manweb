@@ -17,7 +17,6 @@ class Apr extends Model
      */
     protected $fillable = [
         'ordem_servico_id',
-        'local_trabalho',
         'localizacao_id',
         'descricao_atividade',
         'responsavel_id',
