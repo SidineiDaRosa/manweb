@@ -461,7 +461,7 @@ class DahboardStatusOsController extends Controller
         $hoje = Carbon::today();
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::where('status', 'ativo')
-            ->where('funcao','eletricista')
+            ->whereIn('funcao', ['mecânico', 'eletricista'])
             ->get();
         $ordens_servicos = OrdemServico::where('situacao', 'aberto')
             ->whereDate('data_inicio', '<=', $hoje)
@@ -469,7 +469,7 @@ class DahboardStatusOsController extends Controller
             ->orderByRaw("
         CASE 
             WHEN `check` = 1 THEN 2
-            ELSE 1add
+            ELSE 1
         END
     ")
             ->orderBy('urgencia', 'desc')
