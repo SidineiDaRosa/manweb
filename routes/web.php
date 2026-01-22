@@ -651,7 +651,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sesmt-dashboard', [APRController::class, 'dashboard'])->name('sesmt.dashboard');
     Route::post('/risco-store', [APRController::class, 'risco_store'])
         ->name('risco.store');
-
+    Route::put('/apr/update', [AprController::class, 'update'])->name('apr.update');
     Route::post(
         '/apr/risco/medida/toggle',
         [APRController::class, 'risco_medida_controle_store']
@@ -681,6 +681,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/riscos/{id}/medidas', [MedidaControleController::class, 'index'])->name('riscos.medidas.index');
     Route::post('/riscos/{id}/medidas', [MedidaControleController::class, 'store'])->name('riscos.medidas.store');
+    Route::put('/risco-medidas/update', [MedidaControleController::class, 'update'])
+        ->name('risco_medidas.update');
 });
 
 

@@ -22,6 +22,7 @@ use App\Models\AreaLocal;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use League\Flysystem\Adapter\Local;
 
 class APRController extends Controller
 {
@@ -82,6 +83,28 @@ class APRController extends Controller
         return redirect()->route('aprs.show', $apr->id);
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:aprs,id',
+            'ordem_servico_id' => 'required',
+            'descricao_atividade' => 'required',
+            'status' => 'required|in:aberta,finalizada'
+        ]);
+
+        $apr = Apr::findOrFail($request->id);
+
+        $apr->update([
+            'ordem_servico_id' => $request->ordem_servico_id,
+            'localizacao_id' => $request->localizacao_id,
+            'descricao_atividade' => $request->descricao_atividade,
+            'responsavel_id' => $request->responsavel_id,
+            'assinatura_responsavel' => $request->assinatura_responsavel,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('success', 'APR atualizada com sucesso!');
+    }
 
 
     /**
@@ -110,14 +133,17 @@ class APRController extends Controller
             ->groupBy('tipo_risco');
         $riscos_medidas_controle = RiscoMedidaControle::all();
         $materiais_risco = MaterialRisco::all();
-
-        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos', 'apr_riscos_medidas', 'materiais_risco'));
+        $localizacao = AreaLocal::all();
+        $responsaveis = Funcionario::all();
+        return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos', 'apr_riscos_medidas', 'materiais_risco', 'localizacao', 'responsaveis'));
     }
     //Carrega dshboard SESMT
     public function dashboard()
     {
         $aprs = APR::all();
-        return view('app.SESMT.dashboard', ['aprs' => $aprs]);
+        $riscos = AprRisco::all();
+        $apr_count = APR::count('status', 'aberta');
+        return view('app.SESMT.dashboard', ['aprs' => $aprs, 'riscos' => $riscos]);
     }
     public function risco_store(Request $request)
     {

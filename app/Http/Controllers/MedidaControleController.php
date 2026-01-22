@@ -29,4 +29,21 @@ class MedidaControleController extends Controller
 
         return redirect()->back()->with('success', 'Medida cadastrada com sucesso!');
     }
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:risco_medidas,id',
+            'risco_id' => 'required|exists:riscos,id',
+            'descricao' => 'required'
+        ]);
+
+        $medida = RiscoMedidaControle::findOrFail($request->id);
+
+        $medida->update([
+            'risco_id' => $request->risco_id,
+            'descricao' => $request->descricao
+        ]);
+
+        return redirect()->back()->with('success', 'Medida atualizada com sucesso!');
+    }
 }
