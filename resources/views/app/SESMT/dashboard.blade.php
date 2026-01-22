@@ -571,67 +571,9 @@
                                             {{ ucfirst($apr->status) }}
                                         </span>
                                     </td>
-                                    <td>
-                                        @php
-                                        // Valores
-                                        $probabilidade = $apr->probabilidade ?? 0;
-                                        $severidade = $apr->severidade ?? 0;
-                                        $nota = $probabilidade * $severidade;
-
-                                        // Classificação
-                                        if ($nota <= 2) {
-                                            $class='baixo' ;
-                                            $texto='Baixo' ;
-                                            } elseif ($nota <=4) {
-                                            $class='medio' ;
-                                            $texto='Médio' ;
-                                            } elseif ($nota <=8) {
-                                            $class='alto' ;
-                                            $texto='Alto' ;
-                                            } else {
-                                            $class='critico' ;
-                                            $texto='Crítico' ;
-                                            }
-                                            @endphp
-
-                                            <div class="mini-risk {{ $class }}">
-                                            <div><strong>P:</strong> {{ $probabilidade }}</div>
-                                            <div><strong>S:</strong> {{ $severidade }}</div>
-                                            <div><strong>{{ $texto }}</strong> ({{ $nota }})</div>
-                    </div>
-                    <style>
-                        .mini-risk {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            padding: 5px;
-                            border-radius: 5px;
-                            color: #fff;
-                            font-size: 12px;
-                            font-weight: bold;
-                        }
-
-                        .mini-risk.baixo {
-                            background-color: green;
-                        }
-
-                        .mini-risk.medio {
-                            background-color: yellow;
-                            color: #000;
-                        }
-
-                        .mini-risk.alto {
-                            background-color: orange;
-                        }
-
-                        .mini-risk.critico {
-                            background-color: red;
-                        }
-                    </style>
-                    </td>
-
-                    </tr>
+                                   <td>
+                                    {{$apr->grau}}
+                                   </td>
                     @endforeach
                     </tbody>
                     </table>

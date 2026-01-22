@@ -113,6 +113,7 @@ class APRController extends Controller
 
         return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos', 'apr_riscos_medidas', 'materiais_risco'));
     }
+    //Carrega dshboard SESMT
     public function dashboard()
     {
         $aprs = APR::all();
