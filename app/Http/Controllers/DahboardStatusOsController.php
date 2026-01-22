@@ -461,7 +461,10 @@ class DahboardStatusOsController extends Controller
         $hoje = Carbon::today();
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::where('status', 'ativo')
-            ->whereIn('funcao', ['mecânico', 'eletricista'])
+            ->where(function ($q) {
+                $q->where('funcao', 'mecanico')
+                    ->orWhere('funcao', 'eletricista');
+            })
             ->get();
         $ordens_servicos = OrdemServico::where('situacao', 'aberto')
             ->whereDate('data_inicio', '<=', $hoje)
