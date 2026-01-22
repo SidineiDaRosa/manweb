@@ -3,7 +3,7 @@
 
 <main class="content">
     <div class="titulo-main">
-        Solicitações de O.S
+        Solicitações de O.S aprtir de uma SS
     </div>
     <form action="{{ route('ordem-servico.create') }}" method="get" style="font-family: Arial, sans-serif;">
         <select class="form-control" name="equipamento" id="equipamento_id" required>
