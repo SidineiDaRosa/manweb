@@ -663,7 +663,6 @@
         <div><strong>Riscos:</strong> {{ $apr->riscos_identificados }}</div>
         <div><strong>Controle:</strong> {{ $apr->medidas_controle }}</div>
         <div><strong>EPI:</strong> {{ $apr->epi_obrigatorio }}</div>
-        <div><strong>Responsável:</strong> {{$apr->responsavel->primeiro_nome}} {{$apr->responsavel->ultimo_nome}}</div>
         <div><strong>Status:</strong> {{ $apr->status }}</div>
 
     </div>

@@ -133,20 +133,19 @@
                 <div class="titulo">Executor responsável:</div>
                 <hr>
                 <div class="conteudo">
-                    <select class="input-text" name="responsavel" id="responsavel" class="form-control-template" onchange="ValidateChangeResp();" required>
+                    <select class="input-text form-control-template" name="responsavel" id="responsavel" onchange="ValidateChangeResp();" required>
                         <script>
                             function ValidateChangeResp() {
                                 document.getElementById('responsavel').style.background = "rgb(150, 255, 150)";
                             }
                         </script>
+
                         <option value=""> --Selecione o Responsável--</option>
-                        @foreach ($funcionarios as $funcionario_find)
-                        <option value="{{ $funcionario_find->primeiro_nome }}"
-                            {{ 
-            $funcionario_find->id == 13 ? 'selected' : 
-            (($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '') 
-        }}>
-                            {{ $funcionario_find->primeiro_nome }}
+
+                        @foreach ($funcionarios as $funcionario)
+                        <option value="{{ $funcionario->primeiro_nome }}"
+                            {{ old('responsavel') == $funcionario->primeiro_nome ? 'selected' : '' }}>
+                            {{ $funcionario->primeiro_nome }}
                         </option>
                         @endforeach
                     </select>
@@ -576,7 +575,7 @@
             <div class="titulo">Solução</div>
             <hr>
             <div class="conteudo">
-                <select class="input-text"  name="solucao" id="solucao" value="">
+                <select class="input-text" name="solucao" id="solucao" value="">
                     <option value="5">Agilizar Mão de obra</option>
                     <option value="4">Mão de obra autonama</option>
                     <option value="3">Acionar segurança do trabalho</option>
@@ -593,7 +592,7 @@
             <div class="titulo">Projeto</div>
             <hr>
             <div class="conteudo">
-                <select class="input-text"  name="projeto_id" id="projeto_id">
+                <select class="input-text" name="projeto_id" id="projeto_id">
                     <option value="">Selecione um projeto</option> <!-- opcional -->
                     @foreach($projetos as $projeto)
                     <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>

@@ -71,14 +71,14 @@
         <div id="div-executante">
             <select name="funcionario_id" id="funcionario_id" class="form-control" required style="font-family: Arial, Helvetica, sans-serif;">
                 <option value="" style="font-family: Arial, Helvetica, sans-serif;"> --Selecione o Responsável--</option>
-                @foreach ($funcionarios as $funcionario_find)
-                <option value="{{$funcionario_find->id}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}
+                @foreach ($funcionarios as $funcionario)
+                <option value="{{$funcionario->id}}"
                     style="font-family: Arial, Helvetica, sans-serif;">
-                    {{$funcionario_find->primeiro_nome}}
+                    {{$funcionario->primeiro_nome}} {{$funcionario->ultimo_nome}}
                 </option>
                 @endforeach
             </select>
-            {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
+            {{ $errors->has('funcionario_id') ? $errors->first('funcionario_id') : '' }}
         </div>
         <style>
             .div-description {
@@ -110,17 +110,19 @@
                 box-shadow: 0 0 5px #721c24;
                 /* Adiciona uma sombra à borda */
             }
-            #div-executante{
-                    width:33%;
-                }
+
+            #div-executante {
+                width: 33%;
+            }
 
             @media (max-width: 900px) {
                 .form-control-txt {
                     width: 100%;
                     /* Ajusta a largura do textarea em telas menores */
                 }
-                #div-executante{
-                    width:100%;
+
+                #div-executante {
+                    width: 100%;
                 }
             }
         </style>
