@@ -147,89 +147,60 @@ class APRController extends Controller
     }
     public function risco_store(Request $request)
     {
-        // Validação
         $request->validate([
             'apr_id'        => 'required|exists:aprs,id',
             'risco_id'      => 'required|exists:riscos,id',
-            'status'        => 'required|string|max:255',
             'probabilidade' => 'required|string|max:50',
             'severidade'    => 'required|string|max:50',
             'grau'          => 'required|integer|min:1'
         ]);
-        $materiais_risco = MaterialRisco::all();
-        // Cria ou atualiza o risco diretamente
+
         $aprRisco = AprRisco::updateOrCreate(
             [
                 'apr_id'   => $request->apr_id,
                 'risco_id' => $request->risco_id
             ],
             [
-                'status'        => $request->status,
+                'status'        => 1,
                 'probabilidade' => $request->probabilidade,
                 'severidade'    => $request->severidade,
-                'grau'          => $request->grau,
-                'status'        => 1
+                'grau'          => $request->grau
             ]
         );
 
-        // Carrega os dados atualizados para a view
-        $apr = APR::findOrFail($request->apr_id);
-
-        $apr_riscos = AprRisco::where('apr_id', $request->apr_id)->get();
-
-        $riscos = Risco::where('ativo', 1)
-            ->orderBy('tipo_risco')
-            ->orderBy('nome')
-            ->get()
-            ->groupBy('tipo_risco');
-
-        $riscos_medidas_controle = RiscoMedidaControle::all();
-
-        // IDs dos riscos
-        $idsRiscos = $apr_riscos->pluck('id');
-
-        // TODAS as medidas (sem agrupar)
-        $apr_riscos_medidas = AprRiscoMedidaControle::whereIn(
-            'apr_risco_id',
-            $idsRiscos
-        )->get();
-        $localizacao = AreaLocal::all();
-        $responsaveis=Funcionario::where('status','ativo')->get();
-        return view('app.SESMT.show', compact(
-            'apr',
-            'riscos',
-            'riscos_medidas_controle',
-            'apr_riscos',
-            'apr_riscos_medidas',
-            'materiais_risco',
-            'localizacao',
-            'responsaveis'
-        ));
+        return response()->json([
+            'success' => true,
+            'message' => 'Risco salvo com sucesso',
+            'status' => 1, // ou 0 conforme lógica
+            'apr_risco_id' => $aprRisco->id,
+            'risco_id' => $request->risco_id,
+            'probabilidade' => $request->probabilidade,
+            'severidade' => $request->severidade,
+            'grau' => $request->grau,
+        ]);
     }
-
     public function risco_medida_controle_store(Request $request)
     {
-        $request->validate([
-            'apr_risco_id' => 'required|integer',
-            'medida_id'    => 'required|integer',
-            'status'       => 'required|boolean' // 1 ou 0
-        ]);
+        $medidas = $request->input('medidas', []);
 
-        AprRiscoMedidaControle::updateOrCreate(
-            [
-                'apr_risco_id' => $request->apr_risco_id,
-                'medida_id'    => $request->medida_id
-            ],
-            [
-                'status' => $request->status
-            ]
-        );
-        $apr_risco_salvo = AprRiscoMedidaControle::where('apr_risco_id', $request->apr_risco_id)
+        foreach ($medidas as $medidaId => $valor) {
+            // Atualiza ou cria o registro da medida
+            $aprMedida = AprRiscoMedidaControle::updateOrCreate(
+                [
+                    'apr_risco_id' => $request->apr_risco_id ?? 0, // passe o apr_risco_id via JS se necessário
+                    'medida_id' => $medidaId,
+                ],
+                [
+                    'status' => $valor === 'existente' ? 1 : 0
+                ]
+            );
+        }
 
-            ->get()
-            ->keyBy('medida_id'); // chave = medida_id para facilitar
         return response()->json(['success' => true]);
     }
+
+
+
     // imprime a apr PDF
     public function pdf($id)
     {

@@ -55,94 +55,16 @@
             </div>
         </form>
     </div>
-
 </div>
-<script>
-    document.getElementById('formConfirmarRisco').addEventListener('submit', function(e) {
-        e.preventDefault(); // impede reload
-
-        const form = this;
-
-        const dados = {
-            apr_id: form.querySelector('[name="apr_id"]').value,
-            risco_id: form.querySelector('[name="risco_id"]').value,
-            probabilidade: form.querySelector('[name="probabilidade"]').value,
-            severidade: form.querySelector('[name="severidade"]').value,
-            grau: form.querySelector('[name="grau"]').value
-        };
-
-        fetch("{{ route('risco.store') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify(dados)
-            })
-
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.success) {
-
-
-                    const modalConfirmar = bootstrap.Modal.getInstance(
-                        document.getElementById('modalConfirmarRisco')
-                    );
-
-                    modalConfirmar.hide();
-
-                    modalConfirmar._element.addEventListener('hidden.bs.modal', function onHidden() {
-                        modalConfirmar._element.removeEventListener('hidden.bs.modal', onHidden);
-
-                        // Remove possíveis backdrops órfãos
-                        document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
-                        document.body.classList.remove('modal-open');
-                        document.body.style.overflow = '';
-                        document.body.style.paddingRight = '';
-
-                        const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucessoRisco'));
-                        modalSucesso.show();
-                        // 🔥 ATUALIZA O CHECKBOX NA TELA
-                        const chk = document.getElementById('chk_risco_' + data.risco_id);
-                        if (chk) {
-                            chk.checked = data.status == 1;
-                        }
-
-                        // Atualiza o grau
-                        const grauDiv = document.querySelector(`#grau_risco_${data.risco_id}`);
-                        if (grauDiv) {
-                            grauDiv.innerText = data.grau;
-
-                            // Define a classe de cor igual à lógica do Blade
-                            let classeGrau = 'bg-secondary text-white';
-                            if (data.grau == 2) classeGrau = 'bg-success text-white';
-                            else if (data.grau == 4) classeGrau = 'bg-warning text-dark';
-                            else if (data.grau == 5) classeGrau = 'bg-danger text-white';
-
-                            grauDiv.className = 'text-center ' + classeGrau;
-                        }
-
-                    });
-                } else {
-                    alert("Erro ao salvar risco");
-                }
-            })
-
-            .catch(err => {
-                console.error(err);
-                alert("Erro na comunicação com o servidor.");
-            });
-    });
-</script>
 
 <!--Modal update APR-->
 <!-- Modal Editar APR -->
 <div class="modal fade" id="modalEditarApr" tabindex="-1" aria-labelledby="modalEditarAprLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <form id="formAprUpdate" method="POST" action="{{ route('apr.update') }}">
+        <form method="POST" action="{{ route('apr.update') }}">
             @csrf
             @method('PUT')
+
             <input type="hidden" name="id" id="apr_id">
 
             <div class="modal-content">
@@ -212,7 +134,6 @@
                 </div>
             </div>
         </form>
-
     </div>
 </div>
 <script>
@@ -231,6 +152,7 @@
 </script>
 
 <!--  fim upd apr-->
+
 <main class="content">
     <div class="container-fluid p-0">
         <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
@@ -443,9 +365,7 @@
                                             }
                                             }
                                             @endphp
-                                            <div class="text-center {{ $classeGrau }}"
-                                                style="padding: 6px; border-radius: 4px;"
-                                                id="grau_risco_{{ $risco->id }}">
+                                            <div class="text-center {{ $classeGrau }}" style="padding: 6px; border-radius: 4px;">
                                                 {{ $grauExibido }}
                                             </div>
                                         </div>
@@ -454,95 +374,86 @@
                                         <div>
                                             {{-- IDENTIFICADO --}}
                                             <input type="checkbox"
-                                                id="chk_risco_{{ $risco->id }}"
                                                 name="riscos[{{ $risco->id }}][identificado]"
                                                 class="form-check-input risco-identificado"
                                                 data-risco-id="{{ $risco->id }}"
                                                 data-risco-nome="{{ $risco->nome }}"
                                                 style="width:20px;height:20px;"
                                                 {{ $apr_risco_salvo ? 'checked' : '' }}>
-
                                         </div>
                                     </div>
                                     {{-- MEDIDAS DE CONTROLE --}}
                                     <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 4px;">
                                         <div style="font-weight: 600; margin-bottom: 10px;">Medidas de Controle:</div>
 
-                                        <div id="medidas-container">
-                                            @foreach($riscos_medidas_controle as $medida)
-                                            @if($medida->risco_id == $risco->id)
-                                            @php
-                                            $estado = null;
-                                            if($apr_risco_salvo && $apr_risco_salvo->medidas) {
-                                            $medidaSalva = $apr_risco_salvo->medidas->firstWhere('medida_id', $medida->id);
-                                            $estado = $medidaSalva->marcado ?? null;
-                                            }
-                                            @endphp
+                                        @foreach($riscos_medidas_controle as $medida)
+                                        @if($medida->risco_id == $risco->id)
+                                        @php
+                                        $estado = null;
+                                        $aprRiscoMedida = null;
 
-                                            <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                                                <label style="background-color: #198754; color: white; padding: 4px 8px; border-radius: 4px; margin-right: 10px;">
-                                                    <input type="radio"
-                                                        name="medida_{{ $medida->id }}"
-                                                        value="existente"
-                                                        {{ $estado === 'existente' ? 'checked' : '' }}
-                                                        class="medida-radio"
-                                                        data-medida-id="{{ $medida->id }}">
+                                        if($apr_risco_salvo && $apr_risco_salvo->medidas) {
+                                        $medidaSalva = $apr_risco_salvo->medidas->firstWhere('medida_id', $medida->id);
+                                        $estado = $medidaSalva->marcado ?? null;
+                                        }
+                                        @endphp
+
+                                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                            {{-- Existente --}}
+                                            <div style="background-color: #198754; padding: 4px; border-radius: 4px; margin-right: 10px;">
+                                                @foreach($apr_riscos_medidas as $apr_risco_medida_controle)
+                                                @if($apr_risco_salvo &&
+                                                $apr_risco_medida_controle->apr_risco_id == $apr_risco_salvo->id &&
+                                                $apr_risco_medida_controle->medida_id == $medida->id &&
+                                                $apr_risco_medida_controle->status == 1)
+                                                ✅
+                                                @endif
+                                                @endforeach
+
+                                                <input type="radio"
+                                                    name="medida_{{ $medida->id }}"
+                                                    value="existente"
+                                                    class="form-check-input medida-radio"
+                                                    data-medida-id="{{ $medida->id }}"
+                                                    data-apr-risco-id="{{ $apr_risco_salvo->id ?? '' }}"
+                                                    id="medida-{{ $medida->id }}-existente"
+                                                    {{ $estado === 'existente' ? 'checked' : '' }}
+                                                    style="margin: 0 5px;">
+                                                <label for="medida-{{ $medida->id }}-existente" style="color: white; margin-right: 10px;">
                                                     Sim
                                                 </label>
+                                            </div>
 
-                                                <label style="background-color: #fdda14; padding: 4px 8px; border-radius: 4px; margin-right: 10px;">
-                                                    <input type="radio"
-                                                        name="medida_{{ $medida->id }}"
-                                                        value="inexistente"
-                                                        {{ $estado === 'inexistente' ? 'checked' : '' }}
-                                                        class="medida-radio"
-                                                        data-medida-id="{{ $medida->id }}">
+                                            {{-- Inexistente --}}
+                                            <div style="background-color: #fdda14; padding: 4px; border-radius: 4px;">
+                                                @foreach($apr_riscos_medidas as $apr_risco_medida_controle)
+                                                @if($apr_risco_salvo &&
+                                                $apr_risco_medida_controle->apr_risco_id == $apr_risco_salvo->id &&
+                                                $apr_risco_medida_controle->medida_id == $medida->id &&
+                                                $apr_risco_medida_controle->status == 0)
+                                                ✅
+                                                @endif
+                                                @endforeach
+
+                                                <input type="radio"
+                                                    name="medida_{{ $medida->id }}"
+                                                    value="inexistente"
+                                                    class="form-check-input medida-radio"
+                                                    data-medida-id="{{ $medida->id }}"
+                                                    data-apr-risco-id="{{ $apr_risco_salvo->id ?? '' }}"
+                                                    id="medida-{{ $medida->id }}-inexistente"
+                                                    {{ $estado === 'inexistente' ? 'checked' : '' }}
+                                                    style="margin: 0 5px;">
+                                                <label for="medida-{{ $medida->id }}-inexistente" style="margin-right: 10px;">
                                                     Não
                                                 </label>
-
-                                                <span>{{ $medida->descricao }}</span>
                                             </div>
-                                            @endif
-                                            @endforeach
+
+                                            <span style="margin-left: 15px;">{{ $medida->descricao }}</span>
                                         </div>
-
-                                        <button id="btnConfirmarMedidas" class="btn btn-primary mt-2">Confirmar alterações</button>
+                                        @endif
+                                        @endforeach
                                     </div>
-
-                                    <script>
-                                        document.getElementById('btnConfirmarMedidas').addEventListener('click', function() {
-                                            const medidas = {};
-
-                                            document.querySelectorAll('.medida-radio:checked').forEach(input => {
-                                                const id = input.dataset.medidaId;
-                                                medidas[id] = input.value;
-                                            });
-
-                                            fetch("{{ url('/apr/risco/medida/toggle') }}", {
-                                                    method: 'POST',
-                                                    headers: {
-                                                        'Content-Type': 'application/json',
-                                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                    },
-                                                    body: JSON.stringify({
-                                                        medidas: medidas
-                                                    })
-                                                })
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    if (data.success) {
-                                                        alert('Alterações salvas com sucesso!');
-                                                    } else {
-                                                        alert('Erro ao salvar alterações!');
-                                                    }
-                                                })
-                                                .catch(error => {
-                                                    console.error('Erro:', error);
-                                                    alert('Ocorreu um erro inesperado.');
-                                                });
-                                        });
-                                    </script>
-
 
                                     {{-- MATERIAIS DE RISCO --}}
                                     @if($materiais_risco->where('risco_id', $risco->id)->count() > 0)
@@ -845,23 +756,6 @@
     </div>
     </div>
     </div>
-    <div class="modal fade" id="modalSucessoRisco" tabindex="-1" aria-labelledby="modalSucessoRiscoLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-success">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="modalSucessoRiscoLabel">Sucesso</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    Risco salvo com sucesso!
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </main>
 <style>
     /* Estilos customizados para melhorar a visualização */
@@ -958,7 +852,6 @@
         color: white !important;
     }
 </style>
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // ========== PARTE 1: MODAL DE CONFIRMAÇÃO DO RISCO ==========
@@ -1042,6 +935,78 @@
                 checkboxAtual = null;
             }
         });
+
+        // ========== PARTE 2: AJAX PARA MEDIDAS DE CONTROLE (SIM/NÃO) ==========
+        document.querySelectorAll('.medida-radio').forEach(radio => {
+            radio.addEventListener('mousedown', function(e) {
+                const medidaId = this.dataset.medidaId;
+                const aprRiscoId = this.dataset.aprRiscoId;
+                const valor = this.value; // "existente" ou "inexistente"
+
+                // Se o radio já estava selecionado, permite continuar
+                if (this.checked) return;
+
+                // Evita que o radio seja marcado antes do confirm
+                e.preventDefault();
+
+                if (confirm(`Deseja realmente marcar esta medida como "${valor}"?`)) {
+                    // Atualiza visualmente o radio
+                    this.checked = true;
+
+                    // Converte para 1 ou 0 para enviar ao backend
+                    const status = valor === 'existente' ? 1 : 0;
+
+                    // Envia via AJAX
+                    fetch("{{ route('apr.risco.medida.toggle') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                medida_id: medidaId,
+                                apr_risco_id: aprRiscoId,
+                                status: status // 1 ou 0
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Mostra o ✅ visualmente
+                                const container = this.closest('div[style*="background-color"]');
+                                if (container) {
+                                    // Remove todos os ✅ existentes
+                                    const checks = container.querySelectorAll('span, div');
+                                    checks.forEach(el => {
+                                        if (el.textContent === '✅') {
+                                            el.remove();
+                                        }
+                                    });
+
+                                    // Adiciona o ✅ no início
+                                    container.insertAdjacentHTML('afterbegin', '✅ ');
+                                }
+
+                                // Não precisa do alert, só atualiza visualmente
+                                // alert('Medida salva com sucesso!');
+                            } else {
+                                alert('Erro ao salvar a medida.');
+                                this.checked = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert('Erro ao salvar a medida.');
+                            this.checked = false;
+                        });
+
+                } else {
+                    // Se cancelar, não marca nada
+                    this.checked = false;
+                }
+            });
+        });
+
         // ========== PARTE 3: CÁLCULO DO GRAU DE RISCO (se ainda necessário) ==========
         // Função para atualizar o grau de risco
         function atualizarGrauRisco(riscoId) {
@@ -1080,4 +1045,5 @@
         });
     });
 </script>
+
 @endsection

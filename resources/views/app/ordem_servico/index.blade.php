@@ -54,11 +54,11 @@
                     <label for="responsavel" class="">Responsável:</label>
                     <select name="responsavel" id="responsavel" class="form-control">
                         <option value="todos">Todos</option>
-                        @foreach ($funcionarios as $funcionario_find)
-                        <option value="{{ $funcionario_find->primeiro_nome }}" {{ ($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
-                            {{ $funcionario_find->primeiro_nome }}
-                        </option>
-                        @endforeach
+                        @foreach ($funcionarios as $funcionario)
+                        <option value="{{ $funcionario->primeiro_nome}}"
+                            {{ $funcionario->primeiro_nome}}
+                            </option>
+                            @endforeach
                     </select>
                     {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
                 </div>
