@@ -145,7 +145,11 @@
                         @foreach ($funcionarios as $funcionario)
                         <option value="{{ $funcionario->primeiro_nome }}"
                             {{ old('responsavel') == $funcionario->primeiro_nome ? 'selected' : '' }}>
-                            {{ $funcionario->primeiro_nome }}
+                            {{ $funcionario->primeiro_nome }} {{ $funcionario->ultimo_nome}}
+                            <!-- Coluna 1: Logo -->
+                            <td style="width:130px; vertical-align:top;">
+                                <img src="{{ public_path('img/logo_fapolpa.png') }}" style="width:120px; height:auto;">
+                            </td>
                         </option>
                         @endforeach
                     </select>
@@ -153,6 +157,7 @@
                     <div class="invalid-tooltip">
                         Por favor, informe o responsável.
                     </div>
+                    
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>

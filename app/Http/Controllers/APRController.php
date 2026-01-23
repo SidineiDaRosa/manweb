@@ -193,14 +193,17 @@ class APRController extends Controller
             'apr_risco_id',
             $idsRiscos
         )->get();
-
+        $localizacao = AreaLocal::all();
+        $responsaveis=Funcionario::where('status','ativo')->get();
         return view('app.SESMT.show', compact(
             'apr',
             'riscos',
             'riscos_medidas_controle',
             'apr_riscos',
             'apr_riscos_medidas',
-            'materiais_risco'
+            'materiais_risco',
+            'localizacao',
+            'responsaveis'
         ));
     }
 
