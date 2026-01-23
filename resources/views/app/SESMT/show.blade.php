@@ -393,6 +393,8 @@
                                     <div style="margin-bottom: 10px;">
                                         <div style="font-weight: 700; color: #0d6efd; margin-bottom: 5px;">
                                             Risco: {{ $risco->id }}-{{ $risco->nome }}
+                                            <!-- Input hidden com o ID do risco -->
+                                            <input type="hidden" id="apr_risco_id" value="{{ $apr_risco_salvo->id ?? 0 }}">
                                         </div>
                                         <div style="color: #6c757d;">
                                             Descrição: {{ $risco->descricao }}
@@ -464,331 +466,296 @@
 
                                         </div>
                                     </div>
-                                    {{-- MEDIDAS DE CONTROLE --}}
-                                    <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 4px;">
-                                        <div style="font-weight: 600; margin-bottom: 10px;">Medidas de Controle:</div>
+                                    {{--Medidas--}}
+                                    @foreach($riscos_medidas_controle as $medida)
+                                    @if($medida->risco_id == $risco->id)
+                                    @php
+                                    $medidaSalva = $apr_riscos_medidas->firstWhere('medida_id', $medida->id);
+                                    $status = $medidaSalva->status ?? null; // 1 = existente, 0 = inexistente, null = não marcado ainda
+                                    @endphp
 
-                                        <div id="medidas-container">
-                                            @foreach($riscos_medidas_controle as $medida)
-                                            @if($medida->risco_id == $risco->id)
-                                            @php
-                                            $estado = null;
-                                            if($apr_risco_salvo && $apr_risco_salvo->medidas) {
-                                            $medidaSalva = $apr_risco_salvo->medidas->firstWhere('medida_id', $medida->id);
-                                            $estado = $medidaSalva->marcado ?? null;
-                                            }
-                                            @endphp
+                                    <div class="medidas-bloco" style="display: flex; align-items: center; margin-bottom: 8px;">
 
-                                            <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                                                <label style="background-color: #198754; color: white; padding: 4px 8px; border-radius: 4px; margin-right: 10px;">
-                                                    <input type="radio"
-                                                        name="medida_{{ $medida->id }}"
-                                                        value="existente"
-                                                        {{ $estado === 'existente' ? 'checked' : '' }}
-                                                        class="medida-radio"
-                                                        data-medida-id="{{ $medida->id }}">
-                                                    Sim
-                                                </label>
+                                        <!-- Radio "Sim" -->
+                                        <label style="background-color: #198754; color: white; padding: 4px 8px; border-radius: 4px; margin-right: 10px;">
+                                            <input type="radio"
+                                                name="medida_{{ $medida->id }}"
+                                                value="existente"
+                                                class="medida-radio"
+                                                data-medida-id="{{ $medida->id }}"
+                                                {{ $status === 1 ? 'checked' : '' }}>
+                                            Sim
+                                        </label>
 
-                                                <label style="background-color: #fdda14; padding: 4px 8px; border-radius: 4px; margin-right: 10px;">
-                                                    <input type="radio"
-                                                        name="medida_{{ $medida->id }}"
-                                                        value="inexistente"
-                                                        {{ $estado === 'inexistente' ? 'checked' : '' }}
-                                                        class="medida-radio"
-                                                        data-medida-id="{{ $medida->id }}">
-                                                    Não
-                                                </label>
+                                        <!-- Radio "Não" -->
+                                        <label style="background-color: #fdda14; padding: 4px 8px; border-radius: 4px; margin-right: 10px;">
+                                            <input type="radio"
+                                                name="medida_{{ $medida->id }}"
+                                                value="inexistente"
+                                                class="medida-radio"
+                                                data-medida-id="{{ $medida->id }}"
+                                                {{ $status === 0 ? 'checked' : '' }}>
+                                            Não
+                                        </label>
 
-                                                <span>{{ $medida->descricao }}</span>
-                                            </div>
-                                            @endif
-                                            @endforeach
-                                        </div>
-
-                                        <button id="btnConfirmarMedidas" class="btn btn-primary mt-2">Confirmar alterações</button>
-                                    </div>
-
-                                    <script>
-                                        document.getElementById('btnConfirmarMedidas').addEventListener('click', function() {
-                                            const medidas = {};
-
-                                            document.querySelectorAll('.medida-radio:checked').forEach(input => {
-                                                const id = input.dataset.medidaId;
-                                                medidas[id] = input.value;
-                                            });
-
-                                            fetch("{{ url('/apr/risco/medida/toggle') }}", {
-                                                    method: 'POST',
-                                                    headers: {
-                                                        'Content-Type': 'application/json',
-                                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                    },
-                                                    body: JSON.stringify({
-                                                        medidas: medidas
-                                                    })
-                                                })
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    if (data.success) {
-                                                        alert('Alterações salvas com sucesso!');
-                                                    } else {
-                                                        alert('Erro ao salvar alterações!');
-                                                    }
-                                                })
-                                                .catch(error => {
-                                                    console.error('Erro:', error);
-                                                    alert('Ocorreu um erro inesperado.');
-                                                });
-                                        });
-                                    </script>
-
-
-                                    {{-- MATERIAIS DE RISCO --}}
-                                    @if($materiais_risco->where('risco_id', $risco->id)->count() > 0)
-                                    <div style="margin-top: 15px;">
-                                        <div style="font-weight: 600; margin-bottom: 10px;">Materiais Relacionados:</div>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                                            @foreach($materiais_risco as $material_risco)
-                                            @if($material_risco->risco_id == $risco->id)
-                                            <div style="flex: 1 1 300px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-                                                <input type="checkbox" name="" id="" style="margin-right: 8px;">
-                                                <strong style="color: darkblue;">
-                                                    {{ $material_risco->material->nome ?? 'Material não encontrado' }}
-                                                </strong>
-                                                <br>
-                                                <small style="color: #6c757d;">
-                                                    Observações: {{ $material_risco->observacoes }}
-                                                </small>
-                                            </div>
-                                            @endif
-                                            @endforeach
-                                        </div>
+                                        <span>{{ $medida->descricao }}</span>
                                     </div>
                                     @endif
+                                    @endforeach
 
+                                    <!-- Botão por bloco de risco -->
+                                    <button type="button" class="btnSalvarMedidas btn btn-primary mt-2"
+                                        data-apr-risco-id="{{ $apr_risco_salvo->id ?? 0 }}">
+                                        Confirmar alterações
+                                    </button>
                                 </div>
-                                @endforeach
-                                @endforeach
+
+
+
+                                {{-- MATERIAIS DE RISCO --}}
+                                @if($materiais_risco->where('risco_id', $risco->id)->count() > 0)
+                                <div style="margin-top: 15px;">
+                                    <div style="font-weight: 600; margin-bottom: 10px;">Materiais Relacionados:</div>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                                        @foreach($materiais_risco as $material_risco)
+                                        @if($material_risco->risco_id == $risco->id)
+                                        <div style="flex: 1 1 300px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                                            <input type="checkbox" name="" id="" style="margin-right: 8px;">
+                                            <strong style="color: darkblue;">
+                                                {{ $material_risco->material->nome ?? 'Material não encontrado' }}
+                                            </strong>
+                                            <br>
+                                            <small style="color: #6c757d;">
+                                                Observações: {{ $material_risco->observacoes }}
+                                            </small>
+                                        </div>
+                                        @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+
                             </div>
+                            @endforeach
+                            @endforeach
                         </div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                let checkboxAtual = null;
-                                const modalElement = document.getElementById('modalConfirmarRisco');
-                                const modal = new bootstrap.Modal(modalElement);
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            let checkboxAtual = null;
+                            const modalElement = document.getElementById('modalConfirmarRisco');
+                            const modal = new bootstrap.Modal(modalElement);
 
-                                // Matriz de risco (Probabilidade x Severidade)
-                                const matrizRisco = {
-                                    'baixa': {
-                                        'leve': 1,
-                                        'moderada': 2,
-                                        'grave': 3
-                                    },
-                                    'media': {
-                                        'leve': 2,
-                                        'moderada': 3,
-                                        'grave': 4
-                                    },
-                                    'alta': {
-                                        'leve': 3,
-                                        'moderada': 4,
-                                        'grave': 5
-                                    }
-                                };
+                            // Matriz de risco (Probabilidade x Severidade)
+                            const matrizRisco = {
+                                'baixa': {
+                                    'leve': 1,
+                                    'moderada': 2,
+                                    'grave': 3
+                                },
+                                'media': {
+                                    'leve': 2,
+                                    'moderada': 3,
+                                    'grave': 4
+                                },
+                                'alta': {
+                                    'leve': 3,
+                                    'moderada': 4,
+                                    'grave': 5
+                                }
+                            };
 
-                                // Preenche modal e calcula grau de risco
-                                document.querySelectorAll('.risco-identificado').forEach(checkbox => {
-                                    checkbox.addEventListener('change', function() {
-                                        if (!this.checked) return;
+                            // Preenche modal e calcula grau de risco
+                            document.querySelectorAll('.risco-identificado').forEach(checkbox => {
+                                checkbox.addEventListener('change', function() {
+                                    if (!this.checked) return;
 
-                                        checkboxAtual = this;
+                                    checkboxAtual = this;
 
-                                        // AGORA BUSCA A DIV CONTÊINER EM VEZ DE TR
-                                        const container = this.closest('div[style*="border: 1px solid #dee2e6"]');
+                                    // AGORA BUSCA A DIV CONTÊINER EM VEZ DE TR
+                                    const container = this.closest('div[style*="border: 1px solid #dee2e6"]');
 
-                                        if (!container) return; // Segurança
+                                    if (!container) return; // Segurança
 
-                                        // Nome do risco
-                                        document.getElementById('modalRiscoNome').value = this.dataset.riscoNome || '';
-                                        document.getElementById('modal_risco_id').value = this.dataset.riscoId || '';
+                                    // Nome do risco
+                                    document.getElementById('modalRiscoNome').value = this.dataset.riscoNome || '';
+                                    document.getElementById('modal_risco_id').value = this.dataset.riscoId || '';
 
-                                        // Probabilidade - busca pelo seletor correto
-                                        const probSelect = container.querySelector('select[name*="[probabilidade]"]');
-                                        const prob = probSelect ? probSelect.value : '';
-                                        document.getElementById('modal_probabilidade').value = probSelect ?
-                                            probSelect.options[probSelect.selectedIndex].text : '';
+                                    // Probabilidade - busca pelo seletor correto
+                                    const probSelect = container.querySelector('select[name*="[probabilidade]"]');
+                                    const prob = probSelect ? probSelect.value : '';
+                                    document.getElementById('modal_probabilidade').value = probSelect ?
+                                        probSelect.options[probSelect.selectedIndex].text : '';
 
-                                        // Severidade - busca pelo seletor correto
-                                        const sevSelect = container.querySelector('select[name*="[severidade]"]');
-                                        const sev = sevSelect ? sevSelect.value : '';
-                                        document.getElementById('modal_severidade').value = sevSelect ?
-                                            sevSelect.options[sevSelect.selectedIndex].text : '';
+                                    // Severidade - busca pelo seletor correto
+                                    const sevSelect = container.querySelector('select[name*="[severidade]"]');
+                                    const sev = sevSelect ? sevSelect.value : '';
+                                    document.getElementById('modal_severidade').value = sevSelect ?
+                                        sevSelect.options[sevSelect.selectedIndex].text : '';
 
-                                        // Grau de risco calculado
-                                        const grauInput = document.getElementById('modal_grau');
-                                        if (prob && sev && matrizRisco[prob] && matrizRisco[prob][sev] !== undefined) {
-                                            const grau = matrizRisco[prob][sev];
-                                            grauInput.value = grau;
+                                    // Grau de risco calculado
+                                    const grauInput = document.getElementById('modal_grau');
+                                    if (prob && sev && matrizRisco[prob] && matrizRisco[prob][sev] !== undefined) {
+                                        const grau = matrizRisco[prob][sev];
+                                        grauInput.value = grau;
 
-                                            // Alterar cor do input baseado no grau
-                                            grauInput.className = 'form-control w-25 text-center fw-bold';
-                                            if (grau <= 2) {
-                                                grauInput.classList.add('bg-success', 'text-white');
-                                            } else if (grau === 3) {
-                                                grauInput.classList.add('bg-warning', 'text-dark');
-                                            } else if (grau === 4) {
-                                                grauInput.classList.add('bg-orange', 'text-white');
-                                            } else {
-                                                grauInput.classList.add('bg-danger', 'text-white');
-                                            }
+                                        // Alterar cor do input baseado no grau
+                                        grauInput.className = 'form-control w-25 text-center fw-bold';
+                                        if (grau <= 2) {
+                                            grauInput.classList.add('bg-success', 'text-white');
+                                        } else if (grau === 3) {
+                                            grauInput.classList.add('bg-warning', 'text-dark');
+                                        } else if (grau === 4) {
+                                            grauInput.classList.add('bg-orange', 'text-white');
+                                        } else {
+                                            grauInput.classList.add('bg-danger', 'text-white');
                                         }
-
-                                        modal.show();
-                                    });
-                                });
-
-                                modalElement.addEventListener('hidden.bs.modal', function() {
-                                    if (checkboxAtual) {
-                                        checkboxAtual.checked = false;
-                                        checkboxAtual = null;
                                     }
+
+                                    modal.show();
                                 });
                             });
-                        </script>
 
-                        {{-- MATRIZ DE RISCO --}}
-                        <div class="card border-secondary mt-4 shadow-sm">
-                            <div class="card-header bg-secondary text-white py-3">
-                                <h5 class="mb-0">
-                                    <i class="fas fa-table me-2"></i> Matriz de Risco Aplicada
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered text-center mb-0">
-                                                <thead>
-                                                    <tr class="table-light">
-                                                        <th colspan="6" class="fs-5">MATRIZ DE PROBABILIDADE x SEVERIDADE</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th width="20%" class="align-middle">Probabilidade \ Severidade</th>
-                                                        <th width="16%" class="bg-success text-white align-middle">Leve</th>
-                                                        <th width="16%" class="bg-warning text-dark align-middle">Moderada</th>
-                                                        <th width="16%" class="bg-orange text-white align-middle">Significativa</th>
-                                                        <th width="16%" class="bg-danger text-white align-middle">Grave</th>
-                                                        <th width="16%" class="bg-dark text-white align-middle">Catastrófica</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="fw-bold bg-danger text-white align-middle py-3">Alta</td>
-                                                        <td class="bg-warning text-dark align-middle">
-                                                            <div class="fs-5 fw-bold">3</div>
-                                                            <small>Moderado</small>
-                                                        </td>
-                                                        <td class="bg-orange text-white align-middle">
-                                                            <div class="fs-5 fw-bold">4</div>
-                                                            <small>Significativo</small>
-                                                        </td>
-                                                        <td class="bg-danger text-white align-middle">
-                                                            <div class="fs-5 fw-bold">5</div>
-                                                            <small>Alto</small>
-                                                        </td>
-                                                        <td class="bg-danger text-white align-middle">
-                                                            <div class="fs-5 fw-bold">6</div>
-                                                            <small>Alto</small>
-                                                        </td>
-                                                        <td class="bg-dark text-white align-middle">
-                                                            <div class="fs-5 fw-bold">7</div>
-                                                            <small>Crítico</small>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="fw-bold bg-warning text-dark align-middle py-3">Média</td>
-                                                        <td class="bg-success text-white align-middle">
-                                                            <div class="fs-5 fw-bold">2</div>
-                                                            <small>Baixo</small>
-                                                        </td>
-                                                        <td class="bg-warning text-dark align-middle">
-                                                            <div class="fs-5 fw-bold">3</div>
-                                                            <small>Moderado</small>
-                                                        </td>
-                                                        <td class="bg-orange text-white align-middle">
-                                                            <div class="fs-5 fw-bold">4</div>
-                                                            <small>Significativo</small>
-                                                        </td>
-                                                        <td class="bg-danger text-white align-middle">
-                                                            <div class="fs-5 fw-bold">5</div>
-                                                            <small>Alto</small>
-                                                        </td>
-                                                        <td class="bg-danger text-white align-middle">
-                                                            <div class="fs-5 fw-bold">6</div>
-                                                            <small>Alto</small>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="fw-bold bg-success text-white align-middle py-3">Baixa</td>
-                                                        <td class="bg-success text-white align-middle">
-                                                            <div class="fs-5 fw-bold">1</div>
-                                                            <small>Baixo</small>
-                                                        </td>
-                                                        <td class="bg-success text-white align-middle">
-                                                            <div class="fs-5 fw-bold">2</div>
-                                                            <small>Baixo</small>
-                                                        </td>
-                                                        <td class="bg-warning text-dark align-middle">
-                                                            <div class="fs-5 fw-bold">3</div>
-                                                            <small>Moderado</small>
-                                                        </td>
-                                                        <td class="bg-orange text-white align-middle">
-                                                            <div class="fs-5 fw-bold">4</div>
-                                                            <small>Significativo</small>
-                                                        </td>
-                                                        <td class="bg-danger text-white align-middle">
-                                                            <div class="fs-5 fw-bold">5</div>
-                                                            <small>Alto</small>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                            modalElement.addEventListener('hidden.bs.modal', function() {
+                                if (checkboxAtual) {
+                                    checkboxAtual.checked = false;
+                                    checkboxAtual = null;
+                                }
+                            });
+                        });
+                    </script>
+
+                    {{-- MATRIZ DE RISCO --}}
+                    <div class="card border-secondary mt-4 shadow-sm">
+                        <div class="card-header bg-secondary text-white py-3">
+                            <h5 class="mb-0">
+                                <i class="fas fa-table me-2"></i> Matriz de Risco Aplicada
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-center mb-0">
+                                            <thead>
+                                                <tr class="table-light">
+                                                    <th colspan="6" class="fs-5">MATRIZ DE PROBABILIDADE x SEVERIDADE</th>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" class="align-middle">Probabilidade \ Severidade</th>
+                                                    <th width="16%" class="bg-success text-white align-middle">Leve</th>
+                                                    <th width="16%" class="bg-warning text-dark align-middle">Moderada</th>
+                                                    <th width="16%" class="bg-orange text-white align-middle">Significativa</th>
+                                                    <th width="16%" class="bg-danger text-white align-middle">Grave</th>
+                                                    <th width="16%" class="bg-dark text-white align-middle">Catastrófica</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="fw-bold bg-danger text-white align-middle py-3">Alta</td>
+                                                    <td class="bg-warning text-dark align-middle">
+                                                        <div class="fs-5 fw-bold">3</div>
+                                                        <small>Moderado</small>
+                                                    </td>
+                                                    <td class="bg-orange text-white align-middle">
+                                                        <div class="fs-5 fw-bold">4</div>
+                                                        <small>Significativo</small>
+                                                    </td>
+                                                    <td class="bg-danger text-white align-middle">
+                                                        <div class="fs-5 fw-bold">5</div>
+                                                        <small>Alto</small>
+                                                    </td>
+                                                    <td class="bg-danger text-white align-middle">
+                                                        <div class="fs-5 fw-bold">6</div>
+                                                        <small>Alto</small>
+                                                    </td>
+                                                    <td class="bg-dark text-white align-middle">
+                                                        <div class="fs-5 fw-bold">7</div>
+                                                        <small>Crítico</small>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-bold bg-warning text-dark align-middle py-3">Média</td>
+                                                    <td class="bg-success text-white align-middle">
+                                                        <div class="fs-5 fw-bold">2</div>
+                                                        <small>Baixo</small>
+                                                    </td>
+                                                    <td class="bg-warning text-dark align-middle">
+                                                        <div class="fs-5 fw-bold">3</div>
+                                                        <small>Moderado</small>
+                                                    </td>
+                                                    <td class="bg-orange text-white align-middle">
+                                                        <div class="fs-5 fw-bold">4</div>
+                                                        <small>Significativo</small>
+                                                    </td>
+                                                    <td class="bg-danger text-white align-middle">
+                                                        <div class="fs-5 fw-bold">5</div>
+                                                        <small>Alto</small>
+                                                    </td>
+                                                    <td class="bg-danger text-white align-middle">
+                                                        <div class="fs-5 fw-bold">6</div>
+                                                        <small>Alto</small>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-bold bg-success text-white align-middle py-3">Baixa</td>
+                                                    <td class="bg-success text-white align-middle">
+                                                        <div class="fs-5 fw-bold">1</div>
+                                                        <small>Baixo</small>
+                                                    </td>
+                                                    <td class="bg-success text-white align-middle">
+                                                        <div class="fs-5 fw-bold">2</div>
+                                                        <small>Baixo</small>
+                                                    </td>
+                                                    <td class="bg-warning text-dark align-middle">
+                                                        <div class="fs-5 fw-bold">3</div>
+                                                        <small>Moderado</small>
+                                                    </td>
+                                                    <td class="bg-orange text-white align-middle">
+                                                        <div class="fs-5 fw-bold">4</div>
+                                                        <small>Significativo</small>
+                                                    </td>
+                                                    <td class="bg-danger text-white align-middle">
+                                                        <div class="fs-5 fw-bold">5</div>
+                                                        <small>Alto</small>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="col-lg-4 mt-4 mt-lg-0">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <div class="card-header bg-primary text-white">
-                                                <h6 class="mb-0">Legenda do Grau de Risco</h6>
+                                </div>
+                                <div class="col-lg-4 mt-4 mt-lg-0">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-header bg-primary text-white">
+                                            <h6 class="mb-0">Legenda do Grau de Risco</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                                                <span class="badge bg-success text-white fs-6 px-3 py-2 me-3">1-2</span>
+                                                <div>
+                                                    <div class="fw-bold">BAIXO</div>
+                                                    <small class="text-muted">Aceitável com controle básico</small>
+                                                </div>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center mb-3 p-2 border rounded">
-                                                    <span class="badge bg-success text-white fs-6 px-3 py-2 me-3">1-2</span>
-                                                    <div>
-                                                        <div class="fw-bold">BAIXO</div>
-                                                        <small class="text-muted">Aceitável com controle básico</small>
-                                                    </div>
+                                            <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                                                <span class="badge bg-warning text-dark fs-6 px-3 py-2 me-3">3</span>
+                                                <div>
+                                                    <div class="fw-bold">MODERADO</div>
+                                                    <small class="text-muted">Necessita controle adicional</small>
                                                 </div>
-                                                <div class="d-flex align-items-center mb-3 p-2 border rounded">
-                                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2 me-3">3</span>
-                                                    <div>
-                                                        <div class="fw-bold">MODERADO</div>
-                                                        <small class="text-muted">Necessita controle adicional</small>
-                                                    </div>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                                                <span class="badge bg-orange text-white fs-6 px-3 py-2 me-3">4</span>
+                                                <div>
+                                                    <div class="fw-bold">SIGNIFICATIVO</div>
+                                                    <small class="text-muted">Exige atenção imediata</small>
                                                 </div>
-                                                <div class="d-flex align-items-center mb-3 p-2 border rounded">
-                                                    <span class="badge bg-orange text-white fs-6 px-3 py-2 me-3">4</span>
-                                                    <div>
-                                                        <div class="fw-bold">SIGNIFICATIVO</div>
-                                                        <small class="text-muted">Exige atenção imediata</small>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center p-2 border rounded">
-                                                    <span class="badge bg-danger text-white fs-6 px-3 py-2 me-3">5-7</span>
-                                                    <div>
-                                                        <div class="fw-bold">ALTO</div>
-                                                        <small class="text-muted">Inaceitável - Parar atividade</small>
-                                                    </div>
+                                            </div>
+                                            <div class="d-flex align-items-center p-2 border rounded">
+                                                <span class="badge bg-danger text-white fs-6 px-3 py-2 me-3">5-7</span>
+                                                <div>
+                                                    <div class="fw-bold">ALTO</div>
+                                                    <small class="text-muted">Inaceitável - Parar atividade</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -796,52 +763,53 @@
                                 </div>
                             </div>
                         </div>
-
-                        {{-- CAMPO PARA OBSERVAÇÕES ADICIONAIS --}}
-                        <div class="mt-4">
-                            <label for="observacoes" class="form-label fw-bold">
-                                <i class="fas fa-sticky-note me-2"></i>Observações Adicionais
-                            </label>
-                            <textarea class="form-control" id="observacoes" name="observacoes" rows="3" placeholder="Adicione observações relevantes sobre os riscos ou medidas de controle...">{{ old('observacoes', $apr->observacoes ?? '') }}</textarea>
-                        </div>
                     </div>
-                </div>
 
-
-                {{-- CAMPO DE ASSINATURA --}}
-                <div class="card border-secondary mb-4 shadow-sm">
-                    <div class="card-header bg-secondary text-white py-3">
-                        <h5 class="mb-0">
-                            <i class="fas fa-signature me-2"></i> Assinatura do Responsável
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <label for="assinatura_responsavel" class="form-label fw-bold">Digite sua assinatura:</label>
-                                <input type="text" class="form-control form-control-lg"
-                                    id="assinatura_responsavel"
-                                    name="assinatura_responsavel"
-                                    value="{{ old('assinatura_responsavel', $apr->assinatura_responsavel ?? '') }}"
-                                    placeholder="Digite seu nome completo para assinar">
-                                <div class="form-text">Esta assinatura confirma sua responsabilidade sobre a análise de riscos.</div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                {{-- BOTÕES DE AÇÃO --}}
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
-                    <div class="d-flex flex-wrap justify-content-center gap-2">
-
-                        <button type="submit" class="btn btn-lg btn-success">
-                            <i class="fas fa-save me-2"></i> Confirmar Análise
-                        </button>
+                    {{-- CAMPO PARA OBSERVAÇÕES ADICIONAIS --}}
+                    <div class="mt-4">
+                        <label for="observacoes" class="form-label fw-bold">
+                            <i class="fas fa-sticky-note me-2"></i>Observações Adicionais
+                        </label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="3" placeholder="Adicione observações relevantes sobre os riscos ou medidas de controle...">{{ old('observacoes', $apr->observacoes ?? '') }}</textarea>
                     </div>
                 </div>
             </div>
+
+
+            {{-- CAMPO DE ASSINATURA --}}
+            <div class="card border-secondary mb-4 shadow-sm">
+                <div class="card-header bg-secondary text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-signature me-2"></i> Assinatura do Responsável
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label for="assinatura_responsavel" class="form-label fw-bold">Digite sua assinatura:</label>
+                            <input type="text" class="form-control form-control-lg"
+                                id="assinatura_responsavel"
+                                name="assinatura_responsavel"
+                                value="{{ old('assinatura_responsavel', $apr->assinatura_responsavel ?? '') }}"
+                                placeholder="Digite seu nome completo para assinar">
+                            <div class="form-text">Esta assinatura confirma sua responsabilidade sobre a análise de riscos.</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {{-- BOTÕES DE AÇÃO --}}
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <i class="fas fa-save me-2"></i> Confirmar Análise
+                    </button>
+                </div>
+            </div>
         </div>
+    </div>
     </div>
     </div>
     </div>
@@ -1080,4 +1048,45 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.matches('.btnSalvarMedidas')) {
+            const botao = e.target;
+            const apr_risco_id = botao.dataset.aprRiscoId;
+
+            // Pega todos os radios dentro do mesmo bloco de medidas
+            const container = botao.closest('div');
+            const medidas = {};
+            container.querySelectorAll('.medida-radio:checked').forEach(input => {
+                medidas[input.dataset.medidaId] = input.value;
+            });
+
+            console.log("APR Risco ID:", apr_risco_id);
+            console.log("Medidas selecionadas:", medidas);
+
+            // Fetch para enviar para Laravel
+            fetch("{{ url('/apr/risco/medida/toggle') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        apr_risco_id: apr_risco_id,
+                        medidas: medidas
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) alert('Alterações salvas com sucesso!');
+                    else alert('Erro ao salvar alterações!');
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro inesperado. Veja o console ou o log do Laravel.');
+                });
+        }
+    });
+</script>
+
 @endsection

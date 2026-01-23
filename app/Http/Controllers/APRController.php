@@ -181,13 +181,17 @@ class APRController extends Controller
     }
     public function risco_medida_controle_store(Request $request)
     {
+        $aprRiscoId = $request->input('apr_risco_id');
         $medidas = $request->input('medidas', []);
 
+        if (!$aprRiscoId) {
+            return response()->json(['success' => false, 'message' => 'APR Risco não definido']);
+        }
+
         foreach ($medidas as $medidaId => $valor) {
-            // Atualiza ou cria o registro da medida
-            $aprMedida = AprRiscoMedidaControle::updateOrCreate(
+            AprRiscoMedidaControle::updateOrCreate(
                 [
-                    'apr_risco_id' => $request->apr_risco_id ?? 0, // passe o apr_risco_id via JS se necessário
+                    'apr_risco_id' => $aprRiscoId,
                     'medida_id' => $medidaId,
                 ],
                 [
@@ -198,6 +202,7 @@ class APRController extends Controller
 
         return response()->json(['success' => true]);
     }
+
 
 
 
