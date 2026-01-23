@@ -250,14 +250,17 @@
                 <hr>
                 <div class="conteudo">
                     <select name="responsavel" id="responsavel" class="input-text">
-                        <option value="{{$ordem_servico->responsavel}}">{{$ordem_servico->responsavel}}</option>
-                        @foreach ($funcionarios as $funcionario_find)
-                        <option value="{{$funcionario_find->primeiro_nome}}" {{($funcionario_find->responsavel ?? old('responsavel')) == $funcionario_find->primeiro_nome ? 'selected' : '' }}>
-                            {{$funcionario_find->primeiro_nome}}
+                        <option value="">-- Selecione o responsável --</option>
+                        @foreach ($funcionarios as $funcionario)
+                        <option value="{{ $funcionario->primeiro_nome }}"
+                            {{ old('responsavel', $ordem_servico->responsavel ?? '') == $funcionario->primeiro_nome ? 'selected' : '' }}>
+                            {{ $funcionario->primeiro_nome }}
                         </option>
                         @endforeach
                     </select>
-                    {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
+
+                    {{ $errors->first('responsavel') }}
+
                 </div>
                 <div class="titulo">Emissão:</div>
                 <hr>
