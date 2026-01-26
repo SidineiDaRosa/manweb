@@ -274,9 +274,6 @@
             <div class="submenu" id="administracao-submenu">
                 <a href="{{ route('funcionarios.index') }}">Funcionários</a>
                 <a href="{{ route('sesmt.dashboard') }}">SESMT</a>
-             
-                 <a href="{{ route('material_epis.index') }}" target="blank" >Materiais EPIs</a>
-
             </div>
 
         </li>

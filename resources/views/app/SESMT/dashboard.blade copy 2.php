@@ -23,7 +23,7 @@
         .container {
             display: flex;
             min-height: 100vh;
-        }
+        
 
         /* Sidebar */
         .sidebar {
@@ -176,10 +176,9 @@
             color: #f44336;
         }
 
-        /* Main sections */
         .main-sections {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
 
@@ -423,10 +422,7 @@
                 <h2>SESMT</h2>
             </div>
 
-            <div class="menu-item active">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </div>
+
             <div class="menu-item">
                 <i class="fas fa-file-alt"></i>
                 <span>APRs</span>
@@ -438,7 +434,7 @@
             </div>
             <div class="menu-item">
                 <i class="fas fa-user-hard-hat"></i>
-                <span><a href="" style="color: white;">EPIs</a>
+                <a href="{{ route('material_epis.index') }}" target="blank" style="color: white;">Materiais EPIs</a>
                 </span>
             </div>
             <div class="menu-item">
@@ -470,59 +466,8 @@
             </div>
 
             <!-- Dashboard Cards -->
-            <div class="dashboard-cards" hidden>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">APRs Pendentes</div>
-                        <div class="card-icon" style="background-color: #ff9800;">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                    </div>
-                    <div class="card-value">12</div>
-                    <div class="card-change positive">
-                        <i class="fas fa-arrow-up"></i> 2 desde a última semana
-                    </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">APRs Aprovadas</div>
-                        <div class="card-icon" style="background-color: #4CAF50;">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                    </div>
-                    <div class="card-value">48</div>
-                    <div class="card-change positive">
-                        <i class="fas fa-arrow-up"></i> 5 desde a última semana
-                    </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Riscos Críticos</div>
-                        <div class="card-icon" style="background-color: #f44336;">
-                            <i class="fas fa-exclamation-circle"></i>
-                        </div>
-                    </div>
-                    <div class="card-value">7</div>
-                    <div class="card-change negative">
-                        <i class="fas fa-arrow-down"></i> 1 desde a última semana
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Dias sem Acidentes</div>
-                        <div class="card-icon" style="background-color: #2196F3;">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                    </div>
-                    <div class="card-value">127</div>
-                    <div class="card-change positive">
-                        <i class="fas fa-arrow-up"></i> 7 dias a mais
-                    </div>
-                </div>
-            </div>
 
             <!-- Main Sections -->
             <div class="main-sections">
@@ -679,79 +624,17 @@
                 </div>
 
                 <!-- Right Section - Indicadores de Risco -->
-                <div class="section">
-                    <div class="section-header">
-                        <div class="section-title">Indicadores de Risco</div>
-                        <button class="btn btn-success">Atualizar</button>
-                    </div>
 
-                    <div class="risk-indicators">
-                        <div class="risk-item">
-                            <div class="risk-info">
-                                <h4>Trabalho em Altura</h4>
-                                <p>5 APRs em andamento</p>
-                            </div>
-                            <div class="risk-level alto">Alto</div>
-                        </div>
 
-                        <div class="risk-item">
-                            <div class="risk-info">
-                                <h4>Espaços Confinados</h4>
-                                <p>3 APRs em andamento</p>
-                            </div>
-                            <div class="risk-level alto">Alto</div>
-                        </div>
-
-                        <div class="risk-item">
-                            <div class="risk-info">
-                                <h4>Eletricidade</h4>
-                                <p>8 APRs em andamento</p>
-                            </div>
-                            <div class="risk-level medio">Médio</div>
-                        </div>
-
-                        <div class="risk-item">
-                            <div class="risk-info">
-                                <h4>Produtos Químicos</h4>
-                                <p>4 APRs em andamento</p>
-                            </div>
-                            <div class="risk-level medio">Médio</div>
-                        </div>
-
-                        <div class="risk-item">
-                            <div class="risk-info">
-                                <h4>Movimentação de Cargas</h4>
-                                <p>6 APRs em andamento</p>
-                            </div>
-                            <div class="risk-level baixo">Baixo</div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 30px;">
-                        <div class="section-header" style="margin-bottom: 15px;">
-                            <div class="section-title">Ações Rápidas</div>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <button class="btn btn-primary" style="text-align: left; justify-content: flex-start;">
-                                <i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Criar Nova APR
-                            </button>
-                            <button class="btn btn-outline" style="text-align: left; justify-content: flex-start;">
-                                <i class="fas fa-file-export" style="margin-right: 8px;"></i> Gerar Relatório Mensal
-                            </button>
-                            <button class="btn btn-outline" style="text-align: left; justify-content: flex-start;">
-                                <i class="fas fa-bell" style="margin-right: 8px;"></i> Configurar Alertas
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="footer">
-                <p>SESMT &copy; 2023 - Sistema de Gestão de Segurança do Trabalho</p>
-                <p style="margin-top: 5px;">Última atualização: 10/08/2023 14:30</p>
             </div>
         </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>SESMT &copy; 2023 - Sistema de Gestão de Segurança do Trabalho</p>
+            <p style="margin-top: 5px;">Última atualização: 10/08/2023 14:30</p>
+        </div>
+    </div>
     </div>
 
     <script>
