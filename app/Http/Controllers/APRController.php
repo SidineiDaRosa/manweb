@@ -300,7 +300,7 @@ class APRController extends Controller
             return $pdf->stream('PT_' . $apr->id . '.pdf');
         } else {
             return redirect()->back()->with('error', 'Não foi possível imprimir a PT, 
-            porque Há risco que ainda não foi calssificado! para poder imprimir é preciso que todos estejam classificado.!');
+            porque Há risco que ainda não foi calssificado. Para liberar a impressão é preciso que todos os riscos estejam devidamente classificados!');
         }
     }
     //apr em branco
@@ -335,7 +335,6 @@ class APRController extends Controller
     public function confirmarAnalise($id)
     {
         $riscos = Risco::where('ativo', 1)->get();
-
         $pendentes = [];
 
         foreach ($riscos as $risco) {
@@ -343,30 +342,40 @@ class APRController extends Controller
                 ->where('risco_id', $risco->id)
                 ->first();
 
-            // Não vinculado
-            if (!$apr_risco) {
-                $pendentes[] = $risco->nome . ' (não Verificado)';
+            // Risco não vinculado ou não checado
+            if (!$apr_risco || $apr_risco->status != 1) {
+                $pendentes[] = $risco->nome . ' (risco não verificado)';
+                continue; // pula para o próximo risco
             }
-            // Vinculado, mas não checado
-            elseif ($apr_risco->status != 1) {
-                $pendentes[] = $risco->nome . ' (não Verificado)';
+
+            // 🔎 Agora verifica medidas de controle deste risco
+            $medidas = RiscoMedidaControle::where('risco_id', $risco->id)->get();
+
+            foreach ($medidas as $medida) {
+                $apr_medida = AprRiscoMedidaControle::where('apr_risco_id', $apr_risco->id)
+                    ->where('medida_id', $medida->id)
+                    ->first();
+
+                // Medida não aplicada ou registro não existe
+                if (!$apr_medida) { // só checa se não existe
+                    $pendentes[] = $risco->nome . ' - Medida: ' . $medida->descricao . ' (não verificada)';
+                }
             }
         }
 
-        // Se houver pendências, bloqueia confirmação
+        // 🚫 Bloqueia confirmação se houver pendências
         if (!empty($pendentes)) {
             return redirect()->back()->with(
                 'error',
-                'Existem riscos pendentes, que ainda não foram verificados:<br>' . implode('<br>', $pendentes)
+                'Existem pendências na análise:<br>➤ ' . implode('<br>➤ ', $pendentes)
             );
         }
-        // $apr = APR::find($id);
-        //echo ($apr);
-        // Se passou por tudo, confirma APR
+
+        // ✅ Se passou por tudo, confirma APR
         APR::where('id', $id)->update([
             'status' => 'Verificada'
         ]);
 
-        return redirect()->back()->with('success', 'Todos os riscos foram Classificados!');
+        return redirect()->back()->with('success', 'Todos os riscos e medidas de controle foram verificados com sucesso!');
     }
 }

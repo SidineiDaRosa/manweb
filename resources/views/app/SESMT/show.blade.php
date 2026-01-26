@@ -243,14 +243,29 @@
     </div>
     @endif
 
+
     @if(session('error'))
-    <div class="alert alert-danger custom-alert position-relative">
-        {!! session('error') !!}
-        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
-            &times;
-        </button>
+    <div class="alert alert-danger custom-alert d-flex align-items-start gap-2 position-relative">
+        <!-- Ícone de alerta -->
+        <i class="bi bi-exclamation-triangle-fill fs-4 mt-1"></i>
+
+        <!-- Mensagem -->
+        <div class="flex-fill">
+            <strong>Existem pendências na análise:</strong>
+            <ul class="mb-0 mt-1" style="padding-left:20px;">
+                @foreach(explode('<br>➤ ', session('error')) as $item)
+                @if(str_contains($item, 'Medida:'))
+                <li style="color:wite;">{{ $item }}</li>
+                @else
+                <li style="color:red; font-weight:400;">{{ $item }}</li>
+                @endif
+                @endforeach
+            </ul>
+        </div>
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;"> &times; </button>
     </div>
     @endif
+
 
     <div class="container-fluid p-0">
         <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
