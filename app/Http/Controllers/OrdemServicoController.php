@@ -364,7 +364,7 @@ class OrdemServicoController extends Controller
             $produtos = $produtos->merge($produtosPedido);
         }
         $projeto = Projeto::find($ordem_servico->projeto_id);
-        $aprs = Apr::where('ordem_servico_id', $ordem_servico->id)->get();
+        $aprs = APR::where('ordem_servico_id', $ordem_servico->id)->get();
         $ped_saidas = PedidoSaida::where('ordem_servico_id', $ordem_servico->id)->get();
         return view('app.ordem_servico.show', [
             'ordem_servico'       => $ordem_servico,
