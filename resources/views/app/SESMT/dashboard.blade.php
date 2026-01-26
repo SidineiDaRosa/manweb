@@ -65,9 +65,21 @@
                             </td>
 
                             <td>
-                                <span class="status {{ strtolower($apr->status) }}">
+                                @if($apr->status=='Verificada')
+                                <div class="status {{ strtolower($apr->status) }}" style="background: #28a745;width:100px;border-radius:5px;">
                                     {{ ucfirst($apr->status) }}
-                                </span>
+                                </div>
+                                @endif
+                                @if($apr->status=='aberta')
+                                <div class="status {{ strtolower($apr->status) }}" style="background: #d0da7c;width:100px;border-radius:5px;">
+                                    {{ ucfirst($apr->status) }}
+                                </div>
+                                @endif
+                                @if($apr->status=='finalizada')
+                                <div class="status {{ strtolower($apr->status) }}" style="background: #448bb4;width:100px;border-radius:5px;">
+                                    {{ ucfirst($apr->status) }}
+                                </div>
+                                @endif
                             </td>
 
                             <td>
