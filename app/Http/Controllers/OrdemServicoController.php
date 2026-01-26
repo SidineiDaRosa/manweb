@@ -14,7 +14,7 @@ use App\Models\Funcionario;
 use App\Models\PedidoSaida;
 use App\Models\Projeto;
 use App\Models\SaidaProduto;
-use App\Models\Apr;
+use App\Models\APR;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Query\OrExpr;
