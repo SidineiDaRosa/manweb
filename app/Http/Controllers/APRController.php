@@ -299,7 +299,7 @@ class APRController extends Controller
 
             return $pdf->stream('PT_' . $apr->id . '.pdf');
         } else {
-            return redirect()->back()->with('success', 'Não foi possível imprimir a PT, 
+            return redirect()->back()->with('error', 'Não foi possível imprimir a PT, 
             porque Há risco que ainda não foi calssificado! para poder imprimir é preciso que todos estejam classificado.!');
         }
     }
