@@ -663,6 +663,9 @@ Route::middleware('auth')->group(function () {
     //rota show
     Route::get('/apr/{apr}', [AprController::class, 'show'])
         ->name('aprs.show');
+    //confirmar análise APR
+    Route::post('/apr/{id}/confirmar', [AprController::class, 'confirmarAnalise'])->name('apr.confirmar');
+
 
     //PT
 
@@ -699,5 +702,4 @@ Route::get('/epis/{id}', [MaterialEpiController::class, 'epis_index'])
     ->name('epis_index');
 Route::post('/epis/{id}', [MaterialEpiController::class, 'store_epi'])
     ->name('epis.store');
-    Route::post('/teste-backend', [APRController::class, 'teste_backend']);
-
+Route::post('/teste-backend', [APRController::class, 'teste_backend']);

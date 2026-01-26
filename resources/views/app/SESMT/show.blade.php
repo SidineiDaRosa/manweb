@@ -5,6 +5,7 @@
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <!-- MODAL CONFIRMAR IDENTIFICAÇÃO DO RISCO -->
 <div class="modal fade" id="modalConfirmarRisco" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -232,6 +233,25 @@
 
 <!--  fim upd apr-->
 <main class="content">
+    <!--Mesagem de confirmação de verificação da APR-->
+    @if(session('success'))
+    <div class="alert alert-success custom-alert position-relative">
+        {!! session('success') !!}
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+            &times;
+        </button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger custom-alert position-relative">
+        {!! session('error') !!}
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+            &times;
+        </button>
+    </div>
+    @endif
+
     <div class="container-fluid p-0">
         <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
             <div>
@@ -245,7 +265,6 @@
                 </a>
 
                 <a href="{{ route('apr.pt_pdf', ['apr' => $apr->id]) }}"
-                    target="_blank"
                     class="btn btn-outline-primary"
                     style="height:40px;">
                     PT Pdf <i class="bi bi-filetype-pdf"></i>
@@ -345,9 +364,14 @@
                                             <div class="col-7">
                                                 @if($apr->status === 'aberta')
                                                 <div style="background:#fd7e14; border-radius:2px;">Aberta</div>
-                                                @else
-                                                <div style="background: rgb(25, 135, 84,0.5); border-radius:2px;">Finalizada</div>
                                                 @endif
+                                                @if($apr->status === 'Verificada')
+                                                <div style="background:rgb(87, 144, 228); border-radius:2px;">Verificada</div>
+                                                @endif
+                                                @if($apr->status === 'finalizada')
+                                                <div style="background:#fd7e14; border-radius:2px;">Finalizada</div>
+                                                @endif
+
                                             </div>
                                         </div>
                                         <div class="row">
@@ -802,10 +826,13 @@
             {{-- BOTÕES DE AÇÃO --}}
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
                 <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <form action="{{ route('apr.confirmar', $apr->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">
+                            Confirmar Análise
+                        </button>
+                    </form>
 
-                    <button type="submit" class="btn btn-lg btn-success">
-                        <i class="fas fa-save me-2"></i> Confirmar Análise
-                    </button>
                 </div>
             </div>
         </div>

@@ -22,7 +22,9 @@ use App\Models\AreaLocal;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\App;
 use League\Flysystem\Adapter\Local;
+use PhpParser\Node\Stmt\Foreach_;
 
 class APRController extends Controller
 {
@@ -282,19 +284,24 @@ class APRController extends Controller
 
         // PT vinculada
         $pt = PermissaoTrabalho::where('apr_id', $apr->id)->first();
+        if ($apr->status == 'Verificada') {
 
-        // Gerar PDF
-        $pdf = Pdf::loadView('app.SESMT.pt_pdf', compact(
-            'apr',
-            'riscos',
-            'apr_riscos',
-            'riscos_medidas_controle',
-            'apr_riscos_medidas',
-            'materiais_selecionados', // materiais necessários
-            'pt'
-        ));
+            // Gerar PDF
+            $pdf = Pdf::loadView('app.SESMT.pt_pdf', compact(
+                'apr',
+                'riscos',
+                'apr_riscos',
+                'riscos_medidas_controle',
+                'apr_riscos_medidas',
+                'materiais_selecionados', // materiais necessários
+                'pt'
+            ));
 
-        return $pdf->stream('PT_' . $apr->id . '.pdf');
+            return $pdf->stream('PT_' . $apr->id . '.pdf');
+        } else {
+            return redirect()->back()->with('success', 'Não foi possível imprimir a PT, 
+            porque Há risco que ainda não foi calssificado! para poder imprimir é preciso que todos estejam classificado.!');
+        }
     }
     //apr em branco
     public function apr_modelo($apr_id)
@@ -324,5 +331,42 @@ class APRController extends Controller
         )->setPaper('a4', 'portrait');
 
         return $pdf->stream('APR-EM-BRANCO.pdf');
+    }
+    public function confirmarAnalise($id)
+    {
+        $riscos = Risco::where('ativo', 1)->get();
+
+        $pendentes = [];
+
+        foreach ($riscos as $risco) {
+            $apr_risco = AprRisco::where('apr_id', $id)
+                ->where('risco_id', $risco->id)
+                ->first();
+
+            // Não vinculado
+            if (!$apr_risco) {
+                $pendentes[] = $risco->nome . ' (não Verificado)';
+            }
+            // Vinculado, mas não checado
+            elseif ($apr_risco->status != 1) {
+                $pendentes[] = $risco->nome . ' (não Verificado)';
+            }
+        }
+
+        // Se houver pendências, bloqueia confirmação
+        if (!empty($pendentes)) {
+            return redirect()->back()->with(
+                'error',
+                'Existem riscos pendentes, que ainda não foram verificados:<br>' . implode('<br>', $pendentes)
+            );
+        }
+        // $apr = APR::find($id);
+        //echo ($apr);
+        // Se passou por tudo, confirma APR
+        APR::where('id', $id)->update([
+            'status' => 'Verificada'
+        ]);
+
+        return redirect()->back()->with('success', 'Todos os riscos foram Classificados!');
     }
 }
