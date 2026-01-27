@@ -36,9 +36,9 @@
                             data-nome="{{ $risco->nome }}"
                             data-descricao="{{ $risco->descricao }}"
                             data-status="{{ $risco->ativo ? 'Ativo' : 'Inativo' }}">
-                            Visualizar
+                            <i class="bi bi-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-warning"
+                        <button class="btn btn-sm btn-primary"
                             data-bs-toggle="modal"
                             data-bs-target="#modalEditarRisco"
                             data-id="{{ $risco->id }}"
@@ -46,15 +46,18 @@
                             data-nome="{{ $risco->nome }}"
                             data-descricao="{{ $risco->descricao }}"
                             data-ativo="{{ $risco->ativo }}">
-                            Editar
+                            <i class="bi bi-pencil-fill"></i>
 
                         </button>
-                        <a href="{{ route('riscos.medidas.index', $risco->id) }}" class="btn btn-sm btn-secondary">
-                            Medidas
-                        </a>
-                        <a href="{{ route('epis_index', $risco->id) }}" class="btn btn-sm btn-secondary">
-                            EPIs
-                        </a>
+                        <div>
+                            <a href="{{ route('riscos.medidas.index', $risco->id) }}" class="btn btn-sm btn-warning">
+                                Medidas de Controle do Risco <i class="bi-exclamation-triangle-fill">
+                            </a>
+                            <a href="{{ route('epis_index', $risco->id) }}" class="btn btn-sm btn-success">
+                                EPIs Vinculado ao Risco <i class="bi bi-cone-striped"></i>
+                            </a>
+                        </div>
+
                     </td>
                 </tr>
                 @endforeach
@@ -199,7 +202,7 @@
 
                         <div class="mb-3">
                             <label>Status</label>
-                            <select name="ativo" class="form-select" required>
+                            <select name="ativo" class="form-control" required>
                                 <option value="1">Ativo</option>
                                 <option value="0">Inativo</option>
                             </select>
