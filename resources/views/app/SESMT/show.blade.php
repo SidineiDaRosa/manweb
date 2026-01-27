@@ -59,11 +59,11 @@
 
 </div>
 <script>
+    // Salva ou atualiza o grau de risco e a verificação
     document.getElementById('formConfirmarRisco').addEventListener('submit', function(e) {
-        e.preventDefault(); // impede reload
+        e.preventDefault();
 
         const form = this;
-
         const dados = {
             apr_id: form.querySelector('[name="apr_id"]').value,
             risco_id: form.querySelector('[name="risco_id"]').value,
@@ -81,55 +81,51 @@
                 },
                 body: JSON.stringify(dados)
             })
-
             .then(resp => resp.json())
             .then(data => {
                 if (data.success) {
-
-
-                    const modalConfirmar = bootstrap.Modal.getInstance(
-                        document.getElementById('modalConfirmarRisco')
-                    );
-
+                    const modalConfirmar = bootstrap.Modal.getInstance(document.getElementById('modalConfirmarRisco'));
                     modalConfirmar.hide();
 
                     modalConfirmar._element.addEventListener('hidden.bs.modal', function onHidden() {
                         modalConfirmar._element.removeEventListener('hidden.bs.modal', onHidden);
 
-                        // Remove possíveis backdrops órfãos
                         document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
                         document.body.classList.remove('modal-open');
                         document.body.style.overflow = '';
                         document.body.style.paddingRight = '';
 
+                        // Modal de sucesso
                         const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucessoRisco'));
                         modalSucesso.show();
-                        // 🔥 ATUALIZA O CHECKBOX NA TELA
-                        const chk = document.getElementById('chk_risco_' + data.risco_id);
-                        if (chk) {
-                            chk.checked = data.status == 1;
-                        }
 
-                        // Atualiza o grau
-                        const grauDiv = document.querySelector(`#grau_risco_${data.risco_id}`);
+                        // Atualiza checkbox
+                        const chk = document.getElementById('chk_risco_' + data.risco_id);
+                        if (chk) chk.checked = data.status == 1;
+
+
+                        // 🔥 Atualiza o input hidden com o ID do APR retornado pelo backend
+                        const inputAprRiscoId = document.getElementById('apr_risco_id_' + data.risco_id);
+                        if (inputAprRiscoId) inputAprRiscoId.value = data.apr_risco_id;
+                        // Atualiza grau
+                        const grauDiv = document.getElementById('grau_risco_' + data.risco_id);
                         if (grauDiv) {
                             grauDiv.innerText = data.grau;
-
-                            // Define a classe de cor igual à lógica do Blade
-                            let classeGrau = 'bg-secondary text-white';
-                            if (data.grau == 2) classeGrau = 'bg-success text-white';
-                            else if (data.grau == 4) classeGrau = 'bg-warning text-dark';
-                            else if (data.grau == 5) classeGrau = 'bg-danger text-white';
-
-                            grauDiv.className = 'text-center ' + classeGrau;
+                            let classe = 'bg-secondary text-white';
+                            if (data.grau == 2) classe = 'bg-success text-white';
+                            else if (data.grau == 4) classe = 'bg-warning text-dark';
+                            else if (data.grau == 5) classe = 'bg-danger text-white';
+                            grauDiv.className = 'text-center ' + classe;
                         }
+                  
 
                     });
+
+
                 } else {
                     alert("Erro ao salvar risco");
                 }
             })
-
             .catch(err => {
                 console.error(err);
                 alert("Erro na comunicação com o servidor.");
@@ -242,7 +238,11 @@
         </button>
     </div>
     @endif
-
+<script>
+    function recarrega(){
+         window.location.reload();
+    }
+</script>
 
     @if(session('error'))
     <div class="alert alert-danger custom-alert d-flex align-items-start gap-2 position-relative">
@@ -429,11 +429,11 @@
                                 <div style="border: 1px solid #dee2e6; margin-bottom: 20px; padding: 15px; border-radius: 5px;background: rgb(25, 135, 84,0.3);">
 
                                     {{-- CABEÇALHO DO RISCO --}}
-                                    <div style="margin-bottom: 10px;">
+                                    <div class="risco-container" id="container_risco_{{ $risco->id }}" style="margin-bottom: 10px;">
                                         <div style="font-weight: 700; color: #0d6efd; margin-bottom: 5px;">
-                                            Risco: {{ $risco->id }}-{{ $risco->nome }}
-                                            <!-- Input hidden com o ID do risco -->
-                                            <input type="hidden" id="apr_risco_id" value="{{ $apr_risco_salvo->id ?? 0 }}">
+                                            Risco: {{ $risco->id }} - {{ $risco->nome }}
+                                            <!-- Input hidden com ID único para cada risco -->
+                                            <input type="input" id="apr_risco_id_{{ $risco->id }}" value="{{ $apr_risco_salvo->id ?? 0 }}" hidden>
                                         </div>
                                         <div style="color: #6c757d;">
                                             Descrição: {{ $risco->descricao }}
@@ -545,6 +545,7 @@
                                     <!-- Botão por bloco de risco -->
                                     <button type="button" class="btnSalvarMedidas btn btn-primary mt-2"
                                         data-apr-risco-id="{{ $apr_risco_salvo->id ?? 0 }}">
+
                                         Confirmar alterações
                                     </button>
                                 </div>
@@ -866,7 +867,7 @@
                     Risco salvo com sucesso!
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="recarrega()">OK</button>
                 </div>
             </div>
         </div>
@@ -1090,8 +1091,11 @@
         });
     });
 </script>
+
 <script>
+    //  Bloco que lida com radiobox medidas de controle
     document.addEventListener('click', function(e) {
+        //apr_risco_id_{{ $risco->id }}
         if (e.target && e.target.matches('.btnSalvarMedidas')) {
             const botao = e.target;
             const apr_risco_id = botao.dataset.aprRiscoId;
@@ -1105,7 +1109,6 @@
 
             console.log("APR Risco ID:", apr_risco_id);
             console.log("Medidas selecionadas:", medidas);
-
             // Fetch para enviar para Laravel
             fetch("{{ url('/apr/risco/medida/toggle') }}", {
                     method: 'POST',

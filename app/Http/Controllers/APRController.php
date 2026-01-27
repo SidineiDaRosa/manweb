@@ -169,12 +169,12 @@ class APRController extends Controller
                 'grau'          => $request->grau
             ]
         );
-
+        $apr_risco_id = AprRisco::find($aprRisco->id);
         return response()->json([
             'success' => true,
             'message' => 'Risco salvo com sucesso',
             'status' => 1, // ou 0 conforme lógica
-            'apr_risco_id' => $aprRisco->id,
+            'apr_risco_id' => $apr_risco_id->id,
             'risco_id' => $request->risco_id,
             'probabilidade' => $request->probabilidade,
             'severidade' => $request->severidade,
