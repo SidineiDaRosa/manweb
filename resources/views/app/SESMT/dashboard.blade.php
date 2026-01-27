@@ -31,6 +31,7 @@
                     <a href="{{ route('apr.index') }}" class="btn btn-outline">Ver Todas</a>
                 </div>
             </div>
+
             <!--tabela aprs-->
             <div class="table-container">
                 <table class="table">
@@ -52,7 +53,12 @@
                             <td>
                                 <a class="txt-link" href="{{ route('apr.show',['apr_id'=>$apr->id]) }}">
                                     <strong>#{{ $apr->id }}</strong>
-                                </a>
+                                </a> <br>
+                                @foreach($ordens_servicos as $ordem_servico)
+                                @if($apr->ordem_servico_id==$ordem_servico->id)
+                                Satus do OS:{{$ordem_servico->id}}--{{$ordem_servico->situacao}}
+                                @endif
+                                @endforeach
                             </td>
                             <td>{{ $apr->localizacao->nome }}</td>
                             <td>{{ $apr->descricao_atividade }}</td>

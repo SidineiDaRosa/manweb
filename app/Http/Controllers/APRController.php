@@ -145,7 +145,16 @@ class APRController extends Controller
         $aprs = APR::all();
         $riscos = AprRisco::all();
         $apr_count = APR::count('status', 'aberta');
-        return view('app.SESMT.dashboard', ['aprs' => $aprs, 'riscos' => $riscos]);
+        $ordens_servicos = OrdemServico::whereHas('apr') // só quem tem APR relacionada
+            ->where('situacao', '!=', 'fechado')        // que não estão fechadas
+            ->get();
+
+        return view('app.SESMT.dashboard', [
+            'aprs' => $aprs,
+            'riscos' => $riscos,
+            'ordens_servicos' => $ordens_servicos
+
+        ]);
     }
     public function risco_store(Request $request)
     {
@@ -169,6 +178,7 @@ class APRController extends Controller
                 'grau'          => $request->grau
             ]
         );
+
         $apr_risco_id = AprRisco::find($aprRisco->id);
         return response()->json([
             'success' => true,
@@ -178,7 +188,8 @@ class APRController extends Controller
             'risco_id' => $request->risco_id,
             'probabilidade' => $request->probabilidade,
             'severidade' => $request->severidade,
-            'grau' => $request->grau,
+            'grau' => $request->grau
+
         ]);
     }
     public function risco_medida_controle_store(Request $request)

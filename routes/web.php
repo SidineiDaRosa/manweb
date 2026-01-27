@@ -636,6 +636,12 @@ Route::middleware('auth')->group(function () {
 use App\Http\Controllers\MensagemPainelController;
 use App\Http\Controllers\RiscoController;
 use App\Http\Controllers\MedidaControleController;
+//  inicia os por botão no panel os
+Route::put(
+    '/ordem-servico/{id}/start-stop',
+    [OrdemServicoController::class, 'start_stop_os']
+)->name('ordem-servico.start_stop');
+
 // Resource com binding correto
 Route::resource('mensagens', MensagemPainelController::class)->parameters([
     'mensagens' => 'mensagem'

@@ -225,7 +225,7 @@ class OrdemServicoController extends Controller
      */
     public function create(Request $empresa)
     {
-       
+
         $projetos = Projeto::where('status', 'ativo')->get();
         $id = $empresa->get('empresa');
         $equipamento = $empresa->get('equipamento');
@@ -805,5 +805,25 @@ class OrdemServicoController extends Controller
         ]);
 
         return response()->json(['success' => true, 'id' => $ordemServico->id]);
+    }
+    // Start stop OS
+    public function start_stop_os(Request $request, $id)
+    {
+        $os = OrdemServico::findOrFail($id);
+
+        // Converte de padrão do front para padrão do banco
+        $status = $request->status === 'em_andamento'
+            ? 'em andamento'
+            : $request->status;
+
+        $os->update([
+            'situacao' => $status,
+            'observacao' => $request->observacao,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OS atualizada para: ' . $status
+        ]);
     }
 }

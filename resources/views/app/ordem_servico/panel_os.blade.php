@@ -16,6 +16,17 @@
     <script src="{{ asset('js/date_time.js') }}"></script>
     <script src="{{ asset('js/update_datatime.js') }}" defer></script>
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <!-- Bootstrap Icons (FALTAVA ESTE) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Icofont -->
+    <link rel="stylesheet" href="{{ asset('css/icofont.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/comum.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         * {
             margin: 0;
@@ -169,7 +180,7 @@
         }
 
         .equipamento {
-            color: #2d3748;
+            color: #063991;
             font-size: 16px;
             font-weight: 500;
         }
@@ -690,6 +701,9 @@
                     color: black;
                 }
             </style>
+            <!------------------------->
+            <!--Bloco que do card  os-->
+
             <div class="card-header {{ $headerClass }}">
 
                 <div class="os-info">
@@ -702,8 +716,28 @@
                         @endif
 
                     </div>
+                    <div style="display:flex; flex-direction:row; gap:10px; margin-bottom:3px">
+                        <div class="equipamento">{{ $ordem_servico->equipamento->nome }} </div>
+                        <div>
+                            <span style="color: white;">{{$ordem_servico->situacao}}</span>
+                        </div>
 
-                    <div class="equipamento">{{ $ordem_servico->equipamento->nome }}</div>
+                        <button type="button"
+                            class="btn btn-sm btnAtualizarOS 
+           {{ $ordem_servico->situacao === 'aberto' ? 'btn-success' : 'btn-primary' }}"
+                            data-id="{{ $ordem_servico->id }}"
+                            data-situacao="{{ $ordem_servico->situacao }}"
+                            style="height:30px;width:50px;border-radius:5px;">
+
+                            @if($ordem_servico->situacao === 'em andamento')
+                            <i class="bi bi-pause-circle"></i>
+                            @else
+                            <i class="bi bi-play-circle"></i>
+                            @endif
+                        </button>
+                    </div>
+
+
                 </div>
 
                 <div class="indicador-urgencia urgencia-{{ $ordem_servico->urgencia }}"
@@ -1153,6 +1187,74 @@
                 });
         }
     </script>
+    <div class="modal fade" id="modalStatusOS" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Alterar Status da OS</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="osId">
+
+                    <label class="form-label">Selecione o novo status</label>
+                    <select id="novoStatus" class="form-select">
+                        <option value="aberto">Aberto</option>
+                        <option value="em_andamento">Em andamento</option>
+                        <option value="pausado">Pausado</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" id="confirmarStatus">Confirmar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let modalStatus = new bootstrap.Modal(document.getElementById('modalStatusOS'));
+        let osSelecionada = null;
+
+        // Abre a modal ao clicar no botão atual
+        document.querySelectorAll('.btnAtualizarOS').forEach(btn => {
+            btn.addEventListener('click', function() {
+                osSelecionada = this.dataset.id;
+                document.getElementById('osId').value = osSelecionada;
+                modalStatus.show();
+            });
+        });
+
+        // Confirma e envia
+        document.getElementById('confirmarStatus').addEventListener('click', function() {
+            let novoStatus = document.getElementById('novoStatus').value;
+            let id = document.getElementById('osId').value;
+
+            fetch(`/ordem-servico/${id}/start-stop`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        status: novoStatus,
+                        observacao: 'Alterado via modal'
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.message);
+                    modalStatus.hide();
+                    location.reload();
+                })
+                .catch(err => alert('Erro: ' + err));
+        });
+    </script>
+
 </body>
 
 </html>

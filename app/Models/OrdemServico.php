@@ -38,7 +38,7 @@ class OrdemServico extends Model
     {
         return $this->belongsTo('App\Models\Equipamento');
     }
-   
+
     public function Empresa()
     {
         return $this->belongsTo('App\Models\Empresas');
@@ -50,5 +50,9 @@ class OrdemServico extends Model
     public function ss()
     {
         return $this->belongsTo(SolicitacaoOs::class, 'ss_id'); // ss_id é a FK na ordem_servicos
+    }
+    public function apr()
+    {
+        return $this->hasOne(APR::class, 'ordem_servico_id');
     }
 }

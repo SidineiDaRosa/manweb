@@ -404,7 +404,7 @@
                             </div>
                         </div>
                         {{-- FORMULÁRIO DE EDIÇÃO DA APR --}}
-                        <div class="card border-danger mb-4">
+                        <div class="card border-danger mb-4" >
                             <div class="card-header bg-danger text-white py-3">
                                 <h5 class="mb-0">
                                     <i class="fas fa-exclamation-triangle me-2"></i> ANÁLISE DE RISCOS
