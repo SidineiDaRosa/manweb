@@ -28,33 +28,36 @@
                     <td>{{ Str::limit($risco->descricao, 50) }}</td>
                     <td>{{ $risco->ativo ? 'Ativo' : 'Inativo' }}</td>
                     <td>
-                        <button class="btn btn-sm btn-info"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalRisco"
-                            data-id="{{ $risco->id }}"
-                            data-tipo="{{ $risco->tipo_risco }}"
-                            data-nome="{{ $risco->nome }}"
-                            data-descricao="{{ $risco->descricao }}"
-                            data-status="{{ $risco->ativo ? 'Ativo' : 'Inativo' }}">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-primary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalEditarRisco"
-                            data-id="{{ $risco->id }}"
-                            data-tipo="{{ $risco->tipo_risco }}"
-                            data-nome="{{ $risco->nome }}"
-                            data-descricao="{{ $risco->descricao }}"
-                            data-ativo="{{ $risco->ativo }}">
-                            <i class="bi bi-pencil-fill"></i>
+                        <div>
+                            <button class="btn btn-sm btn-info"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalRisco"
+                                data-id="{{ $risco->id }}"
+                                data-tipo="{{ $risco->tipo_risco }}"
+                                data-nome="{{ $risco->nome }}"
+                                data-descricao="{{ $risco->descricao }}"
+                                data-status="{{ $risco->ativo ? 'Ativo' : 'Inativo' }}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditarRisco"
+                                data-id="{{ $risco->id }}"
+                                data-tipo="{{ $risco->tipo_risco }}"
+                                data-nome="{{ $risco->nome }}"
+                                data-descricao="{{ $risco->descricao }}"
+                                data-ativo="{{ $risco->ativo }}">
+                                <i class="bi bi-pencil-fill"></i>
 
-                        </button>
+                            </button>
+                        </div>
+
                         <div>
                             <a href="{{ route('riscos.medidas.index', $risco->id) }}" class="btn btn-sm btn-warning">
-                                Medidas de Controle do Risco <i class="bi-exclamation-triangle-fill">
+                                <i class="bi-exclamation-triangle-fill"></i> Medidas de Controle do Risco
                             </a>
                             <a href="{{ route('epis_index', $risco->id) }}" class="btn btn-sm btn-success">
-                                EPIs Vinculado ao Risco <i class="bi bi-cone-striped"></i>
+                                <i class="bi bi-cone-striped"></i> EPIs Vinculado ao Risco
                             </a>
                         </div>
 

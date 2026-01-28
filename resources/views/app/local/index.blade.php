@@ -24,6 +24,9 @@
         @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+                &times;
+            </button>
         </div>
         @endif
 

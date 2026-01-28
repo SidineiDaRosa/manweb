@@ -7,7 +7,26 @@
         @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+            <button type="button" class="close"
+                data-bs-dismiss="alert"
+                aria-label="Fechar"
+                style="border:none; background:none; font-size:20px; font-weight:bold;">
+                &times;
+            </button>
+        </div>
+        @endif
+        @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Ops! Verifique os campos:</strong>
+            <ul class="mb-0 mt-2">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close"
+                data-bs-dismiss="alert"
+                aria-label="Fechar"
+                style="border:none; background:none; font-size:20px; font-weight:bold;">
                 &times;
             </button>
         </div>
