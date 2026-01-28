@@ -792,46 +792,45 @@
                     </div>
 
                     {{-- CAMPO PARA OBSERVAÇÕES ADICIONAIS --}}
-                    <div class="mt-4">
+                    <div class="mt-4" hidden>
                         <label for="observacoes" class="form-label fw-bold">
                             <i class="fas fa-sticky-note me-2"></i>Observações Adicionais
                         </label>
-                        <textarea class="form-control" id="observacoes" name="observacoes" rows="3" placeholder="Adicione observações relevantes sobre os riscos ou medidas de controle...">{{ old('observacoes', $apr->observacoes ?? '') }}</textarea>
                     </div>
                 </div>
             </div>
 
 
             {{-- CAMPO DE ASSINATURA --}}
-            <div class="card border-secondary mb-4 shadow-sm">
-                <div class="card-header bg-secondary text-white py-3">
-                    <h5 class="mb-0">
-                        <i class="fas fa-signature me-2"></i> Assinatura do Responsável
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <label for="assinatura_responsavel" class="form-label fw-bold">Digite sua assinatura:</label>
-                            <input type="text" class="form-control form-control-lg"
-                                id="assinatura_responsavel"
-                                name="assinatura_responsavel"
-                                value="{{ old('assinatura_responsavel', $apr->assinatura_responsavel ?? '') }}"
-                                placeholder="Digite seu nome completo para assinar">
-                            <div class="form-text">Esta assinatura confirma sua responsabilidade sobre a análise de riscos.</div>
-                        </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="assinatura_responsavel" class="form-label fw-bold">
+                            Digite sua assinatura:
+                        </label>
 
+                        <input type="text"
+                            class="form-control form-control-lg w-100"
+                            id="assinatura_responsavel"
+                            name="assinatura_responsavel"
+                            value="{{ old('assinatura_responsavel', $apr->assinatura_responsavel ?? '') }}"
+                            placeholder="Digite seu nome completo para assinar">
+
+                        <div class="form-text">
+                            Esta assinatura confirma sua responsabilidade sobre a análise de riscos.
+                        </div>
                     </div>
                 </div>
             </div>
+
 
             {{-- BOTÕES DE AÇÃO --}}
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
                 <div class="d-flex flex-wrap justify-content-center gap-2">
                     <form action="{{ route('apr.confirmar', $apr->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-primary">
-                            Confirmar Análise
+                        <button type="submit" class="btn btn-warning">
+                         <i class="bi bi-exclamation-triangle-fill"></i>   Confirmar Análise
                         </button>
                     </form>
 
@@ -839,9 +838,7 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
+
     <div class="modal fade" id="modalSucessoRisco" tabindex="-1" aria-labelledby="modalSucessoRiscoLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-success">
