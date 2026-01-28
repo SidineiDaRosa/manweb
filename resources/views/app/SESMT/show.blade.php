@@ -117,7 +117,7 @@
                             else if (data.grau == 5) classe = 'bg-danger text-white';
                             grauDiv.className = 'text-center ' + classe;
                         }
-                  
+
 
                     });
 
@@ -134,7 +134,6 @@
 </script>
 
 <!--Modal update APR-->
-<!-- Modal Editar APR -->
 <div class="modal fade" id="modalEditarApr" tabindex="-1" aria-labelledby="modalEditarAprLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <form id="formAprUpdate" method="POST" action="{{ route('apr.update') }}">
@@ -149,15 +148,12 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-
                 <div class="modal-body">
-
                     <!-- Ordem de Serviço -->
                     <div class="mb-3">
                         <label class="form-label">Ordem de Serviço</label>
                         <input type="number" class="form-control" name="ordem_servico_id" id="ordem_servico_id" required readonly>
                     </div>
-
                     <!-- Localização -->
                     <div class="mb-3">
                         <label class="form-label">Localização</label>
@@ -168,13 +164,11 @@
                             @endforeach
                         </select>
                     </div>
-
                     <!-- Descrição da Atividade -->
                     <div class="mb-3">
                         <label class="form-label">Descrição da Atividade</label>
                         <textarea name="descricao_atividade" id="descricao_atividade" class="form-control" rows="3" required></textarea>
                     </div>
-
                     <!-- Responsável -->
                     <div class="mb-3">
                         <label class="form-label">Responsável</label>
@@ -238,11 +232,11 @@
         </button>
     </div>
     @endif
-<script>
-    function recarrega(){
-         window.location.reload();
-    }
-</script>
+    <script>
+        function recarrega() {
+            window.location.reload();
+        }
+    </script>
 
     @if(session('error'))
     <div class="alert alert-danger custom-alert d-flex align-items-start gap-2 position-relative">
@@ -266,15 +260,14 @@
     </div>
     @endif
 
-
     <div class="container-fluid p-0">
-        <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
+        <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap" style="max-height: 30px!important;">
             <div>
                 APR #{{ $apr->id }}
             </div>
             <div style="gap:10px!important;">
                 <a href="{{ route('apr.pdf', $apr->id) }}"
-                    class="btn btn-lg btn-outline-danger"
+                    class="btn btn-outline-danger"
                     target="_blank" style="height:40px;">
                     APR Pdf <i class="bi bi-filetype-pdf"></i>
                 </a>
@@ -287,12 +280,12 @@
 
                 <a href="{{ route('apr.modelo', ['apr_id' => $apr->id]) }}"
                     target="_blank"
-                    class="btn btn-secondary" style="height:40px;">
+                    class="btn btn-outline-secondary" style="height:40px;">
                     APR Vazia <i class="bi bi-filetype-pdf"></i>
                 </a>
                 <button class="btn btn-sm btn-warning"
                     onclick="editarApr({{ $apr }})" class="btn btn-secondary" style="height:40px;">
-                    Editar
+                    <i class="bi bi-pen"></i>
                 </button>
             </div>
         </div>
@@ -302,110 +295,105 @@
             <div class="col-12">
                 <div class="card border-primary">
                     {{-- CABEÇALHO DA APR --}}
-                    <div class="card-header bg-primary bg-opacity-10 border-primary py-3">
-                        <div class="row align-items-center">
-
-                            <div class="col-md-4 text-end">
-                                <div class="text-primary fw-bold">Código: APR-{{ str_pad($apr->id, 5, '0', STR_PAD_LEFT) }}</div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="card-body">
                         {{-- INFORMAÇÕES BÁSICAS --}}
                         <div class="row mb-4">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <div class="card border h-10">
-                                    <div class="card-header bg-light py-2">
+                                    <div class="card-header bg-light py-1">
                                         <h5 class="mb-0">
-                                            <i class="fas fa-clipboard-list me-2"></i>Informações da Atividade
+                                            <i class="fas fa-clipboard-list me-2"></i>Informações da APR
                                         </h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row mb-2">
-                                            <div class="col-5 fw-bold">O.S. Nº:</div>
-                                            <div class="col-7">
-                                                <a href="{{route('ordem-servico.show', ['ordem_servico'=>$apr->ordem_servico_id ])}}"
-                                                    class="text-decoration-none fs-5">
-                                                    #{{ $apr->ordem_servico_id }}
-                                                </a>
+                                        <div class="row g-1">
+
+                                            <!-- COLUNA 1 -->
+                                            <div class="col-12 col-md-6">
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">O.S. Nº:</div>
+                                                    <div class="col-7">
+                                                        <a href="{{ route('ordem-servico.show', ['ordem_servico'=>$apr->ordem_servico_id]) }}"
+                                                            class="text-decoration-none fs-6">
+                                                            #{{ $apr->ordem_servico_id }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">Local:</div>
+                                                    <div class="col-7 fs-6">{{ $apr->localizacao->nome }}</div>
+                                                </div>
+
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">Data:</div>
+                                                    <div class="col-7 fs-6">
+                                                        {{ \Carbon\Carbon::parse($apr->created_at)->format('d/m/Y') }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">Atividade:</div>
+                                                    <div class="col-7 fs-6">{{ $apr->descricao_atividade }}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-5 fw-bold">Local:</div>
-                                            <div class="col-7 fs-5">{{ $apr->local_trabalho }}</div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-5 fw-bold">Data:</div>
-                                            <div class="col-7 fs-5">{{ \Carbon\Carbon::parse($apr->created_at)->format('d/m/Y') }}</div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-5 fw-bold">Atividade:</div>
-                                            <div class="col-7 fs-5">{{ $apr->descricao_atividade }}</div>
+
+                                            <!-- COLUNA 2 -->
+                                            <div class="col-12 col-md-6">
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">Elaborado:</div>
+                                                    <div class="col-7 fs-6">
+                                                        {{ $apr->responsavel->primeiro_nome }} {{ $apr->responsavel->ultimo_nome }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">Assinatura:</div>
+                                                    <div class="col-7">
+                                                        <div class="border rounded px-2 py-1 text-center bg-light small">
+                                                            {{ $apr->assinatura_responsavel ?? '____________________' }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">Status:</div>
+                                                    <div style="border-radius:4px;width:300px;padding:5px;">
+                                                        @if($apr->status === 'aberta')
+                                                        <div style="border-radius:4px;background:#198754;">Aberta</div>
+                                                        @endif
+                                                        @if($apr->status === 'Verificada')
+                                                        <div style="border-radius:4px;background:#198754;">Verificada</div>
+                                                        @endif
+                                                        @if($apr->status === 'finalizada')
+                                                        <div style="border-radius:4px;background:#0d6efd;">Finalizada</div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-0">
+                                                    <div class="col-5 fw-bold">Validade:</div>
+                                                    <div class="col-7 fs-6">
+                                                        {{ $apr->validade
+                        ? \Carbon\Carbon::parse($apr->validade)->format('d/m/Y')
+                        : 'Não definida'
+                    }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
+
+                                    <!---->
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <div class="card border h-100">
-                                    <div class="card-header bg-light py-2">
-                                        <h5 class="mb-0">
-                                            <i class="fas fa-user-tie me-2"></i>Responsáveis
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row mb-2">
-                                            <div class="col-5 fw-bold">Elaborado por:</div>
-                                            <div class="col-7 fs-5">{{$apr->responsavel->primeiro_nome}} {{$apr->responsavel->ultimo_nome}}</div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-5 fw-bold">Assinatura:</div>
-                                            <div class="col-7">
-                                                @if($apr->assinatura_responsavel)
-                                                <div class="border rounded p-2 text-center bg-light">
-                                                    {{ $apr->assinatura_responsavel }}
-                                                </div>
-                                                @else
-                                                <div class="text-muted border rounded p-2 text-center bg-light">
-                                                    ________________________
-                                                </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2">
-
-                                            <div class="col-5 fw-bold">Status:</div>
-                                            <div class="col-7">
-                                                @if($apr->status === 'aberta')
-                                                <div style="background:#fd7e14; border-radius:2px;">Aberta</div>
-                                                @endif
-                                                @if($apr->status === 'Verificada')
-                                                <div style="background:rgb(87, 144, 228); border-radius:2px;">Verificada</div>
-                                                @endif
-                                                @if($apr->status === 'finalizada')
-                                                <div style="background:#fd7e14; border-radius:2px;">Finalizada</div>
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-5 fw-bold">Validade:</div>
-                                            <div class="col-7">
-                                                @if($apr->validade)
-                                                <span class="fs-5">{{ \Carbon\Carbon::parse($apr->validade)->format('d/m/Y') }}</span>
-                                                @else
-                                                <span class="text-muted fs-5">Não definida</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         {{-- FORMULÁRIO DE EDIÇÃO DA APR --}}
-                        <div class="card border-danger mb-4" >
-                            <div class="card-header bg-danger text-white py-3">
+                        <div class="card border-danger mb-4">
+                            <div class="card-header bg-danger  text-white py-3">
                                 <h5 class="mb-0">
                                     <i class="fas fa-exclamation-triangle me-2"></i> ANÁLISE DE RISCOS
                                 </h5>
@@ -415,7 +403,7 @@
                             <div class="card-body">
                                 @foreach ($riscos as $tipo => $listaRiscos)
                                 {{-- CABEÇALHO DO TIPO DE RISCO --}}
-                                <div class="risk-type-header" style="background-color: #ffc107; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                                <div class="risk-type-header" style="background-color: rgb(255, 193, 7,0.5); padding: 10px; margin-bottom: 10px; border-radius: 4px;">
                                     <strong style="font-size: 1.1rem; text-transform: uppercase;">{{ $tipo }}</strong>
                                 </div>
 
@@ -426,7 +414,7 @@
                                 });
                                 @endphp
 
-                                <div style="border: 1px solid #dee2e6; margin-bottom: 20px; padding: 15px; border-radius: 5px;background: rgb(25, 135, 84,0.3);">
+                                <div style="border: 1px solid #dee2e6; margin-bottom: 20px; padding: 15px; border-radius: 5px;background: rgb(25, 135, 84,0.2);">
 
                                     {{-- CABEÇALHO DO RISCO --}}
                                     <div class="risco-container" id="container_risco_{{ $risco->id }}" style="margin-bottom: 10px;">
@@ -435,7 +423,7 @@
                                             <!-- Input hidden com ID único para cada risco -->
                                             <input type="input" id="apr_risco_id_{{ $risco->id }}" value="{{ $apr_risco_salvo->id ?? 0 }}" hidden>
                                         </div>
-                                        <div style="color: #6c757d;">
+                                        <div style="color: #33373a; background: rgb(253, 126, 20,0.3); padding:5px; border-radius:5px;">
                                             Descrição: {{ $risco->descricao }}
                                         </div>
                                     </div>
@@ -548,37 +536,35 @@
 
                                         Confirmar alterações
                                     </button>
-                                </div>
-
-
-
-                                {{-- MATERIAIS DE RISCO --}}
-                                @if($materiais_risco->where('risco_id', $risco->id)->count() > 0)
-                                <div style="margin-top: 15px;">
-                                    <div style="font-weight: 600; margin-bottom: 10px;">Materiais Relacionados:</div>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                                        @foreach($materiais_risco as $material_risco)
-                                        @if($material_risco->risco_id == $risco->id)
-                                        <div style="flex: 1 1 300px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-                                            <input type="checkbox" name="" id="" style="margin-right: 8px;">
-                                            <strong style="color: darkblue;">
-                                                {{ $material_risco->material->nome ?? 'Material não encontrado' }}
-                                            </strong>
-                                            <br>
-                                            <small style="color: #6c757d;">
-                                                Observações: {{ $material_risco->observacoes }}
-                                            </small>
+                                    {{-- MATERIAIS DE RISCO --}}
+                                    @if($materiais_risco->where('risco_id', $risco->id)->count() > 0)
+                                    <div style="margin-top: 15px; background: #f9faed">
+                                        <div style="font-weight: 600; margin-bottom: 10px;">Materiais Relacionados EPIs: <i class="bi bi-cone-striped"></i></div>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                                            @foreach($materiais_risco as $material_risco)
+                                            @if($material_risco->risco_id == $risco->id)
+                                            <div style="flex: 1 1 300px; border: solid 1px rgb(33, 37, 41,0.3); padding: 10px; border-radius: 5px;">
+                                                <input type="checkbox" name="" id="" style="margin-right: 8px;">
+                                                <strong style="color: darkblue;">
+                                                    {{ $material_risco->material->nome ?? 'Material não encontrado' }}
+                                                </strong>
+                                                <br>
+                                                <small style="color: #6c757d;">
+                                                    Observações: {{ $material_risco->observacoes }}
+                                                </small>
+                                            </div>
+                                            @endif
+                                            @endforeach
                                         </div>
-                                        @endif
-                                        @endforeach
                                     </div>
-                                </div>
-                                @endif
+                                    @endif
 
+                                </div>
+                                @endforeach
+                                @endforeach
                             </div>
-                            @endforeach
-                            @endforeach
                         </div>
+                        <!--Fim do corpo dos riscos-->
                     </div>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
