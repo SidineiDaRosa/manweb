@@ -709,3 +709,12 @@ Route::get('/epis/{id}', [MaterialEpiController::class, 'epis_index'])
 Route::post('/epis/{id}', [MaterialEpiController::class, 'store_epi'])
     ->name('epis.store');
 Route::post('/teste-backend', [APRController::class, 'teste_backend']);
+//-------------------------------------------------------------//
+//                Loacalização ala, setor
+//-------------------------------------------------------------//
+use App\Http\Controllers\LocalController;
+
+Route::middleware('auth')->group(function () {
+    Route::resource('locais', LocalController::class);
+    Route::put('/locais/{id}', [LocalController::class, 'update'])->name('locais.update');
+});

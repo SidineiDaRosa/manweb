@@ -164,6 +164,9 @@
                 <a class="submenu" href="{{ route('business-partners.index') }}">
                     Business Partners
                 </a>
+                <a class="submenu" href="{{ route('locais.index') }}">
+                    Setor/Local
+                </a>
             </div>
 
 
