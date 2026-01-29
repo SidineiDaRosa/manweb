@@ -44,6 +44,7 @@
                     <th>Status</th>
                     <th>Observações</th>
                     <th>Criado em</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,15 +61,82 @@
                     </td>
                     <td>{{ $vinculo->observacoes ?? '-' }}</td>
                     <td>{{ $vinculo->created_at->format('d/m/Y H:i') }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEditarEpi{{ $vinculo->id }}">
+                            Editar
+                        </button>
+                    </td>
                 </tr>
+
+                {{-- MODAL DO VÍNCULO --}}
+                <div class="modal fade"
+                    id="modalEditarEpi{{ $vinculo->id }}"
+                    tabindex="-1"
+                    aria-hidden="true">
+
+                    <div class="modal-dialog modal-lg">
+                        <form action="{{ route('epis.update', $vinculo->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        Editar EPI – {{ $vinculo->material->nome }}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label>EPI</label>
+                                        <select name="material_id" class="form-select">
+                                            @foreach($materiais_epis as $epi)
+                                            <option value="{{ $epi->id }}"
+                                                {{ $epi->id == $vinculo->material_id ? 'selected' : '' }}>
+                                                {{ $epi->nome }} | CA {{ $epi->ca }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Status</label>
+                                        <select name="status" class="form-select">
+                                            <option value="1" {{ $vinculo->status ? 'selected' : '' }}>Necessário</option>
+                                            <option value="0" {{ !$vinculo->status ? 'selected' : '' }}>Não usado</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Observações</label>
+                                        <textarea name="observacoes"
+                                            class="form-control">{{ $vinculo->observacoes }}</textarea>
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button class="btn btn-success">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center text-muted">
+                    <td colspan="6" class="text-center text-muted">
                         Nenhum EPI vinculado a este risco
                     </td>
                 </tr>
                 @endforelse
             </tbody>
+
         </table>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -118,6 +186,26 @@
             </form>
         </div>
     </div>
+
+    <script>
+        public
+
+        function update(Request $request, $id) {
+            $request - > validate([
+                'status' => 'required|boolean',
+                'observacoes' => 'nullable|string',
+            ]);
+
+            $vinculo = RiscoMaterial::findOrFail($id);
+
+            $vinculo - > update([
+                'status' => $request - > status,
+                'observacoes' => $request - > observacoes,
+            ]);
+
+            return redirect() - > back() - > with('success', 'EPI atualizado com sucesso!');
+        }
+    </script>
 
 </main>
 @endsection

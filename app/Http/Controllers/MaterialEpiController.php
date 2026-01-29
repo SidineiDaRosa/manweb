@@ -105,4 +105,22 @@ class MaterialEpiController extends Controller
 
         return redirect()->back()->with('success', 'EPI vinculado com sucesso!');
     }
+    public function update_material_risco(Request $request, $id)
+    {
+        $request->validate([
+            'material_id' => 'required|exists:materiais,id',
+            'status' => 'required|boolean',
+            'observacoes' => 'nullable|string',
+        ]);
+
+        $vinculo = MaterialRisco::findOrFail($id);
+
+        $vinculo->update([
+            'material_id' => $request->material_id,
+            'status' => $request->status,
+            'observacoes' => $request->observacoes,
+        ]);
+
+        return redirect()->back()->with('success', 'EPI do risco atualizado com sucesso!');
+    }
 }
