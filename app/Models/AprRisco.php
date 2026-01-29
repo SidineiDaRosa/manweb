@@ -18,7 +18,8 @@ class AprRisco extends Model
         'severidade',
         'grau',
         'medidas_controle',
-        'status'
+        'status',
+        'epis'
     ];
 
     /**

@@ -373,9 +373,24 @@ class APRController extends Controller
                 }
             }
         }
+        $erro_epi = false;
+
+        $apr_riscos = AprRisco::where('apr_id', $id)
+            ->where('grau', '>', 1)
+            ->get();
+
+        foreach ($apr_riscos as $risco) {
+            if ($risco->epis != 1) {
+                $erro_epi = true;
+                break;
+            }
+        }
+
 
         // 🚫 Bloqueia confirmação se houver pendências
+
         if (!empty($pendentes)) {
+
             return redirect()->back()->with(
                 'error',
                 'Existem pendências na análise:<br>➤ ' . implode('<br>➤ ', $pendentes)
@@ -383,10 +398,38 @@ class APRController extends Controller
         }
 
         // ✅ Se passou por tudo, confirma APR
-        APR::where('id', $id)->update([
-            'status' => 'Verificada'
+        if ($erro_epi) {
+            return redirect()->back()->with(
+                'error',
+                'Existe risco com grau maior que 1, e que os EPIs  não foram verificados.'
+            );
+        } else {
+            APR::where('id', $id)->update([
+                'status' => 'Verificada'
+            ]);
+            return redirect()->back()->with('success', 'Todos os riscos e medidas de controle foram verificados com sucesso!');
+        }
+    }
+    public function verificaEpis(Request $request)
+    {
+
+        // Validação básica
+        $request->validate([
+            'apr_risco_id' => 'required|integer',
+            'epis' => 'required|array',
+            'epis.*' => 'integer'
         ]);
 
-        return redirect()->back()->with('success', 'Todos os riscos e medidas de controle foram verificados com sucesso!');
+        $aprRiscoId = $request->apr_risco_id;
+        $epis = $request->epis;
+
+        // Aqui você faz o que precisa no banco:
+        // - Registrar que os EPIs foram verificados
+        // - Atualizar algum status no $aprRiscoId, etc.
+
+        // Exemplo simples:
+        AprRisco::find($aprRiscoId)->update(['epis' => true]);
+
+        return response()->json(['success' => true]);
     }
 }

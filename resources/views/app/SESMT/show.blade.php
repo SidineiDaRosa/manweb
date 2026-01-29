@@ -434,9 +434,9 @@
                                         <div style="flex: 1; min-width: 150px;">
                                             <div style="margin-bottom: 5px; font-weight: 500;">Probabilidade</div>
                                             <select name="riscos[{{ $risco->id }}][probabilidade]" class="form-select form-select-sm">
-                                                <option value="baixa" {{ ($apr_risco_salvo->probabilidade ?? '') == 'baixa' ? 'selected' : '' }}>Baixa</option>
-                                                <option value="media" {{ ($apr_risco_salvo->probabilidade ?? '') == 'media' ? 'selected' : '' }}>Média</option>
-                                                <option value="alta" {{ ($apr_risco_salvo->probabilidade ?? '') == 'alta' ? 'selected' : '' }}>Alta</option>
+                                                <option value="baixa" {{ ($apr_risco_salvo->probabilidade ?? '') == 'Baixa' ? 'selected' : '' }}>Baixa</option>
+                                                <option value="media" {{ ($apr_risco_salvo->probabilidade ?? '') == 'Media' ? 'selected' : '' }}>Média</option>
+                                                <option value="alta" {{ ($apr_risco_salvo->probabilidade ?? '') == 'Alta' ? 'selected' : '' }}>Alta</option>
                                             </select>
                                         </div>
 
@@ -444,9 +444,9 @@
                                         <div style="flex: 1; min-width: 150px;">
                                             <div style="margin-bottom: 5px; font-weight: 500;">Severidade</div>
                                             <select name="riscos[{{ $risco->id }}][severidade]" class="form-select form-select-sm">
-                                                <option value="leve" {{ ($apr_risco_salvo->severidade ?? '') == 'leve' ? 'selected' : '' }}>Leve</option>
-                                                <option value="moderada" {{ ($apr_risco_salvo->severidade ?? '') == 'moderada' ? 'selected' : '' }}>Moderada</option>
-                                                <option value="grave" {{ ($apr_risco_salvo->severidade ?? '') == 'grave' ? 'selected' : '' }}>Grave</option>
+                                                <option value="leve" {{ ($apr_risco_salvo->severidade ?? '') == 'Leve' ? 'selected' : '' }}>Leve</option>
+                                                <option value="moderada" {{ ($apr_risco_salvo->severidade ?? '') == 'Moderada' ? 'selected' : '' }}>Moderada</option>
+                                                <option value="grave" {{ ($apr_risco_salvo->severidade ?? '') == 'Grave' ? 'selected' : '' }}>Grave</option>
                                             </select>
                                         </div>
 
@@ -537,28 +537,30 @@
                                         Confirmar alterações
                                     </button>
                                     {{-- MATERIAIS DE RISCO --}}
-                                    @if($materiais_risco->where('risco_id', $risco->id)->count() > 0)
-                                    <div style="margin-top: 15px; background: #f9faed">
-                                        <div style="font-weight: 600; margin-bottom: 10px;">Materiais Relacionados EPIs: <i class="bi bi-cone-striped"></i></div>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                                    <div style="margin-top: 15px;">
+                                        <div style="font-weight: 600; margin-bottom: 10px;">
+                                            Materiais Relacionados EPIs: <i class="bi bi-cone-striped"></i>
+                                        </div>
+                                        @if(isset($apr_risco_salvo) && $apr_risco_salvo->grau > 1)
+                                        <form class="form-verifica-epis" data-apr-risco-id="{{ $apr_risco_salvo->id }}" style="display: flex; flex-wrap: wrap; gap: 15px;">
                                             @foreach($materiais_risco as $material_risco)
                                             @if($material_risco->risco_id == $risco->id)
-                                            <div style="flex: 1 1 300px; border: solid 1px rgb(33, 37, 41,0.3); padding: 10px; border-radius: 5px;">
-                                                <input type="checkbox" name="" id="" style="margin-right: 8px;">
-                                                <strong style="color: darkblue;">
-                                                    {{ $material_risco->material->nome ?? 'Material não encontrado' }}
-                                                </strong>
+                                            <div style="flex: 1 1 300px; border: solid 1px rgba(33,37,41,0.3); padding: 10px; border-radius: 5px;">
+                                                <input type="checkbox" name="epis[]" value="{{ $material_risco->id }}" required>
+                                                <strong>{{ $material_risco->material->nome ?? 'Material não encontrado' }}</strong>
                                                 <br>
-                                                <small style="color: #6c757d;">
-                                                    Observações: {{ $material_risco->observacoes }}
-                                                </small>
+                                                <small>{{ $material_risco->observacoes }}</small>
                                             </div>
                                             @endif
                                             @endforeach
-                                        </div>
-                                    </div>
-                                    @endif
 
+                                            <button type="submit" class="btn btn-success" style="margin-top: 5px;">Confirmar verificação de EPIs</button>
+                                        </form>
+                                        @endif
+
+                                    </div>
+
+                                    {{-- MATERIAIS DE RISCO fim --}}
                                 </div>
                                 @endforeach
                                 @endforeach
@@ -830,7 +832,7 @@
                     <form action="{{ route('apr.confirmar', $apr->id) }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-warning">
-                         <i class="bi bi-exclamation-triangle-fill"></i>   Confirmar Análise
+                            <i class="bi bi-exclamation-triangle-fill"></i> Confirmar Análise
                         </button>
                     </form>
 
@@ -1114,6 +1116,59 @@
                     alert('Ocorreu um erro inesperado. Veja o console ou o log do Laravel.');
                 });
         }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Seleciona todos os formulários de verificação
+        const forms = document.querySelectorAll('.form-verifica-epis');
+
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // impede o envio tradicional
+
+                // Pega todos os checkboxes deste formulário
+                const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+
+                // Verifica se todos estão marcados
+                const todosMarcados = Array.from(checkboxes).every(chk => chk.checked);
+
+                if (!todosMarcados) {
+                    alert('Você precisa marcar todos os EPIs antes de confirmar!');
+                    return;
+                }
+
+                // Se todos estiverem marcados, prepara os dados para enviar
+                const aprRiscoId = form.dataset.aprRiscoId;
+                const epis = Array.from(checkboxes).map(chk => chk.value);
+                //alert(aprRiscoId+epis)
+                // Envia via AJAX (fetch)
+                fetch("{{url('/apr-verifica-epis')}}", { // Substitua pela sua rota
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            apr_risco_id: aprRiscoId,
+                            epis: epis
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Todos os EPIs do risco foram verificados!');
+                        } else {
+                            alert('Ocorreu um erro ao registrar a verificação.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert('Erro na requisição.');
+                    });
+            });
+        });
     });
 </script>
 

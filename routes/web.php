@@ -709,6 +709,7 @@ Route::get('/epis/{id}', [MaterialEpiController::class, 'epis_index'])
 Route::post('/epis/{id}', [MaterialEpiController::class, 'store_epi'])
     ->name('epis.store');
 Route::post('/teste-backend', [APRController::class, 'teste_backend']);
+Route::post('/apr-verifica-epis', [AprController::class, 'verificaEpis'])->name('apr.verificaEpis');
 //-------------------------------------------------------------//
 //                Loacalização ala, setor
 //-------------------------------------------------------------//
