@@ -31,7 +31,7 @@ class APRController extends Controller
     /**
      * Tela de listagem ou painel SESMT
      */
-    public function index()
+    public function index(Request $request)
     {
         $ordens = OrdemServico::orderBy('id', 'desc')->get();
         $ativos = Equipamento::orderBy('nome')->get();
@@ -103,6 +103,7 @@ class APRController extends Controller
             'responsavel_id' => $request->responsavel_id,
             'assinatura_responsavel' => $request->assinatura_responsavel,
             'status' => $request->status,
+            'prazo' => $request->prazo,
         ]);
 
         return redirect()->back()->with('success', 'APR atualizada com sucesso!');
@@ -140,7 +141,7 @@ class APRController extends Controller
         return view('app.SESMT.show', compact('apr', 'riscos', 'riscos_medidas_controle', 'apr_riscos', 'apr_riscos_medidas', 'materiais_risco', 'localizacao', 'responsaveis'));
     }
     //Carrega dshboard SESMT
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $aprs = APR::all();
         $riscos = AprRisco::all();

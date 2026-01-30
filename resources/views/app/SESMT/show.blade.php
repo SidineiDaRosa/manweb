@@ -179,7 +179,11 @@
                             @endforeach
                         </select>
                     </div>
-
+                    <!-- Prazo de validade -->
+                    <div class="mb-3">
+                        <label class="form-label">Prazo de Validade</label>
+                        <input type="datetime-local" class="form-control" name="prazo" id="assinatura_responsavel">
+                    </div>
                     <!-- Assinatura -->
                     <div class="mb-3">
                         <label class="form-label">Assinatura do Responsável</label>
@@ -327,9 +331,10 @@
                                                 </div>
 
                                                 <div class="row mb-0">
-                                                    <div class="col-5 fw-bold">Data:</div>
+                                                    <div class="col-5 fw-bold">Prazo:</div>
                                                     <div class="col-7 fs-6">
-                                                        {{ \Carbon\Carbon::parse($apr->created_at)->format('d/m/Y') }}
+                                                        {{-- \Carbon\Carbon::parse($apr->created_at)->format('d/m/Y') --}}
+                                                         {{ \Carbon\Carbon::parse($apr->prazo)->format('d/m/Y') }}
                                                     </div>
                                                 </div>
 

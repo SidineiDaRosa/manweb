@@ -63,7 +63,7 @@
                             <td>{{ $apr->localizacao->nome }}</td>
                             <td>{{ $apr->descricao_atividade }}</td>
                             <td>{{ $apr->responsavel->primeiro_nome }} {{ $apr->responsavel->ultimo_nome }}</td>
-                            <td>{{ \Carbon\Carbon::parse($apr->prazo)->format('d/m/Y') }}</td>
+                            <td>{{$apr->prazo}}</td>
 
                             <td>
                                 <span class="priority {{ strtolower($apr->prioridade) }}"></span>

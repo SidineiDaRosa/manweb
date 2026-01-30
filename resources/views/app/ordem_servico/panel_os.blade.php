@@ -792,6 +792,13 @@
                     <img src="{{ asset('img/request_os/' . $ordem_servico->ss->imagem) }}"
                         alt="Foto da Ordem de Serviço"
                         class="imagem-os">
+                    @else
+                    @if(!empty($ordem_servico->link_foto))
+                    <img src="/{{ $ordem_servico->link_foto }}"
+                        id="imagem"
+                        alt="Imagem anexada"
+                        class="imagem-os">
+                    @endif
                     @endif
 
                     @if ($ordem_servico->check != 1)

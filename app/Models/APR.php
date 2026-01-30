@@ -22,6 +22,7 @@ class Apr extends Model
         'responsavel_id',
         'assinatura_responsavel',
         'status',
+        'prazo'
     ];
 
     /**

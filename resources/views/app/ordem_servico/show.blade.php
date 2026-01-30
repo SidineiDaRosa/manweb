@@ -608,6 +608,7 @@
     </script>
     </div>
     <!-- arquivo resources/views/atualizar-registro.blade.php -->
+     {{$ordem_servico->link_foto}}
     @php
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     $extension = pathinfo($ordem_servico->link_foto, PATHINFO_EXTENSION);

@@ -111,6 +111,7 @@
 
                 @if ($check_list_executado_f->imagem && file_exists($caminhoCompleto))
                 <img src="{{ asset($check_list_executado_f->imagem) }}" alt="Imagem checklist" style="max-width: 200px;">
+
                 @else
                 <p><i class="text-danger">Imagem não disponível.</i></p>
                 @endif
@@ -118,11 +119,11 @@
                 <button type="button" class="btn btn-outline-success open-modal-btn"
                     data-bs-toggle="modal" data-bs-target="#dateTimeModal"
                     data-id="{{ $check_list_executado_f->id }}"
-
                     data-time="{{ \Carbon\Carbon::parse($check_list_executado_f->data_verificacao)->format('d/m/Y') }} às {{ $check_list_executado_f->hora_verificacao }}"
                     check-list-id="{{ $check_list_executado_f->checkList->id}}"
                     check-list-desc="{{ $check_list_executado_f->checkList->descricao }}"
                     check-list-obs="{{$check_list_executado_f->observacao}}"
+                    check-list-link-img="{{ asset($check_list_executado_f->imagem) }}"
                     style="float:right;margin-left:5px;height:38px;margin-right:5px;">
                     Criar O.S.
                 </button>
@@ -187,6 +188,10 @@
                                 <input type="datetime-local" class="form-control" id="endDateTime" name="data_fim" required>
                             </div>
                             <div class="mb-3">
+                                <label for="endDateTime" class="form-label">Link Imagem</label>
+                                <input type="text" class="form-control" id="link_foto" name="link_foto" readonly>
+                            </div>
+                            <div class="mb-3">
                                 <label for="endDateTime" class="form-label">Pré descrição da O.S.:</label>
                                 <textarea class="form-control" rows="4" maxlength="300" id="text_area_desc" name="descricao">
                                 </textarea>
@@ -225,12 +230,15 @@
                     const checkListId = button.getAttribute("check-list-id");
                     const checkListDesc = button.getAttribute("check-list-desc");
                     const checkListObs = button.getAttribute("check-list-obs");
+                    const checkListImg = button.getAttribute("check-list-link-img");
                     // Atualiza o conteúdo do elemento com o ID dinâmico na modal
                     document.getElementById("dynamicId").value = itemId;
                     document.getElementById("data_time_modal").value = dataTime;
                     document.getElementById("check_list_id").value = checkListId;
                     document.getElementById("check_list_desc").value = checkListDesc;
                     // document.getElementById("check_list_obs").value = checkListObs;
+                    const url = new URL(checkListImg);
+                    document.getElementById("link_foto").value = url.pathname.substring(1);
                     document.getElementById('text_area_desc').value = 'O.S. criado apartir da checagem ' + itemId + ', em: ' +
                         dataTime + ', do Check-List ID:' + checkListId + ' Desc.: ' + checkListDesc + ', Obs.' + checkListObs
                 });

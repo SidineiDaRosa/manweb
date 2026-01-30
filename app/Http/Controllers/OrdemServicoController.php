@@ -535,6 +535,7 @@ class OrdemServicoController extends Controller
     //----------------------------------------------//
     public function new_os_check_list(Request $request)
     {
+       //dd($request);
         // dd($id = $request->checagem_id);
         // Define o fuso horário de São Paulo
         $dataHoraAtual = Carbon::now('America/Sao_Paulo');
@@ -564,6 +565,7 @@ class OrdemServicoController extends Controller
             'situacao' => 'Aberto',
             'natureza_do_servico' => 'Preventiva',
             'especialidade_do_servico' => $request->natureza,
+            'link_foto'=>$request->link_foto
 
         ]);
         $checagem = CheckListExecutado::find($request->checagem_id);
