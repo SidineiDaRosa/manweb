@@ -63,7 +63,20 @@
                             <td>{{ $apr->localizacao->nome }}</td>
                             <td>{{ $apr->descricao_atividade }}</td>
                             <td>{{ $apr->responsavel->primeiro_nome }} {{ $apr->responsavel->ultimo_nome }}</td>
-                            <td>{{$apr->prazo}}</td>
+                            <td>
+                                @if ($apr->prazo)
+                                @php
+                                $prazo = \Carbon\Carbon::parse($apr->prazo);
+                                @endphp
+
+                                <div class="{{ $prazo->isPast() ? 'bg-danger text-white' : 'bg-success text-white' }}"
+                                    style="border-radius:5px;padding:3px;">
+                                    {{ $prazo->format('d/m/Y H:i') }}
+                                </div>
+                                @else
+                                <span class="text-muted">Prazo não definido</span>
+                                @endif
+                            </td>
 
                             <td>
                                 <span class="priority {{ strtolower($apr->prioridade) }}"></span>
