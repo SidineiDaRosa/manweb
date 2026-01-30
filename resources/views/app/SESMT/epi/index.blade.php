@@ -93,7 +93,7 @@
 
                                     <div class="mb-3">
                                         <label>EPI</label>
-                                        <select name="material_id" class="form-select">
+                                        <select name="material_id" class="form-control">
                                             @foreach($materiais_epis as $epi)
                                             <option value="{{ $epi->id }}"
                                                 {{ $epi->id == $vinculo->material_id ? 'selected' : '' }}>
@@ -105,7 +105,7 @@
 
                                     <div class="mb-3">
                                         <label>Status</label>
-                                        <select name="status" class="form-select">
+                                        <select name="status" class="form-control">
                                             <option value="1" {{ $vinculo->status ? 'selected' : '' }}>Necessário</option>
                                             <option value="0" {{ !$vinculo->status ? 'selected' : '' }}>Não usado</option>
                                         </select>
@@ -120,7 +120,7 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                     <button class="btn btn-success">Salvar</button>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@
 
                         <div class="mb-3">
                             <label>Status</label>
-                            <select name="status" class="form-select" required>
+                            <select name="status" class="form-control" required>
                                 <option value="1">Necessário</option>
                                 <option value="0">Não usado</option>
                             </select>
