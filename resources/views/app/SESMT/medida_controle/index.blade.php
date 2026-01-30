@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button class="btn btn-success">Salvar</button>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button class="btn btn-warning">Salvar</button>
                     </div>
                 </div>
