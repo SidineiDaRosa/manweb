@@ -58,6 +58,15 @@
                                         id="status"
                                         name="status" value="Aberta" readonly>
                                 </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="status" class="form-label fw-bold">
+                                        <i class="align-middle me-1" data-feather="activity"></i>
+                                        Prazo determinado
+                                    </label>
+                                    <input type="datetime-local" class="form-control"
+                                        id="prazo"
+                                        name="prazo">
+                                </div>
                             </div>
 
                             {{-- Descrição da Atividade --}}

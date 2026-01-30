@@ -180,9 +180,15 @@
                         </select>
                     </div>
                     <!-- Prazo de validade -->
+
                     <div class="mb-3">
                         <label class="form-label">Prazo de Validade</label>
-                        <input type="datetime-local" class="form-control" name="prazo" id="assinatura_responsavel">
+                        <input
+                            type="datetime-local"
+                            class="form-control"
+                            name="prazo"
+                            id="prazo"
+                            value="{{ \Carbon\Carbon::parse($apr->prazo)->format('Y-m-d\TH:i') }}">
                     </div>
                     <!-- Assinatura -->
                     <div class="mb-3">
@@ -333,8 +339,8 @@
                                                 <div class="row mb-0">
                                                     <div class="col-5 fw-bold">Prazo:</div>
                                                     <div class="col-7 fs-6">
-                                                        {{-- \Carbon\Carbon::parse($apr->created_at)->format('d/m/Y') --}}
-                                                         {{ \Carbon\Carbon::parse($apr->prazo)->format('d/m/Y') }}
+                                                        {{-- \Carbon\Carbon::parse($apr->created_at)->format('d/m/Y' hh:mm) --}}
+                                                        {{ \Carbon\Carbon::parse($apr->prazo)->format('d/m/Y  H:i') }}
                                                     </div>
                                                 </div>
 

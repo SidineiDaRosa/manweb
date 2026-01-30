@@ -66,6 +66,7 @@ class APRController extends Controller
             'medidas_controle'     => 'nullable|string',
             'epi_obrigatorio'      => 'nullable|string',
             'status'               => 'nullable|in:Aberta,aberta',
+
         ]);
 
         // 2. Criar registro da APR
@@ -79,6 +80,7 @@ class APRController extends Controller
             'medidas_controle'     => $request->medidas_controle,
             'epi_obrigatorio'      => $request->epi_obrigatorio,
             'status'               => $request->status ?? 'aberta',
+            'prazo' => $request->prazo
         ]);
 
         // 3. Redirecionar para a tela de exibição da APR
