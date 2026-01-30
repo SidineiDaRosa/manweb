@@ -545,8 +545,18 @@
                                         <form class="form-verifica-epis" data-apr-risco-id="{{ $apr_risco_salvo->id }}" style="display: flex; flex-wrap: wrap; gap: 15px;">
                                             @foreach($materiais_risco as $material_risco)
                                             @if($material_risco->risco_id == $risco->id)
+                                            {{--Marca o checkbox  se epis estiver 1--}}
                                             <div style="flex: 1 1 300px; border: solid 1px rgba(33,37,41,0.3); padding: 10px; border-radius: 5px;">
-                                                <input type="checkbox" name="epis[]" value="{{ $material_risco->id }}" required>
+                                                @php
+                                                $epiConfirmado = isset($apr_risco_salvo->epis)
+                                                && $apr_risco_salvo->epis == 1;
+                                                @endphp
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="epis[]"
+                                                    value="{{ $material_risco->id }}"
+                                                    {{ $epiConfirmado ? 'checked disabled' : 'required' }}>
                                                 <strong>{{ $material_risco->material->nome ?? 'Material não encontrado' }}</strong>
                                                 <br>
                                                 <small>{{ $material_risco->observacoes }}</small>
@@ -554,7 +564,11 @@
                                             @endif
                                             @endforeach
 
-                                            <button type="submit" class="btn btn-success" style="margin-top: 5px;">Confirmar verificação de EPIs</button>
+                                            @if($apr_risco_salvo->epis != 1)
+                                            <button type="submit" class="btn btn-success" style="margin-top: 5px;">
+                                                Confirmar verificação de EPIs
+                                            </button>
+                                            @endif
                                         </form>
                                         @endif
 
