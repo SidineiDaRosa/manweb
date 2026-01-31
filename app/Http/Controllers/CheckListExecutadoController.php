@@ -22,21 +22,22 @@ class CheckListExecutadoController extends Controller
         //
         $equipamentos = Equipamento::all();
         $equipamento = Equipamento::find($request->equipamento_id);
+        if ($request->equipamento_id) {
+            $check_list = CheckList::where('equipamento_id', $request->equipamento_id)
+                ->where('natureza', $request->natureza)
+                ->get();
+            $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
+            $funcionario = $request->funcionario;
 
-        $check_list = CheckList::where('equipamento_id', $request->equipamento_id)
-            ->where('natureza', $request->natureza)
-            ->get();
-        $funcionarios = Funcionario::whereIn('funcao', ['eletricista', 'mecanico'])->get();
-        $funcionario = $request->funcionario;
-
-        //dd($check_list->all());
-        return view('app.check_list.check_list_open', [
-            'equipamentos' => $equipamentos,
-            'equipamento' => $equipamento,
-            'check_list' => $check_list,
-            'funcionario' => $funcionario,
-            'natureza' => $request->natureza
-        ]);
+            //dd($check_list->all());
+            return view('app.check_list.check_list_open', [
+                'equipamentos' => $equipamentos,
+                'equipamento' => $equipamento,
+                'check_list' => $check_list,
+                'funcionario' => $funcionario,
+                'natureza' => $request->natureza
+            ]);
+        }
     }
 
     /**
@@ -244,6 +245,46 @@ class CheckListExecutadoController extends Controller
         return view('app.check_list.check_list_funcionario', [
             'funcionarios' =>  $funcionarios,
             'equipamento' => $equipamento
+        ]);
+    }
+    public function checklist_executado(Request $request)
+    {
+        $query = CheckListExecutado::query();
+
+        // 1️⃣ Se tiver descrição → busca tudo que contém
+        if ($request->filled('descricao')) {
+            $query->whereHas('checkList', function ($q) use ($request) {
+                $q->where('descricao', 'like', '%' . $request->descricao . '%');
+            });
+        }
+        // 2️⃣ Se NÃO tiver descrição → traz só os últimos 20
+        else {
+            $query->latest()->take(20);
+        }
+
+        // (opcional) filtro por data início
+        if ($request->filled('data_inicio')) {
+            $query->whereDate('data_verificacao', '>=', $request->data_inicio);
+        }
+
+        // (opcional) filtro por data fim
+        if ($request->filled('data_fim')) {
+            $query->whereDate('data_verificacao', '<=', $request->data_fim);
+        }
+
+        // (opcional) filtro por gravidade
+        if ($request->filled('natureza')) {
+            $query->where('gravidade', $request->natureza);
+        }
+
+        $check_list_executado = $query
+            ->with('checkList')
+            ->latest()
+            ->get();
+
+        return view('app.check_list.checklist_ok', [
+            'check_list_executado' => $check_list_executado,
+            'natureza' => $request->natureza
         ]);
     }
 }

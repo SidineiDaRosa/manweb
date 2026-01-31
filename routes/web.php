@@ -413,6 +413,7 @@ Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->n
 //
 Route::get('/check-list-index', [CheckListController::class, 'index'])->name('check-list-index');
 Route::get('/check-list-index-nat', [CheckListController::class, 'index'])->name('check-list-nat');
+
 //rota acessada pelos executante de check list
 Route::get('/check-list-index-executar', [CheckListController::class, 'executar'])->name('check-list-index-executar');
 Route::post('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');
@@ -430,6 +431,9 @@ Route::delete('/check-list-delete/{check_list_id}', [CheckListController::class,
 //----------------------------------------------------------//
 Route::post('/check-list-cheked', [CheckListExecutadoController::class, 'store'])->name('check-list-executado');
 Route::get('/check-list-cheked-index', [CheckListExecutadoController::class, 'index'])->name('check-list-cheked-index');
+// checklis executado
+Route::post('/checklist-executado', [CheckListExecutadoController::class, 'checklist_executado'])->name('checklist.executado');
+//
 Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'executado'])->name('check-list-finalizado');
 
 Route::post('/check-list-filter', [CheckListExecutadoController::class, 'executado'])->name('check-list-filter');

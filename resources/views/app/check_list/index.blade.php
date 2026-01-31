@@ -7,6 +7,12 @@
             <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
                 <i class="icofont-dashboard"></i> Dashboard
             </a>
+            <a href="{{ route('checklist.executado') }}"
+                class="btn d-flex align-items-center gap-2"
+                style="background-color: rgb(255, 243, 205); color: rgba(112, 112, 109, 1); border: 1px solid rgb(255, 221, 128);">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                &nbsp; Cheklists
+            </a>
         </div>
         <hr>
         {{--//------------------------------------------------//--}}
@@ -157,7 +163,7 @@
         </div>
         @endforeach
         @endif
-         <h6>Checklists por equipamento</h6>
+        <h6>Checklists por equipamento</h6>
         <div class="card-header justify-content-left pt-1">
             <!-- Gravar um novo check list para o equipamento -->
             <form id="form_store" action="{{ route('check-list-gravar') }}" method="POST">
@@ -190,7 +196,7 @@
                 <a href="{{ route('check-list-finalizado',['equipamento_id'=>$equipamento->id]) }}" class="btn btn-dark">Check-List Executado</a>
                 @endif
             </form>
-           
+
             <div class="checklist-container">
 
                 @if(isset($equipamento) && isset($check_list))
@@ -248,7 +254,7 @@
                         <i class="bi bi-check-circle-fill text-success icon-md" title="Dentro do prazo"></i>
                         @endif
                     </div>
-                    <style> 
+                    <style>
                         /* tamanhos personalizados para os ícones */
                         .icon-xl {
                             font-size: 30px !important;
