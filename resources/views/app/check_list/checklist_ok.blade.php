@@ -2,6 +2,8 @@
 
 @section('content')
 <main class="content">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <div class="card">
         <div class="card-header pb-2">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -80,7 +82,7 @@
                 </div>
             </form>
         </div>
-        
+
         <!--Div conteudo-->
         <div style="margin-top:10px;">
             @if(isset($check_list_executado) && count($check_list_executado) > 0)
@@ -93,7 +95,7 @@
                         <strong>ID Checagem:</strong><br>
                         <span class="text-primary">{{ $c->id }}</span>
                     </div>
-                   
+
                     <!-- Checklist -->
                     <div>
                         <strong>Checklist:</strong><br>
@@ -191,7 +193,7 @@
                         </span>
                     </div>
                 </div>
-                
+
                 <!-- IMAGEM (agora alinhada à direita) -->
                 <div style="flex-shrink: 0; width: 150px; text-align: center;">
                     <strong>Imagem:</strong><br>
@@ -265,11 +267,11 @@
     .checklist-item {
         transition: background-color 0.3s;
     }
-    
+
     .checklist-item:hover {
         background-color: #f8f9fa;
     }
-    
+
     /* Responsividade */
     @media (max-width: 1200px) {
         .card-header>div>div {
@@ -281,8 +283,8 @@
             flex-direction: column;
             align-items: flex-start !important;
         }
-        
-        .checklist-item > div:first-child {
+
+        .checklist-item>div:first-child {
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         }
     }
@@ -296,16 +298,16 @@
             width: 100% !important;
             margin-bottom: 5px;
         }
-        
+
         .checklist-item {
             flex-direction: column;
         }
-        
-        .checklist-item > div:first-child {
+
+        .checklist-item>div:first-child {
             order: 2;
         }
-        
-        .checklist-item > div:last-child {
+
+        .checklist-item>div:last-child {
             order: 1;
             width: 100% !important;
             margin-bottom: 10px;
@@ -315,7 +317,7 @@
     }
 
     @media (max-width: 576px) {
-        .checklist-item > div:first-child {
+        .checklist-item>div:first-child {
             grid-template-columns: 1fr;
         }
     }
