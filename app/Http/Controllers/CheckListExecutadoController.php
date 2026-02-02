@@ -251,30 +251,34 @@ class CheckListExecutadoController extends Controller
     {
         $query = CheckListExecutado::query();
 
-        // 1️⃣ Se tiver descrição → busca tudo que contém
+        // 🔹 Filtro por descrição (na tabela check_lists)
         if ($request->filled('descricao')) {
             $query->whereHas('checkList', function ($q) use ($request) {
                 $q->where('descricao', 'like', '%' . $request->descricao . '%');
             });
-        }
-        // 2️⃣ Se NÃO tiver descrição → traz só os últimos 20
-        else {
+        } else {
+            // Se não tiver descrição, traz só os últimos 20
             $query->latest()->take(20);
         }
 
-        // (opcional) filtro por data início
+        // 🔹 Filtro por data início
         if ($request->filled('data_inicio')) {
             $query->whereDate('data_verificacao', '>=', $request->data_inicio);
         }
 
-        // (opcional) filtro por data fim
+        // 🔹 Filtro por data fim
         if ($request->filled('data_fim')) {
             $query->whereDate('data_verificacao', '<=', $request->data_fim);
         }
 
-        // (opcional) filtro por gravidade
+        // 🔹 Filtro por gravidade
         if ($request->filled('natureza')) {
             $query->where('gravidade', $request->natureza);
+        }
+
+        // ✅ **AQUI ENTRA O FILTRO DE EQUIPAMENTO (o que você pediu)**
+        if ($request->filled('equipamento')) {
+            $query->where('equipamento_id', $request->equipamento);
         }
 
         $check_list_executado = $query
@@ -282,9 +286,12 @@ class CheckListExecutadoController extends Controller
             ->latest()
             ->get();
 
+        $equipamentos = Equipamento::all();
+
         return view('app.check_list.checklist_ok', [
             'check_list_executado' => $check_list_executado,
-            'natureza' => $request->natureza
+            'natureza' => $request->natureza,
+            'equipamentos' => $equipamentos
         ]);
     }
 }

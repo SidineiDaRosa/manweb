@@ -7,11 +7,10 @@
             <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
                 <i class="icofont-dashboard"></i> Dashboard
             </a>
-            <a href="{{ route('checklist.executado') }}"
-                class="btn d-flex align-items-center gap-2"
-                style="background-color: rgb(255, 243, 205); color: rgba(112, 112, 109, 1); border: 1px solid rgb(255, 221, 128);">
-                <i class="bi bi-exclamation-triangle-fill"></i>
-                &nbsp; Cheklists
+            <a href="{{ route('checklist.executado.get') }}"
+                class="btn btn-outline-primary mb-1">
+                <i class="bi bi-list-check"></i>
+                &nbsp; Checklists
             </a>
         </div>
         <hr>

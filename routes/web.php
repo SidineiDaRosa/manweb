@@ -433,6 +433,7 @@ Route::post('/check-list-cheked', [CheckListExecutadoController::class, 'store']
 Route::get('/check-list-cheked-index', [CheckListExecutadoController::class, 'index'])->name('check-list-cheked-index');
 // checklis executado
 Route::post('/checklist-executado', [CheckListExecutadoController::class, 'checklist_executado'])->name('checklist.executado');
+Route::get('/checklist-executado-get', [CheckListExecutadoController::class, 'checklist_executado'])->name('checklist.executado.get');
 //
 Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'executado'])->name('check-list-finalizado');
 
