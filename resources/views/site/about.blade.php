@@ -295,7 +295,7 @@
 
 <!-- INVESTORS -->
 <section class="investors">
-    <h2>Fundador</h2>
+    <h2>Criador</h2>
 
     <!-- FOTO DO FUNDADOR -->
     <div class="founder">
@@ -319,22 +319,17 @@
             <div class="logo">ORIGEM</div>
             <h3>Visão Inicial</h3>
             <p class="quote">
-                Criada, a Manweb começou com foco total em entregar soluções digitais sob medida.
-                Inicialmente a ideia nasceu paratir de necessidadede de controlar e fazer gestão de prestação de
-                serviços,
-                para manutenção industrial, onde atuavamos, para isso foi escrito no MSAccess 2003, mas como a
-                plataforma não
-                não disponha de recursos mais tecnologicos e escalavel, sugiu a ideia de reescrever a ideia em php, que
-                logo
-                viria ser escrito com o uso do fraework laravel.
+                A plataforma Manweb surgiu com o objetivo de oferecer soluções digitais sob medida. Inicialmente, a ideia nasceu a partir da necessidade de gerenciar a prestação de serviços na área de manutenção industrial, onde atuávamos. Para isso, foi desenvolvido um aplicativo simples no Microsoft Access 2003.
+
+                No entanto, como essa plataforma não oferecia recursos tecnológicos modernos nem escalabilidade adequada, surgiu a ideia de reescrever o sistema em formato web. Assim, optou-se pelo uso do PHP, e posteriormente a aplicação passou a ser desenvolvida utilizando o framework Laravel.
             </p>
         </div>
 
         <div class="investor-card">
             <div class="logo">EXPERIÊNCIA</div>
-            <h3>26 anos de Vivência na industria</h3>
+            <h3>“26 anos de experiência na área de manutenção industrial.”</h3>
             <p class="quote">
-                Sidinei reúne experiência prática, visão estratégica e paixão por inovação em tecnologia.
+                Sidinei reúne sólida experiência técnica, visão estratégica e dedicação à inovação em tecnologia aplicada à indústria.
             </p>
         </div>
 

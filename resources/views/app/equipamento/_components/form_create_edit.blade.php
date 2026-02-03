@@ -1,6 +1,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    
+
         // Você pode executar qualquer ação que desejar aqui
     });
 </script>
@@ -16,19 +16,51 @@
         <!---------Empresa------------->
         <!--------------------------------------------------------------------------------------->
         <div class="row mb-1">
-            <label for="empresas" class="col-md-4 col-form-label text-md-end text-right">Empresa</label>
+            <label for="empresa_id" class="col-md-4 col-form-label text-md-end text-right">
+                Empresa 🏭
+            </label>
+
             <div class="col-md-6">
                 <select name="empresa_id" id="empresa_id" class="form-control">
-                    <option value="{{$equipamento->empresa_id ?? old('nome') }}">{{$equipamento->empresa_id ?? old('nome') }}</option>
-                    @foreach ($empresas as $empresas_find)
-                    <option value="{{$empresas_find->id}}" {{($empresas_find->empresa_id ?? old('empresa_id')) == $empresas_find->id ? 'selected' : '' }}>
-                        {{$empresas_find->razao_social}}
+                    <option value="">Selecione uma empresa</option>
+
+                    @foreach ($empresas as $empresa)
+                    <option value="{{ $empresa->id }}"
+                        {{ old('empresa_id', $equipamento->empresa_id ?? '') == $empresa->id ? 'selected' : '' }}>
+                        {{ $empresa->nome1 }}
                     </option>
                     @endforeach
                 </select>
-                {{ $errors->has('empresa_id') ? $errors->first('empresa_id') : '' }}
+
+                @error('empresa_id')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
         </div>
+
+        <div class="row mb-1">
+            <label for="local_id" class="col-md-4 col-form-label text-md-end text-right">
+                Local/Setor 🏢
+            </label>
+
+            <div class="col-md-6">
+                <select name="local_id" id="local_id" class="form-control">
+                    <option value="">Selecione um local</option>
+
+                    @foreach ($localizacoes as $local)
+                    <option value="{{ $local->id }}"
+                        {{ (old('local_id', $equipamento->local_id ?? '') == $local->id) ? 'selected' : '' }}>
+                        {{ $local->nome }}
+                    </option>
+                    @endforeach
+                </select>
+
+                @error('local_id')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+
         <div class="row mb-1">
             <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Nome</label>
 
@@ -75,12 +107,6 @@
             <div class="col-md-6">
                 <input id="data_instalacao" type="date" class="form-control" name="data_instalacao" value="{{$equipamento->data_instalacao ?? old('data_instalacao') }}" required autocomplete="" autofocus>
                 {{ $errors->has('data_fabricacao') ? $errors->first('data_fabricacao') : '' }}
-            </div>
-        </div>
-        <div class="row mb-1">
-            <label for="data_fabricacao" class="col-md-4 col-form-label text-md-end text-right">Data Desativação</label>
-            <div class="col-md-6">
-                <input id="data_desativacao" type="date" class="form-control" name="data_desativacao" value="{{$equipamento->data_desativacao?? old('data_desativacao') }}" autofocus>
             </div>
         </div>
 
@@ -156,14 +182,6 @@
                 {{ $errors->has('marca_id') ? $errors->first('marca_id') : '' }}
             </div>
         </div>
-        <div class="row mb-1">
-            <label for="nome" class="col-md-4 col-form-label text-md-end text-right">Localização</label>
-
-            <div class="col-md-6">
-                <input id="localizacao" type="text" class="form-control" name="localizacao" value="{{$equipamento->localizacao ?? old('localizacao') }}" required autocomplete="nome" autofocus>
-                {{ $errors->has('nome') ? $errors->first('nome') : '' }}
-            </div>
-        </div>
 
         <div class="row mb-1">
             <label for="anexo_1" class="col-md-4 col-form-label text-md-end text-right">Anexo 1</label>
@@ -199,6 +217,12 @@
                 <button type="submit" class="btn btn-primary">
                     {{ isset($equipamento) ? 'Atualizar' : 'Cadastrar' }}
                 </button>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <label for="data_fabricacao" class="col-md-4 col-form-label text-md-end text-right">Data Desativação</label>
+            <div class="col-md-6">
+                <input id="data_desativacao" type="date" class="form-control" name="data_desativacao" value="{{$equipamento->data_desativacao?? old('data_desativacao') }}" style="background: yellow;">
             </div>
         </div>
     </form>

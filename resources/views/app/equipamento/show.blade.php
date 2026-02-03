@@ -101,7 +101,12 @@
                 </span></div>
             <hr>
             <div class="conteudo">
-                {{$equipamento->localizacao}}
+                @if(isset($equipamento->area_local->nome))
+                {{$equipamento->area_local->nome}}
+                @else
+                Não definido
+                @endif
+
 
             </div>
             <div class="card-body">

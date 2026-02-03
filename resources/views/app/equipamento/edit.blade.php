@@ -14,13 +14,13 @@
         <div class="card-body">
             @component('app.equipamento._components.form_create_edit', ['marcas'=>$marcas, 
             'equipamento'=>$equipamento, 'equipamentos'=>$equipamentos,
-            'empresas'=>$empresas ])       
+            'empresas'=>$empresas,
+            'localizacoes'=>$localizacoes])       
             @endcomponent
         </div>
     </div>
 
 </main>
-
 
 @endsection
 

@@ -13,9 +13,9 @@
         </div>
         
         <div class="card-body">
-            @component('app.equipamento._components.form_create_edit', ['marcas'=>$marcas,
+            @component('app.equipamento._components.form_create_edit', ['marcas'=>$marcas,'localizacoes'=>$localizacoes, 
              'equipamentos'=>$equipamentos,
-             'empresas'=>$empresas ])       
+             'empresas'=>$empresas])       
             @endcomponent
         </div>
     </div>

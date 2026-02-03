@@ -26,7 +26,7 @@ class Equipamento extends Model
         'tipo_de_ativo',
         'estado_do_ativo',
         'criticidade',
-        'localizacao',
+        'local_id',
         'valor_estimado',
         'anexo_1',
         'anexo_2',
@@ -60,5 +60,9 @@ class Equipamento extends Model
     public function pecas()
     {
         return $this->hasMany('App\Models\PecasEquipamentos', 'equipamento', 'id');
+    }
+    public function area_local()
+    {
+        return $this->belongsTo(\App\Models\AreaLocal::class, 'local_id');
     }
 }

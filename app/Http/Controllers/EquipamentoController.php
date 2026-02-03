@@ -12,6 +12,7 @@ use App\Models\user;
 use App\Models\Servicos_executado; //serviços executados
 use Illuminate\Support\Arr;
 use Picqer\Barcode\BarcodeGeneratorHTML;
+use App\Models\AreaLocal;
 //para busca de produtos em um formlário que adiciona os produtos ao equipamentos
 use App\Models\Produto;
 use App\Models\UnidadeMedida;
@@ -29,14 +30,17 @@ class EquipamentoController extends Controller
     {
         //--------------------------------------
         $id = $request->get('empresa');
+        $localizacoes = AreaLocal::all();
         if ($request->has('searching')) {
             $searching = $request->get('searching');
             $empresas = Empresas::all();
+            
             $equipamentos = Equipamento::where('empresa_id', $id)->orderby('nome', 'asc')->where('nome', 'like', $searching . '%')->get();
             return view('app.equipamento.index', [
                 'equipamentos' => $equipamentos,
                 'empresas' => $empresas,
-                'empresa_id' => $id
+                'empresa_id' => $id,
+                'localizacoes'=>$localizacoes
             ]);
         } else {
             //neste caso filtra pelo formulário empresa
@@ -45,7 +49,8 @@ class EquipamentoController extends Controller
             return view('app.equipamento.index', [
                 'equipamentos' => $equipamentos,
                 'empresas' => $empresas,
-                'empresa_id' => $id
+                'empresa_id' => $id,
+                'localizacoes'=>$localizacoes
             ]);
         }
     }
@@ -60,10 +65,13 @@ class EquipamentoController extends Controller
         $marcas = Marca::all();
         $equipamentos = Equipamento::all();
         $empresas = Empresas::all();
+        $localizacoes = AreaLocal::all();
+
         return view('app.equipamento.create', [
             'marcas' => $marcas,
             'equipamentos' => $equipamentos,
-            'empresas' => $empresas
+            'empresas' => $empresas,
+            'localizacoes' => $localizacoes
         ]);
     }
 
@@ -141,6 +149,7 @@ class EquipamentoController extends Controller
             //---------------------------------//
             $todas = $Request->get('todas');
             $equipamento_id = $equipamento->id;
+            $localizacoes = AreaLocal::all();
             if ($todas == 1) {
                 $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
                 $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
@@ -156,6 +165,7 @@ class EquipamentoController extends Controller
                     'manutencao' => $manutencao,
                     'chek_list' => $chek_list,
                     'lubrificacao' => $lubrificacao,
+                    'localizacoes' => $localizacoes
                 ]);
             } else {
                 $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
@@ -188,11 +198,13 @@ class EquipamentoController extends Controller
         $marcas = Marca::all();
         $equipamentos = Equipamento::all();
         $empresas = Empresas::all();
+        $localizacoes = AreaLocal::all();
         return view('app.equipamento.edit', [
             'equipamento' => $equipamento,
             'equipamentos' => $equipamentos,
             'marcas' => $marcas,
-            'empresas' => $empresas
+            'empresas' => $empresas,
+            'localizacoes' => $localizacoes
 
         ]);
     }
@@ -208,6 +220,7 @@ class EquipamentoController extends Controller
     {
         $equipamento->update($request->all());
         $equipamento_id = $request->get('id');
+        $localizacoes = AreaLocal::all();
         $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
         $ordens_servicos_1 = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'em andamento')->orderby('data_inicio')->orderby('hora_inicio')->get();
         $pecasEquip = PecasEquipamentos::where('equipamento',  $equipamento_id)->where('status', 'ativado')->where('horas_proxima_manutencao', '<=', 72)->orderby('horas_proxima_manutencao')->where('tipo_componente', 'componente')->get();
@@ -222,6 +235,7 @@ class EquipamentoController extends Controller
             'manutencao' => $manutencao,
             'chek_list' => $chek_list,
             'lubrificacao' => $lubrificacao,
+            'localizacoes' => $localizacoes
         ]);
     }
     /**
@@ -255,7 +269,7 @@ class EquipamentoController extends Controller
             $hr_old = $equipamento->horimetro;
             // Atualiza o valor do horímetroadd .
 
-            $equipamento->horimetro =  $hr_old + ($request->horimetro *0.0002777);
+            $equipamento->horimetro =  $hr_old + ($request->horimetro * 0.0002777);
             $equipamento->save();
 
             // Retorna uma resposta JSON com sucesso
@@ -265,7 +279,7 @@ class EquipamentoController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
-     public function update_timer_esp32(Request $request)
+    public function update_timer_esp32(Request $request)
     {
         // Valida os dados recebidos
         $request->validate([
@@ -279,7 +293,7 @@ class EquipamentoController extends Controller
             $hr_old = $equipamento->horimetro;
             // Atualiza o valor do horímetroadd .
 
-            $equipamento->horimetro =  $hr_old + ($request->horimetro *0.0002777);
+            $equipamento->horimetro =  $hr_old + ($request->horimetro * 0.0002777);
             $equipamento->save();
 
             // Retorna uma resposta JSON com sucesso
