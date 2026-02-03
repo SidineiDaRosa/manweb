@@ -828,4 +828,26 @@ class OrdemServicoController extends Controller
             'message' => 'OS atualizada para: ' . $status
         ]);
     }
+ 
+public function notificacao_status_os()
+{
+    // Pega as últimas 10 OS ordenadas por data (ou id)
+    $ultimasOS = OrdemServico::orderBy('created_at', 'desc')
+        ->limit(10)
+        ->get();
+
+    // Verifica se existe pelo menos uma com check = 0
+    $temPendente = $ultimasOS->contains('check', '0');
+
+    if ($temPendente) {
+        return response()->json([
+            "acao" => "ligar"
+        ]);
+    } else {
+        return response()->json([
+            "acao" => "desligar"
+        ]);
+    }
+}
+
 }
