@@ -535,7 +535,7 @@ class OrdemServicoController extends Controller
     //----------------------------------------------//
     public function new_os_check_list(Request $request)
     {
-       //dd($request);
+        //dd($request);
         // dd($id = $request->checagem_id);
         // Define o fuso horário de São Paulo
         $dataHoraAtual = Carbon::now('America/Sao_Paulo');
@@ -565,7 +565,7 @@ class OrdemServicoController extends Controller
             'situacao' => 'Aberto',
             'natureza_do_servico' => 'Preventiva',
             'especialidade_do_servico' => $request->natureza,
-            'link_foto'=>$request->link_foto
+            'link_foto' => $request->link_foto
 
         ]);
         $checagem = CheckListExecutado::find($request->checagem_id);
@@ -828,26 +828,29 @@ class OrdemServicoController extends Controller
             'message' => 'OS atualizada para: ' . $status
         ]);
     }
- 
-public function notificacao_status_os()
-{
-    // Pega as últimas 10 OS ordenadas por data (ou id)
-    $ultimasOS = OrdemServico::orderBy('created_at', 'desc')
-        ->limit(10)
-        ->get();
 
-    // Verifica se existe pelo menos uma com check = 0
-    $temPendente = $ultimasOS->contains('check', '0');
+    public function notificacao_status_os()
+    {
+        $quantidade = 2; // 👈 ALTERE AQUI QUANTAS OS QUISER ANALISAR
 
-    if ($temPendente) {
-        return response()->json([
-            "acao" => "ligar"
-        ]);
-    } else {
-        return response()->json([
-            "acao" => "desligar"
-        ]);
+        $ultimasOS = OrdemServico::orderBy('created_at', 'desc')
+            ->limit($quantidade)
+            ->get();
+
+        // Se QUALQUER uma das últimas N tiver check = 0, liga o LED
+        $temPendente = $ultimasOS->contains(function ($os) {
+            return $os->check == 0 || $os->check === null;
+        });
+        if ($temPendente) {
+            return response()->json([
+                "acao" => "ligar",
+                "analisadas" => $quantidade
+            ]);
+        } else {
+            return response()->json([
+                "acao" => "desligar",
+                "analisadas" => $quantidade
+            ]);
+        }
     }
-}
-
 }
