@@ -14,7 +14,7 @@
     <style>
         /* ======= HEADER ESTILO AZUL (sem apagar seus links) ======= */
         .navbar {
-            background-color: #0b1b3d;
+            background-color: #2e6d46;
             /* azul igual ao exemplo */
             width: 100%;
             padding: 0;
@@ -33,7 +33,7 @@
 
         /* LOGO À ESQUERDA */
         .logo {
-            color: white;
+            color: rgb(255, 255, 255);
             font-size: 22px;
             font-weight: 700;
         }
@@ -74,7 +74,7 @@
         }
 
         .dropdown a {
-            color: #4974d1 !important;
+            color: #397e61 !important;
             /* azul escuro para aparecer no fundo branco */
             text-decoration: none;
             font-weight: 500;
@@ -100,7 +100,7 @@
 
         /* BOTÃO À DIREITA (igual ao print) */
         .btn-contato {
-            background: #3b5bff;
+            background: #3a995a;
             color: white;
             padding: 8px 16px;
             border-radius: 6px;
@@ -128,7 +128,7 @@
             .menu {
                 display: none;
                 flex-direction: column;
-                background: #0b1b3d;
+                background: #0b3d30;
                 width: 100%;
                 position: absolute;
                 top: 60px;
@@ -243,14 +243,14 @@
         }
 
         #patrimonio {
-            color: #2174d4;
+            color: #439161;
         }
 
         .input-text {
             margin-top: 5px;
             width: 50%;
             border: none;
-            color: #2174d4;
+            color: #287450;
             margin-right: 2px;
         }
 
@@ -263,7 +263,7 @@
         }
 
         .relatorios-grid a {
-            color: #0b1b3d;
+            color: #0b3d32;
             text-decoration: none;
             display: block;
             line-height: 1.4;
@@ -302,13 +302,16 @@
                 margin-left: auto;
             }
         }
+        .logo-cor{
+            color: #47cc47
+        }
     </style>
 
     <nav class="navbar">
         <div class="nav-wrapper">
 
             <!-- LOGO -->
-            <div class="logo">MANWEB</div>
+            <div class="logo">MAN<span class="logo-cor">WEB</span></div>
 
             <button id="btnMenu">☰</button>
 

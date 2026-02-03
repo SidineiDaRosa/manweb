@@ -9,7 +9,7 @@
 
     <style>
         :root {
-            --azul: #3498db;
+            --azul: #2f7c4c;
             --escuro: #0b132b;
         }
 
@@ -24,7 +24,10 @@
         .video-hero {
             position: relative;
             width: 100%;
-            height: 100vh;
+            height: 60vh;
+            /* ← DIMINUI A ALTURA */
+            min-height: 500px;
+            /* garante boa aparência em telas grandes */
             overflow: hidden;
         }
 
@@ -88,7 +91,7 @@
         .hero-btn {
             padding: 12px 35px;
             border: none;
-            background: var(--azul);
+            background: #3d8057;
             color: white;
             font-size: 16px;
             border-radius: 30px;
@@ -97,7 +100,7 @@
         }
 
         .hero-btn:hover {
-            background: #2980b9;
+            background: #346856;
             transform: scale(1.05);
         }
 
@@ -231,6 +234,7 @@
         @media (max-width: 768px) {
 
             /* Ajusta altura do vídeo para caber melhor no celular */
+
             .video-hero {
                 height: 85vh;
             }
@@ -405,7 +409,7 @@
         /* NÚMERO GRANDE */
         .stat h4 {
             font-size: 36px;
-            color: #3498db;
+            color: #3c614b;
             margin-bottom: 5px;
         }
 
@@ -431,7 +435,7 @@
         /* ======== FOOTER ======== */
         /* ============ FOOTER MODERNO (NÃO PRETO) ============ */
         .footer-novo {
-            background: linear-gradient(180deg, #0b2f6b, #1e4fa3);
+            background: linear-gradient(180deg, #203f16, #2a4e30);
             color: white;
             padding: 80px 20px 20px;
             position: relative;
@@ -460,7 +464,7 @@
         .footer-col h3 {
             font-size: 22px;
             margin-bottom: 15px;
-            color: #8fd3ff;
+            color: #4a9e42;
         }
 
         .footer-col p {
@@ -490,7 +494,7 @@
         }
 
         .footer-col ul li a:hover {
-            color: #2e5a77;
+            color: #32532b;
         }
 
         /* Ícones sociais (só visual) */
@@ -525,7 +529,7 @@
 
         /* ===== BANNER CORPORATIVO ESTILO IMAGEM ===== */
         .banner-corporativo {
-            background: #163b7a;
+            background: #167a50;
             /* azul corporativo */
             padding: 90px 20px;
         }
@@ -541,7 +545,7 @@
 
         /* TEXTO ESQUERDA */
         .banner-texto h3 {
-            color: #4fc3f7;
+            color: #ffffff;
             font-weight: 400;
             letter-spacing: 2px;
         }
@@ -572,7 +576,7 @@
 
         .banner-btn:hover {
             background: white;
-            color: #384c6e;
+            color: #386e50;
         }
 
         /* PAINEL DIREITA */
@@ -598,13 +602,13 @@
         }
 
         .dado-item h4 {
-            color: #3498db;
+            color: #2f704f;
             font-size: 36px;
             margin-bottom: 5px;
         }
 
         .dado-item span {
-            color: #555;
+            color: #2f3f30;
         }
 
         /* imagem */
@@ -657,7 +661,7 @@
         }
 
         .manutencao .numero {
-            color: #4da3ff;
+            color: #38853e;
             font-weight: bold;
             font-size: 18px;
         }
@@ -684,6 +688,89 @@
                 font-size: 32px;
             }
         }
+
+        .controle {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .controle h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #167a50
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #435a4b;
+            margin-bottom: 48px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 32px 24px;
+            text-align: left;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            border-color: #43aa1b;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .card h2 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 15px;
+            color: #4f634b;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .card a {
+            color: #356e4f;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+        }
+
+        .icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: #529176;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
     </style>
 </head>
 
@@ -693,7 +780,7 @@
 
         <div class="video-slide active">
             <video autoplay muted loop>
-                <source src="{{ asset('images/video1.mp4') }}" type="video/mp4">
+                <source src="{{ asset('images/industria.mp4') }}" type="video/mp4">
             </video>
         </div>
 
@@ -756,16 +843,19 @@
 
                 <button class="banner-btn">SAIBA MAIS</button>
             </div>
-
+            <!--Bem vindo-->
             <!-- LADO DIREITO (painel visual) -->
             <div class="banner-visual">
                 <div class="painel-branco">
                     <div class="dados">
                         <div class="dado-item">
-                            <h4>+120</h4>
+                            <h4>+3000</h4>
                             <span>Ordens de Serviço</span>
                         </div>
-
+<div class="dado-item">
+                            <h4>+2500</h4>
+                            <span>Checklists Verificados</span>
+                        </div>
                         <div class="dado-item">
                             <h4>+85</h4>
                             <span>Equipamentos</span>
@@ -773,15 +863,185 @@
                     </div>
 
                     <div class="foto">
-                        <img src="{{ asset('images/R.jpg') }}" alt="Equipe ManWEB">
+                        <img src="{{ asset('images/propagandas.png') }}" alt="Equipe ManWEB">
                     </div>
                 </div>
             </div>
 
         </div>
     </section>
+    <style>
+        .hero-section {
+            background: #f3f5f7;
+            padding: 80px 40px;
+        }
 
+        .hero-container {
+            display: flex;
+            max-width: 1150px;
+            margin: auto;
+            gap: 50px;
+            align-items: center;
+        }
 
+        .hero-left {
+            flex: 1;
+        }
+
+        .badges {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .badges img {
+            height: 45px;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            color: #0b1f3a;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 17px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background: #1fb141;
+            /* VERDE PRINCIPAL */
+            color: white;
+            padding: 12px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .phone {
+            color: #0b1f3a;
+            font-weight: 600;
+        }
+
+        .hero-right {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-right img {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* Responsivo */
+        @media (max-width: 900px) {
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <section class="hero-section">
+        <div class="hero-container">
+
+            <!-- ESQUERDA (TEXTO) -->
+            <div class="hero-left">
+
+                <h1 class="hero-title">
+                    Manutenção e Confiabilidade:<br>
+                    Maximize seus resultados<br>
+                    com a Manweb
+                </h1>
+
+                <p class="hero-subtitle">
+                    Antecipe falhas, digitalize o chão de fábrica e aumente a disponibilidade
+                    com monitoramento online e gestão de ativos baseada em IA.
+                </p>
+
+                <div class="buttons">
+                    <a href="#" class="btn-primary">Ver como funciona</a>
+                    <span class="phone">Ligue agora ☎ 46 991104509</span>
+                </div>
+
+            </div>
+
+            <!-- DIREITA (IMAGEM) -->
+            <div class="hero-right">
+                <img src="images/tablet.png" alt="IA Manweb">
+            </div>
+
+        </div>
+    </section>
+
+    <section class="controle">
+        <h1>Central de controle unificada para sua indústria</h1>
+        <p class="subtitle">
+            Uma só visão para planejar manutenção, monitorar ativos e otimizar a produção.
+        </p>
+
+        <div class="cards">
+            <div class="card">
+                <div class="icon">
+                    <!-- Sensor -->
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M12 2v4M4.9 4.9l2.8 2.8M2 12h4M4.9 19.1l2.8-2.8M12 18v4M19.1 19.1l-2.8-2.8M18 12h4M19.1 4.9l-2.8 2.8" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </div>
+                <h2>Sensores</h2>
+                <p>
+                    Monitore a condição dos ativos: antecipe falhas, evite paradas inesperadas e reduza custos.
+                </p>
+                <a href="#">Monitore máquinas →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <!-- Software -->
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="4" width="18" height="14" rx="2" />
+                        <path d="M8 20h8M12 18v2" />
+                    </svg>
+                </div>
+                <h2>Software</h2>
+                <p>
+                    CMMS inteligente para operações confiáveis: registre tarefas, acompanhe dados em tempo real e
+                    garanta rastreabilidade.
+                </p>
+                <a href="#">Gerencie ativos →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <!-- OEE / Gráfico -->
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 19V5M10 19V9M16 19V3M22 19H2" />
+                    </svg>
+                </div>
+                <h2>OEE</h2>
+                <p>
+                    Inteligência de Dados e Eficiência Operacional: transforme dados de processos em lucro.
+                </p>
+                <a href="#">Otimize processos →</a>
+            </div>
+        </div>
+    </section>
     <section class="sobre">
         <div class="sobre-container">
 
@@ -802,23 +1062,12 @@
             </div>
 
             <div class="sobre-imagem">
-                <img src="{{ asset('images/manutencao.png') }}" alt="Manutenção industrial">
+                <video controls preload="none" width="100%" poster="{{ asset('images/capa-video.png') }}">
+                    <source src="{{ asset('images/manutecao.mp4') }}" type="video/mp4">
+                    Seu navegador não suporta vídeos HTML5.
+                </video>
             </div>
 
-        </div>
-    </section>
-
-    <section class="manutencao">
-        <div class="overlay"></div>
-
-        <div class="conteudo">
-
-            <p>
-                Nossa abordagem à manutenção de sites abrange três tipos principais:
-                preventiva, corretiva e evolutiva. Cada um desses métodos desempenha
-                um papel crucial em garantir o desempenho, a segurança e a atualização
-                do seu site.
-            </p>
         </div>
     </section>
 
@@ -833,7 +1082,7 @@
 
         <div class="estatisticas">
             <div class="stat">
-                <h4>+120</h4>
+                <h4>+3000</h4>
                 <p>Ordens de Serviço</p>
             </div>
 
@@ -862,11 +1111,7 @@
                     gestão completa de estoque e equipamentos.
                 </p>
 
-                <div class="social-icons">
-                    <span>🔵</span>
-                    <span>🔷</span>
-                    <span>🟣</span>
-                </div>
+
             </div>
 
             <div class="footer-col">
@@ -881,9 +1126,9 @@
 
             <div class="footer-col">
                 <h3>Contato</h3>
-                <p>📧 contato@manweb.com</p>
-                <p>📞 (49) 99110-4509</p>
-                <p>📍 Brasil</p>
+                <p>contato@manweb.com</p>
+                <p>(49) 99110-4509</p>
+                <p>Brasil</p>
             </div>
 
         </div>
@@ -942,6 +1187,13 @@
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
+            });
+        });
+    </script>
+    <script>
+        document.querySelectorAll(".card").forEach(card => {
+            card.addEventListener("click", () => {
+                console.log("Card clicado:", card.querySelector("h2").innerText);
             });
         });
     </script>
