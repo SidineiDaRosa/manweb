@@ -131,6 +131,9 @@ Route::get('/filter-os-timeline', [OrdemServicoController::class, 'filter_os_tim
 Route::get('/gantt-timeline', [OrdemServicoController::class, 'gantt_timeline'])->name('gantt.os.timeline');
 // Busca OS por texto like na descrição
 Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
+//update alarm
+Route::post('/ordem-servico/update-alarm', [OrdemServicoController::class, 'update_alarm'])
+    ->name('update_alarm');
 //--------------------------------------------------------//
 //                  Ordem de produção
 //--------------------------------------------------------//

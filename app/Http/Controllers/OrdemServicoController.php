@@ -839,7 +839,7 @@ class OrdemServicoController extends Controller
 
         // Se QUALQUER uma das últimas N tiver check = 0, liga o LED
         $temPendente = $ultimasOS->contains(function ($os) {
-            return $os->check == 0 || $os->check === null;
+            return $os->alarm == 0 || $os->alarm === null;
         });
         if ($temPendente) {
             return response()->json([
@@ -852,5 +852,19 @@ class OrdemServicoController extends Controller
                 "analisadas" => $quantidade
             ]);
         }
+    }
+    //Atualiza alarm
+    public function update_alarm(Request $request)
+    {
+        $os = OrdemServico::find($request->id);
+
+        if (!$os) {
+            return response()->json(['success' => false, 'message' => 'Ordem de serviço não encontrada.']);
+        }
+
+        $os->alarm = $request->alarm;
+        $os->save();
+
+        return response()->json(['success' => true, 'message' => 'Alarme atualizado!']);
     }
 }

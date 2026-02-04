@@ -716,6 +716,7 @@
                         @endif
 
                     </div>
+                    <!--Bloco do Status da os-->
                     <div style="display:flex; flex-direction:row; gap:10px; margin-bottom:3px">
                         <div class="equipamento">{{ $ordem_servico->equipamento->nome }} </div>
                         <div>
@@ -724,18 +725,51 @@
 
                         <button type="button"
                             class="btn btn-sm btnAtualizarOS 
-           {{ $ordem_servico->situacao === 'aberto' ? 'btn-success' : 'btn-primary' }}"
+    {{ strtolower($ordem_servico->situacao) === 'aberto'
+        ? 'btn-success'
+        : (strtolower($ordem_servico->situacao) === 'pausado'
+            ? 'btn-danger'
+            : 'btn-primary') }}"
+
                             data-id="{{ $ordem_servico->id }}"
                             data-situacao="{{ $ordem_servico->situacao }}"
                             style="height:30px;width:50px;border-radius:5px;">
 
-                            @if($ordem_servico->situacao === 'em andamento')
+                            @switch(strtolower($ordem_servico->situacao))
+
+                            @case('pausado')
+                            <i class="bi bi-question-circle"></i>
+                            @break
+
+                            @case('em andamento')
                             <i class="bi bi-pause-circle"></i>
-                            @else
+                            @break
+
+                            @case('aberto')
                             <i class="bi bi-play-circle"></i>
+                            @break
+
+                            @default
+                            <i class="bi bi-circle"></i>
+                            @endswitch
+                        </button>
+
+                        <!--Bloco do Status da alarme-->
+                        <button type="button"
+                            class="btn btn-sm btnAtualizarAlarm 
+           {{ $ordem_servico->alarm === '0' || $ordem_servico->alarm ===null? 'btn-warning' : 'btn-primary' }}"
+                            data-id="{{ $ordem_servico->id }}"
+                            data-situacao="{{ $ordem_servico->alarm }}"
+                            style="height:30px;width:50px;border-radius:5px;">
+
+                            @if($ordem_servico->alarm === 1)
+                            <i class="icofont-volume-mute "></i>
+                            @else
+                            <i class="icofont-volume-up"></i>
                             @endif
                         </button>
                     </div>
+
 
 
                 </div>
@@ -1259,6 +1293,57 @@
                     location.reload();
                 })
                 .catch(err => alert('Erro: ' + err));
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            document.querySelectorAll('.btnAtualizarAlarm').forEach(btn => {
+
+                btn.addEventListener('click', function() {
+
+                    const osId = this.dataset.id;
+                    const botao = this; // GUARDA REFERÊNCIA DO BOTÃO CLICADO
+
+                    fetch('{{ route("update_alarm") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                id: osId,
+                                alarm: 1
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(res => {
+
+                            if (res.success) {
+
+                                // 🔹 Atualiza VISUAL do botão correto
+                                botao.classList.remove('btn-success');
+                                botao.classList.add('btn-primary');
+
+                                // 🔹 Atualiza ÍCONE dentro deste botão
+                                const icon = botao.querySelector('i');
+                                if (icon) {
+                                     icon.className = 'icofont-volume-mute';
+                                }
+
+                                alert(res.message);
+
+                            } else {
+                                alert(res.message);
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Erro ao atualizar o alarme.');
+                        });
+                });
+            });
         });
     </script>
 
