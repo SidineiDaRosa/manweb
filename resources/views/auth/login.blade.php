@@ -169,7 +169,7 @@
 
 
                 <i class="fa-solid fa-user-helmet-safety"></i>
-                <span class="font-wheight-light">MAN<span class="titulo1">WEB</span></span>
+                <span class="font-wheight-light">Manutenção<span class="titulo1"> Fapolpa</span></span>
             </div>
             <p>Bem vindo ao login.</p>
             <div class="card-body">
