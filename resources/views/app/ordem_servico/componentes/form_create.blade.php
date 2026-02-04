@@ -157,7 +157,7 @@
                     <div class="invalid-tooltip">
                         Por favor, informe o responsável.
                     </div>
-                    
+
                 </div>
                 <div class="titulo">Emissão</div>
                 <hr>
@@ -369,6 +369,14 @@
 
 
                     </div>
+                    <br>
+                    <div>
+                        <select name="alarm" id="alarm" class="form-control">
+                            <option value="1">Não soar alarme 🔇</option>
+                            <option value="0">Soar alarme 🔊</option>
+                        </select>
+                    </div>
+
             </div>
         </div>
         {{--Box 3--}}
@@ -409,10 +417,10 @@
             <hr>
             <div class="conteudo">
                 <select class="input-text" id="specialidade_do_servico" name="especialidade_do_servico">
-                    <option value="mecanica">Mecânica</option>
-                    <option value="eletrica">Elétrica</option>
-                    <option value="civil">Civil</option>
-                    <option value="sesmt">SESMT</option>
+                    <option value="mecanica">Mecânica ⚙️</option>
+                    <option value="eletrica">Elétrica ⚡</option>
+                    <option value="civil">Civil 🛠️</option>
+                    <option value="sesmt">SESMT 🦺</option>
                     <!-- Outras especialidades conforme necessário -->
                 </select>
             </div>

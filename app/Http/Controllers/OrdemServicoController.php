@@ -304,7 +304,8 @@ class OrdemServicoController extends Controller
             'ss_id' => $request->ss_id,
             'anexo' => $request->anexo, //Link anexado com algum documento
             'projeto_id' => $request->projeto_id,
-            'check' => '0'
+            'check' => '0',
+            'alarm'=>$request->alarm
 
         ]);
         //------------------------------------------------------------//
