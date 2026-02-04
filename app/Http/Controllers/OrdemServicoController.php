@@ -831,28 +831,32 @@ class OrdemServicoController extends Controller
 
     public function notificacao_status_os()
     {
-        $quantidade = 2; // 👈 ALTERE AQUI QUANTAS OS QUISER ANALISAR
+        $hoje = today(); // data atual
 
-        $ultimasOS = OrdemServico::orderBy('created_at', 'desc')
-            ->limit($quantidade)
+        $ultimasOS = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
+            ->whereDate('data_inicio', '<=', $hoje)
+            ->whereDate('data_fim', '>=', $hoje)   // ainda não venceu
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        // Se QUALQUER uma das últimas N tiver check = 0, liga o LED
+        // Se QUALQUER uma dessas tiver alarm = 0 ou null → liga alerta
         $temPendente = $ultimasOS->contains(function ($os) {
             return $os->alarm == 0 || $os->alarm === null;
         });
+
         if ($temPendente) {
             return response()->json([
                 "acao" => "ligar",
-                "analisadas" => $quantidade
+                "analisadas" => $ultimasOS->count()
             ]);
         } else {
             return response()->json([
                 "acao" => "desligar",
-                "analisadas" => $quantidade
+                "analisadas" => $ultimasOS->count()
             ]);
         }
     }
+
     //Atualiza alarm
     public function update_alarm(Request $request)
     {
