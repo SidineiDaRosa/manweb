@@ -372,8 +372,8 @@
                     <br>
                     <div>
                         <select name="alarm" id="alarm" class="form-control">
-                            <option value="1">Não soar alarme 🔇</option>
                             <option value="0">Soar alarme 🔊</option>
+                            <option value="1">Não soar alarme 🔇</option>
                         </select>
                     </div>
 
