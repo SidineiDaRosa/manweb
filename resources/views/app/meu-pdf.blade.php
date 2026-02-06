@@ -284,10 +284,24 @@ Descrição dos serviços executados:
     }
 </style>
 <?php
-if (isset($solicitacao_os->imagem)) {
-    echo '<img src="' . public_path('img/request_os/' . $solicitacao_os->imagem) . '" alt="Imagem da Solicitação" class="img-ajustada">';
+// Imagem da Solicitação (já estava certa)
+if (!empty($solicitacao_os->imagem)) {
+    echo '<img src="' . public_path('img/request_os/' . $solicitacao_os->imagem) . '" class="img-ajustada">';
+}
+
+// Imagem da OS (CORRIGIDO para public)
+if (!empty($ordemServico->link_foto)) {
+    $caminho = public_path($ordemServico->link_foto);
+
+    if (file_exists($caminho)) {
+        echo '<img src="' . $caminho . '" class="img-ajustada">';
+    } else {
+        echo '<p style="color:red">Imagem não encontrada: ' . $caminho . '</p>';
+    }
 }
 ?>
+
+
 </body>
 
 </html>

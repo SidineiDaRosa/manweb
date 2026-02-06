@@ -468,6 +468,22 @@
                 <div class="conteudo">
                     <input class="input-text" id="anexo" type="text" name="anexo" value="{{$ordem_servico->anexo}}" style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:98%;background-color:rgba(236, 186, 129, 0.5)">
                 </div>
+                <div>
+                    <i class="bi bi-apple"></i>
+                    <select name="alarm" id="alarm" class="form-control">
+
+                        <option value="0" class="opcao-verde"
+                            {{ old('alarm', $ordem_servico->alarm ?? 0) == 0 ? 'selected' : '' }}>
+                            Soar alarme 🔊
+                        </option>
+
+                        <option value="1" class="opcao-vermelha"
+                            {{ old('alarm', $ordem_servico->alarm ?? 0) == 1 ? 'selected' : '' }}>
+                            Não soar alarme 🔇 <i class="bi bi-apple"></i>
+                        </option>
+                    </select>
+                </div>
+
             </div>
         </div>
         {{--Box 3--}}
