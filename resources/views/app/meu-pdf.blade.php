@@ -287,43 +287,36 @@ Descrição dos serviços executados:
 // ===== IMAGEM DA SOLICITAÇÃO =====
 if (!empty($solicitacao_os->imagem)) {
 
-    $caminhoReq = public_path('img/request_os/'.$solicitacao_os->imagem);
+    $caminhoReq = public_path('img/request_os/' . $solicitacao_os->imagem);
 
     if (file_exists($caminhoReq)) {
         $tipoReq = pathinfo($caminhoReq, PATHINFO_EXTENSION);
         $imgReqBase64 = base64_encode(file_get_contents($caminhoReq));
 
-        echo '<img src="data:image/'.$tipoReq.';base64,'.$imgReqBase64.'" class="img-ajustada">';
+        echo '<img src="data:image/' . $tipoReq . ';base64,' . $imgReqBase64 . '" class="img-ajustada">';
     } else {
         echo '<p style="color:red">Imagem da solicitação não encontrada.</p>';
     }
 }
 
+
+
 // ===== IMAGEM DA OS =====
-
-?>
-
-
-<!--if (!empty($ordemServico->link_foto)) {
+if (!empty($ordemServico->link_foto)) {
 
     $caminho = public_path($ordemServico->link_foto);
 
-    if (file_exists($caminho)) {
+    if (file_exists($caminho) && is_file($caminho)) {
+
         $tipo = pathinfo($caminho, PATHINFO_EXTENSION);
         $imagemBase64 = base64_encode(file_get_contents($caminho));
 
-        echo '<img src="data:image/'.$tipo.';base64,'.$imagemBase64.'" class="img-ajustada">';
-    } else {
-        echo '<p style="color:red">
-                Imagem não encontrada no caminho:<br>'.$caminho.'
-              </p>';
+        echo '<img src="data:image/' . $tipo . ';base64,' . $imagemBase64 . '" class="img-ajustada">';
     }
+    // Se não existir a imagem da OS, não mostra nada
+}
+?>
 
-} else {
-    echo '<p style="color:orange">
-            Nenhuma imagem vinculada a esta OS.
-          </p>';
-}-->
 </body>
 
 </html>
