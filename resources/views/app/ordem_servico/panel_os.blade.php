@@ -630,7 +630,7 @@
             </div>
         </div>
 
-
+<!--Fala a os  automaticamente-->
         <script>
             async function atualizarMensagens() {
                 try {
@@ -892,7 +892,7 @@
                 </style>
             </div>
 
-            <div class="card-footer" hidden>
+            <div class="card-footer">
 
 
                 <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}">
@@ -943,12 +943,13 @@
             if (!card) return;
 
             // Coletar dados da OS
-            const osId = card.querySelector('.os-id').textContent.split('OS #')[1].split(' ')[0];
+            // const osId = card.querySelector('.os-id').textContent.split('OS #')[1].split(' ')[0];
+            const osId = card.querySelector('.os-id').textContent.trim();
             const equipamento = card.querySelector('.equipamento').textContent;
             const periodoItems = card.querySelectorAll('.periodo-item span:last-child');
-            const periodoText = Array.from(periodoItems).map(span => span.textContent).join('. ');
+           // const periodoText = Array.from(periodoItems).map(span => span.textContent).join('. ');
+            const periodoText = card.querySelector('.periodo-item').textContent.trim();
             const descricao = card.querySelector('.info-group:nth-child(2) .info-value').textContent.trim();
-
             const temAlerta = card.querySelector('.alerta-container');
             const status = temAlerta ? 'NÃO VERIFICADA' : 'VERIFICADA';
 
@@ -1329,7 +1330,7 @@
                                 // 🔹 Atualiza ÍCONE dentro deste botão
                                 const icon = botao.querySelector('i');
                                 if (icon) {
-                                     icon.className = 'icofont-volume-mute';
+                                    icon.className = 'icofont-volume-mute';
                                 }
 
                                 alert(res.message);
