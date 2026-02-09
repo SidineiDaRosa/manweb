@@ -895,9 +895,9 @@
             <div class="card-footer" hidden>
 
 
-                <!--  <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}" hidden>
+                <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}" hidden>
                     🗣️ Falar esta OS
-                </button>-->
+                </button>
             </div>
 
         </div>
