@@ -194,6 +194,7 @@ class OrdemServicoController extends Controller
 
                 // 9️⃣ Busca por descrição
             case 9:
+                $executados=Servicos_executado::where('descricao','%like'.'$request->servicos_executados'.'%like');
                 $busca = $request->like;
                 $termos = explode(' ', $busca); // divide por espaços
 
@@ -207,13 +208,10 @@ class OrdemServicoController extends Controller
                         });
                     }
                 });
-
-
                 // 🔹 APLICANDO FILTRO DE SITUAÇÃO (IMPORTANTE)
                 if ($situacao && $situacao !== 'todas') {
                     $ordens_servicos->where('situacao', $situacao);
                 }
-
                 $ordens_servicos = $ordens_servicos
                     ->orderBy('data_inicio', 'desc')
                     ->orderBy('hora_inicio', 'desc')
@@ -231,9 +229,6 @@ class OrdemServicoController extends Controller
                     'empresa',
                     'servicos_executado'
                 ));
-
-
-
                 // 🔟 Padrão — vazio
             default:
                 $ordens_servicos = OrdemServico::where('id', 0)->get();

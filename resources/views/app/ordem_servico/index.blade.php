@@ -186,9 +186,13 @@
             <div class="row justify-content-center">
                 <div class="col-md-3 mb-12">
                     <input value="" name="like" id="like" class="form-control"
-                        placeholder="--Digite aqui uma descrição--"
+                        placeholder="--Digite aqui uma descrição ou maquina ou serviço a fazer--"
                         style="background-color: rgba(255, 255, 153, 0.3);">
                 </div>
+                <select name="situacao" id="situacao" class="form-control" hidden>
+                    <option value="executar">Executar</option>
+                    <option value="executado">Executado</option>
+                </select>
                 <div>
                     <a href="#" class="btn btn-outline-warning" onclick="FiltraOs()" style="color: orangered;">
                         <i class="icofont-filter"></i> Filtrar
