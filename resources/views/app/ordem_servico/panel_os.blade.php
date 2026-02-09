@@ -461,6 +461,90 @@
             }
         }
     </style>
+    <script>
+        let cardsLiberados = [];
+        let indiceFala = 0;
+
+        // Monta a lista de botões liberados
+        function montarListaLiberada() {
+            cardsLiberados = [];
+
+            document.querySelectorAll('.os-card').forEach(card => {
+                const botaoFalar = card.querySelector('.btnFalarOS');
+                const botaoAlarme = card.querySelector('.btnAtualizarAlarm');
+
+                if (botaoAlarme && botaoAlarme.dataset.situacao !== "1") {
+                    cardsLiberados.push(botaoFalar);
+                }
+            });
+
+            indiceFala = 0;
+        }
+
+        // Função para falar uma OS
+        async function falarOS(botao) {
+            return new Promise((resolve) => {
+                const card = botao.closest('.os-card');
+
+                const osId = card.querySelector('.os-id').textContent.trim();
+                const equipamento = card.querySelector('.equipamento').textContent;
+                const descricao = card.querySelector('.info-group:nth-child(2) .info-value').textContent.trim();
+                const alarm = card.querySelector('.btnAtualizarAlarm').dataset.situacao;
+
+                if (alarm === "1") {
+                    // Ignora se alarme desligado
+                    resolve();
+                    return;
+                } else {
+
+                    const texto = `Atenção! Nova Ordem. Número: ${osId}. Para: ${equipamento}., ,${descricao}`;
+
+                    const vozes = speechSynthesis.getVoices();
+                    const vozPT = vozes.find(v => v.lang.startsWith('pt')) || vozes[0];
+
+                    const fala = new SpeechSynthesisUtterance(texto);
+                    fala.lang = 'pt-BR';
+                    fala.rate = 1.0;
+                    fala.pitch = 1.0;
+                    fala.volume = 1.0;
+                    if (vozPT) fala.voice = vozPT;
+
+                    // Feedback visual
+                    botao.innerHTML = '🔊 Falando...';
+                    botao.style.opacity = '0.8';
+                    botao.disabled = true;
+
+                    fala.onend = fala.onerror = () => {
+                        botao.innerHTML = '🗣️ Falar esta OS';
+                        botao.style.opacity = '1';
+                        botao.disabled = false;
+                        resolve(); // permite ir para a próxima
+                    };
+
+                    speechSynthesis.speak(fala);
+
+                }
+            });
+
+        }
+
+        // Função sequencial
+        async function falarSequenciaCompleta() {
+            for (indiceFala = 0; indiceFala < cardsLiberados.length; indiceFala++) {
+                await falarOS(cardsLiberados[indiceFala]); // espera a fala terminar
+            }
+        }
+
+        // Espera carregar tudo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                montarListaLiberada();
+                falarSequenciaCompleta();
+            }, 1000); // 1s para garantir que o DOM carregou
+        });
+    </script>
+
+
 </head>
 
 <body>
@@ -630,7 +714,7 @@
             </div>
         </div>
 
-<!--Fala a os  automaticamente-->
+        <!--Fala a os  automaticamente-->
         <script>
             async function atualizarMensagens() {
                 try {
@@ -707,15 +791,22 @@
             <div class="card-header {{ $headerClass }}">
 
                 <div class="os-info">
-                    <div class="os-id">
-                        {{ $ordem_servico->id }}
-                        @if($ordem_servico->check == 1)
-                        <span class="status-badge badge-verificado">✅ Verificada</span>
-                        @else
-                        <span class="status-badge badge-pendente">⚠️ Pendente</span>
-                        @endif
+                    <div style="flex-direction: row;display:flex;">
+                        <div class="os-id">
+                            {{ $ordem_servico->id }}
 
+                        </div>
+                        <div>
+                            @if($ordem_servico->check == 1)
+                            <span class="status-badge badge-verificado">✅ Verificada</span>
+                            @else
+                            <span class="status-badge badge-pendente">⚠️ Pendente</span>
+                            @endif
+                        </div>
                     </div>
+
+
+
                     <!--Bloco do Status da os-->
                     <div style="display:flex; flex-direction:row; gap:10px; margin-bottom:3px">
                         <div class="equipamento">{{ $ordem_servico->equipamento->nome }} </div>
@@ -893,8 +984,6 @@
             </div>
 
             <div class="card-footer">
-
-
                 <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}">
                     🗣️ Falar esta OS
                 </button>
@@ -947,75 +1036,52 @@
             const osId = card.querySelector('.os-id').textContent.trim();
             const equipamento = card.querySelector('.equipamento').textContent;
             const periodoItems = card.querySelectorAll('.periodo-item span:last-child');
-           // const periodoText = Array.from(periodoItems).map(span => span.textContent).join('. ');
+            // const periodoText = Array.from(periodoItems).map(span => span.textContent).join('. ');
             const periodoText = card.querySelector('.periodo-item').textContent.trim();
             const descricao = card.querySelector('.info-group:nth-child(2) .info-value').textContent.trim();
             const temAlerta = card.querySelector('.alerta-container');
-            const status = temAlerta ? 'NÃO VERIFICADA' : 'VERIFICADA';
+            const alarm = card.querySelector('.btnAtualizarAlarm').dataset.situacao;
 
             // Preparar texto para fala
-            const texto = `
-                Ordem de Serviço número ${osId}.
-                Equipamento: ${equipamento}.
-                Status: ${status}.
-                ${periodoText}.
-                Descrição: ${descricao}.
-                ${temAlerta ? 'ATENÇÃO: Esta ordem de serviço requer verificação imediata!' : ''}
+
+            // BLOQUEIO DE FALA SE ALARM = 1
+            if (alarm === "1") {
+                alert("Esta OS está com o alarme desativado — fala bloqueada.");
+                return;
+            } else {
+
+                const texto = `
+                Atenção!, 
+                Nova Ordem, 
+                Número: ${osId}.
+                Para: ${equipamento}.
+                , ${descricao}
             `;
+                // Configurar e iniciar fala
+                const vozes = await inicializarVoz();
+                const vozPT = vozes.find(v => v.lang.startsWith('pt')) || vozes[0];
 
-            // Configurar e iniciar fala
-            const vozes = await inicializarVoz();
-            const vozPT = vozes.find(v => v.lang.startsWith('pt')) || vozes[0];
+                const fala = new SpeechSynthesisUtterance(texto);
+                fala.lang = 'pt-BR';
+                fala.rate = 1.0;
+                fala.pitch = 1.0;
+                fala.volume = 1.0;
+                if (vozPT) fala.voice = vozPT;
 
-            const fala = new SpeechSynthesisUtterance(texto);
-            fala.lang = 'pt-BR';
-            fala.rate = 1.0;
-            fala.pitch = 1.0;
-            fala.volume = 1.0;
-            if (vozPT) fala.voice = vozPT;
+                // Feedback visual durante a fala
+                e.target.innerHTML = '🔊 Falando...';
+                e.target.style.opacity = '0.8';
+                e.target.disabled = true;
 
-            // Feedback visual durante a fala
-            e.target.innerHTML = '🔊 Falando...';
-            e.target.style.opacity = '0.8';
-            e.target.disabled = true;
+                fala.onend = fala.onerror = () => {
+                    e.target.innerHTML = '🗣️ Falar esta OS';
+                    e.target.style.opacity = '1';
+                    e.target.disabled = false;
+                };
 
-            fala.onend = fala.onerror = () => {
-                e.target.innerHTML = '🗣️ Falar esta OS';
-                e.target.style.opacity = '1';
-                e.target.disabled = false;
-            };
-
-            speechSynthesis.speak(fala);
-        });
-
-        // Auto-fala para primeira OS pendente
-        window.addEventListener('load', async function() {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            const primeiraOSPendente = document.querySelector('.alerta-container');
-            if (primeiraOSPendente) {
-                const btnFalar = primeiraOSPendente.closest('.os-card').querySelector('.btnFalarOS');
-                if (btnFalar) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    btnFalar.click();
-                }
+                speechSynthesis.speak(fala);
             }
-        });
 
-        // Expansão de imagens
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('imagem-os')) {
-                const img = e.target;
-                if (!img.classList.contains('expanded')) {
-                    img.style.maxHeight = '400px';
-                    img.style.cursor = 'zoom-out';
-                    img.classList.add('expanded');
-                } else {
-                    img.style.maxHeight = '180px';
-                    img.style.cursor = 'zoom-in';
-                    img.classList.remove('expanded');
-                }
-            }
         });
     </script>
 
