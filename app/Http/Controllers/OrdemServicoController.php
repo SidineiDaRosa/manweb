@@ -195,18 +195,19 @@ class OrdemServicoController extends Controller
                 // 9️⃣ Busca por descrição
             case 9:
                 $busca = $request->like;
-                $situacao = $request->get('situacao');
+                $termos = explode(' ', $busca); // divide por espaços
 
-                $ordens_servicos = OrdemServico::where(function ($q) use ($busca) {
-
-                    // Busca na descrição da OS
-                    $q->where('descricao', 'like', "%{$busca}%")
-
-                        // OU na descrição do Equipamento relacionado
-                        ->orWhereHas('equipamento', function ($eq) use ($busca) {
-                            $eq->where('descricao', 'like', "%{$busca}%");
+                $ordens_servicos = OrdemServico::where(function ($q) use ($termos) {
+                    foreach ($termos as $termo) {
+                        $q->where(function ($q2) use ($termo) {
+                            $q2->where('descricao', 'like', "%{$termo}%")
+                                ->orWhereHas('equipamento', function ($eq) use ($termo) {
+                                    $eq->where('descricao', 'like', "%{$termo}%");
+                                });
                         });
+                    }
                 });
+
 
                 // 🔹 APLICANDO FILTRO DE SITUAÇÃO (IMPORTANTE)
                 if ($situacao && $situacao !== 'todas') {

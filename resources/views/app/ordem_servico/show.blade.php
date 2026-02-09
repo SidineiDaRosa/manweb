@@ -332,7 +332,7 @@
                         </div>
 
                     </div>
-                <br>
+                    <br>
                     <div class="titulo">Projeto</div>
                     <div class="conteudo">
                         @if((isset($projeto)))
@@ -608,7 +608,7 @@
     </script>
     </div>
     <!-- arquivo resources/views/atualizar-registro.blade.php -->
-     {{$ordem_servico->link_foto}}
+    {{$ordem_servico->link_foto}}
     @php
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     $extension = pathinfo($ordem_servico->link_foto, PATHINFO_EXTENSION);
@@ -694,9 +694,19 @@
                     Deseja realmente fechar a Ordem de serviço?
                     <div style="font-size:15px;color:black;">Se clicar em confirmar, todos os pedidos de saída ligados a esta O.S., tmabém serão fechados!</div>
                 </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-danger" id="confirmarEnvioPendente" data-bs-dismiss="modal">
+                        Ficou algo pendente? <br>
+                        Emitir Cópia com a pendência, e Finalizar</button> 
+                        <br>
+                    <input type="textarea" id="pendencia" class="form-control" style="margin:5px;">
+                  
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="confirmarEnvio" data-bs-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-primary" id="confirmarEnvio" data-bs-dismiss="modal">Apenas Finalizar a O.S.</button>
+
                 </div>
             </div>
         </div>
