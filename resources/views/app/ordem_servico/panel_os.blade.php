@@ -131,23 +131,26 @@
         /* GRID DE CARDS */
         .grid-os {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(333px, 1fr));
+            gap: 5px;
             width: 100%;
 
         }
 
         .os-card {
             background: white;
-            padding: 5px;
+            padding: 3px;
             border-radius: 12px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             height: 100%;
-
             border: 1px solid #eef2f7;
+        }
+
+        .card-content {
+            overflow-y: auto;
         }
 
         .os-card:hover {
@@ -907,7 +910,7 @@
                     </div>
                 </div>
 
-                <div class="info-group">
+                <div class="info-group" style="margin-bottom:1px;">
                     <span class="info-label">Descrição</span>
                     <div class="info-value">{{ $ordem_servico->descricao }}</div>
                 </div>
