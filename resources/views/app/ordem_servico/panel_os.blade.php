@@ -681,7 +681,7 @@
                     stopAutoRefresh(); // garante que não haja timers duplicados
                     refreshTimeout = setTimeout(() => {
                         location.reload();
-                    }, 30000); // 60 segundos
+                    }, 60000); // 60 segundos
                 }
 
                 function stopAutoRefresh() {
@@ -983,7 +983,7 @@
                 </style>
             </div>
 
-            <div class="card-footer">
+            <div class="card-footer" hidden>
                 <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}">
                     🗣️ Falar esta OS
                 </button>
