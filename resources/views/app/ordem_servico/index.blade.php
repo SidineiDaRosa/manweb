@@ -4,6 +4,62 @@
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <main class="content">
+    <div class="card-header" style="background-color: rgb(245, 246, 248);">
+
+        <div style="
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px;
+      padding: 8px;
+      background: #f2f2f2;
+      border-radius: 8px;
+      align-items: start;
+    ">
+
+            <div>
+                <a href="#" class="btn btn-info btn-icon-split" onclick="SetDataHoje()">
+                    <span class="icon text-white-50"><i class="icofont-filter"></i></span>
+                    <span class="text">O.S. hoje</span>
+                </a>
+            </div>
+
+            <div>
+                <a href="#" class="btn btn-info btn-icon-split" onclick="GetOsEmAndamento()">
+                    <span class="icon text-white-50"><i class="icofont-filter"></i></span>
+                    <span class="text">O.S. Em Andamento</span>
+                </a>
+            </div>
+
+            <div>
+                <a href="#" class="btn btn-info btn-icon-split" onclick="SetAbertas()">
+                    <span class="icon text-white-50"><i class="icofont-filter"></i></span>
+                    <span class="text">O.S. aberta</span>
+                </a>
+            </div>
+
+            <div>
+                <a href="#" class="btn btn-info btn-icon-split" onclick="exibirIntervaloSemanaAtual()">
+                    <span class="icon text-white-50"><i class="icofont-filter"></i></span>
+                    <span class="text">O.S semana</span>
+                </a>
+            </div>
+
+            <div>
+                <a href="#" class="btn btn-info btn-icon-split" onclick="SetOsVencidas()">
+                    <span class="icon text-white-50"><i class="icofont-filter"></i></span>
+                    <span class="text">O.S. Vencidas</span>
+                </a>
+            </div>
+
+            <div>
+                <a class="btn btn-dark" href="{{ route('app.home') }}">
+                    <i class="icofont-dashboard"></i> Dashboard
+                </a>
+            </div>
+
+        </div>
+    </div>
+
     <div class="card" style="background-color: rgb(245, 246, 248);">
         <style>
             .card-header {
@@ -11,27 +67,25 @@
                 opacity: 0.95;
             }
         </style>
-        <div class="card-header" style="background-color: rgb(245, 246, 248);">
-            <script>
-                function Funcao() {
-                    alert('teste');
-                    document.getElementById("t1").value = "{{ $funcionarios }}"
-                }
-            </script>
-            <!------------------------------------->
-            <!----teste de url--------------------->
-            <div class="form-row">
-                <form action="{{ 'filtro-os' }}" method="POST" id="form_filt_os">
-                    @csrf
 
-            </div>
+        <script>
+            function Funcao() {
+                alert('teste');
+                document.getElementById("t1").value = "{{ $funcionarios }}"
+            }
+        </script>
+        <!------------------------------------->
+        <!----teste de url--------------------->
+        <form action="{{ 'filtro-os' }}" method="POST" id="form_filt_os">
+            @csrf
             <!------------------------------------------------------------------------------------------->
             <!----datas---------------------------------------------------------------------------------->
             <!------------------------------------------------------------------------------------------->
             <div class="form-row">
+
                 <div class="col-md-0">
                     <label for="id">ID:</label>
-                    <input type="number" class="form-control" id="id" name="id" placeholder="ID Os" value="">
+                    <input type="number" class="form-control" id="id" name="id" placeholder="--Digite o ID--" value="">
                 </div>
                 <p>
                 <div class="col-sm-1.5">
@@ -50,7 +104,7 @@
                     <label for="horaFim">Hora fim:</label>
                     <input type="time" class="form-control" name="hora_fim" id="horaFim" placeholder="horaFim" value="">
                 </div>
-                <div class="col-md-3 mb-0">
+                <div class="col-md-3 mb-0" hidden>
                     <label for="responsavel" class="">Responsável:</label>
                     <select name="responsavel" id="responsavel" class="form-control">
                         <option value="todos">Todos</option>
@@ -62,15 +116,11 @@
                     </select>
                     {{ $errors->has('responsavel') ? $errors->first('responsavel') : '' }}
                 </div>
-                <div class="col-md-3 mb-0">
-                    <label for="responsavel" class="">Busca texto descrição:</label>
-                    <input value="" name="like" id="like" class="form-control" placeholder="--Digite aqui--" style="background-color: rgba(255, 255, 153, 0.3);">
-                </div>
 
                 <!--------------------------------------------------------------------------------------->
                 <!---------Select empresa------------->
                 <!--------------------------------------------------------------------------------------->
-                <div class="col-md-5 mb-0">
+                <div class="col-md-5 mb-0" hidden>
                     <label for="empresas" class="">Empresa:</label>
                     <select name="empresa_id" id="empresa_id" class="form-control">
                         <option value=""> --Selecione a empresa--</option>
@@ -94,7 +144,7 @@
                 </script>
                 {{----------------------------------------------------------------}}
                 {{--Select para escolher o patrimônio-----------------------------}}
-                <div class="col-md-3 mb-0">
+                <div class="col-md-3 mb-0" hidden>
                     <label for="id">Patrimônio:</label>
                     <input type="number" class="form-control" id="patrimonio" name="patrimonio_id" placeholder="ID patrimonio" value="" hidden>
                     <select class="form-control" id="results" onchange="updateIdPatrimonio()">
@@ -106,6 +156,7 @@
                 <div class="col-md-2 mb-0">
                     <label for="situacao">Situação:</label>
                     <select class="form-control" name="situacao" id="situacao">
+                        <option value="todas"> Todas</option>
                         <option value="aberto">🔓 Aberto</option>
                         <option value="fechado">🔒 Fechado</option>
                         <option value="indefinido">❔ Indefinido</option>
@@ -119,10 +170,10 @@
                     <label for="tipo_consulta" class="">Tipo de consulta:</label>
 
                     <select class="form-control" name="tipo_consulta" id="tipo_consulta" value="">
+                        <option value="9" style="background-color: #81b0eeff;">📝Pela descrição</option>
                         <option value="6">🗓️ Data Inicial</option>
                         <option value="5">🗓️ ⚙️Data inicial e Equipamento</option>
                         <option value="1" style="background-color: #a3e6a3;">🆔 Pelo ID</option>
-                        <option value="9" style="background-color: #81b0eeff;">📝Pela descrição</option>
                         <option value="2">>=Data inicial <= Data inicial </option>
                         <option value="3">>=Data inicial e <=Data final</option>
                         <option value="4">=Data final</option>
@@ -130,507 +181,453 @@
                         <option value="8">Ordenado pela Emissão</option>
                     </select>
                 </div>
-
-                </form>
-                {{----------------------------------------------------------------}}
-                {{--Conjunto de botão para ações de filtros de ordens de serviço--}}
-
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">Hoje</label>
-                    <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetDataHoje()">
-                            <span class="icon text-white-50">
-                                <i class="icofont-filter"></i>
-                            </span>
-                            <span class="text">O.S. hoje</span>
-                        </a>
+            </div>
+            <p></p>
+            <div class="row justify-content-center">
+                <div class="col-md-3 mb-12">
+                    <input value="" name="like" id="like" class="form-control"
+                        placeholder="--Digite aqui uma descrição--"
+                        style="background-color: rgba(255, 255, 153, 0.3);">
                 </div>
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">O.S. Em andamento</label>
-                    <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="GetOsEmAndamento()">
-                            <span class="icon text-white-50">
-                                <i class="icofont-filter"></i>
-                            </span>
-                            <span class="text">O.S. Em Andamento</span>
-                        </a>
+                <div>
+                    <a href="#" class="btn btn-outline-warning" onclick="FiltraOs()" style="color: orangered;">
+                        <i class="icofont-filter"></i> Filtrar
+                    </a>
                 </div>
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">Abertas</label>
-                    <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetAbertas()">
-                            <span class="icon text-white-50">
-                                <i class="icofont-filter"></i>
-                            </span>
-                            <span class="text">O.S. aberta</span>
-                        </a>
-                </div>
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">O.S. semana</label>
-                    <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="exibirIntervaloSemanaAtual()">
-                            <span class="icon text-white-50">
-                                <i class="icofont-filter"></i>
-                            </span>
-                            <span class="text">O.S semana</span>
-                        </a>
-                </div>
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">O.S. Vencidas</label>
-                    <p>
-                        <a href="#" class="btn btn-info btn-icon-split" onclick="SetOsVencidas()">
-                            <span class="icon text-white-50">
-                                <i class="icofont-filter"></i>
-                            </span>
-                            <span class="text">O.S. Vencidas</span>
-                        </a>
-                </div>
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">Filtrar:</label>
-                    <p>
-                        <a href="#" class="btn btn-outline-warning btn-bg" onclick="FiltraOs()" style="color: orangered;"
-                            title="Alpicar filtro">
-                            <span class="text">
-                                <i class="icofont-filter"></i>Filtrar</span>
-                        </a>
+            </div>
 
-                        </input>
-                </div>
-                <!--------------------------------Ajax para pesquisa------------------------------------->
-                <!-- resources/views/your_view.blade.php -->
-                <!DOCTYPE html>
-                <html lang="en">
 
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Search Example</title>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                </head>
+        </form>
 
-                <body>
-                    <script>
-                        function updateIdPatrimonio() {
-                            let sh = document.getElementById('results').value;
-                            document.getElementById('patrimonio').value = sh; // Corrigido para 'patrimonio'
-                        }
+        <!--------------------------------Ajax para pesquisa------------------------------------->
+        <!-- resources/views/your_view.blade.php -->
+        <!DOCTYPE html>
+        <html lang="en">
 
-                        $(document).ready(function() {
-                            $('#empresa_id').on('change', function() {
-                                var query = $(this).val();
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Search Example</title>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        </head>
 
-                                $.ajax({
-                                    url: '{{ route("search") }}',
-                                    type: 'GET',
-                                    data: {
-                                        'query': query
-                                    },
-                                    success: function(data) {
-                                        console.log(data); // Verificar os dados retornados
-                                        $('#results').empty();
-                                        $('#results').append('<option value="">Selecione um resultado</option>');
 
-                                        $.each(data, function(key, item) {
-                                            $('#results').append('<option value="' + item.id + '">' + item.nome + '</option>');
-                                        });
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.log('Erro na requisição AJAX: ' + error);
-                                    }
-                                });
+        <script>
+            function updateIdPatrimonio() {
+                let sh = document.getElementById('results').value;
+                document.getElementById('patrimonio').value = sh; // Corrigido para 'patrimonio'
+            }
+
+            $(document).ready(function() {
+                $('#empresa_id').on('change', function() {
+                    var query = $(this).val();
+
+                    $.ajax({
+                        url: '{{ route("search") }}',
+                        type: 'GET',
+                        data: {
+                            'query': query
+                        },
+                        success: function(data) {
+                            console.log(data); // Verificar os dados retornados
+                            $('#results').empty();
+                            $('#results').append('<option value="">Selecione um resultado</option>');
+
+                            $.each(data, function(key, item) {
+                                $('#results').append('<option value="' + item.id + '">' + item.nome + '</option>');
                             });
-                        });
-                    </script>
-                </body>
-
-                </html>
-
-                <!----------------------------------fim do ajax------------------------------------------>
-                <script>
-                    //------------------------------------------------------------------//
-                    //Código que executa os filtros do formulário index ordem de serviço
-                    let data_atual = new Date();
-                    var dia = String(data_atual.getDate()).padStart(2, '0');
-                    var mes = String(data_atual.getMonth() + 1).padStart(2, '0');
-                    var ano = data_atual.getFullYear();
-                    data_atual = ano + '-' + mes + '-' + dia;
-
-                    function SetDataHoje() { //função que executa o filtro da data de hoje
-                        document.getElementById("data_inicio").value = data_atual;
-                        document.getElementById("data_fim").value = data_atual;
-                        document.getElementById("situacao").value = 'aberto';
-                        document.getElementById("tipo_consulta").value = 6;
-                        document.getElementById("empresa_id").value = 2;
-                        document.getElementById('form_filt_os').submit();
-                    }
-
-                    function FiltraOs() { //Função que executa o filtro de acordo com as especificações escolhidas
-                        document.getElementById('form_filt_os').submit();
-                    }
-
-                    function SetAbertas() {
-
-                        document.getElementById("data_inicio").value = '2000-01-01';
-                        document.getElementById("data_fim").value = '2030-01-01';
-                        document.getElementById("situacao").value = 'aberto';
-                        document.getElementById("tipo_consulta").value = 6;
-                        document.getElementById("empresa_id").value = 2;
-                        document.getElementById('form_filt_os').submit();
-                    }
-
-                    function SetOsVencidas() { //Filtra os ja vencidas
-
-                        document.getElementById("data_inicio").value = '2000-01-01';
-                        document.getElementById("data_fim").value = data_atual;
-                        document.getElementById("situacao").value = 'aberto';
-                        document.getElementById("tipo_consulta").value = 6;
-                        document.getElementById("empresa_id").value = 2;
-                        document.getElementById('form_filt_os').submit();
-                    }
-                </script>
-
-                <div class="col-md-0">
-                    <label for="btFiltrar" class="">Dashboard</label>
-                    <p>
-                        <a class="btn btn-info btn-icon-split btn-dark" href="{{ route('app.home') }}">
-                            <i class="icofont-dashboard"></i> Dashboard
-                        </a>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            {{------------------------------teste pinta campo  tabela aberto-----------------------------}}
-            <!DOCTYPE html>
-            <html lang="en">
-
-            <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <style>
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-
-                    th,
-                    td {
-                        border: 1px solid #dddddd;
-                        text-align: left;
-                        padding: 8px;
-                    }
-
-                    th {
-                        background-color: #f2f2f2;
-                    }
-
-                    .bg-green {
-                        background-color: #a3e6a3;
-                    }
-
-                    .bg-yellow {
-                        background-color: #ffff99;
-                    }
-
-                    .bg-red {
-                        background-color: #f08080;
-                    }
-                </style>
-            </head>
-            <h6>Ordens</h6>
-
-            <body>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th style="width:100px;">ID</th>
-                            <th>Emissão</th>
-                            <th>Previsão para início</th>
-                            <th>Previsão para conclusão</th>
-                            <th>Empresa</th>
-                            <th>Patrimônio</th>
-                            <th>Emissor</th>
-                            <th>Responsável</th>
-                            <th>Descrição</th>
-                            <th>Status</th>
-                            <th>Projeto</th>
-                            <th>Operações</th>
-                            <th>check</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($ordens_servicos as $ordem_servico)
-                        @php
-                        // Definir o fuso horário para America/Sao_Paulo
-                        date_default_timezone_set('America/Sao_Paulo');
-
-                        // Obter o horário atual de Brasília
-                        $dataAtual = \Illuminate\Support\Carbon::now();
-                        //-------------------------------------------------//
-                        $dataFim = \Carbon\Carbon::parse($ordem_servico->data_fim);
-                        $horaFim = \Carbon\Carbon::parse($ordem_servico->hora_fim);
-                        $dataAtual = \Carbon\Carbon::now();
-                        $classData = '';
-                        $classHora = '';
-                        // Regras para data de fim verde//
-                        if ($dataFim->greaterThan($dataAtual)) {
-                        $classData = 'bg-green';
-                        $classHora = 'bg-green';//seta para verde
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Erro na requisição AJAX: ' + error);
                         }
-                        // Regras para data de fim amarelo
-                        if ($dataFim->isSameDay($dataAtual)) {
-                        $classData = 'bg-yellow';
-                        // -----------Regras para hora de fim
-                        $horaFimSemSegundos = $horaFim->copy()->second(0); // Define os segundos como 0
-                        $horaAtualSemSegundos = $dataAtual->copy()->second(0); // Define os segundos como 0
-                        if ($horaFimSemSegundos->greaterThan($horaAtualSemSegundos)) {
-                        $classHora = 'bg-green'; // seta para verde
-                        } elseif ($horaFimSemSegundos->equalTo($horaAtualSemSegundos)) {
-                        $classHora = 'bg-yellow'; // seta para amarelo
-                        } elseif ($horaFimSemSegundos->lessThan($horaAtualSemSegundos)) {
-                        $classHora = 'bg-red'; // seta para vermelho
-                        }
-                        // Regras para data de fim vermelho//
-                        } elseif ($dataFim->lessThan($dataAtual)) {
-                        $classData = 'bg-red';
-                        // -----------Regras para hora de fim
-                        $classHora = 'bg-red';//seta para vermelho
-                        }
-                        @endphp
-                        <tr>
-                            <td style="width:10px;">{{ $ordem_servico->id }}</td>
-                            <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}
-                                {{ $ordem_servico->hora_emissao }}
-                            </td>
-                            <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}}
-                                {{ $ordem_servico->hora_inicio }}
-                            </td>
-                            <td>
-                                <div class="{{ $classData }}">
-                                    {{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}
-                                </div>
+                    });
+                });
+            });
+        </script>
 
-                                <div class="{{ $classHora }}">
-                                    {{ $ordem_servico->hora_fim }}
-                                </div>
-                            </td>
-                            <td>
-                                {{ $ordem_servico->Empresa->razao_social}}
-                            </td>
-                            <td>{{ $ordem_servico->equipamento->nome}}</td>
-                            <td>{{ $ordem_servico->emissor}}</td>
-                            <td>{{ $ordem_servico->responsavel}}</td>
-                            <td id="descricao">
 
-                                {{ $ordem_servico->descricao}}
+        </html>
 
-                            </td>
-                            <td>{{ $ordem_servico->situacao}}
-                                <div class="progress mb-3" role="progressbar" aria-label="Success example with label" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar text-bg-warning">{{ $ordem_servico->status_servicos}}%</div>
-                                </div>
-                            </td>
-                            <td>{{ $ordem_servico->projeto_id}}</td>
-                            <!--Div operaçoes do registro da ordem des serviço-->
-                            <td>
-                                <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                                    <a class="btn btn-sm-template btn-outline-primary" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}">
-                                        <i class="icofont-eye-alt"></i>
-                                    </a>
+        <!----------------------------------fim do ajax------------------------------------------>
+        <script>
+            //------------------------------------------------------------------//
+            //Código que executa os filtros do formulário index ordem de serviço
+            let data_atual = new Date();
+            var dia = String(data_atual.getDate()).padStart(2, '0');
+            var mes = String(data_atual.getMonth() + 1).padStart(2, '0');
+            var ano = data_atual.getFullYear();
+            data_atual = ano + '-' + mes + '-' + dia;
 
-                                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
+            function SetDataHoje() { //função que executa o filtro da data de hoje
+                document.getElementById("data_inicio").value = data_atual;
+                document.getElementById("data_fim").value = data_atual;
+                document.getElementById("situacao").value = 'aberto';
+                document.getElementById("tipo_consulta").value = 6;
+                document.getElementById("empresa_id").value = 2;
+                document.getElementById('form_filt_os').submit();
+            }
 
-                                        <i class="icofont-ui-edit"></i> </a>
+            function FiltraOs() { //Função que executa o filtro de acordo com as especificações escolhidas
+                document.getElementById('form_filt_os').submit();
+            }
 
-                                    <!--Condoçes para deletar a os-->
-                                    <form id="form_{{ $ordem_servico->id }}" method="post" action="{{route('ordem-servico.destroy', ['ordem_servico'=>$ordem_servico->id])}}">
-                                        @method('DELETE')
-                                        @csrf
-                                        <input type="text" value="{{$ordem_servico->id}}" name="id_os" hidden>
-                                    </form>
-                                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
-                                        <i class="icofont-ui-delete"></i>
-                                        <script>
-                                            function DeletarOs() {
-                                                var x;
-                                                var r = confirm("Deseja deletar a ordem de serviço?");
-                                                if (r == true) {
+            function SetAbertas() {
 
-                                                    document.getElementById('form_{{$ordem_servico->id }}').submit()
-                                                } else {
-                                                    x = "Você pressionou Cancelar!";
-                                                }
-                                                document.getElementById("demo").innerHTML = x;
-                                            }
-                                        </script>
-                                    </a>
-                                    <!------------------------------>
+                document.getElementById("data_inicio").value = '2000-01-01';
+                document.getElementById("data_fim").value = '2030-01-01';
+                document.getElementById("situacao").value = 'aberto';
+                document.getElementById("tipo_consulta").value = 6;
+                document.getElementById("empresa_id").value = 2;
+                document.getElementById('form_filt_os').submit();
+            }
 
-                                </div>
-                            <td>
-                                <div class="col-md-2 mb-0">
-                                    <input type="checkbox" name="" id="">
-                                </div>
-                            </td>
+            function SetOsVencidas() { //Filtra os ja vencidas
 
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                {{----------------------------------------Fim tabela os pinta celula--------------------------------------}}
-                <style>
-                    #tblOs {
-                        font-family: arial, sans-serif;
-                        border-collapse: collapse;
-                        width: 100%;
-                        background-color: rgb(211, 211, 211);
-                    }
+                document.getElementById("data_inicio").value = '2000-01-01';
+                document.getElementById("data_fim").value = data_atual;
+                document.getElementById("situacao").value = 'aberto';
+                document.getElementById("tipo_consulta").value = 6;
+                document.getElementById("empresa_id").value = 2;
+                document.getElementById('form_filt_os').submit();
+            }
+        </script>
 
-                    thead {
-                        background-color: rgb(169, 169, 169);
-                    }
 
-                    td,
-                    th {
-                        border: 1px solid #dddddd;
-                        text-align: left;
-                        padding: 8px;
-                    }
+    </div>
+    </div>
+    <div class="card-body">
+        {{------------------------------teste pinta campo  tabela aberto-----------------------------}}
+        <!DOCTYPE html>
+        <html lang="en">
 
-                    tr:nth-child(even) {
-                        background-color: #dddddd;
-                    }
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
 
-                    tr:hover {
-                        background-color: rgb(169, 169, 169);
-                    }
-                </style>
-                <table id="tblOs" hidden>
-                    <thead>
-                        <tr>
-                            <th scope="col" class="">ID</th>
-                            <th scope="col" class="" hidden>Data emissao</th>
-                            <th scope="col" class="" hidden>Hora</th>
-                            <th scope="col" class="">Data prevista</th>
-                            <th scope="col" class="">Hora prevista</th>
-                            <th scope="col" class="">Data fim</th>
-                            <th scope="col" class="">Hora fim</th>
-                            <th scope="col" class="">Empresa</th>
-                            <th scope="col" class="">Patrimônio</th>
-                            <th scope="col" class="">id patr</th>
-                            <th scope="col" class="">Emissor</th>
-                            <th scope="col" class="">Responsável</th>
-                            <th scope="col" class="">Executado</th>
-                            <th>link foto</th>
-                            <th>Status</th>
-                            <th>ID Projeto</th>
-                            <th>Operações</th>
-                            <th>check</th>
-                            <th hidden>G</th>
-                            <th hidden>U</th>
-                            <th hidden>T</th>
+                th,
+                td {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                }
 
-                        </tr>
-                    </thead>
+                th {
+                    background-color: #f2f2f2;
+                }
+
+                .bg-green {
+                    background-color: #a3e6a3;
+                }
+
+                .bg-yellow {
+                    background-color: #ffff99;
+                }
+
+                .bg-red {
+                    background-color: #f08080;
+                }
+            </style>
+        </head>
+        <h6>Ordens</h6>
+
+        <body>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">ID</th>
+                        <th>Emissão</th>
+                        <th>Previsão para início</th>
+                        <th>Previsão para conclusão</th>
+                        <th>Empresa</th>
+                        <th>Patrimônio</th>
+                        <th>Emissor</th>
+                        <th>Responsável</th>
+                        <th>Descrição</th>
+                        <th>Status</th>
+                        <th>Projeto</th>
+                        <th>Operações</th>
+                        <th>check</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @foreach ($ordens_servicos as $ordem_servico)
+                    @php
+                    // Definir o fuso horário para America/Sao_Paulo
+                    date_default_timezone_set('America/Sao_Paulo');
 
-                    <tbody>
+                    // Obter o horário atual de Brasília
+                    $dataAtual = \Illuminate\Support\Carbon::now();
+                    //-------------------------------------------------//
+                    $dataFim = \Carbon\Carbon::parse($ordem_servico->data_fim);
+                    $horaFim = \Carbon\Carbon::parse($ordem_servico->hora_fim);
+                    $dataAtual = \Carbon\Carbon::now();
+                    $classData = '';
+                    $classHora = '';
+                    // Regras para data de fim verde//
+                    if ($dataFim->greaterThan($dataAtual)) {
+                    $classData = 'bg-green';
+                    $classHora = 'bg-green';//seta para verde
+                    }
+                    // Regras para data de fim amarelo
+                    if ($dataFim->isSameDay($dataAtual)) {
+                    $classData = 'bg-yellow';
+                    // -----------Regras para hora de fim
+                    $horaFimSemSegundos = $horaFim->copy()->second(0); // Define os segundos como 0
+                    $horaAtualSemSegundos = $dataAtual->copy()->second(0); // Define os segundos como 0
+                    if ($horaFimSemSegundos->greaterThan($horaAtualSemSegundos)) {
+                    $classHora = 'bg-green'; // seta para verde
+                    } elseif ($horaFimSemSegundos->equalTo($horaAtualSemSegundos)) {
+                    $classHora = 'bg-yellow'; // seta para amarelo
+                    } elseif ($horaFimSemSegundos->lessThan($horaAtualSemSegundos)) {
+                    $classHora = 'bg-red'; // seta para vermelho
+                    }
+                    // Regras para data de fim vermelho//
+                    } elseif ($dataFim->lessThan($dataAtual)) {
+                    $classData = 'bg-red';
+                    // -----------Regras para hora de fim
+                    $classHora = 'bg-red';//seta para vermelho
+                    }
+                    @endphp
+                    <tr>
+                        <td style="width:10px;">{{ $ordem_servico->id }}</td>
+                        <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_emissao']))}}
+                            {{ $ordem_servico->hora_emissao }}
+                        </td>
+                        <td> {{ date( 'd/m/Y' , strtotime($ordem_servico['data_inicio']))}}
+                            {{ $ordem_servico->hora_inicio }}
+                        </td>
+                        <td>
+                            <div class="{{ $classData }}">
+                                {{ date( 'd/m/Y' , strtotime($ordem_servico['data_fim']))}}
+                            </div>
 
-                        <tr>
-                            <td>{{ $ordem_servico->id }}</td>
-                            <td hidden>{{ $ordem_servico->data_emissao }}</td>
-                            <td hidden>{{ $ordem_servico->hora_emissao }}</td>
-                            <td>{{ $ordem_servico->data_inicio }}</td>
-                            <td>{{ $ordem_servico->hora_inicio }}</td>
-                            <td>{{ $ordem_servico->data_fim }}</td>
-                            <td>{{ $ordem_servico->hora_fim }}</td>
-                            <td>{{ $ordem_servico->Empresa->razao_social }}</td>
-                            <td>{{ $ordem_servico->equipamento->nome }}</td>
-                            <td>{{ $ordem_servico->equipamento->id }}</td>
-                            <td>{{ $ordem_servico->emissor }}</td>
-                            <td>{{ $ordem_servico->responsavel }}</td>
-                            <td id="descricao">
-                                {{ $ordem_servico->descricao }}
-                            </td>
+                            <div class="{{ $classHora }}">
+                                {{ $ordem_servico->hora_fim }}
+                            </div>
+                        </td>
+                        <td>
+                            {{ $ordem_servico->Empresa->razao_social}}
+                        </td>
+                        <td>{{ $ordem_servico->equipamento->nome}}</td>
+                        <td>{{ $ordem_servico->emissor}}</td>
+                        <td>{{ $ordem_servico->responsavel}}</td>
+                        <td id="descricao">
 
-                            <td><a href="{{ $ordem_servico->link_foto }}" target="blank">link foto</a></td>
-                            <td>{{ $ordem_servico->situacao }}
-                                <input type="text" value="{{ $ordem_servico->status_servicos }}" id="progress-input" hidden>
-                                <!--Exemplo de progressbar com um input texto-->
-                                <div class="progress">
-                                    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos }}%</div>
-                                </div>
-                                <script>
-                                    //document.addEventListener('DOMContentLoaded', function() {
-                                    var progressBar = document.getElementById('progress-bar');
-                                    var progressInput = document.getElementById('progress-input');
+                            {{ $ordem_servico->descricao}}
 
-                                    // Função para atualizar a barra de progresso
-                                    function updateProgressBar(value) {
-                                        progressBar.style.width = value + '%';
-                                        progressBar.setAttribute('aria-valuenow', value);
-                                    }
+                        </td>
+                        <td>{{ $ordem_servico->situacao}}
+                            <div class="progress mb-3" role="progressbar" aria-label="Success example with label" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar text-bg-warning">{{ $ordem_servico->status_servicos}}%</div>
+                            </div>
+                        </td>
+                        <td>{{ $ordem_servico->projeto_id}}</td>
+                        <!--Div operaçoes do registro da ordem des serviço-->
+                        <td>
+                            <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
+                                <a class="btn btn-sm-template btn-outline-primary" href="{{route('ordem-servico.show', ['ordem_servico'=>$ordem_servico->id])}}">
+                                    <i class="icofont-eye-alt"></i>
+                                </a>
 
-                                    // Chama a função de atualização da barra de progresso com o valor inicial do input
-                                    updateProgressBar(progressInput.value);
+                                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
 
-                                    // Adiciona um ouvinte de eventos para o input
-                                    progressInput.addEventListener('input', function() {
-                                        var value = progressInput.value;
-                                        updateProgressBar(value);
-                                    });
-                                    //});
-                                </script>
-                                <!--Fim Exemplo de progressbar com um input texto-->
-                            </td>
-                            <td>{{ $ordem_servico->projeto_id}}</td>
-                            </td>
-                            <!--Div operaçoes do registro da ordem des serviço-->
-                            <td>
-                                <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
-                                    <a class="btn btn-sm-template btn-outline-primary" href="{{ route('ordem-servico.show', ['ordem_servico' => $ordem_servico->id]) }}">
-                                        <i class="icofont-eye-alt"></i>
-                                    </a>
-                                    <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
+                                    <i class="icofont-ui-edit"></i> </a>
 
-                                        <i class="icofont-ui-edit"></i> </a>
+                                <!--Condoçes para deletar a os-->
+                                <form id="form_{{ $ordem_servico->id }}" method="post" action="{{route('ordem-servico.destroy', ['ordem_servico'=>$ordem_servico->id])}}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <input type="text" value="{{$ordem_servico->id}}" name="id_os" hidden>
+                                </form>
+                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
+                                    <i class="icofont-ui-delete"></i>
+                                    <script>
+                                        function DeletarOs() {
+                                            var x;
+                                            var r = confirm("Deseja deletar a ordem de serviço?");
+                                            if (r == true) {
 
-                                    <!--Condoçes para deletar a os-->
-                                    <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
-                                        <i class="icofont-ui-delete"></i></a>
-                            </td>
+                                                document.getElementById('form_{{$ordem_servico->id }}').submit()
+                                            } else {
+                                                x = "Você pressionou Cancelar!";
+                                            }
+                                            document.getElementById("demo").innerHTML = x;
+                                        }
+                                    </script>
+                                </a>
+                                <!------------------------------>
+
+                            </div>
+                        <td>
+                            <div class="col-md-2 mb-0">
+                                <input type="checkbox" name="" id="">
+                            </div>
+                        </td>
+
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            {{----------------------------------------Fim tabela os pinta celula--------------------------------------}}
+            <style>
+                #tblOs {
+                    font-family: arial, sans-serif;
+                    border-collapse: collapse;
+                    width: 100%;
+                    background-color: rgb(211, 211, 211);
+                }
+
+                thead {
+                    background-color: rgb(169, 169, 169);
+                }
+
+                td,
+                th {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                }
+
+                tr:nth-child(even) {
+                    background-color: #dddddd;
+                }
+
+                tr:hover {
+                    background-color: rgb(169, 169, 169);
+                }
+            </style>
+            <table id="tblOs" hidden>
+                <thead>
+                    <tr>
+                        <th scope="col" class="">ID</th>
+                        <th scope="col" class="" hidden>Data emissao</th>
+                        <th scope="col" class="" hidden>Hora</th>
+                        <th scope="col" class="">Data prevista</th>
+                        <th scope="col" class="">Hora prevista</th>
+                        <th scope="col" class="">Data fim</th>
+                        <th scope="col" class="">Hora fim</th>
+                        <th scope="col" class="">Empresa</th>
+                        <th scope="col" class="">Patrimônio</th>
+                        <th scope="col" class="">id patr</th>
+                        <th scope="col" class="">Emissor</th>
+                        <th scope="col" class="">Responsável</th>
+                        <th scope="col" class="">Executado</th>
+                        <th>link foto</th>
+                        <th>Status</th>
+                        <th>ID Projeto</th>
+                        <th>Operações</th>
+                        <th>check</th>
+                        <th hidden>G</th>
+                        <th hidden>U</th>
+                        <th hidden>T</th>
+
+                    </tr>
+                </thead>
+                @foreach ($ordens_servicos as $ordem_servico)
+
+                <tbody>
+
+                    <tr>
+                        <td>{{ $ordem_servico->id }}</td>
+                        <td hidden>{{ $ordem_servico->data_emissao }}</td>
+                        <td hidden>{{ $ordem_servico->hora_emissao }}</td>
+                        <td>{{ $ordem_servico->data_inicio }}</td>
+                        <td>{{ $ordem_servico->hora_inicio }}</td>
+                        <td>{{ $ordem_servico->data_fim }}</td>
+                        <td>{{ $ordem_servico->hora_fim }}</td>
+                        <td>{{ $ordem_servico->Empresa->razao_social }}</td>
+                        <td>{{ $ordem_servico->equipamento->nome }}</td>
+                        <td>{{ $ordem_servico->equipamento->id }}</td>
+                        <td>{{ $ordem_servico->emissor }}</td>
+                        <td>{{ $ordem_servico->responsavel }}</td>
+                        <td id="descricao">
+                            {{ $ordem_servico->descricao }}
+                        </td>
+
+                        <td><a href="{{ $ordem_servico->link_foto }}" target="blank">link foto</a></td>
+                        <td>{{ $ordem_servico->situacao }}
+                            <input type="text" value="{{ $ordem_servico->status_servicos }}" id="progress-input" hidden>
+                            <!--Exemplo de progressbar com um input texto-->
+                            <div class="progress">
+                                <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos }}%</div>
+                            </div>
                             <script>
-                                function DeletarOs() {
-                                    var x;
-                                    var r = confirm("Deseja deletar o registro os?");
-                                    if (r == true) {
-                                        document.getElementById('form_{{ $ordem_servico->id }}').submit()
-                                    } else {
-                                        x = "Você pressionou Cancelar!";
-                                    }
-                                    document.getElementById("demo").innerHTML = x;
+                                //document.addEventListener('DOMContentLoaded', function() {
+                                var progressBar = document.getElementById('progress-bar');
+                                var progressInput = document.getElementById('progress-input');
+
+                                // Função para atualizar a barra de progresso
+                                function updateProgressBar(value) {
+                                    progressBar.style.width = value + '%';
+                                    progressBar.setAttribute('aria-valuenow', value);
                                 }
+
+                                // Chama a função de atualização da barra de progresso com o valor inicial do input
+                                updateProgressBar(progressInput.value);
+
+                                // Adiciona um ouvinte de eventos para o input
+                                progressInput.addEventListener('input', function() {
+                                    var value = progressInput.value;
+                                    updateProgressBar(value);
+                                });
+                                //});
                             </script>
+                            <!--Fim Exemplo de progressbar com um input texto-->
+                        </td>
+                        <td>{{ $ordem_servico->projeto_id}}</td>
+                        </td>
+                        <!--Div operaçoes do registro da ordem des serviço-->
+                        <td>
+                            <div {{-- class="div-op" --}} class="btn-group btn-group-actions visible-on-hover">
+                                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('ordem-servico.show', ['ordem_servico' => $ordem_servico->id]) }}">
+                                    <i class="icofont-eye-alt"></i>
+                                </a>
+                                <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
 
-                            <form id="form_{{ $ordem_servico->id }}" method="post" action="{{ route('ordem-servico.destroy', ['ordem_servico' => $ordem_servico->id]) }}">
-                                @method('DELETE')
-                                @csrf
-                            </form>
+                                    <i class="icofont-ui-edit"></i> </a>
 
+                                <!--Condoçes para deletar a os-->
+                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick=" DeletarOs()">
+                                    <i class="icofont-ui-delete"></i></a>
+                        </td>
+                        <script>
+                            function DeletarOs() {
+                                var x;
+                                var r = confirm("Deseja deletar o registro os?");
+                                if (r == true) {
+                                    document.getElementById('form_{{ $ordem_servico->id }}').submit()
+                                } else {
+                                    x = "Você pressionou Cancelar!";
+                                }
+                                document.getElementById("demo").innerHTML = x;
+                            }
+                        </script>
+
+                        <form id="form_{{ $ordem_servico->id }}" method="post" action="{{ route('ordem-servico.destroy', ['ordem_servico' => $ordem_servico->id]) }}">
+                            @method('DELETE')
+                            @csrf
+                        </form>
+
+    </div>
+    <td>
+        <div class="col-md-2 mb-0">
+            <input type="checkbox" name="" id="">
         </div>
-        <td>
-            <div class="col-md-2 mb-0">
-                <input type="checkbox" name="" id="">
-            </div>
-        </td>
-        <td hidden>{{ $ordem_servico->gravidade}} </td>
-        <td hidden>{{ $ordem_servico->urgencia}} </td>
-        <td hidden>{{ $ordem_servico->tendencia}} </td>
-        </tr>
-        </tbody>
-        @endforeach
+    </td>
+    <td hidden>{{ $ordem_servico->gravidade}} </td>
+    <td hidden>{{ $ordem_servico->urgencia}} </td>
+    <td hidden>{{ $ordem_servico->tendencia}} </td>
+    </tr>
+    </tbody>
+    @endforeach
 
-        </table>
+    </table>
     </div>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

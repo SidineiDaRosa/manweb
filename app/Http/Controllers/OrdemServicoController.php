@@ -31,16 +31,37 @@ class OrdemServicoController extends Controller
     //public function index(Request $request)
     public function index(Request $request)
     {
-        $empresa = Empresas::all();
-        $equipamento = Equipamento::all();
-        $id = $request->get("id");
+        $empresa       = Empresas::all();
+        $equipamento   = Equipamento::all();
+        $funcionarios  = Funcionario::all();
+
+        $id            = $request->get("id");
         $tipo_consulta = $request->get("tipo_consulta");
+
+        $dataInicio    = $request->get("data_inicio");
+        $dataFim       = $request->get("data_fim");
+        $horaInicio    = $request->get("hora_inicio");
+        $horaFim       = $request->get("hora_fim");
+        $situacao      = $request->get("situacao");
+
+        // Função auxiliar para aplicar filtros padrão
+        $aplicarFiltrosDataHora = function ($query) use ($dataInicio, $dataFim, $horaInicio, $horaFim) {
+            if ($dataInicio && $dataFim) {
+                $query->whereBetween('data_inicio', [$dataInicio, $dataFim]);
+            }
+
+            if (!empty($horaInicio) && !empty($horaFim)) {
+                $query->whereBetween('hora_inicio', [$horaInicio, $horaFim]);
+            }
+
+            return $query;
+        };
+
         switch ($tipo_consulta) {
 
             // 1️⃣ Consulta por ID
             case 1:
                 if ($id >= 1) {
-                    $funcionarios = Funcionario::all();
                     $ordens_servicos = OrdemServico::where('id', $id)
                         ->orderBy('data_inicio', 'desc')
                         ->orderBy('hora_inicio', 'desc')
@@ -60,58 +81,45 @@ class OrdemServicoController extends Controller
 
             // 2️⃣ Consulta por data e situação
             case 2:
-                $dataInicio = $request->get("data_inicio");
-                $dataFim = $request->get("data_fim");
-                $situacao = $request->get("situacao");
+                $query = OrdemServico::where('situacao', $situacao);
+                $query = $aplicarFiltrosDataHora($query);
 
-                if (!empty($dataInicio)) {
-                    $funcionarios = Funcionario::all();
-                    $equipamentos = Equipamento::all();
+                $ordens_servicos = $query
+                    ->orderBy('data_inicio', 'desc')
+                    ->orderBy('hora_inicio', 'desc')
+                    ->get();
 
-                    $ordens_servicos = OrdemServico::where('situacao', $situacao)
-                        ->whereBetween('data_inicio', [$dataInicio, $dataFim])
-                        ->orderBy('data_inicio', 'desc')
-                        ->orderBy('hora_inicio', 'desc')
-                        ->get();
+                $valorTotal = OrdemServico::where('situacao', $situacao)
+                    ->where('data_inicio', '>=', $dataInicio)
+                    ->sum('valor');
 
-                    $valorTotal = OrdemServico::where('situacao', $situacao)
-                        ->where('data_inicio', '>=', $dataInicio)
-                        ->sum('valor');
+                $equipamentos = Equipamento::all();
 
-                    return view('app.ordem_servico.index', compact(
-                        'equipamento',
-                        'ordens_servicos',
-                        'funcionarios',
-                        'empresa',
-                        'valorTotal',
-                        'equipamentos'
-                    ));
-                }
-                break;
+                return view('app.ordem_servico.index', compact(
+                    'equipamento',
+                    'ordens_servicos',
+                    'funcionarios',
+                    'empresa',
+                    'valorTotal',
+                    'equipamentos'
+                ));
 
-            // 5️⃣ Consulta por Patrimônio
+                // 5️⃣ Consulta por Patrimônio
             case 5:
-                $dataInicio = $request->input('data_inicio');
-                $funcionarios = Funcionario::all();
-                $dataFim = $request->get("data_fim");
                 $patrimonio = $request->get("patrimonio_id");
-                $situacao = $request->get("situacao");
 
-                if (Carbon::hasFormat($dataInicio, 'Y-m-d')) {
-                    $ordens_servicos = OrdemServico::whereBetween('data_inicio', [$dataInicio, $dataFim])
-                        ->where('equipamento_id', $patrimonio)
-                        ->where('situacao', $situacao)
-                        ->orderBy('data_inicio', 'desc')
-                        ->orderBy('hora_inicio', 'desc')
-                        ->get();
-                } else {
-                    $ordens_servicos = OrdemServico::where('equipamento_id', $patrimonio)
-                        ->where('situacao', 'fechado')
-                        ->orderBy('data_fim', 'desc')
-                        ->get();
-                }
+                $query = OrdemServico::where('equipamento_id', $patrimonio)
+                    ->where('situacao', $situacao);
+
+                $query = $aplicarFiltrosDataHora($query);
+
+                $ordens_servicos = $query
+                    ->orderBy('data_inicio', 'desc')
+                    ->orderBy('hora_inicio', 'desc')
+                    ->get();
 
                 $valorTotal = 0;
+
                 return view('app.ordem_servico.index', compact(
                     'equipamento',
                     'ordens_servicos',
@@ -122,20 +130,20 @@ class OrdemServicoController extends Controller
 
                 // 6️⃣ Consulta por empresa
             case 6:
-                $funcionarios = Funcionario::all();
-                $dataInicio = $request->get("data_inicio");
-                $dataFim = $request->get("data_fim");
                 $empresa_id = $request->get("empresa_id");
-                $situacao = $request->get("situacao");
 
-                $ordens_servicos = OrdemServico::whereBetween('data_inicio', [$dataInicio, $dataFim])
-                    ->where('empresa_id', $empresa_id)
-                    ->where('situacao', $situacao)
+                $query = OrdemServico::where('empresa_id', $empresa_id)
+                    ->where('situacao', $situacao);
+
+                $query = $aplicarFiltrosDataHora($query);
+
+                $ordens_servicos = $query
                     ->orderBy('data_inicio', 'desc')
                     ->orderBy('hora_inicio', 'desc')
                     ->get();
 
                 $valorTotal = 0;
+
                 return view('app.ordem_servico.index', compact(
                     'equipamento',
                     'ordens_servicos',
@@ -148,26 +156,25 @@ class OrdemServicoController extends Controller
             case 7:
                 $empresa_id = $request->get("empresa_id");
                 $empresa = Empresas::where('id', $empresa_id)->get();
-                $situacao = $request->get("situacao");
-                $dataInicio = $request->get("data_inicio");
-                $dataFim = $request->get("data_fim");
 
-                $ordens_servicos = OrdemServico::whereBetween('data_inicio', [$dataInicio, $dataFim])
-                    ->where('empresa_id', $empresa_id)
-                    ->where('situacao', $situacao)
+                $query = OrdemServico::where('empresa_id', $empresa_id)
+                    ->where('situacao', $situacao);
+
+                $query = $aplicarFiltrosDataHora($query);
+
+                $ordens_servicos = $query
                     ->orderBy('data_inicio', 'desc')
                     ->orderBy('hora_inicio', 'desc')
                     ->get();
 
-                return view('app.ordem_servico.printer_list_os', compact('empresa', 'ordens_servicos'));
+                return view('app.ordem_servico.printer_list_os', compact(
+                    'empresa',
+                    'ordens_servicos'
+                ));
 
-                // 8️⃣ Ordenação por ID (emissão)
+                // 8️⃣ Ordenação por data de emissão
             case 8:
-                $funcionarios = Funcionario::all();
-                $dataInicio = $request->get("data_inicio");
-                $dataFim = $request->get("data_fim");
                 $empresa_id = $request->get("empresa_id");
-                $situacao = $request->get("situacao");
 
                 $ordens_servicos = OrdemServico::whereBetween('data_emissao', [$dataInicio, $dataFim])
                     ->where('empresa_id', $empresa_id)
@@ -176,6 +183,7 @@ class OrdemServicoController extends Controller
                     ->get();
 
                 $valorTotal = 0;
+
                 return view('app.ordem_servico.index', compact(
                     'equipamento',
                     'ordens_servicos',
@@ -186,13 +194,34 @@ class OrdemServicoController extends Controller
 
                 // 9️⃣ Busca por descrição
             case 9:
-                $funcionarios = Funcionario::all();
-                $ordens_servicos = OrdemServico::where('descricao', 'like', '%' . $request->like . '%')
+                $busca = $request->like;
+                $situacao = $request->get('situacao');
+
+                $ordens_servicos = OrdemServico::where(function ($q) use ($busca) {
+
+                    // Busca na descrição da OS
+                    $q->where('descricao', 'like', "%{$busca}%")
+
+                        // OU na descrição do Equipamento relacionado
+                        ->orWhereHas('equipamento', function ($eq) use ($busca) {
+                            $eq->where('descricao', 'like', "%{$busca}%");
+                        });
+                });
+
+                // 🔹 APLICANDO FILTRO DE SITUAÇÃO (IMPORTANTE)
+                if ($situacao && $situacao !== 'todas') {
+                    $ordens_servicos->where('situacao', $situacao);
+                }
+
+                $ordens_servicos = $ordens_servicos
                     ->orderBy('data_inicio', 'desc')
                     ->orderBy('hora_inicio', 'desc')
                     ->get();
 
-                $servicos_executado = Servicos_executado::where('ordem_servico_id', $id)->get();
+                $servicos_executado = Servicos_executado::whereIn(
+                    'ordem_servico_id',
+                    $ordens_servicos->pluck('id')
+                )->get();
 
                 return view('app.ordem_servico.index', compact(
                     'equipamento',
@@ -202,11 +231,13 @@ class OrdemServicoController extends Controller
                     'servicos_executado'
                 ));
 
-                // 🔟 Padrão — retorna vazio
+
+
+                // 🔟 Padrão — vazio
             default:
-                $funcionarios = Funcionario::all();
                 $ordens_servicos = OrdemServico::where('id', 0)->get();
                 $valorTotal = 0;
+
                 return view('app.ordem_servico.index', compact(
                     'equipamento',
                     'ordens_servicos',
@@ -216,7 +247,6 @@ class OrdemServicoController extends Controller
                 ));
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -305,7 +335,7 @@ class OrdemServicoController extends Controller
             'anexo' => $request->anexo, //Link anexado com algum documento
             'projeto_id' => $request->projeto_id,
             'check' => '0',
-            'alarm'=>$request->alarm
+            'alarm' => $request->alarm
 
         ]);
         //------------------------------------------------------------//
