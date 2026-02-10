@@ -118,8 +118,6 @@ Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\Equipa
 //---------------------------------------------//
 Route::middleware('auth')->resource('/ordem-servico', 'App\Http\Controllers\OrdemServicoController');
 Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 'update'])->name('ordem_servico.update');
-//ordem de serviço rota de pesquisas
-Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
 // Programação de os e visualização semanal O.S.
 Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStatusOsController::class, 'programer_os'])->name('program_os');
 //Atualiza datas via jason gráfico Gantt
@@ -131,6 +129,7 @@ Route::get('/filter-os-timeline', [OrdemServicoController::class, 'filter_os_tim
 Route::get('/gantt-timeline', [OrdemServicoController::class, 'gantt_timeline'])->name('gantt.os.timeline');
 // Busca OS por texto like na descrição
 Route::middleware('auth')->post('/filtro-os', [App\Http\Controllers\OrdemServicoController::class, 'index']);
+Route::middleware('auth')->get('/ordem-servico-filtrar', [OrdemServicoController::class, 'filter_advanced'])->name('ordem.servico.filtrar');
 //update alarm
 Route::post('/ordem-servico/update-alarm', [OrdemServicoController::class, 'update_alarm'])
     ->name('update_alarm');

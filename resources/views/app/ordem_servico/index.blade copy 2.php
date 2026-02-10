@@ -18,15 +18,14 @@ $classHora = $classHora ?? '';
 
     <!-- ==================== FILTROS RÁPIDOS ==================== -->
     <div class="card-header" style="background:#f2f2f2; border-radius:8px; padding:8px;">
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px;gap:5px; ">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px;">
 
-            <a href="#" class="btn btn-info" onclick="SetDataHoje()">📆 O.S. hoje</a>
-            <a href="#" class="btn btn-info" onclick="exibirIntervaloSemanaAtual()">📅 O.S semana</a>
-            <a href="#" class="btn btn-info" onclick="GetOsEmAndamento()"> 🔄 O.S. Em Andamento</a>
-            <a href="#" class="btn btn-info" onclick="SetAbertas()">🔓 O.S. aberta</a>
-            <a href="#" class="btn btn-info" onclick="SetOsVencidas()">⏰ O.S. Vencidas</a>
+            <a href="#" class="btn btn-info" onclick="SetDataHoje()">O.S. hoje</a>
+            <a href="#" class="btn btn-info" onclick="GetOsEmAndamento()">O.S. Em Andamento</a>
+            <a href="#" class="btn btn-info" onclick="SetAbertas()">O.S. aberta</a>
+            <a href="#" class="btn btn-info" onclick="exibirIntervaloSemanaAtual()">O.S semana</a>
+            <a href="#" class="btn btn-info" onclick="SetOsVencidas()">O.S. Vencidas</a>
             <a class="btn btn-dark" href="{{ route('app.home') }}">Dashboard</a>
-            <a class="btn btn-dark" href="{{ route('ordem.servico.filtrar') }}">T</a>
 
         </div>
     </div>
@@ -86,34 +85,29 @@ $classHora = $classHora ?? '';
         <form action="{{ url('filtro-os') }}" method="POST" id="form_filt_os">
             @csrf
 
-            <div class="row g-2" style="gap:2px;">
+            <div class="row g-2">
 
                 <div class="col-md-1">
                     <label>ID</label>
                     <input type="number" class="form-control" name="id" placeholder="ID">
                 </div>
-                <style>
-                    label {
-                        font-size: 15px;
-                        font-weight: 500;
-                    }
-                </style>
-                <div class="col-md-0">
+
+                <div class="col-md-2">
                     <label>Data inicial</label>
                     <input type="date" class="form-control" name="data_inicio" id="data_inicio">
                 </div>
 
-                <div class="col-md-0">
+                <div class="col-md-2">
                     <label>Hora prevista</label>
                     <input type="time" class="form-control" name="hora_inicio" id="hora_inicio">
                 </div>
 
-                <div class="col-md-0">
+                <div class="col-md-2">
                     <label>Data final</label>
                     <input type="date" class="form-control" name="data_fim" id="data_fim">
                 </div>
 
-                <div class="col-md-0">
+                <div class="col-md-2">
                     <label>Hora fim</label>
                     <input type="time" class="form-control" name="hora_fim" id="hora_fim">
                 </div>
@@ -130,17 +124,19 @@ $classHora = $classHora ?? '';
                         <option value="pausado">⏸️ Pausado</option>
                     </select>
                 </div>
+
                 <div class="col-md-3">
-                    <label>Tipo</label>
-                    <select class="form-control" name="tipo_consulta" id="tipo_consulta">
+                    <label>Tipo de consulta</label>
+                    <select class="form-control" name="tipo_consulta">
                         <option value="9">📝 Pela descrição</option>
-                        <option value="2">🗓️ Por data</option>
-                        <option value="5">🖥️ Por equipamento</option>
+                        <option value="6">🗓️ Data Inicial</option>
+                        <option value="5">🗓️ + Equipamento</option>
                         <option value="1">🆔 Pelo ID</option>
+                        <option value="3">Entre datas</option>
+                        <option value="7">Imprimir</option>
+                        <option value="8">Ordenado pela Emissão</option>
                     </select>
-
                 </div>
-
 
             </div>
 
@@ -148,7 +144,7 @@ $classHora = $classHora ?? '';
                 <div class="col-md-6">
                     <input type="text" name="like" class="form-control"
                         placeholder="Digite descrição, máquina ou serviço..."
-                        style="background:rgba(218, 218, 212, 0.3);border-radius:15px;">
+                        style="background:rgba(255,255,153,0.3);">
                 </div>
 
                 <div class="col-md-2">
@@ -181,117 +177,110 @@ $classHora = $classHora ?? '';
             document.getElementById('form_filt_os').submit();
         }
     </script>
-    <div class="lista-os">
 
-        @foreach($ordens_servicos as $ordem)
+    <table class="table table-striped table-hover mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Emissão</th>
+                <th>Previsão Início</th>
+                <th>Previsão Fim</th>
+                <th>Empresa</th>
+                <th>Patrimônio</th>
+                <th>Emissor</th>
+                <th>Responsável</th>
+                <th>Descrição</th>
+                <th>Status</th>
+                <th>Projeto</th>
+                <th>Ações</th>
+                <th>Check</th>
+            </tr>
+        </thead>
 
-        <div class="card mb-3 p-3 border">
+        <tbody>
+            @foreach($ordens_servicos as $ordem)
+            <tr>
+                <td>{{ $ordem->id }}</td>
 
-
-
-            <div class="row" style="gap:5px;">
-                <div><strong>ID:</strong> {{ $ordem->id }}</div>
-
-                <div class="col-md-0">
-                    <strong>Emissão:</strong><br>
-                    {{ date('d/m/Y', strtotime($ordem->data_emissao)) }} <br>
+                <td>
+                    {{ date('d/m/Y', strtotime($ordem->data_emissao)) }}
                     {{ $ordem->hora_emissao }}
-                </div>
+                </td>
 
-                <div class="col-md-0">
-                    <strong>Previsão Início:</strong><br>
-                    {{ date('d/m/Y', strtotime($ordem->data_inicio)) }}<br>
+                <td>
+                    {{ date('d/m/Y', strtotime($ordem->data_inicio)) }}
                     {{ $ordem->hora_inicio }}
-                </div>
+                </td>
 
-                <div class="col-md-0">
-                    <strong>Previsão Fim:</strong><br>
+                <td>
                     <div class="{{ $classData }}">
-                        {{ date('d/m/Y', strtotime($ordem->data_fim)) }}<br>
+                        {{ date('d/m/Y', strtotime($ordem->data_fim)) }}
                     </div>
                     <div class="{{ $classHora }}">
                         {{ $ordem->hora_fim }}
                     </div>
-                </div>
+                </td>
 
-                <div class="col-md-2">
-                    <strong>Empresa:</strong> {{ $ordem->Empresa->razao_social }}<br>
-                    <strong>Patrimônio:</strong> {{ $ordem->equipamento->nome }}<br>
-                    <strong>Projeto:</strong> {{ $ordem->projeto_id }}
-                </div>
+                <td>{{ $ordem->Empresa->razao_social }}</td>
+                <td>{{ $ordem->equipamento->nome }}</td>
+                <td>{{ $ordem->emissor }}</td>
+                <td>{{ $ordem->responsavel }}</td>
+                <td>{{ $ordem->descricao }}
 
-                <div class="col-md-2">
-                    <strong>Emissor:</strong> {{ $ordem->emissor }}<br>
-                    <strong>Responsável:</strong> {{ $ordem->responsavel }}
-                </div>
-                <div>
-                    <strong>Progresso:</strong>
+                    @if(isset($servicos_executado))
+                    @foreach($servicos_executado as $servicos)
+                    @if($servicos->ordem_servico_id==$ordem->id)
+                    <div style="border: solid 1px red;border-radius:5px;">
+                        <span style="font-weight:500;">{{$servicos->funcionario->primeiro_nome}}</span>
+                        
+                        {{$servicos->descricao}}
+                    </div>
+
+                    @endif
+                    @endforeach
+                    @endif
+                </td>
+
+                <td>
+                    {{ $ordem->situacao }}
                     <div class="progress">
                         <div class="progress-bar bg-warning"
                             style="width: {{ $ordem->status_servicos }}%">
                             {{ $ordem->status_servicos }}%
                         </div>
                     </div>
-                </div>
-                <div><strong>Status:</strong> {{ $ordem->situacao }}</div>
-                <div class="col-md-4 d-flex gap-2 align-items-center">
+                </td>
 
-                    <a class="btn btn-outline-primary btn-sm"
-                        href="{{ route('ordem-servico.show', $ordem->id) }}">
-                        👁 Visualizar
-                    </a>
+                <td>{{ $ordem->projeto_id }}</td>
+                <td>
+                    <div class="btn-group">
 
-                    <a class="btn btn-outline-success btn-sm @can('user') disabled @endcan"
-                        href="{{ route('ordem-servico.edit', $ordem->id) }}">
-                        ✏️ Editar
-                    </a>
+                        <a class="btn btn-outline-primary btn-sm"
+                            href="{{ route('ordem-servico.show', $ordem->id) }}">👁</a>
 
-                    <form id="form_{{ $ordem->id }}" method="POST"
-                        action="{{ route('ordem-servico.destroy', $ordem->id) }}" class="d-none">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                        <a class="btn btn-outline-success btn-sm @can('user') disabled @endcan"
+                            href="{{ route('ordem-servico.edit', $ordem->id) }}">✏️</a>
 
-                    <a class="btn btn-outline-danger btn-sm @can('user') disabled @endcan"
-                        href="#"
-                        onclick="DeletarOs({{ $ordem->id }})">
-                        🗑️ Excluir
-                    </a>
+                        <form id="form_{{ $ordem->id }}" method="POST"
+                            action="{{ route('ordem-servico.destroy', $ordem->id) }}">
+                            @csrf
+                            @method('DELETE')
+                        </form>
 
-                </div>
+                        <a class="btn btn-outline-danger btn-sm @can('user') disabled @endcan"
+                            href="#" onclick="DeletarOs({{ $ordem->id }})">🗑️</a>
 
-                <div>
-                    <strong>Descrição:</strong><br>
-
-                    {{ $ordem->descricao }}
-
-                    @if(isset($servicos_executado[$ordem->id]))
-                    <div class="mt-2 p-2 border rounded bg-light">
-                        <strong style="font-size: 12px;">Serviços Executados:</strong>
-
-                        @foreach($servicos_executado[$ordem->id] as $servico)
-                        <div class="d-flex align-items-center gap-2 mt-1 p-2 border rounded bg-white">
-                            <span class="material-symbols-outlined text-primary">engineering</span>
-
-                            <div>
-                                <strong>{{ $servico->funcionario->primeiro_nome ?? '—' }}</strong><br>
-                                <small>{{ $servico->descricao }}</small>
-                            </div>
-                        </div>
-                        @endforeach
                     </div>
-                    @endif
+                </td>
 
-                </div>
+                <td>
+                    <input type="checkbox">
+                </td>
 
-
-            </div>
-
-
-        </div>
-
-        @endforeach
-    </div>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
 </main>
 @endsection
