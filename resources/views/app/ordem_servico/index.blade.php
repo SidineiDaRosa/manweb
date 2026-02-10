@@ -188,7 +188,12 @@ $classHora = $classHora ?? '';
         <div class="card mb-3 p-3 border">
 
 
-
+            <style>
+                strong {
+                    font-size: 15px;
+                    font-weight:700;
+                }
+            </style>
             <div class="row" style="gap:5px;">
                 <div><strong>ID:</strong> {{ $ordem->id }}</div>
 
