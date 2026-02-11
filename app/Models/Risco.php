@@ -16,6 +16,7 @@ class Risco extends Model
         'nome',
         'descricao',
         'ativo',
+        'link_item'
     ];
 
     /**

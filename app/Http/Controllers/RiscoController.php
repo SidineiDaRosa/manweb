@@ -27,6 +27,7 @@ class RiscoController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string',
             'ativo' => 'required|boolean',
+            
         ]);
 
         Risco::create($request->all());

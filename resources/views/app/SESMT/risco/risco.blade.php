@@ -15,6 +15,7 @@
                     <th>Tipo</th>
                     <th>Nome</th>
                     <th>Descrição</th>
+                    <th>Link</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
@@ -26,6 +27,11 @@
                     <td>{{ $risco->tipo_risco }}</td>
                     <td>{{ $risco->nome }}</td>
                     <td>{{ Str::limit($risco->descricao, 50) }}</td>
+                    <td>
+                        <a href="{{ $risco->link_item }}" target="_blank">
+                            Ver NR
+                        </a>
+                    </td>
                     <td>{{ $risco->ativo ? 'Ativo' : 'Inativo' }}</td>
                     <td>
                         <div>
@@ -84,6 +90,7 @@
                     <p><strong>Descrição:</strong></p>
                     <p id="m_descricao"></p>
                     <p><strong>Status:</strong> <span id="m_status"></span></p>
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -108,7 +115,6 @@
         });
     </script>
     <!--Envia edição-->
-
     <div class="modal fade" id="modalEditarRisco" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form method="POST" id="formEditarRisco">
@@ -137,7 +143,10 @@
                             <label>Descrição</label>
                             <textarea class="form-control" name="descricao" id="edit_descricao"></textarea>
                         </div>
-
+                        <div class="mb-3">
+                            <label>Local de referência da Norma</label>
+                            <textarea type="text" class="form-control" name="link_item" id="link_item"></textarea>
+                        </div>
                         <div class="mb-3">
                             <label>Status</label>
                             <select class="form-control" name="ativo" id="edit_ativo">
@@ -202,7 +211,10 @@
                             <label>Descrição</label>
                             <textarea name="descricao" class="form-control" required></textarea>
                         </div>
-
+                        <div class="mb-3">
+                            <label>Local de referência da Norma</label>
+                            <textarea type="text" class="form-control" name="link_item" id="link_item"></textarea>
+                        </div>
                         <div class="mb-3">
                             <label>Status</label>
                             <select name="ativo" class="form-control" required>

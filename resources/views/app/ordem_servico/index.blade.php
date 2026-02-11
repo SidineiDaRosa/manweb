@@ -13,8 +13,14 @@ $classHora = $classHora ?? '';
 
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<!--Link  do meu css  no git-->
+<link rel="stylesheet" href="https://manweb.com.br/my_css/toggle.css">
 
+<style>
+    
+</style>
 <main class="content">
+
 
     <!-- ==================== FILTROS RÁPIDOS ==================== -->
     <div class="card-header" style="background:#f2f2f2; border-radius:8px; padding:8px;">
@@ -147,7 +153,7 @@ $classHora = $classHora ?? '';
             <div class="row mt-3 justify-content-center">
                 <div class="col-md-6">
                     <input type="text" name="like" class="form-control"
-                        placeholder="Digite descrição, máquina ou serviço..."
+                        placeholder="Digite Ex.: descrição equipamento..."
                         style="background:rgba(218, 218, 212, 0.3);border-radius:15px;">
                 </div>
 
@@ -191,7 +197,7 @@ $classHora = $classHora ?? '';
             <style>
                 strong {
                     font-size: 15px;
-                    font-weight:700;
+                    font-weight: 700;
                 }
             </style>
             <div class="row" style="gap:5px;">

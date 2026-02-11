@@ -8,6 +8,7 @@
 
 <!-- MODAL CONFIRMAR IDENTIFICAÇÃO DO RISCO -->
 <div class="modal fade" id="modalConfirmarRisco" tabindex="-1">
+
     <div class="modal-dialog modal-dialog-centered">
         <form method="POST" action="{{ route('risco.store') }}" id="formConfirmarRisco">
             @csrf
@@ -275,6 +276,10 @@
             <div>
                 APR #{{ $apr->id }}
             </div>
+            <a href="https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/arquivos/normas-regulamentadoras/nr-10.pdf#page=2" target="_blank">
+
+                NR-10: Item 10.2.8 - Medidas de Proteção contra Choques
+            </a>
             <div style="gap:10px!important;">
                 <a href="{{ route('apr.pdf', $apr->id) }}"
                     class="btn btn-outline-danger"
