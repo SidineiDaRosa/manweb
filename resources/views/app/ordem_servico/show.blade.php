@@ -466,7 +466,7 @@
             {{--//--------------------------------------//--}}
             <!--btns-->
             @if($ordem_servico->situacao !== 'fechado')
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalServico">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalServico" hidden>
                 + Lançar Serviço
             </button>
 
