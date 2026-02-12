@@ -28,8 +28,9 @@
                     <td>{{ $risco->nome }}</td>
                     <td>{{ Str::limit($risco->descricao, 50) }}</td>
                     <td>
+                        Norma NR
                         <a href="{{ $risco->link_item }}" target="_blank">
-                            Ver NR
+                            <i class="bi bi-arrow-up-right-square"></i>
                         </a>
                     </td>
                     <td>{{ $risco->ativo ? 'Ativo' : 'Inativo' }}</td>
@@ -42,6 +43,7 @@
                                 data-tipo="{{ $risco->tipo_risco }}"
                                 data-nome="{{ $risco->nome }}"
                                 data-descricao="{{ $risco->descricao }}"
+                                data-link-item="{{ $risco->link_item }}"
                                 data-status="{{ $risco->ativo ? 'Ativo' : 'Inativo' }}">
                                 <i class="bi bi-eye"></i>
                             </button>
@@ -52,7 +54,8 @@
                                 data-tipo="{{ $risco->tipo_risco }}"
                                 data-nome="{{ $risco->nome }}"
                                 data-descricao="{{ $risco->descricao }}"
-                                data-ativo="{{ $risco->ativo }}">
+                                data-ativo="{{ $risco->ativo }}"
+                                data-link-item="{{ $risco->link_item }}">
                                 <i class="bi bi-pencil-fill"></i>
 
                             </button>
@@ -89,6 +92,8 @@
                     <p><strong>Nome:</strong> <span id="m_nome"></span></p>
                     <p><strong>Descrição:</strong></p>
                     <p id="m_descricao"></p>
+                     <p><strong>link_NR:</strong></p>
+                    <p id="m_link_item"></p>
                     <p><strong>Status:</strong> <span id="m_status"></span></p>
 
                 </div>
@@ -110,6 +115,7 @@
                 document.getElementById('m_tipo').textContent = button.getAttribute('data-tipo');
                 document.getElementById('m_nome').textContent = button.getAttribute('data-nome');
                 document.getElementById('m_descricao').textContent = button.getAttribute('data-descricao');
+                 document.getElementById('m_link_item').textContent = button.getAttribute('data-link_item');
                 document.getElementById('m_status').textContent = button.getAttribute('data-status');
             });
         });
@@ -145,7 +151,7 @@
                         </div>
                         <div class="mb-3">
                             <label>Local de referência da Norma</label>
-                            <textarea type="text" class="form-control" name="link_item" id="link_item"></textarea>
+                            <textarea  class="form-control" name="link_item" id="edit_link_item"></textarea>
                         </div>
                         <div class="mb-3">
                             <label>Status</label>
@@ -178,6 +184,8 @@
                 document.getElementById('edit_nome').value = button.getAttribute('data-nome');
                 document.getElementById('edit_descricao').value = button.getAttribute('data-descricao');
                 document.getElementById('edit_ativo').value = button.getAttribute('data-ativo');
+                document.getElementById('edit_link_item').value = button.getAttribute('data-link-item');
+
 
                 // Ajusta a action do form dinamicamente
                 document.getElementById('formEditarRisco').action = `/riscos/${id}`;
@@ -233,22 +241,7 @@
             </form>
         </div>
     </div>
-    <script>
-        public
-
-        function store(Request $request) {
-            $request - > validate([
-                'tipo_risco' => 'required|string|max:255',
-                'nome' => 'required|string|max:255',
-                'descricao' => 'required|string',
-                'ativo' => 'required|boolean',
-            ]);
-
-            Risco::create($request - > all());
-
-            return redirect() - > back() - > with('success', 'Risco cadastrado com sucesso!');
-        }
-    </script>
+    
 
 </main>
 @endsection

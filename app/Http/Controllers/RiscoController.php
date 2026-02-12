@@ -9,13 +9,14 @@ class RiscoController extends Controller
 {
     public function index()
     {
-        $riscos = Risco::orderBy('id')->get();
+        $riscos = Risco::orderBy('nome', 'asc')->get();
         return view('app.SESMT.risco.risco', compact('riscos'));
     }
     public function update(Request $request, $id)
     {
+        echo ($request->link_item);
         $risco = Risco::findOrFail($id);
-
+        
         $risco->update($request->all());
 
         return redirect()->back()->with('success', 'Risco atualizado com sucesso!');
@@ -27,7 +28,7 @@ class RiscoController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string',
             'ativo' => 'required|boolean',
-            
+
         ]);
 
         Risco::create($request->all());

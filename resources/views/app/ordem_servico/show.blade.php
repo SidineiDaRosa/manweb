@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 <main class="content">
+    @include('app.servicos_executado.modal-servico')
     <div class="titulo-main">
         Ordem de Serviço
     </div>
@@ -43,9 +44,19 @@
                 </a>
                 <a id="btn-edit" class="btn btn-outline-primary mb-1" href="{{route('ordem-servico.edit', ['ordem_servico'=>$ordem_servico->id])}}">
                     <i class="icofont-ui-edit"></i>Editar</a>
+                <!--APR-->
+                @if(isset($aprs))
+                @foreach($aprs as $apr)
+    
+                @endforeach
+                @endif
                 @if($aprs->isEmpty())
                 <a class="btn btn-warning mb-1" href="{{ route('apr.create', $ordem_servico->id) }}">
                     Gerar APR
+                </a>
+                @else
+                <a class="btn btn-success mb-1" href="{{route('apr.show',['apr_id'=>$apr->id])}}">
+                    ⚠ Abrir APR
                 </a>
                 @endif
                 <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
@@ -453,7 +464,12 @@
             {{--//--------------------------------------//--}}
             {{--//--Critério se a os já fechada----------//--}}
             {{--//--------------------------------------//--}}
+            <!--btns-->
             @if($ordem_servico->situacao !== 'fechado')
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalServico">
+                + Lançar Serviço
+            </button>
+
             <a id="btn-add-task" class="btn btn-outline-primary mb-1" href="{{ route('Servicos-executado.create', ['ordem_servico' => $ordem_servico->id]) }}" style="width: 300px;">
                 <img src="{{ asset('img/icon/add_list.png') }}" alt="" style="height: 25px; width: 25px;"> 🛠️ Adicionar serviço
             </a>
@@ -640,38 +656,8 @@
     @else
     <p>Imagem não disponível</p>
     @endif
-    <!--APR-->
-    @if(isset($aprs))
-    @foreach($aprs as $apr)
-    <div style="
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    background: #f9f9f9;
-    align-items: flex-start;
-    overflow-x: auto;
-">
 
-        <div>
-            <a class="txt-link" href="{{route('apr.show',['apr_id'=>$apr->id])}}"><strong>ID APR:</strong> {{ $apr->id }}</a>
-        </div>
-        <div><strong>Local:</strong> {{ $apr->local_trabalho }}</div>
-        <div><strong>Atividade:</strong> {{ $apr->descricao_atividade }}</div>
-        <div><strong>Riscos:</strong> {{ $apr->riscos_identificados }}</div>
-        <div><strong>Controle:</strong> {{ $apr->medidas_controle }}</div>
-        <div><strong>EPI:</strong> {{ $apr->epi_obrigatorio }}</div>
-        <div><strong>Status:</strong> {{ $apr->status }}</div>
-
-    </div>
-
-    @endforeach
-    @endif
     @endsection
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{--====================================================================--}}
     {{--Função que fecha a ordem de serviço--}}
@@ -697,10 +683,10 @@
                 <div class="modal-body">
                     <button type="button" class="btn btn-danger" id="confirmarEnvioPendente" data-bs-dismiss="modal">
                         Ficou algo pendente? <br>
-                        Emitir Cópia com a pendência, e Finalizar</button> 
-                        <br>
+                        Emitir Cópia com a pendência, e Finalizar</button>
+                    <br>
                     <input type="textarea" id="pendencia" class="form-control" style="margin:5px;">
-                  
+
                 </div>
 
                 <div class="modal-footer">

@@ -11,7 +11,7 @@
     <div class="row mb-1 ">
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">ID O.S.</label>
         <div class="col-md-2">
-            <input id="idOs" type="nuber" class="form-control custom-font-size 40" name="ordem_servico_id" value="{{$ordem_servico_id}}" readonly>
+            <input id="idOs" type="number" class="form-control custom-font-size 40" name="ordem_servico_id" value="{{$ordem_servico_id}}" readonly>
         </div>
     </div>
     <div class="row mb-1">
@@ -32,7 +32,7 @@
         <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end text-right">Data início</label>
 
         <div class="col-md-2">
-            <input type="date" class="form-control" name="data_inicio" id="data_inicio" placeholder="dataPrevista" required value="" onchange="ValidateDatePrevista()">
+            <input type="date" class="form-control" name="data_inicio" id="data_inicio"  required value="" onchange="ValidateDatePrevista()">
         </div>
         <div class="invalid-tooltip">
             Por favor, informe data.
