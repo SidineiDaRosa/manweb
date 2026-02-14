@@ -457,11 +457,13 @@ class DahboardStatusOsController extends Controller
     }
     public function show_os()
     {
-        $agora = Carbon::now('America/Sao_Paulo'); // Data e hora atuais em São Paulo
-        $hora_atual = $agora->format('H:i:s'); // Pega apenas a hora atual
+        // Horário atual de São Paulo
+        $agora = Carbon::now('America/Sao_Paulo');
 
+        // Pega todos os equipamentos
         $equipamentos = Equipamento::all();
 
+        // Pega funcionários ativos que são mecânico ou eletricista
         $funcionarios = Funcionario::where('status', 'ativo')
             ->where(function ($q) {
                 $q->where('funcao', 'mecanico')
@@ -469,11 +471,10 @@ class DahboardStatusOsController extends Controller
             })
             ->get();
 
+        // Pega ordens de serviço ativas neste momento
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
-            ->where('data_inicio', '<=', $agora)
-            ->where('hora_inicio', '<=', $hora_atual)
-            ->where('data_fim', '>=', $agora)
-            ->where('hora_fim', '>=', $hora_atual)
+            ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$agora])
+            ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') >= ?", [$agora])
             ->orderByRaw("
             CASE 
                 WHEN `check` = 1 THEN 2
@@ -489,6 +490,7 @@ class DahboardStatusOsController extends Controller
             'funcionarios' => $funcionarios
         ]);
     }
+
 
     public function check_ordem_servico(Request $request)
     {
