@@ -457,8 +457,8 @@ class DahboardStatusOsController extends Controller
     }
     public function show_os()
     {
+        $agora = Carbon::now(); // Data e hora atuais
 
-        $hoje = Carbon::today();
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::where('status', 'ativo')
             ->where(function ($q) {
@@ -466,23 +466,26 @@ class DahboardStatusOsController extends Controller
                     ->orWhere('funcao', 'eletricista');
             })
             ->get();
+
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
-            ->whereDate('data_inicio', '<=', $hoje)
-            ->whereDate('data_fim', '>=', $hoje)
+            ->where('data_inicio', '<=', $agora) // considera hora de início
+            ->where('data_fim', '>=', $agora)   // considera hora de fim
             ->orderByRaw("
-        CASE 
-            WHEN `check` = 1 THEN 2
-            ELSE 1
-        END
-    ")
+            CASE 
+                WHEN `check` = 1 THEN 2
+                ELSE 1
+            END
+        ")
             ->orderBy('urgencia', 'desc')
             ->get();
-        return View('app.ordem_servico.panel_os', [
+
+        return view('app.ordem_servico.panel_os', [
             'ordens_servicos' => $ordens_servicos,
             'equipamentos' => $equipamentos,
             'funcionarios' => $funcionarios
         ]);
     }
+
     public function check_ordem_servico(Request $request)
     {
         $ordem_servico = OrdemServico::find($request->id_os);

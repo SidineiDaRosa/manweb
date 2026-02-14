@@ -25,15 +25,16 @@
     <span hidden>{{$ordem_servico_gantt_gnt->equipamento->nome}} <br></span>
 
     @endforeach
-    <style>
 
-    </style>
-    <div style="display:flex; justify-content:center;width:100%;">
-        <div id="intervalo" style="display:flex; flex-direction:row; border:solid rgba(126, 118, 118, 0.5) 1px ;padding:10px;border-radius:10px;">
+    <div style="display:flex; justify-content:center;width:100%;gap:10px;">
+        <div>
             <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}">
                 <i class="icofont-dashboard"></i> Dashboard
             </a>
-            <form style="display:flex;flex-direction:row;" action="{{ route('gantt.os.timeline') }}" method="GET">
+        </div>
+        <div id="intervalo">
+
+            <form style="display:flex;flex-direction:row;gap:5px;" action="{{ route('gantt.os.timeline') }}" method="GET">
                 <label for="inicio">Início:</label>
                 <input class="form-control w-50" type="datetime-local" id="inicio" name="inicio" />
 
@@ -177,7 +178,7 @@
         @endphp
         <div class="item-week {{ $today == 'Monday' ? 'highlight-today' : '' }}" id="box-2">
             <span class="{{ $today == 'Monday' ? 'today' : '' }}" style="font-weight:600;color:blue;" onclick="toggleExpand('box-2')" title="Expandir/Recolher">
-                Segunda-feira - {{ \Carbon\Carbon::now()->startOfWeek()->translatedFormat('d \d\e F') }}
+                Segunda-feira - {{ \Carbon\Carbon::now()->startOfWeek()->translatedFormat('d \d\e F') }} <i class="bi bi-arrows-angle-expand"></i>
             </span>
             <div class="orders">
                 @forelse ($mondayOrders as $order)
