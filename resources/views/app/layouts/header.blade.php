@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/template.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <script src="{{asset('js/date_time.js')}}"></script><!--Update data time-->
+    <script src="{{ asset('js/date_time.js') }}"></script><!--Update data time-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
@@ -18,7 +18,7 @@
         .sidebar {
             width: 250px;
             min-height: 100vh;
-            background-color: #6e6b6bff;
+            background-color: rgb(54, 84, 148);
             padding: 10px;
             box-sizing: border-box;
             overflow-y: auto;
@@ -250,31 +250,46 @@
     <div class="spacer"></div>
 
     <!-- Notifications -->
+    <!-- Notifications -->
     <div class="notifications">
-        @if(auth()->check() && auth()->user()->id == 3)
-        <div id="alarms-count" class="notification">
-            <a href="{{ route('notificacoes.index') }}" style="color:white;">Alarmes</a>
-            <span class="badge" id="alarms-badge">0</span>
-        </div>
+
+        @if (auth()->check() && auth()->user()->id == 3)
+            <div class="notification">
+                <a href="{{ route('notificacoes.index') }}">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <span class="badge-mini" id="alarms-badge">0</span>
+                </a>
+            </div>
         @endif
-        <div id="lubrificacao-count" class="notification">
-            <a href="{{ route('lubrificacao.index') }}" style="color:white;">
-                Lubrificação
-                <span class="badge" id="lubrificacao-badge">0</span>
+
+        <div class="notification">
+            <a href="{{ route('lubrificacao.index') }}">
+                <i class="bi bi-droplet-half"></i>
+                <span class="badge-mini" id="lubrificacao-badge">0</span>
             </a>
         </div>
-        <div id="checklist-count" class="notification">
-            <a href="/check-list-index" style="color:white;">Check-list</a>
-            <span class="badge" id="checklist-badge">0</span>
+
+        <div class="notification">
+            <a href="/check-list-index">
+                <i class="bi bi-card-checklist"></i>
+                <span class="badge-mini" id="checklist-badge">0</span>
+            </a>
         </div>
-        <div id="solicitacoes-count" class="notification">
-            <a href="/solicitacoes-os" style="color:white;margin-left:10px;">SS pendente</a>
-            <span class="badge" id="solicitacoes-badge">0</span>
+
+        <div class="notification">
+            <a href="/solicitacoes-os">
+                <i class="bi bi-card-text"></i>
+                <span class="badge-mini" id="solicitacoes-badge">0</span>
+            </a>
         </div>
-        <div id="messages-count" class="notification">
-            <a href="{{ route('groups.index') }}" style="color:white;"><i class="icofont-ui-messaging icofont-2x"></i></a>
-            <span class="badge" id="messages-badge">0</span>
+
+        <div class="notification">
+            <a href="{{ route('groups.index') }}">
+                <i class="bi bi-chat-dots-fill"></i>
+                <span class="badge-mini" id="messages-badge">0</span>
+            </a>
         </div>
+
     </div>
 
     <!-- Usuário -->
@@ -354,6 +369,77 @@
         .user-menu-box li a:hover {
             background: #f5f5f5;
             color: #000;
+        }
+
+        .notifications {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .notification {
+            position: relative;
+        }
+
+        .notification a {
+            color: white;
+            font-size: 22px;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        .notification a:hover {
+            transform: scale(1.1);
+        }
+
+        /* Badge estilo Facebook */
+        .badge-mini {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 50px;
+            background: #e41e3f;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #343a40;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Quando for zero */
+        .badge-mini.zero {
+            background: #28a745;
+        }
+
+        /* Aviso */
+        .badge-mini.warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        /* Notificação pulsando */
+        .badge-mini.non-zero {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
     </style>
     <script>
