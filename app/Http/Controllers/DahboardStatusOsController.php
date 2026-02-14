@@ -471,9 +471,10 @@ class DahboardStatusOsController extends Controller
 
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
             ->where('data_inicio', '<=', $agora)
-            ->where('data_fim', '>=', $agora)
-            ->where('hora_inicio', '<=', $hora_atual)   // corrigido
+            ->where('hora_inicio', '<=', $hora_atual)  
+            ->where('data_fim', '>=', $agora) // corrigido
             ->where('hora_fim', '>=', $hora_atual)     // se você tiver hora_fim separada
+            ->where('hora_fim', '>=', $hora_atual)  
             ->orderByRaw("
             CASE 
                 WHEN `check` = 1 THEN 2
