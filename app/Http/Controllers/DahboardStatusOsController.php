@@ -457,7 +457,7 @@ class DahboardStatusOsController extends Controller
     }
     public function show_os()
     {
-        $agora = Carbon::now(); // Data e hora atuais
+        $agora = Carbon::now('America/Sao_Paulo'); // Data e hora atuais em São Paulo
         $hora_atual = $agora->format('H:i:s'); // Pega apenas a hora atual
 
         $equipamentos = Equipamento::all();
@@ -471,10 +471,9 @@ class DahboardStatusOsController extends Controller
 
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
             ->where('data_inicio', '<=', $agora)
-            ->where('hora_inicio', '<=', $hora_atual)  
-            ->where('data_fim', '>=', $agora) // corrigido
-            ->where('hora_fim', '>=', $hora_atual)     // se você tiver hora_fim separada
-            ->where('hora_fim', '>=', $hora_atual)  
+            ->where('hora_inicio', '<=', $hora_atual)
+            ->where('data_fim', '>=', $agora)
+            ->where('hora_fim', '>=', $hora_atual)
             ->orderByRaw("
             CASE 
                 WHEN `check` = 1 THEN 2
