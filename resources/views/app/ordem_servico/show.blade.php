@@ -304,12 +304,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--Progressbar com um input texto-->
-                            <div class="titulo" style="font-size:15px;font-weight:300;">Progresso:</div>
-                            <div class="progress">
-                                <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
-                                    aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos }}%</div>
-                            </div>
+
                             @php
                                 use Carbon\Carbon;
 
@@ -334,16 +329,19 @@
 
                             </div>
                             <hr>
-                            <p>
-                            <p>
-                            <p>
+                            <!--Progressbar com um input texto-->
+                            <div class="titulo" style="font-size:15px;font-weight:300;">Progresso:</div>
+                            <div class="progress" style="height: 5px">
+                                <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
+                                    aria-valuemin="0" aria-valuemax="100">{{ $ordem_servico->status_servicos }}%</div>
+                            </div>
                             <div class="titulo">Descrição dos serviços a serem executados</div>
                             <div class="titulo">
                                 <textarea id="txt-area" class="form-control" rows="6" readonly
                                     style="color:#333333; 
                font-weight:500; 
                font-family:Arial, Helvetica, sans-serif; 
-               border:1px dashed #333;
+               border:1px dashed rgb(51, 51, 51,0.5);
                text-align:left;    /* força alinhamento à esquerda */
                padding:5px;        /* padding padrão */
                margin:0;">{{ trim($ordem_servico->descricao) }}</textarea>
@@ -995,14 +993,14 @@
     /* ===================== PROGRESS BAR ===================== */
     .progress {
         height: 25px;
-        background-color: rgba(33, 116, 212, 0.1);
+        background-color: rgba(194, 212, 33, 0.1);
         border-radius: 6px;
         overflow: hidden;
         margin-bottom: 10px;
     }
 
     .progress-bar {
-        background-color: #2174d4;
+        background-color: #d49b21;
         font-weight: 600;
         display: flex;
         justify-content: center;
