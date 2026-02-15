@@ -1,4 +1,4 @@
-{{--modal window --}}
+{{-- modal window --}}
 
 <script>
     function ValidateHoraInicio() {
@@ -152,15 +152,16 @@
         document.getElementById('bg-modal').style.display = 'none';
     }
 </script>
-{{---------------------------------------------------------------------}}
-{{--Inicio de formulário de ordem de serviço--=------------------------}}
-<form action="{{ route('ordem-servico.update', ['ordem_servico' => $ordem_servico->id]) }}" method="POST" enctype="multipart/form-data">
+{{-- ----------------------------------------------------------------- --}}
+{{-- Inicio de formulário de ordem de serviço--=---------------------- --}}
+<form action="{{ route('ordem-servico.update', ['ordem_servico' => $ordem_servico->id]) }}" method="POST"
+    enctype="multipart/form-data">
     @csrf
     @method('PATCH')
 
     <!------------------------------------------------------------------------------------------->
-    {{-------------------------------------------------------------------------}}
-    {{--início da div que contem os box--}}
+    {{-- --------------------------------------------------------------------- --}}
+    {{-- início da div que contem os box --}}
 
 
     <style>
@@ -210,40 +211,46 @@
         }
     </style>
     <div class="container-chart">
-        {{--Box 1--}}
+        {{-- Box 1 --}}
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">ID:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="text" class="input-text" name="ordem_servico_id" id="ordem_servico_id" value="{{$ordem_servico->id}}" readonly style="color:#007b00">
+                    <input type="text" class="input-text" name="ordem_servico_id" id="ordem_servico_id"
+                        value="{{ $ordem_servico->id }}" readonly style="color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Empresa:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="text" class="input-text" name="empresa_id" id="empresa_id" value="{{$ordem_servico->empresa->id}}" readonly style="width:20%;color:#007b00">
+                    <input type="text" class="input-text" name="empresa_id" id="empresa_id"
+                        value="{{ $ordem_servico->empresa->id }}" readonly style="width:20%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
-                    <input type="text" class="input-text" name="razao_social" id="razao_social" value="{{$ordem_servico->empresa->razao_social}}" readonly style="width:80%;color:#007b00">
+                    <input type="text" class="input-text" name="razao_social" id="razao_social"
+                        value="{{ $ordem_servico->empresa->razao_social }}" readonly style="width:80%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
 
                 <div class="titulo">ID patrimônio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="equipamento_id" type="text" class="input-text" name="equipamento_id" value="{{ $ordem_servico->equipamento->id}}" readonly style="width:20%;color:#007b00">
+                    <input id="equipamento_id" type="text" class="input-text" name="equipamento_id"
+                        value="{{ $ordem_servico->equipamento->id }}" readonly style="width:20%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Patrimônio:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="patrimonio" type="text" class="input-text" name="nome" value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;color:#007b00">
+                    <input id="patrimonio" type="text" class="input-text" name="nome"
+                        value="{{ $ordem_servico->equipamento->nome }}" disabled style="width:80%;color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Emissor da ordem:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="emissor" type="text" class="input-text" name="emissor" value="{{$ordem_servico->emissor}}" readonly style="color:#007b00">
+                    <input id="emissor" type="text" class="input-text" name="emissor"
+                        value="{{ $ordem_servico->emissor }}" readonly style="color:#007b00">
                     {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                 </div>
                 <div class="titulo">Executor responsável:</div>
@@ -252,24 +259,26 @@
                     <select name="responsavel" id="responsavel" class="input-text">
                         <option value="">-- Selecione o responsável --</option>
                         @foreach ($funcionarios as $funcionario)
-                        <option value="{{ $funcionario->primeiro_nome }}"
-                            {{ old('responsavel', $ordem_servico->responsavel ?? '') == $funcionario->primeiro_nome ? 'selected' : '' }}>
-                            {{ $funcionario->primeiro_nome }}
-                        </option>
+                            <option value="{{ $funcionario->primeiro_nome }}"
+                                {{ old('responsavel', $ordem_servico->responsavel ?? '') == $funcionario->primeiro_nome ? 'selected' : '' }}>
+                                {{ $funcionario->primeiro_nome }}
+                            </option>
                         @endforeach
                     </select>
 
                     {{ $errors->first('responsavel') }}
-
                 </div>
+
                 <div class="titulo">Emissão:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="date" class="input-text" id="d_emissao" name="data_emissao" value="{{$ordem_servico->data_emissao}}" readonly>
+                    <input type="date" class="input-text" id="d_emissao" name="data_emissao"
+                        value="{{ $ordem_servico->data_emissao }}" readonly>
                     <div class="invalid-tooltip">
                         informe a data
                     </div>
-                    <input type="time" class="input-text" name="hora_emissao" id="h_emissao" required value="{{$ordem_servico->hora_emissao}}" readonly>
+                    <input type="time" class="input-text" name="hora_emissao" id="h_emissao" required
+                        value="{{ $ordem_servico->hora_emissao }}" readonly>
                     <div class="invalid-tooltip">
                         Por favor, informe a hora.
                     </div>
@@ -277,11 +286,14 @@
                 <div class="titulo">Previsão para início:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="date" class="input-text" name="data_inicio" id="dataPrevista" required value="{{$ordem_servico->data_inicio}}" onchange=" ValidateDate()">
+                    <input type="date" class="input-text" name="data_inicio" id="dataPrevista" required
+                        value="{{ $ordem_servico->data_inicio }}" onchange=" ValidateDate()">
                     <div class="invalid-tooltip">
                         Por favor, informe data
                     </div>
-                    <input type="time" class="input-text" name="hora_inicio" id="hora_Inicio" required value="{{ \Carbon\Carbon::parse($ordem_servico->hora_inicio)->format('H:i') }}" onchange="ValidateHora()">
+                    <input type="time" class="input-text" name="hora_inicio" id="hora_Inicio" required
+                        value="{{ \Carbon\Carbon::parse($ordem_servico->hora_inicio)->format('H:i') }}"
+                        onchange="ValidateHora()">
                     <div class="invalid-tooltip">
                         Por favor, informe hora.
                     </div>
@@ -296,12 +308,15 @@
                 <div class="titulo">Previsão para finalização:</div>
                 <hr>
                 <div class="conteudo">
-                    <input type="date" class="input-text" name="data_fim" id="dataFim" required value="{{$ordem_servico->data_fim}}" required onchange="ValidateDate()">
+                    <input type="date" class="input-text" name="data_fim" id="dataFim" required
+                        value="{{ $ordem_servico->data_fim }}" required onchange="ValidateDate()">
                     <div class="invalid-tooltip">
                         Por favor, informe dataFim.
                     </div>
 
-                    <input type="time" class="input-text" name="hora_fim" id="hora_Fim" value="{{ \Carbon\Carbon::parse($ordem_servico->hora_fim)->format('H:i') }}" onchange="ValidateHoraFim()">
+                    <input type="time" class="input-text" name="hora_fim" id="hora_Fim"
+                        value="{{ \Carbon\Carbon::parse($ordem_servico->hora_fim)->format('H:i') }}"
+                        onchange="ValidateHoraFim()">
                     <div class="invalid-tooltip">
                         Por favor, informe um estado válido.
                     </div>
@@ -375,11 +390,12 @@
                 </div>
             </div>
         </div>
-        {{--Box 2--}}
+        {{-- Box 2 --}}
         <div class="item">
             <div class="box-conteudo">
                 <div class="titulo">
-                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao" placeholder="--Insira a descrição do serviço--">{{$ordem_servico->descricao}}</textarea>
+                    <textarea id="descricao" class="form-control" rows="6" style="color:crimson" name="descricao"
+                        placeholder="--Insira a descrição do serviço--">{{ $ordem_servico->descricao }}</textarea>
                 </div>
                 <style>
                     #txt-area {
@@ -405,16 +421,19 @@
                 <div class="titulo">Situação:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="situacao" type="text" class="input-text" name="situacao" value="{{$ordem_servico->situacao}}" readonly style="height:30px;">
+                    <input id="situacao" type="text" class="input-text" name="situacao"
+                        value="{{ $ordem_servico->situacao }}" readonly style="height:30px;">
                     <div class="invalid-tooltip">
                         Por favor, informe situacao.
                     </div>
-                    <input class="btn btn-outline-success btn-sm" type="button" name="openmodalsituacao" id="openmodalsituacao" value="Alterar status" onclick="abreModal()">
+                    <input class="btn btn-outline-success btn-sm" type="button" name="openmodalsituacao"
+                        id="openmodalsituacao" value="Alterar status" onclick="abreModal()">
                 </div>
                 <div class="titulo">Progressão do serviço:</div>
                 <hr>
                 <div class="conteudo">
-                    <input id="status_servicos" type="text" class="input-text" value="{{$ordem_servico->status_servicos}}">%
+                    <input id="status_servicos" type="text" class="input-text"
+                        value="{{ $ordem_servico->status_servicos }}">%
                 </div>
                 <div class="titulo"></div>
                 <hr>
@@ -443,7 +462,9 @@
                         }
                     </style>
                     <div class="progress-container">
-                        <input type="range" min="0" max="100" value="{{$ordem_servico->status_servicos}}" class="slider" id="progressSlider" onchange="updateProgress()" name="status_servicos">
+                        <input type="range" min="0" max="100"
+                            value="{{ $ordem_servico->status_servicos }}" class="slider" id="progressSlider"
+                            onchange="updateProgress()" name="status_servicos">
                     </div>
                     <script>
                         function updateProgress() {
@@ -453,20 +474,23 @@
                             document.getElementById('status_servicos').value = progresServ;
                         }
                     </script>
-                    {{-----------------------------------------------------------------}}
+                    {{-- ------------------------------------------------------------- --}}
 
                 </div>
                 <div class="titulo">Imagem:</div>
                 <hr style="margin-bottom:3px;">
                 <div class="conteudo">
-                    <input class="btn btn-outline-dark btn-sm" type="file" id="imagem" name="imagem" style="font-family:'Poppins', sans-serif; font-weight:300; background-color:green; width:100%">
+                    <input class="btn btn-outline-dark btn-sm" type="file" id="imagem" name="imagem"
+                        style="font-family:'Poppins', sans-serif; font-weight:300; background-color:green; width:100%">
                 </div>
                 <!---------->
                 <!--Anexo-->
                 <div class="titulo">Anexo:</div>
                 <hr>
                 <div class="conteudo">
-                    <input class="input-text" id="anexo" type="text" name="anexo" value="{{$ordem_servico->anexo}}" style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:98%;background-color:rgba(236, 186, 129, 0.5)">
+                    <input class="input-text" id="anexo" type="text" name="anexo"
+                        value="{{ $ordem_servico->anexo }}"
+                        style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:98%;background-color:rgba(236, 186, 129, 0.5)">
                 </div>
                 <div>
                     <i class="bi bi-apple"></i>
@@ -486,13 +510,14 @@
 
             </div>
         </div>
-        {{--Box 3--}}
+        {{-- Box 3 --}}
         <div class="item">
             <div class="titulo">Natureza da O.S</div>
             <hr>
             <div class="conteudo">
                 <select class="input-text" name="natureza_do_servico" id="natureza_do_servico" value="">
-                    <option value="{{$ordem_servico->natureza_do_servico}}">{{$ordem_servico->natureza_do_servico}}</option>
+                    <option value="{{ $ordem_servico->natureza_do_servico }}">
+                        {{ $ordem_servico->natureza_do_servico }}</option>
                     <option value="corretiva">Corretiva</option>
                     <option value="ampliacao">Ampliação</option>
                     <option value="investimento">Investimento</option>
@@ -510,8 +535,10 @@
             <div class="titulo">Especialidade da O.S</div>
             <hr>
             <div class="conteudo">
-                <select class="input-text" name="especialidade_do_servico" id="especialidade_do_servico" value="">
-                    <option value="{{$ordem_servico->especialidade_do_servico}}">{{$ordem_servico->especialidade_do_servico}}</option>
+                <select class="input-text" name="especialidade_do_servico" id="especialidade_do_servico"
+                    value="">
+                    <option value="{{ $ordem_servico->especialidade_do_servico }}">
+                        {{ $ordem_servico->especialidade_do_servico }}</option>
                     <option value="eletrica">Elétrica</option>
                     <option value="mecanica">Mecanica</option>
                     <option value="civil">Civil</option>
@@ -567,8 +594,10 @@
             <!-- Botões -->
             <div style="margin-top:10px;">
                 <button type="button" class="btn-prioridade btn-alta" onclick="setPrioridade('alta')">Alta</button>
-                <button type="button" class="btn-prioridade btn-media" onclick="setPrioridade('media')">Média</button>
-                <button type="button" class="btn-prioridade btn-baixa" onclick="setPrioridade('baixa')">Baixa</button>
+                <button type="button" class="btn-prioridade btn-media"
+                    onclick="setPrioridade('media')">Média</button>
+                <button type="button" class="btn-prioridade btn-baixa"
+                    onclick="setPrioridade('baixa')">Baixa</button>
             </div>
 
             <script>
@@ -620,7 +649,7 @@
                 <hr>
                 <div class="conteudo">
                     <select class="input-text" name="gravidade" id="gravidade" value="">
-                        <option value="{{$ordem_servico->gravidade}}">{{$ordem_servico->gravidade}}</option>
+                        <option value="{{ $ordem_servico->gravidade }}">{{ $ordem_servico->gravidade }}</option>
                         <option value="5">Extremamante grave 5</option>
                         <option value="4">Muito grave 4</option>
                         <option value="3">Grave 3</option>
@@ -635,7 +664,7 @@
                 <hr>
                 <div class="conteudo">
                     <select class="input-text" name="urgencia" id="urgencia" value="">
-                        <option value="{{$ordem_servico->urgencia}}">{{$ordem_servico->urgencia}}</option>
+                        <option value="{{ $ordem_servico->urgencia }}">{{ $ordem_servico->urgencia }}</option>
                         <option value="5">Extremamante urgente 5</option>
                         <option value="4">Urgente 4</option>
                         <option value="3">Urgente se possível 3</option>
@@ -650,7 +679,7 @@
                 <hr>
                 <div class="conteudo">
                     <select class="input-text" name="tendencia" id="tendencia" value="">
-                        <option value="{{$ordem_servico->tendencia}}">{{$ordem_servico->tendencia}}</option>
+                        <option value="{{ $ordem_servico->tendencia }}">{{ $ordem_servico->tendencia }}</option>
                         <option value="5">Piorar rápidamante 5</option>
                         <option value="4">Piorar em curto prazo 4</option>
                         <option value="3">Piorar 3</option>
@@ -703,8 +732,10 @@
                 </div>
             </div>
             {{-- Início de assinatura manual --}}
-            <div id="confirmacao" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
+            <div id="confirmacao"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+                <div
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
                     <p>Deseja salvar esta assinatura?</p>
                     <button type="button" class="btn btn-success" onclick="saveSignature()">Sim</button>
                     <button type="button" class="btn btn-danger" onclick="cancelSignature()">Cancelar</button>
@@ -714,7 +745,8 @@
             <canvas id="meuCanvas" width="150" height="50" style="border: 1px solid black;"></canvas>
             <input type="hidden" id="signature_receptor" name="signature_receptor" value="null">
             <br>
-            <button type="button" class="btn btn-outline-primary btn-sm" id="salvar" onclick="showConfirmation()">Salvar Assinatura</button>
+            <button type="button" class="btn btn-outline-primary btn-sm" id="salvar"
+                onclick="showConfirmation()">Salvar Assinatura</button>
 
             {{-- Botão de envio, inicialmente desabilitado --}}
 
@@ -765,14 +797,14 @@
             <div class="conteudo">
                 <select class="input-text" name="projeto_id" id="projeto_id">
                     <option value="">Selecione um projeto</option> <!-- opcional -->
-                    @foreach($projetos as $projeto)
-                    <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
+                    @foreach ($projetos as $projeto)
+                        <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
                     @endforeach
                 </select>
 
             </div>
         </div>
-        {{--fim card 3--}}
+        {{-- fim card 3 --}}
         <div class="row sm-3 mb-0">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-outline-primary btn-bg" style="width:500px;">
