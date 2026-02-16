@@ -730,3 +730,31 @@ Route::middleware('auth')->group(function () {
     Route::resource('locais', LocalController::class);
     Route::put('/locais/{id}', [LocalController::class, 'update'])->name('locais.update');
 });
+//-------------------------------------------------------------//
+//                Paradas de máquinas
+//-------------------------------------------------------------//
+use App\Http\Controllers\ParadaEquipamentoController;
+Route::prefix('machine-downtime')->group(function () {
+
+    Route::get('/', [ParadaEquipamentoController::class, 'index'])
+        ->name('machine_downtime.index');
+
+    Route::get('/create', [ParadaEquipamentoController::class, 'create'])
+        ->name('machine_downtime.create');
+
+    Route::post('/', [ParadaEquipamentoController::class, 'store'])
+        ->name('machine_downtime.store');
+
+    Route::get('/{id}', [ParadaEquipamentoController::class, 'show'])
+        ->name('machine_downtime.show');
+
+    Route::get('/{id}/edit', [ParadaEquipamentoController::class, 'edit'])
+        ->name('machine_downtime.edit');
+
+    Route::put('/{id}', [ParadaEquipamentoController::class, 'update'])
+        ->name('machine_downtime.update');
+
+    Route::delete('/{id}', [ParadaEquipamentoController::class, 'destroy'])
+        ->name('machine_downtime.destroy');
+});
+

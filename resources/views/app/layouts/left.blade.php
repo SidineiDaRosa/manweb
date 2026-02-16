@@ -252,6 +252,7 @@
                 <a href="{{ route('index_kpis') }}">📊 KPIs</a>
                 <a href="{{ route('lubrificacao.index') }}"> ⚙️💧 Lubrificação</a>
                 <a href="{{ route('projetos.index') }}"><i class="bi bi-kanban"></i>Projetos</a>
+                 <a href="{{ route('machine_downtime.index') }}"><i class="bi bi-kanban"></i>Paradas De Máquinas</a>
 
             </div>
         </li>
