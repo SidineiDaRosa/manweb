@@ -11,7 +11,7 @@
         {{-- teste de botão pulsante --}}
         <style>
             /* ---------------------------------------//
-                // Alerta de green de uma tarefa em curso*/
+                                    // Alerta de green de uma tarefa em curso*/
             .circle {
                 width: 10px;
                 height: 10px;
@@ -84,6 +84,7 @@
         <div class="container-chart">
             {{-- Box 1 --}}
             <div class="item">
+
                 <form action="" class="scrollable">
                     <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. FECHADAS HOJE</h6>
                     <div class="div-os-sm">
@@ -143,7 +144,7 @@
                             <thead>
                                 <tr>
 
-                                  
+
                                     <th>Finalização prevista</th>
                                     <th>Descrição</th>
                                     <th>Patrimônio</th>
@@ -159,14 +160,14 @@
                                     @endphp
                                     <tr>
 
-                                        
+
                                         <td
                                             class="{{ $dataPrevista->lt($dataAtual) ? 'text-danger' : ($dataPrevista->eq($dataAtual) ? 'text-warning' : 'text-primary') }}">
                                             <div>
                                                 <a style="font-size: 17px;" class="txt-link"
-                                                href="{{ route('ordem-servico.show', ['ordem_servico' => $ordens_servicos_venc->id]) }}">
-                                                {{ $ordens_servicos_venc->id }}
-                                            </a>
+                                                    href="{{ route('ordem-servico.show', ['ordem_servico' => $ordens_servicos_venc->id]) }}">
+                                                    {{ $ordens_servicos_venc->id }}
+                                                </a>
                                             </div>
 
                                             <div>
@@ -1010,7 +1011,6 @@
                             <table class="condensed-table" id="tb_pedidos_compra">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th hidden>Emissão</th>
                                         <th>Previsão</th>
                                         <th>Destino</th>
@@ -1028,12 +1028,7 @@
                                             $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                                         @endphp
                                         <tr style="padding:10px;">
-                                            <td>
-                                                <a style="font-size: 17px;" class="txt-link"
-                                                    href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $pedido_compra->id]) }}">
-                                                    {{ $pedido_compra->id }}
-                                                </a> &nbsp&nbsp <br>
-                                            </td>
+                                          
                                             <td hidden>
                                                 {{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/y') }}
                                                 <br>
@@ -1041,9 +1036,14 @@
                                             </td>
                                             <td>
                                                 <div
-                                                    class="{{ $dataPrevista->lt($dataAtual) ? 'btn-sm-static-danger' : ($dataPrevista->eq($dataAtual) ? 'btn-sm-static-warning' : 'btn-sm-static-info') }}">
+                                                    class="{{ $dataPrevista->lt($dataAtual) ? 'btn-inf btn-inf-sm btn-inf-red' : ($dataPrevista->eq($dataAtual) ? 'btn-inf btn-inf-sm btn-inf-warning' : 'btn-inf btn-inf-sm btn-inf-blue-dark') }}">
+                                                    <a style="font-size: 17px;" class="txt-link"
+                                                        href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $pedido_compra->id]) }}">
+                                                        {{ $pedido_compra->id }}
+                                                    </a> &nbsp&nbsp
                                                     {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/y') }}
                                                     {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('h:i') }}
+                                                    </a> &nbsp&nbsp <br>
                                                 </div>
 
 
@@ -1337,4 +1337,6 @@
             opacity: 0.9;
         }
     </style>
+
+
 </main>

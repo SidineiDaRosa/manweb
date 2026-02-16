@@ -50,6 +50,8 @@ Route::get('/configuracoes', function () {
 Route::get('/link_produtos', function () {
     return view('app.produto.link_produtos');
 });
+Route::view('/modelos', 'app.layouts.modelos')->name('modelos');
+
 //---------------------------------------------------------//
 //    Status Os
 //---------------------------------------------------------//

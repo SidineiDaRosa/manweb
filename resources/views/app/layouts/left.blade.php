@@ -142,9 +142,11 @@
                 <a href="{{ route('dashboard-status-os') }}">Painel de Visualização O.S.</a>
                 <a href="{{ route('control-panel.index') }}">Painel de controle</a>
                 <a href="{{ route('site.configuracoes') }}" hidden>Configurações</a>
+                 
                 <a class="nav-link" href="{{ route('mensagens.index') }}">
                     📢 Mural de Avisos
                 </a>
+                <a href="{{ route('modelos') }}" >Modelos</a>
             </div>
         </li>
 
