@@ -16,7 +16,8 @@ class MachineDowntime extends Model
         'ordem_servico_id', // ✅ corrigido
         'started_at',
         'ended_at',
-        'reason'
+        'reason',
+        'failure_id'
     ];
 
     protected $casts = [
@@ -34,5 +35,8 @@ class MachineDowntime extends Model
     public function ordemServico()
     {
         return $this->belongsTo(OrdemServico::class, 'ordem_servico_id');
+    }
+    public function failure(){
+        return $this->belongsTo(MachineFailure::class,'failure_id');
     }
 }

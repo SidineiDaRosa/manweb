@@ -51,6 +51,7 @@
                     <!-- Falhas -->
                     <div class="mb-3">
                         <label class="form-label">Falha</label>
+                        <option value=""></option>
                         <select name="falha_id" class="form-control" required id="edit_falha">
                             @foreach($flaiures as $flaiure)
                             <option value="{{ $flaiure->id }}">{{ $flaiure->name }} - {{ Str::limit($flaiure->description, 40, '...') }}</option>
@@ -63,12 +64,11 @@
                         <label class="form-label">Motivo</label>
                         <textarea name="reason" class="form-control" rows="3" id="edit_reason"></textarea>
                     </div>
-
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Salvar Alterações</button>
+                    <button type="button" class="btn-inf btn-inf-md btn-inf-red" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-inf btn-inf-md btn-inf-blue-dark">Salvar Alterações</button>
                 </div>
 
             </form>

@@ -1,40 +1,104 @@
 @include('app.layouts.header')
 @include('app.paradas_de_maquinas.partials.modal_create')
 @include('app.paradas_de_maquinas.partials.modal_edit')
-<main class="content">
-    <h1>MTBF MTT OEE</h1>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalParada">
-        Iniciar Parada
-    </button>
 
-    <div style="display: flex; flex-direction: column; gap: 10px; font-family: sans-serif;">
-        @foreach($paradas as $parada)
+<main class="content py-4">
+    <div class="container-fluid">
 
-        <div
-            style="display: flex; flex-wrap: wrap; gap: 12px 20px; padding: 12px; background-color: #ffffff; border-bottom: 1px solid #ddd; 
-        @if(!$parada->ended_at) border-left: 4px solid red; @endif">
-            <div style="min-width: 120px;"><strong>ID:</strong> {{ $parada->id }}</div>
-            <div style="min-width: 150px;"><strong>Equipamento:</strong> {{ $parada->equipamento->nome ?? 'N/A' }}</div>
-            <div style="min-width: 150px;"><strong>OS:</strong> {{ $parada->ordem->descricao ?? 'Sem título' }}</div>
-            <div style="min-width: 120px;"><strong>Falha:</strong> {{ $parada->falha->name ?? 'N/A' }}</div>
-            <div style="min-width: 120px;"><strong>Motivo:</strong> {{ $parada->reason ?? '-' }}</div>
-            <div style="min-width: 130px;"><strong>Criado:</strong> {{ $parada->created_at?->format('d/m/Y H:i') ?? '-' }}</div>
-            <div style="min-width: 130px;"><strong>Início:</strong> {{ $parada->started_at?->format('d/m/Y H:i') ?? '-' }}</div>
-            <div style="min-width: 130px;"><strong>Fim:</strong> {{ $parada->ended_at?->format('d/m/Y H:i') ?? '-' }}</div>
-
-            <!-- Botão de edição -->
-            <button type="button" class="btn btn-warning btn-edit-parada"
-                data-id="{{ $parada->id }}"
-                data-equipment="{{ $parada->equipment_id }}"
-                data-ordem="{{ $parada->ordem_servico_id }}"
-                data-falha="{{ $parada->falha_id }}"
-                data-reason="{{ $parada->reason }}"
-                data-started="{{ $parada->started_at }}"
-                data-ended="{{ $parada->ended_at }}">
-                Editar
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3">MTBF · MTT · OEE</h1>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalParada">
+                <i class="bi bi-play-circle"></i> Iniciar Parada
             </button>
         </div>
-        @endforeach
-    </div>
 
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Status</th>
+                        <th>Equipamento</th>
+                        <th>OS</th>
+                        <th>Falha</th>
+                        <th>Motivo</th>
+                        <th>Início</th>
+                        <th>Fim</th>
+                        <th>Duração</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($paradas as $parada)
+
+                    @php
+                    $isActive = is_null($parada->ended_at);
+                    $start = $parada->started_at ? \Carbon\Carbon::parse($parada->started_at) : null;
+                    $end = $parada->ended_at ? \Carbon\Carbon::parse($parada->ended_at) : null;
+                    @endphp
+
+                    <tr class="{{ $isActive ? 'table-danger' : '' }}">
+                        <td>#{{ $parada->id }}</td>
+
+                        <td>
+                            @if($isActive)
+                            <span class="badge bg-danger">Ativa</span>
+                            @else
+                            <span class="badge bg-success">Finalizada</span>
+                            @endif
+                        </td>
+
+                        <td>{{ $parada->equipamento->nome ?? 'N/A' }}</td>
+                        <td>{{ $parada->ordem->descricao ?? 'Sem título' }}</td>
+                        <td>{{ $parada->failure->name ?? 'N/A' }}</td>
+                        <td>{{ $parada->reason ?: '-' }}</td>
+                        <td>{{ $start?->format('d/m/Y H:i') ?? '-' }}</td>
+                        <td>{{ $end?->format('d/m/Y H:i') ?? '-' }}</td>
+
+                        <td>
+                            @if($end)
+                            <span class="badge bg-info">
+                                {{ $start->diffForHumans($end, true) }}
+                            </span>
+                            @elseif($start)
+                            <span class="badge bg-warning text-dark">
+                                em andamento
+                            </span>
+                            @else
+                            -
+                            @endif
+                        </td>
+
+                        <td class="text-center">
+                            @if($isActive)
+                            <button type="button"
+                                class="btn btn-sm btn-primary btn-edit-parada"
+                                data-id="{{ $parada->id }}"
+                                data-equipment="{{ $parada->equipment_id }}"
+                                data-ordem="{{ $parada->ordem_servico_id }}"
+                                data-falha="{{ $parada->falha_id }}"
+                                data-reason="{{ $parada->reason }}"
+                                data-started="{{ $parada->started_at }}"
+                                data-ended="{{ $parada->ended_at }}"
+                                data-fail="{{ $parada->failure_id }}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            @else
+                            -
+                            @endif
+                        </td>
+                    </tr>
+
+                    @empty
+                    <tr>
+                        <td colspan="10" class="text-center">
+                            Nenhuma parada registrada.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </main>

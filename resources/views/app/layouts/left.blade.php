@@ -316,8 +316,6 @@
                                         <span class="arrow"><i class="icofont-rounded-right"></i></span>
 
                                     </a>
-
-
                                     <div class="submenu" id="sesmt-submenu">
 
                                         <a href="{{ route('sesmt.dashboard') }}">SESMT</a>

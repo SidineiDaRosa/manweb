@@ -108,7 +108,7 @@ class ParadaEquipamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
+      
         // Busca a parada pelo ID
         $parada = MachineDowntime::findOrFail($id);
 
@@ -118,7 +118,7 @@ class ParadaEquipamentoController extends Controller
             'ordem_servico_id'  => 'required|exists:ordens_servicos,id',
             'started_at'        => 'required|date',
             'ended_at'          => 'nullable|date|after_or_equal:started_at',
-            //'falha_id'          => 'required|exists:falhas,id',
+            //'failure_id'          => 'required|exists:falhas,id',
             'reason'            => 'nullable|string|max:1000',
         ]);
 
@@ -132,7 +132,7 @@ class ParadaEquipamentoController extends Controller
             'ordem_servico_id' => $request->ordem_servico_id,
             'started_at'       => $request->started_at,
             'ended_at'         => $request->ended_at,
-            //'falha_id'         => $request->falha_id,
+            'failure_id'         => $request->falha_id,
             'reason'           => $request->reason,
         ]);
 
