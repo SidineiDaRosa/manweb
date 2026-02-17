@@ -13,7 +13,7 @@
     <script src="{{ asset('js/date_time.js') }}"></script><!--Update data time-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/button.css') }}">
-    
+
     <style>
         /* Sidebar */
         .sidebar {
@@ -251,48 +251,49 @@
     <div class="spacer"></div>
 
     <!-- Notifications -->
-    <!-- Notifications -->
-    <div class="notifications">
+    <!-- Oculta icones -->
+    @if (auth()->check() && auth()->user()->level <= 2)
+        <div class="notifications">
 
-        @if (auth()->check() && auth()->user()->id == 3)
+            @if (auth()->check() && auth()->user()->id == 3)
+                <div class="notification">
+                    <a href="{{ route('notificacoes.index') }}">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span class="badge-mini" id="alarms-badge">0</span>
+                    </a>
+                </div>
+            @endif
+
             <div class="notification">
-                <a href="{{ route('notificacoes.index') }}">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                    <span class="badge-mini" id="alarms-badge">0</span>
+                <a href="{{ route('lubrificacao.index') }}">
+                    <i class="bi bi-droplet-half"></i>
+                    <span class="badge-mini" id="lubrificacao-badge">0</span>
                 </a>
             </div>
-        @endif
 
-        <div class="notification">
-            <a href="{{ route('lubrificacao.index') }}">
-                <i class="bi bi-droplet-half"></i>
-                <span class="badge-mini" id="lubrificacao-badge">0</span>
-            </a>
+            <div class="notification">
+                <a href="/check-list-index">
+                    <i class="bi bi-card-checklist"></i>
+                    <span class="badge-mini" id="checklist-badge">0</span>
+                </a>
+            </div>
+
+            <div class="notification">
+                <a href="/solicitacoes-os">
+                    <i class="bi bi-card-text"></i>
+                    <span class="badge-mini" id="solicitacoes-badge">0</span>
+                </a>
+            </div>
+
+            <div class="notification">
+                <a href="{{ route('groups.index') }}">
+                    <i class="bi bi-chat-dots-fill"></i>
+                    <span class="badge-mini" id="messages-badge">0</span>
+                </a>
+            </div>
+
         </div>
-
-        <div class="notification">
-            <a href="/check-list-index">
-                <i class="bi bi-card-checklist"></i>
-                <span class="badge-mini" id="checklist-badge">0</span>
-            </a>
-        </div>
-
-        <div class="notification">
-            <a href="/solicitacoes-os">
-                <i class="bi bi-card-text"></i>
-                <span class="badge-mini" id="solicitacoes-badge">0</span>
-            </a>
-        </div>
-
-        <div class="notification">
-            <a href="{{ route('groups.index') }}">
-                <i class="bi bi-chat-dots-fill"></i>
-                <span class="badge-mini" id="messages-badge">0</span>
-            </a>
-        </div>
-
-    </div>
-
+    @endif
     <!-- Usuário -->
     <div class="user-menu ml-3">
         <div class="user-menu-btn" id="userMenuBtn">

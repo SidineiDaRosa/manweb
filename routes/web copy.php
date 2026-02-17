@@ -53,9 +53,7 @@ Route::get('/link_produtos', function () {
     return view('app.produto.link_produtos');
 });
 Route::view('/modelos', 'app.layouts.modelos')->name('modelos');
-//---------------------------------------------------------//
-//    Rotas que não precisam de middlwre
-//---------------------------------------------------------//
+
 //---------------------------------------------------------//
 //    Status Os
 //---------------------------------------------------------//
@@ -64,50 +62,55 @@ Route::get('/show-panel-os', [DahboardStatusOsController::class, 'show_os'])->na
 //verifica a os pelo painel 
 Route::get('/check-ordem-servico', [DahboardStatusOsController::class, 'check_ordem_servico'])->name('check.odem.servico');
 
+//Route::get('/', function () {
+//return view('auth.login');
+//});
 Route::get('/asset-show', [EquipamentoHistoryController::class, 'asset_show'])->name('asset.show');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home');
-//-------------------------------------------------------------------------------------------------
-// Rota do venda no site 
-//-------------------------------------------------------------------------------------------------
-Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce@index');
-Route::post('/produtos-filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
-Route::post('/comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
-Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
-Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
 //--------------------------------------------------------//
 // Autetication User
 //--------------------------------------------------------//
 Auth::routes();
 Route::middleware('auth')->get('/users-management', [ControlPanelController::class, 'users_management'])->name('users.management');
-use App\Http\Controllers\UserRoleController;
 
-Route::resource('user_roles', UserRoleController::class);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home');
+
+Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce@index');
+//Route::post('/e-comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
+Route::post('/produtos-filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
+//Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce');
+//Route::get('/filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
+Route::post('/comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
+Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
+Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
+//-------------------------------------------------------------------------------------------------
+// Rota do venda no site 
 //-------------------------------------------------------------------------------------------------
 //Marca
-//-------------------------------------------------------------------------------------------------
 Route::middleware('auth')->resource('/marca', 'App\Http\Controllers\MarcaController');
 //-------------------------------------------------------------------------------------------------
 //Categoria
 //-------------------------------------------------------------------------------------------------
+
+
 Route::get('/categorias/{id}', [CategoriaController::class, 'show'])->name('categorias.show');
 
 Route::middleware('auth')->resource('/categoria', 'App\Http\Controllers\CategoriaController');
 Route::middleware('auth')->get('/categoria-edit/{id}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 // Rota para processar a atualização (PUT)
 Route::middleware('auth')->put('/categoria-update/{id}', [CategoriaController::class, 'update'])->name('categoria.update');
-//-------------------------------------------------------------------------------------------------
+// familias
+
+
 // Rotas para famílias
-//-------------------------------------------------------------------------------------------------
 Route::middleware('auth')->resource('/familia', FamiliaController::class);
-//-------------------------------------------------------------------------------------------------
-//Fornecedor
-//-------------------------------------------------------------------------------------------------
+
+
+//fornecedor
 Route::middleware('auth')->resource('/fornecedor', 'App\Http\Controllers\FornecedorController');
-//-------------------------------------------------------------------------------------------------
-//Produto
-//-------------------------------------------------------------------------------------------------
+
+//produto
 Route::middleware('auth')->resource('/produto', 'App\Http\Controllers\ProdutoController');
 //----------------------------------------------//
 //                Equipamento
@@ -136,14 +139,18 @@ Route::post('/ordem-servico/update-alarm', [OrdemServicoController::class, 'upda
 //   Check-list  Criar O.S.            
 
 Route::middleware('auth')->post('/new_os_check_list', [OrdemServicoController::class, 'new_os_check_list'])->name('new_os_check_list');
-Route::post('/ordem-servico/modal', [OrdemServicoController::class, 'storeFromModal'])->name('ordem_servico.modal');
+
+//----------------------------------------------------------//
 //   Dashboard status  os
+//----------------------------------------------------------//
+
+Route::post('/ordem-servico/modal', [OrdemServicoController::class, 'storeFromModal'])->name('ordem_servico.modal');
+
 //  inicia os por botão no panel os
 Route::put(
     '/ordem-servico/{id}/start-stop',
     [OrdemServicoController::class, 'start_stop_os']
 )->name('ordem-servico.start_stop');
-
 
 //--------------------------------------------------------//
 //                  Ordem de produção
@@ -500,7 +507,6 @@ Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
 Route::post('/groups/{group}/attach-users', [GroupController::class, 'attachUsers'])->name('groups.attachUsers');
 Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
-
 
 Route::get('/messages/fetch/{group}', [PostController::class, 'fetch'])->name('messages.fetch');
 Route::get('/messages-count', [PostController::class, 'messages_count_user'])->name('messages.count');

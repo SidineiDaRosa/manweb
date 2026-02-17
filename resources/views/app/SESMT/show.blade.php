@@ -100,11 +100,15 @@
                                             <div class="col-12 col-md-6">
                                                 <div class="row mb-0">
                                                     <div class="col-5 fw-bold">O.S. Nº:</div>
-                                                    <div class="col-7">
+                                                    <div class="col-7" >
+                                                        @if (auth()->check() && auth()->user()->level <= 2)
                                                         <a href="{{ route('ordem-servico.show', ['ordem_servico'=>$apr->ordem_servico_id]) }}"
-                                                            class="text-decoration-none fs-6">
+                                                            class="text-decoration-none fs-6" >
                                                             #{{ $apr->ordem_servico_id }}
                                                         </a>
+                                                        @else
+                                                        #{{ $apr->ordem_servico_id }}
+                                                        @endif
                                                     </div>
                                                 </div>
 

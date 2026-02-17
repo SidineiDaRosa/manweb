@@ -117,6 +117,7 @@
 <aside class="sidebar" id="sidebarleft">
     <ul class="nav-list">
         <!-- Dashboard -->
+        @if (auth()->check() && auth()->user()->level <= 2)
         <li>
             <a href="{{ route('app.home') }}">
                 <div class="icon-wrapper">
@@ -276,9 +277,31 @@
                 </div>
                 <span class="spn-txt-menu">Administração</span>
                 <span class="arrow"><i class="icofont-rounded-right"></i></span>
+
             </a>
+           
+
             <div class="submenu" id="administracao-submenu">
                 <a href="{{ route('funcionarios.index') }}">Funcionários</a>
+                 <a href="{{ route('user_roles.index') }}" class="btn btn-primary">User Roles</a>
+            </div>
+
+        </li>
+        
+        <!-- Sesmt -->
+        @endif
+        <li>
+            <a href="javascript:void(0);" onclick="toggleSubmenu('sesmt-submenu')">
+                <div class="icon-wrapper">
+                    <i class="bi bi-cone-striped"></i>
+                </div>
+                <span class="spn-txt-menu">SESMT</span>
+                <span class="arrow"><i class="icofont-rounded-right"></i></span>
+
+            </a>
+           
+
+            <div class="submenu" id="sesmt-submenu">
                 <a href="{{ route('sesmt.dashboard') }}">SESMT</a>
             </div>
 
