@@ -17,7 +17,6 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>Status</th>
                         <th>Equipamento</th>
                         <th>OS</th>
                         <th>Falha</th>
@@ -39,15 +38,6 @@
 
                     <tr class="{{ $isActive ? 'table-danger' : '' }}">
                         <td>#{{ $parada->id }}</td>
-
-                        <td>
-                            @if($isActive)
-                            <span class="badge bg-danger">Ativa</span>
-                            @else
-                            <span class="badge bg-success">Finalizada</span>
-                            @endif
-                        </td>
-
                         <td>{{ $parada->equipamento->nome ?? 'N/A' }}</td>
                         <td>{{ $parada->ordem->descricao ?? 'Sem título' }}</td>
                         <td>{{ $parada->failure->name ?? 'N/A' }}</td>

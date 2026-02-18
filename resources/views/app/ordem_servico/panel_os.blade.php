@@ -1125,13 +1125,17 @@
                         const hora = String(agora.getHours()).padStart(2, '0');
                         const minutos = String(agora.getMinutes()).padStart(2, '0');
                         const horaFormatada = `${hora}:${minutos}`;
+                        // Adicionando o 'l' no let
+                        let [h, m] = [parseInt(hora), parseInt(minutos)];
+                        h = (h + 1) % 24;
 
+                        const novaHoraFimFormatada = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
                         // Aplicar nos campos
                         inputDataInicio.value = dataFormatada;
                         inputDataFim.value = dataFormatada;
 
                         inputHoraInicio.value = horaFormatadaInicio;
-                        inputHoraFim.value = horaFormatada;
+                        inputHoraFim.value = novaHoraFimFormatada;
                     });
                 </script>
 

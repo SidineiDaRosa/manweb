@@ -22,7 +22,7 @@ class ParadaEquipamentoController extends Controller
     public function index()
     {
         //
-        $paradas = MachineDowntime::all();
+        $paradas = MachineDowntime::orderBy('created_at','desc')->get();
         $equipamentos = Equipamento::where('estado_do_ativo', 'ativado')->get();
         $ordens_servicos = OrdemServico::where('situacao', '=', ['aberto', 'em andamento'])->get();
         $flaiures = MachineFailure::all();
