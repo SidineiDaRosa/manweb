@@ -152,7 +152,7 @@ class ParadaEquipamentoController extends Controller
 
         $validator = Validator::make($request->all(), [
             'equipment_id'      => 'required|exists:equipamentos,id',
-            'ordem_servico_id'  => 'required|exists:ordens_servicos,id',
+            //'ordem_servico_id'  => 'required|exists:ordens_servicos,id',
             'started_at'        => 'required|date',
             'ended_at'          => 'nullable|date|after_or_equal:started_at',
             'reason'            => 'nullable|string|max:1000',
