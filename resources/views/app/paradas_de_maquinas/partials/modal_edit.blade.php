@@ -37,7 +37,7 @@
                     <!-- Ordem de Serviço -->
                     <div class="mb-3">
                         <label class="form-label">Ordem de Serviço</label>
-                        <select name="ordem_servico_id" class="form-control" required id="edit_ordem" disabled>
+                        <select name="ordem_servico_id" class="form-control"  id="edit_ordem" disabled>
                             @foreach($ordens_servicos as $ordem)
                             <option value="{{ $ordem->id }}">
                                 OS #{{ $ordem->id }} - {{ Str::limit($ordem->descricao, 40, '...') ?? 'Sem título' }} {{ $ordem->situacao }}
