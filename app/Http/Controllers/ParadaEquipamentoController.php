@@ -116,6 +116,8 @@ class ParadaEquipamentoController extends Controller
             'user_id'          => auth()->id(), // 👈 quem iniciou
         ]);
 
+
+
         return redirect()->back()->with('success', 'Parada iniciada com sucesso!');
     }
     /**
