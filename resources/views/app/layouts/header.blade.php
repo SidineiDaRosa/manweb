@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="{{ asset('js/date_time.js') }}"></script><!--Update data time-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/button.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/my_css/button.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/my_css/card.css') }}">
 
     <style>
         /* Sidebar */

@@ -13,11 +13,21 @@
                 </div>
 
                 <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Senha para liberar edição</label>
+                        <div class="input-group">
+                            <input type="password" id="senhaLiberacao" name="password" class="form-control">
+                            <button type="button" class="btn-inf btn-inf-md btn-inf-orange" onclick="validarSenha()">
+                                Validar
+                            </button>
+                        </div>
+                        <small id="msgSenha" class="text-danger d-none">Senha incorreta</small>
+                    </div>
 
                     <!-- Equipamento -->
                     <div class="mb-3">
                         <label class="form-label">Equipamento</label>
-                        <select name="equipment_id" class="form-control" required id="edit_equipment">
+                        <select name="equipment_id" class="form-control" required id="edit_equipment" disabled>
                             @foreach($equipamentos as $equipamento)
                             <option value="{{ $equipamento->id }}">{{ $equipamento->nome }}</option>
                             @endforeach
@@ -27,7 +37,7 @@
                     <!-- Ordem de Serviço -->
                     <div class="mb-3">
                         <label class="form-label">Ordem de Serviço</label>
-                        <select name="ordem_servico_id" class="form-control" required id="edit_ordem">
+                        <select name="ordem_servico_id" class="form-control" required id="edit_ordem" disabled>
                             @foreach($ordens_servicos as $ordem)
                             <option value="{{ $ordem->id }}">
                                 OS #{{ $ordem->id }} - {{ Str::limit($ordem->descricao, 40, '...') ?? 'Sem título' }} {{ $ordem->situacao }}
@@ -52,7 +62,7 @@
                     <div class="mb-3">
                         <label class="form-label">Falha</label>
                         <option value=""></option>
-                        <select name="falha_id" class="form-control" required id="edit_falha">
+                        <select name="falha_id" class="form-control" required id="edit_falha" disabled >
                             @foreach($flaiures as $flaiure)
                             <option value="{{ $flaiure->id }}">{{ $flaiure->name }} - {{ Str::limit($flaiure->description, 40, '...') }}</option>
                             @endforeach
@@ -62,13 +72,13 @@
                     <!-- Motivo -->
                     <div class="mb-3">
                         <label class="form-label">Motivo</label>
-                        <textarea name="reason" class="form-control" rows="3" id="edit_reason"></textarea>
+                        <textarea name="reason" class="form-control" rows="3" id="edit_reason" disabled></textarea>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn-inf btn-inf-md btn-inf-red" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn-inf btn-inf-md btn-inf-blue-dark">Salvar Alterações</button>
+                    <button type="submit" class="btn-inf btn-inf-md btn-inf-blue-dark" disabled>Salvar Alterações</button>
                 </div>
 
             </form>
@@ -94,7 +104,7 @@
                 const id = this.dataset.id;
                 const equipment = this.dataset.equipment;
                 const ordem = this.dataset.ordem;
-                const falha = this.dataset.falha;
+                const failure = this.dataset.failure;
                 const reason = this.dataset.reason;
                 const started = this.dataset.started;
                 const ended = this.dataset.ended;
@@ -105,7 +115,8 @@
                 // Popula os campos
                 document.getElementById('edit_equipment').value = equipment;
                 document.getElementById('edit_ordem').value = ordem;
-                document.getElementById('edit_falha').value = falha;
+                document.getElementById('edit_falha').value = failure;
+
                 document.getElementById('edit_reason').value = reason || '';
 
                 // Início da parada (readonly) com fuso ajustado
@@ -123,4 +134,34 @@
             });
         });
     });
+</script>
+<script>
+    function validarSenha() {
+
+        let senha = document.getElementById('senhaLiberacao').value;
+        let mensagem = document.getElementById('msgSenha');
+        let modal = document.getElementById('modalEditParada');
+
+        if (senha !== '1234' && senha !== '12345') { // 🔐 depois troque por validação backend
+            mensagem.classList.remove('d-none');
+            return;
+        }
+
+        mensagem.classList.add('d-none');
+
+        // Habilita todos os campos da modal
+        modal.querySelectorAll('input, textarea, select').forEach(campo => {
+            if (campo.id !== 'senhaLiberacao') {
+                campo.removeAttribute('disabled');
+                // campo.removeAttribute('readonly');
+                // Habilita botão salvar
+                  modal.querySelector('button[type="submit"]').removeAttribute('disabled');
+
+            }
+        });
+
+        alert('Edição liberada!');
+       
+    }
+
 </script>

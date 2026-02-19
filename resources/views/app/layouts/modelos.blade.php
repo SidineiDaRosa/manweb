@@ -49,69 +49,6 @@
     <button class="btn-inf btn-inf-sm btn-inf-gray">Gray SM</button>
     <button class="btn-inf btn-inf-sm btn-inf-brown">Brown SM</button>
 
-    <style>
-        .card-inf-md {
-            width: 250px;
-            aspect-ratio: 2 / 1;
-            box-sizing: border-box;
-            background: #ffffff;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            border: 1px solid rgba(189, 194, 197, 0.3);
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            /* 🔥 alterado */
-            gap: 6px;
-            /* 🔥 controla o espaço */
-        }
-
-        .card-inf-md:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        /* HEADER */
-        .card-inf-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* TITLE */
-        .card-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #8a9099;
-            letter-spacing: 0.5px;
-        }
-
-        /* ICON */
-        .card-inf-ico {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(138, 43, 226, 0.1);
-            padding: 8px;
-            border-radius: 12px;
-        }
-
-        /* NUMBER */
-        .card-data {
-            font-size: 32px;
-            font-weight: 700;
-            color: #2f2f2f;
-            margin-top: 10px;
-        }
-
-        /* DESCRIPTION */
-        .card-description {
-            font-size: 14px;
-            color: rgba(85, 79, 79, 0.7);
-            margin-top: 4px;
-        }
-    </style>
 
     <div class="card-inf-md">
 
@@ -132,10 +69,55 @@
         <div class="card-description">
             9 dados obtidos hoje
         </div>
+    </div>
 
+    <div class="card-inf-sm">
+        <div class="card-inf-header">
+            <span class="card-title">OS</span>
+            <div class="card-inf-ico">
+                <i class="bi bi-gear" style="font-size:12px;"></i>
+            </div>
+        </div>
+
+        <div class="card-data">12</div>
+        <div class="card-description">Abertas</div>
     </div>
 
 
+    <!--Mesagem de confirmação de verificação da APR-->
+    @if(session('success'))
+    <div class="alert alert-success custom-alert position-relative">
+        {!! session('success') !!}
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+            &times;
+        </button>
+    </div>
+    @endif
+    <script>
+        function recarrega() {
+            window.location.reload();
+        }
+    </script>
 
+    @if(session('error'))
+    <div class="alert alert-danger custom-alert d-flex align-items-start gap-2 position-relative">
+        <!-- Ícone de alerta -->
+        <i class="bi bi-exclamation-triangle-fill fs-4 mt-1"></i>
 
+        <!-- Mensagem -->
+        <div class="flex-fill">
+            <strong>Existem pendências na análise:</strong>
+            <ul class="mb-0 mt-1" style="padding-left:20px;">
+                @foreach(explode('<br>➤ ', session('error')) as $item)
+                @if(str_contains($item, 'Medida:'))
+                <li style="color:wite;">{{ $item }}</li>
+                @else
+                <li style="color:red; font-weight:400;">{{ $item }}</li>
+                @endif
+                @endforeach
+            </ul>
+        </div>
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;"> &times; </button>
+    </div>
+    @endif
 </main>

@@ -13,11 +13,13 @@ class MachineDowntime extends Model
 
     protected $fillable = [
         'equipment_id',
-        'ordem_servico_id', // ✅ corrigido
+        'ordem_servico_id',
         'started_at',
         'ended_at',
         'reason',
-        'failure_id'
+        'failure_id',
+        'user_id',
+        'ended_user_id'
     ];
 
     protected $casts = [
@@ -36,7 +38,18 @@ class MachineDowntime extends Model
     {
         return $this->belongsTo(OrdemServico::class, 'ordem_servico_id');
     }
-    public function failure(){
-        return $this->belongsTo(MachineFailure::class,'failure_id');
+    public function failure()
+    {
+        return $this->belongsTo(MachineFailure::class, 'failure_id');
+    }
+    
+    public function startedBy()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function endedBy()
+    {
+        return $this->belongsTo(User::class, 'ended_user_id');
     }
 }

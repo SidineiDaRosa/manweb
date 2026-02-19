@@ -19,13 +19,54 @@ class ParadaEquipamentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+ 
+
+    public function index(Request $request)
     {
-        //
-        $paradas = MachineDowntime::orderBy('created_at','desc')->get();
+        // Query base
+        $query = MachineDowntime::query();
+
+        // 🔎 Filtro por equipamento
+        if ($request->filled('equipamento_id')) {
+            $query->where('equipment_id', $request->equipamento_id);
+        }
+
+        // 🔎 Filtro por descrição
+        if ($request->filled('descricao')) {
+            $query->where('reason', 'like', '%' . $request->descricao . '%');
+        }
+
+        // 🔎 Filtro por status
+        if ($request->filled('status')) {
+            if ($request->status === 'ativo') {
+                $query->whereNull('ended_at');
+            } elseif ($request->status === 'finalizado') {
+                $query->whereNotNull('ended_at');
+            }
+        }
+
+        // 🔎 Filtro por período
+        if ($request->filled('data_inicio')) {
+            $query->where('started_at', '>=', $request->data_inicio);
+        }
+
+        if ($request->filled('data_fim')) {
+            $query->where('started_at', '<=', $request->data_fim);
+        }
+
+        // Ordenação
+        $paradas = $query->orderBy('created_at', 'desc')
+            ->limit(8)
+            ->get();
+
+        // Equipamentos ativos
         $equipamentos = Equipamento::where('estado_do_ativo', 'ativado')->get();
-        $ordens_servicos = OrdemServico::where('situacao', '=', ['aberto', 'em andamento'])->get();
+
+        // Ordens abertas ou em andamento
+        $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento'])->get();
+
         $flaiures = MachineFailure::all();
+
         return view('app.paradas_de_maquinas.index', [
             'paradas' => $paradas,
             'equipamentos' => $equipamentos,
@@ -33,6 +74,7 @@ class ParadaEquipamentoController extends Controller
             'flaiures' => $flaiures
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -51,32 +93,31 @@ class ParadaEquipamentoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
     public function store(Request $request)
     {
-        // Validação dos dados enviados
+        // Validação
         $validator = Validator::make($request->all(), [
             'equipment_id'      => 'required|exists:equipamentos,id',
             'ordem_servico_id'  => 'required|exists:ordens_servicos,id',
             'started_at'        => 'required|date',
-            //'falha_id'          => 'required|exists:falhas,id',
+            'falha_id'          => 'required|exists:falhas,id',
             'reason'            => 'nullable|string|max:1000',
         ]);
 
 
-        // Criar a parada no banco
+
+        // Criar a parada
         MachineDowntime::create([
             'equipment_id'     => $request->equipment_id,
             'ordem_servico_id' => $request->ordem_servico_id,
             'started_at'       => $request->started_at,
-            //'falha_id'         => $request->falha_id,
+            'failure_id'       => $request->falha_id,
             'reason'           => $request->reason,
+            'user_id'          => auth()->id(), // 👈 quem iniciou
         ]);
 
         return redirect()->back()->with('success', 'Parada iniciada com sucesso!');
     }
-
-
     /**
      * Display the specified resource.
      *
@@ -105,20 +146,15 @@ class ParadaEquipamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+     */ public function update(Request $request, $id)
     {
-      
-        // Busca a parada pelo ID
         $parada = MachineDowntime::findOrFail($id);
 
-        // Validação dos dados enviados
         $validator = Validator::make($request->all(), [
             'equipment_id'      => 'required|exists:equipamentos,id',
             'ordem_servico_id'  => 'required|exists:ordens_servicos,id',
             'started_at'        => 'required|date',
             'ended_at'          => 'nullable|date|after_or_equal:started_at',
-            //'failure_id'          => 'required|exists:falhas,id',
             'reason'            => 'nullable|string|max:1000',
         ]);
 
@@ -126,17 +162,40 @@ class ParadaEquipamentoController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Atualiza os dados
-        $parada->update([
+        $dados = [
             'equipment_id'     => $request->equipment_id,
             'ordem_servico_id' => $request->ordem_servico_id,
             'started_at'       => $request->started_at,
             'ended_at'         => $request->ended_at,
-            'failure_id'         => $request->falha_id,
+            'failure_id'       => $request->falha_id,
             'reason'           => $request->reason,
-        ]);
+            'ended_user_id'    => auth()->id(), // 👈 quem finalizou
+        ];
 
-        return redirect()->back()->with('success', 'Parada atualizada com sucesso!');
+        // 🔥 Se estiver encerrando agora
+        if ($request->filled('ended_at') && is_null($parada->ended_at)) {
+            $dados['ended_user_id'] = auth()->id();
+        }
+
+        switch ($request->falha_id) {
+            case 2:
+                if ($request->password == 1234) {
+                    $parada->update($dados);
+                    return redirect()->back()->with('success', 'Parada Finalizada!');
+                } else {
+                    return redirect()->back()->with('error', 'Senha da manutenção não cofere!');
+                }
+                break;
+
+            default: // Executa para qualquer ID que não seja 2
+                if ($request->password == 12345) {
+                    $parada->update($dados);
+                    return redirect()->back()->with('success', 'Parada Finalizada!');
+                } else {
+                    return redirect()->back()->with('error', 'Senha Geral Produção não confere!');
+                }
+                break;
+        }
     }
 
     /**
@@ -149,4 +208,5 @@ class ParadaEquipamentoController extends Controller
     {
         //
     }
+    public function kpi_downtime() {}
 }

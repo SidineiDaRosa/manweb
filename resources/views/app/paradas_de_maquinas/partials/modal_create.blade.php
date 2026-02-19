@@ -30,7 +30,8 @@
                     <!-- Ordem de Serviço -->
                     <div class="mb-3">
                         <label class="form-label">Ordem de Serviço</label>
-                        <select name="ordem_servico_id" class="form-control" required>
+                        <select name="ordem_servico_id" class="form-control">
+                            <option value="">Ordem não anexada</option>
                             @foreach($ordens_servicos as $ordem)
                             <option value="{{ $ordem->id }}">
                                 OS #{{ $ordem->id }} - {{ Str::limit($ordem->descricao, 40, '...') ?? 'Sem título' }} {{ $ordem->situacao}}
@@ -61,14 +62,18 @@
                     <!-- Motivo -->
                     <div class="mb-3">
                         <label class="form-label">Motivo</label>
-                        <textarea name="reason" class="form-control" rows="3"></textarea>
+                        <textarea
+                            name="reason"
+                            class="form-control"
+                            rows="3"
+                            minlength="30"
+                            required></textarea>
+                        <div class="form-text">Mínimo de 10 caracteres.</div>
                     </div>
-
                 </div>
-
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Iniciar Parada</button>
+                    <button type="button" class="btn-inf btn-inf-md btn-inf-red" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-inf btn-inf-md btn-inf-warning">Iniciar Parada</button>
                 </div>
 
             </form>

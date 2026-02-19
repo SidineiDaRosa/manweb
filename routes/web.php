@@ -81,6 +81,7 @@ Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'
 //--------------------------------------------------------//
 Auth::routes();
 Route::middleware('auth')->get('/users-management', [ControlPanelController::class, 'users_management'])->name('users.management');
+
 use App\Http\Controllers\UserRoleController;
 
 Route::resource('user_roles', UserRoleController::class);
@@ -752,5 +753,7 @@ Route::prefix('machine-downtime')->group(function () {
         ->name('machine_downtime.update');
 
     Route::delete('/{id}', [ParadaEquipamentoController::class, 'destroy'])
-        ->name('machine_downtime.destroy');
+        ->name('machine_downtime.kpi');
+    Route::delete('/{id}', [ParadaEquipamentoController::class, 'kapi_downtime'])
+        ->name('machine_downtime.kpi');
 });
