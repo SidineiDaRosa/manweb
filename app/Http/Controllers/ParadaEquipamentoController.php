@@ -11,6 +11,8 @@ use App\Models\OrdemServico;
 use App\Models\RecursosProducao;
 use App\Models\MachineFailure;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ParadaEquipamentoController extends Controller
 {
@@ -19,7 +21,7 @@ class ParadaEquipamentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
- 
+
 
     public function index(Request $request)
     {
@@ -115,8 +117,43 @@ class ParadaEquipamentoController extends Controller
             'reason'           => $request->reason,
             'user_id'          => auth()->id(), // 👈 quem iniciou
         ]);
+        //  atualiza a os  para parada de máquina
 
+        if ($request->falha_id == 2) {
+            $agora = Carbon::now('America/Sao_Paulo');
+            $data = $agora->toDateString();     // Y-m-d
+            $hora = $agora->format('H:i');    // 14:35
+            $ordem_servico = OrdemServico::find(2399);
+            $ordem_servico->update([
+                // 'data_emissao' => 
+                //'hora_emissao' =>
+                'data_inicio' => $data,
+                // 'hora_inicio' =>
+                'data_fim' => $data,
+                //'hora_fim' => 
+                'equipamento_id' => $request->equipment_id, // ajuste conforme seus campos
+                //'emissor' => 
+                //'responsavel' => 
+                'descricao' => 'Foi gerado uma parada as ' .    $hora . ', e definido como sendo Elétrica ou mecânica, favor verificar.',
+                //'status_servicos' => 
+                // 'especialidade_do_servico' =>
+                // 'natureza_do_servico' =>
+                // 'gravidade' => 
+                // 'urgencia' => 
+                // 'tendencia' => 
+                'situacao' => 'aberto',
+                // 'link_foto' => 
+                // 'signature_receptor' => 
+                // 'anexo' => 
+                //'projeto_id' => 
+                //'check' => false,
+                'alarm' => 0,
+            ]);
 
+            $ordem_servico = OrdemServico::find(2399);
+            $ordem_servico->check =0;
+            $ordem_servico->save();
+        }
 
         return redirect()->back()->with('success', 'Parada iniciada com sucesso!');
     }
@@ -183,6 +220,12 @@ class ParadaEquipamentoController extends Controller
             case 2:
                 if ($request->password == 1234) {
                     $parada->update($dados);
+                    //fecha a os
+                    $ordem_servico = OrdemServico::find(2399);
+                    $ordem_servico->check = 1;
+                    $ordem_servico->alarm = 1;
+                    $ordem_servico->situacao = 'fechado';
+                    $ordem_servico->save();
                     return redirect()->back()->with('success', 'Parada Finalizada!');
                 } else {
                     return redirect()->back()->with('error', 'Senha da manutenção não cofere!');
@@ -192,6 +235,12 @@ class ParadaEquipamentoController extends Controller
             default: // Executa para qualquer ID que não seja 2
                 if ($request->password == 12345) {
                     $parada->update($dados);
+                    //fecha a os
+                    $ordem_servico = OrdemServico::find(2399);
+                    $ordem_servico->check = 1;
+                    $ordem_servico->alarm = 1;
+                    $ordem_servico->situacao = 'fechado';
+                    $ordem_servico->save();
                     return redirect()->back()->with('success', 'Parada Finalizada!');
                 } else {
                     return redirect()->back()->with('error', 'Senha Geral Produção não confere!');

@@ -33,6 +33,7 @@ class OrdemServico extends Model
         'ss_id',
         'anexo',
         'projeto_id',
+        'check',
         'alarm'
     ];
     public function equipamento()
