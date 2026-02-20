@@ -123,7 +123,7 @@ class ParadaEquipamentoController extends Controller
             $agora = Carbon::now('America/Sao_Paulo');
             $data = $agora->toDateString();     // Y-m-d
             $hora = $agora->format('H:i');    // 14:35
-            $ordem_servico = OrdemServico::find(2399);
+            $ordem_servico = OrdemServico::find(3123);
             $ordem_servico->update([
                 // 'data_emissao' => 
                 //'hora_emissao' =>
@@ -150,7 +150,7 @@ class ParadaEquipamentoController extends Controller
                 'alarm' => 0,
             ]);
 
-            $ordem_servico = OrdemServico::find(2399);
+            $ordem_servico = OrdemServico::find(3123);
             $ordem_servico->check =0;
             $ordem_servico->save();
         }
@@ -221,7 +221,7 @@ class ParadaEquipamentoController extends Controller
                 if ($request->password == 1234) {
                     $parada->update($dados);
                     //fecha a os
-                    $ordem_servico = OrdemServico::find(2399);
+                    $ordem_servico = OrdemServico::find(3123);
                     $ordem_servico->check = 1;
                     $ordem_servico->alarm = 1;
                     $ordem_servico->situacao = 'fechado';
@@ -236,7 +236,7 @@ class ParadaEquipamentoController extends Controller
                 if ($request->password == 12345) {
                     $parada->update($dados);
                     //fecha a os
-                    $ordem_servico = OrdemServico::find(2399);
+                    $ordem_servico = OrdemServico::find(3123);
                     $ordem_servico->check = 1;
                     $ordem_servico->alarm = 1;
                     $ordem_servico->situacao = 'fechado';
