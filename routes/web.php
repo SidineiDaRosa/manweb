@@ -625,6 +625,7 @@ Route::delete('/apr/{id}', [APRController::class, 'destroy'])->name('apr.destroy
 //                Business Partner
 //-------------------------------------------------------------//
 use App\Http\Controllers\BusinessPartnerController;
+use App\Http\Controllers\FailuresCotroller;
 
 Route::middleware('auth')->group(function () {
     Route::resource('business-partners', BusinessPartnerController::class);
@@ -731,6 +732,7 @@ Route::middleware('auth')->group(function () {
 //                Paradas de máquinas
 //-------------------------------------------------------------//
 use App\Http\Controllers\ParadaEquipamentoController;
+use App\Http\Controllers\FailureController;
 
 Route::prefix('machine-downtime')->group(function () {
 
@@ -757,3 +759,9 @@ Route::prefix('machine-downtime')->group(function () {
     Route::delete('/{id}', [ParadaEquipamentoController::class, 'kapi_downtime'])
         ->name('machine_downtime.kpi');
 });
+//-------------------------------------------------------------//
+//                Paradas de máquinas
+//-------------------------------------------------------------//
+Route::get('/failures-index', [FailureController::class, 'index'])->name('failures.index');
+Route::post('/failures-store', [FailureController::class, 'store'])->name('failures.store');
+Route::put('/failures-update/{id}', [FailureController::class, 'update'])->name('failures.update');

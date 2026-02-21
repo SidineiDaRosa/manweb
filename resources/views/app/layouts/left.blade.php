@@ -274,6 +274,7 @@
                                 @endif
                                   @if (auth()->check() && (auth()->user()->level == 4 || auth()->user()->level == 2 || auth()->user()->level == 0))
                                 <a href="{{ route('machine_downtime.index') }}"> <i class="bi bi-clock-history"></i>Paradas De Máquinas</a>
+                                 <a href="{{ route('failures.index') }}"><i class="bi bi-exclamation-triangle"></i>Cadastro de Falhas</a>
                                 @endif
 
                         </div>

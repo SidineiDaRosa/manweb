@@ -146,9 +146,9 @@
         </div>
         <form action="{{ route('machine_downtime.index') }}" method="GET">
 
-            <div class="d-flex align-items-center gap-2 flex-nowrap">
+            <div style="gap:5px;display:flex;flex-direction:row;">
 
-                <span class="fw-semibold text-muted me-3"style="width:20%;">
+                <span class="fw-semibold text-muted me-3" style="width:20%;">
                     REGISTROS DE PARADAS
                 </span>
 
@@ -185,7 +185,7 @@
                 <!-- Status -->
                 <select name="status" class="form-control" style="width:300px;">
                     <option value="">Todos Status</option>
-                    <option value="ativo" {{ request('status') == 'ativo' ? 'selected' : '' }} >
+                    <option value="ativo" {{ request('status') == 'ativo' ? 'selected' : '' }}>
                         Ativo
                     </option>
                     <option value="finalizado" {{ request('status') == 'finalizado' ? 'selected' : '' }}>

@@ -21,8 +21,6 @@ class ParadaEquipamentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-
     public function index(Request $request)
     {
         // Query base
