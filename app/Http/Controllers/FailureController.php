@@ -14,8 +14,9 @@ class FailureController extends Controller
         $failuresSubcategories = MachineFailureSubcategory::orderBy('id', 'desc')->get();
         return view(
             'app.paradas_de_maquinas.failures',
-            ['failures' => $failures,
-            'failuresSubcategories'=> $failuresSubcategories 
+            [
+                'failures' => $failures,
+                'failuresSubcategories' => $failuresSubcategories
             ]
         );
     }
@@ -64,5 +65,49 @@ class FailureController extends Controller
         return redirect()
             ->route('failures.index')
             ->with('success', 'Falha excluída com sucesso!');
+    }
+
+    public function subcategoriesUpdate(Request $request, $id)
+    {
+        // Validação
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        // Buscar subcategoria
+        $subcategory = MachineFailureSubcategory::findOrFail($id);
+
+        // Atualizar dados
+        $subcategory->name = $request->name;
+        $subcategory->description = $request->description;
+        $subcategory->save();
+
+        // Redirecionar
+        return redirect()
+            ->route('failures.index')
+            ->with('success', 'Subcategoria atualizada com sucesso!');
+    }
+    public function  subcategoriesstore(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'failure_id' => 'required|exists:failures,id'
+            ]);
+
+            MachineFailureSubcategory::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'failure_id' => $request->failure_id,
+            ]);
+
+            return back()->with('success', 'Subcategoria criada com sucesso!');
+        } catch (\Exception $e) {
+
+            return back()->with('error', 'Erro ao criar subcategoria.');
+        }
     }
 }

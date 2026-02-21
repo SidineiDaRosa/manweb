@@ -1,8 +1,26 @@
 @extends('app.layouts.app')
-
+@include('app.paradas_de_maquinas.partials.modal_create_failures_subcategory')
+@include('app.paradas_de_maquinas.partials.modal_edit_failures_subcategory')
 @section('content')
 
 <main class="content">
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+            &times;
+        </button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;">
+            &times;
+        </button>
+    </div>
+    @endif
     <div class="card shadow-sm">
 
         <div class="card-body">
@@ -11,15 +29,13 @@
             </button>
 
             <div class="table-responsive">
-                <table class="table table-hover table-bordered align-middle">
+                <table class="table table-hover table-bordered-none align-middle">
 
-                    <thead class="table-dark text-center">
+                    <thead class="table text-left" style="color:rgb(1,1,1,0.4)">
                         <tr>
                             <th style="width:60px;">ID</th>
                             <th>Nome</th>
                             <th>Subcategorias</th>
-
-                            <th style="width:150px;">Ações</th>
                         </tr>
                     </thead>
 
@@ -53,12 +69,30 @@
                             <td>
                                 @foreach($failuresSubcategories as $failuresSubcategorie)
                                 @if($failuresSubcategorie->machine_failure_id == $failure->id)
-                                <div style="width:100;border:solid rgb(1,1,1,0.2) 0.5px;border-radius:10px;display:flex;flex-direction:row;margin:5px;;">
-                                    <div style="width:80%;padding:5px;">
+                                <div style="width:100%;border:solid rgb(1,1,1,0.2) 0.5px;border-radius:10px;display:flex;flex-direction:row;margin:5px;;">
+                                    <div style="width:80%;padding:10px;">
                                         {{$failuresSubcategorie->name}}
                                     </div>
                                     <div style="float:right;display:flex;margin-right:10px;">
-                                        <button    class="btn-inf btn-inf-sm btn-inf-blue-dark">Editar</button>
+                                        <button
+                                            class="btn-inf btn-inf-sm btn-inf-blue-dark btn-edit-subcategory"
+                                            data-id="{{ $failuresSubcategorie->id }}"
+                                            data-name="{{ $failuresSubcategorie->name }}"
+                                            data-description="{{ $failuresSubcategorie->description }}"
+                                            data-category="{{ $failuresSubcategorie->category_id }}"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEditSubcategory">
+                                            Editar
+                                        </button>
+                                    </div>
+                                    <div style="float:right;display:flex;margin-right:10px;">
+                                        <button class="btn-create-subcategory"
+                                            data-id="{{ $failure->id }}"
+                                            data-name="{{ $failure->name }}"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalCreateSubcategory">
+                                            Nova Subcategoria
+                                        </button>
                                     </div>
                                 </div>
                                 @endif
@@ -73,10 +107,8 @@
                         </tr>
                         @endforelse
                     </tbody>
-
                 </table>
             </div>
-
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -760,8 +760,24 @@ Route::prefix('machine-downtime')->group(function () {
         ->name('machine_downtime.kpi');
 });
 //-------------------------------------------------------------//
-//                Paradas de máquinas
+//                Paradas de máquinas falhas categorias
 //-------------------------------------------------------------//
 Route::get('/failures-index', [FailureController::class, 'index'])->name('failures.index');
 Route::post('/failures-store', [FailureController::class, 'store'])->name('failures.store');
 Route::put('/failures-update/{id}', [FailureController::class, 'update'])->name('failures.update');
+//-------------------------------------------------------------//
+//                Paradas de máquinas  falhas subacategorias
+//-------------------------------------------------------------//
+
+
+Route::get('/failure-subcategories-index', [FailureController::class, 'subcategoriesIndex'])
+    ->name('failure-subcategories.index');
+
+Route::post('/failure-subcategories-store', [FailureController::class, 'subcategoriesstore'])
+    ->name('failure-subcategories.store');
+
+Route::put('/failure-subcategories-update/{id}', [FailureController::class, 'subcategoriesUpdate'])
+    ->name('failure-subcategories.update');
+
+Route::delete('/failure-subcategories-delete/{id}', [FailureController::class, 'subcategoriesDestroy'])
+    ->name('failure-subcategories.destroy');
