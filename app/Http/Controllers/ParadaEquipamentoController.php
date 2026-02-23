@@ -11,6 +11,7 @@ use App\Models\OrdemServico;
 use App\Models\RecursosProducao;
 use App\Models\MachineFailure;
 use App\Models\MachineDowntimeEvent;
+use App\Models\MachineFailureSubcategory;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +25,8 @@ class ParadaEquipamentoController extends Controller
      */
     public function index(Request $request)
     {
-        $machine_downtime_events=MachineDowntimeEvent::all();
-       
+        $machine_downtime_events = MachineDowntimeEvent::all();
+        $MachineFailureSubcategories = MachineFailureSubcategory::all();
         // Query base
         $query = MachineDowntime::query();
 
@@ -75,7 +76,8 @@ class ParadaEquipamentoController extends Controller
             'equipamentos' => $equipamentos,
             'ordens_servicos' => $ordens_servicos,
             'flaiures' => $flaiures,
-            'machine_downtime_events'=>$machine_downtime_events
+            'machine_downtime_events' => $machine_downtime_events,
+            'MachineFailureSubcategories' => $MachineFailureSubcategories
         ]);
     }
 
@@ -117,7 +119,8 @@ class ParadaEquipamentoController extends Controller
             'started_at'       => $request->started_at,
             'failure_id'       => $request->falha_id,
             'reason'           => $request->reason,
-            'user_id'          => auth()->id(), // 👈 quem iniciou
+            'user_id'          => auth()->id(), // 👈 quem iniciou,
+            'subcategoria_id' => $request->subcategoria_id
         ]);
         //  atualiza a os  para parada de máquina
 
@@ -210,7 +213,8 @@ class ParadaEquipamentoController extends Controller
             'ended_at'         => $request->ended_at,
             'failure_id'       => $request->falha_id,
             'reason'           => $request->reason,
-            'ended_user_id'    => auth()->id(), // 👈 quem finalizou
+            'ended_user_id'    => auth()->id(), // 👈 quem finalizou,
+            'subcategoria_id' => $request->subcategoria_id
         ];
 
         // 🔥 Se estiver encerrando agora

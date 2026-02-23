@@ -21,7 +21,7 @@
                     <!-- Tipo de evento -->
                     <div class="mb-3">
                         <label for="event_type" class="form-label">Tipo de Evento</label>
-                        <select class="form-select" name="event_type" id="event_type" required>
+                        <select class="form-control" name="event_type" id="event_type" required>
                             <option value="">Selecione</option>
                             <option value="INICIO">INÍCIO</option>
                             <option value="PAUSA">PAUSA</option>
@@ -40,8 +40,8 @@
                     <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar Evento</button>
+                    <button type="button" class="btn-inf btn-inf-md btn-inf-red" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-inf btn-inf-md btn-inf-blue-dark">Salvar Evento</button>
                 </div>
             </form>
         </div>

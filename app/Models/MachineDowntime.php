@@ -19,7 +19,8 @@ class MachineDowntime extends Model
         'reason',
         'failure_id',
         'user_id',
-        'ended_user_id'
+        'ended_user_id',
+        'subcategoria_id'
     ];
 
     protected $casts = [
@@ -42,7 +43,7 @@ class MachineDowntime extends Model
     {
         return $this->belongsTo(MachineFailure::class, 'failure_id');
     }
-    
+
     public function startedBy()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -51,5 +52,9 @@ class MachineDowntime extends Model
     public function endedBy()
     {
         return $this->belongsTo(User::class, 'ended_user_id');
+    }
+    public function machine_failure_subcategorie()
+    {
+        return $this->belongsTo(MachineFailureSubcategory::class, 'subcategoria_id');
     }
 }

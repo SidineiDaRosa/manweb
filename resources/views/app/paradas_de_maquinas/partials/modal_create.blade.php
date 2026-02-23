@@ -39,20 +39,60 @@
                             @endforeach
                         </select>
                     </div>
-
                     <!-- Falha -->
                     <div class="mb-3">
                         <label class="form-label">Falha</label>
-                        <select name="falha_id" class="form-control" required>
+                        <select name="falha_id" class="form-control" id="falhaSelect" required>
                             <option value="">Selecione</option>
                             @foreach($flaiures as $flaiure)
-                            <option value="{{ $flaiure->id }}">
-                                {{ $flaiure->name }}
-                            </option>
+                            <option value="{{ $flaiure->id }}">{{ $flaiure->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
+                    <!-- Subcategoria -->
+                    <div class="mb-3">
+                        <label class="form-label">Subcategoria</label>
+                        <select name="subcategoria_id" class="form-control" id="subcategoriaSelect" required disabled>
+                            <option value="">Selecione uma falha primeiro</option>
+                        </select>
+                    </div>
+
+                    <script>
+                        // Converte sua coleção Blade para JS
+                        const subcategories = @json($MachineFailureSubcategories);
+
+                        const falhaSelect = document.getElementById('falhaSelect');
+                        const subcategoriaSelect = document.getElementById('subcategoriaSelect');
+
+                        falhaSelect.addEventListener('change', function() {
+                            const falhaId = this.value;
+                            subcategoriaSelect.innerHTML = ''; // Limpa opções
+
+                            if (!falhaId) {
+                                subcategoriaSelect.innerHTML = '<option value="">Selecione uma falha primeiro</option>';
+                                subcategoriaSelect.disabled = true;
+                                return;
+                            }
+
+                            // Filtra subcategorias correspondentes à falha selecionada
+                            const filtered = subcategories.filter(sub => sub.machine_failure_id == falhaId);
+
+                            if (filtered.length > 0) {
+                                subcategoriaSelect.innerHTML = '<option value="">Selecione</option>';
+                                filtered.forEach(sub => {
+                                    const option = document.createElement('option');
+                                    option.value = sub.id;
+                                    option.textContent = sub.name;
+                                    subcategoriaSelect.appendChild(option);
+                                });
+                                subcategoriaSelect.disabled = false;
+                            } else {
+                                subcategoriaSelect.innerHTML = '<option value="">Nenhuma subcategoria encontrada</option>';
+                                subcategoriaSelect.disabled = true;
+                            }
+                        });
+                    </script>
                     <!-- Início -->
                     <div class="mb-3">
                         <label class="form-label">Início da Parada</label>

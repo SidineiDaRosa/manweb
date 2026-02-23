@@ -32,52 +32,99 @@
 
 
                 @php
-                // 1. Defina o período total que você está analisando (ex: tempo desde a primeira parada até agora)
+                use Carbon\Carbon;
+                use Carbon\CarbonInterval;
+
+                // Função para calcular o tempo parado de uma parada considerando os eventos
+                function calcularTempoParado($parada, $events) {
+                $eventsParada = $events->where('downtime_id', $parada->id)
+                ->sortBy('event_timestamp'); // Ordena por horário
+
+                $tempoParado = 0;
+                $inicioPeriodo = null;
+
+                foreach ($eventsParada as $event) {
+                $timestamp = Carbon::parse($event->event_timestamp);
+
+                switch ($event->event_type) {
+                case 'INICIO':
+                $inicioPeriodo = $timestamp;
+                break;
+
+                case 'PAUSA':
+                if ($inicioPeriodo) {
+                $tempoParado += $inicioPeriodo->diffInSeconds($timestamp);
+                $inicioPeriodo = null; // Pausa suspende o tempo parado
+                }
+                break;
+
+                case 'RETOMADA':
+                $inicioPeriodo = $timestamp; // Retomada reinicia contagem
+                break;
+
+                case 'FIM':
+                if ($inicioPeriodo) {
+                $tempoParado += $inicioPeriodo->diffInSeconds($timestamp);
+                $inicioPeriodo = null;
+                }
+                break;
+                }
+                }
+
+                // Se a parada ainda estiver ativa (sem FIM), conta até agora
+                if ($inicioPeriodo) {
+                $tempoParado += $inicioPeriodo->diffInSeconds(now());
+                }
+
+                return $tempoParado;
+                }
+
+                // 1. Tempo total de vida útil
                 $primeiraParada = $paradas->min('started_at');
-                $dataInicio = $primeiraParada ? \Carbon\Carbon::parse($primeiraParada) : now()->subDays(1);
+                $dataInicio = $primeiraParada ? Carbon::parse($primeiraParada) : now()->subDays(1);
                 $tempoTotalVidaUtil = now()->diffInSeconds($dataInicio);
 
-                // 2. Calcula o Tempo Total Parado (Downtime)
-                $totalSegundosParado = $paradas->reduce(function ($carry, $parada) {
-                $start = \Carbon\Carbon::parse($parada->started_at);
-                $end = $parada->ended_at ? \Carbon\Carbon::parse($parada->ended_at) : now();
-                return $carry + $start->diffInSeconds($end);
+                // 2. Tempo total parado somando todas as paradas
+                $totalSegundosParado = $paradas->reduce(function ($carry, $parada) use ($machine_downtime_events) {
+                return $carry + calcularTempoParado($parada, $machine_downtime_events);
                 }, 0);
 
                 // 3. Quantidade de paradas
                 $totalParadas = $paradas->count();
 
-                // 4. Cálculos MTTR e MTBF
-                // MTTR: Média de tempo para consertar (Tempo Parado / Qtd Paradas)
+                // 4. MTTR e MTBF
                 $mttrSegundos = $totalParadas > 0 ? $totalSegundosParado / $totalParadas : 0;
-
-                // MTBF: Média de tempo entre falhas (Tempo total operando / Qtd Paradas)
                 $tempoOperando = $tempoTotalVidaUtil - $totalSegundosParado;
                 $mtbfSegundos = $totalParadas > 0 ? $tempoOperando / $totalParadas : $tempoOperando;
 
-                // 5. Formatação para os cards
-                $formatar = function($segundos) {
-                return \Carbon\CarbonInterval::seconds($segundos)->cascade()->forHumans(['short' => true]);
-                };
+                // 5. Formatação legível
+                $formatar = fn($segundos) => CarbonInterval::seconds($segundos)->cascade()->forHumans(['short' => true]);
 
                 $mtbfFinal = $formatar($mtbfSegundos);
                 $mttrFinal = $formatar($mttrSegundos);
                 $totalParadoFinal = $formatar($totalSegundosParado);
 
-                //Paradas ativas
-                // Paradas ativas (sem ended_at)
-                $paradasAtivas = $paradas->whereNull('ended_at')->count();
+                // Paradas ativas
+                $paradasAtivas = $paradas->filter(function($parada) use ($machine_downtime_events) {
+                $eventsParada = $machine_downtime_events->where('downtime_id', $parada->id)
+                ->sortByDesc('event_timestamp');
+                $ultimoEvento = $eventsParada->first();
+                return !$ultimoEvento || $ultimoEvento->event_type != 'FIM';
+                })->count();
 
                 // Tempo total das paradas ativas
-                $totalSegundosAtivas = $paradas->whereNull('ended_at')->reduce(function ($carry, $parada) {
-                $start = \Carbon\Carbon::parse($parada->started_at);
-                return $carry + $start->diffInSeconds(now());
+                $totalSegundosAtivas = $paradas->filter(function($parada) use ($machine_downtime_events) {
+                $eventsParada = $machine_downtime_events->where('downtime_id', $parada->id)
+                ->sortByDesc('event_timestamp');
+                $ultimoEvento = $eventsParada->first();
+                return !$ultimoEvento || $ultimoEvento->event_type != 'FIM';
+                })->reduce(function($carry, $parada) use ($machine_downtime_events) {
+                return $carry + calcularTempoParado($parada, $machine_downtime_events);
                 }, 0);
 
                 $totalAtivasFormatado = $formatar($totalSegundosAtivas);
 
                 @endphp
-
                 <!-- Card MTBF -->
                 <div class="card-inf-md">
                     <div class="card-inf-header">
@@ -228,7 +275,7 @@
                 @endphp
 
                 <tr>
-               
+
                     <td>
                         <div>
                             <span style="font-size:15px;font-weight:600;color:rgba(1,1,1,0.9);">#{{ $parada->id }} | {{ $parada->equipamento->nome ?? '-' }}</span>
@@ -243,7 +290,10 @@
                         </div>
                     </td>
                     <td>{{ $parada->ordem_servico_id ?? 'OS não anexada!' }}</td>
-                    <td>{{ $parada->failure->name ?? 'N/A' }}</td>
+                    <td>{{ $parada->failure->name ?? 'N/A' }} <br>
+                         {{ $parada->machine_failure_subcategorie?->name ?? 'N/A' }}
+
+                    </td>
                     <td>{{ $parada->reason ?: '-' }} <br>
                         @foreach($machine_downtime_events as $machine_downtime_event)
                         @if($machine_downtime_event->downtime_id == $parada->id)
@@ -302,11 +352,12 @@
                         -
                         @endif
 
-                        <button type="button" class="btn-inf btn-inf-md btn-inf-green"
+                        <button type="button" class="btn-inf btn-inf-md btn-inf-orange"
                             data-bs-toggle="modal"
                             data-bs-target="#createEventModal"
                             data-downtime="{{ $parada->id }}">
-                            Criar Novo Evento
+                            <i class="bi bi-plus-circle"></i>
+                            Novo Evento
                         </button>
                     </td>
 
