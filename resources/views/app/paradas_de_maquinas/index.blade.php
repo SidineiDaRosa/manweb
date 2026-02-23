@@ -291,6 +291,8 @@
                     </td>
                     <td>{{ $parada->ordem_servico_id ?? 'OS não anexada!' }}</td>
                     <td>{{ $parada->failure->name ?? 'N/A' }} <br>
+                    <span style="font-weight:600;font-size:12px;color:rgb(1,1,1,0.5)">Sub Categoria:</span>
+                    
                          {{ $parada->machine_failure_subcategorie?->name ?? 'N/A' }}
 
                     </td>
@@ -298,7 +300,8 @@
                         @foreach($machine_downtime_events as $machine_downtime_event)
                         @if($machine_downtime_event->downtime_id == $parada->id)
                         <div class="row mb-2 p-2" style="background-color: #f0f0f0; border-radius:5px;">
-                            <div class="col-2"><strong>{{ $machine_downtime_event->event_type }}</strong></div>
+                            <span style="font-weight:600;font-size:12px;color:rgb(1,1,1,0.5)">Evento:</span>
+                            <div class="col-2"><strong style="font-weight:600;font-size:12px;color:rgb(1,1,1,0.9)">{{ $machine_downtime_event->event_type }}</strong></div>
                             <div class="col-3">{{ \Carbon\Carbon::parse($machine_downtime_event->event_timestamp)->format('d/m/Y H:i') }}</div>
                             <div class="col-5">
                                 @if($machine_downtime_event->reason_detail)
