@@ -10,6 +10,7 @@ use App\Models\OrdemProducao;
 use App\Models\OrdemServico;
 use App\Models\RecursosProducao;
 use App\Models\MachineFailure;
+use App\Models\MachineDowntimeEvent;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,8 @@ class ParadaEquipamentoController extends Controller
      */
     public function index(Request $request)
     {
+        $machine_downtime_events=MachineDowntimeEvent::all();
+       
         // Query base
         $query = MachineDowntime::query();
 
@@ -71,7 +74,8 @@ class ParadaEquipamentoController extends Controller
             'paradas' => $paradas,
             'equipamentos' => $equipamentos,
             'ordens_servicos' => $ordens_servicos,
-            'flaiures' => $flaiures
+            'flaiures' => $flaiures,
+            'machine_downtime_events'=>$machine_downtime_events
         ]);
     }
 
@@ -121,7 +125,7 @@ class ParadaEquipamentoController extends Controller
             $agora = Carbon::now('America/Sao_Paulo');
             $data = $agora->toDateString();     // Y-m-d
             $hora = $agora->format('H:i');    // 14:35
-            $ordem_servico = OrdemServico::find(3123);
+            $ordem_servico = OrdemServico::find(2318);
             $ordem_servico->update([
                 // 'data_emissao' => 
                 //'hora_emissao' =>
@@ -148,8 +152,8 @@ class ParadaEquipamentoController extends Controller
                 'alarm' => 0,
             ]);
 
-            $ordem_servico = OrdemServico::find(3123);
-            $ordem_servico->check =0;
+            $ordem_servico = OrdemServico::find(2318);
+            $ordem_servico->check = 0;
             $ordem_servico->save();
         }
 
@@ -219,7 +223,7 @@ class ParadaEquipamentoController extends Controller
                 if ($request->password == 1234) {
                     $parada->update($dados);
                     //fecha a os
-                    $ordem_servico = OrdemServico::find(3123);
+                    $ordem_servico = OrdemServico::find(2318);
                     $ordem_servico->check = 1;
                     $ordem_servico->alarm = 1;
                     $ordem_servico->situacao = 'fechado';
@@ -234,7 +238,7 @@ class ParadaEquipamentoController extends Controller
                 if ($request->password == 12345) {
                     $parada->update($dados);
                     //fecha a os
-                    $ordem_servico = OrdemServico::find(3123);
+                    $ordem_servico = OrdemServico::find(2318); //3123
                     $ordem_servico->check = 1;
                     $ordem_servico->alarm = 1;
                     $ordem_servico->situacao = 'fechado';
@@ -257,5 +261,17 @@ class ParadaEquipamentoController extends Controller
     {
         //
     }
-    public function kpi_downtime() {}
+    public function store_downtime_event(Request $request)
+    {
+        $request->validate([
+            'downtime_id' => 'required|exists:machine_downtime,id',
+            'event_type' => 'required|in:INICIO,PAUSA,RETOMADA,FIM',
+            'reason_detail' => 'nullable|string',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        MachineDowntimeEvent::create($request->all());
+
+        return redirect()->back()->with('success', 'Evento criado com sucesso!');
+    }
 }

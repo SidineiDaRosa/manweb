@@ -1,10 +1,11 @@
 @include('app.layouts.header')
 @include('app.paradas_de_maquinas.partials.modal_create')
 @include('app.paradas_de_maquinas.partials.modal_edit')
+@include('app.paradas_de_maquinas.partials.modal_create_event')
 
 <main class="content py-4">
 
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!--Mesagem de confirmação de verificação da APR-->
     @if(session('success'))
     <div class="alert alert-success custom-alert position-relative">
@@ -140,9 +141,10 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn-inf btn-inf-warning" data-bs-toggle="modal" data-bs-target="#modalParada">
+            <button type="button" class="btn-inf btn-inf-warning" data-bs-toggle="modal" data-bs-target="#modalCreateParada">
                 <i class="bi bi-play-circle"></i> Iniciar Parada
             </button>
+
         </div>
         <form action="{{ route('machine_downtime.index') }}" method="GET">
 
@@ -169,7 +171,7 @@
                     name="descricao"
                     class="form-control"
                     placeholder="Buscar descrição"
-                    value="{{ request('descricao') }}" style="width:300px;">
+                    value="{{ request('descricao') }}" style="width:350px;border-radius:15px;background-color:khaki">
 
                 <!-- Equipamento -->
                 <select name="equipamento_id" class="form-control" style="width:300px;">
@@ -205,7 +207,6 @@
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-light">
                 <tr style="color:rgba(1,1,1,0.5);font-weight:400;">
-                    <th>#</th>
                     <th>Equipamento</th>
                     <th>Usuários</th>
                     <th>OS</th>
@@ -227,10 +228,10 @@
                 @endphp
 
                 <tr>
-                    <td>#{{ $parada->id }}</td>
+               
                     <td>
                         <div>
-                            <span style="font-size:15px;font-weight:600;color:rgba(1,1,1,0.9);"> {{ $parada->equipamento->nome ?? '-' }}</span>
+                            <span style="font-size:15px;font-weight:600;color:rgba(1,1,1,0.9);">#{{ $parada->id }} | {{ $parada->equipamento->nome ?? '-' }}</span>
                         </div>
                     </td>
                     <td>
@@ -243,7 +244,23 @@
                     </td>
                     <td>{{ $parada->ordem_servico_id ?? 'OS não anexada!' }}</td>
                     <td>{{ $parada->failure->name ?? 'N/A' }}</td>
-                    <td>{{ $parada->reason ?: '-' }}</td>
+                    <td>{{ $parada->reason ?: '-' }} <br>
+                        @foreach($machine_downtime_events as $machine_downtime_event)
+                        @if($machine_downtime_event->downtime_id == $parada->id)
+                        <div class="row mb-2 p-2" style="background-color: #f0f0f0; border-radius:5px;">
+                            <div class="col-2"><strong>{{ $machine_downtime_event->event_type }}</strong></div>
+                            <div class="col-3">{{ \Carbon\Carbon::parse($machine_downtime_event->event_timestamp)->format('d/m/Y H:i') }}</div>
+                            <div class="col-5">
+                                @if($machine_downtime_event->reason_detail)
+                                Motivo: {{ $machine_downtime_event->reason_detail }}
+                                @endif
+                            </div>
+                            <div class="col-2">Usuário: {{ $machine_downtime_event->user->name ?? 'Desconhecido' }}</div>
+                        </div>
+                        @endif
+                        @endforeach
+
+                    </td>
                     <td>{{ $start?->format('d/m/Y H:i') ?? '-' }}</td>
                     <td>
                         @if($end)
@@ -284,7 +301,15 @@
                         @else
                         -
                         @endif
+
+                        <button type="button" class="btn-inf btn-inf-md btn-inf-green"
+                            data-bs-toggle="modal"
+                            data-bs-target="#createEventModal"
+                            data-downtime="{{ $parada->id }}">
+                            Criar Novo Evento
+                        </button>
                     </td>
+
                 </tr>
 
                 @empty

@@ -9,7 +9,7 @@ class MachineDowntime extends Model
 {
     use HasFactory;
 
-    protected $table = 'machine_downtime_events';
+    protected $table = 'machine_downtime';
 
     protected $fillable = [
         'equipment_id',

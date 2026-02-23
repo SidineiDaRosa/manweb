@@ -17,13 +17,13 @@
                     <!-- Nome -->
                     <div class="mb-3">
                         <label class="form-label">Nome da Subcategoria</label>
-                        <input type="text" name="name" id="edit_name" class="form-control" required>
+                        <input type="text" name="name" id="edit_name_subcategory" class="form-control" required>
                     </div>
                     <!-- Descrição -->
                     <div class="mb-3">
                         <label class="form-label">Descrição</label>
                         <textarea name="description"
-                            id="edit_description"
+                            id="edit_description_subcategory"
                             class="form-control"
                             rows="3"></textarea>
                     </div>
@@ -61,8 +61,8 @@
                 const name = this.dataset.name;
                 const description = this.dataset.description;
 
-                document.getElementById('edit_name').value = name;
-                document.getElementById('edit_description').value = description ?? '';
+                document.getElementById('edit_name_subcategory').value = name;
+                document.getElementById('edit_description_subcategory').value = description ?? '';
 
                 form.action = '/failure-subcategories-update/' + id;
             });

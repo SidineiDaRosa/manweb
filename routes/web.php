@@ -734,12 +734,13 @@ Route::middleware('auth')->group(function () {
 use App\Http\Controllers\ParadaEquipamentoController;
 use App\Http\Controllers\FailureController;
 
+
 Route::prefix('machine-downtime')->group(function () {
 
     Route::get('/', [ParadaEquipamentoController::class, 'index'])
         ->name('machine_downtime.index');
 
-    Route::get('/create', [ParadaEquipamentoController::class, 'create'])
+    Route::post('/create', [ParadaEquipamentoController::class, 'create'])
         ->name('machine_downtime.create');
 
     Route::post('/', [ParadaEquipamentoController::class, 'store'])
@@ -758,6 +759,10 @@ Route::prefix('machine-downtime')->group(function () {
         ->name('machine_downtime.kpi');
     Route::delete('/{id}', [ParadaEquipamentoController::class, 'kapi_downtime'])
         ->name('machine_downtime.kpi');
+
+    // Cria um evento 
+    Route::post('/machine-downtime-events', [ParadaEquipamentoController::class, 'store_downtime_event'])
+        ->name('machine-downtime-events.store');
 });
 //-------------------------------------------------------------//
 //                Paradas de máquinas falhas categorias

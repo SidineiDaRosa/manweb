@@ -57,36 +57,19 @@
                                         data-description="{{ $failure->description }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalEditarFailure">
-                                        Editar
+                                        Editar Falha
                                     </button>
 
                                     <button class="btn-inf btn-inf-md btn-inf-red">
-                                        Excluir
+                                        Excluir Falha
                                     </button>
 
                                 </div>
                             </td>
                             <td>
-                                @foreach($failuresSubcategories as $failuresSubcategorie)
-                                @if($failuresSubcategorie->machine_failure_id == $failure->id)
-                                <div style="width:100%;border:solid rgb(1,1,1,0.2) 0.5px;border-radius:10px;display:flex;flex-direction:row;margin:5px;;">
-                                    <div style="width:80%;padding:10px;">
-                                        {{$failuresSubcategorie->name}}
-                                    </div>
+                                <div style="border: solid 0.5px rgb(1,1,1,0.2);padding:5px;border-radius:10px;">
                                     <div style="float:right;display:flex;margin-right:10px;">
-                                        <button
-                                            class="btn-inf btn-inf-sm btn-inf-blue-dark btn-edit-subcategory"
-                                            data-id="{{ $failuresSubcategorie->id }}"
-                                            data-name="{{ $failuresSubcategorie->name }}"
-                                            data-description="{{ $failuresSubcategorie->description }}"
-                                            data-category="{{ $failuresSubcategorie->category_id }}"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#modalEditSubcategory">
-                                            Editar
-                                        </button>
-                                    </div>
-                                    <div style="float:right;display:flex;margin-right:10px;">
-                                        <button class="btn-create-subcategory"
+                                        <button class="btn-inf btn-inf-sm btn-inf-blue-dark btn-create-subcategory"
                                             data-id="{{ $failure->id }}"
                                             data-name="{{ $failure->name }}"
                                             data-bs-toggle="modal"
@@ -94,9 +77,31 @@
                                             Nova Subcategoria
                                         </button>
                                     </div>
+                                    {{--SUBCATEGORIAS--}}
+                                    @foreach($failuresSubcategories as $failuresSubcategorie)
+                                    @if($failuresSubcategorie->machine_failure_id == $failure->id)
+                                    <div style="width:100%;display:flex;flex-direction:row;margin:5px;;">
+
+                                        <div style="width:80%;padding:10px;">
+                                            {{$failuresSubcategorie->name}}
+                                        </div>
+                                        <div style="float:right;display:flex;margin-right:10px;">
+                                            <button
+                                                class="btn-inf btn-inf-sm btn-inf-warning btn-edit-subcategory"
+                                                data-id="{{ $failuresSubcategorie->id }}"
+                                                data-name="{{ $failuresSubcategorie->name }}"
+                                                data-description="{{ $failuresSubcategorie->description }}"
+                                                data-category="{{ $failuresSubcategorie->category_id }}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEditSubcategory">
+                                                Editar
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                    @endif
+                                    @endforeach
                                 </div>
-                                @endif
-                                @endforeach
                             </td>
                         </tr>
                         @empty
@@ -215,29 +220,25 @@
             </div>
         </div>
     </div>
+    <input type="text" id="teste-id">
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('modalEditarFailure');
 
-            const botoesEditar = document.querySelectorAll('.btnEditar');
+        modal.addEventListener('show.bs.modal', function(event) {
 
-            botoesEditar.forEach(botao => {
-                botao.addEventListener('click', function() {
+            const button = event.relatedTarget;
 
-                    const id = this.getAttribute('data-id');
-                    const name = this.getAttribute('data-name');
-                    const description = this.getAttribute('data-description');
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            const description = button.getAttribute('data-description');
 
-                    document.getElementById('edit_id').value = id;
-                    document.getElementById('edit_name').value = name;
-                    document.getElementById('edit_description').value = description;
+            document.getElementById('edit_id').value = id;
+            document.getElementById('edit_name').value = name;
+            document.getElementById('edit_description').value = description ?? '';
 
-                    // Ajusta a action dinamicamente
-                    document.getElementById('formEditarFailure').action =
-                        '/failures-update/' + id;
-
-                });
-            });
-
+            // 🔥 Define a rota dinamicamente
+            document.getElementById('formEditarFailure').action =
+                `/failures-update/${id}`;
         });
     </script>
 </main>
