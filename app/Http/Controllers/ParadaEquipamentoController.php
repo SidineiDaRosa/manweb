@@ -22,12 +22,16 @@ class ParadaEquipamentoController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+     */ public function index(Request $request)
     {
+        // Carregar dados base
         $machine_downtime_events = MachineDowntimeEvent::all();
         $MachineFailureSubcategories = MachineFailureSubcategory::all();
-        // Query base
+        $flaiures = MachineFailure::all();
+        $equipamentos = Equipamento::where('estado_do_ativo', 'ativado')->get();
+        $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento'])->get();
+
+        // Query base das paradas
         $query = MachineDowntime::query();
 
         // 🔎 Filtro por equipamento
@@ -35,7 +39,16 @@ class ParadaEquipamentoController extends Controller
             $query->where('equipment_id', $request->equipamento_id);
         }
 
-        // 🔎 Filtro por descrição
+        // 🔎 Filtro por falha
+        if ($request->filled('falha_id')) {
+            $query->where('failure_id', $request->falha_id);
+        }
+        // 🔎 Filtro por subcategoria (opcional)
+        if ($request->filled('subcategoria_id')) {
+            $query->where('subcategoria_id', $request->subcategoria_id);
+        }
+
+        // 🔎 Filtro por descrição/motivo
         if ($request->filled('descricao')) {
             $query->where('reason', 'like', '%' . $request->descricao . '%');
         }
@@ -58,26 +71,27 @@ class ParadaEquipamentoController extends Controller
             $query->where('started_at', '<=', $request->data_fim);
         }
 
-        // Ordenação
+        // Ordenar e limitar resultados
         $paradas = $query->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
 
-        // Equipamentos ativos
-        $equipamentos = Equipamento::where('estado_do_ativo', 'ativado')->get();
-
-        // Ordens abertas ou em andamento
-        $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento'])->get();
-
-        $flaiures = MachineFailure::all();
-
+        // Retornar view com todos os dados
         return view('app.paradas_de_maquinas.index', [
             'paradas' => $paradas,
             'equipamentos' => $equipamentos,
             'ordens_servicos' => $ordens_servicos,
             'flaiures' => $flaiures,
+            'MachineFailureSubcategories' => $MachineFailureSubcategories,
             'machine_downtime_events' => $machine_downtime_events,
-            'MachineFailureSubcategories' => $MachineFailureSubcategories
+            // valores selecionados no filtro para manter selects preenchidos
+            'selected_equipment' => $request->equipamento_id,
+            'selected_falha' => $request->falha_id,
+            'selected_subcategoria' => $request->subcategoria_id,
+            'selected_status' => $request->status,
+            'data_inicio' => $request->data_inicio,
+            'data_fim' => $request->data_fim,
+            'descricao' => $request->descricao
         ]);
     }
 
@@ -110,57 +124,68 @@ class ParadaEquipamentoController extends Controller
             'reason'            => 'nullable|string|max:1000',
         ]);
 
+        //verifica ja  ha uma  para da para quel  máquina em aberto
 
 
-        // Criar a parada
-        MachineDowntime::create([
-            'equipment_id'     => $request->equipment_id,
-            'ordem_servico_id' => $request->ordem_servico_id,
-            'started_at'       => $request->started_at,
-            'failure_id'       => $request->falha_id,
-            'reason'           => $request->reason,
-            'user_id'          => auth()->id(), // 👈 quem iniciou,
-            'subcategoria_id' => $request->subcategoria_id
-        ]);
-        //  atualiza a os  para parada de máquina
+        // Verifica se já existe uma parada ativa para a máquina
+        $machine_downtime_active = MachineDowntime::where('equipment_id', $request->equipment_id)
+            ->whereNotNull('started_at')
+            ->whereNull('ended_at')
+            ->first(); // só precisa verificar se existe
+        if ($machine_downtime_active) {
+            return back()->with('error', 'Já existe uma parada ativa para este equipamento.');
+        } else {
 
-        if ($request->falha_id == 2) {
-            $agora = Carbon::now('America/Sao_Paulo');
-            $data = $agora->toDateString();     // Y-m-d
-            $hora = $agora->format('H:i');    // 14:35
-            $ordem_servico = OrdemServico::find(2318);
-            $ordem_servico->update([
-                // 'data_emissao' => 
-                //'hora_emissao' =>
-                'data_inicio' => $data,
-                // 'hora_inicio' =>
-                'data_fim' => $data,
-                //'hora_fim' => 
-                'equipamento_id' => $request->equipment_id, // ajuste conforme seus campos
-                //'emissor' => 
-                //'responsavel' => 
-                'descricao' => 'Foi gerado uma parada as ' .    $hora . ', e definido como sendo Elétrica ou mecânica, favor verificar.',
-                //'status_servicos' => 
-                // 'especialidade_do_servico' =>
-                // 'natureza_do_servico' =>
-                // 'gravidade' => 
-                // 'urgencia' => 
-                // 'tendencia' => 
-                'situacao' => 'aberto',
-                // 'link_foto' => 
-                // 'signature_receptor' => 
-                // 'anexo' => 
-                //'projeto_id' => 
-                //'check' => false,
-                'alarm' => 0,
+
+            // Criar a parada
+            MachineDowntime::create([
+                'equipment_id'     => $request->equipment_id,
+                'ordem_servico_id' => $request->ordem_servico_id,
+                'started_at'       => $request->started_at,
+                'failure_id'       => $request->falha_id,
+                'reason'           => $request->reason,
+                'user_id'          => auth()->id(), // 👈 quem iniciou,
+                'subcategoria_id' => $request->subcategoria_id
             ]);
+            //  atualiza a os  para parada de máquina
 
-            $ordem_servico = OrdemServico::find(2318);
-            $ordem_servico->check = 0;
-            $ordem_servico->save();
+            if ($request->falha_id == 2) {
+                $agora = Carbon::now('America/Sao_Paulo');
+                $data = $agora->toDateString();     // Y-m-d
+                $hora = $agora->format('H:i');    // 14:35
+                $ordem_servico = OrdemServico::find(2318);
+                $ordem_servico->update([
+                    // 'data_emissao' => 
+                    //'hora_emissao' =>
+                    'data_inicio' => $data,
+                    // 'hora_inicio' =>
+                    'data_fim' => $data,
+                    //'hora_fim' => 
+                    'equipamento_id' => $request->equipment_id, // ajuste conforme seus campos
+                    //'emissor' => 
+                    //'responsavel' => 
+                    'descricao' => 'Foi gerado uma parada as ' .    $hora . ', e definido como sendo Elétrica ou mecânica, favor verificar.',
+                    //'status_servicos' => 
+                    // 'especialidade_do_servico' =>
+                    // 'natureza_do_servico' =>
+                    // 'gravidade' => 
+                    // 'urgencia' => 
+                    // 'tendencia' => 
+                    'situacao' => 'aberto',
+                    // 'link_foto' => 
+                    // 'signature_receptor' => 
+                    // 'anexo' => 
+                    //'projeto_id' => 
+                    //'check' => false,
+                    'alarm' => 0,
+                ]);
+
+                $ordem_servico = OrdemServico::find(2318);
+                $ordem_servico->check = 0;
+                $ordem_servico->save();
+            }
+            return redirect()->back()->with('success', 'Parada iniciada com sucesso!');
         }
-
-        return redirect()->back()->with('success', 'Parada iniciada com sucesso!');
     }
     /**
      * Display the specified resource.

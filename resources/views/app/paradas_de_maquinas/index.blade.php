@@ -231,6 +231,16 @@
                     @endforeach
                 </select>
 
+                <!-- Tipo de falha   selecionada para filtros-->
+                <select name="falha_id" class="form-control" style="width:300px;">
+                    <option value="">Todas as Falhas</option>
+                    @foreach($flaiures as $fl)
+                    <option value="{{ $fl->id }}">
+                        {{ $fl->name }} - {{ Str::limit($fl->description, 40, '...') }}
+                    </option>
+                    @endforeach
+
+                </select>
                 <!-- Status -->
                 <select name="status" class="form-control" style="width:300px;">
                     <option value="">Todos Status</option>
@@ -278,22 +288,27 @@
 
                     <td>
                         <div>
-                            <span style="font-size:15px;font-weight:600;color:rgba(1,1,1,0.9);">#{{ $parada->id }} | {{ $parada->equipamento->nome ?? '-' }}</span>
+                            <h6 class="h6-gray">iD:#{{ $parada->id }} </h6>
+                            <hr>
+                            </span>
+                            <h4 class="h5-gray">#{{ $parada->equipamento->id ?? '-' }} | {{ $parada->equipamento->nome ?? '-' }}</h4>
                         </div>
                     </td>
                     <td>
                         <div>
                             <span style="font-size:12px;font-weight:600;color: gray;"> Iniciado:</span> {{ $parada->startedby->name ?? '-' }}
                         </div>
+                        <hr>
                         <div>
                             <span style="font-size:12px;font-weight:600;color: gray;"> Finalizado:</span> {{$parada->endedBy->name ?? '?' }}
                         </div>
                     </td>
                     <td>{{ $parada->ordem_servico_id ?? 'OS não anexada!' }}</td>
                     <td>{{ $parada->failure->name ?? 'N/A' }} <br>
-                        <span style="font-weight:600;font-size:12px;color:rgb(1,1,1,0.5)">Sub Categoria:</span>
+                        <hr>
+                        <h6 class="h6-black">Subcategoria: </h6>
+                        <h4 class="h4-gray">{{ $parada->machine_failure_subcategorie?->name ?? 'N/A' }}</h4>
 
-                        {{ $parada->machine_failure_subcategorie?->name ?? 'N/A' }}
 
                     </td>
                     <td>{{ $parada->reason ?: '-' }} <br>
@@ -336,7 +351,7 @@
 
                         {{ $time_stoped }}
                     </td>
-            
+
                     <td class="text-center">
                         @if($isActive)
                         <button type="button"
