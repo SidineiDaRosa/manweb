@@ -120,4 +120,56 @@
         <button type="button" class="close" data-bs-dismiss="alert" aria-label="Fechar" style="border:none; background:none; font-size:20px; font-weight:bold;"> &times; </button>
     </div>
     @endif
+    <!--Fontes Titulos e subtitulos-->
+    <h1 class="h1-gray">TÍTULO PRINCIPAL</h1>
+    <h2 class="h2-gray">Título secundário</h2>
+    <h3 class="h3-gray">Subtítulo</h3>
+    <h4 class="h4-gray">Texto</h4>
+    <h5 class="h5-gray">Texto médio</h5>
+    <h6 class="h6-gray">Texto Pequeno</h6>
+
+
+    <h1 class="h1-black">TÍTULO PRINCIPAL</h1>
+    <h2 class="h2-black">Título secundário</h2>
+    <h3 class="h3-black">Subtítulo</h3>
+    <h4 class="h4-black">Texto</h4>
+    <h5 class="h5-black">Texto médio</h5>
+    <h6 class="h6-black">Texto Pequeno</h6>
+
+    <h1 class="h1-green">TÍTULO PRINCIPAL</h1>
+    <h2 class="h2-green">Título secundário</h2>
+    <h3 class="h3-green">Subtítulo</h3>
+    <h4 class="h4-green">Texto</h4>
+    <h5 class="h5green">Texto médio</h5>
+    <h6 class="h6-green">Texto Pequeno</h6>
+
+    <h1 class="h1-warning">TÍTULO PRINCIPAL</h1>
+    <h2 class="h2-warning">Título secundário</h2>
+    <h3 class="h3-warning">Subtítulo</h3>
+    <h4 class="h4-warning">Texto</h4>
+    <h5 class="h5-warning">Texto médio</h5>
+    <h6 class="h6-warning">Texto Pequeno</h6>
+
+    <h1 class="h1-red">TÍTULO PRINCIPAL</h1>
+    <h2 class="h2-red">Título secundário</h2>
+    <h3 class="h3-red">Subtítulo</h3>
+    <h4 class="h4-red">Texto</h4>
+    <h5 class="h5-red">Texto médio</h5>
+    <h6 class="h6-red">Texto Pequeno</h6>
+
+    <h1 class="h1-orange">TÍTULO PRINCIPAL</h1>
+    <h2 class="h2-orange">Título secundário</h2>
+    <h3 class="h3-orange">Subtítulo</h3>
+    <h4 class="h4-orange">Texto</h4>
+    <h5 class="h5-orange">Texto médio</h5>
+    <h6 class="h6-orange">Texto Pequeno</h6>
+
+
+
+    <h1>Inputs</h1>
+    <input type="text" class="input" placeholder="Digite algo">
+
+    <input type="text" class="input input-error" placeholder="Campo com erro">
+
+    <input type="text" class="input input-success" placeholder="Campo válido">
 </main>

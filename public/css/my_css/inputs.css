@@ -1,0 +1,51 @@
+/* =========================
+   INPUT BASE
+========================= */
+
+.input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    background: #ffffff;
+    color: rgba(0, 0, 0, 0.8);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.input:hover {
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Focus */
+.input:focus {
+    border-color: rgba(37, 99, 235, 0.8);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.input-sm {
+    padding: 6px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+
+
+.input-error {
+    border-color: rgba(220, 38, 38, 0.8);
+}
+
+.input-error:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.input-success {
+    border-color: rgba(22, 163, 74, 0.8);
+}
+
+.input-success:focus {
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+}

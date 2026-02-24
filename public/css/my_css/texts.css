@@ -1,0 +1,125 @@
+/* =========================
+   GRAY
+========================= */
+.h1-gray,
+.h2-gray,
+.h3-gray,
+.h4-gray,
+.h5-gray,
+.h6-gray {
+    color: rgba(0, 0, 0, 0.5);
+
+}
+
+
+
+/* =========================
+   BLACK
+========================= */
+.h1-black,
+.h2-black,
+.h3-black,
+.h4-black,
+.h5-black,
+.h6-black {
+    color: rgba(0, 0, 0, 0.9);
+}
+
+
+/* =========================
+   GREEN
+========================= */
+.h1-green,
+.h2-green,
+.h3-green,
+.h4-green,
+.h5-green,
+.h6-green {
+    color: #16a34a;
+}
+
+
+/* =========================
+   WARNING (AMARELO)
+========================= */
+.h1-warning,
+.h2-warning,
+.h3-warning,
+.h4-warning,
+.h5-warning,
+.h6-warning {
+    color: #eab308;
+}
+
+
+/* =========================
+   RED
+========================= */
+.h1-red,
+.h2-red,
+.h3-red,
+.h4-red,
+.h5-red,
+.h6-red {
+    color: #dc2626;
+}
+
+
+
+/* =========================
+   ORANGE
+========================= */
+.h1-orange,
+.h2-orange,
+.h3-orange,
+.h4-orange,
+.h5-orange,
+.h6-orange {
+    color: #f97316;
+    /* laranja moderno */
+}
+
+/* =====================================
+   PADRÃO TIPOGRÁFICO MODERNO
+===================================== */
+
+h1 {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+h5 {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+h6 {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Remove espaçamento exagerado padrão */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    line-height: 1.3;
+}

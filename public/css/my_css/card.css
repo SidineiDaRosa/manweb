@@ -125,3 +125,9 @@
     color: rgba(85, 79, 79, 0.7);
     line-height: 1.1;
 }
+
+/*hover*/
+.card-inf-md,
+.card-inf-sm {
+    transition: all 0.25s ease;
+}

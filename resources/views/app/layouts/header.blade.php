@@ -14,6 +14,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/my_css/button.css') }}">
     <link rel="stylesheet" href="{{ asset('css/my_css/card.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/my_css/texts.css') }}">
+     <link rel="stylesheet" href="{{ asset('css/my_css/inputs.css') }}">
 
     <style>
         /* Sidebar */

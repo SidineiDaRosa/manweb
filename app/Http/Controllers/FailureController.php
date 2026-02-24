@@ -90,18 +90,20 @@ class FailureController extends Controller
     }
     public function  subcategoriesstore(Request $request)
     {
+
         try {
 
             $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'failure_id' => 'required|exists:failures,id'
+                'failure_id' => 'required|exists:machine_failures,id'
             ]);
 
             MachineFailureSubcategory::create([
                 'name' => $request->name,
                 'description' => $request->description,
-                'failure_id' => $request->failure_id,
+                'machine_failure_id' => $request->failure_id,
+                'active' =>1,
             ]);
 
             return back()->with('success', 'Subcategoria criada com sucesso!');
