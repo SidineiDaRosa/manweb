@@ -37,7 +37,7 @@
                     <!-- Ordem de Serviço -->
                     <div class="mb-3">
                         <label class="form-label">Ordem de Serviço</label>
-                        <select name="ordem_servico_id" class="form-control"  id="edit_ordem" disabled>
+                        <select name="ordem_servico_id" class="form-control" id="edit_ordem" disabled>
                             @foreach($ordens_servicos as $ordem)
                             <option value="{{ $ordem->id }}">
                                 OS #{{ $ordem->id }} - {{ Str::limit($ordem->descricao, 40, '...') ?? 'Sem título' }} {{ $ordem->situacao }}
@@ -58,17 +58,22 @@
                         <input type="datetime-local" name="ended_at" class="form-control" id="edit_ended" required readonly>
                     </div>
 
-                    <!-- Falhas -->
+                    <!-- Subcategoria -->
                     <div class="mb-3">
                         <label class="form-label">Falha</label>
-                        <option value=""></option>
-                        <select name="falha_id" class="form-control" required id="edit_falha" disabled >
+                        <select name="falha_id" class="form-control" required id="edit_falha" disabled>
                             @foreach($flaiures as $flaiure)
                             <option value="{{ $flaiure->id }}">{{ $flaiure->name }} - {{ Str::limit($flaiure->description, 40, '...') }}</option>
                             @endforeach
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Subcategoria</label>
+                        <select name="subcategoria_id" class="form-control" id="edit_subcategoria" disabled>
+                            <!-- Opções carregadas via JS -->
+                        </select>
+                    </div>
                     <!-- Motivo -->
                     <div class="mb-3">
                         <label class="form-label">Motivo</label>
@@ -86,63 +91,111 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const modal = new bootstrap.Modal(document.getElementById('modalEditParada'));
+
+        const modal = document.getElementById('modalEditParada');
         const form = document.getElementById('formEditParada');
 
+        const subcategories = @json($MachineFailureSubcategories);
+
+        const falhaSelect = document.getElementById('edit_falha');
+        const subcategoriaSelect = document.getElementById('edit_subcategoria');
+        const equipmentSelect = document.getElementById('edit_equipment');
+        const ordemSelect = document.getElementById('edit_ordem');
+        const reasonField = document.getElementById('edit_reason');
+        const startedField = document.getElementById('edit_started');
+        const endedField = document.getElementById('edit_ended');
+
+        // Função para formatar datas para datetime-local
         function formatDateTimeLocal(dateStr) {
             const date = new Date(dateStr);
-            // Ajusta o fuso horário local
             const offset = date.getTimezoneOffset() * 60000;
             return new Date(date.getTime() - offset).toISOString().slice(0, 16);
         }
 
+        // Função para carregar subcategorias filtradas
+        function carregarSubcategorias(falhaId, subcategoriaSelecionada = null) {
+            subcategoriaSelect.innerHTML = '';
+
+            if (!falhaId) {
+                subcategoriaSelect.innerHTML = '<option value="">Selecione uma falha primeiro</option>';
+                subcategoriaSelect.disabled = true;
+                return;
+            }
+
+            const filtered = subcategories.filter(sub => sub.machine_failure_id == parseInt(falhaId));
+
+            if (filtered.length > 0) {
+                filtered.forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub.id;
+                    option.textContent = sub.name;
+
+                    if (subcategoriaSelecionada && sub.id == parseInt(subcategoriaSelecionada)) {
+                        option.selected = true;
+                    }
+
+                    subcategoriaSelect.appendChild(option);
+                });
+                subcategoriaSelect.disabled = false;
+            } else {
+                subcategoriaSelect.innerHTML = '<option value="">Nenhuma subcategoria encontrada</option>';
+                subcategoriaSelect.disabled = true;
+            }
+        }
+
+        // Abrir modal ao clicar no botão
         document.querySelectorAll('.btn-edit-parada').forEach(button => {
             button.addEventListener('click', function() {
+
                 const id = this.dataset.id;
                 const equipment = this.dataset.equipment;
                 const ordem = this.dataset.ordem;
                 const failure = this.dataset.failure;
+                const subcategoria = this.dataset.subcategoria;
                 const reason = this.dataset.reason;
                 const started = this.dataset.started;
                 const ended = this.dataset.ended;
 
-                // Atualiza a action do form para o ID correto
-                form.action = `/machine-downtime/${id}`; // ajuste se a rota for diferente
+                // Define a action do formulário
+                form.action = `/machine-downtime/${id}`;
 
-                // Popula os campos
-                document.getElementById('edit_equipment').value = equipment;
-                document.getElementById('edit_ordem').value = ordem;
-                document.getElementById('edit_falha').value = failure;
+                // Preenche os campos
+                equipmentSelect.value = equipment;
+                ordemSelect.value = ordem;
+                falhaSelect.value = failure;
+                reasonField.value = reason || '';
+                startedField.value = started ? formatDateTimeLocal(started) : formatDateTimeLocal(new Date());
+                endedField.value = ended ? formatDateTimeLocal(ended) : formatDateTimeLocal(new Date());
 
-                document.getElementById('edit_reason').value = reason || '';
+                // Carrega subcategorias e seleciona a atual
+                carregarSubcategorias(failure, subcategoria);
 
-                // Início da parada (readonly) com fuso ajustado
-                document.getElementById('edit_started').value = started ?
-                    formatDateTimeLocal(started) :
-                    formatDateTimeLocal(new Date());
+                // Reseta campos para leitura
+                modal.querySelectorAll(' select, textarea').forEach(c => c.setAttribute('disabled', true));
+                form.querySelector('button[type="submit"]').setAttribute('disabled', true);
 
-                // Fim da parada (se vazio, hora atual) com fuso ajustado
-                document.getElementById('edit_ended').value = ended ?
-                    formatDateTimeLocal(ended) :
-                    formatDateTimeLocal(new Date());
-
-                // Abre o modal
-                modal.show();
+                // Mostra o modal
+                const bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
             });
         });
+
+        // Atualiza subcategoria se o usuário mudar a falha
+        falhaSelect.addEventListener('change', function() {
+            carregarSubcategorias(this.value);
+        });
+
     });
-</script>
-<script>
+
+    // Função para validar senha e liberar edição
     function validarSenha() {
+        const senha = document.getElementById('senhaLiberacao').value;
+        const mensagem = document.getElementById('msgSenha');
+        const modal = document.getElementById('modalEditParada');
 
-        let senha = document.getElementById('senhaLiberacao').value;
-        let mensagem = document.getElementById('msgSenha');
-        let modal = document.getElementById('modalEditParada');
-
-        if (senha !== '1234' && senha !== '12345') { // 🔐 depois troque por validação backend
+        if (senha !== '1234' && senha !== '12345') { // 🔐 trocar para backend depois
             mensagem.classList.remove('d-none');
             return;
         }
@@ -153,15 +206,12 @@
         modal.querySelectorAll('input, textarea, select').forEach(campo => {
             if (campo.id !== 'senhaLiberacao') {
                 campo.removeAttribute('disabled');
-                // campo.removeAttribute('readonly');
-                // Habilita botão salvar
-                  modal.querySelector('button[type="submit"]').removeAttribute('disabled');
-
             }
         });
 
-        alert('Edição liberada!');
-       
-    }
+        // Habilita botão salvar
+        modal.querySelector('button[type="submit"]').removeAttribute('disabled');
 
+        alert('Edição liberada!');
+    }
 </script>

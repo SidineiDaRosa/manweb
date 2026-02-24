@@ -291,9 +291,9 @@
                     </td>
                     <td>{{ $parada->ordem_servico_id ?? 'OS não anexada!' }}</td>
                     <td>{{ $parada->failure->name ?? 'N/A' }} <br>
-                    <span style="font-weight:600;font-size:12px;color:rgb(1,1,1,0.5)">Sub Categoria:</span>
-                    
-                         {{ $parada->machine_failure_subcategorie?->name ?? 'N/A' }}
+                        <span style="font-weight:600;font-size:12px;color:rgb(1,1,1,0.5)">Sub Categoria:</span>
+
+                        {{ $parada->machine_failure_subcategorie?->name ?? 'N/A' }}
 
                     </td>
                     <td>{{ $parada->reason ?: '-' }} <br>
@@ -336,7 +336,7 @@
 
                         {{ $time_stoped }}
                     </td>
-
+            
                     <td class="text-center">
                         @if($isActive)
                         <button type="button"
@@ -344,11 +344,12 @@
                             data-id="{{ $parada->id }}"
                             data-equipment="{{ $parada->equipment_id }}"
                             data-ordem="{{ $parada->ordem_servico_id }}"
-                            data-falha="{{ $parada->falha_id }}"
+                            data-failure="{{ $parada->failure_id}}"
+                            data-subcategoria="{{  $parada->machine_failure_subcategorie?->id}}"
                             data-reason="{{ $parada->reason }}"
                             data-started="{{ $parada->started_at }}"
-                            data-ended="{{ $parada->ended_at }}"
-                            data-failure="{{ $parada->failure_id}}">
+                            data-ended="{{ $parada->ended_at }}">
+
                             <i class="bi bi-check-circle"></i> Resolver
                         </button>
                         @else
@@ -363,9 +364,7 @@
                             Novo Evento
                         </button>
                     </td>
-
                 </tr>
-
                 @empty
                 <tr>
                     <td colspan="10" class="text-center">
