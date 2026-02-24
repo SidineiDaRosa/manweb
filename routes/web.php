@@ -759,11 +759,14 @@ Route::prefix('machine-downtime')->group(function () {
         ->name('machine_downtime.kpi');
     Route::delete('/{id}', [ParadaEquipamentoController::class, 'kapi_downtime'])
         ->name('machine_downtime.kpi');
+    //Busca status de paradas
 
     // Cria um evento 
     Route::post('/machine-downtime-events', [ParadaEquipamentoController::class, 'store_downtime_event'])
         ->name('machine-downtime-events.store');
 });
+Route::get('/machine-downtime-status', [ParadaEquipamentoController::class, 'downtime_status_cont'])
+    ->name('machine.downtime.status');
 //-------------------------------------------------------------//
 //                Paradas de máquinas falhas categorias
 //-------------------------------------------------------------//

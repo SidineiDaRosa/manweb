@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/my_css/button.css') }}">
     <link rel="stylesheet" href="{{ asset('css/my_css/card.css') }}">
     <link rel="stylesheet" href="{{ asset('css/my_css/texts.css') }}">
-     <link rel="stylesheet" href="{{ asset('css/my_css/inputs.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/my_css/inputs.css') }}">
 
     <style>
         /* Sidebar */
@@ -258,205 +258,210 @@
     @if (auth()->check() && auth()->user()->level <= 2)
         <div class="notifications">
 
-            @if (auth()->check() && auth()->user()->id == 3)
-                <div class="notification">
-                    <a href="{{ route('notificacoes.index') }}">
-                        <i class="bi bi-exclamation-triangle-fill"></i>
-                        <span class="badge-mini" id="alarms-badge">0</span>
-                    </a>
-                </div>
-            @endif
-
-            <div class="notification">
-                <a href="{{ route('lubrificacao.index') }}">
-                    <i class="bi bi-droplet-half"></i>
-                    <span class="badge-mini" id="lubrificacao-badge">0</span>
-                </a>
-            </div>
-
-            <div class="notification">
-                <a href="/check-list-index">
-                    <i class="bi bi-card-checklist"></i>
-                    <span class="badge-mini" id="checklist-badge">0</span>
-                </a>
-            </div>
-
-            <div class="notification">
-                <a href="/solicitacoes-os">
-                    <i class="bi bi-card-text"></i>
-                    <span class="badge-mini" id="solicitacoes-badge">0</span>
-                </a>
-            </div>
-
-            <div class="notification">
-                <a href="{{ route('groups.index') }}">
-                    <i class="bi bi-chat-dots-fill"></i>
-                    <span class="badge-mini" id="messages-badge">0</span>
-                </a>
-            </div>
-
+        @if (auth()->check() && auth()->user()->id == 3)
+        <div class="notification">
+            <a href="{{ route('notificacoes.index') }}">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span class="badge-mini" id="alarms-badge">0</span>
+            </a>
         </div>
-    @endif
-    <!-- Usuário -->
-    <div class="user-menu ml-3">
-        <div class="user-menu-btn" id="userMenuBtn">
-            {{ Auth::user()->name }}
-            <i class="icofont-simple-down mx-2"></i>
+        @endif
+        <div class="notification">
+            <a href="{{ route('machine_downtime.index') }}">
+                <i class="bi bi-exclamation-diamond"></i>
+                <span class="badge-mini" id="machine_downtime">0</span>
+            </a>
+        </div>
+        <div class="notification">
+            <a href="{{ route('lubrificacao.index') }}">
+                <i class="bi bi-droplet-half"></i>
+                <span class="badge-mini" id="lubrificacao-badge">0</span>
+            </a>
         </div>
 
-        <div class="user-menu-box" id="userMenuBox">
-            <ul>
-                <li>
-                    <a href="#"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Sair
-                    </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                        @csrf
-                    </form>
-                </li>
-            </ul>
+        <div class="notification">
+            <a href="/check-list-index">
+                <i class="bi bi-card-checklist"></i>
+                <span class="badge-mini" id="checklist-badge">0</span>
+            </a>
         </div>
-    </div>
 
-    <style>
-        .user-menu {
-            position: relative;
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-        }
+        <div class="notification">
+            <a href="/solicitacoes-os">
+                <i class="bi bi-card-text"></i>
+                <span class="badge-mini" id="solicitacoes-badge">0</span>
+            </a>
+        </div>
 
-        .user-menu-btn {
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
+        <div class="notification">
+            <a href="{{ route('groups.index') }}">
+                <i class="bi bi-chat-dots-fill"></i>
+                <span class="badge-mini" id="messages-badge">0</span>
+            </a>
+        </div>
 
-        .user-menu-btn:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
+        </div>
+        @endif
+        <!-- Usuário -->
+        <div class="user-menu ml-3">
+            <div class="user-menu-btn" id="userMenuBtn">
+                {{ Auth::user()->name }}
+                <i class="icofont-simple-down mx-2"></i>
+            </div>
 
-        .user-menu-box {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 110%;
-            background: #ffffff;
-            min-width: 160px;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
-            z-index: 9999;
-            padding: 6px 0;
-        }
+            <div class="user-menu-box" id="userMenuBox">
+                <ul>
+                    <li>
+                        <a href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Sair
+                        </a>
 
-        .user-menu-box.active {
-            display: block;
-        }
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-        /* lista */
-        .user-menu-box ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .user-menu-box li a {
-            display: block;
-            padding: 10px 16px;
-            color: #333;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .user-menu-box li a:hover {
-            background: #f5f5f5;
-            color: #000;
-        }
-
-        .notifications {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .notification {
-            position: relative;
-        }
-
-        .notification a {
-            color: white;
-            font-size: 22px;
-            position: relative;
-            transition: transform 0.2s ease;
-        }
-
-        .notification a:hover {
-            transform: scale(1.1);
-        }
-
-        /* Badge estilo Facebook */
-        .badge-mini {
-            position: absolute;
-            top: -6px;
-            right: -8px;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 50px;
-            background: #e41e3f;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #343a40;
-            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Quando for zero */
-        .badge-mini.zero {
-            background: #28a745;
-        }
-
-        /* Aviso */
-        .badge-mini.warning {
-            background: #ffc107;
-            color: #000;
-        }
-
-        /* Notificação pulsando */
-        .badge-mini.non-zero {
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
+        <style>
+            .user-menu {
+                position: relative;
+                display: flex;
+                align-items: center;
+                font-weight: 500;
             }
 
-            50% {
-                transform: scale(1.2);
+            .user-menu-btn {
+                cursor: pointer;
+                padding: 6px 12px;
+                border-radius: 6px;
+                transition: background 0.2s;
             }
 
-            100% {
-                transform: scale(1);
+            .user-menu-btn:hover {
+                background: rgba(0, 0, 0, 0.05);
             }
-        }
-    </style>
-    <script>
-        document.getElementById('userMenuBtn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.getElementById('userMenuBox').classList.toggle('active');
-        });
 
-        document.addEventListener('click', function() {
-            document.getElementById('userMenuBox').classList.remove('active');
-        });
-    </script>
+            .user-menu-box {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 110%;
+                background: #ffffff;
+                min-width: 160px;
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+                z-index: 9999;
+                padding: 6px 0;
+            }
+
+            .user-menu-box.active {
+                display: block;
+            }
+
+            /* lista */
+            .user-menu-box ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .user-menu-box li a {
+                display: block;
+                padding: 10px 16px;
+                color: #333;
+                text-decoration: none;
+                transition: background 0.2s, color 0.2s;
+            }
+
+            .user-menu-box li a:hover {
+                background: #f5f5f5;
+                color: #000;
+            }
+
+            .notifications {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+            }
+
+            .notification {
+                position: relative;
+            }
+
+            .notification a {
+                color: white;
+                font-size: 22px;
+                position: relative;
+                transition: transform 0.2s ease;
+            }
+
+            .notification a:hover {
+                transform: scale(1.1);
+            }
+
+            /* Badge estilo Facebook */
+            .badge-mini {
+                position: absolute;
+                top: -6px;
+                right: -8px;
+                min-width: 18px;
+                height: 18px;
+                padding: 0 5px;
+                border-radius: 50px;
+                background: #e41e3f;
+                color: white;
+                font-size: 11px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid #343a40;
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Quando for zero */
+            .badge-mini.zero {
+                background: #28a745;
+            }
+
+            /* Aviso */
+            .badge-mini.warning {
+                background: #ffc107;
+                color: #000;
+            }
+
+            /* Notificação pulsando */
+            .badge-mini.non-zero {
+                animation: pulse 1.5s infinite;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+
+                50% {
+                    transform: scale(1.2);
+                }
+
+                100% {
+                    transform: scale(1);
+                }
+            }
+        </style>
+        <script>
+            document.getElementById('userMenuBtn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('userMenuBox').classList.toggle('active');
+            });
+
+            document.addEventListener('click', function() {
+                document.getElementById('userMenuBox').classList.remove('active');
+            });
+        </script>
 
 
 
@@ -506,6 +511,7 @@
         atualizarBadge('alarms-badge', '/alarms-count', 'zero', 'non-zero', 'yellow');
         atualizarBadge('messages-badge', '/messages-count', 'zero', 'non-zero', 'yellow');
         atualizarBadge('lubrificacao-badge', '/lubrificacao-count', 'zero', 'non-zero', 'yellow');
+        atualizarBadge('machine_downtime', '/machine-downtime-status', 'zero', 'non-zero', 'yellow');
     }, 30000);
 
     // Atualiza imediatamente
@@ -514,6 +520,8 @@
     atualizarBadge('alarms-badge', '/alarms-count', 'zero', 'non-zero', 'yellow');
     atualizarBadge('messages-badge', '/messages-count', 'zero', 'non-zero', 'yellow');
     atualizarBadge('lubrificacao-badge', '/lubrificacao-count', 'zero', 'non-zero', 'yellow');
+    atualizarBadge('machine_downtime', '/machine-downtime-status', 'zero', 'non-zero', 'yellow');
 </script>
+
 
 </html>

@@ -303,4 +303,16 @@ class ParadaEquipamentoController extends Controller
 
         return redirect()->back()->with('success', 'Evento criado com sucesso!');
     }
+    //  Busca  status de paradas  e conta
+    public function downtime_status_cont()
+    {
+        // Conta todas as paradas que ainda não têm ended_at (null ou vazio)
+        $paradas_ativas = MachineDowntime::whereNull('ended_at') // null
+            ->orWhere('ended_at', '') // string vazia
+            ->count();
+
+        return response()->json([
+            'pendentes' => $paradas_ativas
+        ]);
+    }
 }
