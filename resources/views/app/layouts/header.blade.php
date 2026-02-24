@@ -265,6 +265,13 @@
                 <span class="badge-mini" id="alarms-badge">0</span>
             </a>
         </div>
+        <div class="notification">
+            <a href="{{ route('groups.index') }}">
+                <i class="bi bi-chat-dots-fill"></i>
+                <span class="badge-mini" id="messages-badge">0</span>
+            </a>
+        </div>
+
         @endif
         <div class="notification">
             <a href="{{ route('machine_downtime.index') }}">
@@ -293,12 +300,6 @@
             </a>
         </div>
 
-        <div class="notification">
-            <a href="{{ route('groups.index') }}">
-                <i class="bi bi-chat-dots-fill"></i>
-                <span class="badge-mini" id="messages-badge">0</span>
-            </a>
-        </div>
 
         </div>
         @endif
