@@ -367,9 +367,6 @@
 
                             <i class="bi bi-check-circle"></i> Resolver
                         </button>
-                        @else
-                        -
-                        @endif
 
                         <button type="button" class="btn-inf btn-inf-md btn-inf-orange"
                             data-bs-toggle="modal"
@@ -378,6 +375,10 @@
                             <i class="bi bi-plus-circle"></i>
                             Novo Evento
                         </button>
+                        @else
+                        -
+                        @endif
+
                     </td>
                 </tr>
                 @empty
