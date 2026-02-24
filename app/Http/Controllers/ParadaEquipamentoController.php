@@ -72,8 +72,12 @@ class ParadaEquipamentoController extends Controller
         }
 
         // Ordenar e limitar resultados
-        $paradas = $query->orderBy('created_at', 'desc')
-            ->limit(8)
+        $paradas = $query
+            ->where(function ($q) {
+                $q->whereNull('ended_at')
+                    ->orWhere('ended_at', '');
+            })
+            ->orderBy('created_at', 'desc')
             ->get();
 
         // Retornar view com todos os dados
