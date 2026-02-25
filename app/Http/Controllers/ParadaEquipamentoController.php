@@ -24,17 +24,23 @@ class ParadaEquipamentoController extends Controller
      * @return \Illuminate\Http\Response
      */ public function index(Request $request)
     {
-        // Carregar dados base
+        // ===============================
+        // 📌 Carregar dados base
+        // ===============================
         $machine_downtime_events = MachineDowntimeEvent::all();
         $MachineFailureSubcategories = MachineFailureSubcategory::all();
         $flaiures = MachineFailure::all();
         $equipamentos = Equipamento::where('estado_do_ativo', 'ativado')->get();
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento'])->get();
 
-        // Query base das paradas
+        // ===============================
+        // 📌 Query base
+        // ===============================
         $query = MachineDowntime::query();
 
+        // ===============================
         // 🔎 Filtro por equipamento
+        // ===============================
         if ($request->filled('equipamento_id')) {
             $query->where('equipment_id', $request->equipamento_id);
         }
@@ -43,44 +49,52 @@ class ParadaEquipamentoController extends Controller
         if ($request->filled('falha_id')) {
             $query->where('failure_id', $request->falha_id);
         }
-        // 🔎 Filtro por subcategoria (opcional)
+
+        // 🔎 Filtro por subcategoria
         if ($request->filled('subcategoria_id')) {
             $query->where('subcategoria_id', $request->subcategoria_id);
         }
 
-        // 🔎 Filtro por descrição/motivo
+        // 🔎 Filtro por descrição
         if ($request->filled('descricao')) {
             $query->where('reason', 'like', '%' . $request->descricao . '%');
         }
 
+        // ===============================
         // 🔎 Filtro por status
+        // ===============================
         if ($request->filled('status')) {
+
             if ($request->status === 'ativo') {
+                // Ativo = não tem data de encerramento
                 $query->whereNull('ended_at');
             } elseif ($request->status === 'finalizado') {
+                // Finalizado = tem data de encerramento
                 $query->whereNotNull('ended_at');
             }
         }
 
+        // ===============================
         // 🔎 Filtro por período
+        // ===============================
         if ($request->filled('data_inicio')) {
-            $query->where('started_at', '>=', $request->data_inicio);
+            $query->whereDate('started_at', '>=', $request->data_inicio);
         }
 
         if ($request->filled('data_fim')) {
-            $query->where('started_at', '<=', $request->data_fim);
+            $query->whereDate('started_at', '<=', $request->data_fim);
         }
 
-        // Ordenar e limitar resultados
+        // ===============================
+        // 📌 Ordenação e execução
+        // ===============================
         $paradas = $query
-            ->where(function ($q) {
-                $q->whereNull('ended_at')
-                    ->orWhere('ended_at', '');
-            })
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Retornar view com todos os dados
+        // ===============================
+        // 📌 Retorno da view
+        // ===============================
         return view('app.paradas_de_maquinas.index', [
             'paradas' => $paradas,
             'equipamentos' => $equipamentos,
@@ -88,7 +102,8 @@ class ParadaEquipamentoController extends Controller
             'flaiures' => $flaiures,
             'MachineFailureSubcategories' => $MachineFailureSubcategories,
             'machine_downtime_events' => $machine_downtime_events,
-            // valores selecionados no filtro para manter selects preenchidos
+
+            // manter filtros selecionados
             'selected_equipment' => $request->equipamento_id,
             'selected_falha' => $request->falha_id,
             'selected_subcategoria' => $request->subcategoria_id,
@@ -98,8 +113,6 @@ class ParadaEquipamentoController extends Controller
             'descricao' => $request->descricao
         ]);
     }
-
-
     /**
      * Show the form for creating a new resource.
      *
