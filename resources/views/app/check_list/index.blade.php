@@ -33,7 +33,7 @@
         <hr>
         @if(isset($contChListMec))
         <h3 class="h3-gray">Pendências</h3>
-        <div style="display:flex;flex-direction:row;">
+        <div class="header-grid">
 
             <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Mecanico'])}}" class="btn-inf btn-inf-md btn-inf-brown"><i class="bi bi-wrench-adjustable"></i> Mecânico: {{$contChListMec}}</a>
 
