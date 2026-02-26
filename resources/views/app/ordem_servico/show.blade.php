@@ -238,19 +238,20 @@
                     {{-- Box 1 --}}
                     <div class="item">
                         <div class="box-conteudo">
-                            <div class="titulo">ID:</div>
-                            <hr>
-                            <div id=idOs class="conteudo" style="color:rgb(53, 77, 156);font-size:20px;font:bold;">
-                                {{ $ordem_servico->id }}
+                            <div style="display: flex;flex-direction:row;" >
+                               <h4 class="h3-gray">ID: </h4> &nbsp; <h3 class="h3-green">#{{ $ordem_servico->id }}</h3> 
                             </div>
-                            <div class="titulo">Emissão</div>
+                            
+                            <div style="display: flex;flex-direction:row;">
+                               <h4 class="h3-gray">Emissão: </h4>&nbsp;
+                                <h4 class="h4-green">{{ date('d/m/Y', strtotime($ordem_servico['data_emissao'])) }}>
+                                    &nbsp ás &nbsp {{ date('H:i', strtotime($ordem_servico['hora_emissao']))}}</h4>  
+                                    </div>
                             <hr>
-                            <div class="conteudo" style="color: #2174d4;">
-                                {{ date('d/m/Y', strtotime($ordem_servico['data_emissao'])) }}<span class="span-texto-sm ">
-                                    &nbsp às &nbsp</span> {{ $ordem_servico->hora_emissao }}</div>
+                           
                             <div class="titulo"> Empresa</div>
                             <hr>
-                            <div class="conteudo">{{ $ordem_servico->Empresa->razao_social }}</div>
+                            <div class="conteudo">{{ $ordem_servico->Empresa->name1}}</div>
 
                             <div class="titulo">Patrimônio/Ativo</div>
                             <hr>
@@ -667,13 +668,13 @@
                         + Lançar Serviço
                     </button>
 
-                    <a id="btn-add-task" class="btn btn-outline-primary mb-1"
+                    <a id="btn-add-task" class="btn-inf btn-inf-blue-light"
                         href="{{ route('Servicos-executado.create', ['ordem_servico' => $ordem_servico->id]) }}"
                         style="width: 300px;">
                         <img src="{{ asset('img/icon/add_list.png') }}" alt=""
                             style="height: 25px; width: 25px;"> 🛠️ Adicionar serviço
                     </a>
-                    <button id="enviar" class="btn btn-outline-secondary mb-1" data-bs-toggle="modal"
+                    <button id="enviar" class="btn-inf btn-inf-md btn-inf-green" data-bs-toggle="modal"
                         data-bs-target="#confirmModal" style="width:300px;">
                         <img src="{{ asset('img/icon/finished-work.png') }}" alt=""
                             style="height:25px; width:25px;">
@@ -684,13 +685,13 @@
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
                         rel="stylesheet">
 
-                    <button id="bt_iniciar_os" class="btn btn-outline-success mb-1" onclick="StartOs()"
+                    <button id="bt_iniciar_os" class="btn-inf btn-inf-blue-dark" onclick="StartOs()"
                         style="width:300px;">
                         <i class="bi bi-caret-right-fill"></i>
                         Iniciar OS
                     </button>
                 @endif
-                <button type="button" id="gerarPdfButton" class="btn btn-outline-primary mb-1"
+                <button type="button" id="gerarPdfButton" class="btn-inf btn-inf-gray"
                     style="width:300px;">Gerar PDF
                     <i class="bi bi-filetype-pdf"></i>
                 </button>
@@ -715,7 +716,7 @@
                     @if ($produtos->isNotEmpty())
                         @foreach ($ped_saidas as $ped_saida)
                             <div>
-                                <div style="background-color: #2174d4;">
+                                <div class="btn-inf btn-inf-sm btn-inf-brown" style="width:100%;">
                                     <h5>Pedido: {{ $ped_saida->id }}</h5>
                                 </div>
 
@@ -774,16 +775,16 @@
                     @endif
                 @endisset
             @else
-                <div style="background-color: #78c799ff;">
+                <div class="btn-inf btn-inf-sm btn-inf-orange">
                     <h5>
-                        <p>Nenhum pedido encontrado.</p>
+                      <i class="bi bi-exclamation-circle"></i> Nenhum pedido encontrado
                     </h5>
                 </div>
             @endif
         @endisset
         <!--Fim Pedidos de saídas-->
 
-        <hr>
+        <hr class="hr-margin-0">
         <div id="mensagem"></div>
         <script>
             function StartOs() {
@@ -825,7 +826,7 @@
         </script>
         </div>
         <!-- arquivo resources/views/atualizar-registro.blade.php -->
-        {{ $ordem_servico->link_foto }}
+       
         @php
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             $extension = pathinfo($ordem_servico->link_foto, PATHINFO_EXTENSION);
@@ -835,7 +836,9 @@
             !empty($ordem_servico->link_foto) &&
                 in_array($extension, $allowedExtensions) &&
                 file_exists(public_path($ordem_servico->link_foto)))
+
             <div class="container" style="margin-top:20px;">
+               <h6 class="h6-gray"> {{ $ordem_servico->link_foto }}</h6> 
                 <img src="/{{ $ordem_servico->link_foto }}" alt="Imagem da Ordem de Serviço" id="imagem">
             </div>
             <style>
@@ -858,7 +861,7 @@
                 }
             </style>
         @else
-            <p>Imagem não disponível</p>
+            <button class="btn-inf btn-inf-sm btn-inf-orange"><i class="bi bi-exclamation-circle"></i>Não há imagens anexadas</button>
         @endif
 
     @endsection

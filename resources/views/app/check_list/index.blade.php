@@ -2,50 +2,47 @@
 
 @section('content')
 <main class="content">
-    <div class="card">
-        <div class="card-header pb-2">
-            <a class="btn btn-outline-dark mb-1" href="{{ route('app.home') }}" style="width:200px;">
+     <div class="header-grid">
+            <a class="btn-inf btn-inf-md btn-inf-gray" href="{{ route('app.home') }}" style="width:200px;">
                 <i class="icofont-dashboard"></i> Dashboard
             </a>
             <a href="{{ route('checklist.executado.get') }}"
-                class="btn btn-outline-primary mb-1">
+                class="btn-inf btn-inf-md btn-inf-blue-dark">
                 <i class="bi bi-list-check"></i>
                 &nbsp; Checklists
             </a>
+            {{--//------------------------------------------------//--}}
+            {{--Filtrar o check list por equipamento--}}
+            {{--//------------------------------------------------//--}}
+            <form action="{{ route('check-list-show') }}" method="POST" id="form_fornecedor" style="width:350px;">
+                @csrf
+                <select name="equipamento_id" id="equipamento_id" class="form-control"
+                    onchange="document.getElementById('form_fornecedor').submit();">
+                    <option value=""> --Selecione O Ativo--</option>
+                    @foreach ($equipamentos as $equipamento_f)
+                    <option value="{{ $equipamento_f->id }}"
+                        {{ isset($fornecedor) ? ($fornecedor == $equipamento_f->id ? 'selected' : '') : '' }}>
+                        {{ $equipamento_f->nome }}
+                    </option>
+                    @endforeach
+                </select>
+            </form>
         </div>
+    <div class="card">
+       
         <hr>
-        {{--//------------------------------------------------//--}}
-        {{--Filtrar o check list por equipamento--}}
-        {{--//------------------------------------------------//--}}
-        <form action="{{ route('check-list-show') }}" method="POST" id="form_fornecedor">
-            @csrf
-            <select name="equipamento_id" id="equipamento_id" class="form-control"
-                onchange="document.getElementById('form_fornecedor').submit();">
-                <option value=""> --Selecione O Ativo--</option>
-                @foreach ($equipamentos as $equipamento_f)
-                <option value="{{ $equipamento_f->id }}"
-                    {{ isset($fornecedor) ? ($fornecedor == $equipamento_f->id ? 'selected' : '') : '' }}>
-                    {{ $equipamento_f->nome }}
-                </option>
-                @endforeach
-            </select>
-        </form>
-        <br>
         @if(isset($contChListMec))
-        <span style="font-family: Arial, Helvetica, sans-serif;height:40px;font-weight:bold;">Check-Lists pendentes</span>
+        <h3 class="h3-gray">Pendências</h3>
         <div style="display:flex;flex-direction:row;">
-            <div class="btn btn-dark mb-1" style="width:200px;margin:5px;">
-                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Mecanico'])}}" style="color: white; text-decoration: none;">Mecânico: {{$contChListMec}}</a>
-            </div>
-            <div class="btn btn-warning mb-1" style="width:200px;margin:5px;">
-                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Eletrico'])}}" style="color: white; text-decoration: none;">Elétrico: {{$contChListElet}}</a>
-            </div>
-            <div class="btn btn-primary mb-1" style="width:200px;margin:5px;">
-                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Civil'])}}" style="color: white; text-decoration: none;">Civíl: {{$contChListCiv}}</a>
-            </div>
-            <div class="btn btn-primary mb-1" style="width:200px;margin:5px;">
-                <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Operacional'])}}" style="color: white; text-decoration: none;">Operacional: {{$contChListOpe}}</a>
-            </div>
+
+            <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Mecanico'])}}" class="btn-inf btn-inf-md btn-inf-brown"><i class="bi bi-wrench-adjustable"></i> Mecânico: {{$contChListMec}}</a>
+
+            <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Eletrico'])}}" class="btn-inf btn-inf-md btn-inf-warning"><i class="bi bi-lightning"></i> Elétrico: {{$contChListElet}}</a>
+
+            <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Civil'])}}" class="btn-inf btn-inf-md btn-inf-blue-dark"><i class="bi bi-house-gear-fill"></i> Civíl: {{$contChListCiv}}</a>
+
+            <a href="{{route('check-list-nat',['type'=>1,'nat'=>'Operacional'])}}" class="btn-inf btn-inf-md btn-inf-purple"><i class="bi bi-person-gear"></i> Operacional: {{$contChListOpe}}</a>
+
             <!-- <div class="btn btn-success mb-1" style="width:200px;margin:5px;">
               <a href="{{route('check-list-nat',['type'=>1,'nat'=>'SESMT'])}}" style="color: white; text-decoration: none;">SESMT: {{$contChListOpe}}</a>
             </div>-->

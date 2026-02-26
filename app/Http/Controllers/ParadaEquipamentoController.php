@@ -22,7 +22,8 @@ class ParadaEquipamentoController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */ public function index(Request $request)
+     */
+    public function index(Request $request)
     {
         // ===============================
         // 📌 Carregar dados base
@@ -88,7 +89,13 @@ class ParadaEquipamentoController extends Controller
         // ===============================
         // 📌 Ordenação e execução
         // ===============================
+        if (empty($request->all())) {
+        }
+
+
         $paradas = $query
+            ->whereNull('ended_at')
+            ->orwhere('ended_at', '')
             ->orderBy('created_at', 'desc')
             ->get();
 

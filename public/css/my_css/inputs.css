@@ -49,3 +49,17 @@
 .input-success:focus {
     box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
 }
+
+.header-grid {
+  display: grid;
+  /* Use auto-fill para garantir que ele tente preencher o espaço */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+  gap: 10px;
+  width: 100%; /* Garante que o pai ocupe a tela toda */
+  box-sizing: border-box;
+}
+
+.item {
+  min-width: 0; /* Evita que o conteúdo interno force a largura do grid */
+  overflow: hidden; /* Impede que o conteúdo sobreponha as bordas */
+}

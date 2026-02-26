@@ -54,7 +54,7 @@
 
         <div class="card-inf-header">
             <div class="card-title">
-                Total de Alertas
+              Total de Alertas
             </div>
 
             <div class="card-inf-ico">
