@@ -113,21 +113,15 @@
                     <form action="{{ route('check-list-show') }}" method="POST">
                         @csrf
                         <input type="hidden" name="equipamento_id" value="{{ $checkListsStatus_f->equipamento->id }}">
-                        <button type="submit" class="btn btn-outline-dark">Check-lists</button>
+                         <button type="submit"  class="btn-inf btn-inf-md btn-inf-blue-dark">Checklists</button>
                     </form>
                     <a href="{{ route('check-list-finalizado', ['equipamento_id' => $checkListsStatus_f->equipamento->id]) }}"
-                        class="btn d-flex align-items-center gap-2"
-                        style="background-color: rgb(255, 243, 205); color: rgba(112, 112, 109, 1); border: 1px solid rgb(255, 221, 128);">
+                         class="btn-inf btn-inf-md btn-inf-warning">
                         <i class="bi bi-exclamation-triangle-fill"></i>
                         &nbsp; Avarias encontradas
                     </a>
-
-
                 </div>
             </div>
-
-
-
             {{-- Alertas específicos --}}
             @php
             $alertasDoEquipamento = $checkListExcAlerts->where('equipamento_id', $checkListsStatus_f->equipamento->id);
