@@ -75,25 +75,28 @@
         {{-- início da div que contem os box --}}
         {{-- ------------------------------- --}}
         <div class="card">
-            <div class="card-header-template">
+            <div class="header-grid">
+                <a class="btn-inf btn-inf-md btn-inf-gray" href="{{ route('app.home') }}">
+                    <i class="bi bi-house"></i> Dashboard
+                </a>
 
-                <a class="btn btn-lista" href="{{ route('ordem-servico.index') }}">
+                <a class="btn-inf btn-inf-md btn-inf-blue-light" href="{{ route('ordem-servico.index') }}">
                     <i class="bi bi-card-list"></i> Listar O.S.
                 </a>
 
                 @if ($ordem_servico->situacao !== 'fechado')
-                    <a class="btn btn-novo"
+                    <a class="btn-inf btn-inf-md btn-inf-brown"
                         href="{{ route('pedido-saida.create', ['ordem_servico' => $ordem_servico->id]) }}">
                         <i class="bi bi-plus-circle"></i> Novo Pedido Saída
                     </a>
                 @endif
 
-                <a class="btn btn-pedidos"
+                <a class="btn-inf btn-inf-md btn-inf-gray"
                     href="{{ route('pedido-saida.index', ['ordem_servico' => $ordem_servico->id, 'tipofiltro' => 4]) }}">
                     <i class="bi bi-search"></i> Pedidos
                 </a>
 
-                <a class="btn btn-equipamento"
+                <a class="btn-inf btn-inf-md btn-inf-blue-dark"
                     href="{{ route('equipamento.show', ['equipamento' => $ordem_servico->equipamento->id]) }}">
                     <i class="bi bi-truck"></i> Equipamento
                 </a>
@@ -103,21 +106,18 @@
                     @endforeach
                 @endif
                 @if ($aprs->isEmpty())
-                    <a class="btn btn-apr" href="{{ route('apr.create', $ordem_servico->id) }}">
+                    <a class="btn-inf btn-inf-md btn-inf-gray" href="{{ route('apr.create', $ordem_servico->id) }}">
                         <i class="bi bi-file-earmark-text"></i> Gerar APR
                     </a>
                 @else
-                    <a class="btn btn-apr" href="{{ route('apr.show', ['apr_id' => $apr->id]) }}">
+                    <a class="btn-inf btn-inf-md btn-inf-orange" href="{{ route('apr.show', ['apr_id' => $apr->id]) }}">
                         <i class="bi bi-exclamation-triangle"></i> Abrir APR
                     </a>
                 @endif
 
-                <a class="btn btn-dashboard" href="{{ route('app.home') }}">
-                    <i class="bi bi-house"></i> Dashboard
-                </a>
-
-                <a class="btn btn-editar" href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
-                    <i class="bi bi-pencil-square"></i> Editar O.S.
+                <a class="btn-inf btn-inf-md btn-inf-warning"
+                    href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
+                    <i class="bi bi-pencil-square"></i>Editar
                 </a>
 
             </div>
@@ -238,20 +238,20 @@
                     {{-- Box 1 --}}
                     <div class="item">
                         <div class="box-conteudo">
-                            <div style="display: flex;flex-direction:row;" >
-                               <h4 class="h3-gray">ID: </h4> &nbsp; <h3 class="h3-green">#{{ $ordem_servico->id }}</h3> 
-                            </div>
-                            
                             <div style="display: flex;flex-direction:row;">
-                               <h4 class="h3-gray">Emissão: </h4>&nbsp;
+                                <h4 class="h3-gray">ID: </h4> &nbsp; <h3 class="h3-green">#{{ $ordem_servico->id }}</h3>
+                            </div>
+
+                            <div style="display: flex;flex-direction:row;">
+                                <h4 class="h3-gray">Emissão: </h4>&nbsp;
                                 <h4 class="h4-green">{{ date('d/m/Y', strtotime($ordem_servico['data_emissao'])) }}>
-                                    &nbsp ás &nbsp {{ date('H:i', strtotime($ordem_servico['hora_emissao']))}}</h4>  
-                                    </div>
+                                    &nbsp ás &nbsp {{ date('H:i', strtotime($ordem_servico['hora_emissao'])) }}</h4>
+                            </div>
                             <hr>
-                           
+
                             <div class="titulo"> Empresa</div>
                             <hr>
-                            <div class="conteudo">{{ $ordem_servico->Empresa->name1}}</div>
+                            <div class="conteudo">{{ $ordem_servico->Empresa->name1 }}</div>
 
                             <div class="titulo">Patrimônio/Ativo</div>
                             <hr>
@@ -690,8 +690,7 @@
                         Iniciar OS
                     </button>
                 @endif
-                <button type="button" id="gerarPdfButton" class="btn-inf btn-inf-gray"
-                    style="width:300px;">Gerar PDF
+                <button type="button" id="gerarPdfButton" class="btn-inf btn-inf-gray" style="width:300px;">Gerar PDF
                     <i class="bi bi-filetype-pdf"></i>
                 </button>
                 <script>
@@ -776,7 +775,7 @@
             @else
                 <div class="btn-inf btn-inf-sm btn-inf-orange">
                     <h5>
-                      <i class="bi bi-exclamation-circle"></i> Nenhum pedido encontrado
+                        <i class="bi bi-exclamation-circle"></i> Nenhum pedido encontrado
                     </h5>
                 </div>
             @endif
@@ -825,7 +824,7 @@
         </script>
         </div>
         <!-- arquivo resources/views/atualizar-registro.blade.php -->
-       
+
         @php
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             $extension = pathinfo($ordem_servico->link_foto, PATHINFO_EXTENSION);
@@ -835,9 +834,8 @@
             !empty($ordem_servico->link_foto) &&
                 in_array($extension, $allowedExtensions) &&
                 file_exists(public_path($ordem_servico->link_foto)))
-
             <div class="container" style="margin-top:20px;">
-               <h6 class="h6-gray"> {{ $ordem_servico->link_foto }}</h6> 
+                <h6 class="h6-gray"> {{ $ordem_servico->link_foto }}</h6>
                 <img src="/{{ $ordem_servico->link_foto }}" alt="Imagem da Ordem de Serviço" id="imagem">
             </div>
             <style>
@@ -860,7 +858,8 @@
                 }
             </style>
         @else
-            <button class="btn-inf btn-inf-sm btn-inf-orange"><i class="bi bi-exclamation-circle"></i>Não há imagens anexadas</button>
+            <button class="btn-inf btn-inf-sm btn-inf-orange"><i class="bi bi-exclamation-circle"></i>Não há imagens
+                anexadas</button>
         @endif
 
     @endsection
@@ -915,8 +914,6 @@
 
 
 <style>
-
-
     /* ===================== BASE ===================== */
     body,
     html {
@@ -1094,7 +1091,7 @@
     //Fechar ordem de serviço pelo botão finalizar
     $(document).ready(function() {
         $('#confirmarEnvio').click(function() {
-          
+
             var valor = $('#valor').val(); // Obtém o valor do input
 
             $.ajax({
@@ -1117,4 +1114,3 @@
         });
     });
 </script>
-
