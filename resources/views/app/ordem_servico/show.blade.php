@@ -51,42 +51,7 @@
     {{-- ------------------------------- --}}
     {{-- início da div que contem os box --}}
     {{-- ------------------------------- --}}
-    <style>
-        hr {
-            margin: 1px;
-        }
 
-        .container-item {
-            display: grid;
-            /* Cria 3 colunas de tamanhos iguais (33% cada) */
-            grid-template-columns: repeat(3, 1fr);
-            width: 100%;
-            gap: 10px;
-        }
-
-        .item {
-            /* O Grid controla a largura, então removemos o width: 33% */
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            border-radius: 10px;
-            border: solid 0.5px rgba(1, 1, 1, 0.1);
-        }
-
-        /* RESPONSIVIDADE: Quando a tela for menor que 768px (Tablet/Mobile) */
-        @media (max-width: 980px) {
-            .container-item {
-                /* Muda de 3 colunas para apenas 1 coluna (100%) */
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-        .container-row {
-            display: flex;
-            flex-direction: row;
-        }
-    </style>
     <div class="container-item">
         {{-- Box 1 --}}
         <div class="item">
@@ -116,6 +81,36 @@
             <h5 class="h5-gray">Situação</h5>
             <hr>
             <h5 class="h5-black">{{ $ordem_servico->situacao }}</h5>
+            <hr>
+
+            @php
+            $gravidade = $ordem_servico->gravidade ?? 0;
+            $urgencia = $ordem_servico->urgencia ?? 0;
+            $tendencia = $ordem_servico->tendencia ?? 0;
+
+            $classe = '';
+            $texto = 'Sem prioridade definida';
+
+            if ($gravidade >= 5 && $urgencia >= 5 && $tendencia >= 5) {
+            $classe = 'background-color: orange;';
+            $texto = 'Prioridade Alta';
+            } elseif ($gravidade >= 4 && $urgencia >= 4 && $tendencia >= 4) {
+            $classe = 'background-color: gold;';
+            $texto = 'Prioridade Média';
+            } elseif ($gravidade >= 3 && $urgencia >= 3 && $tendencia >= 3) {
+            $classe = 'background-color: deepskyblue;';
+            $texto = 'Prioridade Baixa';
+            }
+            @endphp
+            <div class="container-row">
+                <h4 class="h5-gray">Prioridade:</h4>
+                <div id="prioridade" style="{{$classe}}" class="h5-black ">
+                    {{ $texto }}
+                </div>
+            </div>
+            <hr>
+
+
             <!--QR code hidden-->
             <div id=qrCodes hidden>
                 {!! QrCode::size(50)->backgroundColor(255, 255, 255)->generate($ordem_servico->id) !!}
@@ -199,34 +194,6 @@
                 </button>
             </form>
 
-            @php
-            $gravidade = $ordem_servico->gravidade ?? 0;
-            $urgencia = $ordem_servico->urgencia ?? 0;
-            $tendencia = $ordem_servico->tendencia ?? 0;
-
-            $classe = '';
-            $texto = 'Sem prioridade definida';
-
-            if ($gravidade >= 5 && $urgencia >= 5 && $tendencia >= 5) {
-            $classe = 'background-color: orange;';
-            $texto = 'Prioridade Alta';
-            } elseif ($gravidade >= 4 && $urgencia >= 4 && $tendencia >= 4) {
-            $classe = 'background-color: gold;';
-            $texto = 'Prioridade Média';
-            } elseif ($gravidade >= 3 && $urgencia >= 3 && $tendencia >= 3) {
-            $classe = 'background-color: deepskyblue;';
-            $texto = 'Prioridade Baixa';
-            }
-            @endphp
-
-            <div class="container-row">
-                <h4 class="h5-gray">Prioridade:</h4>
-            </div>
-            <hr>
-            <div id="prioridade" style="{{ $classe }}" class="h5-black">
-                {{ $texto }}
-            </div>
-
             <div class="container-row">
                 <h4 class="h5-gray">Projeto:</h4>
             </div>
@@ -247,83 +214,85 @@
         </div>
     </div>
     {{-- fim container item --}}
-    <div class="card">
-        <!--!Ao abrir verifica algumas status-->
+
+    <!--!Ao abrir verifica algumas status-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Verifica se a assinatura está presente
+            var signatureImage = document.getElementById("signature_receptor");
+            let situacao = document.getElementById("situacao");
+            if (signatureImage) {
+                // Oculta o link adicionando um estilo inline que esconde visualmente
+                document.getElementById("btn-add-task").style.display = 'none';
+                document.getElementById("btn-edit").style.display = 'none';
+                document.getElementById("bt_iniciar_os").style.display = 'none';
+                document.getElementById("Btn_novo_ped_compra").style.display = 'none';
+            }
+            if (situacao.value === 'fechado') {
+                document.getElementById("btn-add-task").style.display = 'none';
+                document.getElementById("btn-edit").style.display = 'none';
+                document.getElementById("bt_iniciar_os").style.display = 'none';
+                document.getElementById("Btn_novo_ped_compra").style.display = 'none';
+            }
+        });
+    </script>
+    <div class="card1">
+        {{-- --------------------------------------------------------------------- --}}
+        {{-- Inicio do bloco que contém o continer dos gráficos------------------- --}}
+
+        <!----------------------------------------------------------->
+        <!--Divs dos dados da os-->
+        <!----------------------------------------------------------->
+
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                // Verifica se a assinatura está presente
-                var signatureImage = document.getElementById("signature_receptor");
-                let situacao = document.getElementById("situacao");
-                if (signatureImage) {
-                    // Oculta o link adicionando um estilo inline que esconde visualmente
-                    document.getElementById("btn-add-task").style.display = 'none';
-                    document.getElementById("btn-edit").style.display = 'none';
-                    document.getElementById("bt_iniciar_os").style.display = 'none';
-                    document.getElementById("Btn_novo_ped_compra").style.display = 'none';
-                }
-                if (situacao.value === 'fechado') {
-                    document.getElementById("btn-add-task").style.display = 'none';
-                    document.getElementById("btn-edit").style.display = 'none';
-                    document.getElementById("bt_iniciar_os").style.display = 'none';
-                    document.getElementById("Btn_novo_ped_compra").style.display = 'none';
-                }
+            //--------------------------------------------------//
+            //          Progress BAR                            //
+            //--------------------------------------------------//
+            //document.addEventListener('DOMContentLoaded', function() {
+            var progressBar = document.getElementById('progress-bar');
+            var progressInput = document.getElementById('progress-input');
+
+            // Função para atualizar a barra de progresso
+            function updateProgressBar(value) {
+                progressBar.style.width = value + '%';
+                progressBar.setAttribute('aria-valuenow', value);
+            }
+
+            // Chama a função de atualização da barra de progresso com o valor inicial do input
+            updateProgressBar(progressInput.value);
+
+            // Adiciona um ouvinte de eventos para o input
+            progressInput.addEventListener('input', function() {
+                var value = progressInput.value;
+                updateProgressBar(value);
             });
+            //});
         </script>
-        <div class="card1">
-            {{-- --------------------------------------------------------------------- --}}
-            {{-- Inicio do bloco que contém o continer dos gráficos------------------- --}}
+        <!--Fim Exemplo de progressbar com um input texto-->
 
-            <!----------------------------------------------------------->
-            <!--Divs dos dados da os-->
-            <!----------------------------------------------------------->
-
-            <script>
-                //--------------------------------------------------//
-                //          Progress BAR                            //
-                //--------------------------------------------------//
-                //document.addEventListener('DOMContentLoaded', function() {
-                var progressBar = document.getElementById('progress-bar');
-                var progressInput = document.getElementById('progress-input');
-
-                // Função para atualizar a barra de progresso
-                function updateProgressBar(value) {
-                    progressBar.style.width = value + '%';
-                    progressBar.setAttribute('aria-valuenow', value);
-                }
-
-                // Chama a função de atualização da barra de progresso com o valor inicial do input
-                updateProgressBar(progressInput.value);
-
-                // Adiciona um ouvinte de eventos para o input
-                progressInput.addEventListener('input', function() {
-                    var value = progressInput.value;
-                    updateProgressBar(value);
-                });
-                //});
-            </script>
-            <!--Fim Exemplo de progressbar com um input texto-->
-
-            {{-- ------------------------------------------------------ --}}
-            {{-- ------------------//Serviços executados//------------- --}}
-            <hr>
-            <h4 class="h4-gray">Serviços executados</h4>
-            @foreach ($servicos_executado as $servicos_executados)
-            <div class="container-item">
-                <div class="item">
+        {{-- ------------------------------------------------------ --}}
+        {{-- ------------------//Serviços executados//------------- --}}
+        <hr>
+        <h4 class="h4-gray">Serviços executados</h4>
+        @foreach ($servicos_executado as $servicos_executados)
+        <div class="container-item">
+            <div class="item">
+                <div class="container-row-1x">
                     <div class="container-row">
                         <h4 class="h4-gray">Início:</h4>
                         <h4 class="h4-black"> {{ \Carbon\Carbon::parse($servicos_executados->data_inicio)->format('d/m/Y') }} as
                             {{ $servicos_executados->hora_inicio }}
                         </h4>
                     </div>
-                    <hr>
                     <div class=" container-row">
                         <h4 class="h4-gray"> Data Fim:</h4>
                         <h4 class="h4-black"> {{ \Carbon\Carbon::parse($servicos_executados->data_fim)->format('d/m/Y') }} as
                             {{ $servicos_executados->hora_fim }}
                         </h4>
                     </div>
-                    <hr>
+                </div>
+                <hr>
+                <div class="container-row-1x">
                     <div class="container-row">
                         <h4 class="h4-gray">Tipo</h4>
                         <h4 class="h4-black"> {{ $servicos_executados->tipo_de_servico }}</h4>
@@ -334,36 +303,36 @@
                         <h4 class="h4-black"> {{ $servicos_executados->estado }}</h4>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="container-row">
-                        <h4 class="h4-gray">Executante</h4>
-                        <h4 class="h4-black"> {{ $servicos_executados->funcionario->primeiro_nome }}
-                            {{ $servicos_executados->funcionario->ultimo_nome }}
-                        </h4>
-                    </div>
-                    <hr>
-                    <h4 class="h4-gray">Descrição dos serviços</h4>
-                    <hr>
-                    <div class="container-row">
-                        {{ $servicos_executados->descricao }}
-                    </div>
-                </div>
-                <div class=" item">
-
-                    <div class="titulo">Subtotal de horas</div>
-                    <hr>
-                    <div class="container-row">
-                        <h4 class="h4-gray">Subtotal de horas</h4>
-                        <h4 class="h4-black"> {{ $servicos_executados->subtotal }}hs</h4>
-                    </div>
+                <div class="container-row">
+                    <h4 class="h4-gray">Executante</h4>
+                    <h4 class="h4-black"> {{ $servicos_executados->funcionario->primeiro_nome }}
+                        {{ $servicos_executados->funcionario->ultimo_nome }}
+                    </h4>
                 </div>
             </div>
-            @endforeach
-            <div style="display:flex;float:right;margin-right:20px;"> <span style="font-weight:700;">Total de horas
-                    trabalhadas: {{ number_format($total_hs_os, 2, ',', '.') }}hs</span></div>
+            <div class="item">
+                <h4 class="h4-gray">Descrição dos serviços</h4>
+                <hr>
+                <div class="container-row-1x">
+                    {{ $servicos_executados->descricao }}
+                </div>
+            </div>
+            <div class=" item">
 
-            <!--fim seriços executados-->
+                <div class="titulo">Subtotal de horas</div>
+                <hr>
+                <div class="container-row">
+                    <h4 class="h4-gray">Subtotal de horas</h4>
+                    <h4 class="h4-black"> {{ $servicos_executados->subtotal }}hs</h4>
+                </div>
+            </div>
         </div>
+        @endforeach
+        <div style="display:flex;float:right;margin-right:20px;"> <span style="font-weight:700;">Total de horas
+                trabalhadas: {{ number_format($total_hs_os, 2, ',', '.') }}hs</span></div>
+
+        <!--fim seriços executados-->
+
 
     </div>
     <!--Botoes inferior-->
@@ -450,7 +419,7 @@
 
             <tbody>
                 @foreach ($produtosDoPedido as $produto)
-                <tr>
+                <tr >
                     <td>
                         <a class="txt-link"
                             href="{{ route('produto.show', ['produto' => $produto->produto->id]) }}"
@@ -492,9 +461,7 @@
     @endif
     @endisset
     <!--Fim Pedidos de saídas-->
-
-    <hr class="hr-margin-0">
-
+    <hr>
     </div>
     <!-- arquivo resources/views/atualizar-registro.blade.php -->
 

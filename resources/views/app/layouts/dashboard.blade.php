@@ -8,52 +8,52 @@
 <script src="{{ asset('js/timeline_google.js') }}" defer></script>
 <main class="content">
     @if (auth()->check() && auth()->user()->level <= 2)
-       
+
         <style>
-            body,
-            html {
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
+        body,
+        html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        }
 
-            .container-chart {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-around;
-                align-items: flex-start;
-                background-color: #f2f2f2;
-            }
+        .container-chart {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: flex-start;
+        background-color: #f2f2f2;
+        }
 
-            .item {
-                width: calc(33% - 5px);
-                height: 400px;
-                margin: 5px;
-                padding: 10px;
-                background-color: white;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                overflow: auto;
-                /* Impede que o conteúdo transborde */
-            }
+        .item {
+        width: calc(33% - 5px);
+        height: 400px;
+        margin: 5px;
+        padding: 10px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: auto;
+        /* Impede que o conteúdo transborde */
+        }
 
-            .box {
-                display: flex;
-                width: 100%;
-                height: auto;
-                margin-bottom: 1px;
-                background-color: #ccc;
-                border-radius: 5px;
-                padding: 5px;
-            }
+        .box {
+        display: flex;
+        width: 100%;
+        height: auto;
+        margin-bottom: 1px;
+        background-color: #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        }
 
 
-            @media (max-width: 900px) {
-                .item {
-                    width: 100%;
-                    margin: 0px -80;
-                }
-            }
+        @media (max-width: 900px) {
+        .item {
+        width: 100%;
+        margin: 0px -80;
+        }
+        }
         </style>
         {{-- --------------------------------------------------------------------- --}}
         {{-- Inicio do bloco que contém o container dos gráficos------------------ --}}
@@ -181,22 +181,24 @@
                 }
             </style>
             <div class="item">
-                <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">O.S. EM EXECUÇÃO</span> &nbsp
-                <button class="btn btn-outline-primary btn-sm"
-                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                    onclick="window.location.href='{{ route('ordem-servico.index') }}'">
-                    Filtrar O.S.
-                </button>
-                <button class="btn btn-outline-info btn-sm"
-                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                    onclick="window.location.href='{{ route('program_os') }}'">
-                    Distribuição O.S.
-                </button>
-                <button class="btn btn-outline-dark btn-sm"
-                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                    onclick="window.location.href='{{ route('equipamento.index', ['empresa' => 2]) }}'">
-                    Ativos/Nova O.S.
-                </button>
+                <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;margin-bottom:1px">O.S. EM EXECUÇÃO</span>
+                <div class="container-row">
+                    <button class="btn btn-outline-primary btn-sm"
+                        style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                        onclick="window.location.href='{{ route('ordem-servico.index') }}'">
+                        Filtrar O.S.
+                    </button>
+                    <button class="btn btn-outline-info btn-sm"
+                        style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                        onclick="window.location.href='{{ route('program_os') }}'">
+                        Distribuição O.S.
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm"
+                        style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                        onclick="window.location.href='{{ route('equipamento.index', ['empresa' => 2]) }}'">
+                        Ativos/Nova O.S.
+                    </button>
+                </div>
                 <style>
                     #menu-ativos {
                         font-size: 50px;
@@ -261,7 +263,7 @@
                                                 justify-content: center;
                                                 animation: pulse 4s ease-in-out infinite alternate;
                                                 font-weight: 700;
-                                                font-size:9px;
+                                                font-size: 9px;
                                             }
                                         </style>
                     </div>
@@ -965,23 +967,24 @@
         {{-- Box 5 Pedido de Compra --}}
         {{-- Box que contém a lista de pedidos abertos --}}
         <div class="item">
-            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">PEDIDOS</span>
-            &nbsp&nbsp&nbsp&nbsp
-            <button class="btn btn-outline-primary btn-sm"
-                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                onclick="window.location.href='{{ route('pedido-compra.index') }}'">
-                Pedidos de compra
-            </button>
-            <button class="btn btn-outline-info btn-sm"
-                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                onclick="window.location.href='{{ route('equipamento.index', ['empresa' => 2]) }}'">
-                Novo Pedido de compra
-            </button>
-            <button class="btn btn-outline-dark btn-sm"
-                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                onclick="window.location.href='{{ route('pedido-saida.create', ['ordem_servico' => 0]) }}'">
-                Novo Pedido de saída
-            </button>
+             <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">PEDIDOS</span>
+            <div class="container-row">
+                <button class="btn btn-outline-primary btn-sm"
+                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                    onclick="window.location.href='{{ route('pedido-compra.index') }}'">
+                    Pedidos de compra
+                </button>
+                <button class="btn btn-outline-info btn-sm"
+                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                    onclick="window.location.href='{{ route('equipamento.index', ['empresa' => 2]) }}'">
+                    Novo Pedido de compra
+                </button>
+                <button class="btn btn-outline-dark btn-sm"
+                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
+                    onclick="window.location.href='{{ route('pedido-saida.create', ['ordem_servico' => 0]) }}'">
+                    Novo Pedido de saída
+                </button>
+            </div>
             <hr style="margin-bottom:2px;margin-top:2px;">
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgba(39,218,190,0.2);">
                 <div class="card-body">
@@ -1150,16 +1153,18 @@
         <!-- continer products-->
         <div class="item">
             <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">ESTOQUE ALMOXARIFADO</span>
-            <button class="btn btn-outline-primary btn-sm"
-                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                onclick="window.location.href='{{ route('produto.index') }}'">
-                Produtos
-            </button>
-            <button class="btn btn-outline-Success btn-sm"
-                style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
-                onclick="window.location.href='{{ route('Estoque-produto.index') }}'">
-                Estoque de produtos
-            </button>
+            <div class="container-row">
+                <button class="btn btn-outline-primary btn-sm"
+                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;width:200px;"
+                    onclick="window.location.href='{{ route('produto.index') }}'">
+                    Produtos
+                </button>
+                <button class="btn btn-outline-Success btn-sm"
+                    style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;width:200px;"
+                    onclick="window.location.href='{{ route('Estoque-produto.index') }}'">
+                    Estoque de produtos
+                </button>
+            </div>
             <hr style="margin-top:1px;">
             <div class="container-chart" style="background-color:rgba(100,58,27,0.1);margin-top:-5px;">
                 <table class="condensed-table" id="tb_pedidos_compra" style="margin-top:-20px;">

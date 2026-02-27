@@ -131,3 +131,46 @@
 .card-inf-sm {
     transition: all 0.25s ease;
 }
+
+/*===================*/
+/* Container  itens*/
+.container-item {
+    display: grid;
+    /* Cria 3 colunas de tamanhos iguais (33% cada) */
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 10px;
+}
+
+.item {
+    /* O Grid controla a largura, então removemos o width: 33% */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+    border: solid 0.5px rgba(1, 1, 1, 0.1);
+}
+
+/* RESPONSIVIDADE: Quando a tela for menor que 768px (Tablet/Mobile) */
+@media (max-width: 980px) {
+    .container-item {
+        /* Muda de 3 colunas para apenas 1 coluna (100%) */
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.container-row {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    padding:2px;
+    gap:5px;
+
+}
+
+.container-row-1x {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
