@@ -25,66 +25,67 @@ class EstoqueProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        $empresa_id = $request->get('empresa_id');
-        $tipoFiltro = $request->get('tipofiltro');
-        $categoria_id = $request->get('categoria_id');
-        $nome_produto_like = $request->get('produto');
-        $estoque_produtos = EstoqueProdutos::all();
-        $empresas = Empresas::all();
-        $produtos = Produto::all();
-        $categorias = Categoria::all();
+   public function index(Request $request)
+{
+    $empresa_id   = $request->input('empresa_id', 2);
+    $tipoFiltro   = $request->input('tipofiltro');
+    $categoria_id = $request->input('categoria_id');
+    $nome_produto = $request->input('produto');
 
-        if ($empresa_id >= 1) {
-            if ($tipoFiltro == 1) {
-                //--------------------------------------------------------------//
-                //  status geral do estoque tabela
-                //--------------------------------------------------------------//
-                $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)
-                    ->where('produto_id', 'like', $nome_produto_like)
-                    ->orderBy('criticidade', 'asc')
-                    ->get();
+    $empresas   = Empresas::all();
+    $produtos   = Produto::all();
+    $categorias = Categoria::all();
 
-                //dd($estoque_produtos);
-                return view('app.estoque_produto.index', [
-                    'estoque_produtos' => $estoque_produtos,
-                    'empresas' => $empresas,
-                    'produtos' => $produtos,
-                    'categorias' => $categorias
-                ]);
-            }
-            //--------------------------------------------------------------//
-            //  Busca estoque mínimo
-            //--------------------------------------------------------------//
-            if ($tipoFiltro == 2) {
-                $estoque_produtos = EstoqueProdutos::where('empresa_id', $empresa_id)
-                    ->orderByRaw('(CASE 
-                                    WHEN quantidade = 0 AND criticidade > 0 THEN 0  -- Prioriza estoque 0 com criticidade alta
-                                    WHEN quantidade <= estoque_minimo AND criticidade > 0 THEN 1  -- Em seguida, estoque baixo com criticidade alta
-                                    WHEN criticidade = 0 THEN 2  -- Por último, criticidade zero
-                                    ELSE 3  -- Todos os demais casos
-                                END)')
-                    ->orderBy('criticidade', 'desc') // Ordena criticidade em ordem decrescente
-                    ->orderBy('quantidade', 'desc') // E em seguida, pela quantidade em ordem decrescente
-                    ->get();
-                return view('app.estoque_produto.index', [
-                    'estoque_produtos' => $estoque_produtos,
-                    'empresas' => $empresas,
-                    'produtos' => $produtos,
-                    'categorias' => $categorias
-                ]);
-            }
-        } else {
-            $estoque_produtos = EstoqueProdutos::where('empresa_id', 0)->get();
-            return view('app.estoque_produto.index', [
-                'estoque_produtos' => $estoque_produtos,
-                'empresas' => $empresas,
-                'produtos' => $produtos,
-                'categorias' => $categorias
-            ]);
+    $query = EstoqueProdutos::query();
+
+    // Sempre filtra por empresa
+    $query->where('empresa_id', $empresa_id);
+
+    // =========================
+    // FILTROS DINÂMICOS
+    // =========================
+
+    if ($request->isMethod('post')) {
+
+        if ($tipoFiltro === 'id' && !empty($nome_produto)) {
+            $query->where('produto_id', $nome_produto);
+        }
+
+        if ($tipoFiltro === 'categoria' && !empty($categoria_id)) {
+            $query->whereHas('produto', function ($q) use ($categoria_id) {
+                $q->where('categoria_id', $categoria_id);
+            });
+        }
+
+        if ($tipoFiltro === 'descricao' && !empty($nome_produto)) {
+            $query->whereHas('produto', function ($q) use ($nome_produto) {
+                $q->where('descricao', 'like', '%' . $nome_produto . '%');
+            });
         }
     }
+
+    // =========================
+    // ORDENAÇÃO PADRÃO INTELIGENTE
+    // =========================
+
+    $query->orderByRaw('(CASE 
+        WHEN quantidade = 0 AND criticidade > 0 THEN 0
+        WHEN quantidade <= estoque_minimo AND criticidade > 0 THEN 1
+        WHEN criticidade = 0 THEN 2
+        ELSE 3
+    END)')
+    ->orderBy('criticidade', 'desc')
+    ->orderBy('quantidade', 'desc');
+
+    $estoque_produtos = $query->get();
+
+    return view('app.estoque_produto.index', compact(
+        'estoque_produtos',
+        'empresas',
+        'produtos',
+        'categorias'
+    ));
+}
     /**
      * Show the form for creating a new resource.
      * 

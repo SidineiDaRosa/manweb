@@ -7,7 +7,7 @@ use App\Http\Controllers\OrdemServicoController;
 use App\Http\Controllers\PedidoCompraListaController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QrCodeController;
-use app\Http\Controllers\EstoqueProdutoController;
+use App\Http\Controllers\EstoqueProdutoController;
 use App\Http\Controllers\PedidosSaidaController;
 use App\Http\Controllers\SaidaProdutoController;
 use App\Http\Controllers\PedidoCompraAutoGenerateController;
@@ -279,7 +279,8 @@ Route::middleware('auth')->resource('/mostra-produto', 'App\Http\Controllers\Sai
 //-------------------------------------------------------------//
 //           Estoque de produtos
 //-------------------------------------------------------------//
-Route::middleware('auth')->post('/Estoque-Produtos-filtro', [App\Http\Controllers\EstoqueProdutoController::class, 'index']);
+
+Route::middleware('auth')->post('/estoque-produtos-filtro',[EstoqueProdutoController::class, 'index'])->name('estoque-produtos-filtro');
 Route::middleware('auth')->resource('/Estoque-produto', 'App\Http\Controllers\EstoqueProdutoController');
 Route::middleware('auth')->resource('Estoque-produto', EstoqueProdutoController::class);
 //-------------------------------------------------------------//

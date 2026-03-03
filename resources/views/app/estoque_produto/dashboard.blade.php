@@ -192,7 +192,7 @@
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Dashboard de Estoque</h2>
+                    <h3 class="h3-gray">Dashboard de Estoque</h3>
                     <div class="d-flex">
                         <div class="search-container me-2">
                             <input type="text" class="form-control" placeholder="Buscar item...">

@@ -3,89 +3,63 @@
 @section('content')
 <main class="content">
     <div>
-        <h6>Estoque produtos</h6>
-        <div class="card">
-            <div>
-                <a href="{{ route('produto.index') }}" class="btn btn-sm btn-outline-primary">
-                    Produtos
-                </a>
-            </div>
-            <div>
-                <a class="btn btn-sm btn-outline-dark mb-1" href="{{ route('app.home') }}">
-                    <i class="icofont-dashboard"></i> Dashboard
-                </a>
-            </div>
+        <h3 class="h3-gray">Estoque Produtos</h3>
+        <div class="header-grid">
+
+            <a href="{{ route('produto.index') }}" class="btn-inf btn-inf-md btn-inf-blue-dark">
+                <i class="bi bi-grid-3x2-gap"></i> Produtos
+            </a>
+            <a class="btn-inf btn-inf-md btn-inf-gray" href="{{ route('app.home') }}">
+                <i class="icofont-dashboard"></i> Dashboard
+            </a>
         </div>
+        <br>
+        <div class="container-row">
+            <form id="formSearchingProducts" action="{{ route('estoque-produtos-filtro') }}" method="POST">
+                @csrf
 
-        <form id="formSearchingProducts" action="{{'Estoque-Produtos-filtro'}}" method="POST" style="margin-right:10%;">
-            @csrf
-            <!--------------------------------------------------------------------------------------->
-            <!---------Select empresa------------->
-            <!--------------------------------------------------------------------------------------->
+                {{-- Empresa fixa --}}
+                <input type="hidden" name="empresa_id" value="2">
 
-            <div class="col-md-4 mb-0" hidden>
-                <select name="empresa_id" id="empresa_id" class="form-control">
-                    <option value=""> --Selecione a empresa--</option>
-                    @foreach ($empresas as $empresas_find)
-                    <option value="{{$empresas_find->id}}"
-                        {{ $empresas_find->id == 2 ? 'selected' : '' }}>
-                        {{$empresas_find->razao_social}}
-                    </option>
-                    @endforeach
-                </select>
-                {{ $errors->has('empresa_id') ? $errors->first('empresa_id') : '' }}
-            </div>
-            <div class="col-md-3 mb-0">
-                <select class="form-control" name="tipofiltro" id="tipofiltro" value="" placeholder="Selecione o tipo de filtro">
-                    <option value="2">Pela empresa</option>
-                    <option value="1">Busca pelo Id</option>
-                </select>
-            </div>
+                <div class="row">
 
-            <!---estilização do input box buscar produtos---->
-            <style>
-                #formSearchingProducts {
-                    background-color: white;
-                    width: 100%;
-                    height: 44px;
-                    border-radius: 5px;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                }
+                    <div class="col-md-3 mb-2">
+                        <select class="form-control" name="tipofiltro" id="tipofiltro">
+                            <option value="id">Busca pelo ID</option>
+                            <option value="categoria">Busca pela Categoria</option>
+                            <option value="descricao">Busca pela Descrição</option>
+                        </select>
+                    </div>
 
-                input {
-                    all: unset;
-                    font: 16px system-ui;
-                    color: blue;
-                    height: 100%;
-                    width: 100%;
-                    padding: 6px 10px;
-                }
+                    <div class="col-md-4 mb-2">
+                        <select name="categoria_id" id="categoria_id" class="form-control">
+                            <option value=""> --Selecione a categoria-- </option>
+                            @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id }}">
+                                {{ $categoria->nome }}
+                            </option>
+                            @endforeach
+                        </select>
+                        {{ $errors->first('categoria_id') }}
+                    </div>
 
-                ::placeholder {
-                    color: blueviolet;
-                    opacity: 0.9;
-                }
+                    <div class="col-md-3 mb-2">
+                        <input type="text"
+                            id="query"
+                            class="form-control"
+                            name="produto"
+                            placeholder="Buscar produto...">
+                    </div>
 
+                    <div class="col-md-2 mb-2">
+                        <button type="submit" class="btn-inf btn-inf-md btn-inf-blue-dark">
+                            <i class="icofont-search"></i> Buscar
+                        </button>
+                    </div>
 
-                button {
-                    all: unset;
-                    cursor: pointer;
-                    width: 44px;
-                    height: 44px;
-                }
-            </style>
-            <!-------------------------------------------------------------------------->
-            <!--input box filtro buscar produto--------->
-
-            <input type="text" id="query" name="produto" placeholder="Buscar produto..." aria-label="Search through site content">
-            <button type="submit">
-                <i class="icofont-search icofont-2x"></i>
-            </button>
-
-        </form>
-
+                </div>
+            </form>
+        </div>
         <div class="card-body">
             {{--Table stock os products searching--}}
             <table class="table table-striped table-hover">
@@ -129,15 +103,16 @@
                         <td>
                             @foreach($produtos as $produto)
                             @endforeach
-                            <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}" class="btn-sm btn-success">
-                                Inserir Estoque
+                            <a href="{{ route('entrada-produto.create',['produto' => $estoque_produto->produto->id,'estoque_id'=>$estoque_produto->id ]) }}"
+                                class="btn-inf btn-inf-md btn-inf-blue-dark">
+                                <i class="bi bi-arrow-down-circle"></i> Inserir Estoque
                             </a>
                             {{--//-----------------------------------------//--}}
                             {{--// Cria automaticamente um pedido de compra//--}}
                             {{--//-----------------------------------------//--}}
 
                             {{--//-----------------------------------------//--}}
-                            <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}" title="editar dados do estoque">
+                            <a class="btn-inf btn-inf-md btn-inf-warning" href="{{ route('Estoque-produto.edit', ['Estoque_produto' => $estoque_produto->id]) }}">
                                 <i class="icofont-ui-edit"></i>
                             </a>
 
@@ -152,6 +127,43 @@
 
 
     </div>
+
+    <!---estilização do input box buscar produtos---->
+    <style>
+        #formSearchingProducts {
+            background-color: white;
+            width: 100%;
+            height: 44px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        input {
+            all: unset;
+            font: 16px system-ui;
+            color: blue;
+            height: 100%;
+            width: 100%;
+            padding: 6px 10px;
+        }
+
+        ::placeholder {
+            color: blueviolet;
+            opacity: 0.9;
+        }
+
+
+        button {
+            all: unset;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+        }
+    </style>
+    <!-------------------------------------------------------------------------->
+    <!--input box filtro buscar produto--------->
 
 
 </main>
