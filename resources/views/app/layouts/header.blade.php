@@ -261,7 +261,7 @@
         @if (auth()->check() && auth()->user()->id == 3)
         <div class="notification">
             <a href="{{ route('notificacoes.index') }}">
-                <i class="bi bi-exclamation-triangle-fill"></i>
+               <i class="bi bi-tools"></i>
                 <span class="badge-mini" id="alarms-badge">0</span>
             </a>
         </div>

@@ -48,8 +48,6 @@
     <button class="btn-inf btn-inf-sm btn-inf-red">Red SM</button>
     <button class="btn-inf btn-inf-sm btn-inf-gray">Gray SM</button>
     <button class="btn-inf btn-inf-sm btn-inf-brown">Brown SM</button>
-
-
     <div class="card-inf-md">
 
         <div class="card-inf-header">

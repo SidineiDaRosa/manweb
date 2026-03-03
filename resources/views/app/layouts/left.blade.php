@@ -272,9 +272,9 @@
                                 <a href="{{ route('lubrificacao.index') }}"> ⚙️💧 Lubrificação</a>
                                 <a href="{{ route('projetos.index') }}"><i class="bi bi-kanban"></i>Projetos</a>
                                 @endif
-                                  @if (auth()->check() && (auth()->user()->level == 4 || auth()->user()->level == 2 || auth()->user()->level == 0))
+                                @if (auth()->check() && (auth()->user()->level == 4 || auth()->user()->level == 2 || auth()->user()->level == 0))
                                 <a href="{{ route('machine_downtime.index') }}"> <i class="bi bi-clock-history"></i>Paradas De Máquinas</a>
-                                 <a href="{{ route('failures.index') }}"><i class="bi bi-exclamation-triangle"></i>Cadastro de Falhas</a>
+                                <a href="{{ route('failures.index') }}"><i class="bi bi-exclamation-triangle"></i>Cadastro de Falhas</a>
                                 @endif
 
                         </div>
@@ -304,10 +304,14 @@
                             </a>
                             <div class="submenu" id="administracao-submenu">
                                 @if (auth()->check() && auth()->user()->level <= 2)
-                                    <a href="{{ route('funcionarios.index') }}">Funcionários</a>
+
+                                    <a href="{{ route('funcionarios.index') }}">
+                                    <i class="bi bi-person"></i>
+                                    Funcionários</a>
                                     @endif
                                     @if (auth()->check() && auth()->user()->level <= 0)
-                                        <a href="{{ route('user_roles.index') }}" class="btn btn-primary">User Roles</a>
+                                        <a href="{{ route('user_roles.index') }}">
+                                        <i class="bi bi-person-gear"></i>Users Roles</a>
                                         @endif
                             </div>
                         </li>
