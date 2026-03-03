@@ -55,7 +55,7 @@
                 <div class="card-footer bg-white">
                     <div class="btn-group w-100" role="group">
                         <!-- Ver -->
-                        <a class="btn btn-sm btn-outline-primary flex-fill"
+                        <a class="btn-inf btn-inf-md btn-inf-blue-light"
                             href="{{ route('equipamento.show', ['equipamento' => $equipamento->id]) }}"
                             data-bs-toggle="tooltip" title="Visualizar">
                             <i class="icofont-eye-alt"></i>
@@ -63,7 +63,7 @@
                         </a>
 
                         <!-- Editar -->
-                        <a class="btn btn-sm btn-outline-success flex-fill @can('user') disabled @endcan"
+                        <a class="btn-inf btn-inf-md btn-inf-warning flex-fill @can('user') disabled @endcan"
                             href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}"
                             data-bs-toggle="tooltip" title="Editar">
                             <i class="icofont-ui-edit"></i>
@@ -77,7 +77,7 @@
                             @method('DELETE')
                             @csrf
                         </form>
-                        <a class="btn btn-sm btn-outline-danger flex-fill @can('user') disabled @endcan"
+                        <a class="btn-inf btn-inf-sm btn-inf-red flex-fill @can('user') disabled @endcan"
                             href="#" onclick="DeletarEquipamento({{ $equipamento->id }})"
                             data-bs-toggle="tooltip" title="Excluir">
                             <i class="icofont-ui-delete"></i>
@@ -87,7 +87,7 @@
 
                     <div class="btn-group w-100 mt-2" role="group">
                         <!-- Criar OS -->
-                        <a class="btn btn-sm btn-outline-primary flex-fill"
+                        <a class="btn-inf btn-inf-sm btn-inf-blue-dark flex-fill"
                             href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}"
                             data-bs-toggle="tooltip" title="Criar Ordem de Serviço">
                             <i class="bi bi-plus-circle"></i>
@@ -96,7 +96,7 @@
                         </a>
 
                         <!-- Pedido de compra -->
-                        <a class="btn btn-sm btn-outline-success flex-fill"
+                        <a class="btn-inf btn-inf-sm btn-inf-gray"
                             href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}"
                             data-bs-toggle="tooltip" title="Criar Pedido de Compra">
                             <span class="d-none d-md-inline">
@@ -114,7 +114,7 @@
                             <input type="hidden" name="data_fim" value="fechado">
                             <input type="hidden" name="situacao" value="fechado">
                             <input type="hidden" name="tipo_consulta" value="5">
-                            <button type="submit" class="btn btn-sm btn-outline-success w-100"
+                            <button type="submit" class="btn-inf btn-inf-sm btn-inf-green"
                                 data-bs-toggle="tooltip" title="OS Fechadas">
                                 <span class="d-none d-md-inline">
                                 <i class="bi bi-list-check"></i>    
