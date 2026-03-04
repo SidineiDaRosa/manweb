@@ -308,10 +308,11 @@
     <div class="investor-grid">
 
         <div class="investor-card">
-            <div class="logo">MANWEB</div>
+            <div class="logo">ManWEB</div>
             <h3>A Empresa</h3>
             <p class="quote">
-                A Manweb nasceu da vontade de resolver problemas reais com tecnologia simples, eficiente e acessível.
+                O ManWEb foi criado apartir de necesseidades reais encontradas no chão de fábrica,
+                 veio para auxiliar a equipe de manutenção, no controle e execução das tarefas.
             </p>
         </div>
 

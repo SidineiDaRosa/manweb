@@ -87,6 +87,7 @@
                                 ID:&nbsp{{ $estoque_produto->produto->id}},&nbsp{{ $estoque_produto->produto->nome }}
                             </a>
                         </td>
+                
 
                         <td>{{ $estoque_produto->unidade_medida }}</td>
                         <td @if($estoque_produto->quantidade <= 0) style="background-color: red;" @elseif($estoque_produto->quantidade > 0 && $estoque_produto->quantidade < $estoque_produto->estoque_minimo) style="background-color: yellow;"
