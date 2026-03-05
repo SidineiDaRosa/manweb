@@ -25,7 +25,7 @@
             <i class="bi bi-house-gear-fill"></i>
             Novo Ativo/Equipamento
         </a>
-        <a class="btn btn-outline-primary btn-bg" href="{{ route('Peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
+        <a class="btn btn-outline-primary btn-bg" href="{{ route('peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
             <i class="bi bi-gear"></i>
             Novo Componente
         </a>

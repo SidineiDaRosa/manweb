@@ -1,7 +1,7 @@
 <!--Modal update APR-->
 <div class="modal fade" id="modalEditarApr" tabindex="-1" aria-labelledby="modalEditarAprLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <form id="formAprUpdate" method="POST" action="{{ route('apr.update') }}">
+        <form id="formAprUpdate" method="POST" action="{{ route('apr.update',$apr->id) }}">
             @csrf
             @method('PUT')
             <input type="hidden" name="id" id="apr_id">

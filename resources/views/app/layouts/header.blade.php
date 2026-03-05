@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('css/my_css/card.css') }}">
     <link rel="stylesheet" href="{{ asset('css/my_css/texts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/my_css/inputs.css') }}">
+    <!--link rel="stylesheet" href="https://manweb.com.br/css/my_css/button.css"-->
 
     <style>
         /* Sidebar */

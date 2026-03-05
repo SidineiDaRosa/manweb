@@ -1,7 +1,6 @@
 <?php
 
 use App\Console\Commands\UpdateLoop;
-use App\Http\Controllers\Check_listController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdemServicoController;
 use App\Http\Controllers\PedidoCompraListaController;
@@ -19,23 +18,40 @@ use App\Http\Controllers\CheckListController;
 use App\Http\Controllers\CheckListExecutadoController;
 use App\Http\Controllers\CustosController;
 use App\Http\Controllers\ControlPanelController;
-use App\Models\OrdemServico;
 use Illuminate\Http\Request;
 use App\Http\Controllers\LubrificacaoExecutadaController;
 use App\Http\Controllers\FamiliaController;
 use App\Http\Controllers\CategoriaController;
-//use Illuminate\Support\Facades\Route;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\OrdemProducaoController;
+use App\Http\Controllers\PecaEquipamentoController;
+use App\Models\EstoqueProdutos;
+use App\Models\PedidoCompraLista;
+use App\Http\Controllers\KPIsController;
+use App\Http\Controllers\EquipamentoController;
+use App\Http\Controllers\UpdateLoopController;
+use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\GroupController;
 
+use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\LubrificacaoController;
+use App\Http\Controllers\ProjectController;
+
+use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\APRController;
+use App\Http\Controllers\BusinessPartnerController;
+use App\Http\Controllers\FailuresCotroller;
+use App\Http\Controllers\MensagemPainelController;
+use App\Http\Controllers\RiscoController;
+use App\Http\Controllers\MedidaControleController;
+use App\Http\Controllers\MaterialEpiController;
+use App\Http\Controllers\LocalController;
+use App\Http\Controllers\ParadaEquipamentoController;
+use App\Http\Controllers\FailureController;
+//------------------
+//Rotas publicas
+//------------------
 Route::get('/', function () {
     return view('site.home');
 })->name('site.home'); // Dashboard principal
@@ -52,19 +68,24 @@ Route::get('/configuracoes', function () {
 Route::get('/link_produtos', function () {
     return view('app.produto.link_produtos');
 });
+Route::get('/about', function () {
+    return view('site.about');
+})->name('about');
 Route::view('/modelos', 'app.layouts.modelos')->name('modelos');
 //---------------------------------------------------------//
 //    Rotas que não precisam de middlwre
 //---------------------------------------------------------//
 //---------------------------------------------------------//
 //    Status Os
+//--DahboardStatusOsController--
 //---------------------------------------------------------//
 Route::get('/dashboard-status-os', [DahboardStatusOsController::class, 'index'])->name('dashboard-status-os');
 Route::get('/show-panel-os', [DahboardStatusOsController::class, 'show_os'])->name('show-panel-os');
 //verifica a os pelo painel 
 Route::get('/check-ordem-servico', [DahboardStatusOsController::class, 'check_ordem_servico'])->name('check.odem.servico');
+// Programação de os e visualização semanal O.S.
+Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStatusOsController::class, 'programer_os'])->name('program_os');
 
-Route::get('/asset-show', [EquipamentoHistoryController::class, 'asset_show'])->name('asset.show');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home');
@@ -74,30 +95,43 @@ Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home
 Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce@index');
 Route::post('/produtos-filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
 Route::post('/comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
-Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
-Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
+
 //--------------------------------------------------------//
 // Autetication User
 //--------------------------------------------------------//
 Auth::routes();
+//--------------------------------------------------------//
+// Painel de visualização WEB
+//--------------------------------------------------------//
 Route::middleware('auth')->get('/users-management', [ControlPanelController::class, 'users_management'])->name('users.management');
-
-use App\Http\Controllers\UserRoleController;
+//Rota control panel
+Route::middleware('auth')->resource('/control-panel', 'App\Http\Controllers\ControlPanelController');
+//--------------------------------------------------------//
+// Usuários
+//--------------------------------------------------------//
 
 Route::resource('user_roles', UserRoleController::class);
 //-------------------------------------------------------------------------------------------------
-//Marca
+//  Marcas
 //-------------------------------------------------------------------------------------------------
 Route::middleware('auth')->resource('/marca', 'App\Http\Controllers\MarcaController');
 //-------------------------------------------------------------------------------------------------
 //Categoria
 //-------------------------------------------------------------------------------------------------
 Route::get('/categorias/{id}', [CategoriaController::class, 'show'])->name('categorias.show');
-
 Route::middleware('auth')->resource('/categoria', 'App\Http\Controllers\CategoriaController');
 Route::middleware('auth')->get('/categoria-edit/{id}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 // Rota para processar a atualização (PUT)
 Route::middleware('auth')->put('/categoria-update/{id}', [CategoriaController::class, 'update'])->name('categoria.update');
+//--------------------------------------------------------//
+// EQUIPAMENTOS ATIVOS
+//--------------------------------------------------------//
+Route::post('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets'); //acesso sem autenticação
+Route::post('/asset_history', [EquipamentoHistoryController::class, 'asset_show'])->name('asset_history'); //acesso sem autenticação
+Route::get('/asset-show', [EquipamentoHistoryController::class, 'asset_show'])->name('asset.show');
+//    QRcode equipamentos history
+Route::get('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets');
+
 //-------------------------------------------------------------------------------------------------
 // Rotas para famílias
 //-------------------------------------------------------------------------------------------------
@@ -110,17 +144,18 @@ Route::middleware('auth')->resource('/fornecedor', 'App\Http\Controllers\Fornece
 //Produto
 //-------------------------------------------------------------------------------------------------
 Route::middleware('auth')->resource('/produto', 'App\Http\Controllers\ProdutoController');
+Route::middleware('auth')->post('/produtos-filtro', [App\Http\Controllers\ProdutoController::class, 'index']);
 //----------------------------------------------//
 //                Equipamento
 //---------------------------------------------//
 Route::middleware('auth')->resource('/equipamento', 'App\Http\Controllers\EquipamentoController');
+
+Route::post('/update-horimetro', [EquipamentoController::class, 'update_hour_meter']);
 //---------------------------------------------//
 //                Ordem de serviço
 //---------------------------------------------//
 Route::middleware('auth')->resource('/ordem-servico', 'App\Http\Controllers\OrdemServicoController');
 Route::put('/ordem_servico_up/{ordem_servico}', [OrdemServicoController::class, 'update'])->name('ordem_servico.update');
-// Programação de os e visualização semanal O.S.
-Route::middleware('auth')->get('/program_os', [App\Http\Controllers\DahboardStatusOsController::class, 'programer_os'])->name('program_os');
 //Atualiza datas via jason gráfico Gantt
 
 Route::post('/ordem-servico/atualizar-intervalo', [OrdemServicoController::class, 'update_os_interval'])
@@ -149,7 +184,6 @@ Route::put(
 //--------------------------------------------------------//
 //                  Ordem de produção
 //--------------------------------------------------------//
-use App\Http\Controllers\OrdemProducaoController;
 
 // Listar todas as ordens
 Route::get('/ordens-producao', [OrdemProducaoController::class, 'index'])->name('ordens-producao.index');
@@ -176,14 +210,16 @@ Route::delete('/ordens-producao/{ordem_producao}', [OrdemProducaoController::cla
 //                 Entrada de produtos
 //--------------------------------------------------------//
 Route::middleware('auth')->resource('/entrada-produto', 'App\Http\Controllers\EntradaProdutoController');
-
+Route::middleware('auth')->post('/Ent-Produtos-filtro', [App\Http\Controllers\EntradaProdutoController::class, 'index']);
+//------------------------------------------------//
+//produto-fornecedor
+//---ProdutoFornecedorController--
+//------------------------------------------------//
 Route::middleware('auth')->get(
     'produto_fornecedor/create',
     'App\Http\Controllers\ProdutoFornecedorController@create'
 )->name('produto-fornecedor.create');
-//------------------------------------------------//
-//produto-fornecedor
-//------------------------------------------------//
+
 Route::middleware('auth')->post(
     'produto_fornecedor/store',
     'App\Http\Controllers\ProdutoFornecedorController@store'
@@ -216,6 +252,7 @@ Route::middleware('auth')->post(
 )->name('parada-equipamento.store');
 //---------------------------------------------------------//
 //------------------Utilis controller---------------------//
+//---------------------------------------------------------
 //   Busca o horimetro inicial de Ordem de produção via ajax
 
 Route::middleware('auth')->get(
@@ -259,6 +296,20 @@ Route::middleware('auth')->post(
     'utils/validar-data-hora-termino',
     'App\Http\Controllers\UtilsController@validarDataHoraTermino'
 )->name('validar-data-hora-termino');
+//Rota que atualiza pedido de compra
+Route::middleware('auth')->get(
+    'utils/updatepedidocompra',
+    'App\Http\Controllers\UtilsController@updatepedidocompra'
+)->name('updatepedidocompra');
+// Envia requisição ajax para atualizar um chek-list
+Route::middleware('auth')->get(
+    'utils/update-chek-list',
+    'App\Http\Controllers\UtilsController@update_chek_list'
+)->name('update-chek-list');
+Route::middleware('auth')->get(
+    'utils/search',
+    'App\Http\Controllers\UtilsController@search'
+)->name('search');
 //-------------------------------------------------------------//
 //                Empresas
 //-------------------------------------------------------------//
@@ -269,39 +320,46 @@ Route::middleware('auth')->resource('/empresas', 'App\Http\Controllers\EmpresasC
 //-------------------------------------------------------------//
 //                Busca empresas
 //-------------------------------------------------------------//
-
-//Filtro Produtos
-Route::middleware('auth')->post('/produtos-filtro', [App\Http\Controllers\ProdutoController::class, 'index']);
 //Rota saida de produtos
 Route::middleware('auth')->resource('/Saida-produto', 'App\Http\Controllers\SaidaProdutoController');
 Route::middleware('auth')->resource('/mostra-produto', 'App\Http\Controllers\SaidaProdutoController');
-
+// Deleta item pedido de saida
+Route::middleware('auth')->delete('/saida-produto/{id}', [SaidaProdutoController::class, 'destroy'])->name('saida-produto.destroy');
+//               Saida De produtos store        
+Route::middleware('auth')->resource('/saida-produto-add-item', 'App\Http\Controllers\SaidaProdutoController');
 //-------------------------------------------------------------//
 //           Estoque de produtos
 //-------------------------------------------------------------//
 
-Route::middleware('auth')->post('/estoque-produtos-filtro',[EstoqueProdutoController::class, 'index'])->name('estoque-produtos-filtro');
+Route::middleware('auth')->post('/estoque-produtos-filtro', [EstoqueProdutoController::class, 'index'])->name('estoque-produtos-filtro');
 Route::middleware('auth')->resource('/Estoque-produto', 'App\Http\Controllers\EstoqueProdutoController');
 Route::middleware('auth')->resource('Estoque-produto', EstoqueProdutoController::class);
+Route::middleware('auth')->get('/dashboard-estoque', [EstoqueProdutoController::class, 'storeProductInventory'])->name('dashboard.estoque');
 //-------------------------------------------------------------//
-//          Peças equipamentos
+//                Peças equipamentos
 //-------------------------------------------------------------//
-use App\Http\Controllers\PecaEquipamentoController;
+Route::middleware('auth')->group(function () {
 
-Route::middleware('auth')->resource('/Peca-equipamento', 'App\Http\Controllers\PecaEquipamentoController');
-//--
-Route::middleware('auth')->post('/peca-equpamento-filtro', [App\Http\Controllers\PecaEquipamentoController::class, 'index']);
+    // Listagem e Filtros
+    Route::get('/peca-equipamento', [PecaEquipamentoController::class, 'index'])->name('peca-equipamento.index');
+    Route::post('/peca-equipamento-filtro', [PecaEquipamentoController::class, 'index'])->name('peca-equipamento.filtro');
 
+    // Criação
+    Route::get('/peca-equipamento/create', [PecaEquipamentoController::class, 'create'])->name('peca-equipamento.create');
+    Route::post('/peca-equipamento', [PecaEquipamentoController::class, 'store'])->name('peca-equipamento.store');
 
-use App\Models\EstoqueProdutos;
-use App\Models\PedidoCompraLista;
+    // Edição e Update
+    // Padronizei para usar {id} como as outras rotas do seu sistema
+    Route::get('/peca-equipamento/{id}/edit', [PecaEquipamentoController::class, 'edit'])->name('peca-equipamento.edit');
+    Route::put('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'update'])->name('peca-equipamento.update');
 
-Route::middleware(['auth'])->get('/peca-equipamento-editar/{peca_equipamento_id}', [PecaEquipamentoController::class, 'edit'])->name('Peca-equipamento-editar.edit');
-Route::middleware(['auth'])->put('/peca-equipamento/{pecas_equipamento}', [PecaEquipamentoController::class, 'update'])->name('Peca-equipamento.update');
-Route::delete('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'destroy'])
-    ->name('peca-equipamento.destroy')
-    ->middleware('auth');
+    // Deleção (Apenas uma vez)
+    Route::delete('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'destroy'])->name('peca-equipamento.destroy');
 
+    // Filtros de Componentes e buscas específicas
+    Route::post('/produtos-filtro-componente', [PecaEquipamentoController::class, 'create'])->name('produtos-filtro-componente');
+    Route::post('/produtos-filtro-componente-edit', [PecaEquipamentoController::class, 'searching_products'])->name('produtos-filtro-componente-edit');
+});
 //------------------------------------------//
 //  Pedidos de compra                       //
 //------------------------------------------//
@@ -311,13 +369,9 @@ Route::middleware('auth')->get('/pedido/{id}', [App\Http\Controllers\PedidoCompr
 //  insere o produto  no estoque
 Route::middleware('auth')->post('/insert_item', [App\Http\Controllers\PedidoCompraController::class, 'storeItem'])
     ->name('pedido.store.ajax');
-Route::middleware('auth')->get('/dashboard-estoque', [EstoqueProdutoController::class, 'storeProductInventory'])->name('dashboard.estoque');
 //------------------------------------------//
 // Filtro pedido de entrada
 //------------------------------------------//
-Route::middleware('auth')->post('/Ent-Produtos-filtro', [App\Http\Controllers\EntradaProdutoController::class, 'index']);
-//Rota control panel
-Route::middleware('auth')->resource('/control-panel', 'App\Http\Controllers\ControlPanelController');
 //Rota Busca produto para dicionar item a pedidos
 Route::middleware('auth')->resource('/item-produto', 'App\Http\Controllers\ItemProdutoController');
 //Filtro Produtos item
@@ -330,88 +384,47 @@ Route::middleware('auth')->resource('/pedido-saida', 'App\Http\Controllers\Pedid
 //Busca saida do produto
 Route::middleware('auth')->resource('/pedido-saida-lista', 'App\Http\Controllers\PedidoSaidaListaController');
 Route::middleware('auth')->post('/pedido-saida-filtro', [App\Http\Controllers\PedidosSaidaController::class, 'index']);
-Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
 //--------------------------------------------------------//
 //   Deletar o pedido de saida
 //--------------------------------------------------------//
 Route::middleware('auth')->delete('/pedidos-saida/{id}', [PedidosSaidaController::class, 'destroy'])->name('pedidos-saida.destroy');
-
 //--------------------------------------------------------//
 // Busca produtos para adicionar em pedidos de sáida com O.S.
 //--------------------------------------------------------//
 Route::middleware('auth')->post('/pedido-saida-searching-products', [App\Http\Controllers\PedidoSaidaListaController::class, 'searching_products'])->name('pedido-saida-searching-products');
-
-//----------------------------------------------------//
-//               Saida De produtos store        
-//----------------------------------------------------//
-Route::middleware('auth')->resource('/saida-produto-add-item', 'App\Http\Controllers\SaidaProdutoController');
 //Filtro Produtos item  saida 
 Route::middleware('auth')->post('/Item-Saida-Produto', [App\Http\Controllers\ItemSaidaProdutoController::class, 'index']);
-//Serviçoes executados
-//Route::middleware('auth')->post('/Servicos-executado-index', [App\Http\Controllers\ServicosExecutadosController::class, 'index']);
+Route::middleware('auth')->resource('/item-produto-saida', 'App\Http\Controllers\ItemSaidaProdutoController');
+//----------------------------------------------------
+//   Serviçoes executados
+//----------------------------------------------------
 Route::middleware('auth')->resource('/Servicos-executado', 'App\Http\Controllers\ServicosExecutadoController');
 //--------------------------------------------------------------------//
-//---Pedido de compra lista-------------------------------------------//
+//---Pedido de compra lista
+//--------------------------------------------------------------------
 Route::middleware('auth')->resource('/pedido-compra-lista', 'App\Http\Controllers\PedidoCompraListaController');
-//Rota que atualiza pedido de compra
-Route::middleware('auth')->get(
-    'utils/updatepedidocompra',
-    'App\Http\Controllers\UtilsController@updatepedidocompra'
-)->name('updatepedidocompra');
 Route::middleware('auth')->get('/pedido-compra-printer/{numpedidocompra}', 'App\Http\Controllers\PedidoCompraListaController@printer')->name('pedido-compra-lista-printer');
 Route::delete('/delete-item-pedido-delete', 'App\Http\Controllers\PedidoCompraListaController@destroy')->name('delete-item-pedido-delete');
-//===============================================================//
-//Adiciona componente ao equipamento
-//---------------------------------------------------------------//
-//Filtro Produtos
-Route::middleware('auth')->post('/Produtos-filtro-componente', [App\Http\Controllers\PecaEquipamentoController::class, 'create'])->name('Produtos-filtro-componente');
-//Edita o componente
-Route::middleware('auth')->post('/Produtos-filtro-componente-edit', [App\Http\Controllers\PecaEquipamentoController::class, 'searching_products'])->name('Produtos-filtro-componente-edit');
-//---------------------------------------------------------------//
-// Envia requisição ajax para atualizar um chek-list
-//---------------------------------------------------------------//
-Route::post('/checklist/send', [Check_listController::class, 'send'])->name('checklist.send');
-//---------------------------------------------------------------//
-// Envia requisição ajax para atualizar um chek-list
-//---------------------------------------------------------------//
-Route::middleware('auth')->get(
-    'utils/update-chek-list',
-    'App\Http\Controllers\UtilsController@update_chek_list'
-)->name('update-chek-list');
-Route::middleware('auth')->get(
-    'utils/search',
-    'App\Http\Controllers\UtilsController@search'
-)->name('search');
-//------------------------------------------------------------//
 // Deletar um item de umpedido de compra
 Route::delete('/pedido-compra-lista/{id}', [PedidoCompraListaController::class, 'destroy'])->name('pedido-compra-lista.destroy');
+//---------------------------------------------------------------//
+// Envia requisição ajax para atualizar um chek-list
+//---------------------------------------------------------------//
+Route::post('/checklist/send', [ChecklistController::class, 'send'])->name('checklist.send');
 //-----------------------------------------------------------//
 // Gerar Qr code
-
+//------------------------------------------------------------//
 Route::middleware('auth')->post('/gerar-qrcode', 'App\Http\Controllers\QrCodeController@gerarQRCode')->name('generate-qrcode');
 //----------------------------------------------------------//
 //   Imprimir em PDF
 Route::post('/imprimir-pdf', [App\Http\Controllers\PdfController::class, 'gerarPDF'])->name('gerar.pdf');
 //----------------------------------------------------------//
-// 
-// Deleta item pedido de saida
-Route::middleware('auth')->delete('/saida-produto/{id}', [SaidaProdutoController::class, 'destroy'])->name('saida-produto.destroy');
-//----------------------------------------------------------//
 //   PedidoCompraAutoGenerateController
-
+//----------------------------------------------------------
 //Gerar pedido de compra apartir de produtos
 Route::middleware('auth')->post('/pedido-compra-auto-generate', [PedidoCompraAutoGenerateController::class, 'pedido_compra_auto_generate'])->name('pedido-compra-auto-generate');
 Route::middleware('auth')->get('/pedido-compra/show', [PedidoCompraAutoGenerateController::class, 'show'])
     ->name('pedido.compra.show');
-//----------------------------------------------------------//
-//   Deletar peças de equipamento
-//----------------------------------------------------------//
-Route::delete('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'destroy'])->name('peca_equipamento.destroy');
-//---------------------------------------------------------//
-//    QRcode equipamentos history
-//---------------------------------------------------------//
-Route::get('/assets', [EquipamentoHistoryController::class, 'assets'])->name('assets');
-
 //---------------------------------------------------------//
 //    Criar solicitação de Os
 //---------------------------------------------------------//
@@ -426,10 +439,9 @@ Route::get('/solicitacoes', [SolicitacaoOsController::class, 'solicitacoes'])->n
 //----------------------------------------------------------//
 //   CHECK LIST                 
 //----------------------------------------------------------//
-//
+
 Route::get('/check-list-index', [CheckListController::class, 'index'])->name('check-list-index');
 Route::get('/check-list-index-nat', [CheckListController::class, 'index'])->name('check-list-nat');
-
 //rota acessada pelos executante de check list
 Route::get('/check-list-index-executar', [CheckListController::class, 'executar'])->name('check-list-index-executar');
 Route::post('/check-list-show', [CheckListController::class, 'show'])->name('check-list-show');
@@ -452,35 +464,21 @@ Route::post('/checklist-executado', [CheckListExecutadoController::class, 'check
 Route::get('/checklist-executado-get', [CheckListExecutadoController::class, 'checklist_executado'])->name('checklist.executado.get');
 //
 Route::get('/check-list-finalizado', [CheckListExecutadoController::class, 'executado'])->name('check-list-finalizado');
-
 Route::post('/check-list-filter', [CheckListExecutadoController::class, 'executado'])->name('check-list-filter');
 Route::get('/check-list-funcionario', [CheckListExecutadoController::class, 'funcionario'])->name('check-list-funcionario');
 Route::delete('/check-list-exec-delete/{id}', [CheckListExecutadoController::class, 'destroy'])->name('check-list-exec-delete');
-
 //----------------------------------------------------------//
 //   CUSTOS GERAIS           
 //----------------------------------------------------------//
-
 Route::get('/dashboard-custos', [CustosController::class, 'dashboard'])->name('custos.dashboard');
 //----------------------------------------------------------//
 //   KPYs          
 //----------------------------------------------------------//
-use App\Http\Controllers\KPIsController;
-
 Route::get('/dashboard', [KPIsController::class, 'dashboard'])->name('kpis.dashboard');
 Route::get('/index-kpis', [KPIsController::class, 'index'])->name('index_kpis');
 //----------------------------------------------------------//
-//   Atualizar orímetro        
-//----------------------------------------------------------//
-use App\Http\Controllers\EquipamentoController;
-
-Route::post('/update-horimetro', [EquipamentoController::class, 'update_hour_meter']);
-//----------------------------------------------------------//
 //   Controle Panel    
 //----------------------------------------------------------//
-
-use App\Http\Controllers\UpdateLoopController;
-use App\Http\Controllers\NotificationsController;
 
 Route::post('/loop/ativar', [UpdateLoopController::class, 'ativar'])->name('loop.ativar');
 Route::post('/loop/desativar', [UpdateLoopController::class, 'desativar'])->name('loop.desativar');
@@ -491,59 +489,37 @@ Route::get('/notificacoes', [NotificationsController::class, 'index'])->name('no
 //----------------------------------------------------------//
 //   Blog
 //----------------------------------------------------------//
-use App\Http\Controllers\PostController;
-
 Route::get('/blog/painel', [PostController::class, 'index'])->name('blog.painel');
 Route::post('/messages/painel', [PostController::class, 'store'])->name('messages.store');
-
-use App\Http\Controllers\GroupController;
-
 Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
 Route::post('/groups/{group}/attach-users', [GroupController::class, 'attachUsers'])->name('groups.attachUsers');
 Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
-
-
 Route::get('/messages/fetch/{group}', [PostController::class, 'fetch'])->name('messages.fetch');
 Route::get('/messages-count', [PostController::class, 'messages_count_user'])->name('messages.count');
-
-
 //----------------------------------------------------------//
 //   Artigos  sobre manutenção
 //----------------------------------------------------------//
-use App\Http\Controllers\DocumentoController;
-
 Route::get('/documentos/manutencao', [DocumentoController::class, 'index'])->name('documentos.manutencao');
 Route::get('/documentos/normas', [DocumentoController::class, 'normas'])->name('documentos.normas');
 //============================================================//
 // HELP
 //-------------------------------------------------------------//
-
 Route::get('/site_help', function () {
     return view('site.help');
 })->name('site.help');
 //============================================================//
 // Lubrificação 
 //-------------------------------------------------------------//
-
-use App\Http\Controllers\LubrificacaoController;
-
 Route::get('/lubrificacoes', [LubrificacaoController::class, 'index'])->name('lubrificacao.index');
-
 Route::resource('lubrificacao', LubrificacaoController::class);
 Route::post('/lubrificacao-intervalo', [LubrificacaoController::class, 'store_intervalo'])->name('medicao.store');
-
-
 Route::resource('lubrificacoes-executadas', LubrificacaoExecutadaController::class);
 Route::get('/lubrificacoes-executadas/{lubrificacao}/edit', [LubrificacaoExecutadaController::class, 'edit'])
     ->name('lubrificacoes-executadas.edit');
 //Count 
 Route::get('/lubrificacao-count', [LubrificacaoController::class, 'countPendentes']);
-
-
-
 // Abrir a view externa para execução
-
 Route::post('lubrificacao/{id}/executar-externo', [LubrificacaoExecutadaController::class, 'executar'])
     ->name('lubrificacao.executar.externo.salvar');
 
@@ -555,26 +531,20 @@ Route::post('/open-lubrificacao/{equipamento}', [LubrificacaoExecutadaController
 Route::post('/lubrificacao/executar/{id}', [LubrificacaoExecutadaController::class, 'executarAcao'])
     ->name('lubrificacao.executar.acao');
 // Rota para buscar todas as lubrificações executadas
-
-
 Route::get('/lubrificacoes-feitas', [LubrificacaoExecutadaController::class, 'index'])
     ->name('lubrificacao.executadas');
-//
+//----------------------------------------------------------
 // Manutenção
+//---------------------------------------------------------
 Route::prefix('manutencao')->group(function () {
     Route::get('/preventiva', fn() => view('site.manutencao.manutencao_preventiva'))->name('manutencao.preventiva');
     Route::get('/corretiva', fn() => view('site.manutencao.manutencao_corretiva'))->name('manutencao.corretiva');
     Route::get('/preditiva', fn() => view('site.manutencao.manutencao_preditiva'))->name('manutencao.preditiva');
     Route::get('/lubrificacao', fn() => view('site.manutencao.lubrificacao'))->name('manutencao.lubrificacao');
 });
-Route::get('/about', function () {
-    return view('site.about');
-})->name('about');
-//========================================================//
+//========================================================
 // Projetos
-
-use App\Http\Controllers\ProjectController;
-
+//-------------------------------------------------------
 Route::resource('projetos', ProjectController::class);
 // Rota para listar todos os projetos
 Route::get('/projetos-index', [ProjectController::class, 'index'])->name('projetos.index');
@@ -587,7 +557,7 @@ Route::get('/ordem-servico/projeto/{projeto_id}/gantt', [ProjectController::clas
 //===================================================
 // Funcionários
 //===================================================
-use App\Http\Controllers\FuncionarioController;
+
 // Lista todos os funcionários
 Route::get('/funcionarios', [FuncionarioController::class, 'index'])
     ->name('funcionarios.index');
@@ -609,24 +579,10 @@ Route::put('/funcionarios/{id}', [FuncionarioController::class, 'update'])->name
 
 // Exclui um funcionário
 Route::delete('/funcionarios/{id}', [FuncionarioController::class, 'destroy'])->name('funcionarios.destroy');
-//=========================================================
-// APR 
-//=======================================================
-use App\Http\Controllers\APRController;
 
-Route::get('/apr', [APRController::class, 'index'])->name('apr.index');
-Route::get('/apr/create/{os_id}', [APRController::class, 'create'])->name('apr.create');
-
-Route::post('/apr', [APRController::class, 'store'])->name('apr.store');
-Route::get('/apr-show/{apr_id}', [APRController::class, 'show'])->name('apr.show');
-Route::get('/apr/{id}/edit', [APRController::class, 'edit'])->name('apr.edit');
-Route::put('/apr/{id}', [APRController::class, 'update'])->name('apr.update');
-Route::delete('/apr/{id}', [APRController::class, 'destroy'])->name('apr.destroy');
 //-------------------------------------------------------------//
 //                Business Partner
 //-------------------------------------------------------------//
-use App\Http\Controllers\BusinessPartnerController;
-use App\Http\Controllers\FailuresCotroller;
 
 Route::middleware('auth')->group(function () {
     Route::resource('business-partners', BusinessPartnerController::class);
@@ -638,76 +594,64 @@ Route::middleware('auth')->group(function () {
     Route::resource('business-partners-roles', BusinessPartnerController::class);
 });
 //-------------------------------------------------------------//
-//                Business Partner anderess
-//-------------------------------------------------------------//
-//-------------------------------------------------------------//
-//                Anderess
-//-------------------------------------------------------------//
-//-------------------------------------------------------------//
 //                Mensagens Painel
 //-------------------------------------------------------------//
-use App\Http\Controllers\MensagemPainelController;
-use App\Http\Controllers\RiscoController;
-use App\Http\Controllers\MedidaControleController;
-
 // Resource com binding correto
 Route::resource('mensagens', MensagemPainelController::class)->parameters([
     'mensagens' => 'mensagem'
 ]);
-
-
 // Para AJAX: retorna mensagens ativas em JSON
 Route::get('/mensagens-ativas', [MensagemPainelController::class, 'mensagensAtivas']);
+//=========================================================
+//                 SESMT
+//=======================================================
 //-------------------------------------------------------------//
-//                SESMT
+//                APR
 //-------------------------------------------------------------//
 Route::middleware('auth')->group(function () {
+
+    // --- DASHBOARD E TESTES ---
     Route::get('/sesmt-dashboard', [APRController::class, 'dashboard'])->name('sesmt.dashboard');
-    Route::post('/risco-store', [APRController::class, 'risco_store'])
-        ->name('risco.store');
-    Route::put('/apr/update', [AprController::class, 'update'])->name('apr.update');
-    Route::post(
-        '/apr/risco/medida/toggle',
-        [APRController::class, 'risco_medida_controle_store']
-    )->name('apr.risco.medida.toggle');
-    Route::get('/apr/{apr}/pdf', [AprController::class, 'pdf'])
-        ->name('apr.pdf');
-    Route::get('/apr/{apr}/pt-pdf', [App\Http\Controllers\AprController::class, 'pt_pdf'])
-        ->name('apr.pt_pdf');
-    //rota show
-    Route::get('/apr/{apr}', [AprController::class, 'show'])
-        ->name('aprs.show');
-    //confirmar análise APR
-    Route::post('/apr/{id}/confirmar', [AprController::class, 'confirmarAnalise'])->name('apr.confirmar');
+    Route::post('/teste-backend', [APRController::class, 'teste_backend']);
 
+    // --- CRUD APR (Análise Preliminar de Risco) ---
+    // Rotas estáticas primeiro para evitar conflitos com IDs
+    Route::get('/apr', [APRController::class, 'index'])->name('apr.index');
+    Route::get('/apr/create/{os_id}', [APRController::class, 'create'])->name('apr.create');
+    Route::post('/apr', [APRController::class, 'store'])->name('apr.store');
 
-    //PT
+    // Rotas com ID (Visualização, Edição, Delete)
+    Route::get('/apr/{id}', [APRController::class, 'show'])->name('apr.show');
+    Route::get('/apr/{id}/edit', [APRController::class, 'edit'])->name('apr.edit');
+    Route::put('/apr/{id}', [APRController::class, 'update'])->name('apr.update');
+    Route::delete('/apr/{id}', [APRController::class, 'destroy'])->name('apr.destroy');
 
-    Route::get('/pt/{id}', [AprController::class, 'show'])->name('pt.show');
-    Route::get('/apr-modelo/{apr_id}', [AprController::class, 'apr_modelo'])
-        ->name('apr.modelo');
+    // Ações específicas da APR
+    Route::post('/apr/{id}/confirmar', [APRController::class, 'confirmarAnalise'])->name('apr.confirmar');
+    Route::get('/apr-modelo/{apr_id}', [APRController::class, 'apr_modelo'])->name('apr.modelo');
+    Route::post('/apr-verifica-epis', [APRController::class, 'verificaEpis'])->name('apr.verificaEpis');
 
-    //Riscos Medidas de controle
+    // Documentos e PDFs
+    Route::get('/apr/{apr}/pdf', [APRController::class, 'pdf'])->name('apr.pdf');
+    Route::get('/apr/{apr}/pt-pdf', [APRController::class, 'pt_pdf'])->name('apr.pt_pdf');
 
-    Route::get('/riscos-medidas', [RiscoController::class, 'index'])
-        ->name('riscos.medidas');
-    Route::put('/riscos/{id}', [RiscoController::class, 'update'])->name('riscos.update');
+    // --- GERENCIAMENTO DE RISCOS ---
+    Route::get('/riscos-medidas', [RiscoController::class, 'index'])->name('riscos.medidas');
     Route::post('/riscos', [RiscoController::class, 'store'])->name('riscos.store');
+    Route::put('/riscos/{id}', [RiscoController::class, 'update'])->name('riscos.update');
 
-    //Medidas de controle
+    // Auxiliares de Risco no APRController
+    Route::post('/risco-store', [APRController::class, 'risco_store'])->name('risco.store');
+    Route::post('/apr/risco/medida/toggle', [APRController::class, 'risco_medida_controle_store'])->name('apr.risco.medida.toggle');
 
+    // --- MEDIDAS DE CONTROLE ---
     Route::get('/riscos/{id}/medidas', [MedidaControleController::class, 'index'])->name('riscos.medidas.index');
     Route::post('/riscos/{id}/medidas', [MedidaControleController::class, 'store'])->name('riscos.medidas.store');
-    Route::put('/risco-medidas/update', [MedidaControleController::class, 'update'])
-        ->name('risco_medidas.update');
+    Route::put('/risco-medidas/update', [MedidaControleController::class, 'update'])->name('risco_medidas.update');
 });
-
-
 //-------------------------------------------------------------//
 //                Materiais EPIs
 //-------------------------------------------------------------//
-use App\Http\Controllers\MaterialEpiController;
-
 Route::resource('material_epis', MaterialEpiController::class);
 // Store novo EPI
 Route::post('/material-epis', [MaterialEpiController::class, 'store'])->name('material_epis.store');
@@ -716,15 +660,9 @@ Route::get('/epis/{id}', [MaterialEpiController::class, 'epis_index'])
     ->name('epis_index');
 Route::post('/epis/{id}', [MaterialEpiController::class, 'store_epi'])
     ->name('epis.store');
-Route::post('/teste-backend', [APRController::class, 'teste_backend']);
-Route::post('/apr-verifica-epis', [AprController::class, 'verificaEpis'])->name('apr.verificaEpis');
-
-
 //-------------------------------------------------------------//
 //                Loacalização ala, setor
 //-------------------------------------------------------------//
-use App\Http\Controllers\LocalController;
-
 Route::middleware('auth')->group(function () {
     Route::resource('locais', LocalController::class);
     Route::put('/locais/{id}', [LocalController::class, 'update'])->name('locais.update');
@@ -732,10 +670,6 @@ Route::middleware('auth')->group(function () {
 //-------------------------------------------------------------//
 //                Paradas de máquinas
 //-------------------------------------------------------------//
-use App\Http\Controllers\ParadaEquipamentoController;
-use App\Http\Controllers\FailureController;
-
-
 Route::prefix('machine-downtime')->group(function () {
 
     Route::get('/', [ParadaEquipamentoController::class, 'index'])
@@ -777,7 +711,6 @@ Route::put('/failures-update/{id}', [FailureController::class, 'update'])->name(
 //-------------------------------------------------------------//
 //                Paradas de máquinas  falhas subacategorias
 //-------------------------------------------------------------//
-
 
 Route::get('/failure-subcategories-index', [FailureController::class, 'subcategoriesIndex'])
     ->name('failure-subcategories.index');

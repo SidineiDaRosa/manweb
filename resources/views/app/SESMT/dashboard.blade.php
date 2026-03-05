@@ -51,7 +51,8 @@
                         @foreach($aprs as $apr)
                         <tr>
                             <td>
-                                <a class="txt-link" href="{{ route('apr.show',['apr_id'=>$apr->id]) }}">
+
+                                <a class="txt-link" href="{{ route('apr.show', $apr->id) }}">
                                     <strong>#{{ $apr->id }}</strong>
                                 </a> <br>
                                 @foreach($ordens_servicos as $ordem_servico)

@@ -259,7 +259,7 @@
                         </a>
                         <div class="submenu" id="patrimonio-submenu">
                             @if (auth()->check() && auth()->user()->level <= 2)
-                                <a href="{{ route('Peca-equipamento.index') }}">
+                                <a href="{{ route('peca-equipamento.index') }}">
                                 <i class="bi bi-gear"></i>
                                 Peças de equipamentos</a>
                                 <a href="#">
