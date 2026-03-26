@@ -1057,8 +1057,8 @@
                         </div>
                         <style>
                             .img-hover {
-                                height: 20px;
-                                width: 20px;
+                                height: 25px;
+                                width: 25px;
                                 transition: transform 0.3s ease;
                                 cursor: pointer;
                             }
