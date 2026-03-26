@@ -78,7 +78,7 @@ class HomeController extends Controller
             ->orderBy('data_inicio')
             ->orderBy('hora_inicio')
             ->get();
-        $ordens_servicos_emandamento = OrdemServico::whereIn('situacao', ['em andamento','pausado']) //Ordens de serviço em andamento
+        $ordens_servicos_emandamento = OrdemServico::whereIn('situacao', ['em andamento', 'pausado']) //Ordens de serviço em andamento
             //->where('data_inicio', ('>='), $dataInicio)
             //->where('data_fim', ('<='), $dataFim)
             ->where('empresa_id', ('<='), 2)
@@ -128,7 +128,7 @@ class HomeController extends Controller
         // Ordena a coleção pelo valor GUT em ordem decrescente
         $ordens_servicos_aberta_hoje = $ordens_servicos_aberta_hoje->sortByDesc('valor_gut')->values();
         //----------------------------------------------------------------------//
-        $ordens_servicos_abarta_vencidas = OrdemServico::whereIn('situacao', ['aberto','pausado']) //Ordens de serviço vencidas
+        $ordens_servicos_abarta_vencidas = OrdemServico::whereIn('situacao', ['aberto', 'pausado']) //Ordens de serviço vencidas
             ->where('data_fim', ('<'), $dataFim)
             ->where('empresa_id', ('='), 2)
             ->orderby('data_fim')->orderby('hora_fim')->get();
@@ -302,9 +302,10 @@ class HomeController extends Controller
             ->get();
         $countOSAberto = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count();
         $countOSFechado = OrdemServico::where('situacao', 'fechado')->where('empresa_id', ('<='), 2)->count();
-        // busca os pedidos de compra abertos exeto
-        $pedidosCompraAberto = PedidoCompra::whereNotIn('status', ['fechado', 'indefinido', 'cancelado'])->get();
-
+        // Carrega os pedidos e já traz os itens de cada um (Eager Loading)
+        $pedidosCompraAberto = PedidoCompra::with('items') // 'itens' é o nome da function no Model
+            ->whereNotIn('status', ['fechado', 'indefinido', 'cancelado'])
+            ->get();
         $countOSPendenteDeAprovacao = OrdemServico::where('situacao', 'aberto')->where('empresa_id', ('<='), 2)->count(); // busca os pendente de aprovação
         //----------------------------------------------------------
         //Busca status do estoque de produtos

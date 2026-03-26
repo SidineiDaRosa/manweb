@@ -36,4 +36,10 @@ class PedidoCompra extends Model
     {
         return $this->belongsTo(Fornecedor::class, 'fornecedor_id');
     }
+    // Adicione esta função dentro da sua classe PedidoCompra
+    public function items()
+    {
+        // O relacionamento 'hasMany' indica que um pedido tem muitos itens/produtos na lista
+        return $this->hasMany(PedidoCompraLista::class, 'pedidos_compra_id');
+    }
 }

@@ -967,7 +967,7 @@
         {{-- Box 5 Pedido de Compra --}}
         {{-- Box que contém a lista de pedidos abertos --}}
         <div class="item">
-             <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">PEDIDOS</span>
+            <span style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;">PEDIDOS</span>
             <div class="container-row">
                 <button class="btn btn-outline-primary btn-sm"
                     style="font-family:Arial, Helvetica, sans-serif; font-weight:300;height:26px;"
@@ -989,127 +989,95 @@
             <div class="card text-white mb-3" style="max-width:100%;background-color:rgba(39,218,190,0.2);">
                 <div class="card-body">
                     <div>
+
                         <table class="condensed-table" id="tb_pedidos_compra">
                             <thead>
                                 <tr>
-                                    <th hidden>Emissão</th>
-                                    <th>Previsão</th>
+                                    <th>Previsão / Pedido</th>
                                     <th>Destino</th>
-                                    <th>Satus</th>
+                                    <th>Status</th>
                                     <th>Atualizado</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach ($pedidos_compra as $pedido_compra)
                                 @php
                                 $dataPrevista = \Carbon\Carbon::parse($pedido_compra->data_prevista);
-
                                 $dataAtual = \Carbon\Carbon::today();
-                                $horaAtual = \Carbon\Carbon::now('America/Sao_Paulo');
                                 @endphp
-                                <tr style="padding:10px;">
 
-                                    <td hidden>
-                                        {{ \Carbon\Carbon::parse($pedido_compra->data_emissao)->format('d/m/y') }}
-                                        <br>
-                                        {{ \Carbon\Carbon::parse($pedido_compra->hora_emissao)->format('h:i') }}
-                                    </td>
+                                <tr class="trigger-detalhes"
+                                    style="cursor: help;"
+                                    data-id="{{ $pedido_compra->id }}"
+                                    data-equipamento="{{ $pedido_compra->equipamento->nome }}"
+                                    data-status="{{ ucfirst(strtolower($pedido_compra->status)) }}"
+                                    data-descricao="{{ $pedido_compra->descricao }}"
+                                    data-obs="{{ $pedido_compra->observacao ?? 'Sem observações' }}">
+
                                     <td>
-                                        <div
-                                            class="{{ $dataPrevista->lt($dataAtual) ? 'btn-inf btn-inf-sm btn-inf-red' : ($dataPrevista->eq($dataAtual) ? 'btn-inf btn-inf-sm btn-inf-warning' : 'btn-inf btn-inf-sm btn-inf-blue-dark') }}">
+                                        <div class="{{ $dataPrevista->lt($dataAtual) ? 'btn-inf btn-inf-sm btn-inf-red' : ($dataPrevista->eq($dataAtual) ? 'btn-inf btn-inf-sm btn-inf-warning' : 'btn-inf btn-inf-sm btn-inf-blue-dark') }}">
                                             <a style="font-size: 17px;" class="txt-link"
                                                 href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $pedido_compra->id]) }}">
                                                 {{ $pedido_compra->id }}
-                                            </a> &nbsp&nbsp
-                                            {{ \Carbon\Carbon::parse($pedido_compra->data_prevista)->format('d/m/y') }}
-                                            {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('h:i') }}
-                                            </a> &nbsp&nbsp <br>
+                                            </a> &nbsp;&nbsp;
+                                            {{ $dataPrevista->format('d/m/y') }}
+                                            {{ \Carbon\Carbon::parse($pedido_compra->hora_prevista)->format('H:i') }}
                                         </div>
-
-
                                     </td>
+
                                     <td>{{ $pedido_compra->equipamento->nome }}</td>
-                                    <td hidden>{{ $pedido_compra->descricao }}</td>
+
                                     <td style="color: darkgray;">
                                         {{ ucfirst(strtolower($pedido_compra->status)) }}
                                     </td>
+
                                     <td style="color: darkgray;">
                                         {{ $pedido_compra->updated_at->format('d/m/y H:i') }}
                                     </td>
+                                    <td>
+                                        @foreach($pedido_compra->items->take(3) as $item)
+                                        @if ($item->produto->image)
+                                        <img src="/img/produtos/{{ $item->produto->image}}"
+                                            class="img-hover"
+                                            onmouseover="mostrarPreview(this)"
+                                            onmouseout="esconderPreview()">
+                                        @endif
+                                        @endforeach
+                                    </td>
+
+                                  
                                 </tr>
+
                                 @endforeach
                             </tbody>
                         </table>
-
-                        {{-- ------------------------------------------- --}}
-                        {{-- Div script exibe informações sobre o pedido --}}
+                        <!-- Preview global -->
+                        <div id="preview-img">
+                            <img id="preview-content" src="">
+                        </div>
                         <style>
-                            .info-box {
-                                width: 500px;
-                                display: none;
-                                position: absolute;
-                                background-color: aliceblue;
-                                border: 1px solid #ccc;
-                                padding: 10px;
-                                opacity: 0;
-                                transition: opacity 0.5s ease-in-out;
-                                border-radius: 5px;
-                                z-index: 9999;
-                                /* Coloca a div acima de todos os outros elementos */
+                            .img-hover {
+                                height: 20px;
+                                width: 20px;
+                                transition: transform 0.3s ease;
+                                cursor: pointer;
+                            }
+
+                            .img-hover:hover {
+                                transform: scale(10);
+                                /* aumenta 3x */
+                                position: relative;
+                                z-index: 10;
                             }
                         </style>
-                        <script>
-                            var tabela = document.getElementById('tb_pedidos_compra');
-                            var infoBox = document.getElementById('info-box');
-                            var timeoutId;
+                        {{-- ------------------------------------------- --}}
+                        {{-- Div script exibe informações sobre o pedido --}}
+                        <div id="info-box" class="info-box"></div>
 
-                            tabela.addEventListener('mouseover', function(event) {
-                                if (event.target.tagName === 'TD') {
-                                    timeoutId = setTimeout(function() {
-                                        var row = event.target.parentNode;
-                                        var cells = row.getElementsByTagName('td');
-                                        var labels = ['ID', 'Emissão', 'Previsão de uso', 'Ativo',
-                                            'Descrição'
-                                        ]; // Rótulos dos campos
-                                        var info = '<div class="info-content" style="text-align: center;">' +
-                                            '<h5 style="margin-bottom: 10px;">Pedido de compra</h5>'; // Adiciona margem inferior para separar do restante do conteúdo
-
-                                        for (var i = 1; i < cells.length; i++) {
-                                            info += '<p><strong>' + labels[i - 1] + ':</strong> ' + cells[i].textContent +
-                                                '</p>';
-                                        }
-
-                                        info += '</div>';
-
-                                        infoBox.innerHTML = info;
-                                        infoBox.style.display = 'block';
-
-                                        // Posição inicial
-                                        var topPosition = event.clientY + 10;
-                                        var leftPosition = event.clientX + 10;
-
-                                        // Verifica se a posição da div excede a altura da janela
-                                        var windowHeight = window.innerHeight;
-                                        var infoBoxHeight = infoBox.clientHeight;
-                                        if (topPosition + infoBoxHeight > windowHeight) {
-                                            topPosition = windowHeight - infoBoxHeight - 20; // 20 pixels de margem
-                                        }
-
-                                        infoBox.style.top = topPosition + 'px';
-                                        infoBox.style.left = leftPosition + 'px';
-                                        infoBox.style.opacity = 1; // Altera a opacidade para 1 para mostrar a div gradualmente
-                                    }, 300); // 2 segundos
-                                }
-                            });
-
-                            tabela.addEventListener('mouseout', function() {
-                                clearTimeout(timeoutId);
-                                infoBox.style.opacity = 0; // Altera a opacidade para 0 para esconder a div gradualmente
-                            });
-                        </script>
+                        <!--fim da tabela pedidos compra-->
 
                     </div>
+
                 </div>
             </div>
         </div>
@@ -1321,7 +1289,5 @@
                 opacity: 0.9;
             }
         </style>
-
-
 </main>
 @endif

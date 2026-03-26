@@ -95,7 +95,6 @@ Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home
 Route::get('/e-comerce-show-produto', 'App\Http\Controllers\ProdutoControllerComerce@index');
 Route::post('/produtos-filtro-e-comerce', [App\Http\Controllers\ProdutoControllerComerce::class, 'index']);
 Route::post('/comerce-show-produto', [App\Http\Controllers\ProdutoControllerComerce::class, 'show']);
-
 //--------------------------------------------------------//
 // Autetication User
 //--------------------------------------------------------//
