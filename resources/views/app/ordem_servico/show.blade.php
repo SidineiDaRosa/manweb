@@ -28,19 +28,20 @@
             <i class="bi bi-truck"></i> Equipamento
         </a>
         <!--APR-->
-        @if (isset($aprs))
-        @foreach ($aprs as $apr)
-        @endforeach
-        @endif
         @if ($aprs->isEmpty())
+        {{-- Se não houver nenhuma APR, mostra o botão de Gerar --}}
         <a class="btn-inf btn-inf-md btn-inf-gray" href="{{ route('apr.create', $ordem_servico->id) }}">
             <i class="bi bi-file-earmark-text"></i> Gerar APR
         </a>
         @else
-        <a class="btn-inf btn-inf-md btn-inf-orange" href="{{ route('apr.show', ['apr_id' => $apr->id]) }}">
-            <i class="bi bi-exclamation-triangle"></i> Abrir APR
+        {{-- Se houver, percorre a lista e gera o botão para cada uma --}}
+        @foreach ($aprs as $apr)
+        <a class="btn-inf btn-inf-md btn-inf-orange" href="{{ route('apr.show', ['id' => $apr->id]) }}">
+            <i class="bi bi-exclamation-triangle"></i> Abrir APR (ID: {{ $apr->id }})
         </a>
+        @endforeach
         @endif
+
 
         <a class="btn-inf btn-inf-md btn-inf-warning"
             href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
@@ -419,7 +420,7 @@
 
             <tbody>
                 @foreach ($produtosDoPedido as $produto)
-                <tr >
+                <tr>
                     <td>
                         <a class="txt-link"
                             href="{{ route('produto.show', ['produto' => $produto->produto->id]) }}"
