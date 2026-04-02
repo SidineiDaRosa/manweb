@@ -605,7 +605,7 @@ Route::get('/mensagens-ativas', [MensagemPainelController::class, 'mensagensAtiv
 //                 SESMT
 //=======================================================
 //-------------------------------------------------------------//
-//                APR
+//                APRs
 //-------------------------------------------------------------//
 Route::middleware('auth')->group(function () {
 
