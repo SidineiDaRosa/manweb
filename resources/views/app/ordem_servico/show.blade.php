@@ -42,7 +42,6 @@
         @endforeach
         @endif
 
-
         <a class="btn-inf btn-inf-md btn-inf-warning"
             href="{{ route('ordem-servico.edit', ['ordem_servico' => $ordem_servico->id]) }}">
             <i class="bi bi-pencil-square"></i>Editar

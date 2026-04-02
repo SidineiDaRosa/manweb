@@ -181,7 +181,7 @@
                             Business Partners
                         </a>
                         @endif
-                        @if (auth()->check() && auth()->user()->level == 3)
+                        @if (auth()->check() && auth()->user()->level <=2)
                         <a class="submenu" href="{{ route('locais.index') }}">
                             Setor/Local
                         </a>
