@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PedidoCompraLista extends Model
 {
-    use HasFactory;
+  
     use HasFactory;
     protected $table = 'pedido_compra_lista';
     protected $fillable = [
@@ -26,4 +26,5 @@ class PedidoCompraLista extends Model
     {
         return $this->belongsTo(Produto::class, 'produto_id');
     }
+  
 }

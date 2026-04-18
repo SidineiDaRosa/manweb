@@ -42,4 +42,5 @@ class PedidoCompra extends Model
         // O relacionamento 'hasMany' indica que um pedido tem muitos itens/produtos na lista
         return $this->hasMany(PedidoCompraLista::class, 'pedidos_compra_id');
     }
+    
 }

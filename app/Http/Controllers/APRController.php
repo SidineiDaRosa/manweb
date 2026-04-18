@@ -55,36 +55,33 @@ class APRController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. Validação dos dados
+        // 1. Validação (Mantenha como está)
         $request->validate([
             'ordem_servico_id'     => 'required|exists:ordens_servicos,id',
             'responsavel'          => 'required|exists:funcionarios,id',
-            'localizacao_id'       => 'required|exists:area_local,id', // valida o local
-            'local_trabalho'       => 'nullable|string|max:255',
+            'localizacao_id'       => 'required|exists:area_local,id',
             'descricao_atividade'  => 'required|string',
-            'riscos_identificados' => 'nullable|string',
-            'medidas_controle'     => 'nullable|string',
-            'epi_obrigatorio'      => 'nullable|string',
             'status'               => 'nullable|in:Aberta,aberta',
-
         ]);
 
         // 2. Criar registro da APR
+        // O Laravel retorna o objeto criado com o ID gerado pelo banco na variável $apr
         $apr = Apr::create([
             'ordem_servico_id'     => $request->ordem_servico_id,
             'responsavel_id'       => $request->responsavel,
-            'localizacao_id'       => $request->localizacao_id, // adiciona o local
+            'localizacao_id'       => $request->localizacao_id,
             'local_trabalho'       => $request->local_trabalho ?? 'Não informado',
             'descricao_atividade'  => $request->descricao_atividade,
             'riscos_identificados' => $request->riscos_identificados,
             'medidas_controle'     => $request->medidas_controle,
             'epi_obrigatorio'      => $request->epi_obrigatorio,
             'status'               => $request->status ?? 'aberta',
-            'prazo' => $request->prazo
+            'prazo'                => $request->prazo
         ]);
 
-        // 3. Redirecionar para a tela de exibição da APR
-        return redirect()->route('aprs.show', $apr->id);
+        // 3. Redirecionar usando o ID do objeto que acabou de ser criado ($apr->id)
+        return redirect()->route('apr.show', ['id' => $apr->id])
+            ->with('success', 'APR salva com sucesso!');
     }
 
     public function update(Request $request)
@@ -107,8 +104,9 @@ class APRController extends Controller
             'status' => $request->status,
             'prazo' => $request->prazo,
         ]);
-
-        return redirect()->back()->with('success', 'APR atualizada com sucesso!');
+        // No seu APRController, após salvar ou atualizar:
+        return redirect()->route('apr.show', ['id' => $apr->id])
+            ->with('success', 'APR salva com sucesso!');
     }
 
 

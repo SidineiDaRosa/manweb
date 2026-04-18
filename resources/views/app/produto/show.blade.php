@@ -434,7 +434,7 @@
                             <div class="spec-value">sem família</div>
                             @endif
                         </div>
-                         <div class="spec">
+                        <div class="spec">
                             <div class="spec-title">Status:</div>
                             <div class="spec-value">{{$produto->status}}</div>
                         </div>
@@ -461,10 +461,34 @@
                         </a>
 
                         <!-- Botão para abrir o modal -->
-                        <a class="btn-almoxarifado @can('user') disabled @endcan" data-toggle="modal" data-target="#myModal" title="Gerar Pedido de Compra" style="cursor:pointer;">
-                            <i class="fas fa-shopping-cart"></i> Gerar Pedido de Compra
-                            
+                        @if($pedidos_compra->isNotEmpty())
+                        {{-- MODO: VER PEDIDOS (VERDE) --}}
+                        <form action="{{ route('pedido-compra.index') }}" method="GET" style="display:inline;">
+                            {{-- Enviamos o ID do produto para a rota filtrar os pedidos dele --}}
+                            <input type="hidden" name="produto_id" value="{{ $produto->id }}">
+                            <input type="hidden" name="situacao" value="Aberto">
+                            <input type="hidden" name="data_inicio" value="2000-01-01">
+                            <input type="hidden" name="data_fim" value="2030-01-01">
+
+                            <button type="submit" class="btn-almoxarifado"
+                                title="Ver Pedidos: {{ $pedidos_compra->pluck('id')->implode(', ') }}"
+                                style="cursor:pointer; background-color: #28a745; border-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 4px;">
+                                <i class="fas fa-list-ul"></i>
+                                Pedido(s) em Aberto: {{ $pedidos_compra->pluck('id')->implode(', ') }}
+                            </button>
+                        </form>
+                        @else
+                        {{-- MODO: CRIAR NOVO (PADRÃO) --}}
+                        <a class="btn-almoxarifado @can('user') disabled @endcan"
+                            data-toggle="modal"
+                            data-target="#myModal"
+                            title="Gerar Pedido de Compra"
+                            style="cursor:pointer; text-decoration: none;">
+                            <i class="fas fa-cart-plus"></i>
+                            Gerar Pedido de Compra
                         </a>
+                        @endif
+
                     </div>
                 </div>
 

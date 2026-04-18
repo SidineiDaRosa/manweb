@@ -14,6 +14,7 @@ use App\Models\Empresas;
 use App\Models\Equipamento;
 use App\Models\Familia;
 use App\Models\PecasEquipamentos;
+use App\Models\PedidoCompra;
 use BaconQrCode\Renderer\Path\Move;
 use Illuminate\Support\Facades\File; // Importa a classe File
 //use phpDocumentor\Reflection\Types\This;
@@ -245,12 +246,19 @@ class ProdutoController extends Controller
         $estoque_produtos_sum_v = EstoqueProdutos::where('produto_id', $produtoId)->sum('quantidade');
         $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
         $equipamentos = Equipamento::all();
+        $pedidos_compra = PedidoCompra::whereHas('items', function ($query) use ($produtoId) {
+            $query->where('produto_id', $produtoId);
+        })
+            ->whereNotIn('status', ['fechado', 'cancelado']) // Filtra o status do pedido
+            ->get();
+
         return view('app.produto.show', [
             'produto' => $produto,
             'estoque_produtos' => $estoque_produtos,
             'estoque_produtos_sum' => $estoque_produtos_sum,
             'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor,
-            'equipamentos' => $equipamentos
+            'equipamentos' => $equipamentos,
+            'pedidos_compra' => $pedidos_compra
         ]);
         // return view('app.estoque_produto.index', [
         //'estoque_produtos' => $estoque_produtos, 'empresas' => $empresas, 'produtos' => $produtos, 'categorias' => $categorias

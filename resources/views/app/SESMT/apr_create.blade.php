@@ -137,10 +137,6 @@
 
                     {{-- Botões de Ação --}}
                     <div class="d-flex justify-content-between mt-4 pt-3 border-top">
-                        <a href="{{ route('apr.index') }}" class="btn btn-outline-secondary btn-lg">
-                            <i class="align-middle me-1" data-feather="arrow-left"></i>
-                            Voltar
-                        </a>
                         <button type="submit" class="btn btn-primary btn-lg px-5">
                             <i class="align-middle me-1" data-feather="save"></i>
                             Salvar APR
