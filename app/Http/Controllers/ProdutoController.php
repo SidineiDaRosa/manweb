@@ -222,12 +222,26 @@ class ProdutoController extends Controller
         $estoque_produtos = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->get();
         $estoque_produtos_sum = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
         $estoque_produtos_sum_valor = $estoque_produtos_sum * $estoque_produtos_sum; // Verifique esse cálculo se está correto!
+        // 1. Busca o último produto gravado
+        $ultimoProduto = Produto::latest()->first();
 
+        // 2. Define o ID para o filtro dos pedidos
+        $produtoId = $ultimoProduto->id;
+
+        // 3. Sua lógica de busca de pedidos (usando o ID do último produto)
+        $pedidos_compra = PedidoCompra::whereHas('items', function ($query) use ($produtoId) {
+            $query->where('produto_id', $produtoId);
+        })
+            ->whereNotIn('status', ['fechado', 'cancelado'])
+            ->get();
+
+        // 4. Retorna a view com todos os dados
         return view('app.produto.show', [
-            'produto' =>  $ultimoProduto,
-            'estoque_produtos' => $estoque_produtos,
+            'produto' => $ultimoProduto,
+            'estoque_produtos' => $estoque_produtos, // Certifique-se que esta variável foi calculada acima
             'estoque_produtos_sum' => $estoque_produtos_sum,
-            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor
+            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor,
+            'pedidos_compra' => $pedidos_compra
         ]);
     }
 
@@ -289,8 +303,6 @@ class ProdutoController extends Controller
 
     public function update(Request $request, Produto $produto)
     {
-
-
         $id = $produto->id; //pega o código do produto
         $produto = Produto::findOrFail($id);
         $produto->cod_fabricante = $request->cod_fabricante;
@@ -325,11 +337,26 @@ class ProdutoController extends Controller
         $estoque_produtos_sum = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
         $estoque_produtos_sum_v = EstoqueProdutos::where('produto_id', $ultimoProduto->id)->sum('quantidade');
         $estoque_produtos_sum_valor = $estoque_produtos_sum_v * $estoque_produtos_sum;
+        // 1. Busca o último produto gravado
+        $ultimoProduto = Produto::latest()->first();
+
+        // 2. Define o ID para o filtro dos pedidos
+        $produtoId = $ultimoProduto->id;
+
+        // 3. Sua lógica de busca de pedidos (usando o ID do último produto)
+        $pedidos_compra = PedidoCompra::whereHas('items', function ($query) use ($produtoId) {
+            $query->where('produto_id', $produtoId);
+        })
+            ->whereNotIn('status', ['fechado', 'cancelado'])
+            ->get();
+
+        // 4. Retorna a view com todos os dados
         return view('app.produto.show', [
-            'produto' =>  $ultimoProduto,
-            'estoque_produtos' => $estoque_produtos,
+            'produto' => $ultimoProduto,
+            'estoque_produtos' => $estoque_produtos, // Certifique-se que esta variável foi calculada acima
             'estoque_produtos_sum' => $estoque_produtos_sum,
-            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor
+            'estoque_produtos_sum_valor' => $estoque_produtos_sum_valor,
+            'pedidos_compra' => $pedidos_compra
         ]);
     }
 
