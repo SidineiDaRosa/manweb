@@ -295,7 +295,7 @@
 /* 🟡 Warning */
 .btn-inf-warning {
     background: rgba(241, 241, 67, 0.1);
-    border-color: rgba(194, 194, 99, 0.9);
+    border-color: rgba(194, 194, 99, 0.2);
     color: rgba(126, 119, 57, 0.98);
 }
 
@@ -306,7 +306,7 @@
 /* 🟠 Orange */
 .btn-inf-orange {
     background: rgba(255, 159, 67, 0.15);
-    border-color: rgba(255, 159, 67, 0.5);
+    border-color: rgba(255, 159, 67, 0.2);
     color: rgba(255, 169, 77, 0.98);
 }
 
@@ -317,7 +317,7 @@
 /* 🟢 Green */
 .btn-inf-green {
     background: rgba(177, 206, 188, 0.9);
-    border-color: rgba(67, 241, 134, 0.5);
+    border-color: rgba(67, 241, 134, 0.2);
     color: rgba(27, 88, 44, 0.7);
 }
 
@@ -328,8 +328,8 @@
 /* 🔵 Blue Light */
 .btn-inf-blue-light {
     background: rgba(67, 201, 241, 0.15);
-    border-color: rgba(67, 201, 241, 0.5);
-    color: rgba(87, 201, 231, 0.98);
+    border-color: rgba(67, 201, 241, 0.2);
+    color: rgba(32, 115, 138, 0.98);
 }
 
 .btn-inf-blue-light:hover {
@@ -339,7 +339,7 @@
 /* 🔷 Blue Dark */
 .btn-inf-blue-dark {
     background: rgba(47, 91, 191, 0.15);
-    border-color: rgba(47, 91, 191, 0.5);
+    border-color: rgba(47, 91, 191, 0.2);
     color: rgba(77, 121, 221, 0.98);
 }
 
@@ -350,7 +350,7 @@
 /* 🟣 Purple */
 .btn-inf-purple {
     background: rgba(155, 67, 241, 0.15);
-    border-color: rgba(155, 67, 241, 0.5);
+    border-color: rgba(155, 67, 241, 0.2);
     color: rgba(165, 87, 241, 0.98);
 }
 
@@ -361,7 +361,7 @@
 /* 🔴 Red */
 .btn-inf-red {
     background: rgba(241, 67, 67, 0.15);
-    border-color: rgba(241, 67, 67, 0.5);
+    border-color: rgba(241, 67, 67, 0.2);
     color: rgba(231, 87, 87, 0.98);
 }
 
@@ -372,8 +372,8 @@
 /* ⚪ Gray */
 .btn-inf-gray {
     background: rgba(128, 128, 128, 0.15);
-    border-color: rgba(128, 128, 128, 0.5);
-    color: rgba(158, 158, 158, 0.98);
+    border-color: rgba(128, 128, 128, 0.2);
+    color: rgba(131, 128, 128, 0.98);
 }
 
 .btn-inf-gray:hover {
@@ -383,7 +383,7 @@
 /* 🟤 Brown */
 .btn-inf-brown {
     background: rgba(150, 90, 50, 0.15);
-    border-color: rgba(150, 90, 50, 0.5);
+    border-color: rgba(150, 90, 50, 0.2);
     color: rgba(130, 70, 40, 0.98);
 }
 
