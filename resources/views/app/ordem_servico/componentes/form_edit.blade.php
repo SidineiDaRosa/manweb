@@ -732,7 +732,7 @@
                     Por favor, informe a tendência.
                 </div>
             </div>
-            <div hidden>
+            <div>
                 {{-- Início de assinatura manual --}}
                 <div id="confirmacao"
                     style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
@@ -854,15 +854,16 @@
 
                     </div>
                 </div>
-                {{-- fim card 3 --}}
-                <div class="row sm-3 mb-0">
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-outline-primary btn-bg" style="width:500px;">
-                            Salvar alteração da O.S.
-                        </button>
-                    </div>
-                </div>
 
+                {{-- fim card 3 --}}
+
+            </div>
+        </div>
+        <button type="submit" id="enviar" class="btn-inf btn-inf-bg btn-inf-blue-dark" data-bs-toggle="modal"
+            data-bs-target="#confirmModal" style="width:300px;">
+
+            Salvar alteração <i class="icofont-save"></i>
+        </button>
 </form>
 <style>
     body,
