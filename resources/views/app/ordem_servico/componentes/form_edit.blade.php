@@ -259,10 +259,10 @@
                     <select name="responsavel" id="responsavel" class="input-text">
                         <option value="">-- Selecione o responsável --</option>
                         @foreach ($funcionarios as $funcionario)
-                            <option value="{{ $funcionario->primeiro_nome }}"
-                                {{ old('responsavel', $ordem_servico->responsavel ?? '') == $funcionario->primeiro_nome ? 'selected' : '' }}>
-                                {{ $funcionario->primeiro_nome }}
-                            </option>
+                        <option value="{{ $funcionario->primeiro_nome }}"
+                            {{ old('responsavel', $ordem_servico->responsavel ?? '') == $funcionario->primeiro_nome ? 'selected' : '' }}>
+                            {{ $funcionario->primeiro_nome }}
+                        </option>
                         @endforeach
                     </select>
 
@@ -493,7 +493,6 @@
                         style="border:1px solid rgba(236, 123, 30, 0.5);border-radius:5px; width:98%;background-color:rgba(236, 186, 129, 0.5)">
                 </div>
                 <div>
-                    <i class="bi bi-apple"></i>
                     <select name="alarm" id="alarm" class="form-control">
 
                         <option value="0" class="opcao-verde"
@@ -503,7 +502,7 @@
 
                         <option value="1" class="opcao-vermelha"
                             {{ old('alarm', $ordem_servico->alarm ?? 0) == 1 ? 'selected' : '' }}>
-                            Não soar alarme 🔇 <i class="bi bi-apple"></i>
+                            Não soar alarme 🔇
                         </option>
                     </select>
                 </div>
@@ -517,7 +516,8 @@
             <div class="conteudo">
                 <select class="input-text" name="natureza_do_servico" id="natureza_do_servico" value="">
                     <option value="{{ $ordem_servico->natureza_do_servico }}">
-                        {{ $ordem_servico->natureza_do_servico }}</option>
+                        {{ $ordem_servico->natureza_do_servico }}
+                    </option>
                     <option value="corretiva">Corretiva</option>
                     <option value="ampliacao">Ampliação</option>
                     <option value="investimento">Investimento</option>
@@ -538,7 +538,8 @@
                 <select class="input-text" name="especialidade_do_servico" id="especialidade_do_servico"
                     value="">
                     <option value="{{ $ordem_servico->especialidade_do_servico }}">
-                        {{ $ordem_servico->especialidade_do_servico }}</option>
+                        {{ $ordem_servico->especialidade_do_servico }}
+                    </option>
                     <option value="eletrica">Elétrica</option>
                     <option value="mecanica">Mecanica</option>
                     <option value="civil">Civil</option>
@@ -731,87 +732,136 @@
                     Por favor, informe a tendência.
                 </div>
             </div>
-            {{-- Início de assinatura manual --}}
-            <div id="confirmacao"
-                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
-                <div
-                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
-                    <p>Deseja salvar esta assinatura?</p>
-                    <button type="button" class="btn btn-success" onclick="saveSignature()">Sim</button>
-                    <button type="button" class="btn btn-danger" onclick="cancelSignature()">Cancelar</button>
+            <div hidden>
+                {{-- Início de assinatura manual --}}
+                <div id="confirmacao"
+                    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
+                        <p>Deseja salvar esta assinatura?</p>
+                        <button type="button" class="btn btn-success" onclick="saveSignature()">Sim</button>
+                        <button type="button" class="btn btn-danger" onclick="cancelSignature()">Cancelar</button>
+                    </div>
                 </div>
-            </div>
 
-            <canvas id="meuCanvas" width="150" height="50" style="border: 1px solid black;"></canvas>
-            <input type="hidden" id="signature_receptor" name="signature_receptor" value="null">
-            <br>
-            <button type="button" class="btn btn-outline-primary btn-sm" id="salvar"
-                onclick="showConfirmation()">Salvar Assinatura</button>
+                <!-- Canvas com cursor configurado -->
+                <canvas id="meuCanvas" width="150" height="50" style="border: 1px solid black; cursor: crosshair; touch-action: none;"></canvas>
+                <input type="hidden" id="signature_receptor" name="signature_receptor" value="null">
+                <br>
 
-            {{-- Botão de envio, inicialmente desabilitado --}}
+                <!-- Botões de controle -->
+                <button type="button" class="btn btn-outline-primary btn-sm" id="salvar" onclick="showConfirmation()">Salvar Assinatura</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="limpar" onclick="limparCanvas()">Limpar</button>
 
-            <script>
-                const canvas = document.getElementById('meuCanvas');
-                const ctx = canvas.getContext('2d');
-                let desenhando = false;
+                <!-- Botão de envio do formulário (que o JavaScript vai habilitar) -->
+                <button type="submit" class="btn btn-primary btn-sm" id="submitBtn" disabled>Enviar Formulário</button>
 
-                canvas.addEventListener('mousedown', (e) => {
-                    desenhando = true;
-                    ctx.beginPath();
-                    ctx.moveTo(e.offsetX, e.offsetY);
-                });
+                <script>
+                    const canvas = document.getElementById('meuCanvas');
+                    const ctx = canvas.getContext('2d');
+                    let desenhando = false;
 
-                canvas.addEventListener('mousemove', (e) => {
-                    if (desenhando) {
-                        ctx.lineTo(e.offsetX, e.offsetY);
+                    // CORREÇÃO 1: Configuração visual do traço (sem isso o desenho fica invisível)
+                    ctx.lineWidth = 2;
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = '#000000';
+
+                    // Funções auxiliares para calcular posição exata (computador e celular)
+                    function obterPosicao(e) {
+                        const rect = canvas.getBoundingClientRect();
+                        if (e.touches && e.touches.length > 0) {
+                            return {
+                                x: e.touches[0].clientX - rect.left,
+                                y: e.touches[0].clientY - rect.top
+                            };
+                        }
+                        return {
+                            x: e.offsetX,
+                            y: e.offsetY
+                        };
+                    }
+
+                    function iniciarDesenho(e) {
+                        desenhando = true;
+                        ctx.beginPath();
+                        const pos = obterPosicao(e);
+                        ctx.moveTo(pos.x, pos.y);
+                    }
+
+                    function moverDesenho(e) {
+                        if (!desenhando) return;
+                        const pos = obterPosicao(e);
+                        ctx.lineTo(pos.x, pos.y);
                         ctx.stroke();
                     }
-                });
 
-                canvas.addEventListener('mouseup', () => {
-                    desenhando = false;
-                });
+                    function pararDesenho() {
+                        desenhando = false;
+                    }
 
-                canvas.addEventListener('mouseout', () => {
-                    desenhando = false;
-                });
+                    // Eventos para Mouse (Computador)
+                    canvas.addEventListener('mousedown', iniciarDesenho);
+                    canvas.addEventListener('mousemove', moverDesenho);
+                    canvas.addEventListener('mouseup', pararDesenho);
+                    canvas.addEventListener('mouseout', pararDesenho);
 
-                function showConfirmation() {
-                    document.getElementById('confirmacao').style.display = 'block';
-                }
+                    // CORREÇÃO 2: Eventos para Touch (Celular e Tablet)
+                    canvas.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        iniciarDesenho(e);
+                    });
+                    canvas.addEventListener('touchmove', (e) => {
+                        e.preventDefault();
+                        moverDesenho(e);
+                    });
+                    canvas.addEventListener('touchend', pararDesenho);
 
-                function saveSignature() {
-                    const dataURL = canvas.toDataURL('image/png');
-                    document.getElementById('signature_receptor').value = dataURL;
-                    document.getElementById('confirmacao').style.display = 'none'; // Esconde a div de confirmação
-                    document.getElementById('submitBtn').disabled = false; // Habilita o botão de envio
-                }
+                    // Funções dos Botões
+                    function showConfirmation() {
+                        document.getElementById('confirmacao').style.display = 'block';
+                    }
 
-                function cancelSignature() {
-                    document.getElementById('confirmacao').style.display = 'none'; // Esconde a div de confirmação
-                }
-            </script>
-            {{-- Fim de assinatura manual --}}
-            <div class="titulo">Projeto</div>
-            <hr>
-            <div class="conteudo">
-                <select class="input-text" name="projeto_id" id="projeto_id">
-                    <option value="">Selecione um projeto</option> <!-- opcional -->
-                    @foreach ($projetos as $projeto)
-                        <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
-                    @endforeach
-                </select>
+                    function saveSignature() {
+                        const dataURL = canvas.toDataURL('image/png');
+                        document.getElementById('signature_receptor').value = dataURL;
+                        document.getElementById('confirmacao').style.display = 'none';
 
-            </div>
-        </div>
-        {{-- fim card 3 --}}
-        <div class="row sm-3 mb-0">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-outline-primary btn-bg" style="width:500px;">
-                    Salvar alteração da O.S.
-                </button>
-            </div>
-        </div>
+                        // CORREÇÃO 3: Agora o elemento submitBtn existe e pode ser habilitado
+                        document.getElementById('submitBtn').disabled = false;
+                    }
+
+                    function cancelSignature() {
+                        document.getElementById('confirmacao').style.display = 'none';
+                    }
+
+                    // Função extra para limpar a tela
+                    function limparCanvas() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        document.getElementById('signature_receptor').value = 'null';
+                        document.getElementById('submitBtn').disabled = true;
+                    }
+                </script>
+                {{-- Fim de assinatura manual --}}
+                <div>
+                    <div class="titulo">Projeto</div>
+                    <hr>
+                    <div class="conteudo">
+                        <select class="input-text" name="projeto_id" id="projeto_id">
+                            <option value="">Selecione um projeto</option> <!-- opcional -->
+                            @foreach ($projetos as $projeto)
+                            <option value="{{ $projeto->id }}">{{ $projeto->nome }}</option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+                {{-- fim card 3 --}}
+                <div class="row sm-3 mb-0">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-outline-primary btn-bg" style="width:500px;">
+                            Salvar alteração da O.S.
+                        </button>
+                    </div>
+                </div>
 
 </form>
 <style>
