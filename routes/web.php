@@ -722,3 +722,88 @@ Route::put('/failure-subcategories-update/{id}', [FailureController::class, 'sub
 
 Route::delete('/failure-subcategories-delete/{id}', [FailureController::class, 'subcategoriesDestroy'])
     ->name('failure-subcategories.destroy');
+//-------------------------------------------------------------//
+//               Telemetria
+//-------------------------------------------------------------//
+use App\Http\Controllers\TelemetrieController;
+
+// Rota DELETE específica
+Route::get('/telemetria', [TelemetrieController::class, 'index'])
+    ->name('telemetria.index');
+
+// Rota para a View do navegador escutar os dados sem o prefixo /api/
+Route::get('/stream-telemetria', [TelemetrieController::class, 'transmitirDados']);
+
+use App\Http\Controllers\DispositivoController;
+
+
+
+Route::prefix('dispositivos')->name('dispositivos.')->group(function () {
+
+    // Tela principal
+    Route::get('/', [DispositivoController::class, 'index'])
+        ->name('index');
+
+    // Salvar novo dispositivo
+    Route::post('/', [DispositivoController::class, 'store'])
+        ->name('store');
+
+    // Atualizar dispositivo
+    Route::put('/{dispositivo}', [DispositivoController::class, 'update'])
+        ->name('update');
+
+    // Excluir dispositivo
+    Route::delete('/{dispositivo}', [DispositivoController::class, 'destroy'])
+        ->name('destroy');
+    // Monitorar dispositivo ESP32
+    Route::get('/{dispositivo}/monitorar', [DispositivoController::class, 'monitorar'])
+        ->name('monitorar');
+});
+//
+
+
+use Illuminate\Support\Facades\Http;
+use App\Models\Dispositivo;
+
+Route::get('/dispositivo/{id}/status-atual', function ($id) {
+    $dispositivo = Dispositivo::findOrFail($id);
+
+    try {
+        // Faz a requisição direto para o ESP32
+        $respostaEsp = Http::timeout(2)->get("http://{$dispositivo->ultimo_ip}/status-interno");
+
+        if ($respostaEsp->successful()) {
+            $dadosEsp = $respostaEsp->json();
+
+            // Sincroniza forçadamente lendo as chaves exatas do ESP32
+            $dispositivo->update([
+                'temperatura'   => $dadosEsp['temperatura'] ?? 0,
+                'vibracao_rms'  => $dadosEsp['vibracao_rms'] ?? 0,
+                'horimetro'     => $dadosEsp['horimetro'] ?? 0,
+                'status_online' => true
+            ]);
+
+            // Força o retorno com os dados vindos direto do ESP32 na hora
+            return response()->json([
+                'online'             => true,
+                'temperatura'        => (float)($dadosEsp['temperatura'] ?? 0),
+                'vibracao_rms'       => (float)($dadosEsp['vibracao_rms'] ?? 0),
+                'horimetro'          => (float)($dadosEsp['horimetro'] ?? 0),
+                'ultimo_ip'          => $dispositivo->ultimo_ip,
+                'ultima_atualizacao' => now()->format('d/m/Y H:i:s')
+            ]);
+        }
+    } catch (\Exception $e) {
+        // Se falhar a conexão, cai aqui
+    }
+
+    $dispositivo->update(['status_online' => false]);
+    return response()->json([
+        'online'             => false,
+        'temperatura'        => (float)($dispositivo->temperatura ?? 0),
+        'vibracao_rms'       => (float)($dispositivo->vibracao_rms ?? 0),
+        'horimetro'          => (float)($dispositivo->horimetro ?? 0),
+        'ultimo_ip'          => $dispositivo->ultimo_ip,
+        'ultima_atualizacao' => $dispositivo->updated_at->format('d/m/Y H:i:s')
+    ]);
+});

@@ -182,10 +182,10 @@
                         </a>
                         @endif
                         @if (auth()->check() && auth()->user()->level <=2)
-                        <a class="submenu" href="{{ route('locais.index') }}">
+                            <a class="submenu" href="{{ route('locais.index') }}">
                             Setor/Local
-                        </a>
-                        @endif
+                            </a>
+                            @endif
                 </div>
             </li>
 
@@ -271,6 +271,10 @@
                                 <a href="{{ route('index_kpis') }}">📊 KPIs</a>
                                 <a href="{{ route('lubrificacao.index') }}"> ⚙️💧 Lubrificação</a>
                                 <a href="{{ route('projetos.index') }}"><i class="bi bi-kanban"></i>Projetos</a>
+                                <a href="{{ route('telemetria.index') }}"></i>Telemetria</a>
+                                <a href="{{ route('dispositivos.index') }}">
+                                    <i class="fas fa-server me-1"></i> Dispositivos
+                                </a>
                                 @endif
                                 @if (auth()->check() && (auth()->user()->level == 4 || auth()->user()->level == 2 || auth()->user()->level == 0))
                                 <a href="{{ route('machine_downtime.index') }}"> <i class="bi bi-clock-history"></i>Paradas De Máquinas</a>

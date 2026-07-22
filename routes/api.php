@@ -34,3 +34,17 @@ Route::get(
     '/notificacao-status-os',
     [OrdemServicoController::class, 'notificacao_status_os']
 );
+//------------------------------------------------------------//
+//                 Telemetria
+//------------------------------------------------------------//
+
+use App\Http\Controllers\TelemetrieController;
+use App\Http\Controllers\DispositivoController;
+use App\Models\Dispositivo;
+
+// Rota do ESP32 (Mantém exatamente como está)
+Route::post('/teste-websocket', [TelemetrieController::class, 'testeWebsocket']);
+
+// Rota para a View escutar o status do ESP32
+Route::post('/dispositivo_online', [DispositivoController::class, 'dispositivo_online'])
+    ->name('dispositivo.online');
