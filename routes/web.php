@@ -348,7 +348,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/peca-equipamento', [PecaEquipamentoController::class, 'store'])->name('peca-equipamento.store');
 
     // Edição e Update
-    // Padronizei para usar {id} como as outras rotas do seu sistema
+    // Padronizado para usar {id} como as outras rotas do seu sistema
     Route::get('/peca-equipamento/{id}/edit', [PecaEquipamentoController::class, 'edit'])->name('peca-equipamento.edit');
     Route::put('/peca-equipamento/{id}', [PecaEquipamentoController::class, 'update'])->name('peca-equipamento.update');
 

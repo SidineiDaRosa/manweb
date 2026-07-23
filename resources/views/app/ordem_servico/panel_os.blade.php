@@ -707,8 +707,6 @@
                 });
             </script>
 
-
-
         </div>
 
         <div class="toolbar-marquee">

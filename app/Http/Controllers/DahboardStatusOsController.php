@@ -455,6 +455,9 @@ class DahboardStatusOsController extends Controller
 
         ]);
     }
+    //=======================
+    //Painel Show Panel OS
+    //=======================
     public function show_os()
     {
         // Horário atual de São Paulo
@@ -502,16 +505,16 @@ class DahboardStatusOsController extends Controller
         $equipamentos = Equipamento::all();
         $funcionarios = Funcionario::all();
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
-            ->whereDate('data_inicio', '<=', $hoje)
-            ->whereDate('data_fim', '>=', $hoje)
+            ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$agora])
+            ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') >= ?", [$agora])
             ->orderByRaw("
         CASE 
             WHEN `check` = 1 THEN 2
             ELSE 1
         END
     ")
-            ->orderBy('urgencia', 'desc')
             ->get();
+
         return View('app.ordem_servico.panel_os', [
             'ordens_servicos' => $ordens_servicos,
             'equipamentos' => $equipamentos,
