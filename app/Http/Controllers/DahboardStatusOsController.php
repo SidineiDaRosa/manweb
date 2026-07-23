@@ -475,16 +475,18 @@ class DahboardStatusOsController extends Controller
             ->get();
 
         // Pega ordens de serviço ativas neste momento
+        // Pega ordens de serviço ativas neste momento
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
             ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$agora])
             ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') >= ?", [$agora])
             ->orderByRaw("
-            CASE 
-                WHEN `check` = 1 THEN 2
-                ELSE 1
-            END
-        ")
-            ->orderBy('urgencia', 'desc')
+        CASE 
+            WHEN `check` = 1 THEN 2
+            ELSE 1
+        END
+    ") // Regra 1: Quem tem check=1 vai OBRIGATORIAMENTE para o fim da lista
+            ->orderBy('alarm', 'desc')     // Regra 2: Dos que sobraram no topo, quem tem alarme (1) fica acima de quem não tem (0)
+            ->orderBy('urgencia', 'desc')  // Regra 3: Critério de desempate final pelo nível de urgência
             ->get();
 
         return view('app.ordem_servico.panel_os', [
@@ -494,44 +496,16 @@ class DahboardStatusOsController extends Controller
         ]);
     }
 
-
     public function check_ordem_servico(Request $request)
     {
-          // Horário atual de São Paulo
-        $agora = Carbon::now('America/Sao_Paulo');
+        // 1. Busca a OS enviada pela requisição
+        $ordem_servico = OrdemServico::findOrFail($request->id_os);
 
-        // Pega todos os equipamentos
-        $equipamentos = Equipamento::all();
-
-        // Pega funcionários ativos que são mecânico ou eletricista
-        $funcionarios = Funcionario::where('status', 'ativo')
-            ->where(function ($q) {
-                $q->where('funcao', 'mecanico')
-                    ->orWhere('funcao', 'eletricista');
-            })
-            ->get();
-        $ordem_servico = OrdemServico::find($request->id_os);
-
+        // 2. Altera o status do check e salva no banco
         $ordem_servico->check = 1;
         $ordem_servico->save();
-        $hoje = Carbon::today();
-        $equipamentos = Equipamento::all();
-        $funcionarios = Funcionario::all();
-        $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
-            ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$agora])
-            ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') >= ?", [$agora])
-            ->orderByRaw("
-        CASE 
-            WHEN `check` = 1 THEN 2
-            ELSE 1
-        END
-    ")
-            ->get();
 
-        return View('app.ordem_servico.panel_os', [
-            'ordens_servicos' => $ordens_servicos,
-            'equipamentos' => $equipamentos,
-            'funcionarios' => $funcionarios
-        ]);
+        // 3. Redireciona para a rota do painel (que reprocessa os filtros automaticamente)
+        return redirect()->route('show-panel-os');
     }
 }
