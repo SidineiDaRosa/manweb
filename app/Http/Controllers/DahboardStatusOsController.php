@@ -497,6 +497,19 @@ class DahboardStatusOsController extends Controller
 
     public function check_ordem_servico(Request $request)
     {
+          // Horário atual de São Paulo
+        $agora = Carbon::now('America/Sao_Paulo');
+
+        // Pega todos os equipamentos
+        $equipamentos = Equipamento::all();
+
+        // Pega funcionários ativos que são mecânico ou eletricista
+        $funcionarios = Funcionario::where('status', 'ativo')
+            ->where(function ($q) {
+                $q->where('funcao', 'mecanico')
+                    ->orWhere('funcao', 'eletricista');
+            })
+            ->get();
         $ordem_servico = OrdemServico::find($request->id_os);
 
         $ordem_servico->check = 1;
