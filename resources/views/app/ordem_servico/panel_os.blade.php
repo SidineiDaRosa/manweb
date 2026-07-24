@@ -19,7 +19,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
-    <!-- Bootstrap Icons (FALTAVA ESTE) -->
+    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Icofont -->
@@ -555,45 +555,36 @@
     <div class="header">
         <div class="header-title">
             <h1>📋 Painel de Ordens de Serviço <div class="refresh-info">
-                    ⏱️ Atualiza a cada 60 segundos •
+                    ⏱️ 60s
                     <span id="lastUpdate">{{ now()->format('H:i:s') }}</span>
                     <!-- Botão que abre a modal -->
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalExemplo" style="height:35px;margin-top:5px;">
+                    <button type="button" class="btn btn-secondary btn-bg" data-bs-toggle="modal" data-bs-target="#modalExemplo">
                         Criar O.S
                     </button>
                     <!-- Notificação de Check list -->
-                    <div class="dropdown" id="checklist-count" style="margin-top:15px;margin-right:50px">
-                    </div>
-                    <div id="checklist-count" class="notification" style="margin-top:20px;">
-                        <span class="badge" id="checklist-badge">0</span>
-                        <div style="margin-right:25px;">Checklists pendentes</div>
-                    </div>
+                    <div class="card-sm-1">
+                        <div id="checklist-count" class="notification">
+                            <span class="badge" id="checklist-badge">0</span> <br>
+                            <div style="margin-right:25px;">Checklists pendentes</div>
+                        </div>
 
-                    <div id="lubrificacao-count" class="notification" style="margin-top:2px;">
-                        <span id="lubrificacao-badge" style="width:30px;">0</span>
-                        <div style="margin-right:25px;">Lubrificação</div>
+                        <div id="lubrificacao-count" class="notification">
+                            <span class="badge" id="lubrificacao-badge" >0</span><br>
+                            <div style="margin-right:25px;">Lubrificação</div>
+                        </div>
                     </div>
-
+                    <style>
+                        .card-sm-1 {
+                            width: auto;
+                            border-radius: 5px;
+                            padding:2px;
+                        }
+                    </style>
                 </div>
             </h1>
             <!-- CSS para o tollbar contagens notificaçoões-->
             <style>
-                .badge {
-                    display: inline-block;
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;
-                    color: white;
-                    text-align: center;
-                    line-height: 24px;
-                    font-size: 14px;
-                    font-weight: bold;
-                    position: absolute;
-                    top: -10px;
-                    right: -10px;
-                    z-index: 1000;
-                }
-
+             
                 .badge.zero {
                     background-color: green;
                 }
@@ -607,12 +598,11 @@
                     /* Nova classe para laranja */
                 }
 
-                #solicitacoes-count,
+                #lubrificacao-count,
                 #checklist-count {
                     position: relative;
                     display: inline-block;
                     margin-right: 100px;
-                    cursor: pointer;
                 }
             </style>
 
@@ -631,7 +621,7 @@
                                 if (data.pendentes > 0) {
                                     badge.classList.remove('zero', 'non-zero');
                                     badge.classList.add('warning'); // Adiciona a classe warning
-                                    document.getElementById('lubrificacao-badge').style.background = 'yellow'
+                                    //document.getElementById('lubrificacao-badge').style.background = 'yellow'
                                 } else {
                                     badge.classList.remove('non-zero', 'warning');
                                     badge.classList.add('zero');

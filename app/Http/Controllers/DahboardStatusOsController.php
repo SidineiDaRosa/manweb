@@ -475,18 +475,19 @@ class DahboardStatusOsController extends Controller
             ->get();
 
         // Pega ordens de serviço ativas neste momento
-        // Pega ordens de serviço ativas neste momento
         $ordens_servicos = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
             ->whereRaw("STR_TO_DATE(CONCAT(data_inicio, ' ', hora_inicio), '%Y-%m-%d %H:%i:%s') <= ?", [$agora])
             ->whereRaw("STR_TO_DATE(CONCAT(data_fim, ' ', hora_fim), '%Y-%m-%d %H:%i:%s') >= ?", [$agora])
-            ->orderByRaw("
-        CASE 
-            WHEN `check` = 1 THEN 2
-            ELSE 1
-        END
-    ") // Regra 1: Quem tem check=1 vai OBRIGATORIAMENTE para o fim da lista
-            ->orderBy('alarm', 'desc')     // Regra 2: Dos que sobraram no topo, quem tem alarme (1) fica acima de quem não tem (0)
-            ->orderBy('urgencia', 'desc')  // Regra 3: Critério de desempate final pelo nível de urgência
+
+            // Regra 1: Quem tem alarm=0 vai OBRIGATORIAMENTE para o topo da lista
+            ->orderBy('alarm', 'asc')
+
+            // Regra 2: Dentro do grupo do alarm, quem tem check=1 vai para o fim
+            ->orderByRaw(" CASE WHEN `check` = 1 THEN 2 ELSE 1 END ")
+
+            // Regra 3: Critério de desempate final pelo nível de urgência
+            ->orderBy('urgencia', 'desc')
+
             ->get();
 
         return view('app.ordem_servico.panel_os', [
