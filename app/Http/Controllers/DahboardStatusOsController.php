@@ -464,7 +464,7 @@ class DahboardStatusOsController extends Controller
         $agora = Carbon::now('America/Sao_Paulo');
 
         // Pega todos os equipamentos
-        $equipamentos = Equipamento::all();
+        $equipamentos = Equipamento::orderBy('nome','asc')->get();
 
         // Pega funcionários ativos que são mecânico ou eletricista
         $funcionarios = Funcionario::where('status', 'ativo')

@@ -558,7 +558,7 @@
                     ⏱️ 60s
                     <span id="lastUpdate">{{ now()->format('H:i:s') }}</span>
                     <!-- Botão que abre a modal -->
-                    <button type="button" class="btn btn-secondary btn-bg" data-bs-toggle="modal" data-bs-target="#modalExemplo">
+                    <button type="button" class="btn btn-secondary btn-bg" data-bs-toggle="modal" data-bs-target="#modalOs">
                         Criar O.S
                     </button>
                     <!-- Notificação de Check list -->
@@ -682,7 +682,7 @@
                 }
 
                 document.addEventListener('DOMContentLoaded', () => {
-                    const modal = document.getElementById('modalExemplo');
+                    const modal = document.getElementById('modalOs');
 
                     if (modal) {
                         // Para o timer quando a modal abrir
@@ -1081,7 +1081,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Modal Bootstrap -->
-    <div class="modal fade" id="modalExemplo" tabindex="-1" aria-labelledby="modalExemploLabel" aria-hidden="true">
+    <div class="modal fade" id="modalOs" tabindex="-1" aria-labelledby="modalOsLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- modal-lg para mais espaço -->
             <div class="modal-content">
                 <script>
@@ -1129,7 +1129,7 @@
 
                 <!-- Cabeçalho -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalExemploLabel">Criar O.S.</h5>
+                    <h5 class="modal-title" id="modalOsLabel">Criar O.S.</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
 
