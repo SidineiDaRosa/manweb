@@ -158,8 +158,8 @@
                 <hr>
                 <div class="conteudo">
                     <input type="text" class="input-bordernone" name="ordem_servico_id" id="ordem_servico_id" placeholder="ordem_serviço_id" value="{{$pedido_saida_f->ordem_servico_id}}" readonly>
-                    <a class="btn btn-sm-template btn-outline-primary" href="{{route('ordem-servico.show', ['ordem_servico'=>$pedido_saida_f->ordem_servico_id])}}">
-                        O.S.
+                    <a class="btn-inf btn-inf-md btn-inf-blue-dark"href="{{route('ordem-servico.show', ['ordem_servico'=>$pedido_saida_f->ordem_servico_id])}}"> 
+                     <i class="icofont-clip-board"></i>   O.S.
                     </a>
                 </div>
                 <div class="titulo">Pedidos</div>
@@ -284,7 +284,7 @@
 
     <span style="margin-left:20px;">
         <h6 style="font-family: Arial, Helvetica, sans-serif;font-weight:700;">Componentes do equipamento com periodicidade programada</h5>
-            <input type="button" id="Btn-togglePecas" class="btn btn-warning btn-sm" value="Exibir peças do equipamento" onclick="togglePecas()">
+            <input type="button" id="Btn-togglePecas" class="btn-inf btn-inf-warning" value="Exibir peças do equipamento" onclick="togglePecas()">
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
                     document.getElementById('tblPecas').style.display = 'none';

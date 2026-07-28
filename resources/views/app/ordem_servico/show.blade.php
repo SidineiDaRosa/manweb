@@ -189,8 +189,8 @@
             <hr>
             <form action="{{ route('solicitacoes-os') }}" method="get">
                 <input type="text" value="{{ $ordem_servico->ss_id }}" name="id" hidden>
-                <button type="submit" class="btn-inf btn-inf-md btn-inf-blue-dark">
-                    SS: {{ $ordem_servico->ss_id }}
+                <button type="submit" class="btn-inf btn-inf-md btn-inf-blue-dark" title="Abre a SS">
+                   <i class="icofont-file-alt"></i> SS: {{ $ordem_servico->ss_id }} <i class="icofont-arrow-right" ></i>
                 </button>
             </form>
 
@@ -275,8 +275,9 @@
         <hr>
         <h4 class="h4-gray">Serviços executados</h4>
         @foreach ($servicos_executado as $servicos_executados)
+        <hr style="height: 1px; border: none; background-color: black; margin: -1px 0;">
         <div class="container-item">
-            <div class="item">
+            <div class="item" style="border: none;">
                 <div class="container-row-1x">
                     <div class="container-row">
                         <h4 class="h4-gray">Início:</h4>
@@ -310,14 +311,14 @@
                     </h4>
                 </div>
             </div>
-            <div class="item">
+            <div class="item" style="border: none;">
                 <h4 class="h4-gray">Descrição dos serviços</h4>
                 <hr>
                 <div class="container-row-1x">
                     {{ $servicos_executados->descricao }}
                 </div>
             </div>
-            <div class=" item">
+            <div class=" item" style="border: none;">
 
                 <div class="titulo">Subtotal de horas</div>
                 <hr>
@@ -327,6 +328,7 @@
                 </div>
             </div>
         </div>
+
         @endforeach
         <div style="display:flex;float:right;margin-right:20px;"> <span style="font-weight:700;">Total de horas
                 trabalhadas: {{ number_format($total_hs_os, 2, ',', '.') }}hs</span></div>

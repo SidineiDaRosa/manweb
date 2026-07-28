@@ -3,19 +3,19 @@
 @section('content')
 <main class="content">
 
-    <div class="card">
-        <div class="card-header-template mb-1">
+    <div>
+        <div>
             <div>
                 Editar Ordem de Serviço
             </div>
-            <a href="{{route('ordem-servico.index')}}" class="btn btn-info btn-icon-split btn-sm">
+            <a href="{{route('ordem-servico.index')}}" class="btn-inf btn-inf-blue-dark">
                 <span class="icon text-white-50">
                     <i class="icofont-filter"></i>
                 </span>
                 <span class="text">Filtros O.S.</span>
             </a>
 
-            <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}">
+            <a class="btn-inf btn-inf-brown" href="{{ route('app.home') }}">
                 <i class="icofont-dashboard"></i> Dashboard
             </a>
         </div>

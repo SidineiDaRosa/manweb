@@ -5,11 +5,10 @@
 <main class="content">
     <div class="card">
         <div> Criar novo pedido de saída com O.S</div>
-        <div class="col-md-2"> <a href="{{route('pedido-saida.index')}}" class="btn btn-info btn-icon-split">
-                <span class="icon text-white-20">
+        <div class="col-md-2"> 
+            <a href="{{route('pedido-saida.index')}}" class="btn-inf btn-inf-blue-dark">
                     <i class="icofont-list"></i>
-                </span>
-                <span class="text">Voltar para pedidos de saída</span>
+                Voltar para pedidos de saída
             </a></div>
     </div>
     <div class="card-header">
@@ -33,19 +32,19 @@
                 @foreach ($ordem_servico as $ordem_servico_f)
                 @endforeach
                 <div class="form-row">
-                    <div class="col-md-1">
+                    <div class="col-md-">
                         <label for="data_inicio">Data emissão:</label>
-                        <input type="date" class="form-control -lg" name="data_emissao" id="data_emissao" placeholder="dataPrevista" value="" readonly>
+                        <input type="date" class="form-control" name="data_emissao" id="data_emissao" placeholder="dataPrevista" value="" readonly>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-">
                         <label for="hora_inicio">Hora emissão:</label>
                         <input type="time" class="form-control" name="hora_emissao" id="hora_emissao" placeholder="horaPrevista" value="" readonly>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-">
                         <label for="dataFim">Data prevista:</label>
                         <input type="date" class="form-control" name="data_prevista" id="dataFim" placeholder="dataFim" value="">
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-">
                         <label for="horaFim">Hora Prevista:</label>
                         <input type="time" class="form-control" name="hora_prevista" id="horaFim" placeholder="horaFim" value="">
                     </div>
@@ -107,13 +106,13 @@
                     <!------------------------------------------------------------------------------------------->
                     <div class="col-md-2 mt-3">
                         <div style="margin-top: 14px;">
-                            <button type="submit" class="btn btn-outline-primary">Salvar Pedido de saída</button>
+                            <button type="submit" class="btn-inf btn-inf-blue-dark"><i class="icofont-save"></i> Salvar Pedido de saída</button>
                         </div>
                     </div>
             </form>
 
     </div>
-  
+
     @endsection
     <footer>
     </footer>

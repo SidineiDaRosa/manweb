@@ -570,7 +570,7 @@
 
                         <div id="lubrificacao-count" class="notification">
                             <span class="badge" id="lubrificacao-badge" >0</span><br>
-                            <div style="margin-right:25px;">Lubrificação</div>
+                            <div style="margin-right:25px;">Lubrificações Pendentes</div>
                         </div>
                     </div>
                     <style>

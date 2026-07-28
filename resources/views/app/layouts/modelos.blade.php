@@ -16,7 +16,6 @@
     <button class="btn-inf btn-inf-red">Red</button>
     <button class="btn-inf btn-inf-gray">Gray</button>
     <button class="btn-inf btn-inf-brown">Brown</button>
-
     <br><br>
 
     <!-- ============================= -->
@@ -32,7 +31,6 @@
     <button class="btn-inf btn-inf-md btn-inf-red">Red MD</button>
     <button class="btn-inf btn-inf-md btn-inf-gray">Gray MD</button>
     <button class="btn-inf btn-inf-md btn-inf-brown">Brown MD</button>
-
     <br><br>
 
     <!-- ============================= -->

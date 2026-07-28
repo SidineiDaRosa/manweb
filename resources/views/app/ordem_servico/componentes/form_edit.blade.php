@@ -426,7 +426,7 @@
                     <div class="invalid-tooltip">
                         Por favor, informe situacao.
                     </div>
-                    <input class="btn btn-outline-success btn-sm" type="button" name="openmodalsituacao"
+                    <input  class="btn-inf btn-inf-md btn-inf-red" type="button" name="openmodalsituacao"
                         id="openmodalsituacao" value="Alterar status" onclick="abreModal()">
                 </div>
                 <div class="titulo">Progressão do serviço:</div>
