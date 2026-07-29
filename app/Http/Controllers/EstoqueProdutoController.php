@@ -249,6 +249,9 @@ class EstoqueProdutoController extends Controller
     {
         //
     }
+    //=================================
+    // Dashboard estoque de produtos
+    //=================================
     public function storeProductInventory()
     {
 
@@ -263,12 +266,10 @@ class EstoqueProdutoController extends Controller
             ->count();
         $movementsThisMonth = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
             ->count();
-        $stok_level = EstoqueProdutos::where('quantidade', '<=', 'estoque_mnimo')->get();
-        // $lowStockItems = Product::with('category')
-        // ->whereColumn('quantity', '<=', 'min_quantity')
-        //  ->get();
-        // Contagem por criticidade (1 a 9)
-
+        $stok_level = EstoqueProdutos::where('quantidade', '<=', 'estoque_mnimo')
+        ->orderBy('criticidade','desc')
+        ->get();
+     
         // Inicializa um array 0..9 com zeros
         $criticidadeCounts = array_fill(0, 10, 0); // índices 0 a 9
 
@@ -283,9 +284,9 @@ class EstoqueProdutoController extends Controller
                 $criticidadeCounts[$idx] = (int) $total; // <- preenche o array certo
             }
         }
-        $movementsInputProcucts = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(360))
+        $movementsInputProcucts = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
             ->count();
-        $movementsouputProcucts = SaidaProduto::where('created_at', '>=', Carbon::now()->subDays(360))
+        $movementsouputProcucts = SaidaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
             ->count();
         // Retorna a view do dashboard com os dados
         return view('app.estoque_produto.dashboard', [
@@ -295,7 +296,9 @@ class EstoqueProdutoController extends Controller
             'movementsThisMonth' => $movementsThisMonth,
             'criticalItemsFault' => $criticalItemsFault,
             'stok_level' => $stok_level,
-            'criticidadeCounts' => $criticidadeCounts
+            'criticidadeCounts' => $criticidadeCounts,
+            'movementsouputProcucts'=>$movementsouputProcucts,
+            'movementsInputProcucts'=>$movementsInputProcucts
         ]);
     }
 }

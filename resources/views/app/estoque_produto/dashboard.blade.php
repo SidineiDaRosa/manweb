@@ -281,34 +281,7 @@
                     </div>
                 </div>
 
-                <!-- Gráficos -->
-                <div class="row mb-4">
-                    <div class="col-md-8 mb-3">
-                        <div class="card card-dashboard">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Movimentação de Estoque (Últimos 6 Meses)</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="movementChart" height="250"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <div class="col-md-4 mb-3">
-                        <div class="card card-dashboard">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Criticidade de Itens
-
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <!-- Gráfico de Criticidade -->
-                                <canvas id="categoryChart" height="250"></canvas>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              
 
 
                 <!-- Tabela de Itens com Estoque Baixo -->
@@ -339,7 +312,8 @@
                                                 <th>Categoria</th>
                                                 <th>Estoque Atual</th>
                                                 <th>Estoque Mínimo</th>
-                                                <th>Status</th>
+                                                <th>Estoque Máximo</th>
+                                                <th>Criticidade</th>
                                                 <th>Ações</th>
                                             </tr>
                                         </thead>
@@ -361,12 +335,15 @@
                                                             <td>MAT-{{ str_pad($produto->id, 4, '0', STR_PAD_LEFT) }}</td>
                                                             <td>{{ $produto->produto->nome ?? '---' }}</td>
                                                             <td>{{ $produto->produto->categoria->nome ?? '---' }}</td>
-                                                            <td>{{ $produto->quantidade }}</td>
+                                                            <td class="btn-inf btn-inf-sm btn-inf-red">{{ $produto->quantidade }}</td>
                                                             <td>{{ $produto->estoque_minimo }}</td>
-                                                            <td><span class="badge {{ $badge }}">{{ $status }}</span></td>
+                                                            <td>{{ $produto->estoque_maximo }}</td>
+                                                            <td>{{ $produto->criticidade }}</td>
                                                             <td>
-                                                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
-                                                                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
+                                                                <a class="btn-inf btn-inf-sm btn-inf-blue-dark"
+                                                                    href="{{ route('produto.show', ['produto' => $produto->id]) }}">
+                                                                    <i class="icofont-eye-alt"></i>
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                         @endforeach
@@ -377,108 +354,143 @@
                         </div>
                     </div>
                 </div>
-                //
+                  <!-- Gráficos -->
+                <div class="row mb-4">
+                    <div class="col-md-8 mb-3">
+                        <div class="card card-dashboard">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Movimentação de Estoque (Últimos 6 Meses)</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="movementChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <div class="col-md-4 mb-3">
+                        <div class="card card-dashboard">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Criticidade de Itens
+
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Gráfico de Criticidade -->
+                                <canvas id="categoryChart" height="250"></canvas>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Atualizar data e hora da última atualização
-        function updateLastUpdate() {
-            const now = new Date();
-            const options = {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            document.getElementById('last-update').textContent = now.toLocaleDateString('pt-BR', options);
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Atualizar data e hora da última atualização
+    function updateLastUpdate() {
+        const now = new Date();
+        const options = {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        const element = document.getElementById('last-update');
+        if (element) {
+            element.textContent = now.toLocaleDateString('pt-BR', options);
         }
+    }
 
-        updateLastUpdate();
+    updateLastUpdate();
 
-        // Gráfico de Movimentação
-        const movementCtx = document.getElementById('movementChart').getContext('2d');
-        const movementChart = new Chart(movementCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                datasets: [{
-                        label: 'Entradas',
-                        data: [120, 150, 180, 90, 130, 160],
-                        borderColor: '#2ecc71',
-                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                        tension: 0.3,
-                        fill: true
-                    },
-                    {
-                        label: 'Saídas',
-                        data: [80, 100, 120, 140, 110, 130],
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                        tension: 0.3,
-                        fill: true
-                    }
-                ]
+    // Gráfico de Movimentação (Adaptado para o total acumulado enviado pelo Controller)
+    const movementCtx = document.getElementById('movementChart').getContext('2d');
+    const movementChart = new Chart(movementCtx, {
+        type: 'bar', // Alterado para barra pois são dois valores únicos consolidados
+        data: {
+            labels: ['Total (Últimos 360 dias)'],
+            datasets: [
+                {
+                    label: 'Entradas',
+                    data: [@json($movementsInputProcucts)],
+                    backgroundColor: '#2ecc71',
+                    borderColor: '#27ae60',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Saídas',
+                    data: [@json($movementsouputProcucts)],
+                    backgroundColor: '#e74c3c',
+                    borderColor: '#c0392b',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
+        }
+    });
 
-        // Gráfico de Criticidade
-        // Pega os dados do controller
-        const criticidadeCounts = @json($criticidadeCounts);
+    // Gráfico de Criticidade
+    // Injeta com segurança a array associativa ou objeto do PHP
+    const criticidadeData = @json($criticidadeCounts);
 
-        const ctx = document.getElementById('categoryChart').getContext('2d');
-        const criticidadeChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-                datasets: [{
-                    label: 'Quantidade de Itens por Criticidade',
-                    data: criticidadeCounts,
-                    backgroundColor: [
-                        '#e74c3c', '#e67e22', '#f39c12', '#f1c40f',
-                        '#2ecc71', '#27ae60', '#3498db', '#2980b9', '#9b59b6', '#34495e'
-                    ]
-                }]
+    // Mapeia as chaves (0 a 9) e os valores dinamicamente do banco de dados
+    const labelsCriticidade = Object.keys(criticidadeData);
+    const valoresCriticidade = Object.values(criticidadeData);
+
+    const ctx = document.getElementById('categoryChart').getContext('2d');
+    const criticidadeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labelsCriticidade, // Mostra dinamicamente apenas os níveis que existem no banco
+            datasets: [{
+                label: 'Quantidade de Itens por Criticidade',
+                data: valoresCriticidade,
+                backgroundColor: [
+                    '#e74c3c', '#e67e22', '#f39c12', '#f1c40f',
+                    '#2ecc71', '#27ae60', '#3498db', '#2980b9', '#9b59b6', '#34495e'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Quantidade'
                     }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Quantidade'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Nível de Criticidade'
-                        }
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Nível de Criticidade'
                     }
                 }
             }
-        });
-    </script>
-</body>
-<pre>
-{{ print_r($criticidadeCounts) }}
-</pre>
+        }
+    });
+</script>
 
 </html>
