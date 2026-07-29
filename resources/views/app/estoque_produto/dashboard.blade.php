@@ -281,7 +281,7 @@
                     </div>
                 </div>
 
-              
+
 
 
                 <!-- Tabela de Itens com Estoque Baixo -->
@@ -354,7 +354,121 @@
                         </div>
                     </div>
                 </div>
-                  <!-- Gráficos -->
+                <!-- Tabela de Pedidos de Compra --><!-- Tabela de Pedidos de Compra -->
+                <div class="card card-dashboard mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Pedidos de Compra</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" class="ps-3">ID</th>
+                                        <th scope="col">Emissão</th>
+                                        <th scope="col">Previsão</th>
+                                        <th scope="col">Destino</th>
+                                        <th scope="col">Fornecedor</th>
+                                        <th scope="col">Funcionário</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Descrição</th>
+                                        <th scope="col" class="text-end pe-3">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($pedidos_compra as $pedido)
+                                    @php
+                                    // Combina a data e hora previstas do banco em um objeto Carbon
+                                    $dataPrevisao = \Carbon\Carbon::parse($pedido->data_prevista . ' ' . $pedido->hora_prevista);
+
+                                    // Define se está atrasado (passou do prazo atual E não está concluído/cancelado)
+                                    $estaAtrasado = $dataPrevisao->isPast() && !in_array(strtolower($pedido->status), ['fechado', 'concluido', 'cancelado', 'aprovado']);
+                                    @endphp
+
+                                    <tr>
+                                        <!-- ID -->
+                                        <td class="ps-3 fw-bold">#{{ $pedido->id }}</td>
+
+                                        <!-- Emissão -->
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($pedido->data_emissao)->format('d/m/Y') }}
+                                            <small class="text-muted">{{ \Carbon\Carbon::parse($pedido->hora_emissao)->format('H:i') }}</small>
+                                        </td>
+
+                                        <!-- Previsão com o visual do primeiro exemplo -->
+                                        <td>
+                                            <div class="{{ $estaAtrasado ? 'text-danger fw-bold' : '' }}">
+                                                {{ \Carbon\Carbon::parse($pedido->data_prevista)->format('d/m/Y') }}
+                                                <small class="{{ $estaAtrasado ? 'text-danger' : 'text-muted' }}">
+                                                    {{ \Carbon\Carbon::parse($pedido->hora_prevista)->format('H:i') }}
+                                                </small>
+
+                                                @if($estaAtrasado)
+                                                <span class="d-block text-danger fw-normal" style="font-size: 0.75rem;">
+                                                    Atrasado
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td >{{ $pedido->equipamento->nome }}</td>
+
+                                        <!-- Fornecedor -->
+                                        <td>{{ $pedido->fornecedor->nome ?? 'Não informado' }}</td>
+
+                                        <!-- Funcionário -->
+                                        <td>{{ $pedido->funcionario->nome ?? 'Não informado' }}</td>
+
+                                        <!-- Status com Badges dinâmicos -->
+                                        <td>
+                                            @if($estaAtrasado)
+                                            <span class="badge bg-danger">Atrasado</span>
+                                            @else
+                                            @switch(strtolower($pedido->status))
+                                            @case('pendente')
+                                            @case('aberto')
+                                            <span class="badge bg-warning text-dark">Pendente</span>
+                                            @break
+                                            @case('aprovado')
+                                            @case('fechado')
+                                            @case('concluido')
+                                            <span class="badge bg-success">Concluído</span>
+                                            @break
+                                            @case('cancelado')
+                                            <span class="badge bg-danger">Cancelado</span>
+                                            @break
+                                            @default
+                                            <span class="badge bg-secondary">{{ $pedido->status }}</span>
+                                            @endswitch
+                                            @endif
+                                        </td>
+
+                                        <!-- Descrição -->
+                                        <td>
+                                            <span class="d-inline-block text-truncate" style="max-width: 150px;" title="{{ $pedido->descricao }}">
+                                                {{ $pedido->descricao }}
+                                            </span>
+                                        </td>
+
+                                        <!-- Botão de Ação -->
+                                        <td class="text-end pe-3">
+                                            <a href="" class="btn btn-sm btn-outline-primary py-0 px-2">Ver</a>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center text-muted py-4">
+                                            Nenhum pedido de compra encontrado.
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Gráficos -->
                 <div class="row mb-4">
                     <div class="col-md-8 mb-3">
                         <div class="card card-dashboard">
@@ -386,111 +500,109 @@
             </div>
         </div>
     </div>
-
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Atualizar data e hora da última atualização
-    function updateLastUpdate() {
-        const now = new Date();
-        const options = {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        };
-        const element = document.getElementById('last-update');
-        if (element) {
-            element.textContent = now.toLocaleDateString('pt-BR', options);
-        }
-    }
-
-    updateLastUpdate();
-
-    // Gráfico de Movimentação (Adaptado para o total acumulado enviado pelo Controller)
-    const movementCtx = document.getElementById('movementChart').getContext('2d');
-    const movementChart = new Chart(movementCtx, {
-        type: 'bar', // Alterado para barra pois são dois valores únicos consolidados
-        data: {
-            labels: ['Total (Últimos 360 dias)'],
-            datasets: [
-                {
-                    label: 'Entradas',
-                    data: [@json($movementsInputProcucts)],
-                    backgroundColor: '#2ecc71',
-                    borderColor: '#27ae60',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Saídas',
-                    data: [@json($movementsouputProcucts)],
-                    backgroundColor: '#e74c3c',
-                    borderColor: '#c0392b',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Atualizar data e hora da última atualização
+        function updateLastUpdate() {
+            const now = new Date();
+            const options = {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const element = document.getElementById('last-update');
+            if (element) {
+                element.textContent = now.toLocaleDateString('pt-BR', options);
             }
         }
-    });
 
-    // Gráfico de Criticidade
-    // Injeta com segurança a array associativa ou objeto do PHP
-    const criticidadeData = @json($criticidadeCounts);
+        updateLastUpdate();
 
-    // Mapeia as chaves (0 a 9) e os valores dinamicamente do banco de dados
-    const labelsCriticidade = Object.keys(criticidadeData);
-    const valoresCriticidade = Object.values(criticidadeData);
-
-    const ctx = document.getElementById('categoryChart').getContext('2d');
-    const criticidadeChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labelsCriticidade, // Mostra dinamicamente apenas os níveis que existem no banco
-            datasets: [{
-                label: 'Quantidade de Itens por Criticidade',
-                data: valoresCriticidade,
-                backgroundColor: [
-                    '#e74c3c', '#e67e22', '#f39c12', '#f1c40f',
-                    '#2ecc71', '#27ae60', '#3498db', '#2980b9', '#9b59b6', '#34495e'
+        // Gráfico de Movimentação (Adaptado para o total acumulado enviado pelo Controller)
+        const movementCtx = document.getElementById('movementChart').getContext('2d');
+        const movementChart = new Chart(movementCtx, {
+            type: 'bar', // Alterado para barra pois são dois valores únicos consolidados
+            data: {
+                labels: ['Total (Últimos 360 dias)'],
+                datasets: [{
+                        label: 'Entradas',
+                        data: [@json($movementsInputProcucts)],
+                        backgroundColor: '#2ecc71',
+                        borderColor: '#27ae60',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Saídas',
+                        data: [@json($movementsouputProcucts)],
+                        backgroundColor: '#e74c3c',
+                        borderColor: '#c0392b',
+                        borderWidth: 1
+                    }
                 ]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                }
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Quantidade'
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
                     }
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Nível de Criticidade'
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
-        }
-    });
-</script>
+        });
+
+        // Gráfico de Criticidade
+        // Injeta com segurança a array associativa ou objeto do PHP
+        const criticidadeData = @json($criticidadeCounts);
+
+        // Mapeia as chaves (0 a 9) e os valores dinamicamente do banco de dados
+        const labelsCriticidade = Object.keys(criticidadeData);
+        const valoresCriticidade = Object.values(criticidadeData);
+
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const criticidadeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labelsCriticidade, // Mostra dinamicamente apenas os níveis que existem no banco
+                datasets: [{
+                    label: 'Quantidade de Itens por Criticidade',
+                    data: valoresCriticidade,
+                    backgroundColor: [
+                        '#e74c3c', '#e67e22', '#f39c12', '#f1c40f',
+                        '#2ecc71', '#27ae60', '#3498db', '#2980b9', '#9b59b6', '#34495e'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Nível de Criticidade'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 
 </html>

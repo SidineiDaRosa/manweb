@@ -13,6 +13,7 @@ use App\Models\PedidoSaida;
 use App\Models\UnidadeMedida;
 use App\Models\Categoria;
 use App\Models\EntradaProduto;
+use App\Models\PedidoCompra;
 use App\Models\SaidaProduto;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Support\Facades\DB;
@@ -288,6 +289,7 @@ class EstoqueProdutoController extends Controller
             ->count();
         $movementsouputProcucts = SaidaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
             ->count();
+            $pedidos_compra=PedidoCompra::where('status','aberto')->get();
         // Retorna a view do dashboard com os dados
         return view('app.estoque_produto.dashboard', [
             'totalItems' => $totalItems,
@@ -298,7 +300,8 @@ class EstoqueProdutoController extends Controller
             'stok_level' => $stok_level,
             'criticidadeCounts' => $criticidadeCounts,
             'movementsouputProcucts'=>$movementsouputProcucts,
-            'movementsInputProcucts'=>$movementsInputProcucts
+            'movementsInputProcucts'=>$movementsInputProcucts,
+            'pedidos_compra'=>$pedidos_compra
         ]);
     }
 }
