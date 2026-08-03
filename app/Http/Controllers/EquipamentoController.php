@@ -9,6 +9,7 @@ use App\Models\Equipamento;
 use App\Models\PecasEquipamentos;
 use App\Models\OrdemServico;
 use App\Models\user;
+use App\Models\Dispositivo;
 use App\Models\Servicos_executado; //serviços executados
 use Illuminate\Support\Arr;
 use Picqer\Barcode\BarcodeGeneratorHTML;
@@ -34,13 +35,13 @@ class EquipamentoController extends Controller
         if ($request->has('searching')) {
             $searching = $request->get('searching');
             $empresas = Empresas::all();
-            
+
             $equipamentos = Equipamento::where('empresa_id', $id)->orderby('nome', 'asc')->where('nome', 'like', $searching . '%')->get();
             return view('app.equipamento.index', [
                 'equipamentos' => $equipamentos,
                 'empresas' => $empresas,
                 'empresa_id' => $id,
-                'localizacoes'=>$localizacoes
+                'localizacoes' => $localizacoes
             ]);
         } else {
             //neste caso filtra pelo formulário empresa
@@ -50,7 +51,7 @@ class EquipamentoController extends Controller
                 'equipamentos' => $equipamentos,
                 'empresas' => $empresas,
                 'empresa_id' => $id,
-                'localizacoes'=>$localizacoes
+                'localizacoes' => $localizacoes
             ]);
         }
     }
@@ -123,6 +124,8 @@ class EquipamentoController extends Controller
         $today = date("Y-m-d"); //data de hoje
         $timeNew = date('H:i:s');
         $data_inicio = date('Y-m-d H:i:s', strtotime('-10 minutes'));
+        $dispositvos = Dispositivo::where('equipamento_id', $equipamento->id)->get();
+
         if ($tipoFiltro == 1) {
             //------------------------------------//php
             // Busca o.s. fehadas por equipamento
@@ -137,13 +140,14 @@ class EquipamentoController extends Controller
                 $servicos_executados = Servicos_executado::where('ordem_servico_id', $ordem_servico->id)->get();
                 $servicos_executados_colecao = $servicos_executados_colecao->merge($servicos_executados); // Adiciona os serviços executados à coleção
             }
+
             return view('app.equipamento.os_fechadas_equipamento', [
                 'equipamento' => $equipamento,
                 'ordens_servicos' => $ordens_servicos,
                 'servicos_executados_colecao' => $servicos_executados_colecao,
                 'usuarios' => $usuarios,
-                'equipamento_filho' => $equipamento_filho
-
+                'equipamento_filho' => $equipamento_filho,
+                'dispositvos' => $dispositvos
             ]);
         } else {
             //---------------------------------//
@@ -165,7 +169,8 @@ class EquipamentoController extends Controller
                     'manutencao' => $manutencao,
                     'chek_list' => $chek_list,
                     'lubrificacao' => $lubrificacao,
-                    'localizacoes' => $localizacoes
+                    'localizacoes' => $localizacoes,
+                    'dispositvos' => $dispositvos
                 ]);
             } else {
                 $ordens_servicos = OrdemServico::where('equipamento_id',  $equipamento_id)->where('situacao', 'aberto')->orderby('data_inicio')->orderby('hora_inicio')->get();
@@ -182,6 +187,7 @@ class EquipamentoController extends Controller
                     'manutencao' => $manutencao,
                     'chek_list' => $chek_list,
                     'lubrificacao' => $lubrificacao,
+                    'dispositvos' => $dispositvos
                 ]);
             }
         }

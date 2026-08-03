@@ -389,13 +389,11 @@
 </style>
 {{------------------------------------------------}}
 {{--Tabela de peças dos equipamento---------------}}
-<a class="btn btn-bg-template btn-outline-success" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id,'todas'=>'1']) }}"
+<a class="btn-inf btn-inf-md btn-inf-blue-light" href="{{ route('equipamento.show', ['equipamento' => $equipamento->id,'todas'=>'1']) }}"
     style="width:300px;">
     <i class="icofont-eye-alt"></i>
     Visualisar todas
 </a>
-
-
 <script>
     function DeletarPecaEquip(id) {
         if (confirm('Você tem certeza que deseja deletar este registro?')) {

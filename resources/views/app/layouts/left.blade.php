@@ -271,9 +271,8 @@
                                 <a href="{{ route('index_kpis') }}">📊 KPIs</a>
                                 <a href="{{ route('lubrificacao.index') }}"> ⚙️💧 Lubrificação</a>
                                 <a href="{{ route('projetos.index') }}"><i class="bi bi-kanban"></i>Projetos</a>
-                                <a href="{{ route('telemetria.index') }}"></i>Telemetria</a>
                                 <a href="{{ route('dispositivos.index') }}">
-                                    <i class="fas fa-server me-1"></i> Dispositivos
+                                    <i class="icofont-wifi-router"></i> Dispositivos
                                 </a>
                                 @endif
                                 @if (auth()->check() && (auth()->user()->level == 4 || auth()->user()->level == 2 || auth()->user()->level == 0))

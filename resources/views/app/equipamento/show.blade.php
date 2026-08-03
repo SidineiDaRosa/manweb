@@ -2,7 +2,7 @@
 
 @section('content')
 
-    
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <main class="content">
@@ -17,38 +17,42 @@
             }
         </style>
 
-        <a class="btn btn-outline-primary btn-bg" href="{{ route('equipamento.index', ['empresa'=>2]) }}">
+        <a class="btn-inf btn-inf-md  btn-inf-green" href="{{ route('equipamento.index', ['empresa'=>2]) }}">
             <span class="material-symbols-outlined">
                 format_list_bulleted
             </span>
+
+        </a>
+        <a class="btn-inf btn-inf-md btn-inf-brown" href="{{ route('app.home') }}">
+            <i class="icofont-dashboard"></i> Dashboard
         </a>
 
-        <a class="btn btn-outline-primary btn-bg" href="{{route('equipamento.create')}}">
+        <a class="btn-inf btn-inf-md  btn-inf-blue-light" href="{{route('equipamento.create')}}">
             <i class="bi bi-house-gear-fill"></i>
             Novo Ativo/Equipamento
         </a>
-        <a class="btn btn-outline-primary btn-bg" href="{{ route('peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
+        <a class="btn-inf btn-inf-md  btn-inf-md  btn-inf-blue-dark" href="{{ route('peca-equipamento.create',['equipamento' => $equipamento->id]) }}">
             <i class="bi bi-gear"></i>
             Novo Componente
         </a>
-        <a class="btn btn-outline-primary btn-bg" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}">
+        <a class="btn-inf btn-inf-md  btn-inf-blue-dark" href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}">
             <span class="material-symbols-outlined">
                 assignment_add
             </span>
             <span class="text">Nova O.S</span>
         </a>
-        <a class="btn btn-outline-success btn-bg" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}">
+        <a class="btn-inf btn-inf-md  btn-inf-gray" href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}">
             <span class="material-symbols-outlined">
                 list_alt_add
             </span>
             Pedido Compra
         </a>
-        <a class="btn btn-outline-dark btn-bg" href="{{ route('app.home') }}">
-            <i class="icofont-dashboard"></i> Dashboard
+
+        <a class="btn-inf btn-inf-md btn-inf-warning" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
+            <i class="icofont-ui-edit"></i>Editar </a>
+        <a class="btn-inf btn-inf-md btn-inf-purple" href="{{ route('dispositivos.index') }}">
+            <i class="icofont-wifi-router"></i> Dispositivos
         </a>
-        <a class="btn btn-sm-template btn-outline-success  @can('user') disabled @endcan" href="{{ route('equipamento.edit', ['equipamento' => $equipamento->id]) }}">
-            <i class="icofont-ui-edit"></i> </a>
-        <span style="font-family: Arial, Helvetica, sans-serif;">Visualização do Ativo | Patrimônio</span>
     </div>
     {{-------------------------------------------------------------------------}}
     {{--Inicio do bloco que contém o continer dos gráficos---------------------}}
@@ -111,7 +115,7 @@
 
 
             </div>
-            <div class="card-body">
+            <div class="card-body" hidden>
                 <?php
                 $protocolo = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on") ? "https" : "http");
                 $url = '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -119,7 +123,7 @@
                 ?>
                 {!! QrCode::size(50)->backgroundColor(255,255,255)->generate($urlPaginaAtual) !!}
             </div>
-            <form id="generateQRForm" action="{{ route('generate-qrcode') }}" method="POST">
+            <form id="generateQRForm" action="{{ route('generate-qrcode') }}" method="POST" hidden>
                 @csrf
                 <input type="text" hidden name="equipamento_id" value="{{$equipamento->id}}">
                 <input type="hidden" name="url" value="{{ $urlPaginaAtual }}">
@@ -248,6 +252,28 @@
                 Procedimento de manutenção
             </a>
         </div>
+Dispositivos
+        <table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="padding: 8px;">ID</th>
+            <th style="padding: 8px;">Nome</th>
+            <th style="padding: 8px;">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($dispositvos as $dispositivo)
+        <tr>
+            <td style="padding: 8px;">{{ $dispositivo->id }}</td>
+            <td style="padding: 8px;">{{ $dispositivo->nome }}</td>
+            <td style="padding: 8px;">
+                {{ $dispositivo->status_online ? 'Online' : 'Offline' }}
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
         {{--fim card--}}
         @include('app.equipamento.os_open')
     </div>
