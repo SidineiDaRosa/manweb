@@ -87,22 +87,19 @@
 
                     <div class="btn-group w-100 mt-2" role="group">
                         <!-- Criar OS -->
-                        <a class="btn-inf btn-inf-sm btn-inf-blue-dark flex-fill"
+                        <a class="btn-inf btn-inf-bg btn-inf-blue-dark flex-fill"
                             href="{{route('ordem-servico.create', ['equipamento'=>$equipamento->id,'empresa'=>2])}}"
                             data-bs-toggle="tooltip" title="Criar Ordem de Serviço">
-                            <i class="bi bi-plus-circle"></i>
+                          <i class="icofont-patient-file"></i>
                             Criar O. S.</span>
-                            <span class="d-md-none">OS</span>
                         </a>
 
                         <!-- Pedido de compra -->
-                        <a class="btn-inf btn-inf-sm btn-inf-gray"
+                        <a class="btn-inf btn-inf-bg btn-inf-gray"
                             href="{{route('pedido-compra.create',['equipamento_id' => $equipamento->id])}}"
                             data-bs-toggle="tooltip" title="Criar Pedido de Compra">
-                            <span class="d-none d-md-inline">
-                            <i class="bi bi-plus-circle"></i>    
+                           <i class="icofont-cart"></i> 
                             Ped. Compra</span>
-                            <span class="d-md-none">PC</span>
                         </a>
 
                         <!-- Filtro de OS fechadas -->
@@ -114,7 +111,7 @@
                             <input type="hidden" name="data_fim" value="fechado">
                             <input type="hidden" name="situacao" value="fechado">
                             <input type="hidden" name="tipo_consulta" value="5">
-                            <button type="submit" class="btn-inf btn-inf-sm btn-inf-green"
+                            <button type="submit" class="btn-inf btn-inf-bg btn-inf-green"
                                 data-bs-toggle="tooltip" title="OS Fechadas">
                                 <span class="d-none d-md-inline">
                                 <i class="bi bi-list-check"></i>    
