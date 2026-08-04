@@ -252,27 +252,38 @@
                 Procedimento de manutenção
             </a>
         </div>
-Dispositivos
+        Dispositivos
         <table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">
-    <thead>
-        <tr style="background-color: #f2f2f2;">
-            <th style="padding: 8px;">ID</th>
-            <th style="padding: 8px;">Nome</th>
-            <th style="padding: 8px;">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($dispositvos as $dispositivo)
-        <tr>
-            <td style="padding: 8px;">{{ $dispositivo->id }}</td>
-            <td style="padding: 8px;">{{ $dispositivo->nome }}</td>
-            <td style="padding: 8px;">
-                {{ $dispositivo->status_online ? 'Online' : 'Offline' }}
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="padding: 8px;">ID</th>
+                    <th style="padding: 8px;">Nome</th>
+                    <th style="padding: 8px;">Device</th>
+                    <th style="padding: 8px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($dispositvos as $dispositivo)
+                <tr>
+                    <td style="padding: 8px;">{{ $dispositivo->id }}</td>
+                    <td style="padding: 8px;">{{ $dispositivo->nome }}</td>
+                    <td style="padding: 8px;">{{ $dispositivo->device_id}}</td>
+                    <td style="padding: 8px;">
+                        {{ $dispositivo->status_online ? 'Online' : 'Offline' }}
+                    </td>
+                    <td>
+                        <a href="{{ route('dispositivos.monitorar', $dispositivo->id) }}"
+                            class="btn btn-success btn-sm">
+
+                            <i class="bi bi-display"></i>
+                            Monitorar
+
+                        </a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
         {{--fim card--}}
         @include('app.equipamento.os_open')

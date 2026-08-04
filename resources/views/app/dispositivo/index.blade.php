@@ -25,8 +25,6 @@
             </button>
 
         </div>
-
-
         <div class="card shadow-sm">
 
             <div class="card-body">
@@ -136,13 +134,13 @@
                                 <button class="btn btn-danger btn-sm">
                                     Excluir
                                 </button>
-                               <a href="{{ route('dispositivos.monitorar', $item->id) }}"
-    class="btn btn-success btn-sm">
+                                <a href="{{ route('dispositivos.monitorar', $item->id) }}"
+                                    class="btn btn-success btn-sm">
 
-    <i class="bi bi-display"></i>
-    Monitorar
+                                    <i class="bi bi-display"></i>
+                                    Monitorar
 
-</a>
+                                </a>
 
                             </td>
 
@@ -181,75 +179,73 @@
 
 
 <script>
+    document.querySelectorAll('.btnEditar').forEach(btn => {
 
-document.querySelectorAll('.btnEditar').forEach(btn => {
-
-    btn.addEventListener('click', function(){
-
-
-        document.getElementById('edit_equipamento').value = this.dataset.equipamento;
-        document.getElementById('edit_device').value = this.dataset.device;
-        document.getElementById('edit_nome').value = this.dataset.nome;
-        document.getElementById('edit_api').value = this.dataset.api;
-        document.getElementById('edit_mac').value = this.dataset.mac;
-        document.getElementById('edit_modelo').value = this.dataset.modelo;
-        document.getElementById('edit_firmware').value = this.dataset.firmware;
-        document.getElementById('edit_intervalo').value = this.dataset.intervalo;
-        document.getElementById('edit_ativo').value = this.dataset.ativo;
+        btn.addEventListener('click', function() {
 
 
-        document.getElementById('formEditar').action =
-            '/dispositivos/' + this.dataset.id;
+            document.getElementById('edit_equipamento').value = this.dataset.equipamento;
+            document.getElementById('edit_device').value = this.dataset.device;
+            document.getElementById('edit_nome').value = this.dataset.nome;
+            document.getElementById('edit_api').value = this.dataset.api;
+            document.getElementById('edit_mac').value = this.dataset.mac;
+            document.getElementById('edit_modelo').value = this.dataset.modelo;
+            document.getElementById('edit_firmware').value = this.dataset.firmware;
+            document.getElementById('edit_intervalo').value = this.dataset.intervalo;
+            document.getElementById('edit_ativo').value = this.dataset.ativo;
 
+
+            document.getElementById('formEditar').action =
+                '/dispositivos/' + this.dataset.id;
+
+
+        });
 
     });
-
-});
-
 </script>
 <script>
-// 1. CÓDIGO DO MODAL EDITAR
-document.getElementById('modalEditar').addEventListener('show.bs.modal', function (event) {
-    // Botão que disparou o modal
-    const button = event.relatedTarget;
-    
-    // Preenche os inputs do formulário de edição
-    document.getElementById('edit_equipamento').value = button.dataset.equipamento;
-    document.getElementById('edit_device').value = button.dataset.device;
-    document.getElementById('edit_nome').value = button.dataset.nome;
-    document.getElementById('edit_api').value = button.dataset.api;
-    document.getElementById('edit_mac').value = button.dataset.mac;
-    document.getElementById('edit_modelo').value = button.dataset.modelo;
-    document.getElementById('edit_firmware').value = button.dataset.firmware;
-    document.getElementById('edit_intervalo').value = button.dataset.intervalo;
-    document.getElementById('edit_ativo').value = button.dataset.ativo;
+    // 1. CÓDIGO DO MODAL EDITAR
+    document.getElementById('modalEditar').addEventListener('show.bs.modal', function(event) {
+        // Botão que disparou o modal
+        const button = event.relatedTarget;
 
-    // Define dinamicamente a rota correta para o envio (Action do Form)
-    document.getElementById('formEditar').action = '/dispositivos/' + button.dataset.id;
-});
+        // Preenche os inputs do formulário de edição
+        document.getElementById('edit_equipamento').value = button.dataset.equipamento;
+        document.getElementById('edit_device').value = button.dataset.device;
+        document.getElementById('edit_nome').value = button.dataset.nome;
+        document.getElementById('edit_api').value = button.dataset.api;
+        document.getElementById('edit_mac').value = button.dataset.mac;
+        document.getElementById('edit_modelo').value = button.dataset.modelo;
+        document.getElementById('edit_firmware').value = button.dataset.firmware;
+        document.getElementById('edit_intervalo').value = button.dataset.intervalo;
+        document.getElementById('edit_ativo').value = button.dataset.ativo;
 
-// 2. CÓDIGO DO MODAL SHOW (VISUALIZAR)
-document.getElementById('modalShow').addEventListener('show.bs.modal', function (event) {
-    // Botão que disparou o modal
-    const button = event.relatedTarget;
-    
-    // Preenche os inputs de visualização (readonly)
-    document.getElementById('show_equipamento').value = button.dataset.equipamento;
-    document.getElementById('show_nome').value = button.dataset.nome;
-    document.getElementById('show_device_id').value = button.dataset.device;
-    document.getElementById('show_api_key').value = button.dataset.api;
-    document.getElementById('show_mac_address').value = button.dataset.mac;
-    document.getElementById('show_modelo').value = button.dataset.modelo;
-    document.getElementById('show_firmware').value = button.dataset.firmware;
-    
-    // Formata o intervalo para incluir a palavra "segundos" se houver valor
-    const intervalo = button.dataset.intervalo;
-    document.getElementById('show_intervalo').value = intervalo ? intervalo + ' segundos' : 'Não definido';
-    
-    // Converte o valor binário (1 ou 0) para texto legível
-    const ativo = button.dataset.ativo;
-    document.getElementById('show_ativo').value = (ativo == '1') ? 'Ativo' : 'Inativo';
-});
+        // Define dinamicamente a rota correta para o envio (Action do Form)
+        document.getElementById('formEditar').action = '/dispositivos/' + button.dataset.id;
+    });
+
+    // 2. CÓDIGO DO MODAL SHOW (VISUALIZAR)
+    document.getElementById('modalShow').addEventListener('show.bs.modal', function(event) {
+        // Botão que disparou o modal
+        const button = event.relatedTarget;
+
+        // Preenche os inputs de visualização (readonly)
+        document.getElementById('show_equipamento').value = button.dataset.equipamento;
+        document.getElementById('show_nome').value = button.dataset.nome;
+        document.getElementById('show_device_id').value = button.dataset.device;
+        document.getElementById('show_api_key').value = button.dataset.api;
+        document.getElementById('show_mac_address').value = button.dataset.mac;
+        document.getElementById('show_modelo').value = button.dataset.modelo;
+        document.getElementById('show_firmware').value = button.dataset.firmware;
+
+        // Formata o intervalo para incluir a palavra "segundos" se houver valor
+        const intervalo = button.dataset.intervalo;
+        document.getElementById('show_intervalo').value = intervalo ? intervalo + ' segundos' : 'Não definido';
+
+        // Converte o valor binário (1 ou 0) para texto legível
+        const ativo = button.dataset.ativo;
+        document.getElementById('show_ativo').value = (ativo == '1') ? 'Ativo' : 'Inativo';
+    });
 </script>
 
 
