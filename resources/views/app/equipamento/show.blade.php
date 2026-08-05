@@ -252,6 +252,10 @@
                 Procedimento de manutenção
             </a>
         </div>
+
+      @isset($dispositivos)
+   
+
         Dispositivos
         <table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">
             <thead>
@@ -284,6 +288,7 @@
                 @endforeach
             </tbody>
         </table>
+        @endisset
 
         {{--fim card--}}
         @include('app.equipamento.os_open')
