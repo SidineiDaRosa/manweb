@@ -528,7 +528,27 @@ if (!empty($ordemServico->link_foto)) {
                 </div>
                 <div class="pt-clear"></div>
             </div>
+    <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
+            <div class="pt-row">
+                <div class="pt-col-50">
+                    <strong>[ ] Energias residual (Risco)</strong> (Energias NR12)
+                    <div class="pt-checkbox-group">
+                         [ ] LOTO realizado (Bloqueio)<br>
+                        [ ] Isolamento da área <br>
+                        [ ] Teste de ausência de Alta temperatura <br>
+                        [ ] Teste de ausência Pressão de AR/hidraúlica (Risco)
+                    </div>
+                </div>
 
+                <div class="pt-col-50">
+                    <strong>[ ] Risco Químico</strong> (Produtos químicos)
+                    <div class="pt-checkbox-group">
+                        [ ] Monitoramento / Inalação de gases<br>
+                        [ ] Contato com produtos químicos<br>
+                    </div>
+                </div>
+                <div class="pt-clear"></div>
+            </div>
             <div class="pt-hr"></div>
 
             <!-- Risco 3 -->
