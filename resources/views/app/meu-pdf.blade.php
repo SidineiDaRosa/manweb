@@ -132,27 +132,27 @@
     }
 </style>
 
-    <table>
-        <tr>
-            <td style="width: 100px; text-align: center; vertical-align: middle;">
-                <!-- O DOMPDF renderiza melhor se a imagem for um caminho físico ou base64 -->
-                <img src="{{ public_path('img/logo_fapolpa.png') }}" style="width: 90px; height: auto;">
-            </td>
-            <td style="text-align: right; font-size: 12px; line-height: 1.3; vertical-align: middle;">
-                <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
-                CNPJ: 82.653.700/0001-40<br>
-                Rua Ema Mazalotti Cardoso, 170, Palmas - PR
-            </td>
-        </tr>
-    </table>
-    <div class="coluna">
-        @foreach($empresa as $empresa_f)
-        @endforeach
-        {{$empresa_f->razao_social}}
-        @php
-        use Carbon\Carbon;
-        @endphp
-    </div>
+<table>
+    <tr>
+        <td style="width: 100px; text-align: center; vertical-align: middle;">
+            <!-- O DOMPDF renderiza melhor se a imagem for um caminho físico ou base64 -->
+            <img src="{{ public_path('img/logo_fapolpa.png') }}" style="width: 90px; height: auto;">
+        </td>
+        <td style="text-align: right; font-size: 12px; line-height: 1.3; vertical-align: middle;">
+            <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
+            CNPJ: 82.653.700/0001-20<br>
+            Rua Ema Mazalotti Cardoso, 170, Palmas - PR
+        </td>
+    </tr>
+</table>
+<div class="coluna">
+    @foreach($empresa as $empresa_f)
+    @endforeach
+    {{$empresa_f->razao_social}}
+    @php
+    use Carbon\Carbon;
+    @endphp
+</div>
 
 <div style="text-align: center;margin-top:0%;font-weight:800;font-family:'Poppins', sans-serif; font-size:25px;">Ordem de Serviço #{{ $ordemServico->id }}</div>
 <hr class="linha-pontilhada">
@@ -380,7 +380,7 @@ if (!empty($ordemServico->link_foto)) {
         </td>
         <td style="text-align: right; font-size: 12px; line-height: 1.3; vertical-align: middle;">
             <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
-            CNPJ: 82.653.700/0001-40<br>
+            CNPJ: 82.653.700/0001-20<br>
             Rua Ema Mazalotti Cardoso, 170, Palmas - PR
         </td>
     </tr>
@@ -390,7 +390,8 @@ if (!empty($ordemServico->link_foto)) {
 <style>
     .pt-container {
         font-family: Arial, sans-serif;
-        font-size: 15px; /* Fonte compacta para caber em uma página */
+        font-size: 15px;
+        /* Fonte compacta para caber em uma página */
         line-height: 1.2;
         color: #000;
     }
@@ -408,10 +409,21 @@ if (!empty($ordemServico->link_foto)) {
         clear: both;
     }
 
-    .pt-col-30 { width: 30%; float: left; }
-    .pt-col-40 { width: 40%; float: left; }
-    .pt-col-50 { width: 50%; float: left; }
-    
+    .pt-col-30 {
+        width: 30%;
+        float: left;
+    }
+
+    .pt-col-40 {
+        width: 40%;
+        float: left;
+    }
+
+    .pt-col-50 {
+        width: 50%;
+        float: left;
+    }
+
     .pt-block {
         border: 1px solid #000;
         padding: 4px;
@@ -439,7 +451,7 @@ if (!empty($ordemServico->link_foto)) {
     .pt-checkbox-group {
         margin-left: 10px;
         margin-bottom: 3px;
-        font-size:15px;
+        font-size: 15px;
     }
 </style>
 
@@ -493,7 +505,7 @@ if (!empty($ordemServico->link_foto)) {
     <!-- RISCOS E MEDIDAS DE CONTROLE -->
     <div class="pt-block" style="padding: 0;">
         <div class="pt-bg-header">RISCOS IDENTIFICADOS E MEDIDAS DE CONTROLE</div>
-        
+
         <div style="padding: 4px;">
             <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
             <div class="pt-row">
@@ -505,7 +517,7 @@ if (!empty($ordemServico->link_foto)) {
                         [ ] Isolamento da área
                     </div>
                 </div>
-                
+
                 <div class="pt-col-50">
                     <strong>[ ] Choque Elétrico</strong> (Painéis/Circuitos)
                     <div class="pt-checkbox-group">
@@ -547,17 +559,32 @@ if (!empty($ordemServico->link_foto)) {
 
     <!-- ASSINATURAS -->
     <div class="pt-row" style="margin-top: 25px;">
+        <!-- Primeira Linha -->
+        <div class="pt-col-50" style="text-align: center; margin-bottom: 25px;">
+            ______________________________________<br>
+            <strong>SESMT</strong>
+        </div>
+
+        <div class="pt-col-50" style="text-align: center; margin-bottom: 25px;">
+            ______________________________________<br>
+            <strong>Responsável da Área</strong>
+        </div>
+    </div>
+    <div class="pt-row" style="margin-top: 25px;">
+        <!-- Segunda Linha -->
         <div class="pt-col-50" style="text-align: center;">
             ______________________________________<br>
-            <strong>Técnico de Segurança</strong>
+            <strong>Supervisor de Manutenção</strong>
         </div>
 
         <div class="pt-col-50" style="text-align: center;">
             ______________________________________<br>
-            <strong>Supervisor / Responsável da Área</strong>
+            <strong>Gerente de Produção</strong>
         </div>
+
         <div class="pt-clear"></div>
     </div>
+
 
 </div>
 
