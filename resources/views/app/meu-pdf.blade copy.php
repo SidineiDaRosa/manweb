@@ -132,19 +132,13 @@
     }
 </style>
 
-    <table>
-        <tr>
-            <td style="width: 100px; text-align: center; vertical-align: middle;">
-                <!-- O DOMPDF renderiza melhor se a imagem for um caminho físico ou base64 -->
-                <img src="{{ public_path('img/logo_fapolpa.png') }}" style="width: 90px; height: auto;">
-            </td>
-            <td style="text-align: right; font-size: 12px; line-height: 1.3; vertical-align: middle;">
-                <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
-                CNPJ: 82.653.700/0001-40<br>
-                Rua Ema Mazalotti Cardoso, 170, Palmas - PR
-            </td>
-        </tr>
-    </table>
+<div class="linha">
+    <div class="coluna">
+        <div id="container-img">
+            <img src="{{ public_path('img/logo_fapolpa.png') }}" alt="Imagem do Produto" class="preview-image-logo" style="width:50%;">
+        </div>
+    </div>
+
     <div class="coluna">
         @foreach($empresa as $empresa_f)
         @endforeach
@@ -153,7 +147,7 @@
         use Carbon\Carbon;
         @endphp
     </div>
-
+</div><br>
 <div style="text-align: center;margin-top:0%;font-weight:800;font-family:'Poppins', sans-serif; font-size:25px;">Ordem de Serviço #{{ $ordemServico->id }}</div>
 <hr class="linha-pontilhada">
 <div class="div-container">
@@ -322,244 +316,6 @@ if (!empty($ordemServico->link_foto)) {
     // Se não existir a imagem da OS, não mostra nada
 }
 ?>
-
-<style>
-    @page {
-        size: A4;
-        margin: 8mm 8mm 8mm 8mm;
-        /* Margens reduzidas para maximizar espaço */
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 6px;
-    }
-
-    th,
-    td {
-        border: 1px solid #000;
-        padding: 4px;
-        text-align: left;
-        vertical-align: top;
-    }
-
-    th {
-        background-color: #eee;
-        font-weight: bold;
-        font-size: 10px;
-        text-align: center;
-    }
-
-    .titulo-central {
-        text-align: center;
-        font-size: 13px;
-        font-weight: bold;
-        padding: 5px;
-        background-color: #f4f4f4;
-    }
-
-    .checkbox-item {
-        margin-bottom: 3px;
-        display: block;
-        font-size: 8.5px;
-    }
-</style>
-
-<!-- ESSA LINHA FORÇA A QUEBRA PARA A PÁGINA 2 -->
-<div style="page-break-before: always;"></div>
-
-<!-- 1. CABEÇALHO DA EMPRESA -->
-<p></p>
-
-<table>
-    <tr>
-        <td style="width: 100px; text-align: center; vertical-align: middle;">
-            <!-- O DOMPDF renderiza melhor se a imagem for um caminho físico ou base64 -->
-            <img src="{{ public_path('img/logo_fapolpa.png') }}" style="width: 90px; height: auto;">
-        </td>
-        <td style="text-align: right; font-size: 12px; line-height: 1.3; vertical-align: middle;">
-            <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
-            CNPJ: 82.653.700/0001-40<br>
-            Rua Ema Mazalotti Cardoso, 170, Palmas - PR
-        </td>
-    </tr>
-</table><!-- FORÇA O CONTEÚDO ABAIXO A COMEÇAR EM UMA NOVA PÁGINA LIMPA -->
-
-
-<style>
-    .pt-container {
-        font-family: Arial, sans-serif;
-        font-size: 15px; /* Fonte compacta para caber em uma página */
-        line-height: 1.2;
-        color: #000;
-    }
-
-    .pt-titulo-central {
-        text-align: center;
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-
-    /* Estrutura de Linhas e Colunas compatível com PDF */
-    .pt-row {
-        width: 100%;
-        clear: both;
-    }
-
-    .pt-col-30 { width: 30%; float: left; }
-    .pt-col-40 { width: 40%; float: left; }
-    .pt-col-50 { width: 50%; float: left; }
-    
-    .pt-block {
-        border: 1px solid #000;
-        padding: 4px;
-        margin-bottom: 5px;
-    }
-
-    .pt-bg-header {
-        background: #f4f4f4;
-        font-weight: bold;
-        text-align: center;
-        padding: 2px;
-        border-bottom: 1px solid #000;
-    }
-
-    .pt-clear {
-        clear: both;
-    }
-
-    .pt-hr {
-        border: none;
-        border-top: 1px solid #000;
-        margin: 4px 0;
-    }
-
-    .pt-checkbox-group {
-        margin-left: 10px;
-        margin-bottom: 3px;
-        font-size:15px;
-    }
-</style>
-
-<div class="pt-container">
-
-    <!-- TÍTULO -->
-    <div class="pt-titulo-central">
-        PERMISSÃO DE TRABALHO (PT)
-    </div>
-
-    <!-- DADOS GERAIS -->
-    <div class="pt-block">
-        <div class="pt-row">
-            <div class="pt-col-30">
-                <strong>PT Nº:</strong> PT{{ $ordemServico->id }}
-            </div>
-            <div class="pt-col-40">
-                <strong>OS:</strong> {{ $ordemServico->id }}
-            </div>
-            <div class="pt-col-30">
-                <strong>Data:</strong> ____/____/________
-            </div>
-            <div class="pt-clear"></div>
-        </div>
-
-        <div class="pt-hr"></div>
-
-        <div class="pt-row">
-            <strong>Local de Trabalho:</strong> _______________________________________________
-        </div>
-
-        <div class="pt-hr"></div>
-
-        <div class="pt-row">
-            <strong>Status:</strong> &nbsp;&nbsp; [ ] Aberto &nbsp;&nbsp;&nbsp;&nbsp; [ ] Em Execução &nbsp;&nbsp;&nbsp;&nbsp; [ ] Encerrado
-        </div>
-
-        <div class="pt-hr"></div>
-
-        <div class="pt-row">
-            <strong>Descrição da Atividade:</strong> {{ $ordemServico->descricao }}
-        </div>
-
-        <div class="pt-hr"></div>
-
-        <div class="pt-row">
-            <strong>Responsável pela Execução:</strong> _______________________________________________
-        </div>
-    </div>
-
-    <!-- RISCOS E MEDIDAS DE CONTROLE -->
-    <div class="pt-block" style="padding: 0;">
-        <div class="pt-bg-header">RISCOS IDENTIFICADOS E MEDIDAS DE CONTROLE</div>
-        
-        <div style="padding: 4px;">
-            <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
-            <div class="pt-row">
-                <div class="pt-col-50">
-                    <strong>[ ] Queda de Nível Diferente</strong> (Altura/Escadas)
-                    <div class="pt-checkbox-group">
-                        [ ] Uso de cinto paraquedista<br>
-                        [ ] Inspeção do andaime/escada<br>
-                        [ ] Isolamento da área
-                    </div>
-                </div>
-                
-                <div class="pt-col-50">
-                    <strong>[ ] Choque Elétrico</strong> (Painéis/Circuitos)
-                    <div class="pt-checkbox-group">
-                        [ ] LOTO realizado (Bloqueio)<br>
-                        [ ] Ferramentas isoladas<br>
-                        [ ] Teste de ausência de tensão
-                    </div>
-                </div>
-                <div class="pt-clear"></div>
-            </div>
-
-            <div class="pt-hr"></div>
-
-            <!-- Risco 3 -->
-            <div class="pt-row">
-                <strong>[ ] Projeção de Partículas / Cortes</strong> (Esmerilhadeira/Corte/Solda)
-                <div class="pt-checkbox-group">
-                    [ ] Óculos de proteção &nbsp;&nbsp;&nbsp;&nbsp; [ ] Luvas adequadas &nbsp;&nbsp;&nbsp;&nbsp; [ ] Verificar as proteções das ferramentas
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- EPIs OBRIGATÓRIOS -->
-    <div class="pt-block">
-        <div class="pt-bg-header" style="border: none; background: transparent; padding: 0; margin-bottom: 3px;">EPIs OBRIGATÓRIOS</div>
-        <div class="pt-row" style="text-align: center;">
-            [ ] Capacete &nbsp;&nbsp; [ ] Óculos &nbsp;&nbsp; [ ] Luvas &nbsp;&nbsp; [ ] Botina &nbsp;&nbsp; [ ] Protetor Auricular &nbsp;&nbsp; [ ] Máscara &nbsp;&nbsp; [ ] Cinto
-        </div>
-    </div>
-
-    <!-- DECLARAÇÃO DA EQUIPE -->
-    <div class="pt-block">
-        <div style="font-weight: bold; text-align: center; margin-bottom: 2px;">DECLARAÇÃO DA EQUIPE</div>
-        <div style="font-size: 9px; text-align: justify; line-height: 1.1;">
-            Declaramos que fomos orientados sobre os riscos existentes na execução desta atividade e sobre as medidas de controle e segurança que deverão ser adotadas durante a execução do serviço.
-        </div>
-    </div>
-
-    <!-- ASSINATURAS -->
-    <div class="pt-row" style="margin-top: 25px;">
-        <div class="pt-col-50" style="text-align: center;">
-            ______________________________________<br>
-            <strong>Técnico de Segurança</strong>
-        </div>
-
-        <div class="pt-col-50" style="text-align: center;">
-            ______________________________________<br>
-            <strong>Supervisor / Responsável da Área</strong>
-        </div>
-        <div class="pt-clear"></div>
-    </div>
-
-</div>
 
 </body>
 
