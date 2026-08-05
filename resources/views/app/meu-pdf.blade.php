@@ -140,7 +140,7 @@
         </td>
         <td style="text-align: right; font-size: 12px; line-height: 1.3; vertical-align: middle;">
             <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
-            CNPJ: 82.653.700/0001-20<br>
+            CNPJ: 82.653.700/0002-20<br>
             Rua Ema Mazalotti Cardoso, 170, Palmas - PR
         </td>
     </tr>
@@ -380,7 +380,7 @@ if (!empty($ordemServico->link_foto)) {
         </td>
         <td style="text-align: right; font-size: 12px; line-height: 1.3; vertical-align: middle;">
             <strong>Fapolpa Industria de Papel e Embalagens LTDA</strong><br>
-            CNPJ: 82.653.700/0001-20<br>
+            CNPJ: 82.653.700/0002-20<br>
             Rua Ema Mazalotti Cardoso, 170, Palmas - PR
         </td>
     </tr>
