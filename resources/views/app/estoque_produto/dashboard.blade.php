@@ -1,8 +1,6 @@
 @extends('app.layouts.app')
 
 @section('titulo', 'Produtos')
-<!DOCTYPE html>
-<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -109,6 +107,19 @@
             color: #6c757d;
         }
 
+        .produto-imagem {
+            height: 50px;
+            width: 50px;
+        }
+
+        /* Correção da tag para img e preenchimento da propriedade object-fit */
+        .produto-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Faz a imagem preencher o espaço sem distorcer */
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -191,25 +202,18 @@
 
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="h3-gray">Dashboard de Estoque</h3>
-                    <div class="d-flex">
-                        <div class="search-container me-2">
-                            <input type="text" class="form-control" placeholder="Buscar item...">
-                            <i class="bi bi-search"></i>
+
+                <!-- Alertas Flutuantes -->
+                <div class="position-fixed top-5 end-0 p-3" style="z-index: 1080; margin-top: -2rem;">
+                    <!-- Adicionada a classe alert-dismissible e fade show para a animação -->
+                    <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center shadow" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <div class="pe-4"> <!-- Adicionado um espaçamento na direita para o texto não bater no botão X -->
+                            {{$criticalItemsFault}} itens com estoque crítico.
+                            <a href="#" class="alert-link">Verificar agora</a>
                         </div>
-                        <button class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Novo Item
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Alertas -->
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <div>
-
-                        {{$criticalItemsFault}} itens com estoque crítico. <a href="#" class="alert-link">Verificar agora</a>
+                        <!-- Botão de fechar nativo do Bootstrap 5 -->
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
 
@@ -280,14 +284,10 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
                 <!-- Tabela de Itens com Estoque Baixo -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="card card-dashboard">
+                        <div class="card card-dashboard" style="height: auto;" >
                             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Itens com Estoque Crítico</h5>
                                 <div class="dropdown">
@@ -304,7 +304,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover align-middle">
                                         <thead>
                                             <tr>
                                                 <th>Código</th>
@@ -314,39 +314,48 @@
                                                 <th>Estoque Mínimo</th>
                                                 <th>Estoque Máximo</th>
                                                 <th>Criticidade</th>
+                                                <th>Imagem</th>
                                                 <th>Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($stok_level as $produto)
                                             @php
-                                            if ($produto->quantidade <= 0 || $produto->quantidade < $produto->estoque_minimo) {
-                                                    $status = 'Crítico';
-                                                    $badge = 'bg-danger';
-                                                    } elseif ($produto->quantidade < $produto->estoque_minimo * 1.5) {
-                                                        $status = 'Atenção';
-                                                        $badge = 'bg-warning';
-                                                        } else {
-                                                        $status = 'Adequado';
-                                                        $badge = 'bg-success';
-                                                        }
-                                                        @endphp
-                                                        <tr>
-                                                            <td>MAT-{{ str_pad($produto->id, 4, '0', STR_PAD_LEFT) }}</td>
-                                                            <td>{{ $produto->produto->nome ?? '---' }}</td>
-                                                            <td>{{ $produto->produto->categoria->nome ?? '---' }}</td>
-                                                            <td class="btn-inf btn-inf-sm btn-inf-red">{{ $produto->quantidade }}</td>
-                                                            <td>{{ $produto->estoque_minimo }}</td>
-                                                            <td>{{ $produto->estoque_maximo }}</td>
-                                                            <td>{{ $produto->criticidade }}</td>
-                                                            <td>
-                                                                <a class="btn-inf btn-inf-sm btn-inf-blue-dark"
-                                                                    href="{{ route('produto.show', ['produto' => $produto->id]) }}">
-                                                                    <i class="icofont-eye-alt"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
+                                            $qtd = (int) $produto->quantidade;
+                                            $min = (int) $produto->estoque_minimo;
+
+                                            // Nova lógica de cores para a célula do estoque
+                                            if ($qtd <= 0) {
+                                                $classe_celula='table-danger text-danger fw-bold' ; // Vermelho se for 0
+                                                } elseif ($qtd> 0 && $qtd <= $min) {
+                                                    $classe_celula='table-warning text-warning-dark fw-bold' ; // Amarelo se for maior que 0 e menor/igual ao mínimo
+                                                    } else {
+                                                    $classe_celula='' ; // Sem cor se estiver acima do mínimo
+                                                    }
+                                                    @endphp
+                                                    <tr>
+                                                    <td>MAT-{{ str_pad($produto->id, 4, '0', STR_PAD_LEFT) }}</td>
+                                                    <td>{{ $produto->produto->nome ?? '---' }}</td>
+                                                    <td>{{ $produto->produto->categoria->nome ?? '---' }}</td>
+
+                                                    <!-- Cor aplicada exclusivamente nesta célula -->
+                                                    <td class="{{ $classe_celula }}">{{ $produto->quantidade }}</td>
+
+                                                    <td>{{ $produto->estoque_minimo }}</td>
+                                                    <td>{{ $produto->estoque_maximo }}</td>
+                                                    <td>{{ $produto->criticidade ?? '---' }}</td>
+                                                    <td>
+                                                        <div class="produto-imagem">
+                                                            <img src="/img/produtos/{{ $produto->produto->image }}" alt="{{ $produto->produto->nome ?? 'Imagem' }}">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-sm btn-outline-dark" href="{{ route('produto.show', ['produto' => $produto->produto->id]) }}">
+                                                            <i class="icofont-eye-alt"></i>
+                                                        </a>
+                                                    </td>
+                                                    </tr>
+                                                    @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -354,6 +363,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Tabela de Pedidos de Compra --><!-- Tabela de Pedidos de Compra -->
                 <div class="card card-dashboard mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -410,7 +420,7 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        <td >{{ $pedido->equipamento->nome }}</td>
+                                        <td>{{ $pedido->equipamento->nome }}</td>
 
                                         <!-- Fornecedor -->
                                         <td>{{ $pedido->fornecedor->nome ?? 'Não informado' }}</td>
@@ -605,4 +615,4 @@
         });
     </script>
 
-</html>
+    </html>

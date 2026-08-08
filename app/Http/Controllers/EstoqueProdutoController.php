@@ -26,67 +26,69 @@ class EstoqueProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   public function index(Request $request)
-{
-    $empresa_id   = $request->input('empresa_id', 2);
-    $tipoFiltro   = $request->input('tipofiltro');
-    $categoria_id = $request->input('categoria_id');
-    $nome_produto = $request->input('produto');
+    public function index(Request $request)
 
-    $empresas   = Empresas::all();
-    $produtos   = Produto::all();
-    $categorias = Categoria::all();
+    {
 
-    $query = EstoqueProdutos::query();
+        $empresa_id   = $request->input('empresa_id', 2);
+        $tipoFiltro   = $request->input('tipofiltro');
+        $categoria_id = $request->input('categoria_id');
+        $nome_produto = $request->input('produto');
 
-    // Sempre filtra por empresa
-    $query->where('empresa_id', $empresa_id);
+        $empresas   = Empresas::all();
+        $produtos   = Produto::all();
+        $categorias = Categoria::all();
 
-    // =========================
-    // FILTROS DINÂMICOS
-    // =========================
+        $query = EstoqueProdutos::query();
 
-    if ($request->isMethod('post')) {
+        // Sempre filtra por empresa
+        $query->where('empresa_id', $empresa_id);
 
-        if ($tipoFiltro === 'id' && !empty($nome_produto)) {
-            $query->where('produto_id', $nome_produto);
+        // =========================
+        // FILTROS DINÂMICOS
+        // =========================
+
+        if ($request->isMethod('post')) {
+
+            if ($tipoFiltro === 'id' && !empty($nome_produto)) {
+                $query->where('produto_id', $nome_produto);
+            }
+
+            if ($tipoFiltro === 'categoria' && !empty($categoria_id)) {
+                $query->whereHas('produto', function ($q) use ($categoria_id) {
+                    $q->where('categoria_id', $categoria_id);
+                });
+            }
+
+            if ($tipoFiltro === 'descricao' && !empty($nome_produto)) {
+                $query->whereHas('produto', function ($q) use ($nome_produto) {
+                    $q->where('descricao', 'like', '%' . $nome_produto . '%');
+                });
+            }
         }
 
-        if ($tipoFiltro === 'categoria' && !empty($categoria_id)) {
-            $query->whereHas('produto', function ($q) use ($categoria_id) {
-                $q->where('categoria_id', $categoria_id);
-            });
-        }
+        // =========================
+        // ORDENAÇÃO PADRÃO INTELIGENTE
+        // =========================
 
-        if ($tipoFiltro === 'descricao' && !empty($nome_produto)) {
-            $query->whereHas('produto', function ($q) use ($nome_produto) {
-                $q->where('descricao', 'like', '%' . $nome_produto . '%');
-            });
-        }
-    }
-
-    // =========================
-    // ORDENAÇÃO PADRÃO INTELIGENTE
-    // =========================
-
-    $query->orderByRaw('(CASE 
+        $query->orderByRaw('(CASE 
         WHEN quantidade = 0 AND criticidade > 0 THEN 0
         WHEN quantidade <= estoque_minimo AND criticidade > 0 THEN 1
         WHEN criticidade = 0 THEN 2
         ELSE 3
     END)')
-    ->orderBy('criticidade', 'desc')
-    ->orderBy('quantidade', 'desc');
+            ->orderBy('criticidade', 'desc')
+            ->orderBy('quantidade', 'desc');
 
-    $estoque_produtos = $query->get();
+        $estoque_produtos = $query->get();
 
-    return view('app.estoque_produto.index', compact(
-        'estoque_produtos',
-        'empresas',
-        'produtos',
-        'categorias'
-    ));
-}
+        return view('app.estoque_produto.index', compact(
+            'estoque_produtos',
+            'empresas',
+            'produtos',
+            'categorias'
+        ));
+    }
     /**
      * Show the form for creating a new resource.
      * 
@@ -267,10 +269,11 @@ class EstoqueProdutoController extends Controller
             ->count();
         $movementsThisMonth = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
             ->count();
-        $stok_level = EstoqueProdutos::where('quantidade', '<=', 'estoque_mnimo')
-        ->orderBy('criticidade','desc')
-        ->get();
-     
+        $stok_level = EstoqueProdutos::whereColumn('quantidade', '<=', 'estoque_minimo')
+            ->orderBy('quantidade', 'asc')
+            ->orderBy('criticidade', 'desc')
+            ->get();
+
         // Inicializa um array 0..9 com zeros
         $criticidadeCounts = array_fill(0, 10, 0); // índices 0 a 9
 
@@ -289,7 +292,7 @@ class EstoqueProdutoController extends Controller
             ->count();
         $movementsouputProcucts = SaidaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
             ->count();
-            $pedidos_compra=PedidoCompra::where('status','aberto')->get();
+        $pedidos_compra = PedidoCompra::where('status', 'aberto')->get();
         // Retorna a view do dashboard com os dados
         return view('app.estoque_produto.dashboard', [
             'totalItems' => $totalItems,
@@ -299,9 +302,9 @@ class EstoqueProdutoController extends Controller
             'criticalItemsFault' => $criticalItemsFault,
             'stok_level' => $stok_level,
             'criticidadeCounts' => $criticidadeCounts,
-            'movementsouputProcucts'=>$movementsouputProcucts,
-            'movementsInputProcucts'=>$movementsInputProcucts,
-            'pedidos_compra'=>$pedidos_compra
+            'movementsouputProcucts' => $movementsouputProcucts,
+            'movementsInputProcucts' => $movementsInputProcucts,
+            'pedidos_compra' => $pedidos_compra
         ]);
     }
 }
