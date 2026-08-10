@@ -515,6 +515,7 @@
         const pontosEntradas = entradas.map(item => ({
             x: item.data,
             y: Number(item.quantidade),
+            produto: item.produto_id,
             pedido: item.pedido_compra_id,
             valor: Number(item.valor),
             tipo: 'Entrada'
@@ -592,6 +593,7 @@
 
                                 return [
                                     context.dataset.label,
+                                    'produto: ' + ponto.produto,
                                     'Pedido: ' + ponto.pedido,
                                     'Quantidade: ' + ponto.y,
                                     'Valor: R$ ' + ponto.valor.toLocaleString(
