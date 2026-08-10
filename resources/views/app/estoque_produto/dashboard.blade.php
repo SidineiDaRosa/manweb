@@ -481,8 +481,8 @@
 
 
                 <!-- Gráficos -->
-                <div class="row mb-4">
-                    <div class="col-md-8 mb-3">
+                <div class="row mb-12">
+                    <div class="col-md-12 mb-3">
                         <div class="card card-dashboard">
                             <div class="card-header bg-white">
                                 <h5 class="card-title mb-0">Movimentação de Estoque (Últimos 6 Meses)</h5>
@@ -493,21 +493,7 @@
                             </div>
                         </div>
                     </div>
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <div class="col-md-4 mb-3">
-                        <div class="card card-dashboard">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Criticidade de Itens
 
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <!-- Gráfico de Criticidade -->
-                                <canvas id="categoryChart" height="250"></canvas>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </div>
@@ -528,12 +514,18 @@
 
         const pontosEntradas = entradas.map(item => ({
             x: item.data,
-            y: Number(item.quantidade)
+            y: Number(item.quantidade),
+            pedido: item.pedido_compra_id,
+            valor: Number(item.valor),
+            tipo: 'Entrada'
         }));
 
         const pontosSaidas = saidas.map(item => ({
             x: item.data,
-            y: Number(item.quantidade)
+            y: Number(item.quantidade),
+            pedido: item.pedidos_saida_id,
+            valor: Number(item.subtotal),
+            tipo: 'Saída'
         }));
 
         const movementChart = new Chart(movementCtx, {
@@ -553,7 +545,6 @@
                         pointHoverRadius: 6,
 
                         tension: 0,
-
                         showLine: true
                     },
 
@@ -570,7 +561,6 @@
                         pointHoverRadius: 6,
 
                         tension: 0,
-
                         showLine: true
                     }
                 ]
@@ -591,14 +581,26 @@
 
                     tooltip: {
                         callbacks: {
+
                             title: function(context) {
-                                return context[0].parsed.x;
+                                return 'Data: ' + context[0].raw.x;
                             },
 
                             label: function(context) {
-                                return context.dataset.label +
-                                    ': ' +
-                                    context.parsed.y;
+
+                                const ponto = context.raw;
+
+                                return [
+                                    context.dataset.label,
+                                    'Pedido: ' + ponto.pedido,
+                                    'Quantidade: ' + ponto.y,
+                                    'Valor: R$ ' + ponto.valor.toLocaleString(
+                                        'pt-BR', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }
+                                    )
+                                ];
                             }
                         }
                     }
@@ -611,6 +613,7 @@
                         time: {
                             parser: 'yyyy-MM-dd',
                             tooltipFormat: 'dd/MM/yyyy',
+
                             displayFormats: {
                                 day: 'dd/MM/yyyy'
                             }
@@ -621,19 +624,13 @@
                             text: 'Data da movimentação'
                         }
                     },
+
                     y: {
                         beginAtZero: true,
-                        max: 500,
 
                         title: {
                             display: true,
-                            text: 'Valor (R$)'
-                        },
-
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
-                            }
+                            text: 'Quantidade'
                         }
                     }
                 }
