@@ -288,10 +288,18 @@ class EstoqueProdutoController extends Controller
                 $criticidadeCounts[$idx] = (int) $total; // <- preenche o array certo
             }
         }
-        $movementsInputProcucts = EntradaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
-            ->count();
-        $movementsouputProcucts = SaidaProduto::where('created_at', '>=', Carbon::now()->subDays(60))
-            ->count();
+        $movementsInputProcucts = EntradaProduto::where(
+            'created_at',
+            '>=',
+            Carbon::now()->subDays(360)
+        )->get();
+
+        $movementsouputProcucts = SaidaProduto::where(
+            'created_at',
+            '>=',
+            Carbon::now()->subDays(360)
+        )->get();
+      
         $pedidos_compra = PedidoCompra::where('status', 'aberto')->get();
         // Retorna a view do dashboard com os dados
         return view('app.estoque_produto.dashboard', [

@@ -218,6 +218,8 @@
                 </div>
 
                 <!-- Métricas -->
+
+
                 <div class="row mb-4">
                     <div class="col-md-3 mb-3">
                         <div class="card card-dashboard">
@@ -286,8 +288,8 @@
                 </div>
                 <!-- Tabela de Itens com Estoque Baixo -->
                 <div class="row">
-                    <div class="col-12">
-                        <div class="card card-dashboard" style="height: auto;" >
+                    <div class="col-16">
+                        <div class="card card-dashboard">
                             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Itens com Estoque Crítico</h5>
                                 <div class="dropdown">
@@ -485,6 +487,7 @@
                             <div class="card-header bg-white">
                                 <h5 class="card-title mb-0">Movimentação de Estoque (Últimos 6 Meses)</h5>
                             </div>
+
                             <div class="card-body">
                                 <canvas id="movementChart" height="250"></canvas>
                             </div>
@@ -510,63 +513,105 @@
             </div>
         </div>
     </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Atualizar data e hora da última atualização
-        function updateLastUpdate() {
-            const now = new Date();
-            const options = {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            const element = document.getElementById('last-update');
-            if (element) {
-                element.textContent = now.toLocaleDateString('pt-BR', options);
-            }
-        }
+        const movementCtx = document
+            .getElementById('movementChart')
+            .getContext('2d');
 
-        updateLastUpdate();
+        const entradas = @json($movementsInputProcucts);
+        const saidas = @json($movementsouputProcucts);
 
-        // Gráfico de Movimentação (Adaptado para o total acumulado enviado pelo Controller)
-        const movementCtx = document.getElementById('movementChart').getContext('2d');
+        // Cada registro de entrada vira um ponto
+        const pontosEntradas = entradas.map(item => ({
+            x: item.data,
+            y: Number(item.quantidade)
+        }));
+
+        // Cada registro de saída vira um ponto
+        const pontosSaidas = saidas.map(item => ({
+            x: item.data,
+            y: Number(item.quantidade)
+        }));
+
         const movementChart = new Chart(movementCtx, {
-            type: 'bar', // Alterado para barra pois são dois valores únicos consolidados
+            type: 'line',
+
             data: {
-                labels: ['Total (Últimos 360 dias)'],
                 datasets: [{
                         label: 'Entradas',
-                        data: [@json($movementsInputProcucts)],
-                        backgroundColor: '#2ecc71',
+                        data: pontosEntradas,
+
                         borderColor: '#27ae60',
-                        borderWidth: 1
+                        backgroundColor: '#27ae60',
+
+                        borderWidth: 2,
+
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+
+                        tension: 0.2
                     },
+
                     {
                         label: 'Saídas',
-                        data: [@json($movementsouputProcucts)],
-                        backgroundColor: '#e74c3c',
+                        data: pontosSaidas,
+
                         borderColor: '#c0392b',
-                        borderWidth: 1
+                        backgroundColor: '#c0392b',
+
+                        borderWidth: 2,
+
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+
+                        tension: 0.2
                     }
                 ]
             },
+
             options: {
                 responsive: true,
+
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'top'
+                    },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label +
+                                    ': ' +
+                                    context.parsed.y;
+                            }
+                        }
                     }
                 },
+
                 scales: {
+                    x: {
+                        type: 'category',
+
+                        title: {
+                            display: true,
+                            text: 'Data'
+                        }
+                    },
+
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
                     }
                 }
             }
         });
-
         // Gráfico de Criticidade
         // Injeta com segurança a array associativa ou objeto do PHP
         const criticidadeData = @json($criticidadeCounts);
