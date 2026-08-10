@@ -462,7 +462,7 @@
                 const card = botao.closest('.os-card');
 
                 const osId = card.querySelector('.os-id').textContent.trim();
-                const equipamento = card.querySelector('.equipamento').textContent;
+                const equipamento = card.querySelector('.equip-row').textContent;
                 const descricao = card.querySelector('.info-group:nth-child(2) .info-value').textContent.trim();
                 const alarm = card.querySelector('.btnAtualizarAlarm').dataset.situacao;
 
@@ -472,7 +472,7 @@
                     return;
                 } else {
 
-                    const texto = `Atenção! Nova Ordem. Número: ${osId}. Para: ${equipamento}., ,${descricao}`;
+                    const texto = `Atenção! Nova Ordem. Número: ${osId}. Para: ${equipamento}.,'.'.${descricao}`;
 
                     const vozes = speechSynthesis.getVoices();
                     const vozPT = vozes.find(v => v.lang.startsWith('pt')) || vozes[0];
@@ -1004,7 +1004,7 @@
                 </style>
             </div>
 
-            <div class="card-footer" hidden>
+            <div class="card-footer" hidden >
                 <button class="btn-falar btnFalarOS" data-os-id="{{ $ordem_servico->id }}">
                     🗣️ Falar esta OS
                 </button>
