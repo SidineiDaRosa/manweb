@@ -623,7 +623,7 @@
                     },
                     y: {
                         beginAtZero: true,
-                        max: 2000,
+                        max: 500,
 
                         title: {
                             display: true,
