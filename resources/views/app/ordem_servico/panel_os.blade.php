@@ -135,23 +135,9 @@
             gap: 5px;
             width: 100%;
 
+
         }
 
-        .os-card {
-            background: white;
-            padding: 3px;
-            border-radius: 12px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            border: 1px solid #eef2f7;
-        }
-
-        .card-content {
-            overflow-y: auto;
-        }
 
         .os-card:hover {
             transform: translateY(-4px);
@@ -160,17 +146,7 @@
         }
 
         /* CARD HEADER */
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 2px;
-            padding-bottom: 2px;
-        }
 
-        .os-info {
-            flex: 1;
-        }
 
         .os-id {
             color: #0c274e;
@@ -182,11 +158,7 @@
             gap: 8px;
         }
 
-        .equipamento {
-            color: #063991;
-            font-size: 16px;
-            font-weight: 500;
-        }
+
 
         .indicador-urgencia {
             width: 28px;
@@ -210,6 +182,8 @@
 
         .info-group {
             margin-bottom: 2px;
+            overflow: hidden;
+            height: auto;
         }
 
         .info-label {
@@ -232,13 +206,10 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 3px;
+            margin-bottom: 0px;
+            margin-top: -3px;
         }
 
-        .periodo-icon {
-            color: #718096;
-            font-size: 12px;
-        }
 
         /* IMAGEM */
         .imagem-container {
@@ -569,7 +540,7 @@
                         </div>
 
                         <div id="lubrificacao-count" class="notification">
-                            <span class="badge" id="lubrificacao-badge" >0</span><br>
+                            <span class="badge" id="lubrificacao-badge">0</span><br>
                             <div style="margin-right:25px;">Lubrificações Pendentes</div>
                         </div>
                     </div>
@@ -577,14 +548,13 @@
                         .card-sm-1 {
                             width: auto;
                             border-radius: 5px;
-                            padding:2px;
+                            padding: 2px;
                         }
                     </style>
                 </div>
             </h1>
             <!-- CSS para o tollbar contagens notificaçoões-->
             <style>
-             
                 .badge.zero {
                     background-color: green;
                 }
@@ -767,25 +737,59 @@
             @endphp
             <style>
                 .os-card .card-header.header-mecanica {
-                    background-color: rgba(59, 80, 100, 0.6) !important;
+                    background-color: rgba(57, 63, 66, 0.6) !important;
                     color: white;
                 }
 
                 .os-card .card-header.header-eletrica {
-                    background-color: rgba(40, 167, 69, 0.3) !important;
+                    background-color: rgba(173, 158, 16, 0.3) !important;
                     color: black;
                 }
             </style>
             <!------------------------->
-            <!--Bloco que do card  os-->
+            <!--Cabeçalho da card-->
+            <!------------------------->
+            <style>
+                .card-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    padding: 1px;
+                }
+
+                .os-info {
+                    padding: 2px;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .os-card {
+                    padding: 3px;
+                    border-radius: 12px;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    border: 1px solid #eef2f7;
+                }
+
+                .card-content {
+                    overflow-y: auto;
+                }
+
+                .container-card-row {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 5px;
+                }
+            </style>
 
             <div class="card-header {{ $headerClass }}">
 
                 <div class="os-info">
-                    <div style="flex-direction: row;display:flex;">
+                    <div class="container-card-row">
                         <div class="os-id">
                             {{ $ordem_servico->id }}
-
                         </div>
                         <div>
                             @if($ordem_servico->check == 1)
@@ -793,16 +797,6 @@
                             @else
                             <span class="status-badge badge-pendente">⚠️ Pendente</span>
                             @endif
-                        </div>
-                    </div>
-
-
-
-                    <!--Bloco do Status da os-->
-                    <div style="display:flex; flex-direction:row; gap:10px; margin-bottom:3px">
-                        <div class="equipamento">{{ $ordem_servico->equipamento->nome }} </div>
-                        <div>
-                            <span style="color: white;">{{$ordem_servico->situacao}}</span>
                         </div>
 
                         <button type="button"
@@ -850,58 +844,93 @@
                             <i class="icofont-volume-up"></i>
                             @endif
                         </button>
+                        <div class="indicador-urgencia urgencia-{{ $ordem_servico->urgencia }}"
+                            title="Nível de urgência: {{ $ordem_servico->urgencia }}/5">
+                            {{ $ordem_servico->urgencia }}
+                        </div>
+                        <!--Botão imprimir-->
+                        <button type="button" class="gerarPdfButton btn btn-outline-secondary mb-1" title="Imprimir O.S">
+                            <i class="icofont-print"></i>
+                        </button>
                     </div>
-
-
-
+                    <div class="equip-row">{{ $ordem_servico->equipamento->nome }} </div>
                 </div>
 
-                <div class="indicador-urgencia urgencia-{{ $ordem_servico->urgencia }}"
-                    title="Nível de urgência: {{ $ordem_servico->urgencia }}/5">
-                    {{ $ordem_servico->urgencia }}
-                </div>
-                <!--Botão imprimir-->
-                <button type="button" class="gerarPdfButton btn btn-outline-secondary mb-1" title="Imprimir O.S">
-                    <i class="icofont-print"></i>
-                </button>
+
 
                 <form class="frm-pdf" action="{{ route('gerar.pdf') }}" method="POST" target="_blank">
                     @csrf
                     <input type="hidden" name="ordem_servico_id" value="{{ $ordem_servico->id }}">
                 </form>
-                <script>
-                    document.querySelectorAll('.gerarPdfButton').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const card = button.closest('.os-card');
-                            const form = card.querySelector('.frm-pdf');
 
-                            if (form) {
-                                form.submit();
-                            } else {
-                                console.error('Formulário de PDF não encontrado');
-                            }
-                        });
-                    });
-                </script>
+                <style>
+                    .equip-row {
+                        flex-direction: row;
+                        color: #0d0d0e;
+                        font-size: 15px;
+                        font-weight: 500;
+                        float: right;
+                        margin-left: 5px;
+
+                    }
+                </style>
 
             </div>
-
+            <!--Contudo da OS-->
             <div class="card-content">
                 <div class="info-group">
                     <div class="info-value">
                         <div class="periodo-item">
-                            <span class="periodo-icon">📅</span>
-                            <span>Início: {{ \Carbon\Carbon::parse($ordem_servico->data_inicio)->format('d/m/Y') }} às {{ $ordem_servico->hora_inicio }}</span>
-                            <span class="periodo-icon">⏰</span>
-                            <span>Término: {{ \Carbon\Carbon::parse($ordem_servico->data_fim)->format('d/m/Y') }} às {{ $ordem_servico->hora_fim }}</span>
+                            <div container-column-sm>Início
+                                <hr class="hr-sm">
+                                <div>📅{{ \Carbon\Carbon::parse($ordem_servico->data_inicio)->format('d/m/Y') }} </div>
+                                <hr class="hr-sm">
+                                <div>⏰{{ $ordem_servico->hora_inicio }}</div>
+                            </div>
+                            <div container-column-sm>Término
+                                <hr class="hr-sm">
+                                <div>📅 {{ \Carbon\Carbon::parse($ordem_servico->data_fim)->format('d/m/Y') }} </div>
+                                <hr class="hr-sm">
+                                <div>⏰{{ $ordem_servico->hora_fim }}</div>
+                            </div>
+                            <div container-column-sm>Responsável
+                                <hr class="hr-sm">
+                                <div>📝 {{$ordem_servico->emissor}} </div>
+                                <hr class="hr-sm">
+                                <div>🛠️ {{$ordem_servico->responsavel}}</div>
+                            </div>
                         </div>
+                        <style>
+                            .container-column-sm {
+                                height: auto;
+                                display: flex;
+                                flex-direction: column;
+                                margin-top: 0px;
+                                font-size: small !important;
+                            }
+
+                            .container-row-sm {
+                                height: auto;
+                                display: flex;
+                                flex-direction: row;
+                                margin-top: 0px;
+
+                            }
+
+                            .hr-sm {
+                                margin: -2px;
+                                color: rgb(209, 227, 255, 0.1);
+                            }
+                        </style>
                     </div>
                 </div>
 
                 <div class="info-group" style="margin-bottom:1px;">
                     <span class="info-label">Descrição</span>
+                    <hr style="margin:-5px;">
                     <div class="info-value">{{ $ordem_servico->descricao }}</div>
                 </div>
+
                 <div class="imagem-container {{ (!$ordem_servico->ss || !$ordem_servico->ss->imagem) ? 'sem-imagem' : '' }}">
 
                     @if($ordem_servico->ss && $ordem_servico->ss->imagem)
@@ -1405,6 +1434,21 @@
                             alert('Erro ao atualizar o alarme.');
                         });
                 });
+            });
+        });
+    </script>
+    <!--Botão de impressão-->
+    <script>
+        document.querySelectorAll('.gerarPdfButton').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = button.closest('.os-card');
+                const form = card.querySelector('.frm-pdf');
+
+                if (form) {
+                    form.submit();
+                } else {
+                    console.error('Formulário de PDF não encontrado');
+                }
             });
         });
     </script>
