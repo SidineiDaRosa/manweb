@@ -782,6 +782,7 @@
                     display: flex;
                     flex-direction: row;
                     gap: 5px;
+                    height:30px;
                 }
             </style>
 
@@ -850,7 +851,7 @@
                             {{ $ordem_servico->urgencia }}
                         </div>
                         <!--Botão imprimir-->
-                        <button type="button" class="gerarPdfButton btn btn-outline-secondary mb-1" title="Imprimir O.S">
+                        <button type="button" class="gerarPdfButton btn btn-outline-primary" title="Imprimir O.S">
                             <i class="icofont-print"></i>
                         </button>
                     </div>
