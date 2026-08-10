@@ -515,7 +515,9 @@
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
     <script>
         const movementCtx = document
             .getElementById('movementChart')
@@ -524,13 +526,11 @@
         const entradas = @json($movementsInputProcucts);
         const saidas = @json($movementsouputProcucts);
 
-        // Cada registro de entrada vira um ponto
         const pontosEntradas = entradas.map(item => ({
             x: item.data,
             y: Number(item.quantidade)
         }));
 
-        // Cada registro de saída vira um ponto
         const pontosSaidas = saidas.map(item => ({
             x: item.data,
             y: Number(item.quantidade)
@@ -549,10 +549,12 @@
 
                         borderWidth: 2,
 
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
 
-                        tension: 0.2
+                        tension: 0,
+
+                        showLine: true
                     },
 
                     {
@@ -564,16 +566,23 @@
 
                         borderWidth: 2,
 
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
 
-                        tension: 0.2
+                        tension: 0,
+
+                        showLine: true
                     }
                 ]
             },
 
             options: {
                 responsive: true,
+
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
 
                 plugins: {
                     legend: {
@@ -582,6 +591,10 @@
 
                     tooltip: {
                         callbacks: {
+                            title: function(context) {
+                                return context[0].parsed.x;
+                            },
+
                             label: function(context) {
                                 return context.dataset.label +
                                     ': ' +
@@ -593,11 +606,19 @@
 
                 scales: {
                     x: {
-                        type: 'category',
+                        type: 'time',
+
+                        time: {
+                            parser: 'yyyy-MM-dd',
+                            tooltipFormat: 'dd/MM/yyyy',
+                            displayFormats: {
+                                day: 'dd/MM/yyyy'
+                            }
+                        },
 
                         title: {
                             display: true,
-                            text: 'Data'
+                            text: 'Data da movimentação'
                         }
                     },
 
@@ -607,52 +628,6 @@
                         title: {
                             display: true,
                             text: 'Quantidade'
-                        }
-                    }
-                }
-            }
-        });
-        // Gráfico de Criticidade
-        // Injeta com segurança a array associativa ou objeto do PHP
-        const criticidadeData = @json($criticidadeCounts);
-
-        // Mapeia as chaves (0 a 9) e os valores dinamicamente do banco de dados
-        const labelsCriticidade = Object.keys(criticidadeData);
-        const valoresCriticidade = Object.values(criticidadeData);
-
-        const ctx = document.getElementById('categoryChart').getContext('2d');
-        const criticidadeChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labelsCriticidade, // Mostra dinamicamente apenas os níveis que existem no banco
-                datasets: [{
-                    label: 'Quantidade de Itens por Criticidade',
-                    data: valoresCriticidade,
-                    backgroundColor: [
-                        '#e74c3c', '#e67e22', '#f39c12', '#f1c40f',
-                        '#2ecc71', '#27ae60', '#3498db', '#2980b9', '#9b59b6', '#34495e'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Quantidade'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Nível de Criticidade'
                         }
                     }
                 }
