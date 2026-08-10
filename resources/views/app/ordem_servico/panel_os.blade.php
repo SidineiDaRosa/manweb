@@ -181,7 +181,8 @@
         }
 
         .info-group {
-            margin-bottom: 2px;
+            margin-bottom: 0px;
+            margin-top: 1px;
             overflow: hidden;
             height: auto;
         }
@@ -925,9 +926,9 @@
                     </div>
                 </div>
 
-                <div class="info-group" style="margin-bottom:1px;">
+                <div class="info-group">
                     <span class="info-label">Descrição</span>
-                    <hr style="margin:-5px;">
+                    <hr style="margin:-3px;">
                     <div class="info-value">{{ $ordem_servico->descricao }}</div>
                 </div>
 
