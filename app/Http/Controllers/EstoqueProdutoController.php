@@ -291,13 +291,13 @@ class EstoqueProdutoController extends Controller
         $movementsInputProcucts = EntradaProduto::where(
             'created_at',
             '>=',
-            Carbon::now()->subDays(360)
+            Carbon::now()->subDays(60)
         )->get();
 
         $movementsouputProcucts = SaidaProduto::where(
             'created_at',
             '>=',
-            Carbon::now()->subDays(360)
+            Carbon::now()->subDays(60)
         )->get();
       
         $pedidos_compra = PedidoCompra::where('status', 'aberto')->get();
