@@ -621,13 +621,19 @@
                             text: 'Data da movimentação'
                         }
                     },
-
                     y: {
                         beginAtZero: true,
+                        max: 2000,
 
                         title: {
                             display: true,
-                            text: 'Quantidade'
+                            text: 'Valor (R$)'
+                        },
+
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + value.toLocaleString('pt-BR');
+                            }
                         }
                     }
                 }
