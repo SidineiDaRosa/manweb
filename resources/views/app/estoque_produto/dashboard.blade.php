@@ -480,164 +480,148 @@
                 </div>
 
 
-                <!-- Gráficos -->
-                <div class="row mb-12">
-                    <div class="col-md-12 mb-3">
-                        <div class="card card-dashboard">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Movimentação de Estoque (Últimos 6 Meses)</h5>
-                            </div>
 
-                            <div class="card-body">
-                                <canvas id="movementChart" height="250"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
 
             </div>
         </div>
     </div>
+    @php
+    use Carbon\Carbon;
 
+    $labels = [];
+    $dataInputProducts = [];
+    $dataOutputProducts = [];
+    $dataInputPurchase = [];
+    $dataOutputPurchase = [];
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
-    <script>
-        const movementCtx = document
-            .getElementById('movementChart')
-            .getContext('2d');
+    // Arrays para guardar os IDs de cada mês para o JavaScript ler
+    $idsInputProducts = [];
+    $idsOutputProducts = [];
+    $idsInputPurchase = [];
+    $idsOutputPurchase = [];
 
-        const entradas = @json($movementsInputProcucts);
-        const saidas = @json($movementsouputProcucts);
+    for ($i = 11; $i >= 0; $i--) {
+        $mesAnoKey = Carbon::now()->subMonths($i)->format('Y-m');
+        $labels[] = Carbon::parse($mesAnoKey . '-01')->translatedFormat('M/y');
 
-        const pontosEntradas = entradas.map(item => ({
-            x: item.data,
-            y: Number(item.quantidade),
-            produto: item.produto_id,
-            pedido: item.pedido_compra_id,
-            valor: Number(item.valor),
-            tipo: 'Entrada'
-        }));
+        // 1. Filtrar registros do mês
+        $filteredInputProd  = $movementsInputProcucts->filter(fn($item) => Carbon::parse($item->created_at)->format('Y-m') === $mesAnoKey);
+        $filteredOutputProd = $movementsOuputProcucts->filter(fn($item) => Carbon::parse($item->created_at)->format('Y-m') === $mesAnoKey);
+        $filteredInputPurch = $movementInputPurchase->filter(fn($item) => Carbon::parse($item->created_at)->format('Y-m') === $mesAnoKey);
+        $filteredOutputPurch = $movementOutputPurchase->filter(fn($item) => Carbon::parse($item->created_at)->format('Y-m') === $mesAnoKey);
 
-        const pontosSaidas = saidas.map(item => ({
-            x: item.data,
-            y: Number(item.quantidade),
-            pedido: item.pedidos_saida_id,
-            valor: Number(item.subtotal),
-            tipo: 'Saída'
-        }));
+        // 2. Salvar os totais para as linhas do gráfico
+        $dataInputProducts[]  = $filteredInputProd->count();
+        $dataOutputProducts[] = $filteredOutputProd->count();
+        $dataInputPurchase[]  = $filteredInputPurch->count();
+        $dataOutputPurchase[] = $filteredOutputPurch->count();
 
-        const movementChart = new Chart(movementCtx, {
+        // 3. Mapear os IDs/Documentos (se não houver ID, exibe o ID do produto)
+        $idsInputProducts[]  = $filteredInputProd->map(fn($item) => 'ID ' . ($item->id ?? $item->produto_id))->values()->toArray();
+        $idsOutputProducts[] = $filteredOutputProd->map(fn($item) => 'ID ' . ($item->id ?? $item->produto_id))->values()->toArray();
+        $idsInputPurchase[]  = $filteredInputPurch->map(fn($item) => 'Ped. ' . ($item->id ?? 'N/A'))->values()->toArray();
+        $idsOutputPurchase[] = $filteredOutputPurch->map(fn($item) => 'Ped. ' . ($item->id ?? 'N/A'))->values()->toArray();
+    }
+@endphp
+
+<div class="card card-dashboard bg-white p-4 mb-4">
+    <h5 class="card-title text-dark mb-3">
+        <i class="bi bi-graph-up shadow-sm me-2 text-primary p-2 rounded bg-light"></i> 
+        Histórico de Movimentações (Rastreável)
+    </h5>
+    <div class="position-relative" style="height: 350px; width: 100%;">
+        <canvas id="canvasGraficoMovimentacoes"></canvas>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('canvasGraficoMovimentacoes').getContext('2d');
+
+        // Passando as listas de IDs geradas no PHP para matrizes JavaScript
+        const docIds = {
+            0: @json($idsInputProducts),
+            1: @json($idsOutputProducts),
+            2: @json($idsInputPurchase),
+            3: @json($idsOutputPurchase)
+        };
+
+        new Chart(ctx, {
             type: 'line',
-
             data: {
-                datasets: [{
-                        label: 'Entradas',
-                        data: pontosEntradas,
-
-                        borderColor: '#27ae60',
-                        backgroundColor: '#27ae60',
-
-                        borderWidth: 2,
-
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-
-                        tension: 0,
-                        showLine: true
-                    },
-
+                labels: @json($labels), 
+                datasets: [
                     {
-                        label: 'Saídas',
-                        data: pontosSaidas,
-
-                        borderColor: '#c0392b',
-                        backgroundColor: '#c0392b',
-
+                        label: 'Entrada de Produtos',
+                        data: @json($dataInputProducts),
+                        borderColor: '#3498db', 
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        tension: 0.3,
                         borderWidth: 2,
-
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-
-                        tension: 0,
-                        showLine: true
+                        fill: true
+                    },
+                    {
+                        label: 'Saída de Produtos',
+                        data: @json($dataOutputProducts),
+                        borderColor: '#2ecc71', 
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        tension: 0.3,
+                        borderWidth: 2,
+                        fill: true
+                    },
+                    {
+                        label: 'Pedidos de Compra',
+                        data: @json($dataInputPurchase),
+                        borderColor: '#f39c12', 
+                        backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                        tension: 0.3,
+                        borderWidth: 2,
+                        fill: true
+                    },
+                    {
+                        label: 'Pedidos de Saída',
+                        data: @json($dataOutputPurchase),
+                        borderColor: '#e74c3c', 
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.3,
+                        borderWidth: 2,
+                        fill: true
                     }
                 ]
             },
-
             options: {
                 responsive: true,
-
-                interaction: {
-                    mode: 'nearest',
-                    intersect: false
-                },
-
+                maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-
+                    legend: { position: 'top' },
+                    // Configuração customizada do balão de informação
                     tooltip: {
                         callbacks: {
+                            footer: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                const datasetIndex = item.datasetIndex; // Qual linha é
+                                const dataIndex = item.dataIndex;       // Qual mês é
 
-                            title: function(context) {
-                                return 'Data: ' + context[0].raw.x;
-                            },
-
-                            label: function(context) {
-
-                                const ponto = context.raw;
-
-                                return [
-                                    context.dataset.label,
-                                    'produto: ' + ponto.produto,
-                                    'Pedido: ' + ponto.pedido,
-                                    'Quantidade: ' + ponto.y,
-                                    'Valor: R$ ' + ponto.valor.toLocaleString(
-                                        'pt-BR', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }
-                                    )
-                                ];
+                                // Busca a lista de IDs correspondente àquele ponto do gráfico
+                                const listaIds = docIds[datasetIndex]?.[dataIndex] || [];
+                                
+                                if (listaIds.length > 0) {
+                                    return 'Documentos: ' + listaIds.join(', ');
+                                }
+                                return 'Nenhum documento encontrado';
                             }
                         }
                     }
                 },
-
                 scales: {
-                    x: {
-                        type: 'time',
-
-                        time: {
-                            parser: 'yyyy-MM-dd',
-                            tooltipFormat: 'dd/MM/yyyy',
-
-                            displayFormats: {
-                                day: 'dd/MM/yyyy'
-                            }
-                        },
-
-                        title: {
-                            display: true,
-                            text: 'Data da movimentação'
-                        }
-                    },
-
                     y: {
                         beginAtZero: true,
-
-                        title: {
-                            display: true,
-                            text: 'Quantidade'
-                        }
+                        ticks: { precision: 0 }
                     }
                 }
             }
         });
-    </script>
+    });
+</script>
 
-    </html>
+</body>

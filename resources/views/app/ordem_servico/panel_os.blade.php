@@ -1236,6 +1236,7 @@
                             <option value="">-- Selecione --</option>
                             <option value="mecanica">Mecânico</option>
                             <option value="eletrica">Elétrico</option>
+                            <option value="eletrica">Civíl</option>
                         </select>
                     </div>
 
@@ -1247,6 +1248,7 @@
                             <option value="Preventiva">Preventiva</option>
                             <option value="Corretiva">Corretiva</option>
                             <option value="Preditiva">Preditiva</option>
+                            <option value="Ampliacao">Ampliação</option>
                         </select>
                     </div>
 

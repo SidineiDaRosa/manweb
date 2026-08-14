@@ -291,15 +291,27 @@ class EstoqueProdutoController extends Controller
         $movementsInputProcucts = EntradaProduto::where(
             'created_at',
             '>=',
-            Carbon::now()->subDays(60)
+            Carbon::now()->subDays(360)
         )->get();
 
-        $movementsouputProcucts = SaidaProduto::where(
+        $movementsOuputProcucts = SaidaProduto::where(
             'created_at',
             '>=',
-            Carbon::now()->subDays(60)
+            Carbon::now()->subDays(360)
         )->get();
-      
+    
+        $movementInputPurchase = PedidoCompra::where(
+            'created_at',
+            '>=',
+            Carbon::now()->subDays(360)
+        )->get();
+
+        $movementOutputPurchase = PedidoSaida::where(
+            'created_at',
+            '>=',
+            Carbon::now()->subDays(360)
+        )->get();
+
         $pedidos_compra = PedidoCompra::where('status', 'aberto')->get();
         // Retorna a view do dashboard com os dados
         return view('app.estoque_produto.dashboard', [
@@ -310,8 +322,10 @@ class EstoqueProdutoController extends Controller
             'criticalItemsFault' => $criticalItemsFault,
             'stok_level' => $stok_level,
             'criticidadeCounts' => $criticidadeCounts,
-            'movementsouputProcucts' => $movementsouputProcucts,
             'movementsInputProcucts' => $movementsInputProcucts,
+            'movementsOuputProcucts' => $movementsOuputProcucts,
+            'movementInputPurchase' => $movementInputPurchase,
+            'movementOutputPurchase' => $movementOutputPurchase,
             'pedidos_compra' => $pedidos_compra
         ]);
     }
