@@ -29,78 +29,141 @@ class OrdemServicoController extends Controller
      * @return \Illuminate\Http\Response
      */
     //public function index(Request $request)
-   public function index(Request $request)
-{
-    $empresa      = Empresas::all();
-    $equipamento  = Equipamento::all();
-    $funcionarios = Funcionario::all();
+    public function index(Request $request)
+    {
+        $empresa      = Empresas::all();
+        $equipamento  = Equipamento::all();
+        $funcionarios = Funcionario::all();
 
-    $id            = $request->id;
-    $tipo_consulta = $request->tipo_consulta;
-    $dataInicio    = $request->data_inicio;
-    $dataFim       = $request->data_fim;
-    $horaInicio    = $request->hora_inicio;
-    $horaFim       = $request->hora_fim;
-    $situacao      = $request->situacao ?? 'todas';
+        $id            = $request->id;
+        $tipo_consulta = $request->tipo_consulta;
+        $dataInicio    = $request->data_inicio;
+        $dataFim       = $request->data_fim;
+        $horaInicio    = $request->hora_inicio;
+        $horaFim       = $request->hora_fim;
+        $situacao      = $request->situacao ?? 'todas';
 
-    // ==================================================
-    // FILTRO PADRÃO DE DATA/HORA (REUTILIZÁVEL)
-    // ==================================================
-    $aplicarFiltrosDataHora = function ($query) use ($dataInicio, $dataFim, $horaInicio, $horaFim) {
+        // ==================================================
+        // FILTRO PADRÃO DE DATA/HORA (REUTILIZÁVEL)
+        // ==================================================
+        $aplicarFiltrosDataHora = function ($query) use ($dataInicio, $dataFim, $horaInicio, $horaFim) {
 
-        if ($dataInicio && $dataFim) {
-            $query->whereBetween('data_inicio', [$dataInicio, $dataFim]);
-        }
-
-        if ($horaInicio && $horaFim) {
-            $query->whereBetween('hora_inicio', [$horaInicio, $horaFim]);
-        }
-
-        return $query;
-    };
-
-    // Variável padrão para evitar erro na view
-    $servicos_executado = collect();
-
-    switch ($tipo_consulta) {
-
-        // ==============================
-        // 1 - POR ID
-        // ==============================
-        case 1:
-            if (!$id) break;
-
-            $ordens_servicos = OrdemServico::where('id', $id)
-                ->orderByDesc('data_inicio')
-                ->orderByDesc('hora_inicio')
-                ->get();
-            break;
-
-        // ==============================
-        // 2 - POR DATA + SITUAÇÃO
-        // ==============================
-        case 2:
-            $query = OrdemServico::query();
-
-            if ($situacao !== 'todas') {
-                $query->where('situacao', $situacao);
+            if ($dataInicio && $dataFim) {
+                $query->whereBetween('data_inicio', [$dataInicio, $dataFim]);
             }
 
-            $query = $aplicarFiltrosDataHora($query);
+            if ($horaInicio && $horaFim) {
+                $query->whereBetween('hora_inicio', [$horaInicio, $horaFim]);
+            }
 
-            $ordens_servicos = $query
-                ->orderByDesc('data_inicio')
-                ->orderByDesc('hora_inicio')
-                ->get();
-            break;
+            return $query;
+        };
 
-        // ==============================
-        // 5 - POR EQUIPAMENTO (ÚLTIMAS 30 FECHADAS)
-        // ==============================
-        case 5:
-            $patrimonio = $request->patrimonio_id;
+        // Variável padrão para evitar erro na view
+        $servicos_executado = collect();
 
-            if (empty($patrimonio)) {
+        switch ($tipo_consulta) {
+
+            // ==============================
+            // 1 - POR ID
+            // ==============================
+            case 1:
+                if (!$id) break;
+
+                $ordens_servicos = OrdemServico::where('id', $id)
+                    ->orderByDesc('data_inicio')
+                    ->orderByDesc('hora_inicio')
+                    ->get();
+                break;
+
+            // ==============================
+            // 2 - POR DATA + SITUAÇÃO
+            // ==============================
+            case 2:
+                $query = OrdemServico::query();
+
+                if ($situacao !== 'todas') {
+                    $query->where('situacao', $situacao);
+                }
+
+                $query = $aplicarFiltrosDataHora($query);
+
+                $ordens_servicos = $query
+                    ->orderByDesc('data_inicio')
+                    ->orderByDesc('hora_inicio')
+                    ->get();
+                break;
+
+            // ==============================
+            // 5 - POR EQUIPAMENTO (ÚLTIMAS 30 FECHADAS)
+            // ==============================
+            case 5:
+                $patrimonio = $request->patrimonio_id;
+
+                if (empty($patrimonio)) {
+                    $ordens_servicos = collect();
+                    return view('app.ordem_servico.index', compact(
+                        'equipamento',
+                        'ordens_servicos',
+                        'funcionarios',
+                        'empresa',
+                        'servicos_executado'
+                    ));
+                }
+
+                $ordens_servicos = OrdemServico::where('equipamento_id', $patrimonio)
+                    ->where('situacao', 'fechado')
+                    ->orderByDesc('data_inicio')
+                    ->orderByDesc('hora_inicio')
+                    ->limit(30)
+                    ->get();
+                break;
+
+            // ==============================
+            // 8 - POR DATA DE EMISSÃO
+            // ==============================
+            case 8:
+                $empresa_id = $request->empresa_id;
+
+                $ordens_servicos = OrdemServico::whereBetween('data_emissao', [$dataInicio, $dataFim])
+                    ->where('empresa_id', $empresa_id)
+                    ->when($situacao !== 'todas', fn($q) => $q->where('situacao', $situacao))
+                    ->orderByDesc('data_emissao')
+                    ->get();
+                break;
+
+            // ==============================
+            // 9 - BUSCA POR DESCRIÇÃO / EQUIPAMENTO
+            // ==============================
+            case 9:
+                $busca = trim($request->like);
+                $termos = explode(' ', $busca);
+
+                $ordens_servicos = OrdemServico::where(function ($q) use ($termos) {
+                    foreach ($termos as $termo) {
+                        $q->where(function ($q2) use ($termo) {
+                            $q2->where('descricao', 'like', "%{$termo}%")
+                                ->orWhereHas('equipamento', function ($eq) use ($termo) {
+                                    $eq->where('descricao', 'like', "%{$termo}%");
+                                });
+                        });
+                    }
+                });
+
+                if ($situacao !== 'todas') {
+                    $ordens_servicos->where('situacao', $situacao);
+                }
+
+                $ordens_servicos = $ordens_servicos
+                    ->orderByDesc('data_inicio')
+                    ->orderByDesc('hora_inicio')
+                    ->get();
+                break;
+
+            // ==============================
+            // PADRÃO (SEM FILTRO)
+            // ==============================
+            default:
                 $ordens_servicos = collect();
                 return view('app.ordem_servico.index', compact(
                     'equipamento',
@@ -109,93 +172,30 @@ class OrdemServicoController extends Controller
                     'empresa',
                     'servicos_executado'
                 ));
-            }
+        }
 
-            $ordens_servicos = OrdemServico::where('equipamento_id', $patrimonio)
-                ->where('situacao', 'fechado')
-                ->orderByDesc('data_inicio')
-                ->orderByDesc('hora_inicio')
-                ->limit(30)
-                ->get();
-            break;
+        // ==================================================
+        // 🔥 BUSCA ÚNICA DE SERVIÇOS EXECUTADOS (PADRÃO)
+        // (vale para TODOS os casos acima)
+        // ==================================================
+        if ($ordens_servicos->isNotEmpty()) {
+            $servicos_executado = Servicos_executado::whereIn(
+                'ordem_servico_id',
+                $ordens_servicos->pluck('id')
+            )
+                ->with('funcionario')
+                ->get()
+                ->groupBy('ordem_servico_id');
+        }
 
-        // ==============================
-        // 8 - POR DATA DE EMISSÃO
-        // ==============================
-        case 8:
-            $empresa_id = $request->empresa_id;
-
-            $ordens_servicos = OrdemServico::whereBetween('data_emissao', [$dataInicio, $dataFim])
-                ->where('empresa_id', $empresa_id)
-                ->when($situacao !== 'todas', fn($q) => $q->where('situacao', $situacao))
-                ->orderByDesc('data_emissao')
-                ->get();
-            break;
-
-        // ==============================
-        // 9 - BUSCA POR DESCRIÇÃO / EQUIPAMENTO
-        // ==============================
-        case 9:
-            $busca = trim($request->like);
-            $termos = explode(' ', $busca);
-
-            $ordens_servicos = OrdemServico::where(function ($q) use ($termos) {
-                foreach ($termos as $termo) {
-                    $q->where(function ($q2) use ($termo) {
-                        $q2->where('descricao', 'like', "%{$termo}%")
-                            ->orWhereHas('equipamento', function ($eq) use ($termo) {
-                                $eq->where('descricao', 'like', "%{$termo}%");
-                            });
-                    });
-                }
-            });
-
-            if ($situacao !== 'todas') {
-                $ordens_servicos->where('situacao', $situacao);
-            }
-
-            $ordens_servicos = $ordens_servicos
-                ->orderByDesc('data_inicio')
-                ->orderByDesc('hora_inicio')
-                ->get();
-            break;
-
-        // ==============================
-        // PADRÃO (SEM FILTRO)
-        // ==============================
-        default:
-            $ordens_servicos = collect();
-            return view('app.ordem_servico.index', compact(
-                'equipamento',
-                'ordens_servicos',
-                'funcionarios',
-                'empresa',
-                'servicos_executado'
-            ));
+        return view('app.ordem_servico.index', compact(
+            'equipamento',
+            'ordens_servicos',
+            'funcionarios',
+            'empresa',
+            'servicos_executado'
+        ));
     }
-
-    // ==================================================
-    // 🔥 BUSCA ÚNICA DE SERVIÇOS EXECUTADOS (PADRÃO)
-    // (vale para TODOS os casos acima)
-    // ==================================================
-    if ($ordens_servicos->isNotEmpty()) {
-        $servicos_executado = Servicos_executado::whereIn(
-            'ordem_servico_id',
-            $ordens_servicos->pluck('id')
-        )
-            ->with('funcionario')
-            ->get()
-            ->groupBy('ordem_servico_id');
-    }
-
-    return view('app.ordem_servico.index', compact(
-        'equipamento',
-        'ordens_servicos',
-        'funcionarios',
-        'empresa',
-        'servicos_executado'
-    ));
-}
 
     /**
      * Show the form for creating a new resource.
@@ -345,7 +345,7 @@ class OrdemServicoController extends Controller
         }
         $projeto = Projeto::find($ordem_servico->projeto_id);
         $aprs = APR::where('ordem_servico_id', $ordem_servico->id)->get();
-      
+
         $ped_saidas = PedidoSaida::where('ordem_servico_id', $ordem_servico->id)->get();
         return view('app.ordem_servico.show', [
             'ordem_servico'       => $ordem_servico,
@@ -812,11 +812,26 @@ class OrdemServicoController extends Controller
 
     public function notificacao_status_os()
     {
-        $hoje = today(); // data atual
+        $hoje = now()->toDateString(); // Traz a data de hoje (AAAA-MM-DD)
+        $agora = now()->toTimeString(); // Traz a hora atual (HH:MM:SS)
 
         $ultimasOS = OrdemServico::whereIn('situacao', ['aberto', 'em andamento', 'pausado'])
-            ->whereDate('data_inicio', '<=', $hoje)
-            ->whereDate('data_fim', '>=', $hoje)   // ainda não venceu
+            // 1. VERIFICA SE JÁ COMEÇOU (Data e Hora de Início)
+            ->where(function ($query) use ($hoje, $agora) {
+                $query->whereDate('data_inicio', '<', $hoje)
+                    ->orWhere(function ($q) use ($hoje, $agora) {
+                        $q->whereDate('data_inicio', $hoje)
+                            ->whereTime('hora_inicio', '<=', $agora);
+                    });
+            })
+            // 2. VERIFICA SE AINDA NÃO VENCEU (Data e Hora de Fim)
+            ->where(function ($query) use ($hoje, $agora) {
+                $query->whereDate('data_fim', '>', $hoje)
+                    ->orWhere(function ($q) use ($hoje, $agora) {
+                        $q->whereDate('data_fim', $hoje)
+                            ->whereTime('hora_fim', '>=', $agora);
+                    });
+            })
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -837,6 +852,7 @@ class OrdemServicoController extends Controller
             ]);
         }
     }
+
 
     //Atualiza alarm
     public function update_alarm(Request $request)
