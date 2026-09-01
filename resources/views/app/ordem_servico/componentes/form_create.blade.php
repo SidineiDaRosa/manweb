@@ -474,9 +474,9 @@
 
             <!-- Botões -->
             <div style="margin-top:10px;">
-                <button type="button" class="btn-prioridade btn-alta" onclick="setPrioridade('alta')">Alta</button>
-                <button type="button" class="btn-prioridade btn-media" onclick="setPrioridade('media')">Média</button>
-                <button type="button" class="btn-prioridade btn-baixa" onclick="setPrioridade('baixa')">Baixa</button>
+                <button type="button" class="btn-inf btn-inf-orange" onclick="setPrioridade('alta')">Alta</button>
+                <button type="button" class="btn-inf btn-inf-warning" onclick="setPrioridade('media')">Média</button>
+                <button type="button" class="btn-inf btn-inf-blue-light" onclick="setPrioridade('baixa')">Baixa</button>
             </div>
 
             <script>
@@ -616,7 +616,8 @@
         </div>
         {{--fim card 3--}}
 </form>
-<button type="button" class="btn btn-outline-primary btn-bg" onclick="CadastraFormOs()" style="width:500px;">
+<button type="button" class="btn-inf btn-inf-blue-dark" onclick="CadastraFormOs()" style="width:500px;">
+    <i class="icofont-save"></i>
     Cadastrar
 </button>
 

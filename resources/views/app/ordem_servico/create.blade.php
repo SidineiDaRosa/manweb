@@ -9,14 +9,13 @@
     <div class="card">
         <div class="card-header-template mb-1" style="float: left; display:flex;">
             Criar ordem de serviço
-            <a href="{{route('ordem-servico.index')}}" class="btn btn-info btn-icon-split btn-sm" style="float: left; display:flex;">
+            <a href="{{route('ordem-servico.index')}}" class="btn-inf btn-inf-blue-dark">
                 <span class="icon text-white-50">
                     <i class="icofont-filter"></i>
                 </span>
                 <span class="text">Filtros OS</span>
             </a>
-
-            <a class="btn btn-outline-dark btn-sm" href="{{ route('app.home') }}" style="float: left;display:flex;">
+            <a class="btn-inf btn-inf-brown" href="{{ route('app.home') }}">
                 <i class="icofont-dashboard"></i> dashboard
             </a>
         </div>

@@ -79,7 +79,6 @@
         <div class="card-description">Abertas</div>
     </div>
 
-
     <!--Mesagem de confirmação de verificação da APR-->
     @if(session('success'))
     <div class="alert alert-success custom-alert position-relative">
@@ -168,4 +167,7 @@
     <input type="text" class="input input-error" placeholder="Campo com erro">
 
     <input type="text" class="input input-success" placeholder="Campo válido">
+
+
+    <input type="textarea" class="input" placeholder="Digite algo texto area">
 </main>

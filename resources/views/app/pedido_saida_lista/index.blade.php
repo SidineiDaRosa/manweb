@@ -273,7 +273,7 @@
             <input type="text" class="form-control" style="width:50%;" readonly name="produto_nome" id="produto_nome">
             <input type="number" id="quantidade" name="quantidade" class="form-control" style="width:200px;" readonly>
             <!-- Botão de envio inicialmente oculto -->
-            <button id="btnEnviar" class="btn btn-outline-primary" style="display: none;" onclick="">Adicionar</button>
+            <button id="btnEnviar" class="btn-inf btn-inf-bg btn-inf-blue-dark" style="display: none;" onclick="">Adicionar</button>
         </div>
     </form>
     <hr>
@@ -497,8 +497,8 @@
 
             <!--input box filtro buscar produto--------->
             <input class="form-control" type="text" id="query" name="query_like_producto_name" placeholder="Buscar produto..." aria-label="Search through site content">
-            <button type="submit" class="btn btn-outline-primary">
-                <i class="icofont-search"></i> Buscar
+            <button type="submit" class="btn-inf btn-inf-sm btn-inf-purple">
+               <i class="icofont-search-2"></i> Buscar
             </button>
         </form>
     </div>
