@@ -616,7 +616,7 @@
         </div>
         {{--fim card 3--}}
 </form>
-<button type="button" class="btn-inf btn-inf-blue-dark" onclick="CadastraFormOs()" style="width:500px;">
+<button class="btn-inf btn-inf-blue-dark" onclick="CadastraFormOs()" style="width:500px;">
     <i class="icofont-save"></i>
     Cadastrar
 </button>
