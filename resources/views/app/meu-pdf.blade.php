@@ -470,35 +470,31 @@ if (!empty($ordemServico->link_foto)) {
             </div>
             <div class="pt-col-40">
                 <strong>OS:</strong> {{ $ordemServico->id }}
-            </div>
-            <div class="pt-col-30">
-                <strong>Data:</strong> ____/____/________
-            </div>
+
+            </div> <br> <br>
+            <div class="pt-row">Início: ____/____/_______,___:____ | Encerramento:____/____/_______,___:____</div>
             <div class="pt-clear"></div>
         </div>
 
         <div class="pt-hr"></div>
 
-        <div class="pt-row">
+        <div class="pt-row"> <br>
             <strong>Local de Trabalho:</strong> _______________________________________________
         </div>
 
         <div class="pt-hr"></div>
 
-        <div class="pt-row">
-            <strong>Status:</strong> &nbsp;&nbsp; [ ] Aberto &nbsp;&nbsp;&nbsp;&nbsp; [ ] Em Execução &nbsp;&nbsp;&nbsp;&nbsp; [ ] Encerrado
-        </div>
 
         <div class="pt-hr"></div>
 
         <div class="pt-row">
-            <strong>Descrição da Atividade:</strong> {{ $ordemServico->descricao }}
+            <strong>Descrição da Atividade de risco:</strong> {{ $ordemServico->descricao }}
         </div>
 
         <div class="pt-hr"></div>
 
-        <div class="pt-row">
-            <strong>Responsável pela Execução:</strong> _______________________________________________
+        <div class="pt-row"> <br>
+            <strong>Equipe:</strong> _______________________________________________
         </div>
     </div>
 
@@ -510,7 +506,7 @@ if (!empty($ordemServico->link_foto)) {
             <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
             <div class="pt-row">
                 <div class="pt-col-50">
-                    <strong>[ ] Queda de Nível Diferente</strong> (Altura/Escadas)
+                    <strong>[ ] Queda de Nível </strong> (Acima ou abaixo "diferença de 2m altura")
                     <div class="pt-checkbox-group">
                         [ ] Uso de cinto paraquedista<br>
                         [ ] Inspeção do andaime/escada<br>
@@ -528,12 +524,12 @@ if (!empty($ordemServico->link_foto)) {
                 </div>
                 <div class="pt-clear"></div>
             </div>
-    <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
+            <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
             <div class="pt-row">
                 <div class="pt-col-50">
-                    <strong>[ ] Energias residual (Risco)</strong> (Energias NR12)
+                    <strong>[ ] Energias </strong> (Energias NR12)
                     <div class="pt-checkbox-group">
-                         [ ] LOTO realizado (Bloqueio)<br>
+                        [ ] LOTO realizado (Bloqueio)<br>
                         [ ] Isolamento da área <br>
                         [ ] Teste de ausência de Alta temperatura <br>
                         [ ] Teste de ausência Pressão de AR/hidraúlica (Risco)
@@ -547,17 +543,23 @@ if (!empty($ordemServico->link_foto)) {
                         [ ] Contato com produtos químicos<br>
                     </div>
                 </div>
+
                 <div class="pt-clear"></div>
             </div>
-            <div class="pt-hr"></div>
-
-            <!-- Risco 3 -->
+            <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
             <div class="pt-row">
-                <strong>[ ] Projeção de Partículas / Cortes</strong> (Esmerilhadeira/Corte/Solda)
-                <div class="pt-checkbox-group">
-                    [ ] Óculos de proteção &nbsp;&nbsp;&nbsp;&nbsp; [ ] Luvas adequadas &nbsp;&nbsp;&nbsp;&nbsp; [ ] Verificar as proteções das ferramentas
+                <div class="pt-col-50">
+                    <strong>[ ] Espaço confinado</strong>
+                    <div class="pt-checkbox-group">
+                        [ ] Teste de presença de gases<br>
+                        [ ] Ventialção<br>
+                        [ ] Isolção de área<br>
+                    </div>
                 </div>
+
+                <div class="pt-clear"></div>
             </div>
+
         </div>
     </div>
 
@@ -589,6 +591,8 @@ if (!empty($ordemServico->link_foto)) {
             ______________________________________<br>
             <strong>Responsável da Área</strong>
         </div>
+
+
     </div>
     <div class="pt-row" style="margin-top: 25px;">
         <!-- Segunda Linha -->
@@ -601,7 +605,10 @@ if (!empty($ordemServico->link_foto)) {
             ______________________________________<br>
             <strong>Gerente de Produção</strong>
         </div>
-
+        <div class="pt-col-50" style="text-align: center; margin-bottom: 25px;">
+            ______________________________________<br>
+            <strong>Executante</strong>
+        </div>
         <div class="pt-clear"></div>
     </div>
 
