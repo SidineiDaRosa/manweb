@@ -506,7 +506,7 @@ if (!empty($ordemServico->link_foto)) {
             <!-- Risco 1 e 2 Lado a Lado para economizar espaço vertical -->
             <div class="pt-row">
                 <div class="pt-col-50">
-                    <strong>[ ] Queda de Nível </strong> (Acima ou abaixo "diferença de 2m altura")
+                    <strong>[ ] Queda de Nível </strong> (Acima ou abaixo "diferença de 2m")
                     <div class="pt-checkbox-group">
                         [ ] Uso de cinto paraquedista<br>
                         [ ] Inspeção do andaime/escada<br>
@@ -605,12 +605,21 @@ if (!empty($ordemServico->link_foto)) {
             ______________________________________<br>
             <strong>Gerente de Produção</strong>
         </div>
-        <div class="pt-col-50" style="text-align: center; margin-bottom: 25px;">
+
+        <div class="pt-clear"></div>
+    </div>
+    <div class="pt-row" style="margin-top: 25px;">
+        <!-- Segunda Linha -->
+        <div class="pt-col-50" style="text-align: center;">
             ______________________________________<br>
             <strong>Executante</strong>
         </div>
+
+      
+
         <div class="pt-clear"></div>
     </div>
+
 
 
 </div>
