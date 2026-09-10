@@ -14,6 +14,7 @@ use App\Models\UnidadeMedida;
 use App\Models\Categoria;
 use App\Models\EntradaProduto;
 use App\Models\PedidoCompra;
+use App\Models\PedidoCompraLista;
 use App\Models\SaidaProduto;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Support\Facades\DB;
@@ -299,7 +300,7 @@ class EstoqueProdutoController extends Controller
             '>=',
             Carbon::now()->subDays(360)
         )->get();
-    
+
         $movementInputPurchase = PedidoCompra::where(
             'created_at',
             '>=',
@@ -312,7 +313,23 @@ class EstoqueProdutoController extends Controller
             Carbon::now()->subDays(360)
         )->get();
 
-        $pedidos_compra = PedidoCompra::where('status', 'aberto')->get();
+        $pedidos_compra = PedidoCompra::whereNotIn('status', ['fechado', 'indefinido', 'cancelado'])->get();
+
+        // Criamos a array vazia antes do loop para evitar erros caso não existam itens
+        $todos_os_itens = collect();
+
+        foreach ($pedidos_compra as $pedido) {
+            // Busca os itens deste pedido específico
+            $pedido_compra_itens = PedidoCompraLista::where('pedidos_compra_id', $pedido->id)->get();
+
+            // Guardamos na propriedade temporária dentro do objeto do pedido
+            $pedido->lista_itens = $pedido_compra_itens;
+
+            // Acumulamos de verdade todos os itens na nossa coleção unificada
+            foreach ($pedido_compra_itens as $item) {
+                $todos_os_itens->push($item);
+            }
+        }
         // Retorna a view do dashboard com os dados
         return view('app.estoque_produto.dashboard', [
             'totalItems' => $totalItems,
@@ -326,7 +343,8 @@ class EstoqueProdutoController extends Controller
             'movementsOuputProcucts' => $movementsOuputProcucts,
             'movementInputPurchase' => $movementInputPurchase,
             'movementOutputPurchase' => $movementOutputPurchase,
-            'pedidos_compra' => $pedidos_compra
+            'pedidos_compra' => $pedidos_compra,
+            'pedido_compra_itens' =>  $todos_os_itens
         ]);
     }
 }

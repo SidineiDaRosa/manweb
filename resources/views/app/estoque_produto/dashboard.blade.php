@@ -279,14 +279,14 @@
                                                     <div>
                                                         Estoque Atual:<span class="badge {{ $badge_classe }}">{{ $produto->quantidade }}</span>
                                                     </div>
-                                                    
+
                                                 </div>
 
                                                 <!-- Mínimo / Máximo -->
                                                 <div class="col-6 col-md-2 text-md-center">
                                                     <span class="text-muted d-block d-md-none small fw-bold">Mín / Máx</span>
                                                     <span class="text-secondary small">
-                                                      Qnt. Máximo:  <strong class="text-dark">{{ $produto->estoque_minimo }}</strong> | Qnt Minimo {{ $produto->estoque_maximo }}
+                                                        Qnt. Máximo: <strong class="text-dark">{{ $produto->estoque_minimo }}</strong> | Qnt Minimo {{ $produto->estoque_maximo }}
                                                     </span>
                                                 </div>
 
@@ -313,123 +313,204 @@
                                     @endforeach
                         </div>
                     </div>
-
-                    <hr id="pedidos-compra" style="height:20px;">
-                    <!-- Tabela de Pedidos de Compra --><!-- Tabela de Pedidos de Compra -->
-                    <div class="card card-dashboard mb-4">
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Pedidos de Compra</h5>
+                    <!---------------------->
+                    <!--Pedidos de compra-->
+                    <!---------------------->
+                    <div class="card-body p-2">
+                        <!-- Cabeçalho Compacto -->
+                        <div class="row g-1 fw-bold text-muted pb-1 mb-2 border-bottom d-none d-md-flex align-items-center" style="font-size: 0.75rem;">
+                            <div class="col-md-1 ps-3">ID</div>
+                            <div class="col-md-1">Emissão</div>
+                            <div class="col-md-2">Previsão</div>
+                            <div class="col-md-1">Destino</div>
+                            <div class="col-md-2">Fornecedor</div>
+                            <div class="col-md-2">Funcionário</div>
+                            <div class="col-md-1">Status</div>
+                            <div class="col-md-1">Descrição</div>
+                            <div class="col-md-1 text-end pe-3">Ações</div>
                         </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th scope="col" class="ps-3">ID</th>
-                                            <th scope="col">Emissão</th>
-                                            <th scope="col">Previsão</th>
-                                            <th scope="col">Destino</th>
-                                            <th scope="col">Fornecedor</th>
-                                            <th scope="col">Funcionário</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Descrição</th>
-                                            <th scope="col" class="text-end pe-3">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($pedidos_compra as $pedido)
-                                        @php
-                                        // Combina a data e hora previstas do banco em um objeto Carbon
-                                        $dataPrevisao = \Carbon\Carbon::parse($pedido->data_prevista . ' ' . $pedido->hora_prevista);
 
-                                        // Define se está atrasado (passou do prazo atual E não está concluído/cancelado)
-                                        $estaAtrasado = $dataPrevisao->isPast() && !in_array(strtolower($pedido->status), ['fechado', 'concluido', 'cancelado', 'aprovado']);
-                                        @endphp
+                        <!-- Lista de Pedidos -->
+                        <div class="d-flex flex-column gap-1">
+                            @forelse($pedidos_compra as $pedido)
+                            @php
+                            $dataPrev = \Carbon\Carbon::parse($pedido->data_prevista . ' ' . $pedido->hora_prevista);
+                            $atrasado = $dataPrev->isPast() && !in_array(strtolower($pedido->status), ['fechado', 'concluido', 'cancelado', 'aprovado']);
+                            @endphp
 
-                                        <tr>
-                                            <!-- ID -->
-                                            <td class="ps-3 fw-bold">#{{ $pedido->id }}</td>
+                            <div class="border rounded bg-white shadow-sm @if($atrasado) border-danger-subtle @endif">
 
-                                            <!-- Emissão -->
-                                            <td>
-                                                {{ \Carbon\Carbon::parse($pedido->data_emissao)->format('d/m/Y') }}
-                                                <small class="text-muted">{{ \Carbon\Carbon::parse($pedido->hora_emissao)->format('H:i') }}</small>
-                                            </td>
+                                <!-- Linha do Pedido Slim (Adicionado classe js-linha-pedido) -->
+                                <div class="row g-1 align-items-center py-1 px-3 m-0 style-trigger text-dark js-linha-pedido"
+                                    data-target-id="detalhes-{{ $pedido->id }}"
+                                    style="cursor: pointer; font-size: 0.82rem; min-height: 38px;">
 
-                                            <!-- Previsão com o visual do primeiro exemplo -->
-                                            <td>
-                                                <div class="{{ $estaAtrasado ? 'text-danger fw-bold' : '' }}">
-                                                    {{ \Carbon\Carbon::parse($pedido->data_prevista)->format('d/m/Y') }}
-                                                    <small class="{{ $estaAtrasado ? 'text-danger' : 'text-muted' }}">
-                                                        {{ \Carbon\Carbon::parse($pedido->hora_prevista)->format('H:i') }}
-                                                    </small>
+                                    <div class="col-6 col-md-1 d-flex align-items-center gap-1">
+                                        <i class="icofont-rounded-down text-muted btn-arrow" style="transition: transform 0.2s; font-size: 0.95rem;"></i>
+                                        <div><span class="d-md-none text-muted xx-small d-block">ID</span><span class="fw-bold">#{{ $pedido->id }}</span></div>
+                                    </div>
 
-                                                    @if($estaAtrasado)
-                                                    <span class="d-block text-danger fw-normal" style="font-size: 0.75rem;">
-                                                        Atrasado
-                                                    </span>
-                                                    @endif
+                                    <div class="col-6 col-md-1">
+                                        <span class="d-md-none text-muted xx-small d-block">Emissão</span>
+                                        <span class="text-nowrap">{{ \Carbon\Carbon::parse($pedido->data_emissao)->format('d/m/y') }}</span>
+                                    </div>
+
+                                    <div class="col-6 col-md-2">
+                                        <span class="d-md-none text-muted xx-small d-block">Previsão</span>
+                                        <div class="text-nowrap {{ $atrasado ? 'text-danger fw-bold' : '' }}">
+                                            {{ \Carbon\Carbon::parse($pedido->data_prevista)->format('d/m/y') }}
+                                            @if($atrasado)<span class="badge bg-danger p-1 ms-1 fw-normal" style="font-size: 0.6rem;">Atrasado</span>@endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-1 text-truncate">
+                                        <span class="d-md-none text-muted xx-small d-block">Destino</span>
+                                        <span class="text-secondary">{{ $pedido->equipamento->nome ?? '-' }}</span>
+                                    </div>
+
+                                    <div class="col-6 col-md-2 text-truncate">
+                                        <span class="d-md-none text-muted xx-small d-block">Fornecedor</span>
+                                        <span class="text-secondary">{{ $pedido->fornecedor->nome ?? '-' }}</span>
+                                    </div>
+
+                                    <div class="col-6 col-md-2 text-truncate">
+                                        <span class="d-md-none text-muted xx-small d-block">Funcionário</span>
+                                        <span class="text-secondary">{{ $pedido->funcionario->nome ?? '-' }}</span>
+                                    </div>
+
+                                    <div class="col-6 col-md-1">
+                                        <span class="d-md-none text-muted xx-small d-block">Status</span>
+                                        <span class="badge @if($atrasado) bg-danger @else bg-secondary @endif py-05 px-15" style="font-size: 0.7rem;">{{ $pedido->status }}</span>
+                                    </div>
+
+                                    <div class="col-6 col-md-1 text-truncate">
+                                        <span class="d-md-none text-muted xx-small d-block">Descrição</span>
+                                        <span class="text-muted" title="{{ $pedido->descricao }}">{{ $pedido->descricao }}</span>
+                                    </div>
+
+                                    <!-- Botão de Ação -->
+                                    <div class="col-6 col-md-1 text-end pe-md-1" onclick="event.stopPropagation();">
+                                        <span class="d-md-none text-muted xx-small d-block text-start mb-1">Ações</span>
+                                        <a href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $pedido->id]) }}" class="btn-inf btn-inf-green d-inline-flex align-items-center justify-content-center" style="padding: 2px 8px; font-size: 0.8rem; height: 24px;"><i class="icofont-eye"></i></a>
+                                    </div>
+                                </div>
+
+                                <!-- Gaveta Expansível de Itens (Controlada via CSS classes d-none/d-flex por segurança) -->
+                                <div class="d-none border-top @if($atrasado) border-danger-subtle bg-danger-subtle bg-opacity-10 @else bg-light @endif" id="detalhes-{{ $pedido->id }}">
+                                    <div class="p-2 px-3 w-100">
+                                        <div class="d-flex flex-column gap-1 bg-white p-2 rounded border" style="font-size: 0.78rem;">
+                                            <!-- Cabeçalho Interno dos Itens -->
+                                            <div class="row g-1 fw-bold text-muted border-bottom pb-1 mb-1 d-none d-md-flex" style="font-size: 0.7rem;">
+                                                <div class="col-md-1">ID Item</div>
+                                                <div class="col-md-5">Produto / Material</div>
+                                                <div class="col-md-2 text-center">Quantidade</div>
+
+                                                <div class="col-md-2 text-center">Status</div>
+                                                <div class="col-md-2 text-center">img</div>
+                                                <div class="col-md-2 text-end">Vlr. Unitário</div>
+                                            </div>
+
+                                            <!-- Filtra a lista de itens para pegar apenas os deste pedido específico -->
+                                            @forelse($pedido_compra_itens->where('pedidos_compra_id', $pedido->id) as $item)
+                                            <div class="row g-1 align-items-center py-2 text-secondary border-bottom border-light-subtle">
+                                                <div class="col-2 col-md-1 small text-muted">#{{ $item->id }}</div>
+                                                <div class="col-10 col-md-5 fw-semibold text-dark text-truncate">
+                                                    {{ $item->produto->nome ?? 'Produto ID: ' . $item->produto_id }}
                                                 </div>
-                                            </td>
-                                            <td>{{ $pedido->equipamento->nome }}</td>
+                                                <div class="col-4 col-md-2 text-md-center font-monospace fw-bold text-dark">
+                                                    <span class="d-md-none text-muted small me-1">Qtd:</span>{{ $item->quantidade }}
+                                                </div>
+                                                <div class="col-4 col-md-2 text-md-center">
+                                                    <span class="d-md-none text-muted small me-1">Status:</span>
+                                                    <span class="badge bg-light text-secondary border px-2 py-05" style="font-size: 0.68rem;">
+                                                        {{ $item->status }}
+                                                    </span>
+                                                </div>
+                                                <div class="col-4 col-md-2 text-md-end text-nowrap">
+                                                   
+                                                    <img src="/img/produtos/{{  $item->produto->image }}" alt="Imagem do Produto" class="preview-image">
+                                                    <style>
+                                                        .preview-image{
+                                                            height:55px;
+                                                            width:55px;
+                                                        }
+                                                    </style>
+                                                </div>
+                                                <div class="col-4 col-md-2 text-md-end text-nowrap">
+                                                    <span class="d-md-none text-muted small me-1">Unit:</span>
+                                                    R$ {{ number_format($item->valor_unitario ?? $item->produto->preco_custo ?? 0, 2, ',', '.') }}
+                                                </div>
+                                            </div>
+                                            @empty
+                                            <div class="text-center text-muted py-2 small">Nenhum item vinculado a este pedido.</div>
+                                            @endforelse
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <!-- Fornecedor -->
-                                            <td>{{ $pedido->fornecedor->nome ?? 'Não informado' }}</td>
 
-                                            <!-- Funcionário -->
-                                            <td>{{ $pedido->funcionario->nome ?? 'Não informado' }}</td>
-
-                                            <!-- Status com Badges dinâmicos -->
-                                            <td>
-                                                @if($estaAtrasado)
-                                                <span class="badge bg-danger">Atrasado</span>
-                                                @else
-                                                @switch(strtolower($pedido->status))
-                                                @case('pendente')
-                                                @case('aberto')
-                                                <span class="badge bg-warning text-dark">Pendente</span>
-                                                @break
-                                                @case('aprovado')
-                                                @case('fechado')
-                                                @case('concluido')
-                                                <span class="badge bg-success">Concluído</span>
-                                                @break
-                                                @case('cancelado')
-                                                <span class="badge bg-danger">Cancelado</span>
-                                                @break
-                                                @default
-                                                <span class="badge bg-secondary">{{ $pedido->status }}</span>
-                                                @endswitch
-                                                @endif
-                                            </td>
-
-                                            <!-- Descrição -->
-                                            <td>
-                                                <span class="d-inline-block text-truncate" style="max-width: 150px;" title="{{ $pedido->descricao }}">
-                                                    {{ $pedido->descricao }}
-                                                </span>
-                                            </td>
-
-                                            <!-- Botão de Ação -->
-                                            <td >
-                                                <a href="{{ route('pedido-compra-lista.index', ['numpedidocompra' => $pedido->id]) }}" class="btn-inf btn-inf-md btn-inf-green"><i class="icofont-eye"></i></a>
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="8" class="text-center text-muted py-4">
-                                                Nenhum pedido de compra encontrado.
-                                            </td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
                             </div>
+                            @empty
+                            <div class="text-center text-muted py-4 border rounded bg-light small">Nenhum pedido de compra encontrado.</div>
+                            @endforelse
                         </div>
                     </div>
 
+                    <!-- JavaScript Puro (Garante que vai abrir mesmo se o JS do Bootstrap sumir) -->
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            document.querySelectorAll('.js-linha-pedido').forEach(linha => {
+                                linha.addEventListener('click', function() {
+                                    const targetId = this.getAttribute('data-target-id');
+                                    const gaveta = document.getElementById(targetId);
+                                    const seta = this.querySelector('.btn-arrow');
+
+                                    if (gaveta) {
+                                        if (gaveta.classList.contains('d-none')) {
+                                            // Abre a gaveta
+                                            gaveta.classList.remove('d-none');
+                                            this.classList.add('linha-ativa');
+                                            if (seta) seta.style.transform = 'rotate(180deg)';
+                                        } else {
+                                            // Fecha a gaveta
+                                            gaveta.classList.add('d-none');
+                                            this.classList.remove('linha-ativa');
+                                            if (seta) seta.style.transform = 'rotate(0deg)';
+                                        }
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+
+                    <style>
+                        .xx-small {
+                            font-size: 0.65rem;
+                        }
+
+                        .py-05 {
+                            padding: 0.15rem 0.4rem;
+                        }
+
+                        .px-15 {
+                            padding: 0.15rem 0.4rem;
+                        }
+
+                        .style-trigger:hover {
+                            background-color: rgba(0, 0, 0, 0.015) !important;
+                        }
+
+                        .linha-ativa {
+                            background-color: rgba(13, 110, 253, 0.02) !important;
+                        }
+                    </style>
+
+                    <!-- Fim pedidos de compra -->
+
                 </div>
+
             </div>
+        </div>
         </div>
         @php
         use Carbon\Carbon;
