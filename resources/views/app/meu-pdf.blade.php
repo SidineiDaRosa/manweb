@@ -615,12 +615,8 @@ if (!empty($ordemServico->link_foto)) {
             <strong>Executante</strong>
         </div>
 
-      
-
         <div class="pt-clear"></div>
     </div>
-
-
 
 </div>
 
