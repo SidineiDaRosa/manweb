@@ -316,7 +316,10 @@
                     <!---------------------->
                     <!--Pedidos de compra-->
                     <!---------------------->
+                    <div id="pedidos-compra" style="margin-bottom:50px;"></div>
                     <div class="card-body p-2">
+                        <h3>Pedidos de compra</h3>
+                        
                         <!-- Cabeçalho Compacto -->
                         <div class="row g-1 fw-bold text-muted pb-1 mb-2 border-bottom d-none d-md-flex align-items-center" style="font-size: 0.75rem;">
                             <div class="col-md-1 ps-3">ID</div>
@@ -427,12 +430,12 @@
                                                     </span>
                                                 </div>
                                                 <div class="col-4 col-md-2 text-md-end text-nowrap">
-                                                   
+
                                                     <img src="/img/produtos/{{  $item->produto->image }}" alt="Imagem do Produto" class="preview-image">
                                                     <style>
-                                                        .preview-image{
-                                                            height:55px;
-                                                            width:55px;
+                                                        .preview-image {
+                                                            height: 60px;
+                                                            width: 60px;
                                                         }
                                                     </style>
                                                 </div>
