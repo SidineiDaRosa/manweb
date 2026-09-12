@@ -144,6 +144,7 @@
                                             </h3>
                                         </div>
                                         <div class="metric-icon">
+                                            <i class="bi bi-arrow-down"></i>
                                             <i class="icofont-ui-cart"></i>
                                         </div>
                                     </div>
@@ -155,12 +156,12 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <h6 class="card-title text-muted">Valor Total</h6>
-                                            <h3 class="metric-value text-success">{{$totalValue}}</h3>
-                                            <p class="card-text"><small class="text-success"><i class="bi bi-arrow-up"></i> 4.1% desde o mês passado</small></p>
+                                            <h6 class="card-title text-muted">Saídas Produtos</h6>
+                                            <h3 class="metric-value text-success">{{$movementOutputPurchase->count()}}</h3>
+                                            <p class="card-text"><small class="text-success"></i>{{$movementsOuputProcucts->count()}} Itens, Desde o ano passado.</small></p>
                                         </div>
                                         <div class="metric-icon">
-                                            <i class="bi bi-currency-dollar"></i>
+                                            <i class="bi bi-arrow-up"></i>
                                         </div>
                                     </div>
                                 </div>
