@@ -156,12 +156,19 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <h6 class="card-title text-muted">Saídas Produtos</h6>
-                                            <h3 class="metric-value text-success">{{$movementOutputPurchase->count()}}</h3>
+                                            <h5 class="card-title text-muted">Saídas Produtos</h5>
+                                            <div style="display: flex;flex-direction:row">
+                                                <h3 class="metric-value text-success">{{$movementOutputPurchase->count()}}
+                                                    <a href="{{ route('pedido-saida.index') }}" target="_blank" class="btn-inf btn-inf-md btn-inf-warning">
+                                                        <i class="bi bi-arrow-up-circle me-2"></i>
+                                                        </a>
+                                            </div>
+
                                             <p class="card-text"><small class="text-success"></i>{{$movementsOuputProcucts->count()}} Itens, Desde o ano passado.</small></p>
+
                                         </div>
                                         <div class="metric-icon">
-                                            <i class="bi bi-arrow-up"></i>
+                                            <i class="bi bi-arrow-up"></i><i class="icofont-box"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -320,7 +327,7 @@
                     <div id="pedidos-compra" style="margin-bottom:50px;"></div>
                     <div class="card-body p-2">
                         <h3>Pedidos de compra</h3>
-                        
+
                         <!-- Cabeçalho Compacto -->
                         <div class="row g-1 fw-bold text-muted pb-1 mb-2 border-bottom d-none d-md-flex align-items-center" style="font-size: 0.75rem;">
                             <div class="col-md-1 ps-3">ID</div>

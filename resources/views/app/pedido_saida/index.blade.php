@@ -6,10 +6,9 @@
         <div class="card-header-template">
             <div> Pedidos de Saídas Produtos</div>
             <div>
-                <a href="{{route('pedido-saida.create')}}" class="btn-sm btn-success">
-                    <i class="icofont-database-add"></i>
-                    </span>
-                    <span class="text">Criar novo pedido de saída</span>
+                <a href="{{route('pedido-saida.create')}}" class="btn-inf btn-inf-md btn-inf-blue-dark">
+                    
+                    <span >Criar novo pedido de saída</span> <i class="icofont-ui-add"></i>
                 </a>
             </div>
             <form id="formSearchingProducts" action="{{'pedido-saida-filtro'}}" method="POST">
@@ -145,7 +144,7 @@
                                     <i class="icofont-eye-alt"></i>
                                 </a>
                                 @else
-                                <a class="btn btn-sm-template btn-outline-primary" href="{{ route('pedido-saida.show', ['pedido_saida' => $pedido_saida->id]) }}">
+                                <a class="btn-inf btn-inf-sm btn-inf-green"href="{{ route('pedido-saida.show', ['pedido_saida' => $pedido_saida->id]) }}">
                                     <i class="icofont-eye-alt">add item</i>
                                 </a>
                                 @endif
@@ -155,9 +154,9 @@
                                 <form action="{{ route('pedidos-saida.destroy', $pedido_saida->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar este pedido?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm-template btn-outline-danger" style="height:30px;">Deletar</button>
+                                    <button type="submit" class="btn-inf btn-inf-sm btn-inf-red" style="height:30px;">Deletar</button>
                                 </form>
-                                <a class="btn btn-sm-template btn-outline-danger @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPedidoSaida({{ $pedido_saida->id }})" hidden>
+                                <a class="btn-inf btn-inf-sm btn-inf-red @can('user') disabled @endcan" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="DeletarPedidoSaida({{ $pedido_saida->id }})" hidden>
                                     <i class="icofont-ui-delete"></i>
                                 </a>
                             </div>
