@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript do Bootstrap 5 (Contém o motor que faz os botões fecharem) -->
+    <script src="https://jsdelivr.net"></script>
     <style>
         :root {
             --primary: #2c3e50;
@@ -139,10 +141,20 @@
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <h6 class="card-title text-muted">Pedidos de compras Pendentes</h6>
-                                            <h3 class="metric-value text-primary">{{$pedidos_compra->count() }}
-                                                <a href="#pedidos-compra" class="btn-inf btn-inf-red"><i class="icofont-arrow-down"></i></a>
-                                            </h3>
+
+                                            <div style="display:flex;flex-direction:row;margin-top:5px; ">
+                                                <h3 class="metric-value text-primary">{{$pedidos_compra->count() }}
+
+                                                </h3>
+                                                <a href="#pedidos-compra" class="btn-inf btn-inf-sm btn-inf-green"><i class="icofont-arrow-down"></i><i class="icofont-file-document"></i> Pedidos de Compra</a>
+                                                <a class="btn-inf btn-inf-sm btn-inf-purple" href="{{ route('entrada-produto.index') }}">
+                                                    <i class="bi bi-arrow-down-circle me-2"></i>
+                                                    <i class="icofont-cube"></i>
+                                                    Entrada de produtos
+                                                </a>
+                                            </div>
                                         </div>
+
                                         <div class="metric-icon">
                                             <i class="bi bi-arrow-down"></i>
                                             <i class="icofont-ui-cart"></i>
@@ -161,7 +173,7 @@
                                                 <h3 class="metric-value text-success">{{$movementOutputPurchase->count()}}
                                                     <a href="{{ route('pedido-saida.index') }}" target="_blank" class="btn-inf btn-inf-md btn-inf-warning">
                                                         <i class="bi bi-arrow-up-circle me-2"></i>
-                                                        </a>
+                                                    </a>
                                             </div>
 
                                             <p class="card-text"><small class="text-success"></i>{{$movementsOuputProcucts->count()}} Itens, Desde o ano passado.</small></p>
@@ -183,6 +195,7 @@
                                             <h3 class="metric-value text-danger">{{$criticalItems}}</h3>
                                             <p class="card-text"><small class="text-danger"><i class="bi bi-arrow-up"></i> 3 desde a semana passada</small></p>
                                         </div>
+
                                         <div class="metric-icon">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </div>

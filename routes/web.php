@@ -75,6 +75,15 @@ Route::view('/modelos', 'app.layouts.modelos')->name('modelos');
 //---------------------------------------------------------//
 //    Rotas que não precisam de middlwre
 //---------------------------------------------------------//
+//-----------------------------------------------
+// Temperatures
+//-----------------------------------------------
+use App\Http\Controllers\Df_TemperaturesController;
+
+Route::get('/df_temperatura', [Df_TemperaturesController::class, 'index'])->name('df_temperatura.index');
+Route::get('/df-temperatura-filtro', [Df_TemperaturesController::class, 'index'])
+    ->name('df_temperatura.filtro');
+
 //---------------------------------------------------------//
 //    Status Os
 //--DahboardStatusOsController--

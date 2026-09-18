@@ -41,6 +41,7 @@ Route::get(
 use App\Http\Controllers\TelemetrieController;
 use App\Http\Controllers\DispositivoController;
 use App\Models\Dispositivo;
+use App\Http\Controllers\Df_TemperaturesController;
 
 // Rota do ESP32 (Mantém exatamente como está)
 Route::post('/teste-websocket', [TelemetrieController::class, 'testeWebsocket']);
@@ -48,3 +49,7 @@ Route::post('/teste-websocket', [TelemetrieController::class, 'testeWebsocket'])
 // Rota para a View escutar o status do ESP32
 Route::post('/dispositivo_online', [DispositivoController::class, 'dispositivo_online'])
     ->name('dispositivo.online');
+//------------------------------------------------------------//
+//                 DF
+//------------------------------------------------------------//
+Route::post('/rota_df_temperatures', [Df_TemperaturesController::class, 'store']);
