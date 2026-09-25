@@ -121,7 +121,7 @@
 
                         backgroundColor: 'transparent',
 
-                        borderWidth: 3,
+                        borderWidth: 1,
 
                         pointRadius: 2,
 
@@ -144,7 +144,7 @@
 
                         backgroundColor: 'transparent',
 
-                        borderWidth: 3,
+                        borderWidth: 1,
 
                         pointRadius: 2,
 
@@ -167,7 +167,7 @@
 
                         backgroundColor: 'transparent',
 
-                        borderWidth: 3,
+                        borderWidth: 1,
 
                         pointRadius: 2,
 
@@ -190,7 +190,7 @@
 
                         backgroundColor: 'transparent',
 
-                        borderWidth: 3,
+                        borderWidth: 1,
 
                         pointRadius: 2,
 
@@ -213,7 +213,7 @@
 
                         backgroundColor: 'transparent',
 
-                        borderWidth: 3,
+                        borderWidth: 1,
 
                         pointRadius: 2,
 
