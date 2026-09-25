@@ -516,8 +516,7 @@ class OrdemServicoController extends Controller
     //----------------------------------------------//
     public function new_os_check_list(Request $request)
     {
-        //dd($request);
-        // dd($id = $request->checagem_id);
+
         // Define o fuso horário de São Paulo
         $dataHoraAtual = Carbon::now('America/Sao_Paulo');
 
@@ -526,14 +525,16 @@ class OrdemServicoController extends Controller
         $dataFormatada = Carbon::now('America/Sao_Paulo')->format('Y-m-d');
         $horaAtual = $dataHoraAtual->format('H:i:s');
         $dataHoraMaisUma = Carbon::now('America/Sao_Paulo')->addHour();
+        $horaInicio = \Carbon\Carbon::parse($request->data_inicio)->format('H:i');
+        $horaFim = \Carbon\Carbon::parse($request->data_fim)->format('H:i');
         // Criação da ordem de serviço
         $ordemServico = OrdemServico::create([
             'data_emissao' =>  $dataFormatada,
             'hora_emissao' => $horaAtual,
             'data_inicio' => $request->data_inicio,
-            'hora_inicio' => $horaAtual,
+            'hora_inicio' =>  $horaInicio,
             'data_fim' => $request->data_fim,
-            'hora_fim' =>  $dataHoraMaisUma,
+            'hora_fim' => $horaFim ,
             'equipamento_id' => $request->equipamento_id,
             'emissor' => 'Manutencao',
             'responsavel' => 'Manutencao',
@@ -595,7 +596,6 @@ class OrdemServicoController extends Controller
     }
     public function filter_os_timeline(Request $request)
     {
-
         $dataInicio = $request->input('data_inicio') ?: date('Y-m-01');
         $dataFim = $request->input('data_fim') ?: date('Y-m-t');
 
