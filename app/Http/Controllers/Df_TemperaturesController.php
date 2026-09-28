@@ -55,16 +55,23 @@ class Df_TemperaturesController extends Controller
             $query->where('data_hora', '<=', $request->data_fim);
         }
 
-        // Pega as leituras
-        $df_temperatures = $query
-            ->orderBy('data_hora', 'desc')
-            ->take(2000)
-            ->get()
-            ->reverse();
+        // Define o limite dinamicamente baseado na presença dos filtros
+        if ($request->filled('data_inicio') || $request->filled('data_fim')) {
+            // Se definiu alguma data, pega os últimos 5000 mais recentes do período
+            $df_temperatures = $query
+                ->orderBy('data_hora', 'desc')
+                ->take(5000)
+                ->get()
+                ->reverse(); // Inverte para ordem cronológica no gráfico
+        } else {
+            // Se não definiu nada, pega os últimos 2000 mais recentes
+            $df_temperatures = $query
+                ->orderBy('data_hora', 'desc')
+                ->take(2000)
+                ->get()
+                ->reverse(); // Inverte para ordem cronológica no gráfico
+        }
 
-        return view(
-            'app.df_temperature.index',
-            compact('df_temperatures')
-        );
+        return view('app.df_temperature.index', compact('df_temperatures'));
     }
 }
