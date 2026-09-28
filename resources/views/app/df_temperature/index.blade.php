@@ -48,12 +48,24 @@
         </div>
     </form>
 </div>
+<div style="margin-bottom: 15px; display: flex; gap: 20px; font-family: sans-serif;">
+    <label><input type="checkbox" checked onchange="alternarLinhaCheckbox(0, this)"> Ponto 1</label>
+    <label><input type="checkbox" checked onchange="alternarLinhaCheckbox(1, this)"> Ponto 2</label>
+    <label><input type="checkbox" checked onchange="alternarLinhaCheckbox(2, this)"> Ponto 3</label>
+</div>
+
 
 <div style="width:100%; height:450px;">
     <canvas id="graficoTemperatura"></canvas>
 </div>
 
+<div style="width:100%; height:450px;">
+    <canvas id="graficoTemperatura"></canvas>
+</div>
 <script>
+    // Variável global para guardar o gráfico e ser acessada pela função do checkbox
+    let meuGrafico;
+    
     document.addEventListener('DOMContentLoaded', function() {
 
         // Dados vindos do Laravel
@@ -98,8 +110,8 @@
             .getElementById('graficoTemperatura')
             .getContext('2d');
 
-
-        new Chart(ctx, {
+        // CORREÇÃO AQUI: Salvando a instância na variável global 'meuGrafico'
+        meuGrafico = new Chart(ctx, {
 
             type: 'line',
 
@@ -110,7 +122,7 @@
                 datasets: [
 
                     // =========================================
-                    // LINHA DO PONTO 1
+                    // LINHA DO PONTO 1 (Índice 0)
                     // =========================================
 
                     {
@@ -133,7 +145,7 @@
 
 
                     // =========================================
-                    // LINHA DO PONTO 2
+                    // LINHA DO PONTO 2 (Índice 1)
                     // =========================================
 
                     {
@@ -156,7 +168,7 @@
 
 
                     // =========================================
-                    // LINHA DO PONTO 3
+                    // LINHA DO PONTO 3 (Índice 2)
                     // =========================================
 
                     {
@@ -195,9 +207,9 @@
 
                 plugins: {
 
+                    // Escondendo a legenda nativa para usar apenas as suas caixas HTML
                     legend: {
-                        display: true,
-                        position: 'top'
+                        display: false
                     },
 
                     tooltip: {
@@ -249,4 +261,17 @@
         });
 
     });
+
+    // =====================================================
+    // FUNÇÃO PARA CONTROLAR O GRÁFICO PELO CHECKBOX
+    // =====================================================
+    function alternarLinhaCheckbox(datasetIndex, elementoCheckbox) {
+        if (!meuGrafico) return;
+
+        if (elementoCheckbox.checked) {
+            meuGrafico.show(datasetIndex); // Se marcou, mostra a linha
+        } else {
+            meuGrafico.hide(datasetIndex); // Se desmarcou, esconde a linha
+        }
+    }
 </script>
