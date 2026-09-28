@@ -76,17 +76,18 @@
         const ponto1 = registros.filter(r => r.equipamento === 'ponto_1');
         const ponto2 = registros.filter(r => r.equipamento === 'ponto_2');
         const ponto3 = registros.filter(r => r.equipamento === 'ponto_3');
-        const ponto4 = registros.filter(r => r.equipamento === 'ponto_4');
-        const ponto5 = registros.filter(r => r.equipamento === 'ponto_5');
-
 
         // =====================================================
-        // HORÁRIOS
+        // HORÁRIOS (Data e Hora)
         // =====================================================
 
-        const labels = ponto1.map(r =>
-            r.data_hora.substring(11, 19)
-        );
+        const labels = ponto1.map(r => {
+            const dataIso = r.data_hora.substring(0, 10); // Pega "YYYY-MM-DD"
+            const horaMinuto = r.data_hora.substring(11, 16); // Pega "HH:MM"
+
+            const [ano, mes, dia] = dataIso.split('-');
+            return `${dia}/${mes} ${horaMinuto}`; // Exemplo: "28/09 14:30"
+        });
 
 
         // =====================================================
@@ -123,7 +124,7 @@
 
                         borderWidth: 1,
 
-                        pointRadius: 2,
+                        pointRadius: 1,
 
                         tension: 0.2,
 
@@ -146,7 +147,7 @@
 
                         borderWidth: 1,
 
-                        pointRadius: 2,
+                        pointRadius: 1,
 
                         tension: 0.2,
 
@@ -169,58 +170,13 @@
 
                         borderWidth: 1,
 
-                        pointRadius: 2,
+                        pointRadius: 1,
 
                         tension: 0.2,
 
                         fill: false
                     },
 
-
-                    // =========================================
-                    // LINHA DO PONTO 4
-                    // =========================================
-
-                    {
-                        label: 'Ponto 4',
-
-                        data: ponto4.map(r => Number(r.temperatura)),
-
-                        borderColor: 'purple',
-
-                        backgroundColor: 'transparent',
-
-                        borderWidth: 1,
-
-                        pointRadius: 2,
-
-                        tension: 0.2,
-
-                        fill: false
-                    },
-
-
-                    // =========================================
-                    // LINHA DO PONTO 5
-                    // =========================================
-
-                    {
-                        label: 'Ponto 5',
-
-                        data: ponto5.map(r => Number(r.temperatura)),
-
-                        borderColor: 'orange',
-
-                        backgroundColor: 'transparent',
-
-                        borderWidth: 1,
-
-                        pointRadius: 2,
-
-                        tension: 0.2,
-
-                        fill: false
-                    }
 
                 ]
             },
