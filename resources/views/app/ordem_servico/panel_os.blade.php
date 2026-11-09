@@ -66,7 +66,7 @@
                     return;
                 } else {
 
-                    const texto = `Atenção! Nova Ordem. Número: ${osId}. Para: ${equipamento}.,'.'.${descricao}, Responsável${responsavel}, `;
+                    const texto = `Atenção! "O.S", ${osId}. Para: ${equipamento}., .${descricao}, , Responsável, ${responsavel}`;
 
                     const vozes = speechSynthesis.getVoices();
                     const vozPT = vozes.find(v => v.lang.startsWith('pt')) || vozes[0];
